@@ -12,7 +12,6 @@ export interface Config {
         canUpdate?: string[];
         isAdmin?: string[];
     };
-    defaults?: ConfigDefaults;
 }
 interface ConfigApplication {
     applicationName?: string;
@@ -31,9 +30,5 @@ export interface ConfigActiveDirectory {
     baseDN: string;
     username: string;
     password: string;
-}
-interface ConfigDefaults {
-    licenseeCity: string;
-    licenseeProvince: string;
 }
 export {};
