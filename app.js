@@ -20,7 +20,7 @@ import { version } from "./version.js";
 import * as databaseInitializer from "./helpers/databaseInitializer.js";
 import debug from "debug";
 const debugApp = debug("general-licence-manager:app");
-databaseInitializer.initLicencesDB();
+databaseInitializer.initLotOccupancyDB();
 const __dirname = ".";
 export const app = express();
 if (!configFunctions.getProperty("reverseProxy.disableEtag")) {

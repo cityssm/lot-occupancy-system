@@ -33,7 +33,7 @@ const debugApp = debug("general-licence-manager:app");
  */
 
 
-databaseInitializer.initLicencesDB();
+databaseInitializer.initLotOccupancyDB();
 
 
 /*

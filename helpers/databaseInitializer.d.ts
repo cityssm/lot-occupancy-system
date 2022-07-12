@@ -1,1 +1,1 @@
-export declare const initLotsDB: () => boolean;
+export declare const initLotOccupancyDB: () => boolean;
