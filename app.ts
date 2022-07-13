@@ -25,7 +25,7 @@ import { version } from "./version.js";
 import * as databaseInitializer from "./helpers/databaseInitializer.js";
 
 import debug from "debug";
-const debugApp = debug("general-licence-manager:app");
+const debugApp = debug("lot-occupancy-system:app");
 
 
 /*

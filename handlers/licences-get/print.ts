@@ -5,7 +5,7 @@ import * as ejs from "ejs";
 
 import * as configFunctions from "../../helpers/functions.config.js";
 
-import convertHTMLToPDF from "pdf-puppeteer";
+// import convertHTMLToPDF from "pdf-puppeteer";
 
 
 const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");

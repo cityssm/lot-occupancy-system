@@ -19,7 +19,7 @@ import * as htmlFns from "@cityssm/expressjs-server-js/htmlFns.js";
 import { version } from "./version.js";
 import * as databaseInitializer from "./helpers/databaseInitializer.js";
 import debug from "debug";
-const debugApp = debug("general-licence-manager:app");
+const debugApp = debug("lot-occupancy-system:app");
 databaseInitializer.initLotOccupancyDB();
 const __dirname = ".";
 export const app = express();

@@ -14,28 +14,70 @@
       <div class="card-content">
         <div class="media">
           <div class="media-left">
-            <i class="fas fa-3x fa-fw fa-certificate" aria-hidden="true"></i>
+            <i class="fas fa-3x fa-fw fa-vector-square" aria-hidden="true"></i>
           </div>
           <div class="media-content has-text-black">
             <h2 class="title is-4 is-marginless">
-              <a href="<%= urlPrefix %>/licences">Licences</a>
+              <a href="<%= urlPrefix %>/lots"><%= configFunctions.getProperty("aliases.lots") %></a>
             </h2>
-            <p>View and maintain licences.</p>
+            <p>View and maintain <%= configFunctions.getProperty("aliases.lots").toLowerCase() %>.</p>
           </div>
         </div>
       </div>
-      <% if (user.userProperties.canUpdate) { %>
-        <div class="card-footer">
-          <a class="card-footer-item" href="<%= urlPrefix %>/licences/new">
-            <span class="icon">
-              <i class="fas fa-plus" aria-hidden="true"></i>
-            </span>
-            <span>Create a New Licence</span>
-          </a>
+    </div>
+    <div class="card">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <i class="far fa-3x fa-fw fa-map" aria-hidden="true"></i>
+          </div>
+          <div class="media-content has-text-black">
+            <h2 class="title is-4 is-marginless">
+              <a href="<%= urlPrefix %>/maps"><%= configFunctions.getProperty("aliases.maps") %></a>
+            </h2>
+            <p>View and maintain <%= configFunctions.getProperty("aliases.maps").toLowerCase() %>.</p>
+          </div>
         </div>
-      <% } %>
+      </div>
     </div>
   </div>
+  <div class="column">
+    <div class="card">
+      <div class="card-content">
+      <div class="media">
+          <div class="media-left">
+            <span class="fa-layers fa-3x fa-fw" aria-hidden="true">
+              <i class="fas fa-vector-square"></i>
+              <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+            </span>
+          </div>
+          <div class="media-content has-text-black">
+            <h2 class="title is-4 is-marginless">
+              <a href="<%= urlPrefix %>/lotOccupancies"><%= configFunctions.getProperty("aliases.lot") + " " + configFunctions.getProperty("aliases.occupancies") %></a>
+            </h2>
+            <p>View and maintain <%= configFunctions.getProperty("aliases.lot").toLowerCase() + " " + configFunctions.getProperty("aliases.occupancies").toLowerCase() %>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-content">
+      <div class="media">
+          <div class="media-left">
+            <i class="fas fa-3x fa-fw fa-hard-hat" aria-hidden="true"></i>
+          </div>
+          <div class="media-content has-text-black">
+            <h2 class="title is-4 is-marginless">
+              <a href="<%= urlPrefix %>/workOrders">Work Orders</a>
+            </h2>
+            <p>View and maintain work orders.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="columns">
   <div class="column">
     <div class="card">
       <div class="card-content">
@@ -53,9 +95,6 @@
       </div>
     </div>
   </div>
-</div>
-<div class="columns">
-
   <div class="column">
     <div class="card">
       <div class="card-content">
@@ -65,14 +104,14 @@
           </div>
           <div class="media-content has-text-black">
             <h2 class="title is-4 is-marginless">
-              <a href="https://cityssm.github.io/general-licence-manager/" target="_blank" rel="noopener noreferrer">Help Documentation</a>
+              <a href="https://cityssm.github.io/lot-occupancy-system/" target="_blank" rel="noopener noreferrer">Help Documentation</a>
             </h2>
             <p>Instructions on how to use this application.</p>
           </div>
         </div>
       </div>
       <div class="card-footer">
-        <a class="card-footer-item has-tooltip-bottom" data-tooltip="Latest Updates, Issue Tracker, Say Hello" href="https://github.com/cityssm/general-licence-manager" target="_blank" rel="noreferrer">
+        <a class="card-footer-item has-tooltip-bottom" data-tooltip="Latest Updates, Issue Tracker, Say Hello" href="https://github.com/cityssm/lot-occupancy-system" target="_blank" rel="noreferrer">
           <span class="icon">
             <i class="fab fa-github" aria-hidden="true"></i>
           </span>

@@ -25,39 +25,6 @@ export const initLotOccupancyDB = (): boolean => {
 
     debugSQL("Creating " + databasePath);
 
-    // Contacts
-
-    lotOccupancyDB.prepare("create table if not exists ContactTypes (" +
-      "contactTypeId integer not null primary key autoincrement," +
-      " contactType varchar(100) not null," +
-      " isLotContactType bit not null default 0," +
-      " isOccupantContactType bit not null default 0," +
-      " orderNumber smallint not null default 0," +
-      recordColumns +
-      ")").run();
-
-    lotOccupancyDB.prepare("create index if not exists idx_contacttypes_ordernumber (orderNumber, contactType)").run();
-
-    lotOccupancyDB.prepare("create table if not exists Contacts (" +
-      "contactId integer not null primary key autoincrement," +
-      " contactTypeId integer not null," +
-      " contactName varchar(200) not null," +
-      " contactDescription text," +
-
-      " contactLatitude  decimal(10, 8) check (contactLatitude  between  -90 and 90)," +
-      " contactLongitude decimal(11, 8) check (contactLongitude between -180 and 180)," +
-
-      " contactAddress1 varchar(50)," +
-      " contactAddress2 varchar(50)," +
-      " contactCity varchar(20)," +
-      " contactProvince varchar(2)," +
-      " contactPostalCode varchar(7)," +
-      " contactPhoneNumber varchar(30)," +
-
-      recordColumns + "," +
-      " foreign key (contactTypeId) references ContactTypes (contactTypeId)" +
-      ")").run();
-
     // Lot Types
 
     lotOccupancyDB.prepare("create table if not exists LotTypes (" +
@@ -67,7 +34,8 @@ export const initLotOccupancyDB = (): boolean => {
       recordColumns +
       ")").run();
 
-    lotOccupancyDB.prepare("create index if not exists idx_lottypes_ordernumber (orderNumber, lotType)").run();
+    lotOccupancyDB.prepare("create index if not exists idx_lottypes_ordernumber" +
+      " on LotTypes (orderNumber, lotType)").run();
 
     lotOccupancyDB.prepare("create table if not exists LotTypeFields (" +
       "lotTypeFieldId integer not null primary key autoincrement," +
@@ -83,7 +51,8 @@ export const initLotOccupancyDB = (): boolean => {
       " foreign key (lotTypeId) references LotTypes (lotTypeId)" +
       ")").run();
 
-    lotOccupancyDB.prepare("create index if not exists idx_lottypefields_ordernumber (lotTypeId, orderNumber, lotTypeField)").run();
+    lotOccupancyDB.prepare("create index if not exists idx_lottypefields_ordernumber" +
+    " on LotTypeFields (lotTypeId, orderNumber, lotTypeField)").run();
 
     lotOccupancyDB.prepare("create table if not exists LotTypeStatuses (" +
       "lotTypeStatusId integer not null primary key autoincrement," +
@@ -94,15 +63,36 @@ export const initLotOccupancyDB = (): boolean => {
       " foreign key (lotTypeId) references LotTypes (lotTypeId)" +
       ")").run();
 
-    lotOccupancyDB.prepare("create index if not exists idx_lottypestatuses_ordernumber (lotTypeId, orderNumber, lotTypeStatus)").run();
+    lotOccupancyDB.prepare("create index if not exists idx_lottypestatuses_ordernumber" +
+      " on LotTypeStatuses (lotTypeId, orderNumber, lotTypeStatus)").run();
 
-    // Lots
+    // Maps and Lots
+
+    lotOccupancyDB.prepare("create table if not exists Maps (" +
+      "mapId integer not null primary key autoincrement," +
+      " mapName varchar(200) not null," +
+      " mapDescription text," +
+
+      " mapLatitude  decimal(10, 8) check (mapLatitude  between  -90 and 90)," +
+      " mapLongitude decimal(11, 8) check (mapLongitude between -180 and 180)," +
+
+      " mapSVG varchar(50)," +
+
+      " mapAddress1 varchar(50)," +
+      " mapAddress2 varchar(50)," +
+      " mapCity varchar(20)," +
+      " mapProvince varchar(2)," +
+      " mapPostalCode varchar(7)," +
+      " mapPhoneNumber varchar(30)," +
+
+      recordColumns +
+      ")").run();
 
     lotOccupancyDB.prepare("create table if not exists Lots (" +
       "lotId integer not null primary key autoincrement," +
       " lotTypeId integer not null," +
       " lotName varchar(100)," +
-      " lotContactId integer," +
+      " mapId integer," +
 
       " lotLatitude  decimal(10, 8) check (lotLatitude  between  -90 and 90)," +
       " lotLongitude decimal(11, 8) check (lotLongitude between -180 and 180)," +
@@ -111,7 +101,7 @@ export const initLotOccupancyDB = (): boolean => {
 
       recordColumns + "," +
       " foreign key (lotTypeId) references LotTypes (lotTypeId)," +
-      " foreign key (lotContactId) references Contacts (contactId)," +
+      " foreign key (mapId) references Maps (mapId)," +
       " foreign key (lotTypeStatusId) references LotTypeStatuses (lotTypeStatusId)" +
       ")").run();
 
@@ -135,9 +125,22 @@ export const initLotOccupancyDB = (): boolean => {
       " foreign key (lotId) references Lots (lotId)" +
       ")").run();
 
-    lotOccupancyDB.prepare("create index if not exists idx_lotcomments_datetime (lotId, lotCommentDate, lotCommentTime)").run();
+    lotOccupancyDB.prepare("create index if not exists idx_lotcomments_datetime" +
+      " on LotComments (lotId, lotCommentDate, lotCommentTime)").run();
 
     // Occupancies
+ 
+    lotOccupancyDB.prepare("create table if not exists Occupants (" +
+      "occupantId integer not null primary key autoincrement," +
+      " occupantName varchar(200) not null," +
+      " occupantAddress1 varchar(50)," +
+      " occupantAddress2 varchar(50)," +
+      " occupantCity varchar(20)," +
+      " occupantProvince varchar(2)," +
+      " occupantPostalCode varchar(7)," +
+      " occupantPhoneNumber varchar(30)," +
+      recordColumns +
+    ")").run();
 
     lotOccupancyDB.prepare("create table if not exists OccupancyTypes (" +
       "occupancyTypeId integer not null primary key autoincrement," +
@@ -146,7 +149,8 @@ export const initLotOccupancyDB = (): boolean => {
       recordColumns +
       ")").run();
 
-    lotOccupancyDB.prepare("create index if not exists idx_occupancytypes_ordernumber (orderNumber, occupancyType)").run();
+    lotOccupancyDB.prepare("create index if not exists idx_occupancytypes_ordernumber" +
+      " on OccupancyTypes (orderNumber, occupancyType)").run();
 
     lotOccupancyDB.prepare("create table if not exists OccupancyTypeFields (" +
       "occupancyTypeFieldId integer not null primary key autoincrement," +
@@ -162,18 +166,19 @@ export const initLotOccupancyDB = (): boolean => {
       " foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId)" +
       ")").run();
 
-    lotOccupancyDB.prepare("create index if not exists idx_occupancytypefields_ordernumber (occupancyTypeId, orderNumber, occupancyTypeField)").run();
+    lotOccupancyDB.prepare("create index if not exists idx_occupancytypefields_ordernumber" +
+      " on OccupancyTypeFields (occupancyTypeId, orderNumber, occupancyTypeField)").run();
 
     lotOccupancyDB.prepare("create table if not exists LotOccupancies (" +
       "lotOccupancyId integer not null primary key autoincrement," +
       " occupancyTypeId integer not null," +
       " lotId integer not null," +
-      " occupantContactId integer," +
+      " occupantId integer," +
       " occupancyStartDate integer not null check (occupancyStartDate > 0)," +
       " occupancyEndDate integer check (occupancyEndDate > 0)," +
       recordColumns + "," +
       " foreign key (lotId) references Lots (lotId)," +
-      " foreign key (occupantContactId) references Contacts (contactId)" +
+      " foreign key (occupantId) references Occupants (occupantId)" +
       ")").run();
 
     lotOccupancyDB.prepare("create table if not exists LotOccupancyFields (" +
@@ -198,13 +203,14 @@ export const initLotOccupancyDB = (): boolean => {
       " feeFunction varchar(100)," +
       " isRequired bit not null default 0," +
       " orderNumber smallint not null default 0," +
-      recordColumns +
+      recordColumns + "," +
       " foreign key (contactTypeId) references ContactTypes (contactTypeId)," +
       " foreign key (contactId) references Contacts (contactId)," +
       " foreign key (lotTypeId) references LotTypes (lotTypeId)" +
       ")").run();
 
-    lotOccupancyDB.prepare("create index if not exists idx_fees_ordernumber (orderNumber, feeName)").run();
+    lotOccupancyDB.prepare("create index if not exists idx_fees_ordernumber" +
+      " on Fees (orderNumber, feeName)").run();
 
     lotOccupancyDB.prepare("create table if not exists LotOccupancyFees (" +
       "lotOccupancyId integer not null," +
@@ -229,7 +235,8 @@ export const initLotOccupancyDB = (): boolean => {
       " foreign key (lotOccupancyId) references LotOccupancies (lotOccupancyId)" +
       ") without rowid").run();
 
-    lotOccupancyDB.prepare("create index if not exists idx_lotoccupancytransactions_ordernumber (lotOccupancyId, transactionDate, transactionTime)").run();
+    lotOccupancyDB.prepare("create index if not exists idx_lotoccupancytransactions_ordernumber" +
+      " on LotOccupancyTransactions (lotOccupancyId, transactionDate, transactionTime)").run();
 
     // Work Orders
 
@@ -240,7 +247,8 @@ export const initLotOccupancyDB = (): boolean => {
       recordColumns +
       ")").run();
 
-    lotOccupancyDB.prepare("create index if not exists idx_workordertypes_ordernumber (orderNumber, workOrderType)").run();
+    lotOccupancyDB.prepare("create index if not exists idx_workordertypes_ordernumber" +
+      " on WorkOrderTypes (orderNumber, workOrderType)").run();
 
     lotOccupancyDB.prepare("create table if not exists WorkOrders (" +
       "workOrderId integer not null primary key autoincrement," +
@@ -272,7 +280,8 @@ export const initLotOccupancyDB = (): boolean => {
       " foreign key (workOrderId) references WorkOrders (workOrderId)" +
       ")").run();
 
-    lotOccupancyDB.prepare("create index if not exists idx_workordercomments_datetime (workOrderId, workOrderCommentDate, workOrderCommentTime)").run();
+    lotOccupancyDB.prepare("create index if not exists idx_workordercomments_datetime" +
+      " on WorkOrderComments (workOrderId, workOrderCommentDate, workOrderCommentTime)").run();
 
     lotOccupancyDB.close();
 

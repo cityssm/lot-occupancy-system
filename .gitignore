@@ -1,15 +1,14 @@
 .nyc_output/
+bin/daemon/
 coverage/
 data/sessions/
 node_modules/
 
-app.min.js
-bin/daemon/
 data/*.db
 data/*.db-journal
-data/*.min.js
-data/config.*
-helpers/*.min.js
+
+data/config.d.ts
+data/config.js
+data/config.ts
+
 public/images-custom/*
-routes/*.min.js
-*.pem

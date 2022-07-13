@@ -1,7 +1,8 @@
 import { config } from "../data/config.js";
 const configFallbackValues = new Map();
 configFallbackValues.set("application.applicationName", "Lot Occupancy System");
-configFallbackValues.set("application.logoURL", "/images/stamp.png");
+configFallbackValues.set("application.backgroundURL", "/images/cemetery-background.jpg");
+configFallbackValues.set("application.logoURL", "/images/cemetery-logo.png");
 configFallbackValues.set("application.httpPort", 7000);
 configFallbackValues.set("application.useTestDatabases", false);
 configFallbackValues.set("reverseProxy.disableCompression", false);

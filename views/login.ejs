@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="has-background-grey" id="is-login-page" lang="en">
+<html class="has-background-grey" id="is-login-page" lang="en" style="background-image:url('<%= urlPrefix + configFunctions.getProperty("application.backgroundURL") %>')">
 
 <head>
   <title>
@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="icon" href="<%= urlPrefix %>/images/favicon.png" />
-  <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/style.min.css" />
+  <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/style.css" />
   <link rel="stylesheet" href="<%= urlPrefix %>/lib/fa/css/all.min.css" />
 </head>
 
@@ -20,7 +20,7 @@
       <div class="box mx-3 my-3">
         <div class="columns is-vcentered">
           <div class="column has-text-centered">
-            <img src="<%= urlPrefix + configFunctions.getProperty("application.logoURL") %>" alt="" />
+            <img src="<%= urlPrefix + configFunctions.getProperty("application.logoURL") %>" alt="" style="max-height:400px" />
           </div>
           <div class="column">
             <h1 class="title is-3 has-text-centered">

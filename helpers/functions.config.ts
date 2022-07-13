@@ -11,7 +11,8 @@ import type * as configTypes from "../types/configTypes";
 const configFallbackValues = new Map<string, unknown>();
 
 configFallbackValues.set("application.applicationName", "Lot Occupancy System");
-configFallbackValues.set("application.logoURL", "/images/stamp.png");
+configFallbackValues.set("application.backgroundURL", "/images/cemetery-background.jpg");
+configFallbackValues.set("application.logoURL", "/images/cemetery-logo.png");
 configFallbackValues.set("application.httpPort", 7000);
 configFallbackValues.set("application.useTestDatabases", false);
 

@@ -9,7 +9,7 @@ import * as configFunctions from "../helpers/functions.config.js";
 import exitHook from "exit-hook";
 
 import debug from "debug";
-const debugWWW = debug("general-licence-manager:www");
+const debugWWW = debug("lot-occupancy-system:www");
 
 
 let httpServer: http.Server;

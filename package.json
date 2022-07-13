@@ -10,7 +10,8 @@
   "scripts": {
     "build": "npx genversion --es6 --semi version.js",
     "start": "cross-env NODE_ENV=production node ./bin/www",
-    "dev": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-manager:* nodemon ./bin/www",
+    "dev:test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true nodemon ./bin/www",
+    "dev:live": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* nodemon ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -59,6 +60,7 @@
     "@types/gulp": "^4.0.9",
     "@types/gulp-changed": "^0.0.35",
     "@types/gulp-minify": "^3.1.1",
+    "@types/gulp-sass": "^5.0.0",
     "@types/http-errors": "^1.8.2",
     "@types/mocha": "^9.1.1",
     "@types/node-windows": "^0.1.2",
@@ -73,6 +75,8 @@
     "gulp": "^4.0.2",
     "gulp-changed": "^4.0.3",
     "gulp-minify": "^3.1.0",
-    "nodemon": "^2.0.19"
+    "gulp-sass": "^5.1.0",
+    "nodemon": "^2.0.19",
+    "sass": "^1.53.0"
   }
 }

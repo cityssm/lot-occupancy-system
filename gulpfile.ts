@@ -4,6 +4,25 @@ import gulp from "gulp";
 import changed from "gulp-changed";
 import minify from "gulp-minify";
 
+import dartSass from 'sass';
+import gulpSass from 'gulp-sass';
+const sass = gulpSass(dartSass);
+
+/*
+ * Compile SASS
+ */
+
+const publicSCSSDestination = "public/stylesheets";
+
+const publicSCSSFunction = () => {
+
+  return gulp.src("public-scss/*.scss")
+    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+    .pipe(gulp.dest(publicSCSSDestination));
+};
+
+gulp.task("public-scss", publicSCSSFunction);
+
 /*
  * Minify public/javascripts
  */
@@ -27,6 +46,7 @@ gulp.task("public-javascript-min", publicJavascriptsMinFunction);
  */
 
 const watchFunction = () => {
+  gulp.watch("public-scss/*.scss", publicSCSSFunction);
   gulp.watch("public-typescript/*.js", publicJavascriptsMinFunction);
 };
 
@@ -38,5 +58,6 @@ gulp.task("watch", watchFunction);
 
 gulp.task("default", () => {
   publicJavascriptsMinFunction();
+  publicSCSSFunction();
   watchFunction();
 });

@@ -8,14 +8,24 @@ export interface Config {
   };
   activeDirectory?: ConfigActiveDirectory;
   users?: {
+    testing?: string[];
     canLogin?: string[];
     canUpdate?: string[];
     isAdmin?: string[];
+  },
+  aliases?: {
+    lot: string;
+    lots: string;
+    map: string;
+    maps: string;
+    occupancy: string;
+    occupancies: string;
   }
 }
 
 interface ConfigApplication {
   applicationName?: string;
+  backgroundURL?: string;
   logoURL?: string;
   httpPort?: number;
   userDomain?: string;
