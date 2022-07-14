@@ -8,11 +8,16 @@
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "scripts": {
-    "build": "npx genversion --es6 --semi version.js",
+    "build:version": "npx genversion --es6 --semi version.js",
+
     "start": "cross-env NODE_ENV=production node ./bin/www",
+
     "dev:test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true nodemon ./bin/www",
     "dev:live": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* nodemon ./bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    
+    "test": "echo \"Error: no test specified\" && exit 1",
+
+    "temp:so:importMaps": "node ./temp/so.importMaps.js"
   },
   "repository": {
     "type": "git",
@@ -48,6 +53,7 @@
   },
   "devDependencies": {
     "@cityssm/bulma-webapp-css": "^0.11.0",
+    "@cityssm/mssql-multi-pool": "^2.1.6",
     "@types/activedirectory2": "^1.2.3",
     "@types/better-sqlite3": "^7.5.0",
     "@types/compression": "^1.7.2",
@@ -63,6 +69,7 @@
     "@types/gulp-sass": "^5.0.0",
     "@types/http-errors": "^1.8.2",
     "@types/mocha": "^9.1.1",
+    "@types/mssql": "^8.0.3",
     "@types/node-windows": "^0.1.2",
     "@types/session-file-store": "^1.2.2",
     "@typescript-eslint/eslint-plugin": "^5.30.6",

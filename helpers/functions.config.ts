@@ -29,6 +29,13 @@ configFallbackValues.set("users.canLogin", ["administrator"]);
 configFallbackValues.set("users.canUpdate", []);
 configFallbackValues.set("users.isAdmin", ["administrator"]);
 
+configFallbackValues.set("aliases.lot", "Lot");
+configFallbackValues.set("aliases.lots", "Lots");
+configFallbackValues.set("aliases.map", "Map");
+configFallbackValues.set("aliases.maps", "Maps");
+configFallbackValues.set("aliases.occupancy", "Occupancy");
+configFallbackValues.set("aliases.occupancies", "Occupancies");
+
 
 /*
  * Set up function overloads
@@ -54,6 +61,13 @@ export function getProperty(propertyName: "session.cookieName"): string;
 export function getProperty(propertyName: "session.doKeepAlive"): boolean;
 export function getProperty(propertyName: "session.maxAgeMillis"): number;
 export function getProperty(propertyName: "session.secret"): string;
+
+export function getProperty(propertyName: "aliases.lot"): string;
+export function getProperty(propertyName: "aliases.lots"): string;
+export function getProperty(propertyName: "aliases.map"): string;
+export function getProperty(propertyName: "aliases.maps"): string;
+export function getProperty(propertyName: "aliases.occupancy"): string;
+export function getProperty(propertyName: "aliases.occupancies"): string;
 
 export function getProperty(propertyName: string): unknown {
 

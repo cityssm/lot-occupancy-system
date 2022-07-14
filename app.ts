@@ -12,7 +12,10 @@ import FileStore from "session-file-store";
 
 import routerLogin from "./routes/login.js";
 import routerDashboard from "./routes/dashboard.js";
-import routerLicences from "./routes/licences.js";
+import routerLots from "./routes/lots.js";
+import routerMaps from "./routes/maps.js";
+import routerLotOccupancies from "./routes/lotOccupancies.js";
+import routerWorkOrders from "./routes/workOrders.js";
 import routerReports from "./routes/reports.js";
 import routerAdmin from "./routes/admin.js";
 
@@ -184,7 +187,12 @@ app.get(urlPrefix + "/", sessionChecker, (_request, response) => {
 });
 
 app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
-app.use(urlPrefix + "/licences", sessionChecker, routerLicences);
+
+app.use(urlPrefix + "/lots", sessionChecker, routerLots);
+app.use(urlPrefix + "/maps", sessionChecker, routerMaps);
+app.use(urlPrefix + "/lotOccupancies", sessionChecker, routerLotOccupancies);
+app.use(urlPrefix + "/workOrders", sessionChecker, routerWorkOrders);
+
 app.use(urlPrefix + "/reports", sessionChecker, routerReports);
 app.use(urlPrefix + "/admin", sessionChecker, routerAdmin);
 

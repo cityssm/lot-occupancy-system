@@ -15,6 +15,12 @@ configFallbackValues.set("session.doKeepAlive", false);
 configFallbackValues.set("users.canLogin", ["administrator"]);
 configFallbackValues.set("users.canUpdate", []);
 configFallbackValues.set("users.isAdmin", ["administrator"]);
+configFallbackValues.set("aliases.lot", "Lot");
+configFallbackValues.set("aliases.lots", "Lots");
+configFallbackValues.set("aliases.map", "Map");
+configFallbackValues.set("aliases.maps", "Maps");
+configFallbackValues.set("aliases.occupancy", "Occupancy");
+configFallbackValues.set("aliases.occupancies", "Occupancies");
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split(".");
     let currentObject = config;

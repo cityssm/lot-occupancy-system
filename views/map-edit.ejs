@@ -1,0 +1,65 @@
+<%- include('_header'); -%>
+
+<div class="columns is-variable is-4-mobile is-4-tablet is-block-print" id="is-site-layout">
+
+    <div class="column is-block-print">
+        <nav class="breadcrumb">
+            <ul>
+                <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+                <li><a href="<%= urlPrefix %>/maps"><%= configFunctions.getProperty("aliases.maps") %></a></li>
+                <li class="is-active">
+                    <a href="#" aria-current="page">
+                        <% if (isCreate) { %>
+                        Create a New <%= configFunctions.getProperty("aliases.map") %>
+                        <% } else { %>
+                        Update a <%= configFunctions.getProperty("aliases.map") %>
+                        <% } %>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <h1 class="title is-1">
+            <% if (isCreate) { %>
+            Create a New <%= configFunctions.getProperty("aliases.map") %>
+            <% } else { %>
+            Update a <%= configFunctions.getProperty("aliases.map") %>
+            <% } %>
+        </h1>
+
+        <form id="form--map">
+            <input id="map--mapId" name="mapId" type="hidden" value="<%= map.mapId %>" />
+
+            <div class="field">
+                <label class="label" for="map--mapName"><%= configFunctions.getProperty("aliases.map") %> Name</label>
+                <div class="control">
+                    <input class="input" id="map--mapName" name="mapName" type="text" value="<%= map.mapName %>" maxlength="200" required />
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="map--mapDescription"><%= configFunctions.getProperty("aliases.map") %> Description</label>
+                <div class="control">
+                    <textarea class="textarea" id="map--mapDescription" name="mapDescription"><%= map.mapName %></textarea>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label" for="map--mapSVG">SVG File</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select id="map--mapSVG" name="mapSVG">
+                                    <option value="">(Select a File)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('_footerA'); -%>
+
+<%- include('_footerB'); -%>

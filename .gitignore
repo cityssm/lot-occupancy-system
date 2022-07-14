@@ -12,3 +12,6 @@ data/config.js
 data/config.ts
 
 public/images-custom/*
+
+temp/config.*
+temp/wmf/
