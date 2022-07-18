@@ -13,9 +13,16 @@
 </footer>
 <script>
   window.exports = window.exports || {};
+  exports.aliases = {
+    map: "<%= configFunctions.getProperty("aliases.map") %>",
+    maps: "<%= configFunctions.getProperty("aliases.maps") %>",
+    lot: "<%= configFunctions.getProperty("aliases.lot") %>",
+    lots: "<%= configFunctions.getProperty("aliases.lots") %>"
+  };
 </script>
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-js/bulma-js.js"></script>
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-webapp-js/dist/cityssm.min.js"></script>
+<script src="<%= urlPrefix %>/lib/leaflet/leaflet.js"></script>
 <script>
   cityssm.htmlModalFolder ="<%= urlPrefix %>/html/";
   bulmaJS.init();

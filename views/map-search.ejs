@@ -25,9 +25,27 @@
         </a>
       </div>
     <% } %>
+
+    <div class="box">
+      <form id="form--searchFilters">
+        <div class="field">
+          <div class="control has-icons-left">
+            <input class="input" id="searchFilter--map" type="text" placeholder="Search <%= configFunctions.getProperty("aliases.map").toLowerCase() %> name, description, and address" />
+            <span class="icon is-small is-left">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div id="container--searchResults"></div>
  </div>
 </div>
 
 <%- include('_footerA'); -%>
-
+<script>
+  exports.maps = <%- JSON.stringify(maps) %>;
+</script>
+<script src="<%= urlPrefix %>/javascripts/mapSearch.min.js"></script>
 <%- include('_footerB'); -%>

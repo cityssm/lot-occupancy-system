@@ -13,5 +13,6 @@ data/config.ts
 
 public/images-custom/*
 
-temp/config.*
 temp/wmf/
+temp/config.*
+temp/*.csv

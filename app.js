@@ -57,6 +57,7 @@ app.use(urlPrefix, express.static(path.join("public")));
 app.use(urlPrefix + "/lib/fa", express.static(path.join("node_modules", "@fortawesome", "fontawesome-free")));
 app.use(urlPrefix + "/lib/cityssm-bulma-webapp-js", express.static(path.join("node_modules", "@cityssm", "bulma-webapp-js")));
 app.use(urlPrefix + "/lib/cityssm-bulma-js", express.static(path.join("node_modules", "@cityssm", "bulma-js", "dist")));
+app.use(urlPrefix + "/lib/leaflet", express.static(path.join("node_modules", "leaflet", "dist")));
 const sessionCookieName = configFunctions.getProperty("session.cookieName");
 const FileStoreSession = FileStore(session);
 app.use(session({

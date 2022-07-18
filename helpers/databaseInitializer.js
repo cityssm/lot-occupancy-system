@@ -68,6 +68,7 @@ export const initLotOccupancyDB = () => {
             " lotTypeId integer not null," +
             " lotName varchar(100)," +
             " mapId integer," +
+            " mapKey varchar(100)," +
             " lotLatitude  decimal(10, 8) check (lotLatitude  between  -90 and 90)," +
             " lotLongitude decimal(11, 8) check (lotLongitude between -180 and 180)," +
             " lotTypeStatusId integer," +

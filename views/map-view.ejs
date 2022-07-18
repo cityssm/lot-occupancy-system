@@ -1,0 +1,81 @@
+<%- include('_header'); -%>
+
+<div class="columns is-variable is-4-mobile is-4-tablet is-block-print" id="is-site-layout">
+
+    <div class="column is-block-print">
+        <nav class="breadcrumb">
+            <ul>
+                <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+                <li>
+                    <a href="<%= urlPrefix %>/maps">
+                        <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
+                        <span><%= configFunctions.getProperty("aliases.maps") %></span>
+                    </a>
+                </li>
+                <li class="is-active">
+                    <a href="#" aria-current="page">
+                        <%= map.mapName %>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <h1 class="title is-1">
+            <%= map.mapName %>
+        </h1>
+
+        <% if (user.userProperties.canUpdate) { %>
+            <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+                <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("aliases.map") %>" href="<%= urlPrefix %>/maps/<%= map.mapId %>/edit">
+                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                    <span class="sr-only">Update <%= configFunctions.getProperty("aliases.map") %></span>
+                </a>
+            </div>
+        <% } %>
+
+        <p>
+            <%= map.mapDescription %>
+        </p>
+
+        <div class="columns">
+            <div class="column">
+                <h2 class="title is-4">Geographic Location</h2>
+                
+                <% if (map.mapLatitude && map.mapLongitude) { %>
+                    <div id="map--leaflet" data-map-latitude="<%= map.mapLatitude %>" data-map-longitude="<%= map.mapLongitude %>" style="height:300px"></div>
+                <% } else { %>
+                    <div class="message is-info">
+                        <p class="message-body">There are no geographic coordinates associated with this <%= configFunctions.getProperty("aliases.map").toLowerCase() %>.</p>
+                    </div>
+                <% } %>
+            </div>
+            <div class="column">
+                <h2 class="title is-4">Image</h2>
+
+                <% if (map.mapSVG) { %>
+                    <div class="image">
+                        <% const imageURL = urlPrefix + "/images/maps/" + map.mapSVG %>
+                        <a href="<%= imageURL %>" target="_blank" title="Open in New Window">
+                            <img src="<%= imageURL %>" alt="<%= configFunctions.getProperty("aliases.map") %> Image" />
+                        </a>
+                    </div>
+                <% } else { %>
+                    <div class="message is-info">
+                        <p class="message-body">There are no image associated with this <%= configFunctions.getProperty("aliases.map").toLowerCase() %>.</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <h2 class="title is-4">
+            <%= configFunctions.getProperty("aliases.lots") %>
+            <span class="tag"><%= map.lotCount %></span>
+        </h2>
+    </div>
+</div>
+
+<%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/mapView.min.js"></script>
+
+<%- include('_footerB'); -%>

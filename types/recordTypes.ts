@@ -1,8 +1,3 @@
-/*
- * LOT OCCUPANCY DB TYPES
- */
-
-
 export interface Record {
   recordCreate_userName?: string;
   recordCreate_timeMillis?: number;
@@ -18,8 +13,13 @@ export interface Record {
   recordDelete_dateString?: string;
 }
 
-export interface Map extends Record {
 
+/*
+ * LOT OCCUPANCY DB TYPES
+ */
+
+
+export interface Map extends Record {
   mapId?: number;
   mapName?: string;
   mapDescription?: string;
@@ -34,7 +34,79 @@ export interface Map extends Record {
   mapProvince?: string;
   mapPostalCode?: string;
   mapPhoneNumber?: string;
+
+  lotCount?: number;
 }
+
+
+export interface LotType extends Record {
+  lotTypeId?: number;
+  lotType?: string;
+  orderNumber?: number;
+  lotTypeStatuses?: LotTypeStatus[];
+  lotTypeFields?: LotTypeField[];
+}
+
+
+export interface LotTypeField extends Record {
+  lotTypeFieldId?: number;
+  lotTypeField?: string;
+
+  lotTypeId?: number;
+  lotType: LotType;
+
+  lotTypeFieldValues?: string;
+  isRequired?: boolean;
+  pattern?: string;
+  minimumLength?: number;
+  maximumLength?: number;
+
+  orderNumber?: number;
+}
+
+
+export interface LotTypeStatus extends Record {
+  lotTypeStatusId?: number;
+  lotTypeId?: number;
+  lotTypeStatus?: string;
+  orderNumber?: number;
+}
+
+
+export interface Lot extends Record {
+  lotId?: number;
+  lotName?: string;
+
+  lotTypeId?: number;
+  lotType?: LotType;
+
+  mapId?: number;
+  map?: Map;
+  mapKey?: string;
+
+  lotLatitude?: number;
+  lotLongitude?: number;
+
+  lotTypeStatusId?: number;
+  lotTypeStatus?: LotTypeStatus;
+}
+
+
+export interface Occupant extends Record {
+  occupantId?: number;
+  occupantName?: string;
+  occupantAddress1?: string;
+  occupantAddress2?: string;
+  occupantCity?: string;
+  occupantProvince?: string;
+  occupantPostalCode?: string;
+  occupantPhoneNumber?: string;
+}
+
+
+/*
+ * USER TYPES
+ */
 
 
 export interface User {
@@ -52,4 +124,8 @@ declare module "express-session" {
   interface Session {
     user: User;
   }
+}
+
+export interface PartialSession {
+  user: User;
 }

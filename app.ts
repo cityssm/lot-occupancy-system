@@ -109,6 +109,9 @@ app.use(urlPrefix + "/lib/cityssm-bulma-webapp-js",
 app.use(urlPrefix + "/lib/cityssm-bulma-js",
   express.static(path.join("node_modules", "@cityssm", "bulma-js", "dist")));
 
+app.use(urlPrefix + "/lib/leaflet",
+  express.static(path.join("node_modules", "leaflet", "dist")));
+
 
 /*
  * SESSION MANAGEMENT
