@@ -1,31 +1,63 @@
 <%- include('_header'); -%>
 
-<div class="columns is-variable is-4-mobile is-4-tablet is-block-print" id="is-site-layout">
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li class="is-active"><a href="#" aria-current="page">
+      <span class="icon is-small"><i class="fas fa-vector-square" aria-hidden="true"></i></span>
+      <span><%= configFunctions.getProperty("aliases.lots") %></span>
+    </a></li>
+  </ul>
+</nav>
 
-  <div class="column is-block-print">
-    <nav class="breadcrumb">
-      <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-        <li class="is-active"><a href="#" aria-current="page">
-          <span class="icon is-small"><i class="fas fa-vector-square" aria-hidden="true"></i></span>
-          <span><%= configFunctions.getProperty("aliases.lots") %></span>
-        </a></li>
-      </ul>
-    </nav>
+<h1 class="title is-1">
+  Find a <%= configFunctions.getProperty("aliases.lot") %>
+</h1>
 
-    <h1 class="title is-1">
-      Find a <%= configFunctions.getProperty("aliases.lot") %>
-    </h1>
+<% if (user.userProperties.canUpdate) { %>
+  <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+    <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Create a New <%= configFunctions.getProperty("aliases.lot") %>" href="<%= urlPrefix %>/lots/new">
+      <i class="fas fa-plus" aria-hidden="true"></i>
+      <span class="sr-only">Create a New <%= configFunctions.getProperty("aliases.lot") %></span>
+    </a>
+  </div>
+<% } %>
 
-    <% if (user.userProperties.canUpdate) { %>
-      <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-        <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Create a New <%= configFunctions.getProperty("aliases.lot") %>" href="<%= urlPrefix %>/lots/new">
-          <i class="fas fa-plus" aria-hidden="true"></i>
-          <span class="sr-only">Create a New <%= configFunctions.getProperty("aliases.lot") %></span>
-        </a>
+<div class="box">
+  <form id="form--searchFilters">
+    <div class="columns">
+      <div class="column">
+        <div class="field">
+          <label class="label" for="searchFilter--mapId"><%= configFunctions.getProperty("aliases.map") %></label>
+          <div class="control">
+            <div class="select">
+              <select id="searchFilter--mapId" name="mapId">
+                <option value="">(All <%= configFunctions.getProperty("aliases.maps") %>)</option>
+                <% for (const map of maps) { %>
+                  <option value="<%= map.mapId %>"><%= map.mapName %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
-    <% } %>
- </div>
+      <div class="column">
+        <div class="field">
+          <label class="label" for="searchFilter--lotTypeId"><%= configFunctions.getProperty("aliases.lot") %> Type</label>
+          <div class="control">
+            <div class="select">
+              <select id="searchFilter--lotTypeId" name="lotTypeId">
+                <option value="">(All <%= configFunctions.getProperty("aliases.lot") %> Types)</option>
+                <% for (const lotType of lotTypes) { %>
+                  <option value="<%= lotType.lotTypeId %>"><%= lotType.lotType %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 
 <%- include('_footerA'); -%>

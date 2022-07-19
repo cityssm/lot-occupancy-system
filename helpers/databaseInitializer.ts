@@ -54,17 +54,15 @@ export const initLotOccupancyDB = (): boolean => {
     lotOccupancyDB.prepare("create index if not exists idx_lottypefields_ordernumber" +
     " on LotTypeFields (lotTypeId, orderNumber, lotTypeField)").run();
 
-    lotOccupancyDB.prepare("create table if not exists LotTypeStatuses (" +
-      "lotTypeStatusId integer not null primary key autoincrement," +
-      " lotTypeId integer not null," +
-      " lotTypeStatus varchar(100) not null," +
+    lotOccupancyDB.prepare("create table if not exists LotStatuses (" +
+      "lotStatusId integer not null primary key autoincrement," +
+      " lotStatus varchar(100) not null," +
       " orderNumber smallint not null default 0," +
-      recordColumns + "," +
-      " foreign key (lotTypeId) references LotTypes (lotTypeId)" +
+      recordColumns +
       ")").run();
 
-    lotOccupancyDB.prepare("create index if not exists idx_lottypestatuses_ordernumber" +
-      " on LotTypeStatuses (lotTypeId, orderNumber, lotTypeStatus)").run();
+    lotOccupancyDB.prepare("create index if not exists idx_lotstatuses_ordernumber" +
+      " on LotStatuses (orderNumber, lotStatus)").run();
 
     // Maps and Lots
 
@@ -98,12 +96,12 @@ export const initLotOccupancyDB = (): boolean => {
       " lotLatitude  decimal(10, 8) check (lotLatitude  between  -90 and 90)," +
       " lotLongitude decimal(11, 8) check (lotLongitude between -180 and 180)," +
 
-      " lotTypeStatusId integer," +
+      " lotStatusId integer," +
 
       recordColumns + "," +
       " foreign key (lotTypeId) references LotTypes (lotTypeId)," +
       " foreign key (mapId) references Maps (mapId)," +
-      " foreign key (lotTypeStatusId) references LotTypeStatuses (lotTypeStatusId)" +
+      " foreign key (lotStatusId) references LotStatuses (lotStatusId)" +
       ")").run();
 
     lotOccupancyDB.prepare("create table if not exists LotFields (" +
@@ -166,21 +164,42 @@ export const initLotOccupancyDB = (): boolean => {
       recordColumns + "," +
       " foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId)" +
       ")").run();
-
+      
     lotOccupancyDB.prepare("create index if not exists idx_occupancytypefields_ordernumber" +
       " on OccupancyTypeFields (occupancyTypeId, orderNumber, occupancyTypeField)").run();
 
+    lotOccupancyDB.prepare("create table if not exists LotOccupantTypes (" +
+      "lotOccupantTypeId integer not null primary key autoincrement," +
+      " lotOccupantType varchar(100) not null," +
+      " orderNumber smallint not null default 0," +
+      recordColumns +
+      ")").run();
+
+    lotOccupancyDB.prepare("create index if not exists idx_lotoccupanttypes_ordernumber" +
+      " on LotOccupantTypes (orderNumber, lotOccupantType)").run();
+      
     lotOccupancyDB.prepare("create table if not exists LotOccupancies (" +
       "lotOccupancyId integer not null primary key autoincrement," +
       " occupancyTypeId integer not null," +
       " lotId integer not null," +
-      " occupantId integer," +
       " occupancyStartDate integer not null check (occupancyStartDate > 0)," +
       " occupancyEndDate integer check (occupancyEndDate > 0)," +
       recordColumns + "," +
       " foreign key (lotId) references Lots (lotId)," +
-      " foreign key (occupantId) references Occupants (occupantId)" +
+      " foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId)" +
       ")").run();
+
+      lotOccupancyDB.prepare("create table if not exists LotOccupancyOccupants (" +
+        "lotOccupancyId integer not null," +
+        " lotOccupantIndex  integer not null," +
+        " occupantId integer not null," +
+        " lotOccupantTypeId integer not null," +
+        recordColumns + "," +
+        " primary key (lotOccupancyId, lotOccupantIndex)," +
+        " foreign key (lotOccupancyId) references LotOccupancies (lotOccupancyId)," +
+        " foreign key (occupantId) references Occupants (occupantId)," +
+        " foreign key (lotOccupantTypeId) references LotOccupantTypes (lotOccupantTypeId)" +
+        ") without rowid").run();
 
     lotOccupancyDB.prepare("create table if not exists LotOccupancyFields (" +
       "lotOccupancyId integer not null," +

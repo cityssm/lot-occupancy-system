@@ -7,7 +7,7 @@ import type * as recordTypes from "../../types/recordTypes";
 interface AddLotForm {
     lotName: string;
     lotTypeId: string | number;
-    lotTypeStatusId: string | number;
+    lotStatusId: string | number;
 
     mapId: string | number;
     mapKey: string;
@@ -26,7 +26,7 @@ export const addLot =
 
     const result = database
       .prepare("insert into Lots (" +
-        "lotName, lotTypeId, lotTypeStatusId," +
+        "lotName, lotTypeId, lotStatusId," +
         " mapId, mapKey," +
         " lotLatitude, lotLongitude," +
         " recordCreate_userName, recordCreate_timeMillis," +
@@ -34,7 +34,7 @@ export const addLot =
         " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
       .run(lotForm.lotName,
         lotForm.lotTypeId,
-        (lotForm.lotTypeStatusId === "" ? undefined : lotForm.lotTypeStatusId),
+        (lotForm.lotStatusId === "" ? undefined : lotForm.lotStatusId),
         (lotForm.mapId === "" ? undefined : lotForm.mapId),
         lotForm.mapKey,
         (lotForm.lotLatitude === "" ? undefined : lotForm.lotLatitude),

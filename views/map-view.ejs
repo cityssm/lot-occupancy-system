@@ -32,10 +32,13 @@
                 </a>
             </div>
         <% } %>
-
-        <p>
-            <%= map.mapDescription %>
-        </p>
+        
+        <% if (map.mapDescription && map.mapDescription !== "") { %>
+            <div class="mb-2">
+                <strong>Description</strong><br />
+                <%= map.mapDescription %>
+            </div>
+        <% } %>
 
         <div class="columns">
             <div class="column">

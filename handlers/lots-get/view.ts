@@ -10,7 +10,7 @@ export const handler: RequestHandler = (_request, response) => {
 
   //const licenceID = Number(request.params.licenceID);
 
-  return response.render("licence-view", {
+  return response.render("lot-view", {
     headTitle: "Licence View"
   });
 };

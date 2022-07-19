@@ -1,5 +1,5 @@
 export const handler = (_request, response) => {
-    response.render("licence-edit", {
+    response.render("lot-edit", {
         headTitle: "Licence Create",
         isCreate: true
     });

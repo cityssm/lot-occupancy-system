@@ -2,7 +2,7 @@ import type * as recordTypes from "../../types/recordTypes";
 interface AddLotForm {
     lotName: string;
     lotTypeId: string | number;
-    lotTypeStatusId: string | number;
+    lotStatusId: string | number;
     mapId: string | number;
     mapKey: string;
     lotLatitude: string;

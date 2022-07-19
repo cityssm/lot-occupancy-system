@@ -43,7 +43,6 @@ export interface LotType extends Record {
   lotTypeId?: number;
   lotType?: string;
   orderNumber?: number;
-  lotTypeStatuses?: LotTypeStatus[];
   lotTypeFields?: LotTypeField[];
 }
 
@@ -65,10 +64,9 @@ export interface LotTypeField extends Record {
 }
 
 
-export interface LotTypeStatus extends Record {
-  lotTypeStatusId?: number;
-  lotTypeId?: number;
-  lotTypeStatus?: string;
+export interface LotStatus extends Record {
+  lotStatusId?: number;
+  lotStatus?: string;
   orderNumber?: number;
 }
 
@@ -78,17 +76,32 @@ export interface Lot extends Record {
   lotName?: string;
 
   lotTypeId?: number;
-  lotType?: LotType;
+  lotType?: LotType | string;
 
   mapId?: number;
+  mapName?: string;
   map?: Map;
   mapKey?: string;
 
   lotLatitude?: number;
   lotLongitude?: number;
 
-  lotTypeStatusId?: number;
-  lotTypeStatus?: LotTypeStatus;
+  lotStatusId?: number;
+  lotStatus?: LotStatus | string;
+}
+
+
+export interface OccupancyType extends Record {
+  occupancyTypeId?: number;
+  occupancyType?: string;
+  orderNumber?: number;
+}
+
+
+export interface LotOccupantType extends Record {
+  lotOccupantTypeId?: number;
+  lotOccupantType?: string;
+  orderNumber?: number;
 }
 
 

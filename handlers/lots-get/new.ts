@@ -3,7 +3,7 @@ import type { RequestHandler } from "express";
 
 export const handler: RequestHandler = (_request, response) => {
 
-  response.render("licence-edit", {
+  response.render("lot-edit", {
     headTitle: "Licence Create",
     isCreate: true
   });
