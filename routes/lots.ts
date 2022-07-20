@@ -3,6 +3,7 @@ import { Router } from "express";
 import * as permissionHandlers from "../handlers/permissions.js";
 
 import handler_search from "../handlers/lots-get/search.js";
+import handler_doSearchLots from "../handlers/lots-post/doSearchLots.js";
 
 import handler_view from "../handlers/lots-get/view.js";
 import handler_new from "../handlers/lots-get/new.js";
@@ -20,6 +21,9 @@ export const router = Router();
 
 router.get("/", 
   handler_search);
+  
+router.post("/doSearchLots", 
+  handler_doSearchLots);
 
 
 /*

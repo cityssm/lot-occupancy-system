@@ -1,6 +1,8 @@
 import type * as recordTypes from "../../types/recordTypes";
 interface GetLotsFilters {
     mapId?: number | string;
+    lotTypeId?: number | string;
+    lotStatusId?: number | string;
 }
 interface GetLotsOptions {
     limit: number;

@@ -10,6 +10,14 @@ export const getLots = (filters, options) => {
         sqlWhereClause += " and l.mapId = ?";
         sqlParameters.push(filters.mapId);
     }
+    if (filters.lotTypeId) {
+        sqlWhereClause += " and l.lotTypeId = ?";
+        sqlParameters.push(filters.lotTypeId);
+    }
+    if (filters.lotStatusId) {
+        sqlWhereClause += " and l.lotStatusId = ?";
+        sqlParameters.push(filters.lotStatusId);
+    }
     const lots = database
         .prepare("select l.lotId, l.lotName," +
         " t.lotType," +

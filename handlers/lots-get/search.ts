@@ -8,18 +8,21 @@ import {
     getMaps
 } from "../../helpers/lotOccupancyDB/getMaps.js";
 
-import { getLotTypes } from "../../helpers/lotOccupancyDB/getLotTypes.js";
+import { getLotTypes, getLotStatuses } from "../../helpers/functions.cache.js";
 
 
-export const handler: RequestHandler = (_request, response) => {
+export const handler: RequestHandler = (request, response) => {
 
     const maps = getMaps();
     const lotTypes = getLotTypes();
-
+    const lotStatuses = getLotStatuses();
+    
     response.render("lot-search", {
         headTitle: configFunctions.getProperty("aliases.lot") + " Search",
         maps,
-        lotTypes
+        lotTypes,
+        lotStatuses,
+        mapId: request.query.mapId
     });
 };
 

@@ -3,10 +3,10 @@ import papa from "papaparse";
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../data/databasePaths.js";
 import * as cacheFunctions from "../helpers/functions.cache.js";
-import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { addMap } from "../helpers/lotOccupancyDB/addMap.js";
 import { getMap as getMapFromDatabase } from "../helpers/lotOccupancyDB/getMap.js";
 import { addLot } from "../helpers/lotOccupancyDB/addLot.js";
+import { updateLotStatus } from "../helpers/lotOccupancyDB/updateLot.js";
 import { getOccupants } from "../helpers/lotOccupancyDB/getOccupants.js";
 import { addOccupant } from "../helpers/lotOccupancyDB/addOccupant.js";
 import { addLotOccupancy } from "../helpers/lotOccupancyDB/addLotOccupancy.js";
@@ -80,8 +80,13 @@ function getMap(masterRow) {
 function importFromCSV() {
     let masterRow;
     const lotTypes = cacheFunctions.getLotTypes();
+    const availableLotStatus = cacheFunctions.getLotStatusByLotStatus("Available");
     const preneedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Preneed");
     const preneedOwnerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
+    const reservedLotStatus = cacheFunctions.getLotStatusByLotStatus("Reserved");
+    const deceasedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Interment");
+    const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Deceased");
+    const takenLotStatus = cacheFunctions.getLotStatusByLotStatus("Taken");
     const rawData = fs.readFileSync("./temp/CMMASTER.csv").toString();
     const cmmaster = papa.parse(rawData, {
         delimiter: ",",
@@ -103,7 +108,7 @@ function importFromCSV() {
             const lotId = addLot({
                 lotName: lotName,
                 lotTypeId: lotTypes[0].lotTypeId,
-                lotStatusId: "",
+                lotStatusId: availableLotStatus.lotStatusId,
                 mapId: map.mapId,
                 mapKey: lotName,
                 lotLatitude: "",
@@ -130,20 +135,17 @@ function importFromCSV() {
                     }, user);
                 let occupancyStartDateString = formatDateString(masterRow.CM_PURCHASE_YR, masterRow.CM_PURCHASE_MON, masterRow.CM_PURCHASE_DAY);
                 let occupancyEndDateString = "";
-                if (masterRow.CM_DEATH_YR && masterRow.CM_DEATH_YR !== "0") {
-                    occupancyEndDateString = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
+                if (masterRow.CM_INTERMENT_YR !== "" && masterRow.CM_INTERMENT_YR !== "0") {
+                    occupancyEndDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
                 }
                 if (occupancyStartDateString === "0000-00-00" && occupancyEndDateString !== "") {
                     occupancyStartDateString = occupancyEndDateString;
                 }
-                if (occupancyStartDateString === "0000-00-00" && masterRow.CM_INTERMENT_YR !== "") {
-                    occupancyStartDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
+                if (occupancyStartDateString === "0000-00-00" && masterRow.CM_DEATH_YR !== "" && masterRow.CM_DEATH_YR !== "0") {
+                    occupancyStartDateString = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
                 }
-                if (occupancyStartDateString === "0000-00-00" && masterRow.CM_LAST_CHG_DATE !== "") {
-                    occupancyStartDateString = dateTimeFunctions.dateIntegerToString(Number.parseInt(masterRow.CM_LAST_CHG_DATE, 10));
-                }
-                if (occupancyStartDateString === "0000-00-00") {
-                    occupancyStartDateString = "1970-01-01";
+                if (occupancyStartDateString === "" || occupancyStartDateString === "0000-00-00") {
+                    occupancyStartDateString = "0001-01-01";
                 }
                 const lotOccupancyId = addLotOccupancy({
                     occupancyTypeId: preneedOccupancyType.occupancyTypeId,
@@ -156,6 +158,41 @@ function importFromCSV() {
                     lotOccupantTypeId: preneedOwnerLotOccupantType.lotOccupantTypeId,
                     occupantId
                 }, user);
+                if (occupancyEndDateString === "") {
+                    updateLotStatus(lotId, reservedLotStatus.lotStatusId, user);
+                }
+            }
+            if (masterRow.CM_DECEASED_NAME) {
+                const deceasedPostalCode = ((masterRow.CM_POST1 || "") + " " + (masterRow.CM_POST2 || "")).trim();
+                const occupantId = addOccupant({
+                    occupantName: masterRow.CM_DECEASED_NAME,
+                    occupantAddress1: masterRow.CM_ADDRESS,
+                    occupantAddress2: "",
+                    occupantCity: masterRow.CM_CITY,
+                    occupantProvince: masterRow.CM_PROV,
+                    occupantPostalCode: deceasedPostalCode,
+                    occupantPhoneNumber: ""
+                }, user);
+                let occupancyStartDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
+                const occupancyEndDateString = "";
+                if (occupancyStartDateString === "0000-00-00" && masterRow.CM_DEATH_YR !== "" && masterRow.CM_DEATH_YR !== "0") {
+                    occupancyStartDateString = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
+                }
+                if (occupancyStartDateString === "" || occupancyStartDateString === "0000-00-00") {
+                    occupancyStartDateString = "0001-01-01";
+                }
+                const lotOccupancyId = addLotOccupancy({
+                    occupancyTypeId: deceasedOccupancyType.occupancyTypeId,
+                    lotId,
+                    occupancyStartDateString,
+                    occupancyEndDateString
+                }, user);
+                addLotOccupancyOccupant({
+                    lotOccupancyId,
+                    lotOccupantTypeId: deceasedLotOccupantType.lotOccupantTypeId,
+                    occupantId
+                }, user);
+                updateLotStatus(lotId, takenLotStatus.lotStatusId, user);
             }
         }
     }
@@ -165,5 +202,4 @@ function importFromCSV() {
     }
 }
 purgeTables();
-purgeConfigTables();
 importFromCSV();

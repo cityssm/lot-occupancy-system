@@ -21,7 +21,7 @@ export const getMaps = (filters ? : GetMapsFilters): recordTypes.Map[] => {
         .prepare("select m.mapId, m.mapName, m.mapDescription," +
             " m.mapLatitude, m.mapLongitude, m.mapSVG," +
             " m.mapAddress1, m.mapAddress2, m.mapCity, m.mapProvince, m.mapPostalCode, m.mapPhoneNumber," +
-            " l.lotCount" +
+            " ifnull(l.lotCount,0) as lotCount" +
             " from Maps m" +
             (" left join (" +
                 "select mapId, count(lotId) as lotCount" +

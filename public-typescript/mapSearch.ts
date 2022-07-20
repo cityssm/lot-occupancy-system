@@ -2,11 +2,12 @@
 
 import type * as recordTypes from "../types/recordTypes";
 
-import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
-import type { BulmaJS } from "@cityssm/bulma-js/types";
+import type {
+    cityssmGlobal
+} from "@cityssm/bulma-webapp-js/src/types";
 
 declare const cityssm: cityssmGlobal;
-declare const bulmaJS: BulmaJS;
+
 
 (() => {
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
@@ -50,9 +51,9 @@ declare const bulmaJS: BulmaJS;
 
             searchResultCount += 1;
 
-            const mapName = map.mapName === ""
-                ? "(No Name)"
-                : map.mapName;
+            const mapName = map.mapName === "" ?
+                "(No Name)" :
+                map.mapName;
 
             searchResultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
                 ("<td>" +
@@ -62,16 +63,20 @@ declare const bulmaJS: BulmaJS;
                     cityssm.escapeHTML(map.mapAddress1) +
                     "</td>") +
                 "<td class=\"has-text-centered\">" +
-                (map.mapLatitude && map.mapLongitude
-                    ? "<i class=\"fas fa-map-marker-alt\" title=\"Has Geographic Coordinates\"></i>"
-                    : "") +
+                (map.mapLatitude && map.mapLongitude ?
+                    "<i class=\"fas fa-map-marker-alt\" title=\"Has Geographic Coordinates\"></i>" :
+                    "") +
                 "</td>" +
                 "<td class=\"has-text-centered\">" +
-                (map.mapSVG
-                    ? "<i class=\"fas fa-image\" title=\"Has Image\"></i>"
-                    : "") +
+                (map.mapSVG ?
+                    "<i class=\"fas fa-image\" title=\"Has Image\"></i>" :
+                    "") +
                 "</td>" +
-                "<td class=\"has-text-right\">" + map.lotCount + "</td>" +
+                ("<td class=\"has-text-right\">" +
+                    "<a href=\"" + urlPrefix + "/lots?mapId=" + map.mapId + "\">" +
+                    map.lotCount +
+                    "</a>" +
+                    "</td>") +
                 "</tr>");
         }
 
@@ -101,7 +106,10 @@ declare const bulmaJS: BulmaJS;
     };
 
     searchFilterElement.addEventListener("keyup", renderResults);
-    document.querySelector("#form--searchFilters").addEventListener("submit", renderResults);
+    document.querySelector("#form--searchFilters").addEventListener("submit", (formEvent) => {
+        formEvent.preventDefault();
+        renderResults();
+    });
 
     renderResults();
 })();

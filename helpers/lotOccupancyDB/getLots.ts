@@ -8,6 +8,8 @@ import type * as recordTypes from "../../types/recordTypes";
 
 interface GetLotsFilters {
     mapId?: number | string;
+    lotTypeId?: number | string;
+    lotStatusId?: number | string;
 }
 
 interface GetLotsOptions {
@@ -28,6 +30,16 @@ export const getLots = (filters ? : GetLotsFilters, options?: GetLotsOptions): r
     if (filters.mapId) {
         sqlWhereClause += " and l.mapId = ?";
         sqlParameters.push(filters.mapId);
+    }
+
+    if (filters.lotTypeId) {
+        sqlWhereClause += " and l.lotTypeId = ?";
+        sqlParameters.push(filters.lotTypeId);
+    }
+
+    if (filters.lotStatusId) {
+        sqlWhereClause += " and l.lotStatusId = ?";
+        sqlParameters.push(filters.lotStatusId);
     }
 
     const lots: recordTypes.Lot[] = database

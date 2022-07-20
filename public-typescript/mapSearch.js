@@ -29,9 +29,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 continue;
             }
             searchResultCount += 1;
-            const mapName = map.mapName === ""
-                ? "(No Name)"
-                : map.mapName;
+            const mapName = map.mapName === "" ?
+                "(No Name)" :
+                map.mapName;
             searchResultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
                 ("<td>" +
                     "<a class=\"has-text-weight-bold\" href=\"" + urlPrefix + "/maps/" + map.mapId + "\">" +
@@ -40,16 +40,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     cityssm.escapeHTML(map.mapAddress1) +
                     "</td>") +
                 "<td class=\"has-text-centered\">" +
-                (map.mapLatitude && map.mapLongitude
-                    ? "<i class=\"fas fa-map-marker-alt\" title=\"Has Geographic Coordinates\"></i>"
-                    : "") +
+                (map.mapLatitude && map.mapLongitude ?
+                    "<i class=\"fas fa-map-marker-alt\" title=\"Has Geographic Coordinates\"></i>" :
+                    "") +
                 "</td>" +
                 "<td class=\"has-text-centered\">" +
-                (map.mapSVG
-                    ? "<i class=\"fas fa-image\" title=\"Has Image\"></i>"
-                    : "") +
+                (map.mapSVG ?
+                    "<i class=\"fas fa-image\" title=\"Has Image\"></i>" :
+                    "") +
                 "</td>" +
-                "<td class=\"has-text-right\">" + map.lotCount + "</td>" +
+                ("<td class=\"has-text-right\">" +
+                    "<a href=\"" + urlPrefix + "/lots?mapId=" + map.mapId + "\">" +
+                    map.lotCount +
+                    "</a>" +
+                    "</td>") +
                 "</tr>");
         }
         searchResultsContainerElement.innerHTML = "";
@@ -72,6 +76,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     };
     searchFilterElement.addEventListener("keyup", renderResults);
-    document.querySelector("#form--searchFilters").addEventListener("submit", renderResults);
+    document.querySelector("#form--searchFilters").addEventListener("submit", (formEvent) => {
+        formEvent.preventDefault();
+        renderResults();
+    });
     renderResults();
 })();

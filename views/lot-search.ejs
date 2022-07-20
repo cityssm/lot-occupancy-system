@@ -25,16 +25,20 @@
 
 <div class="box">
   <form id="form--searchFilters">
+    <input name="limit" type="hidden" value="100" />
+    <input name="offset" type="hidden" value="0" />
     <div class="columns">
       <div class="column">
         <div class="field">
           <label class="label" for="searchFilter--mapId"><%= configFunctions.getProperty("aliases.map") %></label>
           <div class="control">
-            <div class="select">
+            <div class="select is-fullwidth">
               <select id="searchFilter--mapId" name="mapId">
                 <option value="">(All <%= configFunctions.getProperty("aliases.maps") %>)</option>
                 <% for (const map of maps) { %>
-                  <option value="<%= map.mapId %>"><%= map.mapName %></option>
+                  <option value="<%= map.mapId %>" <%= (map.mapId.toString() === mapId) ? " selected" : "" %>>
+                    <%= map.mapName %>
+                  </option>
                 <% } %>
               </select>
             </div>
@@ -45,7 +49,7 @@
         <div class="field">
           <label class="label" for="searchFilter--lotTypeId"><%= configFunctions.getProperty("aliases.lot") %> Type</label>
           <div class="control">
-            <div class="select">
+            <div class="select is-fullwidth">
               <select id="searchFilter--lotTypeId" name="lotTypeId">
                 <option value="">(All <%= configFunctions.getProperty("aliases.lot") %> Types)</option>
                 <% for (const lotType of lotTypes) { %>
@@ -56,10 +60,29 @@
           </div>
         </div>
       </div>
+      <div class="column">
+        <div class="field">
+          <label class="label" for="searchFilter--lotStatusId">Status</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="searchFilter--lotStatusId" name="lotStatusId">
+                <option value="">(All Statuses)</option>
+                <% for (const lotStatus of lotStatuses) { %>
+                  <option value="<%= lotStatus.lotStatusId %>"><%= lotStatus.lotStatus %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </form>
 </div>
 
+<div id="container--searchResults"></div>
+
 <%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/lotSearch.min.js"></script>
 
 <%- include('_footerB'); -%>

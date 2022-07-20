@@ -22,6 +22,12 @@ export const addLotOccupancy =
 
     const rightNowMillis = Date.now();
 
+    const occupancyStartDate = dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyStartDateString);
+
+    if (occupancyStartDate <= 0) {
+      console.error(lotOccupancyForm);
+    }
+
     const result = database
       .prepare("insert into LotOccupancies (" +
         "occupancyTypeId, lotId," +
@@ -31,7 +37,7 @@ export const addLotOccupancy =
         " values (?, ?, ?, ?, ?, ?, ?, ?)")
       .run(lotOccupancyForm.occupancyTypeId,
         lotOccupancyForm.lotId,
-        dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyStartDateString),
+        occupancyStartDate,
         (lotOccupancyForm.occupancyEndDateString === ""
             ? undefined
             : dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyEndDateString)),
