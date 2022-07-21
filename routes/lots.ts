@@ -37,16 +37,16 @@ router.get("/new",
 
 
 
-router.get("/:licenceID",
+router.get("/:lotId",
   handler_view);
 
 
-router.get("/:licenceID/edit",
+router.get("/:lotId/edit",
   permissionHandlers.updateGetHandler,
   handler_edit);
 
 
-router.get("/:licenceID/print",
+router.get("/:lotId/print",
   handler_print);
 
 

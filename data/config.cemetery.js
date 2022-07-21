@@ -8,9 +8,7 @@ export const config = {
         lot: "Burial Site",
         lots: "Burial Sites",
         map: "Cemetery",
-        maps: "Cemeteries",
-        occupancy: "Order",
-        occupancies: "Orders"
+        maps: "Cemeteries"
     }
 };
 export default config;

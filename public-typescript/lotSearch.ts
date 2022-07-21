@@ -41,22 +41,29 @@ declare const cityssm: cityssmGlobal;
                 for (const lot of responseJSON.lots) {
                     resultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
                         ("<td>" +
-                            "<a href=\"" + urlPrefix + "/lots/" + lot.lotId + "\">" +
+                            "<a class=\"has-text-weight-bold\" href=\"" + urlPrefix + "/lots/" + lot.lotId + "\">" +
                             lot.lotName +
                             "</a>" +
                             "</td>") +
+                        ("<td>" +
+                            "<a href=\"" + urlPrefix + "/maps/" + lot.mapId + "\">" +
+                            lot.mapName +
+                            "</a>" +
+                            "</td>") +
                         "<td>" + lot.lotType + "</td>" +
-                        "<td>" + lot.lotStatus + "</td>" +
-                        "<td>" + lot.mapName + "</td>" +
+                        ("<td>" +
+                            lot.lotStatus + "<br />" +
+                            (lot.lotOccupancyCount > 0 ? "<span class=\"is-size-7\">Currently Occupied</span>" : "") +
+                            "</td>") +
                         "</tr>");
                 }
 
                 searchResultsContainerElement.innerHTML = "<table class=\"table is-fullwidth is-striped is-hoverable\">" +
                     "<thead><tr>" +
                     "<th>" + exports.aliases.lot + "</th>" +
+                    "<th>" + exports.aliases.map + "</th>" +
                     "<th>" + exports.aliases.lot + " Type</th>" +
                     "<th>Status</th>" +
-                    "<th>" + exports.aliases.map + "</th>" +
                     "</tr></thead>";
 
                 searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);

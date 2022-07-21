@@ -18,8 +18,6 @@ export interface Config {
         lots: string;
         map: string;
         maps: string;
-        occupancy: string;
-        occupancies: string;
     };
 }
 interface ConfigApplication {

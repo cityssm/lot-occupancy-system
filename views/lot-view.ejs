@@ -1,0 +1,47 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+        <a href="<%= urlPrefix %>/lots">
+            <span class="icon is-small"><i class="fas fa-vector-square" aria-hidden="true"></i></span>
+            <span><%= configFunctions.getProperty("aliases.lots") %></span>
+        </a>
+    </li>
+    <li class="is-active"><a href="#" aria-current="page">
+      <span class="icon is-small"><i class="fas fa-vector-square" aria-hidden="true"></i></span>
+      <span><%= lot.lotName %></span>
+    </a></li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+  <%= lot.lotName %>
+</h1>
+
+<% if (user.userProperties.canUpdate) { %>
+  <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+    <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("aliases.lot") %>" href="<%= urlPrefix %>/lots/<%= lot.lotId %>/edit>">
+      <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+      <span class="sr-only">Update <%= configFunctions.getProperty("aliases.lot") %></span>
+    </a>
+  </div>
+<% } %>
+
+<% if (lot.mapSVG) { %>
+    <% const imageURL = urlPrefix + "/images/maps/" + lot.mapSVG %>
+    <div class="image" id="lot--map" data-map-key="<%= lot.mapKey %>">
+        <%- include('../public/images/maps/' + lot.mapSVG); -%>
+    </div>
+<% } else { %>
+    <div class="message is-info">
+        <p class="message-body">There are no image associated with this <%= configFunctions.getProperty("aliases.lot").toLowerCase() %>.</p>
+    </div>
+<% } %>
+
+<%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/lotView.min.js"></script>
+
+<%- include('_footerB'); -%>

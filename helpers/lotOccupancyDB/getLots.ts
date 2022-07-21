@@ -1,3 +1,6 @@
+import {
+    dateToInteger
+} from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import sqlite from "better-sqlite3";
 import {
     lotOccupancyDB as databasePath
@@ -7,9 +10,10 @@ import type * as recordTypes from "../../types/recordTypes";
 
 
 interface GetLotsFilters {
-    mapId?: number | string;
-    lotTypeId?: number | string;
-    lotStatusId?: number | string;
+    lotName?: string;
+    mapId ? : number | string;
+    lotTypeId ? : number | string;
+    lotStatusId ? : number | string;
 }
 
 interface GetLotsOptions {
@@ -18,7 +22,7 @@ interface GetLotsOptions {
 }
 
 
-export const getLots = (filters ? : GetLotsFilters, options?: GetLotsOptions): recordTypes.Lot[] => {
+export const getLots = (filters ? : GetLotsFilters, options ? : GetLotsOptions): recordTypes.Lot[] => {
 
     const database = sqlite(databasePath, {
         readonly: true
@@ -26,6 +30,14 @@ export const getLots = (filters ? : GetLotsFilters, options?: GetLotsOptions): r
 
     let sqlWhereClause = "";
     const sqlParameters = [];
+
+    if (filters.lotName) {
+        const lotNamePieces = filters.lotName.toLowerCase().split(" ");
+        for (const lotNamePiece of lotNamePieces) {
+            sqlWhereClause += " and instr(lower(l.lotName), ?)";
+            sqlParameters.push(lotNamePiece);
+        }
+    }
 
     if (filters.mapId) {
         sqlWhereClause += " and l.mapId = ?";
@@ -42,21 +54,32 @@ export const getLots = (filters ? : GetLotsFilters, options?: GetLotsOptions): r
         sqlParameters.push(filters.lotStatusId);
     }
 
+    const currentDate = dateToInteger(new Date());
+
     const lots: recordTypes.Lot[] = database
         .prepare("select l.lotId, l.lotName," +
-        " t.lotType," +
-        " m.mapName, l.mapKey," +
-        " s.lotStatus" +
-        " from Lots l" +
-        " left join LotTypes t on l.lotTypeId = t.lotTypeId" +
-        " left join LotStatuses s on l.lotStatusId = s.lotStatusId" +
-        " left join Maps m on l.mapId = m.mapId" +
-        " where l.recordDelete_timeMillis is null" +
-        sqlWhereClause +
-        " order by l.lotName" +
-        (options
-            ? " limit " + options.limit + " offset " + options.offset
-            : ""))
+            " t.lotType," +
+            " l.mapId, m.mapName, l.mapKey," +
+            " s.lotStatus," +
+            " ifnull(o.lotOccupancyCount, 0) as lotOccupancyCount" +
+            " from Lots l" +
+            " left join LotTypes t on l.lotTypeId = t.lotTypeId" +
+            " left join LotStatuses s on l.lotStatusId = s.lotStatusId" +
+            " left join Maps m on l.mapId = m.mapId" +
+            (" left join (" +
+                "select lotId, count(lotOccupancyId) as lotOccupancyCount" +
+                " from LotOccupancies" +
+                " where recordDelete_timeMillis is null" +
+                " and occupancyStartDate <= " + currentDate +
+                " and (occupancyEndDate is null or occupancyEndDate >= " + currentDate + ")" +
+                " group by lotId" +
+                ") o on l.lotId = o.lotId") +
+            " where l.recordDelete_timeMillis is null" +
+            sqlWhereClause +
+            " order by l.lotName" +
+            (options ?
+                " limit " + options.limit + " offset " + options.offset :
+                ""))
         .all(sqlParameters);
 
     database.close();

@@ -81,6 +81,7 @@ export interface Lot extends Record {
   mapId?: number;
   mapName?: string;
   map?: Map;
+  mapSVG?: string;
   mapKey?: string;
 
   lotLatitude?: number;
@@ -88,6 +89,8 @@ export interface Lot extends Record {
 
   lotStatusId?: number;
   lotStatus?: LotStatus | string;
+
+  lotOccupancyCount?: number;
 }
 
 

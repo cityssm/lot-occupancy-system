@@ -30,18 +30,9 @@
     <div class="columns">
       <div class="column">
         <div class="field">
-          <label class="label" for="searchFilter--mapId"><%= configFunctions.getProperty("aliases.map") %></label>
+          <label class="label" for="searchFilter--lotName"><%= configFunctions.getProperty("aliases.lot") %></label>
           <div class="control">
-            <div class="select is-fullwidth">
-              <select id="searchFilter--mapId" name="mapId">
-                <option value="">(All <%= configFunctions.getProperty("aliases.maps") %>)</option>
-                <% for (const map of maps) { %>
-                  <option value="<%= map.mapId %>" <%= (map.mapId.toString() === mapId) ? " selected" : "" %>>
-                    <%= map.mapName %>
-                  </option>
-                <% } %>
-              </select>
-            </div>
+            <input class="input" id="searchFilter--lotName" name="lotName" />
           </div>
         </div>
       </div>
@@ -54,6 +45,25 @@
                 <option value="">(All <%= configFunctions.getProperty("aliases.lot") %> Types)</option>
                 <% for (const lotType of lotTypes) { %>
                   <option value="<%= lotType.lotTypeId %>"><%= lotType.lotType %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <div class="field">
+          <label class="label" for="searchFilter--mapId"><%= configFunctions.getProperty("aliases.map") %></label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="searchFilter--mapId" name="mapId">
+                <option value="">(All <%= configFunctions.getProperty("aliases.maps") %>)</option>
+                <% for (const map of maps) { %>
+                  <option value="<%= map.mapId %>" <%= (map.mapId.toString() === mapId) ? " selected" : "" %>>
+                    <%= map.mapName %>
+                  </option>
                 <% } %>
               </select>
             </div>

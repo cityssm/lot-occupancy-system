@@ -33,10 +33,29 @@
             </div>
         <% } %>
         
-        <% if (map.mapDescription && map.mapDescription !== "") { %>
-            <div class="mb-2">
-                <strong>Description</strong><br />
-                <%= map.mapDescription %>
+        <div class="columns">
+            <% if (map.mapDescription && map.mapDescription !== "") { %>
+                <div class="column">
+                    <strong>Description</strong><br />
+                    <%= map.mapDescription %>
+                </div>
+            <% } %>
+            <div class="column">
+                <strong>Address</strong><br />
+                <% if (map.mapAddress1 !== "") { %>
+                    <%= map.mapAddress1 %><br />
+                <% } %>
+                <% if (map.mapAddress2 !== "") { %>
+                    <%= map.mapAddress2 %><br />
+                <% } %>
+                <%= map.mapCity %>, <%= map.mapProvince %><br />
+                <%= map.mapPostalCode %>
+            </div>
+        </div>
+        <% if (map.mapPhoneNumber !== "") { %>
+            <div class="column">
+                <strong>Phone Number</strong><br />
+                <%= map.mapPhoneNumber %>
             </div>
         <% } %>
 
@@ -54,13 +73,10 @@
             </div>
             <div class="column">
                 <h2 class="title is-4">Image</h2>
-
                 <% if (map.mapSVG) { %>
+                    <% const imageURL = urlPrefix + "/images/maps/" + map.mapSVG %>
                     <div class="image">
-                        <% const imageURL = urlPrefix + "/images/maps/" + map.mapSVG %>
-                        <a href="<%= imageURL %>" target="_blank" title="Open in New Window">
-                            <img src="<%= imageURL %>" alt="<%= configFunctions.getProperty("aliases.map") %> Image" />
-                        </a>
+                        <%- include('../public/images/maps/' + map.mapSVG); -%>
                     </div>
                 <% } else { %>
                     <div class="message is-info">

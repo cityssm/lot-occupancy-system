@@ -4,20 +4,38 @@ import fs from "node:fs";
 import papa from "papaparse";
 
 import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../data/databasePaths.js";
+import {
+    lotOccupancyDB as databasePath
+} from "../data/databasePaths.js";
 
 import * as cacheFunctions from "../helpers/functions.cache.js";
 
-import { addMap } from "../helpers/lotOccupancyDB/addMap.js";
-import { getMap as getMapFromDatabase } from "../helpers/lotOccupancyDB/getMap.js";
+import {
+    addMap
+} from "../helpers/lotOccupancyDB/addMap.js";
+import {
+    getMap as getMapFromDatabase
+} from "../helpers/lotOccupancyDB/getMap.js";
 
-import { addLot } from "../helpers/lotOccupancyDB/addLot.js";
-import { updateLotStatus } from "../helpers/lotOccupancyDB/updateLot.js";
+import {
+    addLot
+} from "../helpers/lotOccupancyDB/addLot.js";
+import {
+    updateLotStatus
+} from "../helpers/lotOccupancyDB/updateLot.js";
 
-import { getOccupants } from "../helpers/lotOccupancyDB/getOccupants.js";
-import { addOccupant } from "../helpers/lotOccupancyDB/addOccupant.js";
-import { addLotOccupancy } from "../helpers/lotOccupancyDB/addLotOccupancy.js";
-import { addLotOccupancyOccupant } from "../helpers/lotOccupancyDB/addLotOccupancyOccupant.js";
+import {
+    getOccupants
+} from "../helpers/lotOccupancyDB/getOccupants.js";
+import {
+    addOccupant
+} from "../helpers/lotOccupancyDB/addOccupant.js";
+import {
+    addLotOccupancy
+} from "../helpers/lotOccupancyDB/addLotOccupancy.js";
+import {
+    addLotOccupancyOccupant
+} from "../helpers/lotOccupancyDB/addLotOccupancyOccupant.js";
 
 import type * as recordTypes from "../types/recordTypes";
 
@@ -37,20 +55,20 @@ interface MasterRecord {
     CM_PRENEED_OWNER_SEQ: string;
     CM_DECEASED_NAME: string;
     CM_DECEASED_NAME_SEQ: string;
-    CM_ADDRESS: string; 
-    CM_CITY: string; 
-    CM_PROV: string; 
-    CM_POST1: string; 
-    CM_POST2: string; 
-    CM_PRENEED_ORDER: string; 
-    CM_PURCHASE_YR: string; 
-    CM_PURCHASE_MON: string; 
-    CM_PURCHASE_DAY: string; 
-    CM_NO_GRAVES: string; 
+    CM_ADDRESS: string;
+    CM_CITY: string;
+    CM_PROV: string;
+    CM_POST1: string;
+    CM_POST2: string;
+    CM_PRENEED_ORDER: string;
+    CM_PURCHASE_YR: string;
+    CM_PURCHASE_MON: string;
+    CM_PURCHASE_DAY: string;
+    CM_NO_GRAVES: string;
     CM_DEATH_YR: string;
-    CM_DEATH_MON: string; 
-    CM_DEATH_DAY: string; 
-    CM_WORK_ORDER: string; 
+    CM_DEATH_MON: string;
+    CM_DEATH_DAY: string;
+    CM_WORK_ORDER: string;
     CM_INTERMENT_YR: string;
     CM_INTERMENT_MON: string;
     CM_INTERMENT_DAY: string;
@@ -83,7 +101,7 @@ const user: recordTypes.PartialSession = {
 };
 
 
-function purgeTables () {
+function purgeTables() {
     const database = sqlite(databasePath);
     database.prepare("delete from LotOccupancyOccupants").run();
     database.prepare("delete from LotOccupancies").run();
@@ -94,7 +112,7 @@ function purgeTables () {
 }
 
 
-function purgeConfigTables () {
+function purgeConfigTables() {
     const database = sqlite(databasePath);
     database.prepare("delete from Maps").run();
     database.prepare("delete from sqlite_sequence where name in ('Maps')").run();
@@ -102,23 +120,23 @@ function purgeConfigTables () {
 }
 
 
-function getMapByMapDescription (mapDescription: string) {
+function getMapByMapDescription(mapDescription: string) {
 
     const database = sqlite(databasePath, {
         readonly: true
     });
 
     const map: recordTypes.Map = database
-      .prepare("select * from Maps" +
-        " where mapDescription = ?")
-      .get(mapDescription);
+        .prepare("select * from Maps" +
+            " where mapDescription = ?")
+        .get(mapDescription);
 
     database.close();
 
     return map;
 }
 
-function formatDateString (year: string, month: string, day: string) {
+function formatDateString(year: string, month: string, day: string) {
 
     return ("0000" + year).slice(-4) + "-" +
         ("00" + month).slice(-2) + "-" +
@@ -126,7 +144,7 @@ function formatDateString (year: string, month: string, day: string) {
 }
 
 
-const mapCache: Map<string, recordTypes.Map> = new Map();
+const mapCache: Map < string, recordTypes.Map > = new Map();
 
 
 function getMap(masterRow: MasterRecord): recordTypes.Map {
@@ -164,7 +182,7 @@ function getMap(masterRow: MasterRecord): recordTypes.Map {
 }
 
 
-function importFromCSV () {
+function importFromCSV() {
 
     let masterRow: MasterRecord;
 
@@ -172,18 +190,18 @@ function importFromCSV () {
     const lotTypes = cacheFunctions.getLotTypes();
 
     const availableLotStatus = cacheFunctions.getLotStatusByLotStatus("Available");
-    
+
     const preneedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Preneed");
     const preneedOwnerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
     const reservedLotStatus = cacheFunctions.getLotStatusByLotStatus("Reserved");
-    
+
     const deceasedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Interment");
     const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Deceased");
     const takenLotStatus = cacheFunctions.getLotStatusByLotStatus("Taken");
 
     const rawData = fs.readFileSync("./temp/CMMASTER.csv").toString();
 
-    const cmmaster: papa.ParseResult<MasterRecord> = papa.parse(rawData, {
+    const cmmaster: papa.ParseResult < MasterRecord > = papa.parse(rawData, {
         delimiter: ",",
         header: true,
         skipEmptyLines: true
@@ -200,9 +218,13 @@ function importFromCSV () {
 
             const lotName = masterRow.CM_CEMETERY + "-" +
                 (masterRow.CM_BLOCK === "" ? "" : masterRow.CM_BLOCK + "-") +
-                (masterRow.CM_RANGE2 === "" ? masterRow.CM_RANGE1 : masterRow.CM_RANGE2) + "-" +
-                (masterRow.CM_LOT2 === "" ? masterRow.CM_LOT1 : masterRow.CM_LOT2) + "-" +
-                (masterRow.CM_GRAVE2 === "" ? masterRow.CM_GRAVE1 : masterRow.CM_GRAVE2) + "-" +
+                (masterRow.CM_RANGE1 === "0" && masterRow.CM_RANGE2 === "" ?
+                    "" :
+                    (masterRow.CM_RANGE2 === "" ?
+                        masterRow.CM_RANGE1 :
+                        masterRow.CM_RANGE2) + "-") +
+                masterRow.CM_LOT1 + masterRow.CM_LOT2 + "-" +
+                masterRow.CM_GRAVE1 + masterRow.CM_GRAVE2 + "-" +
                 masterRow.CM_INTERMENT;
 
             const lotId = addLot({
@@ -226,9 +248,9 @@ function importFromCSV () {
                     occupantPostalCode
                 });
 
-                const occupantId = possibleOccupants.length > 0
-                    ? possibleOccupants[0].occupantId
-                    : addOccupant({
+                const occupantId = possibleOccupants.length > 0 ?
+                    possibleOccupants[0].occupantId :
+                    addOccupant({
                         occupantName: masterRow.CM_PRENEED_ORDER,
                         occupantAddress1: masterRow.CM_ADDRESS,
                         occupantAddress2: "",
@@ -254,18 +276,18 @@ function importFromCSV () {
                 if (occupancyStartDateString === "0000-00-00" && occupancyEndDateString !== "") {
                     occupancyStartDateString = occupancyEndDateString;
                 }
-                
+
                 // if end date unavailable
                 if (occupancyStartDateString === "0000-00-00" && masterRow.CM_DEATH_YR !== "" && masterRow.CM_DEATH_YR !== "0") {
                     occupancyStartDateString = formatDateString(masterRow.CM_DEATH_YR,
                         masterRow.CM_DEATH_MON,
                         masterRow.CM_DEATH_DAY);
                 }
-                
+
                 if (occupancyStartDateString === "" || occupancyStartDateString === "0000-00-00") {
                     occupancyStartDateString = "0001-01-01";
                 }
-                
+
                 const lotOccupancyId = addLotOccupancy({
                     occupancyTypeId: preneedOccupancyType.occupancyTypeId,
                     lotId,
@@ -289,14 +311,14 @@ function importFromCSV () {
                 const deceasedPostalCode = ((masterRow.CM_POST1 || "") + " " + (masterRow.CM_POST2 || "")).trim();
 
                 const occupantId = addOccupant({
-                        occupantName: masterRow.CM_DECEASED_NAME,
-                        occupantAddress1: masterRow.CM_ADDRESS,
-                        occupantAddress2: "",
-                        occupantCity: masterRow.CM_CITY,
-                        occupantProvince: masterRow.CM_PROV,
-                        occupantPostalCode: deceasedPostalCode,
-                        occupantPhoneNumber: ""
-                    }, user);
+                    occupantName: masterRow.CM_DECEASED_NAME,
+                    occupantAddress1: masterRow.CM_ADDRESS,
+                    occupantAddress2: "",
+                    occupantCity: masterRow.CM_CITY,
+                    occupantProvince: masterRow.CM_PROV,
+                    occupantPostalCode: deceasedPostalCode,
+                    occupantPhoneNumber: ""
+                }, user);
 
                 let occupancyStartDateString = formatDateString(masterRow.CM_INTERMENT_YR,
                     masterRow.CM_INTERMENT_MON,
@@ -314,7 +336,7 @@ function importFromCSV () {
                 if (occupancyStartDateString === "" || occupancyStartDateString === "0000-00-00") {
                     occupancyStartDateString = "0001-01-01";
                 }
-                
+
                 const lotOccupancyId = addLotOccupancy({
                     occupancyTypeId: deceasedOccupancyType.occupancyTypeId,
                     lotId,

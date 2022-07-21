@@ -1,4 +1,5 @@
 @use '../node_modules/@cityssm/bulma-webapp-css/cityssm.min.css';
+@import '../node_modules/bulma/sass/utilities/derived-variables.sass';
 
 $white: #fff;
 $black: #000;
@@ -81,5 +82,28 @@ fieldset:enabled .is-hidden-enabled {
     width: 100%;
     padding: 0;
     border: 0;
+  }
+}
+
+
+/*
+ * SVG
+ */
+
+.image svg {
+  display: block;
+  height: auto;
+  width: 100%;
+
+  .highlight,
+  .highlight path {
+
+    &.is-danger {
+      fill: $danger-light;
+    }
+    
+    &.is-success {
+      fill: $success-light;
+    }
   }
 }

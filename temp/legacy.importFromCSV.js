@@ -101,9 +101,13 @@ function importFromCSV() {
             const map = getMap(masterRow);
             const lotName = masterRow.CM_CEMETERY + "-" +
                 (masterRow.CM_BLOCK === "" ? "" : masterRow.CM_BLOCK + "-") +
-                (masterRow.CM_RANGE2 === "" ? masterRow.CM_RANGE1 : masterRow.CM_RANGE2) + "-" +
-                (masterRow.CM_LOT2 === "" ? masterRow.CM_LOT1 : masterRow.CM_LOT2) + "-" +
-                (masterRow.CM_GRAVE2 === "" ? masterRow.CM_GRAVE1 : masterRow.CM_GRAVE2) + "-" +
+                (masterRow.CM_RANGE1 === "0" && masterRow.CM_RANGE2 === "" ?
+                    "" :
+                    (masterRow.CM_RANGE2 === "" ?
+                        masterRow.CM_RANGE1 :
+                        masterRow.CM_RANGE2) + "-") +
+                masterRow.CM_LOT1 + masterRow.CM_LOT2 + "-" +
+                masterRow.CM_GRAVE1 + masterRow.CM_GRAVE2 + "-" +
                 masterRow.CM_INTERMENT;
             const lotId = addLot({
                 lotName: lotName,
@@ -122,9 +126,9 @@ function importFromCSV() {
                     occupantCity: masterRow.CM_CITY,
                     occupantPostalCode
                 });
-                const occupantId = possibleOccupants.length > 0
-                    ? possibleOccupants[0].occupantId
-                    : addOccupant({
+                const occupantId = possibleOccupants.length > 0 ?
+                    possibleOccupants[0].occupantId :
+                    addOccupant({
                         occupantName: masterRow.CM_PRENEED_ORDER,
                         occupantAddress1: masterRow.CM_ADDRESS,
                         occupantAddress2: "",

@@ -56,11 +56,13 @@ export interface Lot extends Record {
     mapId?: number;
     mapName?: string;
     map?: Map;
+    mapSVG?: string;
     mapKey?: string;
     lotLatitude?: number;
     lotLongitude?: number;
     lotStatusId?: number;
     lotStatus?: LotStatus | string;
+    lotOccupancyCount?: number;
 }
 export interface OccupancyType extends Record {
     occupancyTypeId?: number;
