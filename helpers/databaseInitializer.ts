@@ -1,6 +1,8 @@
 import sqlite from "better-sqlite3";
 
-import { lotOccupancyDB as databasePath } from "../data/databasePaths.js";
+import {
+  lotOccupancyDB as databasePath
+} from "../data/databasePaths.js";
 
 import debug from "debug";
 const debugSQL = debug("lot-occupancy-system:databaseInitializer");
@@ -18,7 +20,7 @@ export const initLotOccupancyDB = (): boolean => {
   const lotOccupancyDB = sqlite(databasePath);
 
   const row = lotOccupancyDB
-    .prepare("select name from sqlite_master where type = 'table' and name = 'Lots'")
+    .prepare("select name from sqlite_master where type = 'table' and name = 'LotOccupancies'")
     .get();
 
   if (!row) {
@@ -52,7 +54,7 @@ export const initLotOccupancyDB = (): boolean => {
       ")").run();
 
     lotOccupancyDB.prepare("create index if not exists idx_lottypefields_ordernumber" +
-    " on LotTypeFields (lotTypeId, orderNumber, lotTypeField)").run();
+      " on LotTypeFields (lotTypeId, orderNumber, lotTypeField)").run();
 
     lotOccupancyDB.prepare("create table if not exists LotStatuses (" +
       "lotStatusId integer not null primary key autoincrement," +
@@ -128,7 +130,7 @@ export const initLotOccupancyDB = (): boolean => {
       " on LotComments (lotId, lotCommentDate, lotCommentTime)").run();
 
     // Occupancies
- 
+
     lotOccupancyDB.prepare("create table if not exists Occupants (" +
       "occupantId integer not null primary key autoincrement," +
       " occupantName varchar(200) not null," +
@@ -139,7 +141,7 @@ export const initLotOccupancyDB = (): boolean => {
       " occupantPostalCode varchar(7)," +
       " occupantPhoneNumber varchar(30)," +
       recordColumns +
-    ")").run();
+      ")").run();
 
     lotOccupancyDB.prepare("create table if not exists OccupancyTypes (" +
       "occupancyTypeId integer not null primary key autoincrement," +
@@ -164,7 +166,7 @@ export const initLotOccupancyDB = (): boolean => {
       recordColumns + "," +
       " foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId)" +
       ")").run();
-      
+
     lotOccupancyDB.prepare("create index if not exists idx_occupancytypefields_ordernumber" +
       " on OccupancyTypeFields (occupancyTypeId, orderNumber, occupancyTypeField)").run();
 
@@ -177,11 +179,11 @@ export const initLotOccupancyDB = (): boolean => {
 
     lotOccupancyDB.prepare("create index if not exists idx_lotoccupanttypes_ordernumber" +
       " on LotOccupantTypes (orderNumber, lotOccupantType)").run();
-      
+
     lotOccupancyDB.prepare("create table if not exists LotOccupancies (" +
       "lotOccupancyId integer not null primary key autoincrement," +
       " occupancyTypeId integer not null," +
-      " lotId integer not null," +
+      " lotId integer," +
       " occupancyStartDate integer not null check (occupancyStartDate > 0)," +
       " occupancyEndDate integer check (occupancyEndDate > 0)," +
       recordColumns + "," +
@@ -189,17 +191,17 @@ export const initLotOccupancyDB = (): boolean => {
       " foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId)" +
       ")").run();
 
-      lotOccupancyDB.prepare("create table if not exists LotOccupancyOccupants (" +
-        "lotOccupancyId integer not null," +
-        " lotOccupantIndex  integer not null," +
-        " occupantId integer not null," +
-        " lotOccupantTypeId integer not null," +
-        recordColumns + "," +
-        " primary key (lotOccupancyId, lotOccupantIndex)," +
-        " foreign key (lotOccupancyId) references LotOccupancies (lotOccupancyId)," +
-        " foreign key (occupantId) references Occupants (occupantId)," +
-        " foreign key (lotOccupantTypeId) references LotOccupantTypes (lotOccupantTypeId)" +
-        ") without rowid").run();
+    lotOccupancyDB.prepare("create table if not exists LotOccupancyOccupants (" +
+      "lotOccupancyId integer not null," +
+      " lotOccupantIndex  integer not null," +
+      " occupantId integer not null," +
+      " lotOccupantTypeId integer not null," +
+      recordColumns + "," +
+      " primary key (lotOccupancyId, lotOccupantIndex)," +
+      " foreign key (lotOccupancyId) references LotOccupancies (lotOccupancyId)," +
+      " foreign key (occupantId) references Occupants (occupantId)," +
+      " foreign key (lotOccupantTypeId) references LotOccupantTypes (lotOccupantTypeId)" +
+      ") without rowid").run();
 
     lotOccupancyDB.prepare("create table if not exists LotOccupancyFields (" +
       "lotOccupancyId integer not null," +
@@ -210,6 +212,19 @@ export const initLotOccupancyDB = (): boolean => {
       " foreign key (lotOccupancyId) references LotOccupancies (lotOccupancyId)," +
       " foreign key (occupancyTypeFieldId) references OccupancyTypeFields (occupancyTypeFieldId)" +
       ") without rowid").run();
+
+    lotOccupancyDB.prepare("create table if not exists LotOccupancyComments (" +
+      "lotOccupancyCommentId integer not null primary key autoincrement," +
+      " lotOccupancyId integer not null," +
+      " lotOccupancyCommentDate integer not null check (lotOccupancyCommentDate > 0)," +
+      " lotOccupancyCommentTime integer not null check (lotOccupancyCommentTime >= 0)," +
+      " lotOccupancyComment text not null," +
+      recordColumns + "," +
+      " foreign key (lotOccupancyId) references LotOccupancies (lotOccupancyId)" +
+      ")").run();
+
+    lotOccupancyDB.prepare("create index if not exists idx_lotoccupancycomments_datetime" +
+      " on LotOccupancyComments (lotOccupancyId, lotOccupancyCommentDate, lotOccupancyCommentTime)").run();
 
     // Occupancy Fees and Transactions
 

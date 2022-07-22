@@ -11,7 +11,7 @@ const recordColumns = " recordCreate_userName varchar(30) not null," +
 export const initLotOccupancyDB = () => {
     const lotOccupancyDB = sqlite(databasePath);
     const row = lotOccupancyDB
-        .prepare("select name from sqlite_master where type = 'table' and name = 'Lots'")
+        .prepare("select name from sqlite_master where type = 'table' and name = 'LotOccupancies'")
         .get();
     if (!row) {
         debugSQL("Creating " + databasePath);
@@ -140,7 +140,7 @@ export const initLotOccupancyDB = () => {
         lotOccupancyDB.prepare("create table if not exists LotOccupancies (" +
             "lotOccupancyId integer not null primary key autoincrement," +
             " occupancyTypeId integer not null," +
-            " lotId integer not null," +
+            " lotId integer," +
             " occupancyStartDate integer not null check (occupancyStartDate > 0)," +
             " occupancyEndDate integer check (occupancyEndDate > 0)," +
             recordColumns + "," +
@@ -167,6 +167,17 @@ export const initLotOccupancyDB = () => {
             " foreign key (lotOccupancyId) references LotOccupancies (lotOccupancyId)," +
             " foreign key (occupancyTypeFieldId) references OccupancyTypeFields (occupancyTypeFieldId)" +
             ") without rowid").run();
+        lotOccupancyDB.prepare("create table if not exists LotOccupancyComments (" +
+            "lotOccupancyCommentId integer not null primary key autoincrement," +
+            " lotOccupancyId integer not null," +
+            " lotOccupancyCommentDate integer not null check (lotOccupancyCommentDate > 0)," +
+            " lotOccupancyCommentTime integer not null check (lotOccupancyCommentTime >= 0)," +
+            " lotOccupancyComment text not null," +
+            recordColumns + "," +
+            " foreign key (lotOccupancyId) references LotOccupancies (lotOccupancyId)" +
+            ")").run();
+        lotOccupancyDB.prepare("create index if not exists idx_lotoccupancycomments_datetime" +
+            " on LotOccupancyComments (lotOccupancyId, lotOccupancyCommentDate, lotOccupancyCommentTime)").run();
         lotOccupancyDB.prepare("create table if not exists Fees (" +
             "feeId integer not null primary key autoincrement," +
             " feeName varchar(100) not null," +
