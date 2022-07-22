@@ -11,6 +11,7 @@ import { getOccupants } from "../helpers/lotOccupancyDB/getOccupants.js";
 import { addOccupant } from "../helpers/lotOccupancyDB/addOccupant.js";
 import { addLotOccupancy } from "../helpers/lotOccupancyDB/addLotOccupancy.js";
 import { addLotOccupancyOccupant } from "../helpers/lotOccupancyDB/addLotOccupancyOccupant.js";
+import addLotOccupancyComment from "../helpers/lotOccupancyDB/addLotOccupancyComment.js";
 const user = {
     user: {
         userName: "import.unix",
@@ -22,11 +23,12 @@ const user = {
 };
 function purgeTables() {
     const database = sqlite(databasePath);
+    database.prepare("delete from LotOccupancyComments").run();
     database.prepare("delete from LotOccupancyOccupants").run();
     database.prepare("delete from LotOccupancies").run();
     database.prepare("delete from Occupants").run();
     database.prepare("delete from Lots").run();
-    database.prepare("delete from sqlite_sequence where name in ('Lots', 'LotOccupancies', 'Occupants')").run();
+    database.prepare("delete from sqlite_sequence where name in ('Lots', 'LotOccupancies', 'LotOccupancyComments', 'Occupants')").run();
     database.close();
 }
 function purgeConfigTables() {
@@ -53,10 +55,15 @@ function formatDateString(year, month, day) {
 }
 const mapCache = new Map();
 function getMap(masterRow) {
-    if (mapCache.has(masterRow.CM_CEMETERY)) {
-        return mapCache.get(masterRow.CM_CEMETERY);
+    let mapCacheKey = masterRow.CM_CEMETERY;
+    if (masterRow.CM_CEMETERY === "HS" &&
+        (masterRow.CM_BLOCK === "F" || masterRow.CM_BLOCK === "G" || masterRow.CM_BLOCK === "H" || masterRow.CM_BLOCK === "J")) {
+        mapCacheKey += "-" + masterRow.CM_BLOCK;
     }
-    let map = getMapByMapDescription(masterRow.CM_CEMETERY);
+    if (mapCache.has(mapCacheKey)) {
+        return mapCache.get(mapCacheKey);
+    }
+    let map = getMapByMapDescription(mapCacheKey);
     if (!map) {
         console.log("Creating map: " + masterRow.CM_CEMETERY);
         const mapId = addMap({
@@ -74,12 +81,17 @@ function getMap(masterRow) {
         }, user);
         map = getMapFromDatabase(mapId);
     }
-    mapCache.set(masterRow.CM_CEMETERY, map);
+    mapCache.set(mapCacheKey, map);
     return map;
 }
 function importFromCSV() {
     let masterRow;
-    const lotTypes = cacheFunctions.getLotTypes();
+    const casketLotType = cacheFunctions.getLotTypesByLotType("Casket Grave");
+    const columbariumLotType = cacheFunctions.getLotTypesByLotType("Columbarium");
+    const crematoriumLotType = cacheFunctions.getLotTypesByLotType("Crematorium");
+    const mausoleumLotType = cacheFunctions.getLotTypesByLotType("Mausoleum");
+    const nicheWallLotType = cacheFunctions.getLotTypesByLotType("Niche Wall");
+    const urnGardenLotType = cacheFunctions.getLotTypesByLotType("Urn Garden");
     const availableLotStatus = cacheFunctions.getLotStatusByLotStatus("Available");
     const preneedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Preneed");
     const preneedOwnerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
@@ -103,15 +115,39 @@ function importFromCSV() {
                 (masterRow.CM_BLOCK === "" ? "" : masterRow.CM_BLOCK + "-") +
                 (masterRow.CM_RANGE1 === "0" && masterRow.CM_RANGE2 === "" ?
                     "" :
-                    (masterRow.CM_RANGE2 === "" ?
-                        masterRow.CM_RANGE1 :
-                        masterRow.CM_RANGE2) + "-") +
-                masterRow.CM_LOT1 + masterRow.CM_LOT2 + "-" +
+                    (masterRow.CM_RANGE1 + masterRow.CM_RANGE2) + "-") +
+                (masterRow.CM_LOT1 === "0" && masterRow.CM_LOT2 === "" ?
+                    "" :
+                    masterRow.CM_LOT1 + masterRow.CM_LOT2 + "-") +
                 masterRow.CM_GRAVE1 + masterRow.CM_GRAVE2 + "-" +
                 masterRow.CM_INTERMENT;
+            let lotType = casketLotType;
+            switch (masterRow.CM_CEMETERY) {
+                case "00": {
+                    lotType = crematoriumLotType;
+                    break;
+                }
+                case "GC":
+                case "HC": {
+                    lotType = columbariumLotType;
+                    break;
+                }
+                case "MA": {
+                    lotType = mausoleumLotType;
+                    break;
+                }
+                case "NW": {
+                    lotType = nicheWallLotType;
+                    break;
+                }
+                case "UG": {
+                    lotType = urnGardenLotType;
+                    break;
+                }
+            }
             const lotId = addLot({
                 lotName: lotName,
-                lotTypeId: lotTypes[0].lotTypeId,
+                lotTypeId: lotType.lotTypeId,
                 lotStatusId: availableLotStatus.lotStatusId,
                 mapId: map.mapId,
                 mapKey: lotName,
@@ -162,6 +198,22 @@ function importFromCSV() {
                     lotOccupantTypeId: preneedOwnerLotOccupantType.lotOccupantTypeId,
                     occupantId
                 }, user);
+                if (masterRow.CM_REMARK1 !== "") {
+                    addLotOccupancyComment({
+                        lotOccupancyId,
+                        lotOccupancyCommentDateString: occupancyStartDateString,
+                        lotOccupancyCommentTimeString: "00:00",
+                        lotOccupancyComment: masterRow.CM_REMARK1
+                    }, user);
+                }
+                if (masterRow.CM_REMARK2 !== "") {
+                    addLotOccupancyComment({
+                        lotOccupancyId,
+                        lotOccupancyCommentDateString: occupancyStartDateString,
+                        lotOccupancyCommentTimeString: "00:00",
+                        lotOccupancyComment: masterRow.CM_REMARK2
+                    }, user);
+                }
                 if (occupancyEndDateString === "") {
                     updateLotStatus(lotId, reservedLotStatus.lotStatusId, user);
                 }
@@ -196,6 +248,22 @@ function importFromCSV() {
                     lotOccupantTypeId: deceasedLotOccupantType.lotOccupantTypeId,
                     occupantId
                 }, user);
+                if (masterRow.CM_REMARK1 !== "") {
+                    addLotOccupancyComment({
+                        lotOccupancyId,
+                        lotOccupancyCommentDateString: occupancyStartDateString,
+                        lotOccupancyCommentTimeString: "00:00",
+                        lotOccupancyComment: masterRow.CM_REMARK1
+                    }, user);
+                }
+                if (masterRow.CM_REMARK2 !== "") {
+                    addLotOccupancyComment({
+                        lotOccupancyId,
+                        lotOccupancyCommentDateString: occupancyStartDateString,
+                        lotOccupancyCommentTimeString: "00:00",
+                        lotOccupancyComment: masterRow.CM_REMARK2
+                    }, user);
+                }
                 updateLotStatus(lotId, takenLotStatus.lotStatusId, user);
             }
         }

@@ -4,6 +4,7 @@ import { getLotTypes as getLotTypesFromDatabase } from "./lotOccupancyDB/getLotT
 import { getOccupancyTypes as getOccupancyTypesFromDatabase } from "./lotOccupancyDB/getOccupancyTypes.js";
 
 import type * as recordTypes from "../types/recordTypes";
+import getOccupancyType from "./lotOccupancyDB/getOccupancyType.js";
 
 /*
  * Lot Occupant Types
@@ -116,6 +117,7 @@ export function getLotTypesByLotType(lotType: string) {
 */
 
 let occupancyTypes: recordTypes.OccupancyType[];
+const occupancyTypeMap = new Map<number, recordTypes.OccupancyType>();
 
 export function getOccupancyTypes () {
 
@@ -128,20 +130,29 @@ export function getOccupancyTypes () {
 
 export function getOccupancyTypeById (occupancyTypeId: number) {
 
-    const cachedOccupancyTypes = getOccupancyTypes();
+    if (!occupancyTypeMap.has(occupancyTypeId)) {
 
-    return cachedOccupancyTypes.find((currentOccupancyType) => {
-        return currentOccupancyType.occupancyTypeId === occupancyTypeId;
-    });
+        const occupancyType = getOccupancyType(occupancyTypeId);
+        occupancyTypeMap.set(occupancyTypeId, occupancyType);
+    }
+
+    return occupancyTypeMap.get(occupancyTypeId);
 }
 
-export function getOccupancyTypeByOccupancyType (occupancyType: string) {
+export function getOccupancyTypeByOccupancyType (occupancyTypeString: string) {
     
     const cachedOccupancyTypes = getOccupancyTypes();
 
-    const occupancyTypeLowerCase = occupancyType.toLowerCase();
+    const occupancyTypeLowerCase = occupancyTypeString.toLowerCase();
 
-    return cachedOccupancyTypes.find((currentOccupancyType) => {
+    let occupancyType = cachedOccupancyTypes.find((currentOccupancyType) => {
         return currentOccupancyType.occupancyType.toLowerCase() === occupancyTypeLowerCase;
     });
+
+    // get object with related fields
+    if (occupancyType) {
+        occupancyType = getOccupancyTypeById(occupancyType.occupancyTypeId);
+    }
+
+    return occupancyType;
 }

@@ -75,9 +75,9 @@
                 <h2 class="title is-4">Image</h2>
                 <% if (map.mapSVG) { %>
                     <% const imageURL = urlPrefix + "/images/maps/" + map.mapSVG %>
-                    <div class="image">
+                    <a class="image" href="<%= urlPrefix %>/images/maps/<%= map.mapSVG %>" target="_blank">
                         <%- include('../public/images/maps/' + map.mapSVG); -%>
-                    </div>
+                    </a>
                 <% } else { %>
                     <div class="message is-info">
                         <p class="message-body">There are no image associated with this <%= configFunctions.getProperty("aliases.map").toLowerCase() %>.</p>
@@ -87,9 +87,14 @@
         </div>
 
         <h2 class="title is-4">
-            <%= configFunctions.getProperty("aliases.lots") %>
-            <span class="tag"><%= map.lotCount %></span>
+            Related Searches
         </h2>
+
+        <a class="button is-link" href="<%= urlPrefix %>/lots?mapId=<%= map.mapId %>">
+            <span class="icon is-small"><i class="fas fa-vector-square" aria-hidden="true"></i></span>
+            <span class="mr-2"><%= configFunctions.getProperty("aliases.lots") %></span>
+            <span class="tag"><%= map.lotCount %></span>
+        </a>
     </div>
 </div>
 

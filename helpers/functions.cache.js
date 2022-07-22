@@ -2,6 +2,7 @@ import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from "./lotOcc
 import { getLotStatuses as getLotStatusesFromDatabase } from "./lotOccupancyDB/getLotStatuses.js";
 import { getLotTypes as getLotTypesFromDatabase } from "./lotOccupancyDB/getLotTypes.js";
 import { getOccupancyTypes as getOccupancyTypesFromDatabase } from "./lotOccupancyDB/getOccupancyTypes.js";
+import getOccupancyType from "./lotOccupancyDB/getOccupancyType.js";
 let lotOccupantTypes;
 export function getLotOccupantTypes() {
     if (!lotOccupantTypes) {
@@ -63,6 +64,7 @@ export function getLotTypesByLotType(lotType) {
     });
 }
 let occupancyTypes;
+const occupancyTypeMap = new Map();
 export function getOccupancyTypes() {
     if (!occupancyTypes) {
         occupancyTypes = getOccupancyTypesFromDatabase();
@@ -70,15 +72,20 @@ export function getOccupancyTypes() {
     return occupancyTypes;
 }
 export function getOccupancyTypeById(occupancyTypeId) {
-    const cachedOccupancyTypes = getOccupancyTypes();
-    return cachedOccupancyTypes.find((currentOccupancyType) => {
-        return currentOccupancyType.occupancyTypeId === occupancyTypeId;
-    });
+    if (!occupancyTypeMap.has(occupancyTypeId)) {
+        const occupancyType = getOccupancyType(occupancyTypeId);
+        occupancyTypeMap.set(occupancyTypeId, occupancyType);
+    }
+    return occupancyTypeMap.get(occupancyTypeId);
 }
-export function getOccupancyTypeByOccupancyType(occupancyType) {
+export function getOccupancyTypeByOccupancyType(occupancyTypeString) {
     const cachedOccupancyTypes = getOccupancyTypes();
-    const occupancyTypeLowerCase = occupancyType.toLowerCase();
-    return cachedOccupancyTypes.find((currentOccupancyType) => {
+    const occupancyTypeLowerCase = occupancyTypeString.toLowerCase();
+    let occupancyType = cachedOccupancyTypes.find((currentOccupancyType) => {
         return currentOccupancyType.occupancyType.toLowerCase() === occupancyTypeLowerCase;
     });
+    if (occupancyType) {
+        occupancyType = getOccupancyTypeById(occupancyType.occupancyTypeId);
+    }
+    return occupancyType;
 }

@@ -10,4 +10,4 @@ export declare function getLotTypeById(lotTypeId: number): recordTypes.LotType;
 export declare function getLotTypesByLotType(lotType: string): recordTypes.LotType;
 export declare function getOccupancyTypes(): recordTypes.OccupancyType[];
 export declare function getOccupancyTypeById(occupancyTypeId: number): recordTypes.OccupancyType;
-export declare function getOccupancyTypeByOccupancyType(occupancyType: string): recordTypes.OccupancyType;
+export declare function getOccupancyTypeByOccupancyType(occupancyTypeString: string): recordTypes.OccupancyType;

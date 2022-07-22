@@ -106,4 +106,8 @@ fieldset:enabled .is-hidden-enabled {
       fill: $success-light;
     }
   }
+
+  text {
+    user-select: none;
+  }
 }
