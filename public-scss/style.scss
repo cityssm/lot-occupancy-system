@@ -90,6 +90,7 @@ fieldset:enabled .is-hidden-enabled {
  * SVG
  */
 
+
 .image svg {
   display: block;
   height: auto;
@@ -111,3 +112,13 @@ fieldset:enabled .is-hidden-enabled {
     user-select: none;
   }
 }
+
+
+/*
+ * "Readonly" selects
+ */
+
+
+ .select option:disabled {
+  display: none;
+ }

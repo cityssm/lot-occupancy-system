@@ -10,6 +10,9 @@ import handler_new from "../handlers/lots-get/new.js";
 import handler_edit from "../handlers/lots-get/edit.js";
 import handler_print from "../handlers/lots-get/print.js";
 
+import handler_doCreateLot from "../handlers/lots-post/doCreateLot.js";
+import handler_doUpdateLot from "../handlers/lots-post/doUpdateLot.js";
+
 
 export const router = Router();
 
@@ -44,6 +47,17 @@ router.get("/:lotId",
 router.get("/:lotId/edit",
   permissionHandlers.updateGetHandler,
   handler_edit);
+
+  
+router.post("/doCreateLot",
+  permissionHandlers.updatePostHandler,
+  handler_doCreateLot);
+
+
+router.post("/doUpdateLot",
+  permissionHandlers.updatePostHandler,
+  handler_doUpdateLot);
+
 
 
 router.get("/:lotId/print",

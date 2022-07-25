@@ -1,5 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { getLotComments } from "./getLotComments.js";
+import { getLotOccupancies } from "./getLotOccupancies.js";
 export const getLot = (lotId) => {
     const database = sqlite(databasePath, {
         readonly: true
@@ -18,6 +20,16 @@ export const getLot = (lotId) => {
         " where  l.recordDelete_timeMillis is null" +
         " and l.lotId = ?")
         .get(lotId);
+    if (lot) {
+        lot.lotOccupancies = getLotOccupancies({
+            lotId
+        }, {
+            includeOccupants: true,
+            limit: -1,
+            offset: 0
+        }, database).lotOccupancies;
+        lot.lotComments = getLotComments(lotId);
+    }
     database.close();
     return lot;
 };

@@ -10,8 +10,7 @@
         </a>
     </li>
     <li class="is-active"><a href="#" aria-current="page">
-      <span class="icon is-small"><i class="fas fa-vector-square" aria-hidden="true"></i></span>
-      <span><%= lot.lotName %></span>
+      <%= lot.lotName %>
     </a></li>
   </ul>
 </nav>
@@ -20,29 +19,101 @@
   <%= lot.lotName %>
 </h1>
 
-<div>
-  <strong><%= configFunctions.getProperty("aliases.lot") %> Type</strong><br />
-  <%= lot.lotType %>
-</div>
-
 <% if (user.userProperties.canUpdate) { %>
   <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-    <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("aliases.lot") %>" href="<%= urlPrefix %>/lots/<%= lot.lotId %>/edit>">
+    <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("aliases.lot") %>" href="<%= urlPrefix %>/lots/<%= lot.lotId %>/edit">
       <i class="fas fa-pencil-alt" aria-hidden="true"></i>
       <span class="sr-only">Update <%= configFunctions.getProperty("aliases.lot") %></span>
     </a>
   </div>
 <% } %>
 
-<% if (lot.mapSVG) { %>
-    <% const imageURL = urlPrefix + "/images/maps/" + lot.mapSVG %>
-    <div class="image" id="lot--map" data-map-key="<%= lot.mapKey %>">
-        <%- include('../public/images/maps/' + lot.mapSVG); -%>
+<div class="columns">
+  <div class="column">
+    <div>
+      <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
+      <a href="<%= urlPrefix %>/maps/<%= lot.mapId %>">
+        <%= lot.mapName %>
+      </a>
     </div>
+    <div class="mt-2">
+      <strong><%= configFunctions.getProperty("aliases.lot") %> Type</strong><br />
+      <%= lot.lotType %>
+    </div>
+    <div class="mt-2">
+      <strong>Status</strong><br />
+      <%= lot.lotStatus %>
+    </div>
+  </div>
+  <div class="column">
+    <h2 class="title is-4">Image</h2>
+    <% if (lot.mapSVG) { %>
+        <% const imageURL = urlPrefix + "/images/maps/" + lot.mapSVG %>
+        <div class="image" id="lot--map" data-map-key="<%= lot.mapKey %>">
+            <%- include('../public/images/maps/' + lot.mapSVG); -%>
+        </div>
+    <% } else { %>
+        <div class="message is-info">
+            <p class="message-body">There are no image associated with this <%= configFunctions.getProperty("aliases.lot").toLowerCase() %>.</p>
+        </div>
+    <% } %>
+  </div>
+</div>
+
+<h2 class="title is-4">
+  Occupancies
+  <span class="tag"><%= lot.lotOccupancies.length %></span>
+</h2>
+
+<% if (lot.lotOccupancies.length === 0) { %>
+  <div class="message is-info">
+    <p class="message-body">There are no occupancy records asscociated with this <%= configFunctions.getProperty("aliases.lot") %>.</p>
+  </div>
 <% } else { %>
-    <div class="message is-info">
-        <p class="message-body">There are no image associated with this <%= configFunctions.getProperty("aliases.lot").toLowerCase() %>.</p>
-    </div>
+  <table class="table is-fullwidth is-striped is-hoverable">
+    <thead>
+      <tr>
+        <th class="has-width-10">&nbsp;</th>
+        <th>Occupancy Type</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Occupants</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
+      <% for (const lotOccupancy of lot.lotOccupancies) { %>
+        <% const isActive = !(lotOccupancy.occupancyEndDate && lotOccupancy.occupancyEndDate < currentDate); %>
+        <tr>
+          <td class="has-text-centered">
+            <% if (isActive) { %>
+              <i class="fas fa-play" title="Currently Occupied"></i>
+            <% } else { %>
+              <i class="fas fa-stop" title="Previously Occupied"></i>
+            <% } %>
+          </td>
+          <td><%= lotOccupancy.occupancyType %></td>
+          <td><%= lotOccupancy.occupancyStartDateString %></td>
+          <td>
+            <% if (lotOccupancy.occupancyEndDate) { %>
+              <%= lotOccupancy.occupancyEndDateString %>
+            <% } else { %>
+              (No End Date)
+            <% } %>
+          </td>
+          <td>
+            <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
+              (No Occupants)
+            <% } else { %>
+              <% const occupant = lotOccupancy.lotOccupancyOccupants[0]; %>
+              <%= occupant.occupantName %>
+              <%= (lotOccupancy.lotOccupancyOccupants.length > 1 ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1) : "") %>
+            <% } %>
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
 <% } %>
 
 <%- include('_footerA'); -%>

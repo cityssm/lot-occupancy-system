@@ -53,7 +53,7 @@ export const getLots = (filters, options) => {
                 " group by lotId" +
                 ") o on l.lotId = o.lotId") +
             sqlWhereClause +
-            " order by l.lotName" +
+            " order by l.lotName, l.lotId" +
             (options ?
                 " limit " + options.limit + " offset " + options.offset :
                 ""))

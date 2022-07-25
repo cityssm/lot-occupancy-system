@@ -21,8 +21,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         }
     };
+    const unlockField = (clickEvent) => {
+        const fieldElement = clickEvent.currentTarget.closest(".field");
+        const inputOrSelectElement = fieldElement.querySelector("input, select");
+        if (inputOrSelectElement.tagName === "INPUT") {
+            inputOrSelectElement.disabled = false;
+        }
+        else {
+            const optionElements = inputOrSelectElement.querySelectorAll("option");
+            for (const optionElement of optionElements) {
+                optionElement.disabled = false;
+            }
+        }
+        inputOrSelectElement.focus();
+    };
+    const initializeUnlockFieldButtons = (containerElement) => {
+        const unlockFieldButtonElements = containerElement.querySelectorAll(".is-unlock-field-button");
+        for (const unlockFieldButtonElement of unlockFieldButtonElements) {
+            unlockFieldButtonElement.addEventListener("click", unlockField);
+        }
+    };
     const los = {
-        highlightMap
+        highlightMap,
+        initializeUnlockFieldButtons
     };
     exports.los = los;
 })();

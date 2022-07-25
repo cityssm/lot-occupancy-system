@@ -64,6 +64,16 @@ export interface Lot extends Record {
     lotStatus?: LotStatus | string;
     lotOccupancyCount?: number;
     lotOccupancies?: LotOccupancy[];
+    lotComments?: LotComment[];
+}
+export interface LotComment extends Record {
+    lotCommentId?: number;
+    lotId?: number;
+    lotCommentDate?: number;
+    lotCommentDateString?: string;
+    lotCommentTime?: number;
+    lotCommentTimeString?: string;
+    lotComment?: string;
 }
 export interface OccupancyType extends Record {
     occupancyTypeId?: number;
@@ -97,13 +107,18 @@ export interface Occupant extends Record {
     occupantPostalCode?: string;
     occupantPhoneNumber?: string;
 }
+export interface LotOccupancyOccupant extends Occupant, Record {
+    lotOccupancyId?: number;
+    lotOccupantIndex?: number;
+    lotOccupantTypeId?: number;
+    lotOccupantType?: string | LotOccupantType;
+}
 export interface LotOccupancy extends Record {
     lotOccupancyId?: number;
     occupancyTypeId?: number;
     occupancyType?: OccupancyType | string;
     lotId?: number;
-    occupantId?: number;
-    occupant?: Occupant;
+    lotOccupancyOccupants?: LotOccupancyOccupant[];
     occupancyStartDate?: number;
     occupancyStartDateString?: string;
     occupancyEndDate?: number;

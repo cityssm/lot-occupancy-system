@@ -2,7 +2,7 @@ import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from "./lotOcc
 import { getLotStatuses as getLotStatusesFromDatabase } from "./lotOccupancyDB/getLotStatuses.js";
 import { getLotTypes as getLotTypesFromDatabase } from "./lotOccupancyDB/getLotTypes.js";
 import { getOccupancyTypes as getOccupancyTypesFromDatabase } from "./lotOccupancyDB/getOccupancyTypes.js";
-import getOccupancyType from "./lotOccupancyDB/getOccupancyType.js";
+import { getOccupancyType } from "./lotOccupancyDB/getOccupancyType.js";
 let lotOccupantTypes;
 export function getLotOccupantTypes() {
     if (!lotOccupantTypes) {

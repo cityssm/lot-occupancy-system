@@ -165,7 +165,7 @@ function importFromCSV() {
                 const occupantId = possibleOccupants.length > 0 ?
                     possibleOccupants[0].occupantId :
                     addOccupant({
-                        occupantName: masterRow.CM_PRENEED_ORDER,
+                        occupantName: masterRow.CM_PRENEED_OWNER,
                         occupantAddress1: masterRow.CM_ADDRESS,
                         occupantAddress2: "",
                         occupantCity: masterRow.CM_CITY,

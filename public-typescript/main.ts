@@ -41,8 +41,36 @@ import type * as globalTypes from "../types/globalTypes";
         }
     };
 
+    const unlockField = (clickEvent: Event) => {
+
+        const fieldElement = (clickEvent.currentTarget as HTMLElement).closest(".field");
+
+        const inputOrSelectElement = fieldElement.querySelector("input, select") as HTMLInputElement | HTMLSelectElement;
+
+        if (inputOrSelectElement.tagName === "INPUT") {
+            inputOrSelectElement.disabled = false;
+        } else {
+            const optionElements = inputOrSelectElement.querySelectorAll("option");
+            for (const optionElement of optionElements) {
+                optionElement.disabled = false;
+            }
+        }
+
+        inputOrSelectElement.focus();
+    };
+
+    const initializeUnlockFieldButtons = (containerElement: HTMLElement) => {
+
+        const unlockFieldButtonElements = containerElement.querySelectorAll(".is-unlock-field-button");
+
+        for (const unlockFieldButtonElement of unlockFieldButtonElements) {
+            unlockFieldButtonElement.addEventListener("click", unlockField);
+        }
+    };
+
     const los: globalTypes.LOS = {
-        highlightMap
+        highlightMap,
+        initializeUnlockFieldButtons
     };
 
     exports.los = los;

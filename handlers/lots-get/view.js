@@ -1,6 +1,5 @@
 import * as configFunctions from "../../helpers/functions.config.js";
 import { getLot } from "../../helpers/lotOccupancyDB/getLot.js";
-const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
 export const handler = (request, response) => {
     const lot = getLot(request.params.lotId);
     if (!lot) {

@@ -1,0 +1,282 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+        <a href="<%= urlPrefix %>/lots">
+            <span class="icon is-small"><i class="fas fa-vector-square" aria-hidden="true"></i></span>
+            <span><%= configFunctions.getProperty("aliases.lots") %></span>
+        </a>
+    </li>
+    <% if (!isCreate) { %>
+        <li>
+            <a href="<%= urlPrefix %>/lots/<%= lot.lotId %>">
+                <%= lot.lotName %>
+            </a>
+        </li>
+    <% } %>
+    <li class="is-active">
+        <a href="#" aria-current="page">
+            <% if (isCreate) { %>
+            Create a New <%= configFunctions.getProperty("aliases.lot") %>
+            <% } else { %>
+            Update <%= configFunctions.getProperty("aliases.lot") %>
+            <% } %>
+        </a>
+    </li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+  <%= lot.lotName %>
+</h1>
+
+<form id="form--lot">
+    <input id="lot--lotId" name="lotId" type="hidden" value="<%= lot.lotId %>" />
+
+    <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+        <button class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("aliases.lot") %>" type="submit">
+            <i class="fas fa-save" aria-hidden="true"></i>
+            <span class="sr-only">Update <%= configFunctions.getProperty("aliases.lot") %></span>
+        </button>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <label class="label" for="lot--lotName">
+                    <%= configFunctions.getProperty("aliases.lot") %> Name
+                </label>
+                <div class="control">
+                    <input class="input" id="lot--lotName" name="lotName" value="<%= lot.lotName %>" maxlength="100" required />
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <label class="label" for="lot--lotTypeId">
+                <%= configFunctions.getProperty("aliases.lot") %> Type
+            </label>
+            <div class="field has-addons">
+                <div class="control is-expanded">
+                    <div class="select is-fullwidth">
+                        <select id="lot--lotTypeId" name="lotTypeId" required>
+                            <% if (isCreate) { %>
+                                <option value="">(No Type)</option>
+                            <% } %>
+                            <% let typeIsFound = false; %>
+                            <% for (const lotType of lotTypes) { %>
+                                <% 
+                                    if (lot.lotTypeId === lotType.lotTypeId) {
+                                        typeIsFound = true;
+                                    }
+                                %>
+                                <option value="<%= lotType.lotTypeId %>"
+                                    <%= (lot.lotTypeId === lotType.lotTypeId ? " selected" : "") %>
+                                    <%= (!isCreate && lot.lotTypeId !== lotType.lotTypeId ? " disabled" : "") %>>
+                                    <%= lotType.lotType %>
+                                </option>
+                            <% } %>
+                            <% if (lot.lotTypeId && !typeIsFound) { %>
+                                <option value="<%= lot.lotTypeId %>" selected>
+                                    <%= lot.lotType %>
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="control">
+                    <button class="button is-unlock-field-button" type="button" title="Unlock Field">
+                        <i class="fas fa-unlock" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <label class="label" for="lot--lotTypeId">
+                <%= configFunctions.getProperty("aliases.lot") %> Status
+            </label>
+            <div class="field">
+                <div class="control">
+                    <div class="select is-fullwidth">
+                        <select id="lot--lotStatusId" name="lotStatusId">
+                            <option value="">(No Status)</option>
+                            <% let statusIsFound = false; %>
+                            <% for (const lotStatus of lotStatuses) { %>
+                                <% 
+                                    if (lot.lotStatusId === lotStatus.lotStatusId) {
+                                        statusIsFound = true;
+                                    }
+                                %>
+                                <option value="<%= lotStatus.lotStatusId %>"
+                                    <%= (lot.lotStatusId === lotStatus.lotStatusId ? " selected" : "") %>>
+                                    <%= lotStatus.lotStatus %>
+                                </option>
+                            <% } %>
+                            <% if (lot.lotStatusId && !statusIsFound) { %>
+                                <option value="<%= lot.lotStatusId %>" selected>
+                                    <%= lot.lotStatus %>
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <h2 class="title is-4">Geographic Location</h2>
+            <div class="field">
+                <label class="label" for="lot--lotLatitude">Latitude</label>
+                <div class="control">
+                    <input class="input" id="lot--lotLatitude" name="lotLatitude" type="number" min="-90" max="90" step="0.00000001" value="<%= lot.lotLatitude %>" />
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="lot--lotLongitude">Longitude</label>
+                <div class="control">
+                    <input class="input" id="lot--lotLongitude" name="lotLongitude" type="number" min="-180" max="180" step="0.00000001" value="<%= lot.lotLongitude %>" />
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <h2 class="title is-4">Image</h2>
+            <label class="label" for="lot--mapId"><%= configFunctions.getProperty("aliases.map") %></label>
+            <div class="field has-addons">
+                <div class="control is-expanded">
+                    <div class="select is-fullwidth">
+                        <select id="lot--mapId" name="mapId">
+                            <option value="" <%= (!isCreate && lot.mapId ? " disabled" : "") %>>
+                                (No <%= configFunctions.getProperty("aliases.map") %> Selected)
+                            </option>
+                            <% let mapIsFound = false; %>
+                            <% for (const map of maps) { %>
+                                <%
+                                    if (lot.mapId === map.mapId) {
+                                        mapIsFound = true;
+                                    }
+                                %>
+                                <option value="<%= map.mapId %>"
+                                    <%= (lot.mapId === map.mapId ? " selected" : "") %>
+                                    <%= (!isCreate && lot.mapId !== map.mapId ? " disabled" : "") %>>
+                                    <%= map.mapName %>
+                                </option>
+                            <% } %>
+                            <% if (lot.mapId && !mapIsFound) { %>
+                                <option value="<%= lot.mapId %>" selected>
+                                    <%= lot.mapName %>
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="control">
+                    <button class="button is-unlock-field-button" type="button" title="Unlock Field">
+                        <i class="fas fa-unlock" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+    
+            <div class="field">
+                <label class="label" for="lot--mapKey">
+                    <%= configFunctions.getProperty("aliases.map") %> SVG Key
+                </label>
+                <div class="control">
+                    <input class="input" id="lot--mapKey" name="mapKey" value="<%= lot.mapKey %>" maxlength="100" />
+                </div>
+                <p class="help">
+                    <a href="https://cityssm.github.io/lot-occupancy-system/docs/" target="_blank" rel="noreferrer">
+                        <i class="fa fa-question-circle" aria-hidden="true"></i>
+                        What is the SVG key?
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns">
+    </div>
+
+    <h2 class="title is-4">
+        Additional Details
+    </h2>
+</form>
+
+<% if (isCreate) { %>
+    <div class="message is-info">
+        <p class="message-body">
+            Additional options will be available after the record has been created.
+        </p>
+    </div>
+<% } else { %>
+    <h2 class="title is-4">
+        Comments
+    </h2>
+
+    <h2 class="title is-4">
+    Occupancies
+    <span class="tag"><%= lot.lotOccupancies.length %></span>
+    </h2>
+
+    <% if (lot.lotOccupancies.length === 0) { %>
+    <div class="message is-info">
+        <p class="message-body">There are no occupancy records asscociated with this <%= configFunctions.getProperty("aliases.lot") %>.</p>
+    </div>
+    <% } else { %>
+    <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+        <tr>
+            <th class="has-width-10">&nbsp;</th>
+            <th>Occupancy Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Occupants</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
+        <% for (const lotOccupancy of lot.lotOccupancies) { %>
+            <% const isActive = !(lotOccupancy.occupancyEndDate && lotOccupancy.occupancyEndDate < currentDate); %>
+            <tr>
+            <td class="has-text-centered">
+                <% if (isActive) { %>
+                <i class="fas fa-play" title="Currently Occupied"></i>
+                <% } else { %>
+                <i class="fas fa-stop" title="Previously Occupied"></i>
+                <% } %>
+            </td>
+            <td><%= lotOccupancy.occupancyType %></td>
+            <td><%= lotOccupancy.occupancyStartDateString %></td>
+            <td>
+                <% if (lotOccupancy.occupancyEndDate) { %>
+                <%= lotOccupancy.occupancyEndDateString %>
+                <% } else { %>
+                (No End Date)
+                <% } %>
+            </td>
+            <td>
+                <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
+                (No Occupants)
+                <% } else { %>
+                <% const occupant = lotOccupancy.lotOccupancyOccupants[0]; %>
+                <%= occupant.occupantName %>
+                <%= (lotOccupancy.lotOccupancyOccupants.length > 1 ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1) : "") %>
+                <% } %>
+            </td>
+            </tr>
+        <% } %>
+        </tbody>
+    </table>
+    <% } %>
+<% } %>
+
+<%- include('_footerA'); -%>
+
+<script>
+    exports.lotComments = <%- JSON.stringify(lot.lotComments) %>;
+</script>
+<script src="<%= urlPrefix %>/javascripts/lotEdit.min.js"></script>
+
+<%- include('_footerB'); -%>

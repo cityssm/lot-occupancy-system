@@ -4,7 +4,7 @@ import { getLotTypes as getLotTypesFromDatabase } from "./lotOccupancyDB/getLotT
 import { getOccupancyTypes as getOccupancyTypesFromDatabase } from "./lotOccupancyDB/getOccupancyTypes.js";
 
 import type * as recordTypes from "../types/recordTypes";
-import getOccupancyType from "./lotOccupancyDB/getOccupancyType.js";
+import { getOccupancyType } from "./lotOccupancyDB/getOccupancyType.js";
 
 /*
  * Lot Occupant Types

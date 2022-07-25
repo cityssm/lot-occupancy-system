@@ -93,9 +93,9 @@ app.use((request, response, next) => {
     response.locals.user = request.session.user;
     response.locals.csrfToken = request.csrfToken();
     response.locals.configFunctions = configFunctions;
-    response.locals.dateTimeFns = dateTimeFns;
-    response.locals.stringFns = stringFns;
-    response.locals.htmlFns = htmlFns;
+    response.locals.dateTimeFunctions = dateTimeFns;
+    response.locals.stringFunctions = stringFns;
+    response.locals.htmlFunctions = htmlFns;
     response.locals.urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
     next();
 });
