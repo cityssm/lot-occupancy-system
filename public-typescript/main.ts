@@ -68,9 +68,29 @@ import type * as globalTypes from "../types/globalTypes";
         }
     };
 
+    const populateAliases = (containerElement: HTMLElement) => {
+
+        const aliasElements = containerElement.querySelectorAll(".alias") as NodeListOf<HTMLElement>;
+
+        for (const aliasElement of aliasElements) {
+            
+            switch (aliasElement.dataset.alias) {
+
+                case "Lot":
+                    aliasElement.textContent = exports.aliases.lot;
+                    break;
+                    
+                case "lot":
+                    aliasElement.textContent = exports.aliases.lot.toLowerCase();
+                    break;
+            }
+        }
+    };
+
     const los: globalTypes.LOS = {
         highlightMap,
-        initializeUnlockFieldButtons
+        initializeUnlockFieldButtons,
+        populateAliases
     };
 
     exports.los = los;

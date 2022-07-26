@@ -41,9 +41,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
             unlockFieldButtonElement.addEventListener("click", unlockField);
         }
     };
+    const populateAliases = (containerElement) => {
+        const aliasElements = containerElement.querySelectorAll(".alias");
+        for (const aliasElement of aliasElements) {
+            switch (aliasElement.dataset.alias) {
+                case "Lot":
+                    aliasElement.textContent = exports.aliases.lot;
+                    break;
+                case "lot":
+                    aliasElement.textContent = exports.aliases.lot.toLowerCase();
+                    break;
+            }
+        }
+    };
     const los = {
         highlightMap,
-        initializeUnlockFieldButtons
+        initializeUnlockFieldButtons,
+        populateAliases
     };
     exports.los = los;
 })();
