@@ -34,6 +34,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
     let lotComments = exports.lotComments;
     const renderLotComments = () => {
         const lotCommentsContainerElement = document.querySelector("#container--lotComments");
+        if (lotComments.length === 0) {
+            lotCommentsContainerElement.innerHTML = "<div class=\"message is-info\">" +
+                "<p class=\"message-body\">There are no comments to display.</p>" +
+                "</div>";
+        }
     };
     const openAddCommentModal = () => {
         let addCommentCloseModalFunction;

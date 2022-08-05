@@ -14,10 +14,14 @@ export interface Config {
     isAdmin?: string[];
   },
   aliases?: {
-    lot: string;
-    lots: string;
-    map: string;
-    maps: string;
+    lot?: string;
+    lots?: string;
+    map?: string;
+    maps?: string;
+    occupancy?: string;
+    occupancies?: string;
+    occupant?: string;
+    occupants?: string;
   }
 }
 

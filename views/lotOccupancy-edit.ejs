@@ -1,0 +1,43 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+        <a href="<%= urlPrefix %>/lotOccupancies">
+            <span class="icon is-small">
+                <span class="fa-layers fa-fw" aria-hidden="true">
+                    <i class="fas fa-vector-square"></i>
+                    <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+                </span>
+            </span>
+            <span><%= configFunctions.getProperty("aliases.lots") %> <%= configFunctions.getProperty("aliases.occupancies") %></span>
+        </a>
+    </li>
+    <li>
+        <a href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
+        <%= configFunctions.getProperty("aliases.occupancy") %> View
+        </a>
+    </li>
+    <li class="is-active">
+        <a href="#" aria-current="page">
+        <%= configFunctions.getProperty("aliases.occupancy") %> Edit
+        </a>
+    </li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+    <%= configFunctions.getProperty("aliases.occupancy") %> Edit
+</h1>
+
+<div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+    <button class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("aliases.occupancy") %>" type="submit">
+        <i class="fas fa-save" aria-hidden="true"></i>
+        <span class="sr-only">Update <%= configFunctions.getProperty("aliases.occupancy") %></span>
+    </button>
+</div>
+
+<%- include('_footerA'); -%>
+
+<%- include('_footerB'); -%>

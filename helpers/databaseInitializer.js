@@ -11,7 +11,7 @@ const recordColumns = " recordCreate_userName varchar(30) not null," +
 export const initLotOccupancyDB = () => {
     const lotOccupancyDB = sqlite(databasePath);
     const row = lotOccupancyDB
-        .prepare("select name from sqlite_master where type = 'table' and name = 'LotOccupancies'")
+        .prepare("select name from sqlite_master where type = 'table' and name = 'Fees'")
         .get();
     if (!row) {
         debugSQL("Creating " + databasePath);
@@ -181,16 +181,14 @@ export const initLotOccupancyDB = () => {
         lotOccupancyDB.prepare("create table if not exists Fees (" +
             "feeId integer not null primary key autoincrement," +
             " feeName varchar(100) not null," +
-            " contactTypeId integer," +
-            " contactId integer," +
+            " occupancyTypeId integer," +
             " lotTypeId integer," +
             " feeAmount decimal(6, 2)," +
             " feeFunction varchar(100)," +
             " isRequired bit not null default 0," +
             " orderNumber smallint not null default 0," +
             recordColumns + "," +
-            " foreign key (contactTypeId) references ContactTypes (contactTypeId)," +
-            " foreign key (contactId) references Contacts (contactId)," +
+            " foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId)," +
             " foreign key (lotTypeId) references LotTypes (lotTypeId)" +
             ")").run();
         lotOccupancyDB.prepare("create index if not exists idx_fees_ordernumber" +

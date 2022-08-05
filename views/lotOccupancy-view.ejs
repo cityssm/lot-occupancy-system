@@ -1,0 +1,39 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+        <a href="<%= urlPrefix %>/lotOccupancies">
+            <span class="icon is-small">
+                <span class="fa-layers fa-fw" aria-hidden="true">
+                    <i class="fas fa-vector-square"></i>
+                    <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+                </span>
+            </span>
+            <span><%= configFunctions.getProperty("aliases.lots") %> <%= configFunctions.getProperty("aliases.occupancies") %></span>
+        </a>
+    </li>
+    <li class="is-active"><a href="#" aria-current="page">
+        <%= configFunctions.getProperty("aliases.occupancy") %> View
+    </a></li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+    <%= configFunctions.getProperty("aliases.occupancy") %> View
+</h1>
+
+<% if (user.userProperties.canUpdate) { %>
+  <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+    <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("aliases.occupancy") %>" href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>/edit">
+      <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+      <span class="sr-only">Update <%= configFunctions.getProperty("aliases.occupancy") %></span>
+    </a>
+  </div>
+<% } %>
+
+
+<%- include('_footerA'); -%>
+
+<%- include('_footerB'); -%>

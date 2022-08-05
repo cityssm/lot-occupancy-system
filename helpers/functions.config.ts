@@ -33,6 +33,10 @@ configFallbackValues.set("aliases.lot", "Lot");
 configFallbackValues.set("aliases.lots", "Lots");
 configFallbackValues.set("aliases.map", "Map");
 configFallbackValues.set("aliases.maps", "Maps");
+configFallbackValues.set("aliases.occupancy", "Occupancy");
+configFallbackValues.set("aliases.occupancies", "Occupancies");
+configFallbackValues.set("aliases.occupant", "Occupant");
+configFallbackValues.set("aliases.occupants", "Occupants");
 
 
 /*
@@ -64,6 +68,10 @@ export function getProperty(propertyName: "aliases.lot"): string;
 export function getProperty(propertyName: "aliases.lots"): string;
 export function getProperty(propertyName: "aliases.map"): string;
 export function getProperty(propertyName: "aliases.maps"): string;
+export function getProperty(propertyName: "aliases.occupancy"): string;
+export function getProperty(propertyName: "aliases.occupancies"): string;
+export function getProperty(propertyName: "aliases.occupant"): string;
+export function getProperty(propertyName: "aliases.occupants"): string;
 
 export function getProperty(propertyName: string): unknown {
 

@@ -1,15 +1,29 @@
-import { dateIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import {
+    dateIntegerToString,
+    dateToInteger
+} from "@cityssm/expressjs-server-js/dateTimeFns.js";
+
 import sqlite from "better-sqlite3";
+
 import {
     lotOccupancyDB as databasePath
 } from "../../data/databasePaths.js";
 
+import {
+    getLotOccupancyOccupants
+} from "./getLotOccupancyOccupants.js";
+
 import type * as recordTypes from "../../types/recordTypes";
-import { getLotOccupancyOccupants } from "./getLotOccupancyOccupants.js";
 
 
 interface GetLotOccupanciesFilters {
     lotId ? : number | string;
+    occupancyTime ? : "" | "past" | "current" | "future";
+    occupantName ? : string;
+    occupancyTypeId ? : number | string;
+    mapId ? : number | string;
+    lotName ? : string;
+    lotTypeId ? : number | string;
 }
 
 
@@ -41,8 +55,64 @@ export const getLotOccupancies = (filters: GetLotOccupanciesFilters,
         sqlParameters.push(filters.lotId);
     }
 
+    if (filters.lotName) {
+        const lotNamePieces = filters.lotName.toLowerCase().split(" ");
+        for (const lotNamePiece of lotNamePieces) {
+            sqlWhereClause += " and instr(lower(l.lotName), ?)";
+            sqlParameters.push(lotNamePiece);
+        }
+    }
+
+    if (filters.occupantName) {
+        const occupantNamePieces = filters.occupantName.toLowerCase().split(" ");
+        for (const occupantNamePiece of occupantNamePieces) {
+            sqlWhereClause += " and o.lotOccupancyId in (select oo.lotOccupancyId from LotOccupancyOccupants oo left join Occupants o on oo.occupantId = o.occupantId where oo.recordDelete_timeMillis is null and instr(lower(o.occupantName), ?))";
+            sqlParameters.push(occupantNamePiece);
+        }
+    }
+
+    if (filters.occupancyTypeId) {
+        sqlWhereClause += " and o.occupancyTypeId = ?";
+        sqlParameters.push(filters.occupancyTypeId);
+    }
+
+    if (filters.occupancyTime) {
+
+        const currentDateString = dateToInteger(new Date());
+
+        switch (filters.occupancyTime) {
+
+            case "current":
+                sqlWhereClause += " and o.occupancyStartDate <= ? and (o.occupancyEndDate is null or o.occupancyEndDate >= ?)";
+                sqlParameters.push(currentDateString, currentDateString);
+                break;
+
+            case "past":
+                sqlWhereClause += " and o.occupancyEndDate < ?";
+                sqlParameters.push(currentDateString);
+                break;
+
+            case "future":
+                sqlWhereClause += " and o.occupancyStartDate > ?";
+                sqlParameters.push(currentDateString);
+                break;
+
+        }
+    }
+
+    if (filters.mapId) {
+        sqlWhereClause += " and l.mapId = ?";
+        sqlParameters.push(filters.mapId);
+    }
+
+    if (filters.lotTypeId) {
+        sqlWhereClause += " and l.lotTypeId = ?";
+        sqlParameters.push(filters.lotTypeId);
+    }
+
     const count: number = database.prepare("select count(*) as recordCount" +
             " from LotOccupancies o" +
+            " left join Lots l on o.lotId = l.lotId" +
             sqlWhereClause)
         .get(sqlParameters)
         .recordCount;
@@ -55,11 +125,13 @@ export const getLotOccupancies = (filters: GetLotOccupanciesFilters,
             .prepare("select o.lotOccupancyId," +
                 " o.occupancyTypeId, t.occupancyType," +
                 " o.lotId, l.lotName," +
+                " l.mapId, m.mapName," +
                 " o.occupancyStartDate, userFn_dateIntegerToString(o.occupancyStartDate) as occupancyStartDateString," +
                 " o.occupancyEndDate,  userFn_dateIntegerToString(o.occupancyEndDate) as occupancyEndDateString" +
                 " from LotOccupancies o" +
                 " left join OccupancyTypes t on o.occupancyTypeId = t.occupancyTypeId" +
                 " left join Lots l on o.lotId = l.lotId" +
+                " left join Maps m on l.mapId = m.mapId" +
                 sqlWhereClause +
                 " order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId" +
                 (options.limit !== -1 ?

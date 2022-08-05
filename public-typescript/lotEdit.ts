@@ -65,6 +65,12 @@ declare const bulmaJS: BulmaJS;
     const renderLotComments = () => {
 
         const lotCommentsContainerElement = document.querySelector("#container--lotComments") as HTMLElement;
+
+        if (lotComments.length === 0) {
+            lotCommentsContainerElement.innerHTML = "<div class=\"message is-info\">" +
+                "<p class=\"message-body\">There are no comments to display.</p>" +
+                "</div>";
+        }
     };
 
     const openAddCommentModal = () => {

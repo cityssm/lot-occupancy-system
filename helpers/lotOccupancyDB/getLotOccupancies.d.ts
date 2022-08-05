@@ -2,6 +2,12 @@ import sqlite from "better-sqlite3";
 import type * as recordTypes from "../../types/recordTypes";
 interface GetLotOccupanciesFilters {
     lotId?: number | string;
+    occupancyTime?: "" | "past" | "current" | "future";
+    occupantName?: string;
+    occupancyTypeId?: number | string;
+    mapId?: number | string;
+    lotName?: string;
+    lotTypeId?: number | string;
 }
 interface GetLotOccupanciesOptions {
     limit: -1 | number;

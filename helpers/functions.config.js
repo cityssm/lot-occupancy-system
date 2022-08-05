@@ -19,6 +19,10 @@ configFallbackValues.set("aliases.lot", "Lot");
 configFallbackValues.set("aliases.lots", "Lots");
 configFallbackValues.set("aliases.map", "Map");
 configFallbackValues.set("aliases.maps", "Maps");
+configFallbackValues.set("aliases.occupancy", "Occupancy");
+configFallbackValues.set("aliases.occupancies", "Occupancies");
+configFallbackValues.set("aliases.occupant", "Occupant");
+configFallbackValues.set("aliases.occupants", "Occupants");
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split(".");
     let currentObject = config;

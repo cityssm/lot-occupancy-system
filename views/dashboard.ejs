@@ -12,6 +12,39 @@
   <div class="column">
     <div class="card">
       <div class="card-content">
+      <div class="media">
+          <div class="media-left">
+            <span class="fa-layers fa-3x fa-fw" aria-hidden="true">
+              <i class="fas fa-vector-square"></i>
+              <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+            </span>
+          </div>
+          <div class="media-content has-text-black">
+            <h2 class="title is-4 is-marginless">
+              <a href="<%= urlPrefix %>/lotOccupancies"><%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupancies") %></a>
+            </h2>
+            <p>View and maintain current and past <%= configFunctions.getProperty("aliases.lot").toLowerCase() %> <%= configFunctions.getProperty("aliases.occupancies").toLowerCase() %>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <i class="fas fa-3x fa-fw fa-hard-hat" aria-hidden="true"></i>
+          </div>
+          <div class="media-content has-text-black">
+            <h2 class="title is-4 is-marginless">
+              <a href="<%= urlPrefix %>/workOrders">Work Orders</a>
+            </h2>
+            <p>View and maintain work orders.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+      <div class="card-content">
         <div class="media">
           <div class="media-left">
             <i class="fas fa-3x fa-fw fa-vector-square" aria-hidden="true"></i>
@@ -20,12 +53,10 @@
             <h2 class="title is-4 is-marginless">
               <a href="<%= urlPrefix %>/lots"><%= configFunctions.getProperty("aliases.lots") %></a>
             </h2>
-            <p>View and maintain <%= configFunctions.getProperty("aliases.lots").toLowerCase() %>.</p>
+            <p>View and maintain <%= configFunctions.getProperty("aliases.lots").toLowerCase() %> within a <%= configFunctions.getProperty("aliases.map").toLowerCase() %>.</p>
           </div>
         </div>
       </div>
-    </div>
-    <div class="card">
       <div class="card-content">
         <div class="media">
           <div class="media-left">
@@ -36,41 +67,6 @@
               <a href="<%= urlPrefix %>/maps"><%= configFunctions.getProperty("aliases.maps") %></a>
             </h2>
             <p>View and maintain <%= configFunctions.getProperty("aliases.maps").toLowerCase() %>.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="column">
-    <div class="card">
-      <div class="card-content">
-      <div class="media">
-          <div class="media-left">
-            <span class="fa-layers fa-3x fa-fw" aria-hidden="true">
-              <i class="fas fa-vector-square"></i>
-              <i class="fas fa-user" data-fa-transform="shrink-10"></i>
-            </span>
-          </div>
-          <div class="media-content has-text-black">
-            <h2 class="title is-4 is-marginless">
-              <a href="<%= urlPrefix %>/lotOccupancies"><%= configFunctions.getProperty("aliases.lot") %> Occupancies</a>
-            </h2>
-            <p>View and maintain <%= configFunctions.getProperty("aliases.lot").toLowerCase() %> occupancies.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-content">
-      <div class="media">
-          <div class="media-left">
-            <i class="fas fa-3x fa-fw fa-hard-hat" aria-hidden="true"></i>
-          </div>
-          <div class="media-content has-text-black">
-            <h2 class="title is-4 is-marginless">
-              <a href="<%= urlPrefix %>/workOrders">Work Orders</a>
-            </h2>
-            <p>View and maintain work orders.</p>
           </div>
         </div>
       </div>
@@ -122,7 +118,7 @@
   </div>
 </div>
 
-<% if (user.userProperties.isAdmin) { %>
+<% if (false && user.userProperties.isAdmin) { %>
   <h2 class="title is-3">Administrator Tools</h2>
 
   <div class="columns">

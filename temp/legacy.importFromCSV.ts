@@ -38,6 +38,7 @@ import {
 } from "../helpers/lotOccupancyDB/addLotOccupancyOccupant.js";
 
 import type * as recordTypes from "../types/recordTypes";
+
 import addLotOccupancyComment from "../helpers/lotOccupancyDB/addLotOccupancyComment.js";
 
 

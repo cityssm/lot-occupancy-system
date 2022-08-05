@@ -6,7 +6,7 @@ import {
 import type * as recordTypes from "../../types/recordTypes";
 
 
-export const getLotOccupancyOccupants = (lotOccupancyId: number,
+export const getLotOccupancyOccupants = (lotOccupancyId: number | string,
     connectedDatabase ? : sqlite.Database): recordTypes.LotOccupancyOccupant[] => {
 
     const database = connectedDatabase || sqlite(databasePath, {

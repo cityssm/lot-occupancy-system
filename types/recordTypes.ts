@@ -1,16 +1,16 @@
 export interface Record {
-  recordCreate_userName?: string;
-  recordCreate_timeMillis?: number;
-  recordCreate_dateString?: string;
+    recordCreate_userName ? : string;
+    recordCreate_timeMillis ? : number;
+    recordCreate_dateString ? : string;
 
-  recordUpdate_userName?: string;
-  recordUpdate_timeMillis?: number;
-  recordUpdate_dateString?: string;
-  recordUpdate_timeString?: string;
+    recordUpdate_userName ? : string;
+    recordUpdate_timeMillis ? : number;
+    recordUpdate_dateString ? : string;
+    recordUpdate_timeString ? : string;
 
-  recordDelete_userName?: string;
-  recordDelete_timeMillis?: number;
-  recordDelete_dateString?: string;
+    recordDelete_userName ? : string;
+    recordDelete_timeMillis ? : number;
+    recordDelete_dateString ? : string;
 }
 
 
@@ -20,161 +20,180 @@ export interface Record {
 
 
 export interface Map extends Record {
-  mapId?: number;
-  mapName?: string;
-  mapDescription?: string;
+    mapId ? : number;
+    mapName ? : string;
+    mapDescription ? : string;
 
-  mapLatitude?: number;
-  mapLongitude?: number;
-  mapSVG?: string;
+    mapLatitude ? : number;
+    mapLongitude ? : number;
+    mapSVG ? : string;
 
-  mapAddress1?: string;
-  mapAddress2?: string;
-  mapCity?: string;
-  mapProvince?: string;
-  mapPostalCode?: string;
-  mapPhoneNumber?: string;
+    mapAddress1 ? : string;
+    mapAddress2 ? : string;
+    mapCity ? : string;
+    mapProvince ? : string;
+    mapPostalCode ? : string;
+    mapPhoneNumber ? : string;
 
-  lotCount?: number;
+    lotCount ? : number;
 }
 
 
 export interface LotType extends Record {
-  lotTypeId?: number;
-  lotType?: string;
-  orderNumber?: number;
-  lotTypeFields?: LotTypeField[];
+    lotTypeId ? : number;
+    lotType ? : string;
+    orderNumber ? : number;
+    lotTypeFields ? : LotTypeField[];
 }
 
 
 export interface LotTypeField extends Record {
-  lotTypeFieldId?: number;
-  lotTypeField?: string;
+    lotTypeFieldId ? : number;
+    lotTypeField ? : string;
 
-  lotTypeId?: number;
-  lotType: LotType;
+    lotTypeId ? : number;
+    lotType: LotType;
 
-  lotTypeFieldValues?: string;
-  isRequired?: boolean;
-  pattern?: string;
-  minimumLength?: number;
-  maximumLength?: number;
+    lotTypeFieldValues ? : string;
+    isRequired ? : boolean;
+    pattern ? : string;
+    minimumLength ? : number;
+    maximumLength ? : number;
 
-  orderNumber?: number;
+    orderNumber ? : number;
 }
 
 
 export interface LotStatus extends Record {
-  lotStatusId?: number;
-  lotStatus?: string;
-  orderNumber?: number;
+    lotStatusId ? : number;
+    lotStatus ? : string;
+    orderNumber ? : number;
 }
 
 
 export interface Lot extends Record {
-  lotId?: number;
-  lotName?: string;
+    lotId ? : number;
+    lotName ? : string;
 
-  lotTypeId?: number;
-  lotType?: LotType | string;
+    lotTypeId ? : number;
+    lotType ? : LotType | string;
 
-  mapId?: number;
-  mapName?: string;
-  map?: Map;
-  mapSVG?: string;
-  mapKey?: string;
+    mapId ? : number;
+    mapName ? : string;
+    map ? : Map;
+    mapSVG ? : string;
+    mapKey ? : string;
 
-  lotLatitude?: number;
-  lotLongitude?: number;
+    lotLatitude ? : number;
+    lotLongitude ? : number;
 
-  lotStatusId?: number;
-  lotStatus?: LotStatus | string;
+    lotStatusId ? : number;
+    lotStatus ? : LotStatus | string;
 
-  lotOccupancyCount?: number;
-  lotOccupancies?: LotOccupancy[];
+    lotOccupancyCount ? : number;
+    lotOccupancies ? : LotOccupancy[];
 
-  lotComments?: LotComment[];
+    lotComments ? : LotComment[];
 }
 
 
 export interface LotComment extends Record {
-  lotCommentId?: number;
-  lotId?: number;
+    lotCommentId ? : number;
+    lotId ? : number;
 
-  lotCommentDate?: number;
-  lotCommentDateString?: string;
+    lotCommentDate ? : number;
+    lotCommentDateString ? : string;
 
-  lotCommentTime?: number;
-  lotCommentTimeString?: string;
+    lotCommentTime ? : number;
+    lotCommentTimeString ? : string;
 
-  lotComment?: string;
+    lotComment ? : string;
 }
 
 
 export interface OccupancyType extends Record {
-  occupancyTypeId?: number;
-  occupancyType?: string;
-  orderNumber?: number;
-  occupancyTypeFields?: OccupancyTypeField[];
+    occupancyTypeId ? : number;
+    occupancyType ? : string;
+    orderNumber ? : number;
+    occupancyTypeFields ? : OccupancyTypeField[];
 }
 
 
 export interface OccupancyTypeField {
-  occupancyTypeFieldId?: number;
-  occupancyTypeId?: number;
-  occupancyTypeField?: string;
-  occupancyTypeFieldValues?: string;
-  isRequired?: boolean;
-  pattern?: string;
-  minimumLength?: number;
-  maximumLength?: number;
-  orderNumber?: number;
+    occupancyTypeFieldId ? : number;
+    occupancyTypeId ? : number;
+    occupancyTypeField ? : string;
+    occupancyTypeFieldValues ? : string;
+    isRequired ? : boolean;
+    pattern ? : string;
+    minimumLength ? : number;
+    maximumLength ? : number;
+    orderNumber ? : number;
 }
 
 
 export interface LotOccupantType extends Record {
-  lotOccupantTypeId?: number;
-  lotOccupantType?: string;
-  orderNumber?: number;
+    lotOccupantTypeId ? : number;
+    lotOccupantType ? : string;
+    orderNumber ? : number;
 }
 
 
 export interface Occupant extends Record {
-  occupantId?: number;
-  occupantName?: string;
-  occupantAddress1?: string;
-  occupantAddress2?: string;
-  occupantCity?: string;
-  occupantProvince?: string;
-  occupantPostalCode?: string;
-  occupantPhoneNumber?: string;
+    occupantId ? : number;
+    occupantName ? : string;
+    occupantAddress1 ? : string;
+    occupantAddress2 ? : string;
+    occupantCity ? : string;
+    occupantProvince ? : string;
+    occupantPostalCode ? : string;
+    occupantPhoneNumber ? : string;
 }
 
 
 export interface LotOccupancyOccupant extends Occupant, Record {
-  lotOccupancyId?: number;
-  lotOccupantIndex?: number;
+    lotOccupancyId ? : number;
+    lotOccupantIndex ? : number;
 
-  lotOccupantTypeId?: number;
-  lotOccupantType?: string | LotOccupantType;
+    lotOccupantTypeId ? : number;
+    lotOccupantType ? : string | LotOccupantType;
+}
+
+
+export interface LotOccupancyComment extends Record {
+    lotOccupancyCommentId ? : number;
+    lotOccupancyId ? : number;
+
+    lotOccupancyCommentDate ? : number;
+    lotOccupancyCommentDateString ? : string;
+
+    lotOccupancyCommentTime ? : number;
+    lotOccupancyCommentTimeString ? : string;
+
+    lotOccupancyComment ? : string;
 }
 
 
 export interface LotOccupancy extends Record {
-  lotOccupancyId?: number;
+    lotOccupancyId ? : number;
 
-  occupancyTypeId?: number;
-  occupancyType?: OccupancyType | string;
+    occupancyTypeId ? : number;
+    occupancyType ? : OccupancyType | string;
 
-  lotId?: number;
+    lotId ? : number;
+    lotName ? : string;
 
-  lotOccupancyOccupants?: LotOccupancyOccupant[];
+    mapId ? : number;
+    mapName ? : string;
 
-  occupancyStartDate?: number;
-  occupancyStartDateString?: string;
-
-  occupancyEndDate?: number;
-  occupancyEndDateString?: string;
+    occupancyStartDate ? : number;
+    occupancyStartDateString ? : string;
+    
+    occupancyEndDate ? : number;
+    occupancyEndDateString ? : string;
+    
+    lotOccupancyComments ? : LotOccupancyComment[];
+    lotOccupancyOccupants ? : LotOccupancyOccupant[];
 }
 
 
@@ -184,22 +203,22 @@ export interface LotOccupancy extends Record {
 
 
 export interface User {
-  userName: string;
-  userProperties?: UserProperties;
+    userName: string;
+    userProperties ? : UserProperties;
 }
 
 export interface UserProperties {
-  canUpdate: boolean;
-  isAdmin: boolean;
+    canUpdate: boolean;
+    isAdmin: boolean;
 }
 
 
 declare module "express-session" {
-  interface Session {
-    user: User;
-  }
+    interface Session {
+        user: User;
+    }
 }
 
 export interface PartialSession {
-  user: User;
+    user: User;
 }
