@@ -2,6 +2,10 @@ import { dateIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { getLotOccupancyOccupants } from "./getLotOccupancyOccupants.js";
+import { getLotOccupancyComments } from "./getLotOccupancyComments.js";
+import { getLotOccupancyFields } from "./getLotOccupancyFields.js";
+import { getLotOccupancyFees } from "./getLotOccupancyFees.js";
+import { getLotOccupancyTransactions } from "./getLotOccupancyTransactions.js";
 export const getLotOccupancy = (lotOccupancyId) => {
     const database = sqlite(databasePath, {
         readonly: true
@@ -22,7 +26,11 @@ export const getLotOccupancy = (lotOccupancyId) => {
         " and o.lotOccupancyId = ?")
         .get(lotOccupancyId);
     if (lotOccupancy) {
+        lotOccupancy.lotOccupancyFields = getLotOccupancyFields(lotOccupancyId, database);
         lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyComments = getLotOccupancyComments(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyFees = getLotOccupancyFees(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyTransactions = getLotOccupancyTransactions(lotOccupancyId, database);
     }
     database.close();
     return lotOccupancy;

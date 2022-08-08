@@ -1,38 +1,143 @@
 <%- include('_header'); -%>
 
 <nav class="breadcrumb">
-  <ul>
-    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-    <li>
-        <a href="<%= urlPrefix %>/lotOccupancies">
-            <span class="icon is-small">
-                <span class="fa-layers fa-fw" aria-hidden="true">
-                    <i class="fas fa-vector-square"></i>
-                    <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+    <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li>
+            <a href="<%= urlPrefix %>/lotOccupancies">
+                <span class="icon is-small">
+                    <span class="fa-layers fa-fw" aria-hidden="true">
+                        <i class="fas fa-vector-square"></i>
+                        <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+                    </span>
                 </span>
-            </span>
-            <span><%= configFunctions.getProperty("aliases.lots") %> <%= configFunctions.getProperty("aliases.occupancies") %></span>
-        </a>
-    </li>
-    <li class="is-active"><a href="#" aria-current="page">
-        <%= configFunctions.getProperty("aliases.occupancy") %> View
-    </a></li>
-  </ul>
+                <span><%= configFunctions.getProperty("aliases.lots") %>
+                    <%= configFunctions.getProperty("aliases.occupancies") %></span>
+            </a>
+        </li>
+        <li class="is-active">
+            <a href="#" aria-current="page">
+                <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName %>
+            </a>
+        </li>
+    </ul>
 </nav>
 
 <h1 class="title is-1">
-    <%= configFunctions.getProperty("aliases.occupancy") %> View
+    <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName %>
 </h1>
 
 <% if (user.userProperties.canUpdate) { %>
-  <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-    <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("aliases.occupancy") %>" href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>/edit">
-      <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-      <span class="sr-only">Update <%= configFunctions.getProperty("aliases.occupancy") %></span>
+<div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+    <a class="button is-circle is-primary has-tooltip-left"
+        data-tooltip="Update <%= configFunctions.getProperty("aliases.occupancy") %>"
+        href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>/edit">
+        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+        <span class="sr-only">Update <%= configFunctions.getProperty("aliases.occupancy") %></span>
     </a>
-  </div>
+</div>
 <% } %>
 
+<div class="columns">
+    <div class="column">
+        <p>
+            <strong><%= configFunctions.getProperty("aliases.occupancy") %> Type</strong><br />
+            <%= lotOccupancy.occupancyType %>
+        </p>
+    </div>
+    <div class="column">
+        <p>
+            <strong><%= configFunctions.getProperty("aliases.lot") %></strong><br />
+            <a href="<%= urlPrefix %>/lots/<%= lotOccupancy.lotId %>"><%= lotOccupancy.lotName %></a>
+        </p>
+        <p class="mt-2">
+            <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
+            <a href="<%= urlPrefix %>/maps/<%= lotOccupancy.mapId %>"><%= lotOccupancy.mapName %></a>
+        </p>
+    </div>
+    <div class="column">
+        <p>
+            <strong>Start Date</strong><br />
+            <%= lotOccupancy.occupancyStartDateString %>
+        </p>
+        <p class="mt-2">
+            <strong>End Date</strong><br />
+            <%= (lotOccupancy.occupancyEndDateString === "" ? "(No End Date)" : lotOccupancy.occupancyEndDateString) %>
+        </p>
+    </div>
+</div>
+
+<h2 class="title is-4"><%= configFunctions.getProperty("aliases.occupants") %></h2>
+
+<% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
+<div class="message is-warning">
+    <p class="message-body">There are no <%= configFunctions.getProperty("aliases.occupants").toLowerCase() %>
+        associated with this record.</p>
+</div>
+<% } else { %>
+<table class="table is-fullwidth is-striped is-hoverable">
+    <thead>
+        <tr>
+            <th><%= configFunctions.getProperty("aliases.occupant") %> Type</th>
+            <th><%= configFunctions.getProperty("aliases.occupant") %></th>
+            <th>Address</th>
+            <th>Phone Number</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for (const lotOccupancyOccupant of lotOccupancy.lotOccupancyOccupants) { %>
+        <tr>
+            <td><%= lotOccupancyOccupant.lotOccupantType %></td>
+            <td><%= lotOccupancyOccupant.occupantName %></td>
+            <td>
+                <%= lotOccupancyOccupant.occupantAddress1 %><br />
+                <% if (lotOccupancyOccupant.occupantAddress2 && lotOccupancyOccupant.occupantAddress2 !== "") { %>
+                  <%= lotOccupancyOccupant.occupantAddress2 %><br />
+                <% } %>
+                <%= lotOccupancyOccupant.occupantCity %>, <%= lotOccupancyOccupant.occupantProvince %><br />
+                <%= lotOccupancyOccupant.occupantPostalCode %>
+            </td>
+            <td>
+                <%= lotOccupancyOccupant.occupantPhoneNumber %>
+            </td>
+        </tr>
+        <% } %>
+    </tbody>
+</table>
+<% } %>
+
+<% if (lotOccupancy.lotOccupancyComments.length > 0) { %>
+<h2 class="title is-4">Comments</h2>
+<% } %>
+
+<div class="columns">
+    <div class="column">
+        <h2 class="title is-4">Fees</h2>
+
+        <% if (lotOccupancy.lotOccupancyFees.length === 0) { %>
+            <div class="message is-info">
+                <p class="message-body">
+                    There are no fees applied to this <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> record.
+                </p>
+            </div>
+        <% } else { %>
+        
+        <% } %>
+    </div>
+    <div class="column">
+        <h2 class="title is-4">Transactions</h2>
+
+        <% if (lotOccupancy.lotOccupancyTransactions.length === 0) { %>
+            <div class="message is-info">
+                <p class="message-body">
+                    There are no transactions associated with this <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> record.
+                </p>
+            </div>
+        <% } else { %>
+        
+        <% } %>
+    </div>
+</div>
 
 <%- include('_footerA'); -%>
 

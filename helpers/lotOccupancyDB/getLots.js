@@ -26,14 +26,30 @@ export const getLots = (filters, options) => {
         sqlWhereClause += " and l.lotStatusId = ?";
         sqlParameters.push(filters.lotStatusId);
     }
+    if (filters.occupancyStatus) {
+        if (filters.occupancyStatus === "occupied") {
+            sqlWhereClause += " and lotOccupancyCount > 0";
+        }
+        else if (filters.occupancyStatus === "unoccupied") {
+            sqlWhereClause += " and (lotOccupancyCount is null or lotOccupancyCount = 0)";
+        }
+    }
+    const currentDate = dateToInteger(new Date());
     const count = database.prepare("select count(*) as recordCount" +
         " from Lots l" +
+        (" left join (" +
+            "select lotId, count(lotOccupancyId) as lotOccupancyCount" +
+            " from LotOccupancies" +
+            " where recordDelete_timeMillis is null" +
+            " and occupancyStartDate <= " + currentDate +
+            " and (occupancyEndDate is null or occupancyEndDate >= " + currentDate + ")" +
+            " group by lotId" +
+            ") o on l.lotId = o.lotId") +
         sqlWhereClause)
         .get(sqlParameters)
         .recordCount;
     let lots = [];
     if (count > 0) {
-        const currentDate = dateToInteger(new Date());
         lots = database
             .prepare("select l.lotId, l.lotName," +
             " t.lotType," +

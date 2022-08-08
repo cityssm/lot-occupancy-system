@@ -12,6 +12,22 @@ import {
     getLotOccupancyOccupants
 } from "./getLotOccupancyOccupants.js";
 
+import {
+    getLotOccupancyComments
+} from "./getLotOccupancyComments.js";
+
+import {
+    getLotOccupancyFields
+} from "./getLotOccupancyFields.js";
+
+import {
+    getLotOccupancyFees
+} from "./getLotOccupancyFees.js";
+
+import {
+    getLotOccupancyTransactions
+} from "./getLotOccupancyTransactions.js";
+
 import type * as recordTypes from "../../types/recordTypes";
 
 
@@ -40,7 +56,11 @@ export const getLotOccupancy = (lotOccupancyId: number | string): recordTypes.Lo
         .get(lotOccupancyId);
 
     if (lotOccupancy) {
+        lotOccupancy.lotOccupancyFields = getLotOccupancyFields(lotOccupancyId, database);
         lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyComments = getLotOccupancyComments(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyFees = getLotOccupancyFees(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyTransactions = getLotOccupancyTransactions(lotOccupancyId, database);
     }
 
     database.close();

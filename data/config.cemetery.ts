@@ -11,6 +11,11 @@ export const config: Config = {
         lots: "Burial Sites",
         map: "Cemetery",
         maps: "Cemeteries"
+    },
+    settings: {
+        lotOccupancy: {
+            occupancyEndDateIsRequired: false
+        }
     }
 };
 

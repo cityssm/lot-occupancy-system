@@ -6,7 +6,9 @@ import handler_search from "../handlers/lotOccupancies-get/search.js";
 import handler_doSearchLotOccupancies from "../handlers/lotOccupancies-post/doSearchLotOccupancies.js";
 
 import handler_view from "../handlers/lotOccupancies-get/view.js";
+
 import handler_edit from "../handlers/lotOccupancies-get/edit.js";
+import handler_doUpdateLotOccupancy from "../handlers/lotOccupancies-post/doUpdateLotOccupancy.js";
 
 import * as permissionHandlers from "../handlers/permissions.js";
 
@@ -22,13 +24,17 @@ router.post("/doSearchLotOccupancies",
     handler_doSearchLotOccupancies);
 
 
- router.get("/:lotOccupancyId",
+router.get("/:lotOccupancyId",
     handler_view);
 
 
 router.get("/:lotOccupancyId/edit",
     permissionHandlers.updateGetHandler,
     handler_edit);
+
+router.post("/doUpdateLotOccupancy",
+    permissionHandlers.updatePostHandler,
+    handler_doUpdateLotOccupancy);
 
 
 export default router;

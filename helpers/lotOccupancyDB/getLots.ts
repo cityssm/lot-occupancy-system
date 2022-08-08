@@ -14,6 +14,7 @@ interface GetLotsFilters {
     mapId ? : number | string;
     lotTypeId ? : number | string;
     lotStatusId ? : number | string;
+    occupancyStatus ? : "" | "occupied" | "unoccupied";
 }
 
 interface GetLotsOptions {
@@ -57,8 +58,26 @@ export const getLots = (filters ? : GetLotsFilters, options ? : GetLotsOptions):
         sqlParameters.push(filters.lotStatusId);
     }
 
+    if (filters.occupancyStatus) {
+        if (filters.occupancyStatus === "occupied") {
+            sqlWhereClause += " and lotOccupancyCount > 0";
+        } else if (filters.occupancyStatus === "unoccupied") {
+            sqlWhereClause += " and (lotOccupancyCount is null or lotOccupancyCount = 0)";
+        }
+    }
+
+    const currentDate = dateToInteger(new Date());
+
     const count: number = database.prepare("select count(*) as recordCount" +
             " from Lots l" +
+            (" left join (" +
+                "select lotId, count(lotOccupancyId) as lotOccupancyCount" +
+                " from LotOccupancies" +
+                " where recordDelete_timeMillis is null" +
+                " and occupancyStartDate <= " + currentDate +
+                " and (occupancyEndDate is null or occupancyEndDate >= " + currentDate + ")" +
+                " group by lotId" +
+                ") o on l.lotId = o.lotId") +
             sqlWhereClause)
         .get(sqlParameters)
         .recordCount;
@@ -66,8 +85,6 @@ export const getLots = (filters ? : GetLotsFilters, options ? : GetLotsOptions):
     let lots: recordTypes.Lot[] = [];
 
     if (count > 0) {
-
-        const currentDate = dateToInteger(new Date());
 
         lots = database
             .prepare("select l.lotId, l.lotName," +

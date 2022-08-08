@@ -23,19 +23,19 @@ configFallbackValues.set("aliases.occupancy", "Occupancy");
 configFallbackValues.set("aliases.occupancies", "Occupancies");
 configFallbackValues.set("aliases.occupant", "Occupant");
 configFallbackValues.set("aliases.occupants", "Occupants");
+configFallbackValues.set("settings.lotOccupancy.occupancyEndDateIsRequired", true);
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split(".");
     let currentObject = config;
     for (const propertyNamePiece of propertyNameSplit) {
-        if (currentObject[propertyNamePiece]) {
+        if (Object.prototype.hasOwnProperty.call(currentObject, propertyNamePiece)) {
             currentObject = currentObject[propertyNamePiece];
+            continue;
         }
-        else {
-            return configFallbackValues.get(propertyName);
-        }
+        return configFallbackValues.get(propertyName);
     }
     return currentObject;
 }
-export const keepAliveMillis = getProperty("session.doKeepAlive")
-    ? Math.max(getProperty("session.maxAgeMillis") / 2, getProperty("session.maxAgeMillis") - (10 * 60 * 1000))
-    : 0;
+export const keepAliveMillis = getProperty("session.doKeepAlive") ?
+    Math.max(getProperty("session.maxAgeMillis") / 2, getProperty("session.maxAgeMillis") - (10 * 60 * 1000)) :
+    0;

@@ -23,4 +23,5 @@ export declare function getProperty(propertyName: "aliases.occupancy"): string;
 export declare function getProperty(propertyName: "aliases.occupancies"): string;
 export declare function getProperty(propertyName: "aliases.occupant"): string;
 export declare function getProperty(propertyName: "aliases.occupants"): string;
+export declare function getProperty(propertyName: "settings.lotOccupancy.occupancyEndDateIsRequired"): boolean;
 export declare const keepAliveMillis: number;

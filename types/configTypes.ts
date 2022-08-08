@@ -12,7 +12,7 @@ export interface Config {
     canLogin?: string[];
     canUpdate?: string[];
     isAdmin?: string[];
-  },
+  };
   aliases?: {
     lot?: string;
     lots?: string;
@@ -22,7 +22,13 @@ export interface Config {
     occupancies?: string;
     occupant?: string;
     occupants?: string;
-  }
+  };
+  settings?: {
+    lotOccupancy?: {
+      lotIdIsRequired?: boolean;
+      occupancyEndDateIsRequired?: boolean;
+    }
+  };
 }
 
 interface ConfigApplication {

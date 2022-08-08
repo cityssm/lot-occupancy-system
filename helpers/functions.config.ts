@@ -1,5 +1,7 @@
 // eslint-disable-next-line node/no-unpublished-import
-import { config } from "../data/config.js";
+import {
+    config
+} from "../data/config.js";
 
 import type * as configTypes from "../types/configTypes";
 
@@ -8,7 +10,8 @@ import type * as configTypes from "../types/configTypes";
  * SET UP FALLBACK VALUES
  */
 
-const configFallbackValues = new Map<string, unknown>();
+const configFallbackValues = new Map < string,
+    unknown > ();
 
 configFallbackValues.set("application.applicationName", "Lot Occupancy System");
 configFallbackValues.set("application.backgroundURL", "/images/cemetery-background.jpg");
@@ -37,6 +40,8 @@ configFallbackValues.set("aliases.occupancy", "Occupancy");
 configFallbackValues.set("aliases.occupancies", "Occupancies");
 configFallbackValues.set("aliases.occupant", "Occupant");
 configFallbackValues.set("aliases.occupants", "Occupants");
+
+configFallbackValues.set("settings.lotOccupancy.occupancyEndDateIsRequired", true);
 
 
 /*
@@ -73,29 +78,31 @@ export function getProperty(propertyName: "aliases.occupancies"): string;
 export function getProperty(propertyName: "aliases.occupant"): string;
 export function getProperty(propertyName: "aliases.occupants"): string;
 
+export function getProperty(propertyName: "settings.lotOccupancy.occupancyEndDateIsRequired"): boolean;
+
 export function getProperty(propertyName: string): unknown {
 
-  const propertyNameSplit = propertyName.split(".");
+    const propertyNameSplit = propertyName.split(".");
 
-  let currentObject = config;
+    let currentObject = config;
 
-  for (const propertyNamePiece of propertyNameSplit) {
+    for (const propertyNamePiece of propertyNameSplit) {
 
-    if (currentObject[propertyNamePiece]) {
-      currentObject = currentObject[propertyNamePiece];
-    } else {
-      return configFallbackValues.get(propertyName);
+        if (Object.prototype.hasOwnProperty.call(currentObject, propertyNamePiece)) {
+            currentObject = currentObject[propertyNamePiece];
+            continue;
+        }
+
+        return configFallbackValues.get(propertyName);
     }
-  }
 
-  return currentObject;
-
+    return currentObject;
 }
 
 export const keepAliveMillis =
-  getProperty("session.doKeepAlive")
-    ? Math.max(
-      getProperty("session.maxAgeMillis") / 2,
-      getProperty("session.maxAgeMillis") - (10 * 60 * 1000)
-    )
-    : 0;
+    getProperty("session.doKeepAlive") ?
+    Math.max(
+        getProperty("session.maxAgeMillis") / 2,
+        getProperty("session.maxAgeMillis") - (10 * 60 * 1000)
+    ) :
+    0;

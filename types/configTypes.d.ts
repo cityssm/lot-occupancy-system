@@ -23,6 +23,12 @@ export interface Config {
         occupant?: string;
         occupants?: string;
     };
+    settings?: {
+        lotOccupancy?: {
+            lotIdIsRequired?: boolean;
+            occupancyEndDateIsRequired?: boolean;
+        };
+    };
 }
 interface ConfigApplication {
     applicationName?: string;

@@ -4,6 +4,7 @@ interface GetLotsFilters {
     mapId?: number | string;
     lotTypeId?: number | string;
     lotStatusId?: number | string;
+    occupancyStatus?: "" | "occupied" | "unoccupied";
 }
 interface GetLotsOptions {
     limit: number;

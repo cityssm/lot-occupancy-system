@@ -1,0 +1,45 @@
+<div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <h3 class="modal-card-title">
+                Select a <span class="alias" data-alias="Lot"></span>
+            </h3>
+            <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+        </header>
+        <section class="modal-card-body">
+            <div class="box">
+                <form id="form--lotSelect">
+                    <input name="limit" type="hidden" value="100" />
+                    <input name="offset" type="hidden" value="0" />
+                    <div class="field">
+                        <div class="control has-icons-left">
+                            <input class="input" id="lotSelect--lotName" name="lotName" type="text" />
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control has-icons-left">
+                            <div class="select is-fullwidth">
+                                <select id="lotSelect--occupancyStatus" name="occupancyStatus">
+                                    <option value="">(All Statuses)</option>
+                                    <option value="unoccupied" selected>Currently Unoccupied</option>
+                                    <option value="occupied">Currently Occupied</option>
+                                </select>
+                            </div>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-filter" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="resultsContainer--lotSelect"></div>
+        </section>
+        <footer class="modal-card-foot justify-right">
+            <button class="button is-close-modal-button" type="button">Cancel</button>
+        </footer>
+    </div>
+</div>
