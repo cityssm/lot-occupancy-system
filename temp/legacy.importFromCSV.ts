@@ -37,9 +37,15 @@ import {
     addLotOccupancyOccupant
 } from "../helpers/lotOccupancyDB/addLotOccupancyOccupant.js";
 
-import type * as recordTypes from "../types/recordTypes";
+import {
+    addLotOccupancyComment
+} from "../helpers/lotOccupancyDB/addLotOccupancyComment.js";
 
-import addLotOccupancyComment from "../helpers/lotOccupancyDB/addLotOccupancyComment.js";
+import {
+    addLotOccupancyField
+} from "../helpers/lotOccupancyDB/addLotOccupancyField.js";
+
+import type * as recordTypes from "../types/recordTypes";
 
 
 interface MasterRecord {
@@ -147,6 +153,20 @@ function formatDateString(year: string, month: string, day: string) {
 }
 
 
+const cemeteryToMapName = {
+    "00": "Crematorium",
+    "GC": "New Greenwood - Columbarium",
+    "HC": "Holy Sepulchre - Columbarium",
+    "HS": "Holy Sepulchre",
+    "MA": "Holy Sepulchre - Mausoleum",
+    "NG": "New Greenwood",
+    "NW": "Niche Wall",
+    "OG": "Old Greenwood",
+    "PG": "Pine Grove",
+    "UG": "New Greenwood - Urn Garden",
+    "WK": "West Korah"
+}
+
 const mapCache: Map < string, recordTypes.Map > = new Map();
 
 
@@ -171,7 +191,7 @@ function getMap(masterRow: MasterRecord): recordTypes.Map {
         console.log("Creating map: " + masterRow.CM_CEMETERY);
 
         const mapId = addMap({
-            mapName: masterRow.CM_CEMETERY,
+            mapName: cemeteryToMapName[masterRow.CM_CEMETERY] || masterRow.CM_CEMETERY,
             mapDescription: masterRow.CM_CEMETERY,
             mapSVG: "",
             mapLatitude: "",
@@ -404,11 +424,98 @@ function importFromCSV() {
                     occupancyEndDateString
                 }, user);
 
+
+
                 addLotOccupancyOccupant({
                     lotOccupancyId,
                     lotOccupantTypeId: deceasedLotOccupantType.lotOccupantTypeId,
                     occupantId
                 }, user);
+
+                if (masterRow.CM_DEATH_YR !== "") {
+
+                    const lotOccupancyFieldValue = formatDateString(masterRow.CM_DEATH_YR,
+                        masterRow.CM_DEATH_MON,
+                        masterRow.CM_DEATH_DAY);
+
+                    addLotOccupancyField({
+                        lotOccupancyId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Death Date"
+                        }).occupancyTypeFieldId,
+                        lotOccupancyFieldValue
+                    }, user);
+                }
+
+                if (masterRow.CM_AGE !== "") {
+
+                    addLotOccupancyField({
+                        lotOccupancyId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Death Age"
+                        }).occupancyTypeFieldId,
+                        lotOccupancyFieldValue: masterRow.CM_AGE
+                    }, user);
+                }
+
+                if (masterRow.CM_PERIOD !== "") {
+
+                    addLotOccupancyField({
+                        lotOccupancyId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Death Age Period"
+                        }).occupancyTypeFieldId,
+                        lotOccupancyFieldValue: masterRow.CM_PERIOD
+                    }, user);
+                }
+
+                if (masterRow.CM_FUNERAL_HOME !== "") {
+
+                    addLotOccupancyField({
+                        lotOccupancyId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Funeral Home"
+                        }).occupancyTypeFieldId,
+                        lotOccupancyFieldValue: masterRow.CM_FUNERAL_HOME
+                    }, user);
+                }
+
+                if (masterRow.CM_FUNERAL_YR !== "") {
+
+                    const lotOccupancyFieldValue = formatDateString(masterRow.CM_FUNERAL_YR,
+                        masterRow.CM_FUNERAL_MON,
+                        masterRow.CM_FUNERAL_DAY);
+
+                    addLotOccupancyField({
+                        lotOccupancyId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Funeral Date"
+                        }).occupancyTypeFieldId,
+                        lotOccupancyFieldValue
+                    }, user);
+                }
+
+                if (masterRow.CM_CONTAINER_TYPE !== "") {
+
+                    addLotOccupancyField({
+                        lotOccupancyId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Container Type"
+                        }).occupancyTypeFieldId,
+                        lotOccupancyFieldValue: masterRow.CM_CONTAINER_TYPE
+                    }, user);
+                }
+
+                if (masterRow.CM_COMMITTAL_TYPE !== "") {
+
+                    addLotOccupancyField({
+                        lotOccupancyId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Committal Type"
+                        }).occupancyTypeFieldId,
+                        lotOccupancyFieldValue: masterRow.CM_COMMITTAL_TYPE
+                    }, user);
+                }
 
                 if (masterRow.CM_REMARK1 !== "") {
                     addLotOccupancyComment({

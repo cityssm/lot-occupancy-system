@@ -8,7 +8,7 @@ const recordColumns = " recordCreate_userName varchar(30) not null," +
     " recordUpdate_timeMillis integer not null," +
     " recordDelete_userName varchar(30)," +
     " recordDelete_timeMillis integer";
-export const initLotOccupancyDB = () => {
+export const initializeDatabase = () => {
     const lotOccupancyDB = sqlite(databasePath);
     const row = lotOccupancyDB
         .prepare("select name from sqlite_master where type = 'table' and name = 'Fees'")

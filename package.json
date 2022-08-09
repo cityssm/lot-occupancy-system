@@ -9,11 +9,13 @@
   },
   "scripts": {
     "build:version": "npx genversion --es6 --semi version.js",
+    "init:cemetery": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* node ./helpers/initializer.database.cemetery.js",
+    "init:cemetery:test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true node ./helpers/initializer.database.cemetery.js",
     "start": "cross-env NODE_ENV=production node ./bin/www",
-    "dev:test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true nodemon ./bin/www",
-    "dev:live": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* nodemon ./bin/www",
+    "dev:test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true nodemon ./bin/www.js",
+    "dev:live": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* nodemon ./bin/www.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "temp:legacy:importFromCSV": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true node ./temp/legacy.importFromCSV.js",
+    "temp:legacy:importFromCsv": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true node ./temp/legacy.importFromCsv.js",
     "temp:so:exportMaps": "node ./temp/so.exportMaps.js"
   },
   "repository": {
@@ -72,8 +74,8 @@
     "@types/node-windows": "^0.1.2",
     "@types/papaparse": "^5.3.3",
     "@types/session-file-store": "^1.2.2",
-    "@typescript-eslint/eslint-plugin": "^5.32.0",
-    "@typescript-eslint/parser": "^5.32.0",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
     "bulma": "^0.9.4",
     "eslint": "^8.21.0",
     "eslint-plugin-import": "^2.26.0",

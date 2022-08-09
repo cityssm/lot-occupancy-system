@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const lotOccupancyId = document.querySelector("#lotOccupancy--lotOccupancyId").value;
     const isCreate = (lotOccupancyId === "");
     let hasUnsavedChanges = false;
+    let refreshAfterSave = isCreate;
     const setUnsavedChanges = () => {
         if (!hasUnsavedChanges) {
             hasUnsavedChanges = true;
@@ -22,8 +23,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.postJSON(urlPrefix + "/lotOccupancies/" + (isCreate ? "doCreateLotOccupancy" : "doUpdateLotOccupancy"), formElement, (responseJSON) => {
             if (responseJSON.success) {
                 clearUnsavedChanges();
-                if (isCreate) {
-                    window.location.href = urlPrefix + "/lotOccupancies/" + responseJSON.lotOccupancyId + "/edit";
+                if (isCreate || refreshAfterSave) {
+                    window.location.href = urlPrefix + "/lotOccupancies/" + responseJSON.lotOccupancyId + "/edit?t=" + Date.now();
                 }
                 else {
                     bulmaJS.alert({
@@ -41,7 +42,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    document.querySelector("#lotOccupancy--lotName").addEventListener("click", () => {
+    const formInputElements = formElement.querySelectorAll("input, select");
+    for (const formInputElement of formInputElements) {
+        formInputElement.addEventListener("change", setUnsavedChanges);
+    }
+    if (!isCreate) {
+        const occupancyTypeIdElement = document.querySelector("#lotOccupancy--occupancyTypeId");
+        const originalOccupancyTypeId = occupancyTypeIdElement.value;
+        occupancyTypeIdElement.addEventListener("change", () => {
+            if (occupancyTypeIdElement.value !== originalOccupancyTypeId) {
+                bulmaJS.confirm({
+                    title: "Confirm Change",
+                    message: "Are you sure you want to change the " + exports.aliases.occupancy.toLowerCase() + " type?\n" +
+                        "This change affects the additional fields associated with this record, and may also affect the available fees.",
+                    contextualColorName: "warning",
+                    okButton: {
+                        text: "Yes, Keep the Change",
+                        callbackFunction: () => {
+                            refreshAfterSave = true;
+                        }
+                    },
+                    cancelButton: {
+                        text: "Revert the Change",
+                        callbackFunction: () => {
+                            occupancyTypeIdElement.value = originalOccupancyTypeId;
+                        }
+                    }
+                });
+            }
+        });
+    }
+    document.querySelector("#lotOccupancy--lotName").addEventListener("click", (clickEvent) => {
+        const currentLotName = clickEvent.currentTarget.value;
         let lotSelectCloseModalFunction;
         let lotSelectFormElement;
         let lotSelectResultsElement;
@@ -103,6 +135,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
                 lotSelectCloseModalFunction = closeModalFunction;
                 const lotNameFilterElement = modalElement.querySelector("#lotSelect--lotName");
+                lotNameFilterElement.value = currentLotName;
                 lotNameFilterElement.focus();
                 lotNameFilterElement.addEventListener("change", searchLots);
                 modalElement.querySelector("#lotSelect--occupancyStatus").addEventListener("change", searchLots);
@@ -111,11 +144,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 lotSelectFormElement.addEventListener("submit", (submitEvent) => {
                     submitEvent.preventDefault();
                 });
+                searchLots();
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
             }
         });
+    });
+    document.querySelector("#lotOccupancy--occupancyStartDateString").addEventListener("change", () => {
+        document.querySelector("#lotOccupancy--occupancyEndDateString").min =
+            document.querySelector("#lotOccupancy--occupancyStartDateString").value;
     });
     los.initializeUnlockFieldButtons(formElement);
 })();

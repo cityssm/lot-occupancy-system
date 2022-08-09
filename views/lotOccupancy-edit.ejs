@@ -52,11 +52,11 @@
                         <select id="lotOccupancy--occupancyTypeId" name="occupancyTypeId" required>
                             <% if (isCreate) { %>
                                 <option value="">(No Type)</option>
-                            <% } %>
-                            <% let typeIsFound = false; %>
-                            <% for (const occupancyType of occupancyTypes) { %>
+                                <% } %>
+                                <% let typeIsFound = false; %>
+                                <% for (const occupancyType of occupancyTypes) { %>
                                 <%
-                                    if (lotOccupancy.occupancyTypeId === occupancyType.occupancyTypeId) { 
+                                if (lotOccupancy.occupancyTypeId === occupancyType.occupancyTypeId) { 
                                         typeIsFound = true;
                                     }
                                 %>
@@ -70,10 +70,10 @@
                                 <option value="<%= lotOccupancy.occupancyTypeId %>" selected>
                                     <%= lotOccupancy.occupancyType %>
                                 </option>
-                            <% } %>
-                        </select>
+                                <% } %>
+                            </select>
+                        </div>
                     </div>
-                </div>
                 <div class="control">
                     <button class="button is-unlock-field-button" type="button" title="Unlock Field">
                         <i class="fas fa-unlock" aria-hidden="true"></i>
@@ -89,8 +89,8 @@
             <div class="field has-addons">
                 <div class="control is-expanded">
                     <input class="input has-text-left" id="lotOccupancy--lotName" type="button" value="<%= lotOccupancy.lotName %>"
-                        <%= (configFunctions.getProperty("settings.lotOccupancy.lotIdIsRequired") ? " required" : "") %>
-                        disabled />
+                    <%= (configFunctions.getProperty("settings.lotOccupancy.lotIdIsRequired") ? " required" : "") %>
+                    disabled />
                 </div>
                 <div class="control">
                     <button class="button is-unlock-field-button" type="button" title="Unlock Field">
@@ -99,43 +99,80 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="columns">
         <div class="column">
             <div class="field">
                 <label class="label" for="lotOccupancy--occupancyStartDateString">Start Date</label>
                 <div class="control">
                     <input class="input" id="lotOccupancy--occupancyStartDateString" name="occupancyStartDateString" type="date"
-                        value="<%= lotOccupancy.occupancyStartDateString %>" required />
+                    value="<%= lotOccupancy.occupancyStartDateString %>" required />
                 </div>
             </div>
-        </div>
-        <div class="column">
             <div class="field">
                 <label class="label" for="lotOccupancy--occupancyEndDateString">End Date</label>
                 <div class="control">
                     <input class="input" id="lotOccupancy--occupancyEndDateString" name="occupancyEndDateString" type="date" 
                         value="<%= lotOccupancy.occupancyEndDateString %>"
-                        min=""<%= lotOccupancy.occupancyStartDateString %>"
+                        min="<%= lotOccupancy.occupancyStartDateString %>"
                         <%= (configFunctions.getProperty("settings.lotOccupancy.occupancyEndDateIsRequired") ? " required" : "") %> />
                 </div>
             </div>
         </div>
+        <div class="column">
+            <div id="container--lotOccupancyFields">
+                <% if (isCreate) { %>
+                    <div class="message is-info">
+                        <p class="message-body">
+                            Select the <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> type to get the available fields.
+                        </p>
+                    </div>
+                <% } else if (lotOccupancy.lotOccupancyFields.length === 0) { %>
+                    <div class="message is-info">
+                        <p class="message-body">
+                            The current <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> type has no additional fields.
+                        </p>
+                    </div>
+                <% } else { %>
+                    <% let occupancyTypeFieldIds = ""; %>
+                    <% for (const lotOccupancyField of lotOccupancy.lotOccupancyFields) { %>
+                        <% occupancyTypeFieldIds += "," + lotOccupancyField.occupancyTypeFieldId; %>
+                        <div class="field">
+                            <label class="label" for="lotOccupancy--lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>">
+                                <%= lotOccupancyField.occupancyTypeField %>
+                            </label>
+                            <div class="control">
+                                <input class="input"
+                                    id="lotOccupancy--lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
+                                    name="lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
+                                    type="text"
+                                    value="<%= lotOccupancyField.lotOccupancyFieldValue %>"
+                                    <% if (lotOccupancyField.pattern !== "") { %>
+                                        pattern="<%= lotOccupancyField.pattern %>"
+                                    <% } %>
+                                    minlength="<%= lotOccupancyField.minimumLength %>"
+                                    maxlength="<%= lotOccupancyField.maximumLength %>" />
+                            </div>
+                        </div>
+                    <% } %>
+                    <input id="lotOccupancy--occupancyTypeFieldIds" name="occupancyTypeFieldIds" type="hidden" value="<%= occupancyTypeFieldIds.slice(1) %>" />
+                <% } %>
+            </div>
+        </div>
     </div>
+
+ 
 </form>
 
 <% if (isCreate) { %>
-
-<% } else { %>
-
-    <h2 class="title is-4"><%= configFunctions.getProperty("aliases.occupants") %></h2>
     
-    <h2 class="title is-4">Comments</h2>
+    <% } else { %>
+        
+        <h2 class="title is-4 mt-2"><%= configFunctions.getProperty("aliases.occupants") %></h2>
     
-    <div class="columns">
-        <div class="column">
-            <h2 class="title is-4">Fees</h2>
+        <h2 class="title is-4">Comments</h2>
+        
+        <div class="columns">
+            <div class="column">
+                <h2 class="title is-4">Fees</h2>
         </div>
         <div class="column">
             <h2 class="title is-4">Transactions</h2>

@@ -27,6 +27,7 @@ declare const bulmaJS: BulmaJS;
     // Main form
 
     let hasUnsavedChanges = false;
+    let refreshAfterSave = isCreate;
 
     const setUnsavedChanges = () => {
         if (!hasUnsavedChanges) {
@@ -57,8 +58,8 @@ declare const bulmaJS: BulmaJS;
 
                     clearUnsavedChanges();
 
-                    if (isCreate) {
-                        window.location.href = urlPrefix + "/lotOccupancies/" + responseJSON.lotOccupancyId + "/edit";
+                    if (isCreate || refreshAfterSave) {
+                        window.location.href = urlPrefix + "/lotOccupancies/" + responseJSON.lotOccupancyId + "/edit?t=" + Date.now();
                     } else {
                         bulmaJS.alert({
                             message: exports.aliases.occupancy + " Updated Successfully",
@@ -75,9 +76,51 @@ declare const bulmaJS: BulmaJS;
             });
     });
 
+    const formInputElements = formElement.querySelectorAll("input, select");
+
+    for (const formInputElement of formInputElements) {
+        formInputElement.addEventListener("change", setUnsavedChanges);
+    }
+
+    // Occupancy Type
+
+    if (!isCreate) {
+
+        const occupancyTypeIdElement = document.querySelector("#lotOccupancy--occupancyTypeId") as HTMLSelectElement;
+
+        const originalOccupancyTypeId = occupancyTypeIdElement.value;
+
+        occupancyTypeIdElement.addEventListener("change", () => {
+
+            if (occupancyTypeIdElement.value !== originalOccupancyTypeId) {
+
+                bulmaJS.confirm({
+                    title: "Confirm Change",
+                    message: "Are you sure you want to change the " + exports.aliases.occupancy.toLowerCase() + " type?\n" +
+                        "This change affects the additional fields associated with this record, and may also affect the available fees.",
+                    contextualColorName: "warning",
+                    okButton: {
+                        text: "Yes, Keep the Change",
+                        callbackFunction: () => {
+                            refreshAfterSave = true;
+                        }
+                    },
+                    cancelButton: {
+                        text: "Revert the Change",
+                        callbackFunction: () => {
+                            occupancyTypeIdElement.value = originalOccupancyTypeId;
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     // Lot Selector
 
-    document.querySelector("#lotOccupancy--lotName").addEventListener("click", () => {
+    document.querySelector("#lotOccupancy--lotName").addEventListener("click", (clickEvent) => {
+
+        const currentLotName = (clickEvent.currentTarget as HTMLInputElement).value;
 
         let lotSelectCloseModalFunction: () => void;
 
@@ -166,6 +209,7 @@ declare const bulmaJS: BulmaJS;
                 lotSelectCloseModalFunction = closeModalFunction;
 
                 const lotNameFilterElement = modalElement.querySelector("#lotSelect--lotName") as HTMLInputElement;
+                lotNameFilterElement.value = currentLotName;
                 lotNameFilterElement.focus();
                 lotNameFilterElement.addEventListener("change", searchLots);
 
@@ -177,11 +221,21 @@ declare const bulmaJS: BulmaJS;
                 lotSelectFormElement.addEventListener("submit", (submitEvent) => {
                     submitEvent.preventDefault();
                 });
+
+                searchLots();
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
             }
         });
+    });
+
+    // Start Date
+
+    document.querySelector("#lotOccupancy--occupancyStartDateString").addEventListener("change", () => {
+
+        (document.querySelector("#lotOccupancy--occupancyEndDateString") as HTMLInputElement).min =
+            (document.querySelector("#lotOccupancy--occupancyStartDateString") as HTMLInputElement).value;
     });
 
     los.initializeUnlockFieldButtons(formElement);

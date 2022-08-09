@@ -1,7 +1,8 @@
 import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import {
+    lotOccupancyDB as databasePath
+} from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -14,46 +15,46 @@ interface AddLotOccupancyOccupantForm {
 
 
 export const addLotOccupancyOccupant =
-  (lotOccupancyOccupantForm: AddLotOccupancyOccupantForm, requestSession: recordTypes.PartialSession): number => {
+    (lotOccupancyOccupantForm: AddLotOccupancyOccupantForm, requestSession: recordTypes.PartialSession): number => {
 
-    const database = sqlite(databasePath);
+        const database = sqlite(databasePath);
 
-    let lotOccupantIndex = 0;
+        let lotOccupantIndex = 0;
 
-    const maxIndexResult = database.prepare("select lotOccupantIndex" +
-        " from LotOccupancyOccupants" +
-        " where lotOccupancyId = ?" +
-        " order by lotOccupantIndex" +
-        " limit 1")
-        .get(lotOccupancyOccupantForm.lotOccupancyId);
+        const maxIndexResult = database.prepare("select lotOccupantIndex" +
+                " from LotOccupancyOccupants" +
+                " where lotOccupancyId = ?" +
+                " order by lotOccupantIndex" +
+                " limit 1")
+            .get(lotOccupancyOccupantForm.lotOccupancyId);
 
-    if (maxIndexResult) {
-        lotOccupantIndex = maxIndexResult.lotOccupantIndex + 1;
-    }
+        if (maxIndexResult) {
+            lotOccupantIndex = maxIndexResult.lotOccupantIndex + 1;
+        }
 
-    const rightNowMillis = Date.now();
+        const rightNowMillis = Date.now();
 
-    database
-      .prepare("insert into LotOccupancyOccupants (" +
-        "lotOccupancyId, lotOccupantIndex," +
-        " occupantId," +
-        " lotOccupantTypeId," +
-        " recordCreate_userName, recordCreate_timeMillis," +
-        " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?, ?, ?)")
-      .run(lotOccupancyOccupantForm.lotOccupancyId,
-        lotOccupantIndex,
-        lotOccupancyOccupantForm.occupantId,
-        lotOccupancyOccupantForm.lotOccupantTypeId,
-        requestSession.user.userName,
-        rightNowMillis,
-        requestSession.user.userName,
-        rightNowMillis);
+        database
+            .prepare("insert into LotOccupancyOccupants (" +
+                "lotOccupancyId, lotOccupantIndex," +
+                " occupantId," +
+                " lotOccupantTypeId," +
+                " recordCreate_userName, recordCreate_timeMillis," +
+                " recordUpdate_userName, recordUpdate_timeMillis)" +
+                " values (?, ?, ?, ?, ?, ?, ?, ?)")
+            .run(lotOccupancyOccupantForm.lotOccupancyId,
+                lotOccupantIndex,
+                lotOccupancyOccupantForm.occupantId,
+                lotOccupancyOccupantForm.lotOccupantTypeId,
+                requestSession.user.userName,
+                rightNowMillis,
+                requestSession.user.userName,
+                rightNowMillis);
 
-    database.close();
+        database.close();
 
-    return lotOccupantIndex;
-  };
+        return lotOccupantIndex;
+    };
 
 
 export default addLotOccupancyOccupant;

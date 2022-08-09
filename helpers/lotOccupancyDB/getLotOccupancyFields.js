@@ -7,7 +7,9 @@ export const getLotOccupancyFields = (lotOccupancyId, connectedDatabase) => {
     const lotOccupancyFields = database
         .prepare("select o.lotOccupancyId," +
         " o.occupancyTypeFieldId, o.lotOccupancyFieldValue," +
-        " f.occupancyTypeField, f.orderNumber" +
+        " f.occupancyTypeField," +
+        " f.occupancyTypeFieldValues, f.isRequired, f.pattern, f.minimumLength, f.maximumLength," +
+        " f.orderNumber" +
         " from LotOccupancyFields o" +
         " left join OccupancyTypeFields f on o.occupancyTypeFieldId = f.occupancyTypeFieldId" +
         " where o.recordDelete_timeMillis is null" +
@@ -15,7 +17,9 @@ export const getLotOccupancyFields = (lotOccupancyId, connectedDatabase) => {
         " union" +
         " select ? as lotOccupancyId," +
         " f.occupancyTypeFieldId, '' as lotOccupancyFieldValue," +
-        " f.occupancyTypeField, f.orderNumber" +
+        " f.occupancyTypeField," +
+        " f.occupancyTypeFieldValues, f.isRequired, f.pattern, f.minimumLength, f.maximumLength," +
+        " f.orderNumber" +
         " from OccupancyTypeFields f" +
         " where f.recordDelete_timeMillis is null" +
         " and f.occupancyTypeId in (select occupancyTypeId from LotOccupancies where lotOccupancyId = ?)" +

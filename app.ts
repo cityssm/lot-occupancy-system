@@ -25,7 +25,7 @@ import * as stringFns from "@cityssm/expressjs-server-js/stringFns.js";
 import * as htmlFns from "@cityssm/expressjs-server-js/htmlFns.js";
 import { version } from "./version.js";
 
-import * as databaseInitializer from "./helpers/databaseInitializer.js";
+import * as databaseInitializer from "./helpers/initializer.database.js";
 
 import debug from "debug";
 const debugApp = debug("lot-occupancy-system:app");
@@ -36,7 +36,7 @@ const debugApp = debug("lot-occupancy-system:app");
  */
 
 
-databaseInitializer.initLotOccupancyDB();
+databaseInitializer.initializeDatabase();
 
 
 /*

@@ -15,7 +15,8 @@ const recordColumns = " recordCreate_userName varchar(30) not null," +
   " recordDelete_userName varchar(30)," +
   " recordDelete_timeMillis integer";
 
-export const initLotOccupancyDB = (): boolean => {
+
+export const initializeDatabase = (): boolean => {
 
   const lotOccupancyDB = sqlite(databasePath);
 

@@ -46,25 +46,35 @@
         </p>
     </div>
     <div class="column">
-        <p>
+        <p class="mb-2">
             <strong><%= configFunctions.getProperty("aliases.lot") %></strong><br />
             <a href="<%= urlPrefix %>/lots/<%= lotOccupancy.lotId %>"><%= lotOccupancy.lotName %></a>
         </p>
-        <p class="mt-2">
+        <p>
             <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
             <a href="<%= urlPrefix %>/maps/<%= lotOccupancy.mapId %>"><%= lotOccupancy.mapName %></a>
         </p>
     </div>
     <div class="column">
-        <p>
+        <p class="mb-2">
             <strong>Start Date</strong><br />
             <%= lotOccupancy.occupancyStartDateString %>
         </p>
-        <p class="mt-2">
+        <p>
             <strong>End Date</strong><br />
             <%= (lotOccupancy.occupancyEndDateString === "" ? "(No End Date)" : lotOccupancy.occupancyEndDateString) %>
         </p>
     </div>
+    <% if (lotOccupancy.lotOccupancyFields.length > 0) { %>
+        <div class="column">
+            <% for (const lotOccupancyField of lotOccupancy.lotOccupancyFields) { %>
+                <p class="mb-2">
+                    <strong><%= lotOccupancyField.occupancyTypeField %></strong><br />
+                    <%= lotOccupancyField.lotOccupancyFieldValue || "(No Value)" %>
+                </p>
+            <% } %>
+        </div>
+    <% } %>
 </div>
 
 <h2 class="title is-4"><%= configFunctions.getProperty("aliases.occupants") %></h2>
