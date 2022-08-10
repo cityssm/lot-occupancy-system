@@ -132,18 +132,6 @@ export const initializeDatabase = (): boolean => {
 
     // Occupancies
 
-    lotOccupancyDB.prepare("create table if not exists Occupants (" +
-      "occupantId integer not null primary key autoincrement," +
-      " occupantName varchar(200) not null," +
-      " occupantAddress1 varchar(50)," +
-      " occupantAddress2 varchar(50)," +
-      " occupantCity varchar(20)," +
-      " occupantProvince varchar(2)," +
-      " occupantPostalCode varchar(7)," +
-      " occupantPhoneNumber varchar(30)," +
-      recordColumns +
-      ")").run();
-
     lotOccupancyDB.prepare("create table if not exists OccupancyTypes (" +
       "occupancyTypeId integer not null primary key autoincrement," +
       " occupancyType varchar(100) not null," +
@@ -195,12 +183,17 @@ export const initializeDatabase = (): boolean => {
     lotOccupancyDB.prepare("create table if not exists LotOccupancyOccupants (" +
       "lotOccupancyId integer not null," +
       " lotOccupantIndex  integer not null," +
-      " occupantId integer not null," +
+      " occupantName varchar(200) not null," +
+      " occupantAddress1 varchar(50)," +
+      " occupantAddress2 varchar(50)," +
+      " occupantCity varchar(20)," +
+      " occupantProvince varchar(2)," +
+      " occupantPostalCode varchar(7)," +
+      " occupantPhoneNumber varchar(30)," +
       " lotOccupantTypeId integer not null," +
       recordColumns + "," +
       " primary key (lotOccupancyId, lotOccupantIndex)," +
       " foreign key (lotOccupancyId) references LotOccupancies (lotOccupancyId)," +
-      " foreign key (occupantId) references Occupants (occupantId)," +
       " foreign key (lotOccupantTypeId) references LotOccupantTypes (lotOccupantTypeId)" +
       ") without rowid").run();
 

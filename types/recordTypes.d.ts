@@ -97,16 +97,6 @@ export interface LotOccupantType extends Record {
     lotOccupantType?: string;
     orderNumber?: number;
 }
-export interface Occupant extends Record {
-    occupantId?: number;
-    occupantName?: string;
-    occupantAddress1?: string;
-    occupantAddress2?: string;
-    occupantCity?: string;
-    occupantProvince?: string;
-    occupantPostalCode?: string;
-    occupantPhoneNumber?: string;
-}
 export interface Fee extends Record {
     feeId?: number;
     feeName?: string;
@@ -131,11 +121,18 @@ export interface LotOccupancyTransaction extends Record {
     externalReceiptNumber?: string;
     transactionNote?: string;
 }
-export interface LotOccupancyOccupant extends Occupant, Record {
+export interface LotOccupancyOccupant extends Record {
     lotOccupancyId?: number;
     lotOccupantIndex?: number;
     lotOccupantTypeId?: number;
     lotOccupantType?: string | LotOccupantType;
+    occupantName?: string;
+    occupantAddress1?: string;
+    occupantAddress2?: string;
+    occupantCity?: string;
+    occupantProvince?: string;
+    occupantPostalCode?: string;
+    occupantPhoneNumber?: string;
 }
 export interface LotOccupancyComment extends Record {
     lotOccupancyCommentId?: number;

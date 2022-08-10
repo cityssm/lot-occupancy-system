@@ -3,6 +3,7 @@ import type {
 } from "express";
 
 import {
+    getLotOccupantTypes,
     getOccupancyTypes
 } from "../../helpers/functions.cache.js";
 
@@ -22,12 +23,14 @@ export const handler: RequestHandler = (request, response) => {
     }
 
     const occupancyTypes = getOccupancyTypes();
+    const lotOccupantTypes = getLotOccupantTypes();
 
     return response.render("lotOccupancy-edit", {
         headTitle: configFunctions.getProperty("aliases.lot") + " " + configFunctions.getProperty("aliases.occupancy") + "  Update",
         lotOccupancy,
 
         occupancyTypes,
+        lotOccupantTypes,
         isCreate: false
     });
 };

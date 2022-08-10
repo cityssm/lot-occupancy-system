@@ -164,15 +164,38 @@
 
 <% if (isCreate) { %>
     
-    <% } else { %>
-        
-        <h2 class="title is-4 mt-2"><%= configFunctions.getProperty("aliases.occupants") %></h2>
+<% } else { %>
+    <hr />
     
-        <h2 class="title is-4">Comments</h2>
-        
-        <div class="columns">
-            <div class="column">
-                <h2 class="title is-4">Fees</h2>
+    <div class="level is-mobile">
+        <div class="level-left">
+            <div class="level-item">
+                <h2 class="title is-4">
+                    <%= configFunctions.getProperty("aliases.occupants") %>
+                </h2>
+            </div>
+        </div>
+        <div class="level-right">
+            <div class="level-item">
+                <button class="button is-small is-success" id="button--addOccupant" type="button">
+                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                    <span>Add <%= configFunctions.getProperty("aliases.occupant") %></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="container--lotOccupancyOccupants"></div>
+
+    <hr />
+
+    <h2 class="title is-4 mt-2">Comments</h2>
+
+    <div id="container--lotOccupancyComments"></div>
+    
+    <div class="columns">
+        <div class="column">
+            <h2 class="title is-4">Fees</h2>
         </div>
         <div class="column">
             <h2 class="title is-4">Transactions</h2>
@@ -183,6 +206,10 @@
 <%- include('_footerA'); -%>
 
 <script>
+    exports.occupantCityDefault = "<%= configFunctions.getProperty("settings.lotOccupancy.occupantCityDefault") %>";
+    exports.occupantProvinceDefault = "<%= configFunctions.getProperty("settings.lotOccupancy.occupantProvinceDefault") %>";
+    exports.lotOccupantTypes = <%- JSON.stringify(lotOccupantTypes) %>;
+
     exports.lotOccupancyOccupants = <%- JSON.stringify(lotOccupancy.lotOccupancyOccupants) %>;
     exports.lotOccupancyComments = <%- JSON.stringify(lotOccupancy.lotOccupancyComments) %>;
     exports.lotOccupancyFees = <%- JSON.stringify(lotOccupancy.lotOccupancyFees) %>;

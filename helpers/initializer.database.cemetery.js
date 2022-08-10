@@ -1,11 +1,11 @@
 import { lotOccupancyDB as databasePath } from "../data/databasePaths.js";
 import { initializeDatabase } from "./initializer.database.js";
-import addLotType from "./lotOccupancyDB/addLotType.js";
+import { addLotType } from "./lotOccupancyDB/addLotType.js";
+import { addOccupancyType } from "./lotOccupancyDB/addOccupancyType.js";
+import { addOccupancyTypeField } from "./lotOccupancyDB/addOccupancyTypeField.js";
+import { addLotStatus } from "./lotOccupancyDB/addLotStatus.js";
+import { addLotOccupantType } from "./lotOccupancyDB/addLotOccupantType.js";
 import Debug from "debug";
-import addOccupancyType from "./lotOccupancyDB/addOccupancyType.js";
-import addOccupancyTypeField from "./lotOccupancyDB/addOccupancyTypeField.js";
-import addLotStatus from "./lotOccupancyDB/addLotStatus.js";
-import addLotOccupantType from "./lotOccupancyDB/addLotOccupantType.js";
 const debug = Debug("lot-occupancy-system:initialize");
 const session = {
     user: {

@@ -7,12 +7,10 @@ import { addMap } from "../helpers/lotOccupancyDB/addMap.js";
 import { getMap as getMapFromDatabase } from "../helpers/lotOccupancyDB/getMap.js";
 import { addLot } from "../helpers/lotOccupancyDB/addLot.js";
 import { updateLotStatus } from "../helpers/lotOccupancyDB/updateLot.js";
-import { getOccupants } from "../helpers/lotOccupancyDB/getOccupants.js";
-import { addOccupant } from "../helpers/lotOccupancyDB/addOccupant.js";
 import { addLotOccupancy } from "../helpers/lotOccupancyDB/addLotOccupancy.js";
 import { addLotOccupancyOccupant } from "../helpers/lotOccupancyDB/addLotOccupancyOccupant.js";
 import { addLotOccupancyComment } from "../helpers/lotOccupancyDB/addLotOccupancyComment.js";
-import { addLotOccupancyField } from "../helpers/lotOccupancyDB/addLotOccupancyField.js";
+import { addOrUpdateLotOccupancyField } from "../helpers/lotOccupancyDB/addOrUpdateLotOccupancyField.js";
 const user = {
     user: {
         userName: "import.unix",
@@ -24,12 +22,12 @@ const user = {
 };
 function purgeTables() {
     const database = sqlite(databasePath);
+    database.prepare("delete from LotOccupancyFields").run();
     database.prepare("delete from LotOccupancyComments").run();
     database.prepare("delete from LotOccupancyOccupants").run();
     database.prepare("delete from LotOccupancies").run();
-    database.prepare("delete from Occupants").run();
     database.prepare("delete from Lots").run();
-    database.prepare("delete from sqlite_sequence where name in ('Lots', 'LotOccupancies', 'LotOccupancyComments', 'Occupants')").run();
+    database.prepare("delete from sqlite_sequence where name in ('Lots', 'LotOccupancies', 'LotOccupancyComments')").run();
     database.close();
 }
 function purgeConfigTables() {
@@ -69,11 +67,7 @@ const cemeteryToMapName = {
 };
 const mapCache = new Map();
 function getMap(masterRow) {
-    let mapCacheKey = masterRow.CM_CEMETERY;
-    if (masterRow.CM_CEMETERY === "HS" &&
-        (masterRow.CM_BLOCK === "F" || masterRow.CM_BLOCK === "G" || masterRow.CM_BLOCK === "H" || masterRow.CM_BLOCK === "J")) {
-        mapCacheKey += "-" + masterRow.CM_BLOCK;
-    }
+    const mapCacheKey = masterRow.CM_CEMETERY;
     if (mapCache.has(mapCacheKey)) {
         return mapCache.get(mapCacheKey);
     }
@@ -169,24 +163,6 @@ function importFromCSV() {
                 lotLongitude: ""
             }, user);
             if (masterRow.CM_PRENEED_ORDER) {
-                const occupantPostalCode = ((masterRow.CM_POST1 || "") + " " + (masterRow.CM_POST2 || "")).trim();
-                const possibleOccupants = getOccupants({
-                    occupantName: masterRow.CM_PRENEED_OWNER,
-                    occupantAddress: masterRow.CM_ADDRESS,
-                    occupantCity: masterRow.CM_CITY,
-                    occupantPostalCode
-                });
-                const occupantId = possibleOccupants.length > 0 ?
-                    possibleOccupants[0].occupantId :
-                    addOccupant({
-                        occupantName: masterRow.CM_PRENEED_OWNER,
-                        occupantAddress1: masterRow.CM_ADDRESS,
-                        occupantAddress2: "",
-                        occupantCity: masterRow.CM_CITY,
-                        occupantProvince: masterRow.CM_PROV,
-                        occupantPostalCode,
-                        occupantPhoneNumber: ""
-                    }, user);
                 let occupancyStartDateString = formatDateString(masterRow.CM_PURCHASE_YR, masterRow.CM_PURCHASE_MON, masterRow.CM_PURCHASE_DAY);
                 let occupancyEndDateString = "";
                 if (masterRow.CM_INTERMENT_YR !== "" && masterRow.CM_INTERMENT_YR !== "0") {
@@ -207,10 +183,17 @@ function importFromCSV() {
                     occupancyStartDateString,
                     occupancyEndDateString
                 }, user);
+                const occupantPostalCode = ((masterRow.CM_POST1 || "") + " " + (masterRow.CM_POST2 || "")).trim();
                 addLotOccupancyOccupant({
                     lotOccupancyId,
                     lotOccupantTypeId: preneedOwnerLotOccupantType.lotOccupantTypeId,
-                    occupantId
+                    occupantName: masterRow.CM_PRENEED_OWNER,
+                    occupantAddress1: masterRow.CM_ADDRESS,
+                    occupantAddress2: "",
+                    occupantCity: masterRow.CM_CITY,
+                    occupantProvince: masterRow.CM_PROV,
+                    occupantPostalCode,
+                    occupantPhoneNumber: ""
                 }, user);
                 if (masterRow.CM_REMARK1 !== "") {
                     addLotOccupancyComment({
@@ -233,16 +216,6 @@ function importFromCSV() {
                 }
             }
             if (masterRow.CM_DECEASED_NAME) {
-                const deceasedPostalCode = ((masterRow.CM_POST1 || "") + " " + (masterRow.CM_POST2 || "")).trim();
-                const occupantId = addOccupant({
-                    occupantName: masterRow.CM_DECEASED_NAME,
-                    occupantAddress1: masterRow.CM_ADDRESS,
-                    occupantAddress2: "",
-                    occupantCity: masterRow.CM_CITY,
-                    occupantProvince: masterRow.CM_PROV,
-                    occupantPostalCode: deceasedPostalCode,
-                    occupantPhoneNumber: ""
-                }, user);
                 let occupancyStartDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
                 const occupancyEndDateString = "";
                 if (occupancyStartDateString === "0000-00-00" && masterRow.CM_DEATH_YR !== "" && masterRow.CM_DEATH_YR !== "0") {
@@ -257,14 +230,21 @@ function importFromCSV() {
                     occupancyStartDateString,
                     occupancyEndDateString
                 }, user);
+                const deceasedPostalCode = ((masterRow.CM_POST1 || "") + " " + (masterRow.CM_POST2 || "")).trim();
                 addLotOccupancyOccupant({
                     lotOccupancyId,
                     lotOccupantTypeId: deceasedLotOccupantType.lotOccupantTypeId,
-                    occupantId
+                    occupantName: masterRow.CM_DECEASED_NAME,
+                    occupantAddress1: masterRow.CM_ADDRESS,
+                    occupantAddress2: "",
+                    occupantCity: masterRow.CM_CITY,
+                    occupantProvince: masterRow.CM_PROV,
+                    occupantPostalCode: deceasedPostalCode,
+                    occupantPhoneNumber: ""
                 }, user);
                 if (masterRow.CM_DEATH_YR !== "") {
                     const lotOccupancyFieldValue = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
-                    addLotOccupancyField({
+                    addOrUpdateLotOccupancyField({
                         lotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
                             return occupancyTypeField.occupancyTypeField === "Death Date";
@@ -273,7 +253,7 @@ function importFromCSV() {
                     }, user);
                 }
                 if (masterRow.CM_AGE !== "") {
-                    addLotOccupancyField({
+                    addOrUpdateLotOccupancyField({
                         lotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
                             return occupancyTypeField.occupancyTypeField === "Death Age";
@@ -282,7 +262,7 @@ function importFromCSV() {
                     }, user);
                 }
                 if (masterRow.CM_PERIOD !== "") {
-                    addLotOccupancyField({
+                    addOrUpdateLotOccupancyField({
                         lotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
                             return occupancyTypeField.occupancyTypeField === "Death Age Period";
@@ -291,7 +271,7 @@ function importFromCSV() {
                     }, user);
                 }
                 if (masterRow.CM_FUNERAL_HOME !== "") {
-                    addLotOccupancyField({
+                    addOrUpdateLotOccupancyField({
                         lotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
                             return occupancyTypeField.occupancyTypeField === "Funeral Home";
@@ -301,7 +281,7 @@ function importFromCSV() {
                 }
                 if (masterRow.CM_FUNERAL_YR !== "") {
                     const lotOccupancyFieldValue = formatDateString(masterRow.CM_FUNERAL_YR, masterRow.CM_FUNERAL_MON, masterRow.CM_FUNERAL_DAY);
-                    addLotOccupancyField({
+                    addOrUpdateLotOccupancyField({
                         lotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
                             return occupancyTypeField.occupancyTypeField === "Funeral Date";
@@ -310,7 +290,7 @@ function importFromCSV() {
                     }, user);
                 }
                 if (masterRow.CM_CONTAINER_TYPE !== "") {
-                    addLotOccupancyField({
+                    addOrUpdateLotOccupancyField({
                         lotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
                             return occupancyTypeField.occupancyTypeField === "Container Type";
@@ -319,7 +299,7 @@ function importFromCSV() {
                     }, user);
                 }
                 if (masterRow.CM_COMMITTAL_TYPE !== "") {
-                    addLotOccupancyField({
+                    addOrUpdateLotOccupancyField({
                         lotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
                             return occupancyTypeField.occupancyTypeField === "Committal Type";
@@ -353,4 +333,5 @@ function importFromCSV() {
     }
 }
 purgeTables();
+purgeConfigTables();
 importFromCSV();

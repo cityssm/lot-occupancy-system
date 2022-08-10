@@ -23,7 +23,7 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
     if (filters.occupantName) {
         const occupantNamePieces = filters.occupantName.toLowerCase().split(" ");
         for (const occupantNamePiece of occupantNamePieces) {
-            sqlWhereClause += " and o.lotOccupancyId in (select oo.lotOccupancyId from LotOccupancyOccupants oo left join Occupants o on oo.occupantId = o.occupantId where oo.recordDelete_timeMillis is null and instr(lower(o.occupantName), ?))";
+            sqlWhereClause += " and o.lotOccupancyId in (select oo.lotOccupancyId from LotOccupancyOccupants oo where oo.recordDelete_timeMillis is null and instr(lower(oo.occupantName), ?))";
             sqlParameters.push(occupantNamePiece);
         }
     }

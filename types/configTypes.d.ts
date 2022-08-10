@@ -27,6 +27,8 @@ export interface Config {
         lotOccupancy?: {
             lotIdIsRequired?: boolean;
             occupancyEndDateIsRequired?: boolean;
+            occupantCityDefault?: string;
+            occupantProvinceDefault?: string;
         };
     };
 }

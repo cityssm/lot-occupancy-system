@@ -1,0 +1,82 @@
+<div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <h3 class="modal-card-title">
+                Add <span class="alias" data-alias="Occupant"></span>
+            </h3>
+            <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+        </header>
+        <section class="modal-card-body">
+            <form id="form--lotOccupancyOccupantAdd">
+                <input id="lotOccupancyOccupantAdd--lotOccupancyId" name="lotOccupancyId" type="hidden" value="" />
+                <div class="field">
+                    <label class="label" for="lotOccupancyOccupantAdd--lotOccupantTypeId"><span class="alias" data-alias="Occupant"></span> Type</label>
+                    <div class="control">
+                        <div class="select">
+                            <select id="lotOccupancyOccupantAdd--lotOccupantTypeId" name="lotOccupantTypeId" required>
+                                <option value="">(Select a Type)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="lotOccupancyOccupantAdd--occupantName"><span class="alias" data-alias="Occupant"></span> Name</label>
+                    <div class="control">
+                        <input class="input" id="lotOccupancyOccupantAdd--occupantName" name="occupantName" maxlength="200" required />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="lotOccupancyOccupantAdd--occupantAddress1">Address</label>
+                    <div class="control">
+                        <input class="input" id="lotOccupancyOccupantAdd--occupantAddress1" name="occupantAddress1" maxlength="50" placeholder="Line 1" />
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" id="lotOccupancyOccupantAdd--occupantAddress2" name="occupantAddress2" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="lotOccupancyOccupant--occupantCity">City</label>
+                            <div class="control">
+                                <input class="input" id="lotOccupancyOccupantAdd--occupantCity" name="occupantCity" maxlength="20" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="lotOccupancyOccupant--occupantProvince">Province</label>
+                            <div class="control">
+                                <input class="input" id="lotOccupancyOccupantAdd--occupantProvince" name="occupantProvince" maxlength="2" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="lotOccupancyOccupant--occupantPostalCode">Postal Code</label>
+                            <div class="control">
+                                <input class="input" id="lotOccupancyOccupantAdd--occupantPostalCode" name="occupantPostalCode" maxlength="7" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="lotOccupancyOccupant--occupantPhoneNumber">Phone Number</label>
+                    <div class="control">
+                        <input class="input" id="lotOccupancyOccupantAdd--occupantPhoneNumber" name="occupantPhoneNumber" maxlength="30" />
+                    </div>
+                </div>
+            </form>
+        </section>
+        <footer class="modal-card-foot justify-right">
+            <button class="button is-success" type="submit" form="form--lotOccupancyOccupantAdd">
+                <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add <span class="alias" data-alias="Occupant"></span></span>
+            </button>
+            <button class="button is-close-modal-button" type="button">Cancel</button>
+        </footer>
+    </div>
+</div>

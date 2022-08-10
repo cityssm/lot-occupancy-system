@@ -5,6 +5,8 @@ interface UpdateLotOccupancyForm {
     lotId: string | number;
     occupancyStartDateString: string;
     occupancyEndDateString: string;
+    occupancyTypeFieldIds: string;
+    [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown;
 }
 export declare function updateLotOccupancy(lotOccupancyForm: UpdateLotOccupancyForm, requestSession: recordTypes.PartialSession): boolean;
 export default updateLotOccupancy;

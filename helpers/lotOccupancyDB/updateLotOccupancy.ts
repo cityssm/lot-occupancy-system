@@ -1,9 +1,21 @@
-import { dateStringToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import {
+    dateStringToInteger
+} from "@cityssm/expressjs-server-js/dateTimeFns.js";
+
 import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+
+import {
+    lotOccupancyDB as databasePath
+} from "../../data/databasePaths.js";
+
+import {
+    addOrUpdateLotOccupancyField
+} from "./addOrUpdateLotOccupancyField.js";
+import {
+    deleteLotOccupancyField
+} from "./deleteLotOccupancyField.js";
 
 import type * as recordTypes from "../../types/recordTypes";
-
 
 interface UpdateLotOccupancyForm {
     lotOccupancyId: string | number;
@@ -12,6 +24,9 @@ interface UpdateLotOccupancyForm {
 
     occupancyStartDateString: string;
     occupancyEndDateString: string;
+
+    occupancyTypeFieldIds: string;
+    [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown;
 }
 
 
@@ -38,6 +53,29 @@ export function updateLotOccupancy(lotOccupancyForm: UpdateLotOccupancyForm, req
             requestSession.user.userName,
             rightNowMillis,
             lotOccupancyForm.lotOccupancyId);
+
+    if (result.changes > 0) {
+
+        const occupancyTypeFieldIds = lotOccupancyForm.occupancyTypeFieldIds.split(",");
+
+        for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
+
+            const lotOccupancyFieldValue = lotOccupancyForm["lotOccupancyFieldValue_" + occupancyTypeFieldId] as string;
+
+            if (lotOccupancyFieldValue && lotOccupancyFieldValue !== "") {
+                addOrUpdateLotOccupancyField({
+                    lotOccupancyId: lotOccupancyForm.lotOccupancyId,
+                    occupancyTypeFieldId,
+                    lotOccupancyFieldValue
+                }, requestSession, database);
+            } else {
+                deleteLotOccupancyField(lotOccupancyForm.lotOccupancyId,
+                    occupancyTypeFieldId,
+                    requestSession,
+                    database);
+            }
+        }
+    }
 
     database.close();
 

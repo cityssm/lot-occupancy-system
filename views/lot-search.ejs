@@ -44,7 +44,7 @@
               <select id="searchFilter--lotTypeId" name="lotTypeId">
                 <option value="">(All <%= configFunctions.getProperty("aliases.lot") %> Types)</option>
                 <% for (const lotType of lotTypes) { %>
-                  <option value="<%= lotType.lotTypeId %>"><%= lotType.lotType %></option>
+                  <option value="<%= lotType.lotTypeId %>"><%= lotType.lotType || "(No Name)" %></option>
                 <% } %>
               </select>
             </div>
@@ -62,7 +62,7 @@
                 <option value="">(All <%= configFunctions.getProperty("aliases.maps") %>)</option>
                 <% for (const map of maps) { %>
                   <option value="<%= map.mapId %>" <%= (map.mapId.toString() === mapId) ? " selected" : "" %>>
-                    <%= map.mapName %>
+                    <%= map.mapName || "(No Name)" %>
                   </option>
                 <% } %>
               </select>

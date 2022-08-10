@@ -5,7 +5,8 @@ export const getLotStatuses = () => {
         readonly: true
     });
     const lotStatuses = database
-        .prepare("select * from LotStatuses" +
+        .prepare("select lotStatusId, lotStatus" +
+        " from LotStatuses" +
         " where recordDelete_timeMillis is null" +
         " order by orderNumber, lotStatus")
         .all();

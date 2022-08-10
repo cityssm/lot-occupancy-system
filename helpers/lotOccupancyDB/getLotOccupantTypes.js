@@ -5,7 +5,8 @@ export const getLotOccupantTypes = () => {
         readonly: true
     });
     const lotOccupantTypes = database
-        .prepare("select * from LotOccupantTypes" +
+        .prepare("select lotOccupantTypeId, lotOccupantType" +
+        " from LotOccupantTypes" +
         " where recordDelete_timeMillis is null" +
         " order by orderNumber, lotOccupantType")
         .all();

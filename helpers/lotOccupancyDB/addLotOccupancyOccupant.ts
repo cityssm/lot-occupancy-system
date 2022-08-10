@@ -9,8 +9,14 @@ import type * as recordTypes from "../../types/recordTypes";
 
 interface AddLotOccupancyOccupantForm {
     lotOccupancyId: string | number;
-    occupantId: string | number;
     lotOccupantTypeId: string | number;
+    occupantName: string;
+    occupantAddress1: string;
+    occupantAddress2: string;
+    occupantCity: string;
+    occupantProvince: string;
+    occupantPostalCode: string;
+    occupantPhoneNumber: string;
 }
 
 
@@ -37,14 +43,23 @@ export const addLotOccupancyOccupant =
         database
             .prepare("insert into LotOccupancyOccupants (" +
                 "lotOccupancyId, lotOccupantIndex," +
-                " occupantId," +
+                "occupantName," +
+                " occupantAddress1, occupantAddress2," +
+                " occupantCity, occupantProvince, occupantPostalCode," +
+                " occupantPhoneNumber," +
                 " lotOccupantTypeId," +
                 " recordCreate_userName, recordCreate_timeMillis," +
                 " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?)")
+                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
             .run(lotOccupancyOccupantForm.lotOccupancyId,
                 lotOccupantIndex,
-                lotOccupancyOccupantForm.occupantId,
+                lotOccupancyOccupantForm.occupantName,
+                lotOccupancyOccupantForm.occupantAddress1,
+                lotOccupancyOccupantForm.occupantAddress2,
+                lotOccupancyOccupantForm.occupantCity,
+                lotOccupancyOccupantForm.occupantProvince,
+                lotOccupancyOccupantForm.occupantPostalCode,
+                lotOccupancyOccupantForm.occupantPhoneNumber,
                 lotOccupancyOccupantForm.lotOccupantTypeId,
                 requestSession.user.userName,
                 rightNowMillis,

@@ -5,7 +5,8 @@ export const getOccupancyType = (occupancyTypeId) => {
         readonly: true
     });
     const occupancyType = database
-        .prepare("select * from OccupancyTypes" +
+        .prepare("select occupancyTypeId, occupancyType" +
+        " from OccupancyTypes" +
         " where occupancyTypeId = ?")
         .get(occupancyTypeId);
     if (occupancyType) {

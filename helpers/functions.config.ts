@@ -1,4 +1,5 @@
-// eslint-disable-next-line node/no-unpublished-import
+/* eslint-disable node/no-unpublished-import */
+
 import {
     config
 } from "../data/config.js";
@@ -42,6 +43,8 @@ configFallbackValues.set("aliases.occupant", "Occupant");
 configFallbackValues.set("aliases.occupants", "Occupants");
 
 configFallbackValues.set("settings.lotOccupancy.occupancyEndDateIsRequired", true);
+configFallbackValues.set("settings.lotOccupancy.occupantCityDefault", "");
+configFallbackValues.set("settings.lotOccupancy.occupantProvinceDefault", "");
 
 
 /*
@@ -79,6 +82,8 @@ export function getProperty(propertyName: "aliases.occupant"): string;
 export function getProperty(propertyName: "aliases.occupants"): string;
 
 export function getProperty(propertyName: "settings.lotOccupancy.occupancyEndDateIsRequired"): boolean;
+export function getProperty(propertyName: "settings.lotOccupancy.occupantCityDefault"): string;
+export function getProperty(propertyName: "settings.lotOccupancy.occupantProvinceDefault"): string;
 
 export function getProperty(propertyName: string): unknown {
 

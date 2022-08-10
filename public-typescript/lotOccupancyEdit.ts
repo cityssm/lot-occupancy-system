@@ -24,7 +24,9 @@ declare const bulmaJS: BulmaJS;
     const lotOccupancyId = (document.querySelector("#lotOccupancy--lotOccupancyId") as HTMLInputElement).value;
     const isCreate = (lotOccupancyId === "");
 
-    // Main form
+    /*
+     * Main form
+     */
 
     let hasUnsavedChanges = false;
     let refreshAfterSave = isCreate;
@@ -239,4 +241,96 @@ declare const bulmaJS: BulmaJS;
     });
 
     los.initializeUnlockFieldButtons(formElement);
+
+    /*
+     * Occupants
+     */
+
+    if (!isCreate) {
+        let lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[] = exports.lotOccupancyOccupants;
+
+        const renderLotOccupancyOccupants = () => {
+
+            const occupantsContainer = document.querySelector("#container--lotOccupancyOccupants") as HTMLElement;
+
+            cityssm.clearElement(occupantsContainer);
+
+            if (lotOccupancyOccupants.length === 0) {
+                occupantsContainer.innerHTML = "<div class=\"message is-warning\">" +
+                    "<p class=\"message-body\">There are no " + exports.aliases.occupants.toLowerCase() + " associated with this record.</p>" +
+                    "</div>";
+
+                return;
+            }
+
+            const tableElement = document.createElement("table");
+            tableElement.className = "table is-fullwidth is-striped is-hoverable";
+
+            tableElement.innerHTML = "<thead><tr>" +
+                "<th>" + exports.aliases.occupant + " Type</th>" +
+                "<th>" + exports.aliases.occupant + "</th>" +
+                "<th>Address</th>" +
+                "<th>Phone Number</th>" +
+                "<th></th>" +
+                "</tr></thead>" +
+                "<tbody></tbody>";
+
+            for (const lotOccupancyOccupant of lotOccupancyOccupants) {
+
+                const tableRowElement = document.createElement("tr");
+                tableRowElement.dataset.lotOccupantIndex = lotOccupancyOccupant.lotOccupantIndex.toString();
+
+                tableRowElement.innerHTML = ("<td>" + cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType as string) + "</td>") +
+                    ("<td>" + cityssm.escapeHTML(lotOccupancyOccupant.occupantName) + "</td>") +
+                    ("<td>" +
+                        cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) + "<br />" +
+                        (lotOccupancyOccupant.occupantAddress2 ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2) + "<br />" : "") +
+                        cityssm.escapeHTML(lotOccupancyOccupant.occupantCity) + ", " + cityssm.escapeHTML(lotOccupancyOccupant.occupantProvince) + "<br />" +
+                        cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode) +
+                        "</td>") +
+                    ("<td>" + cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber) + "</td>") +
+                    ("<td>" +
+                    "<div class=\"buttons are-small is-justify-content-end\">" +
+                        ("<button class=\"button is-primary button--edit\" type=\"button\">" +
+                        "<span class=\"icon is-small\"><i class=\"fas fa-pencil-alt\" aria-hidden=\"true\"></i></span>" +
+                        " <span>Edit</span>" +
+                        "</button>") +
+                        ("<button class=\"button is-light is-danger button--delete\" type=\"button\" aria-label=\"Delete\">" +
+                        "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
+                        "</button>") +
+                        "</div>" +
+                        "</td>");
+
+                tableElement.querySelector("tbody").append(tableRowElement);
+            }
+
+            occupantsContainer.append(tableElement);
+        };
+
+        document.querySelector("#button--addOccupant").addEventListener("click", () => {
+
+            cityssm.openHtmlModal("lotOccupancy-addOccupant", {
+                onshow: (modalElement) => {
+                    los.populateAliases(modalElement);
+
+                    (modalElement.querySelector("#lotOccupancyOccupantAdd--occupantCity") as HTMLInputElement).value = exports.occupantCityDefault;
+                    (modalElement.querySelector("#lotOccupancyOccupantAdd--occupantProvince") as HTMLInputElement).value = exports.occupantProvinceDefault;
+                }
+            });
+        });
+
+        renderLotOccupancyOccupants();
+    }
+
+    /*
+     * Comments
+     */
+
+    /*
+     * Fees
+     */
+
+    /*
+     * Transactions
+     */
 })();

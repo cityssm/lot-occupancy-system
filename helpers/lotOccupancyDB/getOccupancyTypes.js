@@ -5,7 +5,8 @@ export const getOccupancyTypes = () => {
         readonly: true
     });
     const occupancyTypes = database
-        .prepare("select * from OccupancyTypes" +
+        .prepare("select occupancyTypeId, occupancyType" +
+        " from OccupancyTypes" +
         " where recordDelete_timeMillis is null" +
         " order by orderNumber, occupancyType")
         .all();

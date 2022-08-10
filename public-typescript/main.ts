@@ -83,6 +83,14 @@ import type * as globalTypes from "../types/globalTypes";
                 case "lot":
                     aliasElement.textContent = exports.aliases.lot.toLowerCase();
                     break;
+
+                case "Occupant":
+                    aliasElement.textContent = exports.aliases.occupant;
+                    break;
+                    
+                case "occupant":
+                    aliasElement.textContent = exports.aliases.lot.toLowerCase();
+                    break;
             }
         }
     };
