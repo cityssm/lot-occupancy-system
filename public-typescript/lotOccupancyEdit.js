@@ -158,6 +158,103 @@ Object.defineProperty(exports, "__esModule", { value: true });
     los.initializeUnlockFieldButtons(formElement);
     if (!isCreate) {
         let lotOccupancyOccupants = exports.lotOccupancyOccupants;
+        const openEditLotOccupancyOccupant = (clickEvent) => {
+            const lotOccupantIndex = Number.parseInt(clickEvent.currentTarget.closest("tr").dataset.lotOccupantIndex, 10);
+            const lotOccupancyOccupant = lotOccupancyOccupants.find((currentLotOccupancyOccupant) => {
+                return currentLotOccupancyOccupant.lotOccupantIndex === lotOccupantIndex;
+            });
+            let editFormElement;
+            let editCloseModalFunction;
+            const editOccupant = (submitEvent) => {
+                submitEvent.preventDefault();
+                cityssm.postJSON(urlPrefix + "/lotOccupancies/doUpdateLotOccupancyOccupant", editFormElement, (responseJSON) => {
+                    if (responseJSON.success) {
+                        lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
+                        editCloseModalFunction();
+                        renderLotOccupancyOccupants();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: "Error Updating " + exports.aliases.occupant,
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                });
+            };
+            cityssm.openHtmlModal("lotOccupancy-editOccupant", {
+                onshow: (modalElement) => {
+                    los.populateAliases(modalElement);
+                    modalElement.querySelector("#lotOccupancyOccupantEdit--lotOccupancyId").value = lotOccupancyId;
+                    modalElement.querySelector("#lotOccupancyOccupantEdit--lotOccupantIndex").value = lotOccupantIndex.toString();
+                    const lotOccupantTypeSelectElement = modalElement.querySelector("#lotOccupancyOccupantEdit--lotOccupantTypeId");
+                    let lotOccupantTypeSelected = false;
+                    for (const lotOccupantType of exports.lotOccupantTypes) {
+                        const optionElement = document.createElement("option");
+                        optionElement.value = lotOccupantType.lotOccupantTypeId.toString();
+                        optionElement.textContent = lotOccupantType.lotOccupantType;
+                        if (lotOccupantType.lotOccupantTypeId === lotOccupancyOccupant.lotOccupantTypeId) {
+                            optionElement.selected = true;
+                            lotOccupantTypeSelected = true;
+                        }
+                        lotOccupantTypeSelectElement.append(optionElement);
+                    }
+                    if (!lotOccupantTypeSelected) {
+                        const optionElement = document.createElement("option");
+                        optionElement.value = lotOccupancyOccupant.lotOccupantTypeId.toString();
+                        optionElement.textContent = lotOccupancyOccupant.lotOccupantType;
+                        optionElement.selected = true;
+                        lotOccupantTypeSelectElement.append(optionElement);
+                    }
+                    modalElement.querySelector("#lotOccupancyOccupantEdit--occupantName").value = lotOccupancyOccupant.occupantName;
+                    modalElement.querySelector("#lotOccupancyOccupantEdit--occupantAddress1").value = lotOccupancyOccupant.occupantAddress1;
+                    modalElement.querySelector("#lotOccupancyOccupantEdit--occupantAddress2").value = lotOccupancyOccupant.occupantAddress2;
+                    modalElement.querySelector("#lotOccupancyOccupantEdit--occupantCity").value = lotOccupancyOccupant.occupantCity;
+                    modalElement.querySelector("#lotOccupancyOccupantEdit--occupantProvince").value = lotOccupancyOccupant.occupantProvince;
+                    modalElement.querySelector("#lotOccupancyOccupantEdit--occupantPostalCode").value = lotOccupancyOccupant.occupantPostalCode;
+                    modalElement.querySelector("#lotOccupancyOccupantEdit--occupantPhoneNumber").value = lotOccupancyOccupant.occupantPhoneNumber;
+                },
+                onshown: (modalElement, closeModalFunction) => {
+                    bulmaJS.toggleHtmlClipped();
+                    editFormElement = modalElement.querySelector("form");
+                    editFormElement.addEventListener("submit", editOccupant);
+                    editCloseModalFunction = closeModalFunction;
+                },
+                onremoved: () => {
+                    bulmaJS.toggleHtmlClipped();
+                }
+            });
+        };
+        const deleteLotOccupancyOccupant = (clickEvent) => {
+            const lotOccupantIndex = clickEvent.currentTarget.closest("tr").dataset.lotOccupantIndex;
+            const doDelete = () => {
+                cityssm.postJSON(urlPrefix + "/lotOccupancies/doDeleteLotOccupancyOccupant", {
+                    lotOccupancyId,
+                    lotOccupantIndex
+                }, (responseJSON) => {
+                    if (responseJSON.success) {
+                        lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
+                        renderLotOccupancyOccupants();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: "Error Removing " + exports.aliases.occupant,
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                });
+            };
+            bulmaJS.confirm({
+                title: "Remove " + exports.aliases.occupant + "?",
+                message: "Are you sure you want to remove this " + exports.aliases.occupant.toLowerCase() + "?",
+                okButton: {
+                    text: "Yes, Remove " + exports.aliases.occupant,
+                    callbackFunction: doDelete
+                },
+                contextualColorName: "warning"
+            });
+        };
         const renderLotOccupancyOccupants = () => {
             const occupantsContainer = document.querySelector("#container--lotOccupancyOccupants");
             cityssm.clearElement(occupantsContainer);
@@ -200,16 +297,54 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</button>") +
                         "</div>" +
                         "</td>");
+                tableRowElement.querySelector(".button--edit").addEventListener("click", openEditLotOccupancyOccupant);
+                tableRowElement.querySelector(".button--delete").addEventListener("click", deleteLotOccupancyOccupant);
                 tableElement.querySelector("tbody").append(tableRowElement);
             }
             occupantsContainer.append(tableElement);
         };
         document.querySelector("#button--addOccupant").addEventListener("click", () => {
+            let addFormElement;
+            let addCloseModalFunction;
+            const addOccupant = (submitEvent) => {
+                submitEvent.preventDefault();
+                cityssm.postJSON(urlPrefix + "/lotOccupancies/doAddLotOccupancyOccupant", addFormElement, (responseJSON) => {
+                    if (responseJSON.success) {
+                        lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
+                        addCloseModalFunction();
+                        renderLotOccupancyOccupants();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: "Error Adding " + exports.aliases.occupant,
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                });
+            };
             cityssm.openHtmlModal("lotOccupancy-addOccupant", {
                 onshow: (modalElement) => {
                     los.populateAliases(modalElement);
+                    modalElement.querySelector("#lotOccupancyOccupantAdd--lotOccupancyId").value = lotOccupancyId;
+                    const lotOccupantTypeSelectElement = modalElement.querySelector("#lotOccupancyOccupantAdd--lotOccupantTypeId");
+                    for (const lotOccupantType of exports.lotOccupantTypes) {
+                        const optionElement = document.createElement("option");
+                        optionElement.value = lotOccupantType.lotOccupantTypeId.toString();
+                        optionElement.textContent = lotOccupantType.lotOccupantType;
+                        lotOccupantTypeSelectElement.append(optionElement);
+                    }
                     modalElement.querySelector("#lotOccupancyOccupantAdd--occupantCity").value = exports.occupantCityDefault;
                     modalElement.querySelector("#lotOccupancyOccupantAdd--occupantProvince").value = exports.occupantProvinceDefault;
+                },
+                onshown: (modalElement, closeModalFunction) => {
+                    bulmaJS.toggleHtmlClipped();
+                    addFormElement = modalElement.querySelector("form");
+                    addFormElement.addEventListener("submit", addOccupant);
+                    addCloseModalFunction = closeModalFunction;
+                },
+                onremoved: () => {
+                    bulmaJS.toggleHtmlClipped();
                 }
             });
         });
