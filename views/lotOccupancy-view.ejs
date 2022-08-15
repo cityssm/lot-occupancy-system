@@ -81,8 +81,10 @@
 
 <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
 <div class="message is-warning">
-    <p class="message-body">There are no <%= configFunctions.getProperty("aliases.occupants").toLowerCase() %>
-        associated with this record.</p>
+    <p class="message-body">
+        There are no <%= configFunctions.getProperty("aliases.occupants").toLowerCase() %>
+        associated with this record.
+    </p>
 </div>
 <% } else { %>
 <table class="table is-fullwidth is-striped is-hoverable">
@@ -118,6 +120,27 @@
 
 <% if (lotOccupancy.lotOccupancyComments.length > 0) { %>
 <h2 class="title is-4">Comments</h2>
+<table class="table is-fullwidth is-striped is-hoverable">
+    <thead>
+        <tr>
+            <th>Commentor</th>
+            <th>Comment Date</th>
+            <th>Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for (const lotOccupancyComment of lotOccupancy.lotOccupancyComments) { %>
+            <tr>
+                <td><%= lotOccupancyComment.recordCreate_userName %></td>
+                <td>
+                    <%= lotOccupancyComment.lotOccupancyCommentDateString %>
+                    <%= (lotOccupancyComment.lotOccupancyCommentTime === 0 ? "" : lotOccupancyComment.lotOccupancyCommentTimeString) %>
+                </td>
+                <td><%= lotOccupancyComment.lotOccupancyComment %></td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
 <% } %>
 
 <div class="columns">

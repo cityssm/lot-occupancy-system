@@ -10,6 +10,9 @@ import handler_doUpdateLotOccupancy from "../handlers/lotOccupancies-post/doUpda
 import handler_doAddLotOccupancyOccupant from "../handlers/lotOccupancies-post/doAddLotOccupancyOccupant.js";
 import handler_doUpdateLotOccupancyOccupant from "../handlers/lotOccupancies-post/doUpdateLotOccupancyOccupant.js";
 import handler_doDeleteLotOccupancyOccupant from "../handlers/lotOccupancies-post/doDeleteLotOccupancyOccupant.js";
+import handler_doAddLotOccupancyComment from "../handlers/lotOccupancies-post/doAddLotOccupancyComment.js";
+import handler_doUpdateLotOccupancyComment from "../handlers/lotOccupancies-post/doUpdateLotOccupancyComment.js";
+import handler_doDeleteLotOccupancyComment from "../handlers/lotOccupancies-post/doDeleteLotOccupancyComment.js";
 import * as permissionHandlers from "../handlers/permissions.js";
 export const router = Router();
 router.get("/", handler_search);
@@ -23,4 +26,7 @@ router.post("/doUpdateLotOccupancy", permissionHandlers.updatePostHandler, handl
 router.post("/doAddLotOccupancyOccupant", permissionHandlers.updatePostHandler, handler_doAddLotOccupancyOccupant);
 router.post("/doUpdateLotOccupancyOccupant", permissionHandlers.updatePostHandler, handler_doUpdateLotOccupancyOccupant);
 router.post("/doDeleteLotOccupancyOccupant", permissionHandlers.updatePostHandler, handler_doDeleteLotOccupancyOccupant);
+router.post("/doAddLotOccupancyComment", permissionHandlers.updatePostHandler, handler_doAddLotOccupancyComment);
+router.post("/doUpdateLotOccupancyComment", permissionHandlers.updatePostHandler, handler_doUpdateLotOccupancyComment);
+router.post("/doDeleteLotOccupancyComment", permissionHandlers.updatePostHandler, handler_doDeleteLotOccupancyComment);
 export default router;

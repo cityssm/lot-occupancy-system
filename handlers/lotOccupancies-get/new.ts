@@ -3,7 +3,6 @@ import type {
 } from "express";
 
 import {
-    getLotOccupantTypes,
     getOccupancyTypes
 } from "../../helpers/functions.cache.js";
 

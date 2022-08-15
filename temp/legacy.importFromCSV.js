@@ -181,7 +181,8 @@ function importFromCSV() {
                     occupancyTypeId: preneedOccupancyType.occupancyTypeId,
                     lotId,
                     occupancyStartDateString,
-                    occupancyEndDateString
+                    occupancyEndDateString,
+                    occupancyTypeFieldIds: ""
                 }, user);
                 const occupantPostalCode = ((masterRow.CM_POST1 || "") + " " + (masterRow.CM_POST2 || "")).trim();
                 addLotOccupancyOccupant({
@@ -228,7 +229,8 @@ function importFromCSV() {
                     occupancyTypeId: deceasedOccupancyType.occupancyTypeId,
                     lotId,
                     occupancyStartDateString,
-                    occupancyEndDateString
+                    occupancyEndDateString,
+                    occupancyTypeFieldIds: ""
                 }, user);
                 const deceasedPostalCode = ((masterRow.CM_POST1 || "") + " " + (masterRow.CM_POST2 || "")).trim();
                 addLotOccupancyOccupant({

@@ -20,7 +20,8 @@ export const getLotOccupancyComments = (lotOccupancyId: number | string, connect
         .prepare("select lotOccupancyCommentId," +
             " lotOccupancyCommentDate, userFn_dateIntegerToString(lotOccupancyCommentDate) as lotOccupancyCommentDateString," +
             " lotOccupancyCommentTime, userFn_timeIntegerToString(lotOccupancyCommentTime) as lotOccupancyCommentTimeString," +
-            " lotOccupancyComment" +
+            " lotOccupancyComment," +
+            " recordCreate_userName, recordUpdate_userName" +
             " from LotOccupancyComments" +
             " where recordDelete_timeMillis is null" +
             " and lotOccupancyId = ?" +

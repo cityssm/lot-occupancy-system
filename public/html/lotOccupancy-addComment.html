@@ -1,0 +1,29 @@
+<div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <h3 class="modal-card-title">
+                Add Comment
+            </h3>
+            <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+        </header>
+        <section class="modal-card-body">
+            <form id="form--lotOccupancyCommentAdd">
+                <input id="lotOccupancyCommentAdd--lotOccupancyId" name="lotOccupancyId" type="hidden" value="" />
+                <div class="field">
+                    <label class="label" for="lotOccupancyCommentAdd--lotOccupancyComment">Comment</label>
+                    <div class="control">
+                        <textarea class="textarea" id="lotOccupancyCommentAdd--lotOccupancyComment" name="lotOccupancyComment" required></textarea>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <footer class="modal-card-foot justify-right">
+            <button class="button is-success" type="submit" form="form--lotOccupancyCommentAdd">
+                <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add Comment</span>
+            </button>
+            <button class="button is-close-modal-button" type="button">Cancel</button>
+        </footer>
+    </div>
+</div>
