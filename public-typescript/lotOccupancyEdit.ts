@@ -8,7 +8,8 @@ import type {
 } from "@cityssm/bulma-webapp-js/src/types";
 
 import type {
-    BulmaJS, StringConfigProperties
+    BulmaJS,
+    StringConfigProperties
 } from "@cityssm/bulma-js/types";
 
 declare const cityssm: cityssmGlobal;
@@ -86,9 +87,77 @@ declare const bulmaJS: BulmaJS;
 
     // Occupancy Type
 
-    if (!isCreate) {
+    const occupancyTypeIdElement = document.querySelector("#lotOccupancy--occupancyTypeId") as HTMLSelectElement;
 
-        const occupancyTypeIdElement = document.querySelector("#lotOccupancy--occupancyTypeId") as HTMLSelectElement;
+    if (isCreate) {
+
+        const lotOccupancyFieldsContainerElement = document.querySelector("#container--lotOccupancyFields") as HTMLElement;
+
+        occupancyTypeIdElement.addEventListener("change", () => {
+
+            if (occupancyTypeIdElement.value === "") {
+                lotOccupancyFieldsContainerElement.innerHTML = "<div class=\"message is-info\">" +
+                    "<p class=\"message-body\">Select the " + exports.aliases.occupancy.toLowerCase() + " type to load the available fields.</p>" +
+                    "</div>";
+
+                return
+            }
+
+            cityssm.postJSON(urlPrefix + "/lotOccupancies/doGetOccupancyTypeFields", {
+                    occupancyTypeId: occupancyTypeIdElement.value
+                },
+                (responseJSON: {
+                    occupancyTypeFields: recordTypes.OccupancyTypeField[]
+                }) => {
+
+                    if (responseJSON.occupancyTypeFields.length === 0) {
+                        lotOccupancyFieldsContainerElement.innerHTML = "<div class=\"message is-info\">" +
+                            "<p class=\"message-body\">There are no additional fields for this " + exports.aliases.occupancy.toLowerCase() + " type.</p>" +
+                            "</div>";
+
+                        return
+                    }
+
+                    lotOccupancyFieldsContainerElement.innerHTML = "";
+
+                    let occupancyTypeFieldIds = "";
+
+                    for (const occupancyTypeField of responseJSON.occupancyTypeFields) {
+
+                        occupancyTypeFieldIds += "," + occupancyTypeField.occupancyTypeFieldId;
+
+                        const fieldElement = document.createElement("div");
+                        fieldElement.className = "field";
+                        fieldElement.innerHTML = "<label class=\"label\" for=\"lotOccupancy--lotOccupancyFieldValue_" + occupancyTypeField.occupancyTypeFieldId + "\"></label>" +
+                            "<div class=\"control\"></div>";
+
+                        fieldElement.querySelector("label").textContent = occupancyTypeField.occupancyTypeField;
+
+                        const inputElement = document.createElement("input");
+                        inputElement.className = "input";
+                        inputElement.id = "lotOccupancy--lotOccupancyFieldValue_" + occupancyTypeField.occupancyTypeFieldId;
+                        inputElement.name = "lotOccupancyFieldValue_" + occupancyTypeField.occupancyTypeFieldId;
+                        inputElement.type = "text";
+
+                        inputElement.required = occupancyTypeField.isRequired;
+                        inputElement.minLength = occupancyTypeField.minimumLength;
+                        inputElement.maxLength = occupancyTypeField.maximumLength;
+
+                        if (occupancyTypeField.pattern && occupancyTypeField.pattern !== "") {
+                            inputElement.pattern = occupancyTypeField.pattern;
+                        }
+
+                        fieldElement.querySelector(".control").append(inputElement);
+
+                        lotOccupancyFieldsContainerElement.append(fieldElement);
+                    }
+
+                    lotOccupancyFieldsContainerElement.insertAdjacentHTML("beforeend",
+                        "<input name=\"occupancyTypeFieldIds\" type=\"hidden\" value=\"" + occupancyTypeFieldIds.slice(1) + "\" />");
+                });
+        });
+
+    } else {
 
         const originalOccupancyTypeId = occupancyTypeIdElement.value;
 
@@ -264,8 +333,10 @@ declare const bulmaJS: BulmaJS;
                 submitEvent.preventDefault();
 
                 cityssm.postJSON(urlPrefix + "/lotOccupancies/doUpdateLotOccupancyOccupant",
-                editFormElement,
-                    (responseJSON: { success: boolean; errorMessage?: string; lotOccupancyOccupants?: recordTypes.LotOccupancyOccupant[]; }) => {
+                    editFormElement,
+                    (responseJSON: {
+                        success: boolean;errorMessage ? : string;lotOccupancyOccupants ? : recordTypes.LotOccupancyOccupant[];
+                    }) => {
 
                         if (responseJSON.success) {
                             lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
@@ -344,21 +415,23 @@ declare const bulmaJS: BulmaJS;
 
             const doDelete = () => {
                 cityssm.postJSON(urlPrefix + "/lotOccupancies/doDeleteLotOccupancyOccupant", {
-                    lotOccupancyId,
-                    lotOccupantIndex
-                },
-                (responseJSON: { success: boolean; errorMessage?: string; lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[];}) => {
-                    if (responseJSON.success) {
-                        lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
-                        renderLotOccupancyOccupants();
-                    } else {
-                        bulmaJS.alert({
-                            title: "Error Removing " + exports.aliases.occupant,
-                            message: responseJSON.errorMessage,
-                            contextualColorName: "danger"
-                        });
-                    }
-                });
+                        lotOccupancyId,
+                        lotOccupantIndex
+                    },
+                    (responseJSON: {
+                        success: boolean;errorMessage ? : string;lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[];
+                    }) => {
+                        if (responseJSON.success) {
+                            lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
+                            renderLotOccupancyOccupants();
+                        } else {
+                            bulmaJS.alert({
+                                title: "Error Removing " + exports.aliases.occupant,
+                                message: responseJSON.errorMessage,
+                                contextualColorName: "danger"
+                            });
+                        }
+                    });
             };
 
             bulmaJS.confirm({
@@ -444,7 +517,9 @@ declare const bulmaJS: BulmaJS;
 
                 cityssm.postJSON(urlPrefix + "/lotOccupancies/doAddLotOccupancyOccupant",
                     addFormElement,
-                    (responseJSON: { success: boolean; errorMessage?: string; lotOccupancyOccupants?: recordTypes.LotOccupancyOccupant[]; }) => {
+                    (responseJSON: {
+                        success: boolean;errorMessage ? : string;lotOccupancyOccupants ? : recordTypes.LotOccupancyOccupant[];
+                    }) => {
 
                         if (responseJSON.success) {
                             lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;

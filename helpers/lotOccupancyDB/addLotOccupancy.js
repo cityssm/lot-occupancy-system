@@ -1,6 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { addOrUpdateLotOccupancyField } from "./addOrUpdateLotOccupancyField.js";
 export const addLotOccupancy = (lotOccupancyForm, requestSession) => {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
@@ -20,7 +21,19 @@ export const addLotOccupancy = (lotOccupancyForm, requestSession) => {
         lotOccupancyForm.lotId), occupancyStartDate, (lotOccupancyForm.occupancyEndDateString === "" ?
         undefined :
         dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyEndDateString)), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+    const lotOccupancyId = result.lastInsertRowid;
+    const occupancyTypeFieldIds = lotOccupancyForm.occupancyTypeFieldIds.split(",");
+    for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
+        const lotOccupancyFieldValue = lotOccupancyForm["lotOccupancyFieldValue_" + occupancyTypeFieldId];
+        if (lotOccupancyFieldValue && lotOccupancyFieldValue !== "") {
+            addOrUpdateLotOccupancyField({
+                lotOccupancyId,
+                occupancyTypeFieldId,
+                lotOccupancyFieldValue
+            }, requestSession, database);
+        }
+    }
     database.close();
-    return result.lastInsertRowid;
+    return lotOccupancyId;
 };
 export default addLotOccupancy;

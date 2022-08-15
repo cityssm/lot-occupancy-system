@@ -14,30 +14,34 @@
             <span><%= configFunctions.getProperty("aliases.lots") %> <%= configFunctions.getProperty("aliases.occupancies") %></span>
         </a>
     </li>
+    <% if (!isCreate) { %>
     <li>
         <a href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
             <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName %>
         </a>
     </li>
+    <% } %>
     <li class="is-active">
         <a href="#" aria-current="page">
-            Update <%= configFunctions.getProperty("aliases.occupancy") %>
+            <% if (isCreate) { %>
+                Create a New <%= configFunctions.getProperty("aliases.occupancy") %> Record
+            <% } else { %>
+                Update <%= configFunctions.getProperty("aliases.occupancy") %>
+            <% } %>
         </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-    <%= configFunctions.getProperty("aliases.occupancy") %> Update
+    <% if (isCreate) { %>
+        Create a New <%= configFunctions.getProperty("aliases.occupancy") %> Record
+    <% } else { %>
+        Update <%= configFunctions.getProperty("aliases.occupancy") %>
+    <% } %>
 </h1>
 
 <form id="form--lotOccupancy">
-    <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-        <button class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("aliases.occupancy") %>" type="submit">
-            <i class="fas fa-save" aria-hidden="true"></i>
-            <span class="sr-only">Update <%= configFunctions.getProperty("aliases.occupancy") %></span>
-        </button>
-    </div>
 
     <input id="lotOccupancy--lotOccupancyId" name="lotOccupancyId" type="hidden" value="<%= lotOccupancy.lotOccupancyId %>" />
     
@@ -52,11 +56,11 @@
                         <select id="lotOccupancy--occupancyTypeId" name="occupancyTypeId" required>
                             <% if (isCreate) { %>
                                 <option value="">(No Type)</option>
-                                <% } %>
-                                <% let typeIsFound = false; %>
-                                <% for (const occupancyType of occupancyTypes) { %>
+                            <% } %>
+                            <% let typeIsFound = false; %>
+                            <% for (const occupancyType of occupancyTypes) { %>
                                 <%
-                                if (lotOccupancy.occupancyTypeId === occupancyType.occupancyTypeId) { 
+                                    if (lotOccupancy.occupancyTypeId === occupancyType.occupancyTypeId) { 
                                         typeIsFound = true;
                                     }
                                 %>
@@ -70,10 +74,10 @@
                                 <option value="<%= lotOccupancy.occupancyTypeId %>" selected>
                                     <%= lotOccupancy.occupancyType %>
                                 </option>
-                                <% } %>
-                            </select>
-                        </div>
+                            <% } %>
+                        </select>
                     </div>
+                </div>
                 <div class="control">
                     <button class="button is-unlock-field-button" type="button" title="Unlock Field">
                         <i class="fas fa-unlock" aria-hidden="true"></i>
@@ -90,7 +94,7 @@
                 <div class="control is-expanded">
                     <input class="input has-text-left" id="lotOccupancy--lotName" type="button" value="<%= lotOccupancy.lotName %>"
                     <%= (configFunctions.getProperty("settings.lotOccupancy.lotIdIsRequired") ? " required" : "") %>
-                    disabled />
+                    <%= (isCreate ? "" : " disabled") %> />
                 </div>
                 <div class="control">
                     <button class="button is-unlock-field-button" type="button" title="Unlock Field">
@@ -122,7 +126,7 @@
                 <% if (isCreate) { %>
                     <div class="message is-info">
                         <p class="message-body">
-                            Select the <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> type to get the available fields.
+                            Select the <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> type to load the available fields.
                         </p>
                     </div>
                 <% } else if (lotOccupancy.lotOccupancyFields.length === 0) { %>
@@ -159,7 +163,16 @@
         </div>
     </div>
 
- 
+    <div class="has-text-right">
+        <button class="button is-primary" type="submit">
+            <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
+            <span>
+                <%= (isCreate ? "Create" : "Update") %>
+                <%= configFunctions.getProperty("aliases.occupancy") %>
+                Record
+            </span>
+        </button>
+    </div>
 </form>
 
 <% if (isCreate) { %>
@@ -205,16 +218,18 @@
     
 <%- include('_footerA'); -%>
 
-<script>
-    exports.occupantCityDefault = "<%= configFunctions.getProperty("settings.lotOccupancy.occupantCityDefault") %>";
-    exports.occupantProvinceDefault = "<%= configFunctions.getProperty("settings.lotOccupancy.occupantProvinceDefault") %>";
-    exports.lotOccupantTypes = <%- JSON.stringify(lotOccupantTypes) %>;
+<% if (!isCreate) { %>
+    <script>
+        exports.occupantCityDefault = "<%= configFunctions.getProperty("settings.lotOccupancy.occupantCityDefault") %>";
+        exports.occupantProvinceDefault = "<%= configFunctions.getProperty("settings.lotOccupancy.occupantProvinceDefault") %>";
+        exports.lotOccupantTypes = <%- JSON.stringify(lotOccupantTypes) %>;
 
-    exports.lotOccupancyOccupants = <%- JSON.stringify(lotOccupancy.lotOccupancyOccupants) %>;
-    exports.lotOccupancyComments = <%- JSON.stringify(lotOccupancy.lotOccupancyComments) %>;
-    exports.lotOccupancyFees = <%- JSON.stringify(lotOccupancy.lotOccupancyFees) %>;
-    exports.lotOccupancyTransactions = <%- JSON.stringify(lotOccupancy.lotOccupancyTransactions) %>;
-</script>
+        exports.lotOccupancyOccupants = <%- JSON.stringify(lotOccupancy.lotOccupancyOccupants) %>;
+        exports.lotOccupancyComments = <%- JSON.stringify(lotOccupancy.lotOccupancyComments) %>;
+        exports.lotOccupancyFees = <%- JSON.stringify(lotOccupancy.lotOccupancyFees) %>;
+        exports.lotOccupancyTransactions = <%- JSON.stringify(lotOccupancy.lotOccupancyTransactions) %>;
+    </script>
+<% } %>
 
 <script src="<%= urlPrefix %>/javascripts/lotOccupancyEdit.min.js"></script>
 

@@ -46,8 +46,53 @@ Object.defineProperty(exports, "__esModule", { value: true });
     for (const formInputElement of formInputElements) {
         formInputElement.addEventListener("change", setUnsavedChanges);
     }
-    if (!isCreate) {
-        const occupancyTypeIdElement = document.querySelector("#lotOccupancy--occupancyTypeId");
+    const occupancyTypeIdElement = document.querySelector("#lotOccupancy--occupancyTypeId");
+    if (isCreate) {
+        const lotOccupancyFieldsContainerElement = document.querySelector("#container--lotOccupancyFields");
+        occupancyTypeIdElement.addEventListener("change", () => {
+            if (occupancyTypeIdElement.value === "") {
+                lotOccupancyFieldsContainerElement.innerHTML = "<div class=\"message is-info\">" +
+                    "<p class=\"message-body\">Select the " + exports.aliases.occupancy.toLowerCase() + " type to load the available fields.</p>" +
+                    "</div>";
+                return;
+            }
+            cityssm.postJSON(urlPrefix + "/lotOccupancies/doGetOccupancyTypeFields", {
+                occupancyTypeId: occupancyTypeIdElement.value
+            }, (responseJSON) => {
+                if (responseJSON.occupancyTypeFields.length === 0) {
+                    lotOccupancyFieldsContainerElement.innerHTML = "<div class=\"message is-info\">" +
+                        "<p class=\"message-body\">There are no additional fields for this " + exports.aliases.occupancy.toLowerCase() + " type.</p>" +
+                        "</div>";
+                    return;
+                }
+                lotOccupancyFieldsContainerElement.innerHTML = "";
+                let occupancyTypeFieldIds = "";
+                for (const occupancyTypeField of responseJSON.occupancyTypeFields) {
+                    occupancyTypeFieldIds += "," + occupancyTypeField.occupancyTypeFieldId;
+                    const fieldElement = document.createElement("div");
+                    fieldElement.className = "field";
+                    fieldElement.innerHTML = "<label class=\"label\" for=\"lotOccupancy--lotOccupancyFieldValue_" + occupancyTypeField.occupancyTypeFieldId + "\"></label>" +
+                        "<div class=\"control\"></div>";
+                    fieldElement.querySelector("label").textContent = occupancyTypeField.occupancyTypeField;
+                    const inputElement = document.createElement("input");
+                    inputElement.className = "input";
+                    inputElement.id = "lotOccupancy--lotOccupancyFieldValue_" + occupancyTypeField.occupancyTypeFieldId;
+                    inputElement.name = "lotOccupancyFieldValue_" + occupancyTypeField.occupancyTypeFieldId;
+                    inputElement.type = "text";
+                    inputElement.required = occupancyTypeField.isRequired;
+                    inputElement.minLength = occupancyTypeField.minimumLength;
+                    inputElement.maxLength = occupancyTypeField.maximumLength;
+                    if (occupancyTypeField.pattern && occupancyTypeField.pattern !== "") {
+                        inputElement.pattern = occupancyTypeField.pattern;
+                    }
+                    fieldElement.querySelector(".control").append(inputElement);
+                    lotOccupancyFieldsContainerElement.append(fieldElement);
+                }
+                lotOccupancyFieldsContainerElement.insertAdjacentHTML("beforeend", "<input name=\"occupancyTypeFieldIds\" type=\"hidden\" value=\"" + occupancyTypeFieldIds.slice(1) + "\" />");
+            });
+        });
+    }
+    else {
         const originalOccupancyTypeId = occupancyTypeIdElement.value;
         occupancyTypeIdElement.addEventListener("change", () => {
             if (occupancyTypeIdElement.value !== originalOccupancyTypeId) {

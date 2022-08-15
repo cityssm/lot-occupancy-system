@@ -7,6 +7,10 @@ import handler_doSearchLotOccupancies from "../handlers/lotOccupancies-post/doSe
 
 import handler_view from "../handlers/lotOccupancies-get/view.js";
 
+import handler_new from "../handlers/lotOccupancies-get/new.js";
+import handler_doGetOccupancyTypeFields from "../handlers/lotOccupancies-post/doGetOccupancyTypeFields.js";
+import handler_doCreateLotOccupancy from "../handlers/lotOccupancies-post/doCreateLotOccupancy.js";
+
 import handler_edit from "../handlers/lotOccupancies-get/edit.js";
 import handler_doUpdateLotOccupancy from "../handlers/lotOccupancies-post/doUpdateLotOccupancy.js";
 
@@ -26,6 +30,19 @@ router.get("/",
 
 router.post("/doSearchLotOccupancies",
     handler_doSearchLotOccupancies);
+
+
+router.get("/new",
+    permissionHandlers.updateGetHandler,
+    handler_new);
+    
+router.post("/doGetOccupancyTypeFields",
+    permissionHandlers.updatePostHandler,
+    handler_doGetOccupancyTypeFields);    
+
+router.post("/doCreateLotOccupancy",
+    permissionHandlers.updatePostHandler,
+    handler_doCreateLotOccupancy);
 
 
 router.get("/:lotOccupancyId",
