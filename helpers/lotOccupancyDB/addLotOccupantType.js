@@ -1,5 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { clearLotOccupantTypesCache } from "../functions.cache.js";
 export const addLotOccupantType = (lotOccupantTypeForm, requestSession) => {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
@@ -11,6 +12,7 @@ export const addLotOccupantType = (lotOccupantTypeForm, requestSession) => {
         " values (?, ?, ?, ?, ?, ?)")
         .run(lotOccupantTypeForm.lotOccupantType, (lotOccupantTypeForm.orderNumber || 0), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     database.close();
+    clearLotOccupantTypesCache();
     return result.lastInsertRowid;
 };
 export default addLotOccupantType;

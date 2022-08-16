@@ -5,6 +5,7 @@ import {
 } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
+import { clearOccupancyTypesCache } from "../functions.cache.js";
 
 
 interface AddOccupancyTypeForm {
@@ -34,6 +35,8 @@ export const addOccupancyType =
                 rightNowMillis);
 
         database.close();
+
+        clearOccupancyTypesCache();
 
         return result.lastInsertRowid as number;
     };

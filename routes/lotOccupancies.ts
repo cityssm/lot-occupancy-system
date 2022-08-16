@@ -27,14 +27,15 @@ import * as permissionHandlers from "../handlers/permissions.js";
 
 export const router = Router();
 
+// Search
 
 router.get("/",
     handler_search);
 
-
 router.post("/doSearchLotOccupancies",
     handler_doSearchLotOccupancies);
 
+// Create
 
 router.get("/new",
     permissionHandlers.updateGetHandler,
@@ -48,10 +49,12 @@ router.post("/doCreateLotOccupancy",
     permissionHandlers.updatePostHandler,
     handler_doCreateLotOccupancy);
 
+// View
 
 router.get("/:lotOccupancyId",
     handler_view);
 
+// Edit
 
 router.get("/:lotOccupancyId/edit",
     permissionHandlers.updateGetHandler,
@@ -60,6 +63,8 @@ router.get("/:lotOccupancyId/edit",
 router.post("/doUpdateLotOccupancy",
     permissionHandlers.updatePostHandler,
     handler_doUpdateLotOccupancy);
+
+// Occupants
 
 router.post("/doAddLotOccupancyOccupant",
     permissionHandlers.updatePostHandler,
@@ -72,6 +77,8 @@ router.post("/doUpdateLotOccupancyOccupant",
 router.post("/doDeleteLotOccupancyOccupant",
     permissionHandlers.updatePostHandler,
     handler_doDeleteLotOccupancyOccupant);
+
+// Comments
 
 router.post("/doAddLotOccupancyComment",
     permissionHandlers.updatePostHandler,

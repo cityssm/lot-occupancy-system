@@ -31,6 +31,7 @@ import type {
 } from "../types/recordTypes.js";
 
 import Debug from "debug";
+import addFeeCategory from "./lotOccupancyDB/addFeeCategory.js";
 const debug = Debug("lot-occupancy-system:initialize");
 
 
@@ -219,6 +220,35 @@ const initializeCemeteryDatabase = () => {
         minimumLength: 1,
         maximumLength: 100,
         orderNumber: 21
+    }, session);
+
+    /*
+     * Fee Categories
+     */
+
+    addFeeCategory({
+        feeCategory: "Interment Rights",
+        orderNumber: 1
+    }, session);
+
+    addFeeCategory({
+        feeCategory: "Cremation Services",
+        orderNumber: 2
+    }, session);
+
+    addFeeCategory({
+        feeCategory: "Burial Charges",
+        orderNumber: 3
+    }, session);
+
+    addFeeCategory({
+        feeCategory: "Disinterment of Human Remains",
+        orderNumber: 4
+    }, session);
+
+    addFeeCategory({
+        feeCategory: "Additional Services",
+        orderNumber: 5
     }, session);
 };
 

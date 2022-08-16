@@ -139,36 +139,60 @@ export interface LotOccupantType extends Record {
 }
 
 
+export interface FeeCategory extends Record {
+    feeCategoryId ? : number;
+    feeCategory ? : string;
+    fees ? : Fee[];
+}
+
+
 export interface Fee extends Record {
-    feeId?: number;
-    feeName?: string;
+    feeId ? : number;
 
-    occupancyTypeId?: number;
-    lotTypeId?: number;
+    feeCategoryId ? : number;
+    feeCategory ? : string;
 
-    feeAmount?: number;
-    feeFunction?: string;
+    feeName ? : string;
+    feeDescription ? : string;
 
-    isRequired?: boolean;
+    occupancyTypeId ? : number;
+    lotTypeId ? : number;
+
+    includeQuantity ? : boolean;
+    quantityUnit ? : string;
+
+    feeAmount ? : number;
+    feeFunction ? : string;
+
+    taxAmount ? : number;
+    taxPercentage ? : number;
+
+    isRequired ? : boolean;
 }
 
 
 export interface LotOccupancyFee extends Fee, Record {
-    lotOccupancyId?: number;
-    feeAmount?: number;
+    lotOccupancyId ? : number;
+    
+    feeId ? : number;
+    feeName ? : string;
+
+    quantity ? : number;
+    feeAmount ? : number;
+    taxAmount ? : number;
 }
 
 
 export interface LotOccupancyTransaction extends Record {
-    lotOccupancyId?: number;
-    transactionIndex?: number;
-    transactionDate?: number;
-    transactionDateString?: string;
-    transactionTime?: number;
-    transactionTimeString?: string;
-    tranactionAmount?: number;
-    externalReceiptNumber?: string;
-    transactionNote?: string;
+    lotOccupancyId ? : number;
+    transactionIndex ? : number;
+    transactionDate ? : number;
+    transactionDateString ? : string;
+    transactionTime ? : number;
+    transactionTimeString ? : string;
+    tranactionAmount ? : number;
+    externalReceiptNumber ? : string;
+    transactionNote ? : string;
 }
 
 
@@ -204,9 +228,9 @@ export interface LotOccupancyComment extends Record {
 
 
 export interface LotOccupancyField extends OccupancyTypeField, Record {
-    lotOccupancyId?: number;
-    occupancyTypeFieldId?: number;
-    lotOccupancyFieldValue?: string;
+    lotOccupancyId ? : number;
+    occupancyTypeFieldId ? : number;
+    lotOccupancyFieldValue ? : string;
 }
 
 
@@ -224,15 +248,15 @@ export interface LotOccupancy extends Record {
 
     occupancyStartDate ? : number;
     occupancyStartDateString ? : string;
-    
+
     occupancyEndDate ? : number;
     occupancyEndDateString ? : string;
-    
-    lotOccupancyFields? : LotOccupancyField[];
+
+    lotOccupancyFields ? : LotOccupancyField[];
     lotOccupancyComments ? : LotOccupancyComment[];
     lotOccupancyOccupants ? : LotOccupancyOccupant[];
-    lotOccupancyFees?: LotOccupancyFee[];
-    lotOccupancyTransactions?: LotOccupancyTransaction[];
+    lotOccupancyFees ? : LotOccupancyFee[];
+    lotOccupancyTransactions ? : LotOccupancyTransaction[];
 }
 
 

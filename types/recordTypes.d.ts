@@ -97,18 +97,34 @@ export interface LotOccupantType extends Record {
     lotOccupantType?: string;
     orderNumber?: number;
 }
+export interface FeeCategory extends Record {
+    feeCategoryId?: number;
+    feeCategory?: string;
+    fees?: Fee[];
+}
 export interface Fee extends Record {
     feeId?: number;
+    feeCategoryId?: number;
+    feeCategory?: string;
     feeName?: string;
+    feeDescription?: string;
     occupancyTypeId?: number;
     lotTypeId?: number;
+    includeQuantity?: boolean;
+    quantityUnit?: string;
     feeAmount?: number;
     feeFunction?: string;
+    taxAmount?: number;
+    taxPercentage?: number;
     isRequired?: boolean;
 }
 export interface LotOccupancyFee extends Fee, Record {
     lotOccupancyId?: number;
+    feeId?: number;
+    feeName?: string;
+    quantity?: number;
     feeAmount?: number;
+    taxAmount?: number;
 }
 export interface LotOccupancyTransaction extends Record {
     lotOccupancyId?: number;

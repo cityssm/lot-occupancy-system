@@ -1,10 +1,12 @@
-import {
-    dateToInteger
-} from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import sqlite from "better-sqlite3";
+
 import {
     lotOccupancyDB as databasePath
 } from "../../data/databasePaths.js";
+
+import {
+    dateToInteger
+} from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 

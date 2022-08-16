@@ -172,16 +172,29 @@ export const initializeDatabase = () => {
             ")").run();
         lotOccupancyDB.prepare("create index if not exists idx_lotoccupancycomments_datetime" +
             " on LotOccupancyComments (lotOccupancyId, lotOccupancyCommentDate, lotOccupancyCommentTime)").run();
+        lotOccupancyDB.prepare("create table if not exists FeeCategories (" +
+            "feeCategoryId integer not null primary key autoincrement," +
+            " feeCategory varchar(100) not null," +
+            " orderNumber smallint not null default 0," +
+            recordColumns +
+            ")").run();
         lotOccupancyDB.prepare("create table if not exists Fees (" +
             "feeId integer not null primary key autoincrement," +
+            " feeCategoryId integer not null," +
             " feeName varchar(100) not null," +
+            " feeDescription text," +
             " occupancyTypeId integer," +
             " lotTypeId integer," +
+            " includeQuantity boolean not null default 0," +
+            " quantityUnit varchar(30)," +
             " feeAmount decimal(6, 2)," +
             " feeFunction varchar(100)," +
+            " taxAmount decimal(6, 2)," +
+            " taxPercentage decimal(5, 2)," +
             " isRequired bit not null default 0," +
             " orderNumber smallint not null default 0," +
             recordColumns + "," +
+            " foreign key (feeCategoryId) references FeeCategories (feeCategoryId)," +
             " foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId)," +
             " foreign key (lotTypeId) references LotTypes (lotTypeId)" +
             ")").run();
@@ -190,7 +203,9 @@ export const initializeDatabase = () => {
         lotOccupancyDB.prepare("create table if not exists LotOccupancyFees (" +
             "lotOccupancyId integer not null," +
             " feeId integer not null," +
+            " quantity decimal(4, 1) not null default 1," +
             " feeAmount decimal(6, 2) not null," +
+            " taxAmount decmial(6, 2) not null," +
             recordColumns + "," +
             " primary key (lotOccupancyId, feeId)," +
             " foreign key (lotOccupancyId) references LotOccupancies (lotOccupancyId)," +

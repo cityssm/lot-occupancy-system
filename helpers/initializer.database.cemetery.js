@@ -6,6 +6,7 @@ import { addOccupancyTypeField } from "./lotOccupancyDB/addOccupancyTypeField.js
 import { addLotStatus } from "./lotOccupancyDB/addLotStatus.js";
 import { addLotOccupantType } from "./lotOccupancyDB/addLotOccupantType.js";
 import Debug from "debug";
+import addFeeCategory from "./lotOccupancyDB/addFeeCategory.js";
 const debug = Debug("lot-occupancy-system:initialize");
 const session = {
     user: {
@@ -146,6 +147,26 @@ const initializeCemeteryDatabase = () => {
         minimumLength: 1,
         maximumLength: 100,
         orderNumber: 21
+    }, session);
+    addFeeCategory({
+        feeCategory: "Interment Rights",
+        orderNumber: 1
+    }, session);
+    addFeeCategory({
+        feeCategory: "Cremation Services",
+        orderNumber: 2
+    }, session);
+    addFeeCategory({
+        feeCategory: "Burial Charges",
+        orderNumber: 3
+    }, session);
+    addFeeCategory({
+        feeCategory: "Disinterment of Human Remains",
+        orderNumber: 4
+    }, session);
+    addFeeCategory({
+        feeCategory: "Additional Services",
+        orderNumber: 5
     }, session);
 };
 initializeCemeteryDatabase();

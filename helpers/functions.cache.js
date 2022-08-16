@@ -23,6 +23,9 @@ export function getLotOccupantTypesByLotOccupantType(lotOccupantType) {
         return currentLotOccupantType.lotOccupantType.toLowerCase() === lotOccupantTypeLowerCase;
     });
 }
+export function clearLotOccupantTypesCache() {
+    lotOccupantTypes = undefined;
+}
 let lotStatuses;
 export function getLotStatuses() {
     if (!lotStatuses) {
@@ -43,6 +46,9 @@ export function getLotStatusByLotStatus(lotStatus) {
         return currentLotStatus.lotStatus.toLowerCase() === lotStatusLowerCase;
     });
 }
+export function clearLotStatusesCache() {
+    lotStatuses = undefined;
+}
 let lotTypes;
 export function getLotTypes() {
     if (!lotTypes) {
@@ -62,6 +68,9 @@ export function getLotTypesByLotType(lotType) {
     return cachedLotTypes.find((currentLotType) => {
         return currentLotType.lotType.toLowerCase() === lotTypeLowerCase;
     });
+}
+export function clearLotTypesCache() {
+    lotTypes = undefined;
 }
 let occupancyTypes;
 const occupancyTypeMap = new Map();
@@ -88,4 +97,8 @@ export function getOccupancyTypeByOccupancyType(occupancyTypeString) {
         occupancyType = getOccupancyTypeById(occupancyType.occupancyTypeId);
     }
     return occupancyType;
+}
+export function clearOccupancyTypesCache() {
+    occupancyTypes = undefined;
+    occupancyTypeMap.clear();
 }

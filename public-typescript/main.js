@@ -51,11 +51,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 case "lot":
                     aliasElement.textContent = exports.aliases.lot.toLowerCase();
                     break;
+                case "Occupancy":
+                    aliasElement.textContent = exports.aliases.occupancy;
+                    break;
+                case "occupancy":
+                    aliasElement.textContent = exports.aliases.occupancy.toLowerCase();
+                    break;
                 case "Occupant":
                     aliasElement.textContent = exports.aliases.occupant;
                     break;
                 case "occupant":
-                    aliasElement.textContent = exports.aliases.lot.toLowerCase();
+                    aliasElement.textContent = exports.aliases.occupant.toLowerCase();
                     break;
             }
         }

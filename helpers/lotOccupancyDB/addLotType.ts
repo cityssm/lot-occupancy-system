@@ -5,6 +5,7 @@ import {
 } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
+import { clearLotTypesCache } from "../functions.cache.js";
 
 
 interface AddLotTypeForm {
@@ -34,6 +35,8 @@ export const addLotType =
                 rightNowMillis);
 
         database.close();
+
+        clearLotTypesCache();
 
         return result.lastInsertRowid as number;
     };

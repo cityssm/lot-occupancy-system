@@ -126,3 +126,13 @@ fieldset:enabled .is-hidden-enabled {
  .select option:disabled {
   display: none;
  }
+
+
+ /*
+  * Modal Size Fix
+  */
+
+
+.modal-card {
+  max-width: 100%;
+}

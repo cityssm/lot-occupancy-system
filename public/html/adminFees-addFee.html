@@ -1,0 +1,115 @@
+<div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card" style="width:900px">
+        <header class="modal-card-head">
+            <h3 class="modal-card-title">
+                Add Fee
+            </h3>
+            <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+        </header>
+        <section class="modal-card-body">
+            <form id="form--feeAdd">
+                <div class="field">
+                    <label class="label" for="feeAdd--feeCategoryId">Fee Category</label>
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select id="feeAdd--feeCategoryId" name="feeCategoryId" required></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="feeAdd--feeName">Fee</label>
+                    <div class="control">
+                        <input class="input" id="feeAdd--feeName" name="feeName" maxlength="100" required />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="feeAdd--feeDescription">Fee Description</label>
+                    <div class="control">
+                        <textarea class="textarea" id="feeAdd--feeDescription" name="feeDescription"></textarea>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="feeAdd--occupancyTypeId"><span class="alias" data-alias="Occupancy"></span> Type Filter</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select id="feeAdd--occupancyTypeId" name="occupancyTypeId">
+                                        <option value="">(All Types)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="feeAdd--lotTypeId"><span class="alias" data-alias="Lot"></span> Type Filter</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select id="feeAdd--lotTypeId" name="lotTypeId">
+                                        <option value="">(All Types)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="feeAdd--feeAmount">Fee Amount</label>
+                            <div class="control has-icons-left">
+                                <input class="input has-text-right" id="feeAdd--feeAmount" name="feeAmount" type="number" step="0.01" min="0" max="9999.99" value="0" onwheel="return false" />
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="feeAdd--feeFunction">Fee Function</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select id="feeAdd--feeFunction" name="feeFunction"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="feeAdd--taxAmount">Tax Amount</label>
+                            <div class="control has-icons-left">
+                                <input class="input has-text-right" id="feeAdd--taxAmount" name="taxAmount" type="number" step="0.01" min="0" max="9999.99" onwheel="return false" />
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="feeAdd--taxPercentage">Tax Percentage</label>
+                            <div class="control has-icons-right">
+                                <input class="input has-text-right" id="feeAdd--taxPercentage" name="taxPercentage" type="number" step="0.01" min="0" max="100" value="0" onwheel="return false" />
+                                <span class="icon is-small is-right">
+                                    <i class="fas fa-percent" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <footer class="modal-card-foot justify-right">
+            <button class="button is-success" type="submit" form="form--feeAdd">
+                <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add Fee</span>
+            </button>
+            <button class="button is-close-modal-button" type="button">Cancel</button>
+        </footer>
+    </div>
+</div>

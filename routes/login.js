@@ -4,10 +4,11 @@ import * as authenticationFunctions from "../helpers/functions.authentication.js
 export const router = Router();
 const getSafeRedirectURL = (possibleRedirectURL = "") => {
     const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
-    const urlToCheck = (possibleRedirectURL.startsWith(urlPrefix)
-        ? possibleRedirectURL.slice(urlPrefix.length)
-        : possibleRedirectURL).toLowerCase();
+    const urlToCheck = (possibleRedirectURL.startsWith(urlPrefix) ?
+        possibleRedirectURL.slice(urlPrefix.length) :
+        possibleRedirectURL).toLowerCase();
     switch (urlToCheck) {
+        case "/admin/fees":
         case "/lotOccupancies":
         case "/lots":
         case "/maps":
