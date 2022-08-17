@@ -793,6 +793,67 @@ declare const bulmaJS: BulmaJS;
      * Fees
      */
 
+    if (!isCreate) {
+        let lotOccupancyFees: recordTypes.LotOccupancyFee[] = exports.lotOccupancyFees;
+        const lotOccupancyFeesContainerElement = document.querySelector("#container--lotOccupancyFees") as HTMLElement;
+
+        const renderLotOccupancyFees = () => {
+
+        };
+
+        document.querySelector("#button--addFee").addEventListener("click", () => {
+
+            if (hasUnsavedChanges) {
+                bulmaJS.alert({
+                    message: "Please save all unsaved changes before adding fees.",
+                    contextualColorName: "warning"
+                });
+                return;
+            }
+
+            let feeCategories: recordTypes.FeeCategory[];
+
+            let feeFilterElement: HTMLInputElement;
+
+            const filterFees = () => {
+
+                const filterStringPieces = feeFilterElement.value.trim().toLowerCase().split(" ");
+
+
+            };
+
+            cityssm.openHtmlModal("lotOccupancy-addFee", {
+                onshow: (modalElement) => {
+                    
+                    cityssm.postJSON(urlPrefix + "/lotOccupancies/doGetFees", {
+                        lotOccupancyId
+                    },
+                    (responseJSON: { feeCategories: recordTypes.FeeCategory[]}) => {
+                        feeCategories = responseJSON.feeCategories;
+
+                        feeFilterElement = modalElement.querySelector("#feeSelect--feeName");
+                        feeFilterElement.disabled = false;
+                        feeFilterElement.addEventListener("keyup", filterFees);
+                        feeFilterElement.focus();
+
+                        filterFees();
+                    });
+                },
+                onshown: () => {
+                    bulmaJS.toggleHtmlClipped();
+                },
+                onhidden: () => {
+                    renderLotOccupancyFees();
+                },
+                onremoved: () => {
+                    bulmaJS.toggleHtmlClipped();
+                }
+            });
+        });
+
+        renderLotOccupancyFees();
+    }
+
     /*
      * Transactions
      */

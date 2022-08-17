@@ -22,6 +22,8 @@ import handler_doAddLotOccupancyComment from "../handlers/lotOccupancies-post/do
 import handler_doUpdateLotOccupancyComment from "../handlers/lotOccupancies-post/doUpdateLotOccupancyComment.js";
 import handler_doDeleteLotOccupancyComment from "../handlers/lotOccupancies-post/doDeleteLotOccupancyComment.js";
 
+import handler_doGetFees from "../handlers/lotOccupancies-post/doGetFees.js";
+
 import * as permissionHandlers from "../handlers/permissions.js";
 
 
@@ -91,6 +93,12 @@ router.post("/doUpdateLotOccupancyComment",
 router.post("/doDeleteLotOccupancyComment",
     permissionHandlers.updatePostHandler,
     handler_doDeleteLotOccupancyComment);
+
+// Fees
+
+router.post("/doGetFees",
+    permissionHandlers.updatePostHandler,
+    handler_doGetFees);
 
 
 export default router;
