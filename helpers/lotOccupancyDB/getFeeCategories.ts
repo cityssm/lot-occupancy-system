@@ -52,35 +52,39 @@ export const getFeeCategories = (filters ? : GetFeeCategoriesFilters, options ? 
         .all(sqlParameters);
 
     if (options.includeFees) {
-
-        sql = "select feeId, feeName, feeDescription," +
-            " occupancyTypeId, lotTypeId," +
-            " feeAmount, feeFunction, taxAmount, taxPercentage," +
-            " isRequired" +
-            " from Fees" +
-            " where recordDelete_timeMillis is null" +
-            " and feeCategoryId = ?";
-
-        sqlParameters = [];
-
+        
         for (const feeCategory of feeCategories) {
+
+            sql = "select f.feeId, f.feeName, f.feeDescription," +
+                " f.occupancyTypeId, o.occupancyType," +
+                " f.lotTypeId, l.lotType," +
+                " f.feeAmount, f.feeFunction, f.taxAmount, f.taxPercentage," +
+                " f.includeQuantity, f.quantityUnit," +
+                " f.isRequired" +
+                " from Fees f" +
+                " left join OccupancyTypes o on f.occupancyTypeId = o.occupancyTypeId" +
+                " left join LotTypes l on f.lotTypeId = l.lotTypeId" +
+                " where f.recordDelete_timeMillis is null" +
+                " and f.feeCategoryId = ?";
+    
+            sqlParameters = [];
 
             sqlParameters.push(feeCategory.feeCategoryId);
 
             if (filters.occupancyTypeId) {
-                sql += " and (occupancyTypeId is null or occupancyTypeId = ?)";
+                sql += " and (f.occupancyTypeId is null or f.occupancyTypeId = ?)";
 
                 sqlParameters.push(filters.occupancyTypeId);
             }
 
             if (filters.lotTypeId) {
-                sql += " and (lotTypeId is null or lotTypeId = ?)";
+                sql += " and (f.lotTypeId is null or f.lotTypeId = ?)";
 
                 sqlParameters.push(filters.lotTypeId);
             }
 
             feeCategory.fees = database.prepare(sql +
-                    " order by orderNumber, feeName")
+                    " order by f.orderNumber, f.feeName")
                 .all(sqlParameters);
         }
     }

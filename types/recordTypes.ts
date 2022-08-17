@@ -156,7 +156,10 @@ export interface Fee extends Record {
     feeDescription ? : string;
 
     occupancyTypeId ? : number;
+    occupancyType ? : string;
+
     lotTypeId ? : number;
+    lotType ? : string;
 
     includeQuantity ? : boolean;
     quantityUnit ? : string;
@@ -173,7 +176,7 @@ export interface Fee extends Record {
 
 export interface LotOccupancyFee extends Fee, Record {
     lotOccupancyId ? : number;
-    
+
     feeId ? : number;
     feeName ? : string;
 
@@ -201,7 +204,7 @@ export interface LotOccupancyOccupant extends Record {
     lotOccupantIndex ? : number;
 
     lotOccupantTypeId ? : number;
-    lotOccupantType ? : string | LotOccupantType;
+    lotOccupantType ? : string;
 
     occupantName ? : string;
     occupantAddress1 ? : string;
@@ -238,7 +241,7 @@ export interface LotOccupancy extends Record {
     lotOccupancyId ? : number;
 
     occupancyTypeId ? : number;
-    occupancyType ? : OccupancyType | string;
+    occupancyType ? : string;
 
     lotId ? : number;
     lotName ? : string;
