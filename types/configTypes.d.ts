@@ -24,6 +24,9 @@ export interface Config {
         occupants?: string;
     };
     settings?: {
+        fees?: {
+            taxPercentageDefault?: number;
+        };
         lotOccupancy?: {
             lotIdIsRequired?: boolean;
             occupancyEndDateIsRequired?: boolean;

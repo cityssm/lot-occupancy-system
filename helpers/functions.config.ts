@@ -46,6 +46,8 @@ configFallbackValues.set("settings.lotOccupancy.occupancyEndDateIsRequired", tru
 configFallbackValues.set("settings.lotOccupancy.occupantCityDefault", "");
 configFallbackValues.set("settings.lotOccupancy.occupantProvinceDefault", "");
 
+configFallbackValues.set("settings.fees.taxPercentageDefault", 0);
+
 
 /*
  * Set up function overloads
@@ -84,6 +86,8 @@ export function getProperty(propertyName: "aliases.occupants"): string;
 export function getProperty(propertyName: "settings.lotOccupancy.occupancyEndDateIsRequired"): boolean;
 export function getProperty(propertyName: "settings.lotOccupancy.occupantCityDefault"): string;
 export function getProperty(propertyName: "settings.lotOccupancy.occupantProvinceDefault"): string;
+
+export function getProperty(propertyName: "settings.fees.taxPercentageDefault"): number;
 
 export function getProperty(propertyName: string): unknown {
 

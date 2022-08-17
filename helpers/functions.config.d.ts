@@ -26,4 +26,5 @@ export declare function getProperty(propertyName: "aliases.occupants"): string;
 export declare function getProperty(propertyName: "settings.lotOccupancy.occupancyEndDateIsRequired"): boolean;
 export declare function getProperty(propertyName: "settings.lotOccupancy.occupantCityDefault"): string;
 export declare function getProperty(propertyName: "settings.lotOccupancy.occupantProvinceDefault"): string;
+export declare function getProperty(propertyName: "settings.fees.taxPercentageDefault"): number;
 export declare const keepAliveMillis: number;

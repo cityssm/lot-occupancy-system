@@ -26,6 +26,7 @@ configFallbackValues.set("aliases.occupants", "Occupants");
 configFallbackValues.set("settings.lotOccupancy.occupancyEndDateIsRequired", true);
 configFallbackValues.set("settings.lotOccupancy.occupantCityDefault", "");
 configFallbackValues.set("settings.lotOccupancy.occupantProvinceDefault", "");
+configFallbackValues.set("settings.fees.taxPercentageDefault", 0);
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split(".");
     let currentObject = config;
