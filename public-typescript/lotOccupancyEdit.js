@@ -46,6 +46,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
     for (const formInputElement of formInputElements) {
         formInputElement.addEventListener("change", setUnsavedChanges);
     }
+    if (!isCreate) {
+        document.querySelector("#button--deleteLotOccupancy").addEventListener("click", (clickEvent) => {
+            clickEvent.preventDefault();
+            const doDelete = () => {
+                cityssm.postJSON(urlPrefix + "/lotOccupancies/doDeleteLotOccupancy", {
+                    lotOccupancyId
+                }, (responseJSON) => {
+                    if (responseJSON.success) {
+                        window.location.href = urlPrefix + "/lotOccupancies?t=" + Date.now();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: "Error Deleting Record",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                });
+            };
+            bulmaJS.confirm({
+                title: "Delete " + exports.aliases.occupancy + " Record",
+                message: "Are you sure you want to delete this record?",
+                contextualColorName: "warning",
+                okButton: {
+                    text: "Yes, Delete",
+                    callbackFunction: doDelete
+                }
+            });
+        });
+    }
     const occupancyTypeIdElement = document.querySelector("#lotOccupancy--occupancyTypeId");
     if (isCreate) {
         const lotOccupancyFieldsContainerElement = document.querySelector("#container--lotOccupancyFields");
@@ -261,6 +291,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onshown: (modalElement, closeModalFunction) => {
                     bulmaJS.toggleHtmlClipped();
+                    modalElement.querySelector("#lotOccupancyOccupantEdit--lotOccupantTypeId").focus();
                     editFormElement = modalElement.querySelector("form");
                     editFormElement.addEventListener("submit", editOccupant);
                     editCloseModalFunction = closeModalFunction;
@@ -337,7 +368,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "<span class=\"icon is-small\"><i class=\"fas fa-pencil-alt\" aria-hidden=\"true\"></i></span>" +
                             " <span>Edit</span>" +
                             "</button>") +
-                        ("<button class=\"button is-light is-danger button--delete\" type=\"button\" aria-label=\"Delete\">" +
+                        ("<button class=\"button is-light is-danger button--delete\" data-tooltip=\"Delete " + cityssm.escapeHTML(exports.aliases.occupant) + "\" type=\"button\" aria-label=\"Delete\">" +
                             "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
                             "</button>") +
                         "</div>" +
@@ -384,6 +415,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onshown: (modalElement, closeModalFunction) => {
                     bulmaJS.toggleHtmlClipped();
+                    modalElement.querySelector("#lotOccupancyOccupantAdd--lotOccupantTypeId").focus();
                     addFormElement = modalElement.querySelector("form");
                     addFormElement.addEventListener("submit", addOccupant);
                     addCloseModalFunction = closeModalFunction;
@@ -432,6 +464,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onshown: (modalElement, closeModalFunction) => {
                     bulmaJS.toggleHtmlClipped();
+                    modalElement.querySelector("#lotOccupancyCommentEdit--lotOccupancyComment").focus();
                     editFormElement = modalElement.querySelector("form");
                     editFormElement.addEventListener("submit", editComment);
                     editCloseModalFunction = closeModalFunction;
@@ -503,7 +536,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "<span class=\"icon is-small\"><i class=\"fas fa-pencil-alt\" aria-hidden=\"true\"></i></span>" +
                             " <span>Edit</span>" +
                             "</button>") +
-                        ("<button class=\"button is-light is-danger button--delete\" type=\"button\" aria-label=\"Delete\">" +
+                        ("<button class=\"button is-light is-danger button--delete\" data-tooltip=\"Delete Comment\" type=\"button\" aria-label=\"Delete\">" +
                             "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
                             "</button>") +
                         "</div>" +
@@ -542,6 +575,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onshown: (modalElement, closeModalFunction) => {
                     bulmaJS.toggleHtmlClipped();
+                    modalElement.querySelector("#lotOccupancyCommentAdd--lotOccupancyComment").focus();
                     addFormElement = modalElement.querySelector("form");
                     addFormElement.addEventListener("submit", addComment);
                     addCloseModalFunction = closeModalFunction;
@@ -556,7 +590,89 @@ Object.defineProperty(exports, "__esModule", { value: true });
     if (!isCreate) {
         let lotOccupancyFees = exports.lotOccupancyFees;
         const lotOccupancyFeesContainerElement = document.querySelector("#container--lotOccupancyFees");
+        const deleteLotOccupancyFee = (clickEvent) => {
+            const feeId = clickEvent.currentTarget.closest(".container--lotOccupancyFee").dataset.feeId;
+            const doDelete = () => {
+                cityssm.postJSON(urlPrefix + "/lotOccupancies/doDeleteLotOccupancyFee", {
+                    lotOccupancyId,
+                    feeId
+                }, (responseJSON) => {
+                    if (responseJSON.success) {
+                        lotOccupancyFees = responseJSON.lotOccupancyFees;
+                        renderLotOccupancyFees();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: "Error Deleting Fee",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                });
+            };
+            bulmaJS.confirm({
+                title: "Delete Fee",
+                message: "Are you sure you want to delete this fee?",
+                contextualColorName: "warning",
+                okButton: {
+                    text: "Yes, Delete Fee",
+                    callbackFunction: doDelete,
+                }
+            });
+        };
         const renderLotOccupancyFees = () => {
+            if (lotOccupancyFees.length === 0) {
+                lotOccupancyFeesContainerElement.innerHTML = "<div class=\"message is-info\">" +
+                    "<p class=\"message-body\">There are no fees associated with this record.</p>" +
+                    "</div>";
+                return;
+            }
+            lotOccupancyFeesContainerElement.innerHTML = "<table class=\"table is-fullwidth is-striped is-hoverable\">" +
+                ("<thead><tr>" +
+                    "<th>Fee</th>" +
+                    "<th><span class=\"is-sr-only\">Unit Cost</span></th>" +
+                    "<th class=\"has-width-1\"><span class=\"is-sr-only\">&times;</span></th>" +
+                    "<th class=\"has-width-1\"><span class=\"is-sr-only\">Quantity</span></th>" +
+                    "<th class=\"has-width-1\"><span class=\"is-sr-only\">equals</span></th>" +
+                    "<th class=\"has-width-1 has-text-right\">Total</th>" +
+                    "<th class=\"has-width-1\"><span class=\"is-sr-only\">Options</span></th>" +
+                    "</tr></thead>") +
+                "<tbody></tbody>" +
+                ("<tfoot>" +
+                    "<tr><th colspan=\"5\">Subtotal</th><td class=\"has-text-weight-bold has-text-right\" id=\"lotOccupancyFees--feeAmountTotal\"></td><td></td></tr>" +
+                    "<tr><th colspan=\"5\">Tax</th><td class=\"has-text-right\" id=\"lotOccupancyFees--taxAmountTotal\"></td><td></td></tr>" +
+                    "<tr><th colspan=\"5\">Grand Total</th><td class=\"has-text-weight-bold has-text-right\" id=\"lotOccupancyFees--grandTotal\"></td><td></td></tr>" +
+                    "</tfoot>") +
+                "</table>";
+            let feeAmountTotal = 0;
+            let taxAmountTotal = 0;
+            for (const lotOccupancyFee of lotOccupancyFees) {
+                const tableRowElement = document.createElement("tr");
+                tableRowElement.className = "container--lotOccupancyFee";
+                tableRowElement.dataset.feeId = lotOccupancyFee.feeId.toString();
+                tableRowElement.innerHTML = ("<td colspan=\"" + (lotOccupancyFee.quantity === 1 ? "5" : "1") + "\">" +
+                    cityssm.escapeHTML(lotOccupancyFee.feeName) +
+                    "</td>") +
+                    (lotOccupancyFee.quantity === 1 ?
+                        "" :
+                        "<td class=\"has-text-right\">$" + lotOccupancyFee.feeAmount.toFixed(2) + "</td>" +
+                            "<td>&times;</td>" +
+                            "<td class=\"has-text-right\">" + lotOccupancyFee.quantity + "</td>" +
+                            "<td>=</td>") +
+                    "<td class=\"has-text-right\">$" + (lotOccupancyFee.feeAmount * lotOccupancyFee.quantity).toFixed(2) + "</td>" +
+                    ("<td>" +
+                        "<button class=\"button is-small is-danger is-light\" data-tooltip=\"Delete Fee\" type=\"button\">" +
+                        "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
+                        "</button>" +
+                        "</td>");
+                tableRowElement.querySelector("button").addEventListener("click", deleteLotOccupancyFee);
+                lotOccupancyFeesContainerElement.querySelector("tbody").append(tableRowElement);
+                feeAmountTotal += (lotOccupancyFee.feeAmount * lotOccupancyFee.quantity);
+                taxAmountTotal += (lotOccupancyFee.taxAmount * lotOccupancyFee.quantity);
+            }
+            lotOccupancyFeesContainerElement.querySelector("#lotOccupancyFees--feeAmountTotal").textContent = "$" + feeAmountTotal.toFixed(2);
+            lotOccupancyFeesContainerElement.querySelector("#lotOccupancyFees--taxAmountTotal").textContent = "$" + taxAmountTotal.toFixed(2);
+            lotOccupancyFeesContainerElement.querySelector("#lotOccupancyFees--grandTotal").textContent = "$" + (feeAmountTotal + taxAmountTotal).toFixed(2);
         };
         document.querySelector("#button--addFee").addEventListener("click", () => {
             if (hasUnsavedChanges) {
@@ -568,16 +684,110 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             let feeCategories;
             let feeFilterElement;
+            let feeFilterResultsElement;
+            const doAddFee = (feeId, quantity = 1) => {
+                cityssm.postJSON(urlPrefix + "/lotOccupancies/doAddLotOccupancyFee", {
+                    lotOccupancyId,
+                    feeId,
+                    quantity
+                }, (responseJSON) => {
+                    if (responseJSON.success) {
+                        lotOccupancyFees = responseJSON.lotOccupancyFees;
+                        renderLotOccupancyFees();
+                        filterFees();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: "Error Adding Fee",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                });
+            };
+            const doSetQuantityAndAddFee = (fee) => {
+                let quantityElement;
+                let quantityCloseModalFunction;
+                const doSetQuantity = (submitEvent) => {
+                    submitEvent.preventDefault();
+                    doAddFee(fee.feeId, quantityElement.value);
+                    quantityCloseModalFunction();
+                };
+                cityssm.openHtmlModal("lotOccupancy-setFeeQuantity", {
+                    onshow: (modalElement) => {
+                        modalElement.querySelector("#lotOccupancyFeeQuantity--quantityUnit").textContent = fee.quantityUnit;
+                    },
+                    onshown: (modalElement, closeModalFunction) => {
+                        quantityCloseModalFunction = closeModalFunction;
+                        quantityElement = modalElement.querySelector("#lotOccupancyFeeQuantity--quantity");
+                        modalElement.querySelector("form").addEventListener("submit", doSetQuantity);
+                    }
+                });
+            };
+            const tryAddFee = (clickEvent) => {
+                clickEvent.preventDefault();
+                const feeId = Number.parseInt(clickEvent.currentTarget.dataset.feeId, 10);
+                const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
+                const feeCategory = feeCategories.find((currentFeeCategory) => {
+                    return currentFeeCategory.feeCategoryId === feeCategoryId;
+                });
+                const fee = feeCategory.fees.find((currentFee) => {
+                    return currentFee.feeId === feeId;
+                });
+                if (fee.includeQuantity) {
+                    doSetQuantityAndAddFee(fee);
+                }
+                else {
+                    doAddFee(feeId);
+                }
+            };
             const filterFees = () => {
                 const filterStringPieces = feeFilterElement.value.trim().toLowerCase().split(" ");
+                feeFilterResultsElement.innerHTML = "";
+                for (const feeCategory of feeCategories) {
+                    const categoryContainerElement = document.createElement("div");
+                    categoryContainerElement.className = "container--feeCategory";
+                    categoryContainerElement.dataset.feeCategoryId = feeCategory.feeCategoryId.toString();
+                    categoryContainerElement.innerHTML = "<h4 class=\"title is-5\">" + cityssm.escapeHTML(feeCategory.feeCategory) + "</h4>" +
+                        "<div class=\"panel\"></div>";
+                    let hasFees = false;
+                    for (const fee of feeCategory.fees) {
+                        if (lotOccupancyFeesContainerElement.querySelector(".container--lotOccupancyFee[data-fee-id='" + fee.feeId + "']")) {
+                            continue;
+                        }
+                        let includeFee = true;
+                        for (const filterStringPiece of filterStringPieces) {
+                            if (!fee.feeName.toLowerCase().includes(filterStringPiece)) {
+                                includeFee = false;
+                                break;
+                            }
+                        }
+                        if (!includeFee) {
+                            continue;
+                        }
+                        hasFees = true;
+                        const panelBlockElement = document.createElement("a");
+                        panelBlockElement.className = "panel-block is-block container--fee";
+                        panelBlockElement.dataset.feeId = fee.feeId.toString();
+                        panelBlockElement.href = "#";
+                        panelBlockElement.innerHTML = "<strong>" + cityssm.escapeHTML(fee.feeName) + "</strong><br />" +
+                            "<small>" + cityssm.escapeHTML(fee.feeDescription).replace(/\n/g, "<br />") + "</small>";
+                        panelBlockElement.addEventListener("click", tryAddFee);
+                        categoryContainerElement.querySelector(".panel").append(panelBlockElement);
+                    }
+                    if (hasFees) {
+                        feeFilterResultsElement.append(categoryContainerElement);
+                    }
+                }
             };
             cityssm.openHtmlModal("lotOccupancy-addFee", {
                 onshow: (modalElement) => {
+                    feeFilterElement = modalElement.querySelector("#feeSelect--feeName");
+                    feeFilterResultsElement = modalElement.querySelector("#resultsContainer--feeSelect");
                     cityssm.postJSON(urlPrefix + "/lotOccupancies/doGetFees", {
                         lotOccupancyId
                     }, (responseJSON) => {
                         feeCategories = responseJSON.feeCategories;
-                        feeFilterElement = modalElement.querySelector("#feeSelect--feeName");
                         feeFilterElement.disabled = false;
                         feeFilterElement.addEventListener("keyup", filterFees);
                         feeFilterElement.focus();
