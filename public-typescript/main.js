@@ -63,6 +63,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 case "occupant":
                     aliasElement.textContent = exports.aliases.occupant.toLowerCase();
                     break;
+                case "ExternalReceiptNumber":
+                    aliasElement.textContent = exports.aliases.externalReceiptNumber;
+                    break;
             }
         }
     };

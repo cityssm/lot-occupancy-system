@@ -43,7 +43,7 @@ export const addLotOccupancyOccupant =
         database
             .prepare("insert into LotOccupancyOccupants (" +
                 "lotOccupancyId, lotOccupantIndex," +
-                "occupantName," +
+                " occupantName," +
                 " occupantAddress1, occupantAddress2," +
                 " occupantCity, occupantProvince, occupantPostalCode," +
                 " occupantPhoneNumber," +

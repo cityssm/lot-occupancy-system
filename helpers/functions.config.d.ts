@@ -23,6 +23,7 @@ export declare function getProperty(propertyName: "aliases.occupancy"): string;
 export declare function getProperty(propertyName: "aliases.occupancies"): string;
 export declare function getProperty(propertyName: "aliases.occupant"): string;
 export declare function getProperty(propertyName: "aliases.occupants"): string;
+export declare function getProperty(propertyName: "aliases.externalReceiptNumber"): string;
 export declare function getProperty(propertyName: "settings.lotOccupancy.occupancyEndDateIsRequired"): boolean;
 export declare function getProperty(propertyName: "settings.lotOccupancy.occupantCityDefault"): string;
 export declare function getProperty(propertyName: "settings.lotOccupancy.occupantProvinceDefault"): string;

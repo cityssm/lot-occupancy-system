@@ -4,4 +4,6 @@ export const config =  Object.assign({}, cemeteryConfig);
 
 config.settings.lotOccupancy.occupantCityDefault = "Sault Ste. Marie";
 
+config.aliases.externalReceiptNumber = "GP Receipt Number";
+
 export default config;

@@ -23,6 +23,7 @@ configFallbackValues.set("aliases.occupancy", "Occupancy");
 configFallbackValues.set("aliases.occupancies", "Occupancies");
 configFallbackValues.set("aliases.occupant", "Occupant");
 configFallbackValues.set("aliases.occupants", "Occupants");
+configFallbackValues.set("aliases.externalReceiptNumber", "External Receipt Number");
 configFallbackValues.set("settings.lotOccupancy.occupancyEndDateIsRequired", true);
 configFallbackValues.set("settings.lotOccupancy.occupantCityDefault", "");
 configFallbackValues.set("settings.lotOccupancy.occupantProvinceDefault", "");

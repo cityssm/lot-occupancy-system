@@ -22,6 +22,7 @@ export interface Config {
         occupancies?: string;
         occupant?: string;
         occupants?: string;
+        externalReceiptNumber?: string;
     };
     settings?: {
         fees?: {

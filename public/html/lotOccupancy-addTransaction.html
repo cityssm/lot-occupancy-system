@@ -1,0 +1,47 @@
+<div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <h3 class="modal-card-title">
+                Add Transaction
+            </h3>
+            <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+        </header>
+        <section class="modal-card-body">
+            <form id="form--lotOccupancyTransactionAdd">
+                <input id="lotOccupancyTransactionAdd--lotOccupancyId" name="lotOccupancyId" type="hidden" value="" />
+
+                <div class="field">
+                    <label class="label" for="lotOccupancyTransactionAdd--transactionAmount">Transaction Amount</label>
+                    <div class="control has-icons-left">
+                        <input class="input has-text-right" id="lotOccupancyTransactionAdd--transactionAmount" name="transactionAmount" type="number" step="0.01" required />
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="lotOccupancyTransactionAdd--externalReceiptNumber">
+                        <span class="alias" data-alias="ExternalReceiptNumber"></span>
+                    </label>
+                    <div class="control">
+                        <input class="input" id="lotOccupancyTransactionAdd--externalReceiptNumber" name="externalReceiptNumber" maxlength="100" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="lotOccupancyTransactionAdd--transactionNote">Note</label>
+                    <div class="control">
+                        <textarea class="textarea" id="lotOccupancyTransactionAdd--transactionNote" name="transactionNote"></textarea>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <footer class="modal-card-foot justify-right">
+            <button class="button is-success" type="submit" form="form--lotOccupancyTransactionAdd">
+                <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add Transaction</span>
+            </button>
+            <button class="button is-close-modal-button" type="button">Cancel</button>
+        </footer>
+    </div>
+</div>

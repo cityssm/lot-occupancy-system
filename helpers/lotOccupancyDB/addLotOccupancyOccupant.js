@@ -16,7 +16,7 @@ export const addLotOccupancyOccupant = (lotOccupancyOccupantForm, requestSession
     database
         .prepare("insert into LotOccupancyOccupants (" +
         "lotOccupancyId, lotOccupantIndex," +
-        "occupantName," +
+        " occupantName," +
         " occupantAddress1, occupantAddress2," +
         " occupantCity, occupantProvince, occupantPostalCode," +
         " occupantPhoneNumber," +

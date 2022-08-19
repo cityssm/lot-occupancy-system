@@ -99,6 +99,10 @@ import type * as globalTypes from "../types/globalTypes";
                 case "occupant":
                     aliasElement.textContent = exports.aliases.occupant.toLowerCase();
                     break;
+
+                case "ExternalReceiptNumber":
+                    aliasElement.textContent = exports.aliases.externalReceiptNumber;
+                    break;
             }
         }
     };

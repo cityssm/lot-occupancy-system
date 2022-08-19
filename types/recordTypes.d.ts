@@ -135,7 +135,7 @@ export interface LotOccupancyTransaction extends Record {
     transactionDateString?: string;
     transactionTime?: number;
     transactionTimeString?: string;
-    tranactionAmount?: number;
+    transactionAmount?: number;
     externalReceiptNumber?: string;
     transactionNote?: string;
 }

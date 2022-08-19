@@ -13,12 +13,12 @@ import {
 
 export const handler: RequestHandler = async (request, response) => {
 
-    updateLotOccupancyOccupant(request.body, request.session);
+    const success = updateLotOccupancyOccupant(request.body, request.session);
 
     const lotOccupancyOccupants = getLotOccupancyOccupants(request.body.lotOccupancyId);
 
     response.json({
-        success: true,
+        success,
         lotOccupancyOccupants
     });
 };

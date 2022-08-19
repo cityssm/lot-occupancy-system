@@ -41,6 +41,7 @@ configFallbackValues.set("aliases.occupancy", "Occupancy");
 configFallbackValues.set("aliases.occupancies", "Occupancies");
 configFallbackValues.set("aliases.occupant", "Occupant");
 configFallbackValues.set("aliases.occupants", "Occupants");
+configFallbackValues.set("aliases.externalReceiptNumber", "External Receipt Number");
 
 configFallbackValues.set("settings.lotOccupancy.occupancyEndDateIsRequired", true);
 configFallbackValues.set("settings.lotOccupancy.occupantCityDefault", "");
@@ -82,6 +83,7 @@ export function getProperty(propertyName: "aliases.occupancy"): string;
 export function getProperty(propertyName: "aliases.occupancies"): string;
 export function getProperty(propertyName: "aliases.occupant"): string;
 export function getProperty(propertyName: "aliases.occupants"): string;
+export function getProperty(propertyName: "aliases.externalReceiptNumber"): string;
 
 export function getProperty(propertyName: "settings.lotOccupancy.occupancyEndDateIsRequired"): boolean;
 export function getProperty(propertyName: "settings.lotOccupancy.occupantCityDefault"): string;
