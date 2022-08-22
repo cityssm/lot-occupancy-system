@@ -17,14 +17,14 @@
         </li>
         <li class="is-active">
             <a href="#" aria-current="page">
-                <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName %>
+                <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
             </a>
         </li>
     </ul>
 </nav>
 
 <h1 class="title is-1">
-    <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName %>
+    <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
 </h1>
 
 <% if (user.userProperties.canUpdate) { %>
@@ -50,11 +50,19 @@
             <div class="column">
                 <p class="mb-2">
                     <strong><%= configFunctions.getProperty("aliases.lot") %></strong><br />
-                    <a href="<%= urlPrefix %>/lots/<%= lotOccupancy.lotId %>"><%= lotOccupancy.lotName %></a>
+                    <% if (lotOccupancy.lotId) { %>
+                        <a href="<%= urlPrefix %>/lots/<%= lotOccupancy.lotId %>"><%= lotOccupancy.lotName %></a>
+                    <% } else { %>
+                        (No <%= configFunctions.getProperty("aliases.lot") %>)
+                    <% } %>
                 </p>
                 <p>
                     <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
-                    <a href="<%= urlPrefix %>/maps/<%= lotOccupancy.mapId %>"><%= lotOccupancy.mapName %></a>
+                    <% if (lotOccupancy.mapId) { %>
+                        <a href="<%= urlPrefix %>/maps/<%= lotOccupancy.mapId %>"><%= lotOccupancy.mapName %></a>
+                    <% } else { %>
+                        (No <%= configFunctions.getProperty("aliases.map") %>)
+                    <% } %>
                 </p>
             </div>
             <div class="column">

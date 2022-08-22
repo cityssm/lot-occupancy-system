@@ -44,8 +44,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</a>" +
                         "</td>") +
                     ("<td>" +
-                        cityssm.escapeHTML(lotOccupancy.lotName) + "<br />" +
-                        "<span class=\"is-size-7\">" + cityssm.escapeHTML(lotOccupancy.mapName) + "</span>" +
+                        cityssm.escapeHTML(lotOccupancy.lotName || "(No " + exports.aliases.lot + ")") + "<br />" +
+                        "<span class=\"is-size-7\">" + cityssm.escapeHTML(lotOccupancy.mapName || "") + "</span>" +
                         "</td>") +
                     ("<td>" +
                         lotOccupancy.occupancyStartDateString +
