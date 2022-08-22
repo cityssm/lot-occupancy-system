@@ -1,0 +1,31 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb">
+    <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li class="is-active"><a href="#" aria-current="page">
+                <span class="icon is-small"><i class="fas fa-hard-hat" aria-hidden="true"></i></span>
+                <span>Work Orders</span>
+            </a></li>
+    </ul>
+</nav>
+
+<h1 class="title is-1">
+    Work Order Search
+</h1>
+
+<% if (user.userProperties.canUpdate) { %>
+<div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+    <a class="button is-circle is-primary has-tooltip-left"
+        data-tooltip="Create a New Work Order"
+        href="<%= urlPrefix %>/workOrders/new">
+        <i class="fas fa-plus" aria-hidden="true"></i>
+        <span class="is-sr-only">Create a New Work Order</span>
+    </a>
+</div>
+<% } %>
+
+<div id="container--searchResults"></div>
+
+<%- include('_footerA'); -%>
+<%- include('_footerB'); -%>
