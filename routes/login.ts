@@ -15,19 +15,22 @@ const getSafeRedirectURL = (possibleRedirectURL = "") => {
 
     const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
 
-    const urlToCheck = (possibleRedirectURL.startsWith(urlPrefix) ?
-        possibleRedirectURL.slice(urlPrefix.length) :
-        possibleRedirectURL).toLowerCase();
+    if (typeof (possibleRedirectURL) === "string") {
+        
+        const urlToCheck = (possibleRedirectURL.startsWith(urlPrefix) ?
+            possibleRedirectURL.slice(urlPrefix.length) :
+            possibleRedirectURL).toLowerCase();
 
-    switch (urlToCheck) {
-        case "/admin/fees":
-        case "/lotOccupancies":
-        case "/lots":
-        case "/maps":
-        case "/workOrders":
-        case "/reports":
+        switch (urlToCheck) {
+            case "/admin/fees":
+            case "/lotOccupancies":
+            case "/lots":
+            case "/maps":
+            case "/workOrders":
+            case "/reports":
 
-            return urlPrefix + urlToCheck;
+                return urlPrefix + urlToCheck;
+        }
     }
 
     return urlPrefix + "/dashboard";
