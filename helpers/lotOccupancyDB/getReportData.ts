@@ -17,7 +17,6 @@ export interface ReportParameters {
 
 
 const mapCamelCase = camelCase(configFunctions.getProperty("aliases.map"));
-
 const mapNameAlias = mapCamelCase + "Name";
 const mapDescriptionAlias = mapCamelCase + "Description";
 const mapAddress1Alias = mapCamelCase + "Address1";
@@ -26,6 +25,7 @@ const mapCityAlias = mapCamelCase + "City";
 const mapProvinceAlias = mapCamelCase + "Province";
 const mapPostalCodeAlias = mapCamelCase + "PostalCode";
 const mapPhoneNumberAlias = mapCamelCase + "PhoneNumber";
+
 
 export const getReportData = (reportName: string, reportParameters ? : ReportParameters): unknown[] => {
 
