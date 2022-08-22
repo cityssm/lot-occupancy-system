@@ -1,22 +1,45 @@
-import type { RequestHandler } from "express";
+import type {
+    RequestHandler
+} from "express";
 
-// import * as configFunctions from "../../helpers/functions.config.js";
+import {
+    getReportData,
+    ReportParameters
+} from "../../helpers/lotOccupancyDB/getReportData.js";
+
+import papaparse from "papaparse";
 
 
 export const handler: RequestHandler = (request, response) => {
 
-  // const reportName = request.params.reportName;
+    const reportName = request.params.reportName;
 
-  /*
-  const csv = rawToCSV(rowsColumnsObject);
+    let rows: unknown[];
 
-  response.setHeader("Content-Disposition",
-    "attachment; filename=" + reportName + "-" + Date.now().toString() + ".csv");
+    switch (reportName) {
 
-  response.setHeader("Content-Type", "text/csv");
+        default:
+            rows = getReportData(reportName, request.query as ReportParameters);
+            break;
+    }
 
-  response.send(csv);
-  */
+    if (!rows) {
+        return response
+            .status(404)
+            .json({
+                success: false,
+                message: "Report Not Found"
+            });
+    }
+
+    const csv = papaparse.unparse(rows);
+
+    response.setHeader("Content-Disposition",
+        "attachment; filename=" + reportName + "-" + Date.now().toString() + ".csv");
+
+    response.setHeader("Content-Type", "text/csv");
+
+    response.send(csv);
 };
 
 

@@ -234,7 +234,29 @@
                         </p>
                     </div>
                 <% } else { %>
-                
+                    <table class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th><%= configFunctions.getProperty("aliases.externalReceiptNumber") %></th>
+                                <th class="has-text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (const lotOccupancyTransaction of lotOccupancy.lotOccupancyTransactions) { %>
+                                <tr>
+                                    <td><%= lotOccupancyTransaction.transactionDateString %></td>
+                                    <td>
+                                        <%= lotOccupancyTransaction.externalReceiptNumber %><br />
+                                        <small><%= lotOccupancyTransaction.transactionNote %></small>
+                                    </td>
+                                    <td class="has-text-right">
+                                        $<%= lotOccupancyTransaction.transactionAmount.toFixed(2) %>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
                 <% } %>
             </div>
         </div>

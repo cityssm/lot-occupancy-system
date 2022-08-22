@@ -896,6 +896,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             lotOccupancyTransactionsContainerElement.querySelector("#lotOccupancyTransactions--grandTotal").textContent = "$" + transactionGrandTotal.toFixed(2);
             const feeGrandTotal = getFeeGrandTotal();
             if (feeGrandTotal > transactionGrandTotal) {
+                lotOccupancyTransactionsContainerElement.insertAdjacentHTML("afterbegin", "<div class=\"message is-warning\">" +
+                    "<div class=\"message-body\">" +
+                    "<div class=\"level\">" +
+                    "<div class=\"level-left\"><div class=\"level-item\">Outstanding Balance</div></div>" +
+                    "<div class=\"level-right\"><div class=\"level-item\">$" + (feeGrandTotal - transactionGrandTotal).toFixed(2) + "</div></div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>");
             }
         };
         document.querySelector("#button--addTransaction").addEventListener("click", () => {

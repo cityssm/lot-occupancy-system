@@ -7,12 +7,13 @@ export const addLotOccupancyTransaction = (lotOccupancyTransactionForm, requestS
     const maxIndexResult = database.prepare("select transactionIndex" +
         " from LotOccupancyTransactions" +
         " where lotOccupancyId = ?" +
-        " order by transactionIndex" +
+        " order by transactionIndex desc" +
         " limit 1")
         .get(lotOccupancyTransactionForm.lotOccupancyId);
     if (maxIndexResult) {
         transactionIndex = maxIndexResult.transactionIndex + 1;
     }
+    console.log("transactionIndex = " + transactionIndex);
     const rightNow = new Date();
     const transactionDate = lotOccupancyTransactionForm.transactionDateString ?
         dateStringToInteger(lotOccupancyTransactionForm.transactionDateString) :

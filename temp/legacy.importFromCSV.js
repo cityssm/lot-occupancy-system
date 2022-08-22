@@ -301,12 +301,16 @@ function importFromCSV() {
                     }, user);
                 }
                 if (masterRow.CM_COMMITTAL_TYPE !== "") {
+                    let commitalType = masterRow.CM_COMMITTAL_TYPE;
+                    if (commitalType === "GS") {
+                        commitalType = "Graveside";
+                    }
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
                             return occupancyTypeField.occupancyTypeField === "Committal Type";
                         }).occupancyTypeFieldId,
-                        lotOccupancyFieldValue: masterRow.CM_COMMITTAL_TYPE
+                        lotOccupancyFieldValue: commitalType
                     }, user);
                 }
                 if (masterRow.CM_REMARK1 !== "") {

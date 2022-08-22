@@ -30,7 +30,7 @@ export const addLotOccupancyOccupant =
         const maxIndexResult = database.prepare("select lotOccupantIndex" +
                 " from LotOccupancyOccupants" +
                 " where lotOccupancyId = ?" +
-                " order by lotOccupantIndex" +
+                " order by lotOccupantIndex desc" +
                 " limit 1")
             .get(lotOccupancyOccupantForm.lotOccupancyId);
 
