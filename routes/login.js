@@ -36,7 +36,10 @@ router.route("/")
     .post(async (request, response) => {
     const userName = request.body.userName;
     const passwordPlain = request.body.password;
-    const redirectURL = getSafeRedirectURL(request.body.redirect);
+    const unsafeRedirectURL = request.body.redirect;
+    const redirectURL = getSafeRedirectURL(typeof (unsafeRedirectURL) === "string" ?
+        unsafeRedirectURL :
+        "");
     const isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain);
     let userObject;
     if (isAuthenticated) {

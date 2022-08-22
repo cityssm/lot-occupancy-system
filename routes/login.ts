@@ -59,7 +59,11 @@ router.route("/")
         const userName = request.body.userName as string;
         const passwordPlain = request.body.password as string;
 
-        const redirectURL = getSafeRedirectURL(request.body.redirect);
+        const unsafeRedirectURL = request.body.redirect;
+
+        const redirectURL = getSafeRedirectURL(typeof (unsafeRedirectURL) === "string" ?
+            unsafeRedirectURL :
+            "");
 
         const isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain)
         let userObject: recordTypes.User;
