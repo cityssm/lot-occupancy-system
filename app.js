@@ -43,10 +43,12 @@ app.use(express.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
-app.use(csurf({ cookie: true }));
+app.use(csurf({
+    cookie: true
+}));
 const limiter = rateLimit({
-    windowMs: 60 * 1000,
-    max: 1000
+    windowMs: 1000,
+    max: 25 * Math.max(3, configFunctions.getProperty("users.canLogin").length)
 });
 app.use(limiter);
 const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
