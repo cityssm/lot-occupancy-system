@@ -18,7 +18,7 @@ export function updateLotOccupancy(lotOccupancyForm, requestSession) {
         " and recordDelete_timeMillis is null")
         .run(lotOccupancyForm.occupancyTypeId, (lotOccupancyForm.lotId === "" ? undefined : lotOccupancyForm.lotId), dateStringToInteger(lotOccupancyForm.occupancyStartDateString), (lotOccupancyForm.occupancyEndDateString === "" ? undefined : dateStringToInteger(lotOccupancyForm.occupancyEndDateString)), requestSession.user.userName, rightNowMillis, lotOccupancyForm.lotOccupancyId);
     if (result.changes > 0) {
-        const occupancyTypeFieldIds = lotOccupancyForm.occupancyTypeFieldIds.split(",");
+        const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds || "").split(",");
         for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
             const lotOccupancyFieldValue = lotOccupancyForm["lotOccupancyFieldValue_" + occupancyTypeFieldId];
             if (lotOccupancyFieldValue && lotOccupancyFieldValue !== "") {

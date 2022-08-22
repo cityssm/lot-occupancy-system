@@ -26,7 +26,7 @@ interface UpdateLotOccupancyForm {
     occupancyStartDateString: string;
     occupancyEndDateString: string;
 
-    occupancyTypeFieldIds: string;
+    occupancyTypeFieldIds?: string;
     [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown;
 }
 
@@ -57,7 +57,7 @@ export function updateLotOccupancy(lotOccupancyForm: UpdateLotOccupancyForm, req
 
     if (result.changes > 0) {
 
-        const occupancyTypeFieldIds = lotOccupancyForm.occupancyTypeFieldIds.split(",");
+        const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds || "").split(",");
 
         for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
 

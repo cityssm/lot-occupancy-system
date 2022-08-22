@@ -22,7 +22,7 @@ export const addLotOccupancy = (lotOccupancyForm, requestSession) => {
         undefined :
         dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyEndDateString)), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     const lotOccupancyId = result.lastInsertRowid;
-    const occupancyTypeFieldIds = lotOccupancyForm.occupancyTypeFieldIds.split(",");
+    const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds || "").split(",");
     for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
         const lotOccupancyFieldValue = lotOccupancyForm["lotOccupancyFieldValue_" + occupancyTypeFieldId];
         if (lotOccupancyFieldValue && lotOccupancyFieldValue !== "") {

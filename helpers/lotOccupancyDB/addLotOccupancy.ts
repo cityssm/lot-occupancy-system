@@ -20,7 +20,7 @@ interface AddLotOccupancyForm {
     occupancyStartDateString: string;
     occupancyEndDateString: string;
 
-    occupancyTypeFieldIds: string;
+    occupancyTypeFieldIds?: string;
     [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown;
 }
 
@@ -60,7 +60,7 @@ export const addLotOccupancy =
 
         const lotOccupancyId = result.lastInsertRowid as number;
 
-        const occupancyTypeFieldIds = lotOccupancyForm.occupancyTypeFieldIds.split(",");
+        const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds || "").split(",");
 
         for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
 
