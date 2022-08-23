@@ -373,6 +373,7 @@ const takenLotStatus = cacheFunctions.getLotStatusByLotStatus("Taken");
 
 const preneedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Preneed");
 const deceasedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Interment");
+const cremationOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Cremation");
 
 const preneedOwnerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
 const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Deceased");
@@ -418,15 +419,19 @@ function importFromMasterCSV() {
                 cemetery: masterRow.CM_CEMETERY
             });
 
-            const lotId = addLot({
-                lotName: lotName,
-                lotTypeId: lotType.lotTypeId,
-                lotStatusId: availableLotStatus.lotStatusId,
-                mapId: map.mapId,
-                mapKey: lotName,
-                lotLatitude: "",
-                lotLongitude: ""
-            }, user);
+            let lotId: number;
+
+            if (masterRow.CM_CEMETERY !== "00") {
+                lotId = addLot({
+                    lotName: lotName,
+                    lotTypeId: lotType.lotTypeId,
+                    lotStatusId: availableLotStatus.lotStatusId,
+                    mapId: map.mapId,
+                    mapKey: lotName,
+                    lotLatitude: "",
+                    lotLongitude: ""
+                }, user);
+            }
 
             if (masterRow.CM_PRENEED_ORDER) {
 
@@ -523,7 +528,7 @@ function importFromMasterCSV() {
                 }
 
                 const lotOccupancyId = addLotOccupancy({
-                    occupancyTypeId: deceasedOccupancyType.occupancyTypeId,
+                    occupancyTypeId: lotId ? deceasedOccupancyType.occupancyTypeId : cremationOccupancyType.occupancyTypeId,
                     lotId,
                     occupancyStartDateString,
                     occupancyEndDateString,
@@ -686,16 +691,22 @@ function importFromPrepaidCSV() {
                 continue;
             }
 
+            let cemetery = prepaidRow.CMPP_CEMETERY;
+
+            if (cemetery && cemetery === ".m") {
+                cemetery = "HC"
+            }
+
             let lot: recordTypes.Lot;
 
-            if (prepaidRow.CMPP_CEMETERY) {
+            if (cemetery) {
 
                 const map = getMap({
-                    cemetery: prepaidRow.CMPP_CEMETERY
+                    cemetery
                 });
 
                 const lotName = buildLotName({
-                    cemetery: prepaidRow.CMPP_CEMETERY,
+                    cemetery,
                     block: prepaidRow.CMPP_BLOCK,
                     range1: prepaidRow.CMPP_RANGE1,
                     range2: prepaidRow.CMPP_RANGE2,
@@ -716,7 +727,7 @@ function importFromPrepaidCSV() {
                 } else {
 
                     const lotType = getLotType({
-                        cemetery: prepaidRow.CMPP_CEMETERY
+                        cemetery
                     });
 
                     const lotId = addLot({

@@ -82,6 +82,10 @@ const initializeCemeteryDatabase = () => {
         occupancyType: "Interment",
         orderNumber: 2
     }, session);
+    addOccupancyType({
+        occupancyType: "Cremation",
+        orderNumber: 3
+    }, session);
     addOccupancyTypeField({
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Death Date",

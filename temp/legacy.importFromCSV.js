@@ -160,6 +160,7 @@ const reservedLotStatus = cacheFunctions.getLotStatusByLotStatus("Reserved");
 const takenLotStatus = cacheFunctions.getLotStatusByLotStatus("Taken");
 const preneedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Preneed");
 const deceasedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Interment");
+const cremationOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Cremation");
 const preneedOwnerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
 const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Deceased");
 const arrangerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Arranger");
@@ -193,15 +194,18 @@ function importFromMasterCSV() {
             const lotType = getLotType({
                 cemetery: masterRow.CM_CEMETERY
             });
-            const lotId = addLot({
-                lotName: lotName,
-                lotTypeId: lotType.lotTypeId,
-                lotStatusId: availableLotStatus.lotStatusId,
-                mapId: map.mapId,
-                mapKey: lotName,
-                lotLatitude: "",
-                lotLongitude: ""
-            }, user);
+            let lotId;
+            if (masterRow.CM_CEMETERY !== "00") {
+                lotId = addLot({
+                    lotName: lotName,
+                    lotTypeId: lotType.lotTypeId,
+                    lotStatusId: availableLotStatus.lotStatusId,
+                    mapId: map.mapId,
+                    mapKey: lotName,
+                    lotLatitude: "",
+                    lotLongitude: ""
+                }, user);
+            }
             if (masterRow.CM_PRENEED_ORDER) {
                 let occupancyStartDateString = formatDateString(masterRow.CM_PURCHASE_YR, masterRow.CM_PURCHASE_MON, masterRow.CM_PURCHASE_DAY);
                 let occupancyEndDateString = "";
@@ -266,7 +270,7 @@ function importFromMasterCSV() {
                     occupancyStartDateString = "0001-01-01";
                 }
                 const lotOccupancyId = addLotOccupancy({
-                    occupancyTypeId: deceasedOccupancyType.occupancyTypeId,
+                    occupancyTypeId: lotId ? deceasedOccupancyType.occupancyTypeId : cremationOccupancyType.occupancyTypeId,
                     lotId,
                     occupancyStartDateString,
                     occupancyEndDateString,
@@ -394,13 +398,17 @@ function importFromPrepaidCSV() {
             if (!prepaidRow.CMPP_PREPAID_FOR_NAME) {
                 continue;
             }
+            let cemetery = prepaidRow.CMPP_CEMETERY;
+            if (cemetery && cemetery === ".m") {
+                cemetery = "HC";
+            }
             let lot;
-            if (prepaidRow.CMPP_CEMETERY) {
+            if (cemetery) {
                 const map = getMap({
-                    cemetery: prepaidRow.CMPP_CEMETERY
+                    cemetery
                 });
                 const lotName = buildLotName({
-                    cemetery: prepaidRow.CMPP_CEMETERY,
+                    cemetery,
                     block: prepaidRow.CMPP_BLOCK,
                     range1: prepaidRow.CMPP_RANGE1,
                     range2: prepaidRow.CMPP_RANGE2,
@@ -419,7 +427,7 @@ function importFromPrepaidCSV() {
                 }
                 else {
                     const lotType = getLotType({
-                        cemetery: prepaidRow.CMPP_CEMETERY
+                        cemetery
                     });
                     const lotId = addLot({
                         lotName: lotName,
