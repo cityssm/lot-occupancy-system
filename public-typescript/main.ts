@@ -20,10 +20,7 @@ import type * as globalTypes from "../types/globalTypes";
             }
 
             svgId = svgId.slice(0, Math.max(0, svgId.lastIndexOf("-")));
-            console.log(svgId);
         }
-
-
 
         if (svgElementToHighlight) {
 

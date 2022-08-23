@@ -10,7 +10,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 break;
             }
             svgId = svgId.slice(0, Math.max(0, svgId.lastIndexOf("-")));
-            console.log(svgId);
         }
         if (svgElementToHighlight) {
             svgElementToHighlight.style.fill = null;
