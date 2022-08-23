@@ -1,4 +1,4 @@
-import { dateIntegerToString, dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { dateIntegerToString, dateStringToInteger, dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { getLotOccupancyOccupants } from "./getLotOccupancyOccupants.js";
@@ -47,6 +47,10 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
                 sqlParameters.push(currentDateString);
                 break;
         }
+    }
+    if (filters.occupancyStartDateString) {
+        sqlWhereClause += " and o.occupancyStartDate = ?";
+        sqlParameters.push(dateStringToInteger(filters.occupancyStartDateString));
     }
     if (filters.mapId) {
         sqlWhereClause += " and l.mapId = ?";

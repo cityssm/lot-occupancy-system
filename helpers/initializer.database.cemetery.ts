@@ -26,12 +26,15 @@ import {
     addLotOccupantType
 } from "./lotOccupancyDB/addLotOccupantType.js";
 
+import {
+    addFeeCategory
+} from "./lotOccupancyDB/addFeeCategory.js";
+
 import type {
     PartialSession
 } from "../types/recordTypes.js";
 
 import Debug from "debug";
-import addFeeCategory from "./lotOccupancyDB/addFeeCategory.js";
 const debug = Debug("lot-occupancy-system:initialize");
 
 
@@ -129,6 +132,11 @@ const initializeCemeteryDatabase = () => {
     addLotOccupantType({
         lotOccupantType: "Preneed Owner",
         orderNumber: 2
+    }, session);
+
+    addLotOccupantType({
+        lotOccupantType: "Arranger",
+        orderNumber: 3
     }, session);
 
     /*

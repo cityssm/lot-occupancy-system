@@ -1,5 +1,6 @@
 import {
     dateIntegerToString,
+    dateStringToInteger,
     dateToInteger
 } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
@@ -19,6 +20,7 @@ import type * as recordTypes from "../../types/recordTypes";
 interface GetLotOccupanciesFilters {
     lotId ? : number | string;
     occupancyTime ? : "" | "past" | "current" | "future";
+    occupancyStartDateString?: string;
     occupantName ? : string;
     occupancyTypeId ? : number | string;
     mapId ? : number | string;
@@ -98,6 +100,11 @@ export const getLotOccupancies = (filters: GetLotOccupanciesFilters,
                 break;
 
         }
+    }
+
+    if (filters.occupancyStartDateString) {
+        sqlWhereClause += " and o.occupancyStartDate = ?";
+        sqlParameters.push(dateStringToInteger(filters.occupancyStartDateString));
     }
 
     if (filters.mapId) {

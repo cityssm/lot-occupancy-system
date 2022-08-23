@@ -41,8 +41,6 @@ export const addLotOccupancyTransaction =
             transactionIndex = maxIndexResult.transactionIndex + 1;
         }
 
-        console.log("transactionIndex = " + transactionIndex);
-
         const rightNow = new Date();
 
         const transactionDate = lotOccupancyTransactionForm.transactionDateString ?

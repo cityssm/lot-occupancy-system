@@ -58,7 +58,8 @@ export const getFeeCategories = (filters ? : GetFeeCategoriesFilters, options ? 
             sql = "select f.feeId, f.feeName, f.feeDescription," +
                 " f.occupancyTypeId, o.occupancyType," +
                 " f.lotTypeId, l.lotType," +
-                " f.feeAmount, f.feeFunction, f.taxAmount, f.taxPercentage," +
+                " ifnull(f.feeAmount, 0) as feeAmount, f.feeFunction," +
+                " f.taxAmount, f.taxPercentage," +
                 " f.includeQuantity, f.quantityUnit," +
                 " f.isRequired" +
                 " from Fees f" +

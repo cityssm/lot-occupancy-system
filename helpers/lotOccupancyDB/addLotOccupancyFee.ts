@@ -21,9 +21,11 @@ import type * as recordTypes from "../../types/recordTypes";
 
 
 interface AddLotOccupancyFeeForm {
-    lotOccupancyId: string;
-    feeId: string;
+    lotOccupancyId: number | string;
+    feeId: number | string;
     quantity: number | string;
+    feeAmount ? : number | string;
+    taxAmount ? : number | string;
 }
 
 
@@ -35,7 +37,7 @@ export const addLotOccupancyFee =
         // Check if record already exists
 
         const record: {
-                recordDelete_timeMillis?: number
+                recordDelete_timeMillis ? : number
             } = database.prepare("select recordDelete_timeMillis" +
                 " from LotOccupancyFees" +
                 " where lotOccupancyId = ?" +
@@ -58,11 +60,20 @@ export const addLotOccupancyFee =
 
         // Create new record
 
-        const lotOccupancy = getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId);
-        const fee = getFee(lotOccupancyFeeForm.feeId);
+        let feeAmount: number;
+        let taxAmount: number;
 
-        const feeAmount = calculateFeeAmount(fee, lotOccupancy);
-        const taxAmount = calculateTaxAmount(fee, feeAmount);
+        if (lotOccupancyFeeForm.feeAmount) {
+            feeAmount = typeof(lotOccupancyFeeForm.feeAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.feeAmount) : feeAmount;
+            taxAmount = typeof(lotOccupancyFeeForm.taxAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.taxAmount) : taxAmount;
+        } else {
+
+            const lotOccupancy = getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId);
+            const fee = getFee(lotOccupancyFeeForm.feeId);
+
+            feeAmount = calculateFeeAmount(fee, lotOccupancy);
+            taxAmount = calculateTaxAmount(fee, feeAmount);
+        }
 
         const rightNowMillis = Date.now();
 

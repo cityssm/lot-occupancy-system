@@ -40,6 +40,26 @@ import {
     addOrUpdateLotOccupancyField
 } from "../helpers/lotOccupancyDB/addOrUpdateLotOccupancyField.js";
 
+import {
+    getLot
+} from "../helpers/lotOccupancyDB/getLot.js";
+
+import {
+    getLots
+} from "../helpers/lotOccupancyDB/getLots.js";
+
+import {
+    getLotOccupancies
+} from "../helpers/lotOccupancyDB/getLotOccupancies.js";
+
+import {
+    addLotOccupancyFee
+} from "../helpers/lotOccupancyDB/addLotOccupancyFee.js";
+
+import {
+    addLotOccupancyTransaction
+} from "../helpers/lotOccupancyDB/addLotOccupancyTransaction.js";
+
 import type * as recordTypes from "../types/recordTypes";
 
 
@@ -51,7 +71,7 @@ interface MasterRecord {
     CM_RANGE2: string;
     CM_LOT1: string;
     CM_LOT2: string;
-    CM_GRAVE1: number;
+    CM_GRAVE1: string;
     CM_GRAVE2: string;
     CM_INTERMENT: string;
     CM_PRENEED_OWNER: string;
@@ -93,6 +113,51 @@ interface MasterRecord {
 }
 
 
+interface PrepaidRecord {
+    CMPP_SYSREC: string;
+    CMPP_PREPAID_FOR_NAME: string;
+    CMPP_PREPAID_FOR_SEQ: string;
+    CMPP_ADDRESS: string;
+    CMPP_CITY: string;
+    CMPP_PROV: string;
+    CMPP_POSTAL1: string;
+    CMPP_POSTAL2: string;
+    CMPP_ARRANGED_BY_NAME: string;
+    CMPP_ARRANGED_BY_SEQ: string;
+    CMPP_CEMETERY: string;
+    CMPP_BLOCK: string;
+    CMPP_RANGE1: string;
+    CMPP_RANGE2: string;
+    CMPP_LOT1: string;
+    CMPP_LOT2: string;
+    CMPP_GRAVE1: string;
+    CMPP_GRAVE2: string;
+    CMPP_INTERMENT: string;
+    CMPP_ORDER_NO: string;
+    CMPP_PURCH_YR: string;
+    CMPP_PURCH_MON: string;
+    CMPP_PURCH_DAY: string;
+    CMPP_FEE_GRAV_SD: string;
+    CMPP_GST_GRAV_SD: string;
+    CMPP_FEE_GRAV_DD: string;
+    CMPP_GST_GRAV_DD: string;
+    CMPP_FEE_CHAP_SD: string;
+    CMPP_GST_CHAP_SD: string;
+    CMPP_FEE_CHAP_DD: string;
+    CMPP_GST_CHAP_DD: string;
+    CMPP_FEE_ENTOMBMENT: string;
+    CMPP_GST_ENTOMBMENT: string;
+    CMPP_FEE_CREM: string;
+    CMPP_GST_CREM: string;
+    CMPP_FEE_NICHE: string;
+    CMPP_GST_NICHE: string;
+    CMPP_FEE_DISINTERMENT: string;
+    CMPP_GST_DISINTERMENT: string;
+    CMPP_REMARK1: string;
+    CMPP_REMARK2: string;
+}
+
+
 const user: recordTypes.PartialSession = {
     user: {
         userName: "import.unix",
@@ -106,6 +171,8 @@ const user: recordTypes.PartialSession = {
 
 function purgeTables() {
     const database = sqlite(databasePath);
+    database.prepare("delete from LotOccupancyTransactions").run();
+    database.prepare("delete from LotOccupancyFees").run();
     database.prepare("delete from LotOccupancyFields").run();
     database.prepare("delete from LotOccupancyComments").run();
     database.prepare("delete from LotOccupancyOccupants").run();
@@ -140,6 +207,7 @@ function getMapByMapDescription(mapDescription: string) {
     return map;
 }
 
+
 function formatDateString(year: string, month: string, day: string) {
 
     return ("0000" + year).slice(-4) + "-" +
@@ -165,9 +233,11 @@ const cemeteryToMapName = {
 const mapCache: Map < string, recordTypes.Map > = new Map();
 
 
-function getMap(masterRow: MasterRecord): recordTypes.Map {
+function getMap(dataRow: {
+    cemetery: string;
+}): recordTypes.Map {
 
-    const mapCacheKey = masterRow.CM_CEMETERY;
+    const mapCacheKey = dataRow.cemetery;
 
     /*
     if (masterRow.CM_CEMETERY === "HS" &&
@@ -184,11 +254,11 @@ function getMap(masterRow: MasterRecord): recordTypes.Map {
 
     if (!map) {
 
-        console.log("Creating map: " + masterRow.CM_CEMETERY);
+        console.log("Creating map: " + dataRow.cemetery);
 
         const mapId = addMap({
-            mapName: cemeteryToMapName[masterRow.CM_CEMETERY] || masterRow.CM_CEMETERY,
-            mapDescription: masterRow.CM_CEMETERY,
+            mapName: cemeteryToMapName[dataRow.cemetery] || dataRow.cemetery,
+            mapDescription: dataRow.cemetery,
             mapSVG: "",
             mapLatitude: "",
             mapLongitude: "",
@@ -209,27 +279,109 @@ function getMap(masterRow: MasterRecord): recordTypes.Map {
 }
 
 
-function importFromCSV() {
+const feeCache: Map < string, number > = new Map();
+
+
+function getFeeIdByFeeDescription(feeDescription: string) {
+
+    if (feeCache.keys.length === 0) {
+
+        const database = sqlite(databasePath, {
+            readonly: true
+        });
+
+        const records: {
+                feeId: number;feeDescription: string
+            } [] = database
+            .prepare("select feeId, feeDescription from Fees" +
+                " where feeDescription like 'CMPP_FEE_%'")
+            .all();
+
+        for (const record of records) {
+            feeCache.set(record.feeDescription, record.feeId);
+        }
+
+        database.close();
+    }
+
+    return feeCache.get(feeDescription);
+}
+
+
+function buildLotName(lotNamePieces: {
+    cemetery: string;
+    block: string;
+    range1: string;
+    range2: string;
+    lot1: string;
+    lot2: string;
+    grave1: string;
+    grave2: string;
+    interment: string;
+}) {
+    return lotNamePieces.cemetery + "-" +
+        (lotNamePieces.block === "" ? "" : lotNamePieces.block + "-") +
+        (lotNamePieces.range1 === "0" && lotNamePieces.range2 === "" ?
+            "" :
+            (lotNamePieces.range1 + lotNamePieces.range2) + "-") +
+        (lotNamePieces.lot1 === "0" && lotNamePieces.lot2 === "" ?
+            "" :
+            lotNamePieces.lot1 + lotNamePieces.lot2 + "-") +
+        lotNamePieces.grave1 + lotNamePieces.grave2 + "-" +
+        lotNamePieces.interment;
+}
+
+
+const casketLotType = cacheFunctions.getLotTypesByLotType("Casket Grave");
+const columbariumLotType = cacheFunctions.getLotTypesByLotType("Columbarium");
+const crematoriumLotType = cacheFunctions.getLotTypesByLotType("Crematorium");
+const mausoleumLotType = cacheFunctions.getLotTypesByLotType("Mausoleum");
+const nicheWallLotType = cacheFunctions.getLotTypesByLotType("Niche Wall");
+const urnGardenLotType = cacheFunctions.getLotTypesByLotType("Urn Garden");
+
+
+function getLotType(dataRow: {
+    cemetery: string;
+}) {
+
+    switch (dataRow.cemetery) {
+        case "00": {
+            return crematoriumLotType;
+        }
+        case "GC":
+        case "HC": {
+            return columbariumLotType;
+        }
+        case "MA": {
+            return mausoleumLotType;
+        }
+        case "NW": {
+            return nicheWallLotType;
+        }
+        case "UG": {
+            return urnGardenLotType;
+        }
+    }
+
+    return casketLotType;
+}
+
+
+const availableLotStatus = cacheFunctions.getLotStatusByLotStatus("Available");
+const reservedLotStatus = cacheFunctions.getLotStatusByLotStatus("Reserved");
+const takenLotStatus = cacheFunctions.getLotStatusByLotStatus("Taken");
+
+const preneedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Preneed");
+const deceasedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Interment");
+
+const preneedOwnerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
+const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Deceased");
+const arrangerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Arranger");
+
+
+function importFromMasterCSV() {
 
     let masterRow: MasterRecord;
-
-    // Load cached values
-    const casketLotType = cacheFunctions.getLotTypesByLotType("Casket Grave");
-    const columbariumLotType = cacheFunctions.getLotTypesByLotType("Columbarium");
-    const crematoriumLotType = cacheFunctions.getLotTypesByLotType("Crematorium");
-    const mausoleumLotType = cacheFunctions.getLotTypesByLotType("Mausoleum");
-    const nicheWallLotType = cacheFunctions.getLotTypesByLotType("Niche Wall");
-    const urnGardenLotType = cacheFunctions.getLotTypesByLotType("Urn Garden");
-
-    const availableLotStatus = cacheFunctions.getLotStatusByLotStatus("Available");
-
-    const preneedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Preneed");
-    const preneedOwnerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
-    const reservedLotStatus = cacheFunctions.getLotStatusByLotStatus("Reserved");
-
-    const deceasedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Interment");
-    const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Deceased");
-    const takenLotStatus = cacheFunctions.getLotStatusByLotStatus("Taken");
 
     const rawData = fs.readFileSync("./temp/CMMASTER.csv").toString();
 
@@ -246,44 +398,25 @@ function importFromCSV() {
     try {
         for (masterRow of cmmaster.data) {
 
-            const map = getMap(masterRow);
+            const map = getMap({
+                cemetery: masterRow.CM_CEMETERY
+            });
 
-            const lotName = masterRow.CM_CEMETERY + "-" +
-                (masterRow.CM_BLOCK === "" ? "" : masterRow.CM_BLOCK + "-") +
-                (masterRow.CM_RANGE1 === "0" && masterRow.CM_RANGE2 === "" ?
-                    "" :
-                    (masterRow.CM_RANGE1 + masterRow.CM_RANGE2) + "-") +
-                (masterRow.CM_LOT1 === "0" && masterRow.CM_LOT2 === "" ?
-                    "" :
-                    masterRow.CM_LOT1 + masterRow.CM_LOT2 + "-") +
-                masterRow.CM_GRAVE1 + masterRow.CM_GRAVE2 + "-" +
-                masterRow.CM_INTERMENT;
+            const lotName = buildLotName({
+                cemetery: masterRow.CM_CEMETERY,
+                block: masterRow.CM_BLOCK,
+                range1: masterRow.CM_RANGE1,
+                range2: masterRow.CM_RANGE2,
+                lot1: masterRow.CM_LOT1,
+                lot2: masterRow.CM_LOT2,
+                grave1: masterRow.CM_GRAVE1,
+                grave2: masterRow.CM_GRAVE2,
+                interment: masterRow.CM_INTERMENT
+            });
 
-            let lotType = casketLotType;
-
-            switch (masterRow.CM_CEMETERY) {
-                case "00": {
-                    lotType = crematoriumLotType;
-                    break;
-                }
-                case "GC":
-                case "HC": {
-                    lotType = columbariumLotType;
-                    break;
-                }
-                case "MA": {
-                    lotType = mausoleumLotType;
-                    break;
-                }
-                case "NW": {
-                    lotType = nicheWallLotType;
-                    break;
-                }
-                case "UG": {
-                    lotType = urnGardenLotType;
-                    break;
-                }
-            }
+            const lotType = getLotType({
+                cemetery: masterRow.CM_CEMETERY
+            });
 
             const lotId = addLot({
                 lotName: lotName,
@@ -529,6 +662,270 @@ function importFromCSV() {
     }
 }
 
+
+function importFromPrepaidCSV() {
+
+    let prepaidRow: PrepaidRecord;
+
+    const rawData = fs.readFileSync("./temp/CMPRPAID.csv").toString();
+
+    const cmprpaid: papa.ParseResult < PrepaidRecord > = papa.parse(rawData, {
+        delimiter: ",",
+        header: true,
+        skipEmptyLines: true
+    });
+
+    for (const parseError of cmprpaid.errors) {
+        console.log(parseError);
+    }
+
+    try {
+        for (prepaidRow of cmprpaid.data) {
+
+            if (!prepaidRow.CMPP_PREPAID_FOR_NAME) {
+                continue;
+            }
+
+            let lot: recordTypes.Lot;
+
+            if (prepaidRow.CMPP_CEMETERY) {
+
+                const map = getMap({
+                    cemetery: prepaidRow.CMPP_CEMETERY
+                });
+
+                const lotName = buildLotName({
+                    cemetery: prepaidRow.CMPP_CEMETERY,
+                    block: prepaidRow.CMPP_BLOCK,
+                    range1: prepaidRow.CMPP_RANGE1,
+                    range2: prepaidRow.CMPP_RANGE2,
+                    lot1: prepaidRow.CMPP_LOT1,
+                    lot2: prepaidRow.CMPP_LOT2,
+                    grave1: prepaidRow.CMPP_GRAVE1,
+                    grave2: prepaidRow.CMPP_GRAVE2,
+                    interment: prepaidRow.CMPP_INTERMENT
+                });
+
+                const possibleLots = getLots({
+                    mapId: map.mapId,
+                    lotName
+                });
+
+                if (possibleLots.lots.length > 0) {
+                    lot = possibleLots.lots[0];
+                } else {
+
+                    const lotType = getLotType({
+                        cemetery: prepaidRow.CMPP_CEMETERY
+                    });
+
+                    const lotId = addLot({
+                        lotName: lotName,
+                        lotTypeId: lotType.lotTypeId,
+                        lotStatusId: reservedLotStatus.lotStatusId,
+                        mapId: map.mapId,
+                        mapKey: lotName,
+                        lotLatitude: "",
+                        lotLongitude: ""
+                    }, user);
+
+                    lot = getLot(lotId);
+                }
+            }
+
+            if (lot && lot.lotStatusId === availableLotStatus.lotStatusId) {
+                updateLotStatus(lot.lotId, reservedLotStatus.lotStatusId, user);
+            }
+
+            const occupancyStartDateString = formatDateString(prepaidRow.CMPP_PURCH_YR,
+                prepaidRow.CMPP_PURCH_MON,
+                prepaidRow.CMPP_PURCH_DAY);
+
+            let lotOccupancyId: number;
+
+            if (lot) {
+                const possibleLotOccupancies = getLotOccupancies({
+                    lotId: lot.lotId,
+                    occupancyTypeId: preneedOccupancyType.occupancyTypeId,
+                    occupantName: prepaidRow.CMPP_PREPAID_FOR_NAME,
+                    occupancyStartDateString
+                }, {
+                    includeOccupants: false,
+                    limit: -1,
+                    offset: 0
+                });
+
+                if (possibleLotOccupancies.lotOccupancies.length > 0) {
+                    lotOccupancyId = possibleLotOccupancies.lotOccupancies[0].lotOccupancyId;
+                }
+            }
+
+            if (!lotOccupancyId) {
+                lotOccupancyId = addLotOccupancy({
+                    lotId: lot ? lot.lotId : "",
+                    occupancyTypeId: preneedOccupancyType.occupancyTypeId,
+                    occupancyStartDateString,
+                    occupancyEndDateString: ""
+                }, user);
+            }
+
+            addLotOccupancyOccupant({
+                lotOccupancyId,
+                lotOccupantTypeId: preneedOwnerLotOccupantType.lotOccupantTypeId,
+                occupantName: prepaidRow.CMPP_PREPAID_FOR_NAME,
+                occupantAddress1: prepaidRow.CMPP_ADDRESS,
+                occupantAddress2: "",
+                occupantCity: prepaidRow.CMPP_CITY,
+                occupantProvince: prepaidRow.CMPP_PROV.slice(0, 2),
+                occupantPostalCode: prepaidRow.CMPP_POSTAL1 + " " + prepaidRow.CMPP_POSTAL2,
+                occupantPhoneNumber: ""
+            }, user);
+
+            if (prepaidRow.CMPP_ARRANGED_BY_NAME) {
+                addLotOccupancyOccupant({
+                    lotOccupancyId,
+                    lotOccupantTypeId: arrangerLotOccupantType.lotOccupantTypeId,
+                    occupantName: prepaidRow.CMPP_ARRANGED_BY_NAME,
+                    occupantAddress1: "",
+                    occupantAddress2: "",
+                    occupantCity: "",
+                    occupantProvince: "",
+                    occupantPostalCode: "",
+                    occupantPhoneNumber: ""
+                }, user);
+            }
+
+            if (prepaidRow.CMPP_FEE_GRAV_SD !== "0.0") {
+                addLotOccupancyFee({
+                    lotOccupancyId,
+                    feeId: getFeeIdByFeeDescription("CMPP_FEE_GRAV_SD"),
+                    quantity: 1,
+                    feeAmount: prepaidRow.CMPP_FEE_GRAV_SD,
+                    taxAmount: prepaidRow.CMPP_GST_GRAV_SD
+                }, user);
+            }
+
+            if (prepaidRow.CMPP_FEE_GRAV_DD !== "0.0") {
+                addLotOccupancyFee({
+                    lotOccupancyId,
+                    feeId: getFeeIdByFeeDescription("CMPP_FEE_GRAV_DD"),
+                    quantity: 1,
+                    feeAmount: prepaidRow.CMPP_FEE_GRAV_DD,
+                    taxAmount: prepaidRow.CMPP_GST_GRAV_DD
+                }, user);
+            }
+
+            if (prepaidRow.CMPP_FEE_CHAP_SD !== "0.0") {
+                addLotOccupancyFee({
+                    lotOccupancyId,
+                    feeId: getFeeIdByFeeDescription("CMPP_FEE_CHAP_SD"),
+                    quantity: 1,
+                    feeAmount: prepaidRow.CMPP_FEE_CHAP_SD,
+                    taxAmount: prepaidRow.CMPP_GST_CHAP_SD
+                }, user);
+            }
+
+            if (prepaidRow.CMPP_FEE_CHAP_DD !== "0.0") {
+                addLotOccupancyFee({
+                    lotOccupancyId,
+                    feeId: getFeeIdByFeeDescription("CMPP_FEE_CHAP_DD"),
+                    quantity: 1,
+                    feeAmount: prepaidRow.CMPP_FEE_CHAP_DD,
+                    taxAmount: prepaidRow.CMPP_GST_CHAP_DD
+                }, user);
+            }
+
+            if (prepaidRow.CMPP_FEE_ENTOMBMENT !== "0.0") {
+                addLotOccupancyFee({
+                    lotOccupancyId,
+                    feeId: getFeeIdByFeeDescription("CMPP_FEE_ENTOMBMENT"),
+                    quantity: 1,
+                    feeAmount: prepaidRow.CMPP_FEE_ENTOMBMENT,
+                    taxAmount: prepaidRow.CMPP_GST_ENTOMBMENT
+                }, user);
+            }
+
+            if (prepaidRow.CMPP_FEE_CREM !== "0.0") {
+                addLotOccupancyFee({
+                    lotOccupancyId,
+                    feeId: getFeeIdByFeeDescription("CMPP_FEE_CREM"),
+                    quantity: 1,
+                    feeAmount: prepaidRow.CMPP_FEE_CREM,
+                    taxAmount: prepaidRow.CMPP_GST_CREM
+                }, user);
+            }
+
+            if (prepaidRow.CMPP_FEE_NICHE !== "0.0") {
+                addLotOccupancyFee({
+                    lotOccupancyId,
+                    feeId: getFeeIdByFeeDescription("CMPP_FEE_NICHE"),
+                    quantity: 1,
+                    feeAmount: prepaidRow.CMPP_FEE_NICHE,
+                    taxAmount: prepaidRow.CMPP_GST_NICHE
+                }, user);
+            }
+
+            if (prepaidRow.CMPP_FEE_DISINTERMENT !== "0.0" && prepaidRow.CMPP_FEE_DISINTERMENT !== "20202.02") {
+                addLotOccupancyFee({
+                    lotOccupancyId,
+                    feeId: getFeeIdByFeeDescription("CMPP_FEE_DISINTERMENT"),
+                    quantity: 1,
+                    feeAmount: prepaidRow.CMPP_FEE_DISINTERMENT,
+                    taxAmount: prepaidRow.CMPP_GST_DISINTERMENT
+                }, user);
+            }
+
+            const transactionAmount =
+                Number.parseFloat(prepaidRow.CMPP_FEE_GRAV_SD) +
+                Number.parseFloat(prepaidRow.CMPP_GST_GRAV_SD) +
+                Number.parseFloat(prepaidRow.CMPP_FEE_GRAV_DD) +
+                Number.parseFloat(prepaidRow.CMPP_GST_GRAV_DD) +
+                Number.parseFloat(prepaidRow.CMPP_FEE_CHAP_SD) +
+                Number.parseFloat(prepaidRow.CMPP_GST_CHAP_SD) +
+                Number.parseFloat(prepaidRow.CMPP_FEE_CHAP_DD) +
+                Number.parseFloat(prepaidRow.CMPP_GST_CHAP_DD) +
+                Number.parseFloat(prepaidRow.CMPP_FEE_ENTOMBMENT) +
+                Number.parseFloat(prepaidRow.CMPP_GST_ENTOMBMENT) +
+                Number.parseFloat(prepaidRow.CMPP_FEE_CREM) +
+                Number.parseFloat(prepaidRow.CMPP_GST_CREM) +
+                Number.parseFloat(prepaidRow.CMPP_FEE_NICHE) +
+                Number.parseFloat(prepaidRow.CMPP_GST_NICHE) +
+                Number.parseFloat(prepaidRow.CMPP_FEE_DISINTERMENT === "20202.02" ? "0" : prepaidRow.CMPP_FEE_DISINTERMENT) +
+                Number.parseFloat(prepaidRow.CMPP_GST_DISINTERMENT === "20202.02" ? "0" : prepaidRow.CMPP_GST_DISINTERMENT);
+
+            addLotOccupancyTransaction({
+                lotOccupancyId,
+                externalReceiptNumber: prepaidRow.CMPP_ORDER_NO,
+                transactionAmount,
+                transactionDateString: occupancyStartDateString,
+                transactionNote: ""
+            }, user);
+
+            if (prepaidRow.CMPP_REMARK1) {
+                addLotOccupancyComment({
+                    lotOccupancyId,
+                    lotOccupancyCommentDateString: occupancyStartDateString,
+                    lotOccupancyComment: prepaidRow.CMPP_REMARK1
+                }, user);
+            }
+
+            if (prepaidRow.CMPP_REMARK2) {
+                addLotOccupancyComment({
+                    lotOccupancyId,
+                    lotOccupancyCommentDateString: occupancyStartDateString,
+                    lotOccupancyComment: prepaidRow.CMPP_REMARK2
+                }, user);
+            }
+        }
+
+
+    } catch (error) {
+        console.error(error);
+        console.log(prepaidRow);
+    }
+}
+
 purgeTables();
-purgeConfigTables();
-importFromCSV();
+// purgeConfigTables();
+importFromMasterCSV();
+importFromPrepaidCSV();

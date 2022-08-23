@@ -5,8 +5,8 @@ import { addOccupancyType } from "./lotOccupancyDB/addOccupancyType.js";
 import { addOccupancyTypeField } from "./lotOccupancyDB/addOccupancyTypeField.js";
 import { addLotStatus } from "./lotOccupancyDB/addLotStatus.js";
 import { addLotOccupantType } from "./lotOccupancyDB/addLotOccupantType.js";
+import { addFeeCategory } from "./lotOccupancyDB/addFeeCategory.js";
 import Debug from "debug";
-import addFeeCategory from "./lotOccupancyDB/addFeeCategory.js";
 const debug = Debug("lot-occupancy-system:initialize");
 const session = {
     user: {
@@ -69,6 +69,10 @@ const initializeCemeteryDatabase = () => {
     addLotOccupantType({
         lotOccupantType: "Preneed Owner",
         orderNumber: 2
+    }, session);
+    addLotOccupantType({
+        lotOccupantType: "Arranger",
+        orderNumber: 3
     }, session);
     addOccupancyType({
         occupancyType: "Preneed",

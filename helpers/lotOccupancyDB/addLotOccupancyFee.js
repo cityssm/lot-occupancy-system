@@ -23,10 +23,18 @@ export const addLotOccupancyFee = (lotOccupancyFeeForm, requestSession) => {
             return false;
         }
     }
-    const lotOccupancy = getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId);
-    const fee = getFee(lotOccupancyFeeForm.feeId);
-    const feeAmount = calculateFeeAmount(fee, lotOccupancy);
-    const taxAmount = calculateTaxAmount(fee, feeAmount);
+    let feeAmount;
+    let taxAmount;
+    if (lotOccupancyFeeForm.feeAmount) {
+        feeAmount = typeof (lotOccupancyFeeForm.feeAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.feeAmount) : feeAmount;
+        taxAmount = typeof (lotOccupancyFeeForm.taxAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.taxAmount) : taxAmount;
+    }
+    else {
+        const lotOccupancy = getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId);
+        const fee = getFee(lotOccupancyFeeForm.feeId);
+        feeAmount = calculateFeeAmount(fee, lotOccupancy);
+        taxAmount = calculateTaxAmount(fee, feeAmount);
+    }
     const rightNowMillis = Date.now();
     const result = database
         .prepare("insert into LotOccupancyFees (" +

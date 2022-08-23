@@ -3,6 +3,7 @@ import type * as recordTypes from "../../types/recordTypes";
 interface GetLotOccupanciesFilters {
     lotId?: number | string;
     occupancyTime?: "" | "past" | "current" | "future";
+    occupancyStartDateString?: string;
     occupantName?: string;
     occupancyTypeId?: number | string;
     mapId?: number | string;
