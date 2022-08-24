@@ -942,6 +942,7 @@ declare const bulmaJS: BulmaJS;
                 const tableRowElement = document.createElement("tr");
                 tableRowElement.className = "container--lotOccupancyFee";
                 tableRowElement.dataset.feeId = lotOccupancyFee.feeId.toString();
+                tableRowElement.dataset.includeQuantity = (lotOccupancyFee.includeQuantity ? "1" : "0");
 
                 tableRowElement.innerHTML = ("<td colspan=\"" + (lotOccupancyFee.quantity === 1 ? "5" : "1") + "\">" +
                         cityssm.escapeHTML(lotOccupancyFee.feeName) +
@@ -1080,7 +1081,7 @@ declare const bulmaJS: BulmaJS;
 
                     for (const fee of feeCategory.fees) {
 
-                        if (lotOccupancyFeesContainerElement.querySelector(".container--lotOccupancyFee[data-fee-id='" + fee.feeId + "']")) {
+                        if (lotOccupancyFeesContainerElement.querySelector(".container--lotOccupancyFee[data-fee-id='" + fee.feeId + "'][data-include-quantity='0']")) {
                             continue;
                         }
 

@@ -670,6 +670,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const tableRowElement = document.createElement("tr");
                 tableRowElement.className = "container--lotOccupancyFee";
                 tableRowElement.dataset.feeId = lotOccupancyFee.feeId.toString();
+                tableRowElement.dataset.includeQuantity = (lotOccupancyFee.includeQuantity ? "1" : "0");
                 tableRowElement.innerHTML = ("<td colspan=\"" + (lotOccupancyFee.quantity === 1 ? "5" : "1") + "\">" +
                     cityssm.escapeHTML(lotOccupancyFee.feeName) +
                     "</td>") +
@@ -773,7 +774,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "<div class=\"panel mb-5\"></div>";
                     let hasFees = false;
                     for (const fee of feeCategory.fees) {
-                        if (lotOccupancyFeesContainerElement.querySelector(".container--lotOccupancyFee[data-fee-id='" + fee.feeId + "']")) {
+                        if (lotOccupancyFeesContainerElement.querySelector(".container--lotOccupancyFee[data-fee-id='" + fee.feeId + "'][data-include-quantity='0']")) {
                             continue;
                         }
                         let includeFee = true;

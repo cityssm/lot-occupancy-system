@@ -16,7 +16,7 @@ export const getLotOccupancyFees = (lotOccupancyId: number | string,
 
     const lotOccupancyFees: recordTypes.LotOccupancyFee[] = database
             .prepare("select o.lotOccupancyId," +
-            " o.feeId, c.feeCategory, f.feeName," +
+            " o.feeId, c.feeCategory, f.feeName, f.includeQuantity," +
             " o.feeAmount, o.taxAmount, o.quantity" +
             " from LotOccupancyFees o" +
             " left join Fees f on o.feeId = f.feeId" +

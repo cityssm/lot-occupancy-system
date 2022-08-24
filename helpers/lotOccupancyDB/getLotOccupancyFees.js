@@ -6,7 +6,7 @@ export const getLotOccupancyFees = (lotOccupancyId, connectedDatabase) => {
     });
     const lotOccupancyFees = database
         .prepare("select o.lotOccupancyId," +
-        " o.feeId, c.feeCategory, f.feeName," +
+        " o.feeId, c.feeCategory, f.feeName, f.includeQuantity," +
         " o.feeAmount, o.taxAmount, o.quantity" +
         " from LotOccupancyFees o" +
         " left join Fees f on o.feeId = f.feeId" +

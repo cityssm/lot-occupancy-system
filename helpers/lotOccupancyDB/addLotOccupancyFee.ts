@@ -33,6 +33,25 @@ export const addLotOccupancyFee =
     (lotOccupancyFeeForm: AddLotOccupancyFeeForm, requestSession: recordTypes.PartialSession): boolean => {
 
         const database = sqlite(databasePath);
+        
+        const rightNowMillis = Date.now();
+
+        // Calculate fee and tax (if not set)
+
+        let feeAmount: number;
+        let taxAmount: number;
+
+        if (lotOccupancyFeeForm.feeAmount) {
+            feeAmount = typeof(lotOccupancyFeeForm.feeAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.feeAmount) : feeAmount;
+            taxAmount = typeof(lotOccupancyFeeForm.taxAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.taxAmount) : taxAmount;
+        } else {
+
+            const lotOccupancy = getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId);
+            const fee = getFee(lotOccupancyFeeForm.feeId);
+
+            feeAmount = calculateFeeAmount(fee, lotOccupancy);
+            taxAmount = calculateTaxAmount(fee, feeAmount);
+        }
 
         // Check if record already exists
 
@@ -53,29 +72,30 @@ export const addLotOccupancyFee =
                         " and feeId = ?")
                     .run(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
             } else {
+
+                database.prepare("update LotOccupancyFees" +
+                " set quantity = quantity + ?," +
+                " feeAmount = feeAmount + ?," +
+                " taxAmount = taxAmount + ?," +
+                " recordUpdate_userName = ?," +
+                " recordUpdate_timeMillis = ?" +
+                " where lotOccupancyId = ?" +
+                " and feeId = ?")
+                .run(
+                    lotOccupancyFeeForm.quantity,
+                    feeAmount,
+                    taxAmount,
+                    requestSession.user.userName,
+                    rightNowMillis,
+                    lotOccupancyFeeForm.lotOccupancyId,
+                    lotOccupancyFeeForm.feeId);
+
                 database.close();
                 return false;
             }
         }
 
         // Create new record
-
-        let feeAmount: number;
-        let taxAmount: number;
-
-        if (lotOccupancyFeeForm.feeAmount) {
-            feeAmount = typeof(lotOccupancyFeeForm.feeAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.feeAmount) : feeAmount;
-            taxAmount = typeof(lotOccupancyFeeForm.taxAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.taxAmount) : taxAmount;
-        } else {
-
-            const lotOccupancy = getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId);
-            const fee = getFee(lotOccupancyFeeForm.feeId);
-
-            feeAmount = calculateFeeAmount(fee, lotOccupancy);
-            taxAmount = calculateTaxAmount(fee, feeAmount);
-        }
-
-        const rightNowMillis = Date.now();
 
         const result = database
             .prepare("insert into LotOccupancyFees (" +
