@@ -10,7 +10,8 @@
     "allowUnreachableCode": false,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "compileOnSave": true,
   "buildOnSave": true,
@@ -31,6 +32,7 @@
     "placeOpenBraceOnNewLineForControlBlocks": false
   },
   "exclude": [
+    "node_modules/*",
     "public-typescript/*"
   ]
 }
