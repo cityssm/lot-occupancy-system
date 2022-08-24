@@ -17,7 +17,7 @@
     <% if (!isCreate) { %>
     <li>
         <a href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
-            <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName %>
+            <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
         </a>
     </li>
     <% } %>
@@ -33,13 +33,29 @@
   </ul>
 </nav>
 
-<h1 class="title is-1">
-    <% if (isCreate) { %>
+<% if (isCreate) { %>
+    <h1 class="title is-1">
         Create a New <%= configFunctions.getProperty("aliases.occupancy") %> Record
-    <% } else { %>
-        Update <%= configFunctions.getProperty("aliases.occupancy") %>
-    <% } %>
-</h1>
+    </h1>
+<% } else { %>
+    <div class="level">
+        <div class="level-left">
+            <div class="level-item is-justify-content-left">
+                <h1 class="title is-1">
+                    Update <%= configFunctions.getProperty("aliases.occupancy") %>
+                </h1>
+            </div>
+        </div>
+        <div class="level-right">
+            <div class="level-item is-justify-content-right">
+                <a class="button is-link" href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>/print" target="_blank">
+                    <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
+                    <span>Print</span>
+                </a>
+            </div>
+        </div>
+    </div> 
+<% } %>
 
 <form id="form--lotOccupancy">
 
