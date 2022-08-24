@@ -71,6 +71,35 @@
     </div>
 </div>
 
+<% if (lot.lotComments.length > 0) { %>
+    <div class="panel">
+        <h2 class="panel-heading">Comments</h2>
+        <div class="panel-block is-block">
+            <table class="table is-fullwidth is-striped is-hoverable">
+                <thead>
+                    <tr>
+                        <th>Commentor</th>
+                        <th>Comment Date</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (const lotComment of lot.lotComments) { %>
+                        <tr>
+                            <td><%= lotComment.recordCreate_userName %></td>
+                            <td>
+                                <%= lotComment.lotCommentDateString %>
+                                <%= (lotComment.lotCommentTime === 0 ? "" : lotComment.lotCommentTimeString) %>
+                            </td>
+                            <td><%= lotComment.lotComment %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<% } %>
+
 <div class="panel">
     <h2 class="panel-heading">
         <%= configFunctions.getProperty("aliases.occupancies") %>

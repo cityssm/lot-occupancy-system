@@ -20,7 +20,8 @@ export const getLotComments = (lotId: number | string, connectedDatabase ? : sql
         .prepare("select lotCommentId," +
             " lotCommentDate, userFn_dateIntegerToString(lotCommentDate) as lotCommentDateString," +
             " lotCommentTime, userFn_timeIntegerToString(lotCommentTime) as lotCommentTimeString," +
-            " lotComment" +
+            " lotComment," +
+            " recordCreate_userName, recordUpdate_userName" +
             " from LotComments" +
             " where recordDelete_timeMillis is null" +
             " and lotId = ?" +

@@ -8,10 +8,13 @@ import handler_doSearchLots from "../handlers/lots-post/doSearchLots.js";
 import handler_view from "../handlers/lots-get/view.js";
 import handler_new from "../handlers/lots-get/new.js";
 import handler_edit from "../handlers/lots-get/edit.js";
-import handler_print from "../handlers/lots-get/print.js";
 
 import handler_doCreateLot from "../handlers/lots-post/doCreateLot.js";
 import handler_doUpdateLot from "../handlers/lots-post/doUpdateLot.js";
+
+import handler_doAddLotComment from "../handlers/lots-post/doAddLotComment.js";
+import handler_doUpdateLotComment from "../handlers/lots-post/doUpdateLotComment.js";
+import handler_doDeleteLotComment from "../handlers/lots-post/doDeleteLotComment.js";
 
 
 export const router = Router();
@@ -39,7 +42,6 @@ router.get("/new",
   handler_new);
 
 
-
 router.get("/:lotId",
   handler_view);
 
@@ -59,9 +61,19 @@ router.post("/doUpdateLot",
   handler_doUpdateLot);
 
 
+router.post("/doAddLotComment",
+  permissionHandlers.updatePostHandler,
+  handler_doAddLotComment);
 
-router.get("/:lotId/print",
-  handler_print);
+
+router.post("/doUpdateLotComment",
+  permissionHandlers.updatePostHandler,
+  handler_doUpdateLotComment);
+
+
+router.post("/doDeleteLotComment",
+  permissionHandlers.updatePostHandler,
+  handler_doDeleteLotComment);
 
 
 export default router;
