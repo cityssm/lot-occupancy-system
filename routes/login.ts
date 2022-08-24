@@ -6,7 +6,10 @@ import * as configFunctions from "../helpers/functions.config.js";
 
 import * as authenticationFunctions from "../helpers/functions.authentication.js";
 
+import { useTestDatabases } from "../data/databasePaths.js";
+
 import type * as recordTypes from "../types/recordTypes";
+
 
 export const router = Router();
 
@@ -53,7 +56,8 @@ router.route("/")
             response.render("login", {
                 userName: "",
                 message: "",
-                redirect: request.query.redirect
+                redirect: request.query.redirect,
+                useTestDatabases
             });
         }
     })
@@ -113,7 +117,8 @@ router.route("/")
             response.render("login", {
                 userName,
                 message: "Login Failed",
-                redirect: redirectURL
+                redirect: redirectURL,
+                useTestDatabases
             });
         }
     });

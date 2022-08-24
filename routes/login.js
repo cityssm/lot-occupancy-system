@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as configFunctions from "../helpers/functions.config.js";
 import * as authenticationFunctions from "../helpers/functions.authentication.js";
+import { useTestDatabases } from "../data/databasePaths.js";
 export const router = Router();
 const getSafeRedirectURL = (possibleRedirectURL = "") => {
     const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
@@ -31,7 +32,8 @@ router.route("/")
         response.render("login", {
             userName: "",
             message: "",
-            redirect: request.query.redirect
+            redirect: request.query.redirect,
+            useTestDatabases
         });
     }
 })
@@ -76,7 +78,8 @@ router.route("/")
         response.render("login", {
             userName,
             message: "Login Failed",
-            redirect: redirectURL
+            redirect: redirectURL,
+            useTestDatabases
         });
     }
 });

@@ -2,16 +2,16 @@
 <html class="has-background-grey" id="is-login-page" lang="en" style="background-image:url('<%= urlPrefix + configFunctions.getProperty("application.backgroundURL") %>')">
 
 <head>
-  <title>
-    Login: <%= configFunctions.getProperty("application.applicationName") %>
-  </title>
+    <title>
+        Login: <%= configFunctions.getProperty("application.applicationName") %>
+    </title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <link rel="icon" href="<%= urlPrefix %>/images/favicon.png" />
-  <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/style.css" />
-  <link rel="stylesheet" href="<%= urlPrefix %>/lib/fa/css/all.min.css" />
+    <link rel="icon" href="<%= urlPrefix %>/images/favicon.png" />
+    <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/style.css" />
+    <link rel="stylesheet" href="<%= urlPrefix %>/lib/fa/css/all.min.css" />
 </head>
 
 <body>
@@ -27,51 +27,57 @@
               <%= configFunctions.getProperty("application.applicationName") %>
             </h1>
             <form id="form--login" method="post" action="<%= urlPrefix %>/login">
-              <input name="_csrf" type="hidden" value="<%= csrfToken %>" />
-              <input name="redirect" type="hidden" value="<%= redirect %>" />
+                <input name="_csrf" type="hidden" value="<%= csrfToken %>" />
+                <input name="redirect" type="hidden" value="<%= redirect %>" />
 
-              <div class="field has-addons">
-                <div class="control">
-                  <span class="button is-static"><%= configFunctions.getProperty("application.userDomain") %>\</span>
+                <div class="field has-addons">
+                    <div class="control">
+                        <span class="button is-static"><%= configFunctions.getProperty("application.userDomain") %>\</span>
+                    </div>
+                    <div class="control is-expanded">
+                        <input class="input" id="login--userName" name="userName" type="text" placeholder="User Name" value="<%= userName %>" aria-label="User Name" autofocus required />
+                    </div>
                 </div>
-                <div class="control is-expanded">
-                  <input class="input" id="login--userName" name="userName" type="text" placeholder="User Name" value="<%= userName %>" aria-label="User Name" autofocus required />
+                <div class="field">
+                    <label class="sr-only" for="login--password">Password</label>
+                    <div class="control has-icons-left has-tooltip-right" data-tooltip="Password" >
+                        <input class="input" id="login--password" name="password" type="password" placeholder="Password" required />
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-key" aria-hidden="true"></i>
+                        </span>
+                    </div>
                 </div>
-              </div>
-              <div class="field">
-                <label class="sr-only" for="login--password">Password</label>
-                <div class="control has-icons-left has-tooltip-right" data-tooltip="Password" >
-                  <input class="input" id="login--password" name="password" type="password" placeholder="Password" required />
-                  <span class="icon is-small is-left">
-                    <i class="fas fa-key" aria-hidden="true"></i>
-                  </span>
+                 <% if (useTestDatabases) { %>
+                    <div class="message is-small is-warning">
+                        <p class="message-body has-text-centered">
+                            Testing databases in use!
+                        </p>
+                    </div>
+                 <% } %>
+                <div class="level is-mobile">
+                    <div class="level-left has-text-danger">
+                        <% if (message !== "") { %>
+                            <span class="icon">
+                                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                            </span>
+                            <span><%= message %></span>
+                        <% } %>
+                    </div>
+                    <div class="level-right has-text-right">
+                        <button class="button is-link" type="submit">
+                            <span class="icon">
+                            <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                            </span>
+                            <span>Log In</span>
+                        </button>
+                    </div>
                 </div>
-              </div>
-
-              <div class="level is-mobile">
-                <div class="level-left has-text-danger">
-                    <% if (message !== "") { %>
-                    <span class="icon">
-                      <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
-                    </span>
-                    <span><%= message %></span>
-                  <% } %>
-                </div>
-                <div class="level-right has-text-right">
-                  <button class="button is-link" type="submit">
-                    <span class="icon">
-                      <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
-                    </span>
-                    <span>Log In</span>
-                  </button>
-                </div>
-              </div>
             </form>
             <hr />
             <div class="has-text-right has-text-grey is-size-7">
-              Build <%= buildNumber %><br />
-              <a class="has-text-grey" href="https://cityssm.github.io/general-licence-manager/" target="_blank" rel="nofollow noreferrer">Help</a>
-              <a class="has-text-grey ml-4" href="https://github.com/cityssm/general-licence-manager" target="_blank" rel="noreferrer">GitHub</a>
+                Build <%= buildNumber %><br />
+                <a class="has-text-grey" href="https://cityssm.github.io/general-licence-manager/" target="_blank" rel="nofollow noreferrer">Help</a>
+                <a class="has-text-grey ml-4" href="https://github.com/cityssm/general-licence-manager" target="_blank" rel="noreferrer">GitHub</a>
             </div>
           </div>
         </div>
@@ -79,11 +85,11 @@
     </div>
   </div>
 
-  <script>
-    try {
-      window.localStorage.clear();
-    } catch (e) {}
-  </script>
+    <script>
+        try {
+            window.localStorage.clear();
+        } catch (e) {}
+    </script>
 </body>
 
 </html>
