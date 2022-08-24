@@ -42,6 +42,7 @@ interface ConfigApplication {
     logoURL?: string;
     httpPort?: number;
     userDomain?: string;
+    useTestDatabases?: boolean;
 }
 interface ConfigSession {
     cookieName?: string;

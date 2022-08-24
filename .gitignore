@@ -1,6 +1,9 @@
 .nyc_output/
 bin/daemon/
 coverage/
+cypress/downloads/
+cypress/screenshots/
+cypress/videos/
 data/sessions/
 node_modules/
 

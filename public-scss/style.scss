@@ -129,3 +129,14 @@ fieldset:enabled .is-hidden-enabled {
 .modal-card {
   max-width: 100%;
 }
+
+/*
+ * Accessibility
+ */
+
+$black-ter: hsl(0, 0%, 14%);
+
+.control .button.is-static,
+.menu .menu-label {
+  color: $black-ter;
+}

@@ -43,6 +43,7 @@ interface ConfigApplication {
     logoURL ? : string;
     httpPort ? : number;
     userDomain ? : string;
+    useTestDatabases ?: boolean;
 }
 
 
