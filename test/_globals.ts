@@ -42,6 +42,7 @@ export const fakeAdminSession: Session = {
 
 
 export const fakeRequest: Request = {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     async *[Symbol.asyncIterator]() {},
     _destroy: undefined,
     _read: undefined,
