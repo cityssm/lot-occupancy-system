@@ -80,9 +80,12 @@
                     <td>
                         <%= lotOccupancyOccupant.occupantAddress1 %><br />
                         <% if (lotOccupancyOccupant.occupantAddress2 && lotOccupancyOccupant.occupantAddress2 !== "") { %>
-                        <%= lotOccupancyOccupant.occupantAddress2 %><br />
+                            <%= lotOccupancyOccupant.occupantAddress2 %><br />
                         <% } %>
-                        <%= lotOccupancyOccupant.occupantCity %>, <%= lotOccupancyOccupant.occupantProvince %><br />
+                        <% if (lotOccupancyOccupant.occupantCity) { %>
+                            <%= lotOccupancyOccupant.occupantCity %>, 
+                        <% } %>
+                        <%= lotOccupancyOccupant.occupantProvince %><br />
                         <%= lotOccupancyOccupant.occupantPostalCode %>
                     </td>
                     <td>

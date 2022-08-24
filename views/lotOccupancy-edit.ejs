@@ -48,7 +48,7 @@
         </div>
         <div class="level-right">
             <div class="level-item is-justify-content-right">
-                <a class="button is-link" href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>/print" target="_blank">
+                <a class="button is-link is-hidden-print" href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>/print" target="_blank">
                     <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
                     <span>Print</span>
                 </a>
@@ -96,14 +96,13 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="control">
+                        <div class="control is-hidden-print">
                             <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock <%= configFunctions.getProperty("aliases.occupancy") %> Type Field">
                                 <i class="fas fa-unlock" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>
-                </div>
-                <div class="column">
+
                     <input id="lotOccupancy--lotId" name="lotId" type="hidden" value="<%= lotOccupancy.lotId %>" />
                     <label class="label" for="lotOccupancy--lotName">
                         <%= configFunctions.getProperty("aliases.lot") %>
@@ -114,9 +113,14 @@
                             <%= (configFunctions.getProperty("settings.lotOccupancy.lotIdIsRequired") ? " required" : "") %>
                             <%= (isCreate ? "" : " disabled") %> />
                         </div>
-                        <div class="control">
+                        <div class="control is-hidden-print">
                             <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock <%= configFunctions.getProperty("aliases.lot") %></button> Field">
                                 <i class="fas fa-unlock" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="control is-hidden-print">
+                            <button class="button is-lot-view-button" data-tooltip="Open <%= configFunctions.getProperty("aliases.lot") %>" type="button" aria-label="Open <%= configFunctions.getProperty("aliases.lot") %>">
+                                <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>
@@ -181,7 +185,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel-block is-justify-content-right">
+        <div class="panel-block is-justify-content-right is-hidden-print">
             <button class="button is-primary" type="submit">
                 <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
                 <span>
@@ -229,7 +233,7 @@
                 </div>
                 <div class="level-right">
                     <div class="level-item">
-                        <button class="button is-small is-success" id="button--addOccupant" type="button">
+                        <button class="button is-small is-success is-hidden-print" id="button--addOccupant" type="button">
                             <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
                             <span>Add <%= configFunctions.getProperty("aliases.occupant") %></span>
                         </button>
@@ -250,7 +254,7 @@
                 </div>
                 <div class="level-right">
                     <div class="level-item">
-                        <button class="button is-small is-success" id="button--addComment" type="button">
+                        <button class="button is-small is-success is-hidden-print" id="button--addComment" type="button">
                             <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
                             <span>Add Comment</span>
                         </button>
@@ -273,7 +277,7 @@
                         </div>
                         <div class="level-right">
                             <div class="level-item">
-                                <button class="button is-small is-success" id="button--addFee" type="button">
+                                <button class="button is-small is-success is-hidden-print" id="button--addFee" type="button">
                                     <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
                                     <span>Add Fee</span>
                                 </button>
@@ -295,7 +299,7 @@
                         </div>
                         <div class="level-right">
                             <div class="level-item">
-                                <button class="button is-small is-success" id="button--addTransaction" type="button">
+                                <button class="button is-small is-success is-hidden-print" id="button--addTransaction" type="button">
                                     <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
                                     <span>Add Transaction</span>
                                 </button>

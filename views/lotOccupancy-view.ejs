@@ -33,7 +33,7 @@
     </div>
     <div class="level-right">
         <div class="level-item is-justify-content-right">
-            <a class="button is-link" href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>/print" target="_blank">
+            <a class="button is-link is-hidden-print" href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>/print" target="_blank">
                 <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
                 <span>Print</span>
             </a>
@@ -132,10 +132,13 @@
                     <td><%= lotOccupancyOccupant.occupantName %></td>
                     <td>
                         <%= lotOccupancyOccupant.occupantAddress1 %><br />
-                        <% if (lotOccupancyOccupant.occupantAddress2 && lotOccupancyOccupant.occupantAddress2 !== "") { %>
+                        <% if (lotOccupancyOccupant.occupantAddress2) { %>
                           <%= lotOccupancyOccupant.occupantAddress2 %><br />
                         <% } %>
-                        <%= lotOccupancyOccupant.occupantCity %>, <%= lotOccupancyOccupant.occupantProvince %><br />
+                        <% if (lotOccupancyOccupant.occupantCity) { %>
+                            <%= lotOccupancyOccupant.occupantCity %>, 
+                        <% } %>
+                        <%= lotOccupancyOccupant.occupantProvince %><br />
                         <%= lotOccupancyOccupant.occupantPostalCode %>
                     </td>
                     <td>

@@ -226,6 +226,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
+    document.querySelector(".is-lot-view-button").addEventListener("click", () => {
+        const lotId = document.querySelector("#lotOccupancy--lotId").value;
+        if (lotId) {
+            window.open(urlPrefix + "/lots/" + lotId);
+        }
+        else {
+            bulmaJS.alert({
+                message: "No " + exports.aliases.lot.toLowerCase() + " selected.",
+                contextualColorName: "info"
+            });
+        }
+    });
     document.querySelector("#lotOccupancy--occupancyStartDateString").addEventListener("change", () => {
         document.querySelector("#lotOccupancy--occupancyEndDateString").min =
             document.querySelector("#lotOccupancy--occupancyStartDateString").value;
@@ -347,7 +359,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "<th>" + exports.aliases.occupant + "</th>" +
                 "<th>Address</th>" +
                 "<th>Phone Number</th>" +
-                "<th></th>" +
+                "<th class=\"is-hidden-print\"><span class=\"is-sr-only\">Options</span></th>" +
                 "</tr></thead>" +
                 "<tbody></tbody>";
             for (const lotOccupancyOccupant of lotOccupancyOccupants) {
@@ -358,11 +370,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     ("<td>" +
                         cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) + "<br />" +
                         (lotOccupancyOccupant.occupantAddress2 ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2) + "<br />" : "") +
-                        cityssm.escapeHTML(lotOccupancyOccupant.occupantCity) + ", " + cityssm.escapeHTML(lotOccupancyOccupant.occupantProvince) + "<br />" +
+                        (lotOccupancyOccupant.occupantCity ? cityssm.escapeHTML(lotOccupancyOccupant.occupantCity) + ", " : "") + cityssm.escapeHTML(lotOccupancyOccupant.occupantProvince) + "<br />" +
                         cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode) +
                         "</td>") +
                     ("<td>" + cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber) + "</td>") +
-                    ("<td>" +
+                    ("<td class=\"is-hidden-print\">" +
                         "<div class=\"buttons are-small is-justify-content-end\">" +
                         ("<button class=\"button is-primary button--edit\" type=\"button\">" +
                             "<span class=\"icon is-small\"><i class=\"fas fa-pencil-alt\" aria-hidden=\"true\"></i></span>" +
@@ -518,7 +530,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "<th>Commentor</th>" +
                 "<th>Comment Date</th>" +
                 "<th>Comment</th>" +
-                "<th><span class=\"is-sr-only\">Options</span></th>" +
+                "<th class=\"is-hidden-print\"><span class=\"is-sr-only\">Options</span></th>" +
                 "</tr></thead>" +
                 "<tbody></tbody>";
             for (const lotOccupancyComment of lotOccupancyComments) {
@@ -530,7 +542,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     (lotOccupancyComment.lotOccupancyCommentTime === 0 ? "" : " " + lotOccupancyComment.lotOccupancyCommentTimeString) +
                     "</td>" +
                     "<td>" + cityssm.escapeHTML(lotOccupancyComment.lotOccupancyComment) + "</td>" +
-                    ("<td>" +
+                    ("<td class=\"is-hidden-print\">" +
                         "<div class=\"buttons are-small is-justify-content-end\">" +
                         ("<button class=\"button is-primary button--edit\" type=\"button\">" +
                             "<span class=\"icon is-small\"><i class=\"fas fa-pencil-alt\" aria-hidden=\"true\"></i></span>" +
@@ -632,6 +644,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 lotOccupancyFeesContainerElement.innerHTML = "<div class=\"message is-info\">" +
                     "<p class=\"message-body\">There are no fees associated with this record.</p>" +
                     "</div>";
+                renderLotOccupancyTransactions();
                 return;
             }
             lotOccupancyFeesContainerElement.innerHTML = "<table class=\"table is-fullwidth is-striped is-hoverable\">" +
@@ -642,13 +655,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "<th class=\"has-width-1\"><span class=\"is-sr-only\">Quantity</span></th>" +
                     "<th class=\"has-width-1\"><span class=\"is-sr-only\">equals</span></th>" +
                     "<th class=\"has-width-1 has-text-right\">Total</th>" +
-                    "<th class=\"has-width-1\"><span class=\"is-sr-only\">Options</span></th>" +
+                    "<th class=\"has-width-1 is-hidden-print\"><span class=\"is-sr-only\">Options</span></th>" +
                     "</tr></thead>") +
                 "<tbody></tbody>" +
                 ("<tfoot>" +
-                    "<tr><th colspan=\"5\">Subtotal</th><td class=\"has-text-weight-bold has-text-right\" id=\"lotOccupancyFees--feeAmountTotal\"></td><td></td></tr>" +
-                    "<tr><th colspan=\"5\">Tax</th><td class=\"has-text-right\" id=\"lotOccupancyFees--taxAmountTotal\"></td><td></td></tr>" +
-                    "<tr><th colspan=\"5\">Grand Total</th><td class=\"has-text-weight-bold has-text-right\" id=\"lotOccupancyFees--grandTotal\"></td><td></td></tr>" +
+                    "<tr><th colspan=\"5\">Subtotal</th><td class=\"has-text-weight-bold has-text-right\" id=\"lotOccupancyFees--feeAmountTotal\"></td><td class=\"is-hidden-print\"></td></tr>" +
+                    "<tr><th colspan=\"5\">Tax</th><td class=\"has-text-right\" id=\"lotOccupancyFees--taxAmountTotal\"></td><td class=\"is-hidden-print\"></td></tr>" +
+                    "<tr><th colspan=\"5\">Grand Total</th><td class=\"has-text-weight-bold has-text-right\" id=\"lotOccupancyFees--grandTotal\"></td><td class=\"is-hidden-print\"></td></tr>" +
                     "</tfoot>") +
                 "</table>";
             let feeAmountTotal = 0;
@@ -667,7 +680,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "<td class=\"has-text-right\">" + lotOccupancyFee.quantity + "</td>" +
                             "<td>=</td>") +
                     "<td class=\"has-text-right\">$" + (lotOccupancyFee.feeAmount * lotOccupancyFee.quantity).toFixed(2) + "</td>" +
-                    ("<td>" +
+                    ("<td class=\"is-hidden-print\">" +
                         "<button class=\"button is-small is-danger is-light\" data-tooltip=\"Delete Fee\" type=\"button\">" +
                         "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
                         "</button>" +
@@ -756,8 +769,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const categoryContainerElement = document.createElement("div");
                     categoryContainerElement.className = "container--feeCategory";
                     categoryContainerElement.dataset.feeCategoryId = feeCategory.feeCategoryId.toString();
-                    categoryContainerElement.innerHTML = "<h4 class=\"title is-5\">" + cityssm.escapeHTML(feeCategory.feeCategory) + "</h4>" +
-                        "<div class=\"panel\"></div>";
+                    categoryContainerElement.innerHTML = "<h4 class=\"title is-5 mt-2\">" + cityssm.escapeHTML(feeCategory.feeCategory) + "</h4>" +
+                        "<div class=\"panel mb-5\"></div>";
                     let hasFees = false;
                     for (const fee of feeCategory.fees) {
                         if (lotOccupancyFeesContainerElement.querySelector(".container--lotOccupancyFee[data-fee-id='" + fee.feeId + "']")) {
@@ -864,13 +877,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "<th class=\"has-width-1\">Date</th>" +
                 "<th>" + cityssm.escapeHTML(exports.aliases.externalReceiptNumber) + "</th>" +
                 "<th class=\"has-text-right has-width-1\">Amount</th>" +
-                "<th class=\"has-width-1\"><span class=\"is-sr-only\">Options</span></th>" +
+                "<th class=\"has-width-1 is-hidden-print\"><span class=\"is-sr-only\">Options</span></th>" +
                 "</tr></thead>" +
                 "<tbody></tbody>" +
                 ("<tfoot><tr>" +
                     "<th colspan=\"2\">Transaction Total</th>" +
                     "<td class=\"has-text-weight-bold has-text-right\" id=\"lotOccupancyTransactions--grandTotal\"></td>" +
-                    "<td></td>" +
+                    "<td class=\"is-hidden-print\"></td>" +
                     "</tr></tfoot>") +
                 "</table>";
             let transactionGrandTotal = 0;
@@ -885,7 +898,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "<small>" + cityssm.escapeHTML(lotOccupancyTransaction.transactionNote) + "</small>" +
                         "</td>") +
                     ("<td class=\"has-text-right\">$" + lotOccupancyTransaction.transactionAmount.toFixed(2) + "</td>") +
-                    ("<td>" +
+                    ("<td class=\"is-hidden-print\">" +
                         "<button class=\"button is-small is-danger is-light\" data-tooltip=\"Delete Transaction\" type=\"button\">" +
                         "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
                         "</button>" +
