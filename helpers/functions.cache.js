@@ -2,6 +2,7 @@ import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from "./lotOcc
 import { getLotStatuses as getLotStatusesFromDatabase } from "./lotOccupancyDB/getLotStatuses.js";
 import { getLotTypes as getLotTypesFromDatabase } from "./lotOccupancyDB/getLotTypes.js";
 import { getOccupancyTypes as getOccupancyTypesFromDatabase } from "./lotOccupancyDB/getOccupancyTypes.js";
+import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from "./lotOccupancyDB/getWorkOrderTypes.js";
 import { getOccupancyType } from "./lotOccupancyDB/getOccupancyType.js";
 let lotOccupantTypes;
 export function getLotOccupantTypes() {
@@ -101,4 +102,14 @@ export function getOccupancyTypeByOccupancyType(occupancyTypeString) {
 export function clearOccupancyTypesCache() {
     occupancyTypes = undefined;
     occupancyTypeMap.clear();
+}
+let workOrderTypes;
+export function getWorkOrderTypes() {
+    if (!workOrderTypes) {
+        workOrderTypes = getWorkOrderTypesFromDatabase();
+    }
+    return workOrderTypes;
+}
+export function clearWorkOrderTypesCache() {
+    workOrderTypes = undefined;
 }

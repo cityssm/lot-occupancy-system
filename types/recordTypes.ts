@@ -265,6 +265,18 @@ export interface LotOccupancy extends Record {
 
 
 /*
+ * WORK ORDER TYPES
+ */
+
+
+export interface WorkOrderType extends Record {
+    workOrderTypeId ? : number;
+    workOrderType ? : string;
+    orderNumber ? : number;
+}
+
+
+/*
  * USER TYPES
  */
 

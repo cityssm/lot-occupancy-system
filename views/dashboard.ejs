@@ -145,6 +145,24 @@
                     </div>
                 </div>
             </div>
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-left">
+                        <i class="fas fa-3x fa-fw fa-table" aria-hidden="true"></i>
+                    </div>
+                    <div class="media-content has-text-black">
+                        <h2 class="title is-4 is-marginless">
+                            <a href="<%= urlPrefix %>/admin/tables">Config Table Management</a>
+                        </h2>
+                        <p>
+                            Manage simple configuration tables fees for
+                            work order types,
+                            <%= configFunctions.getProperty("aliases.lot").toLowerCase() %> statuses,
+                            and <%= configFunctions.getProperty("aliases.lot").toLowerCase() %> <%= configFunctions.getProperty("aliases.occupant").toLowerCase() %> types.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

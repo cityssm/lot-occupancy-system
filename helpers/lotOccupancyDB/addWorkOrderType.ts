@@ -5,33 +5,33 @@ import {
 } from "../../data/databasePaths.js";
 
 import {
-    clearLotTypesCache
+    clearWorkOrderTypesCache
 } from "../functions.cache.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
 
-interface AddLotTypeForm {
-    lotType: string;
+interface AddWorkOrderTypeForm {
+    workOrderType: string;
     orderNumber ? : number;
 }
 
 
-export const addLotType =
-    (lotTypeForm: AddLotTypeForm, requestSession: recordTypes.PartialSession): number => {
+export const addWorkOrderType =
+    (workOrderTypeForm: AddWorkOrderTypeForm, requestSession: recordTypes.PartialSession): number => {
 
         const database = sqlite(databasePath);
 
         const rightNowMillis = Date.now();
 
         const result = database
-            .prepare("insert into LotTypes (" +
-                "lotType, orderNumber," +
+            .prepare("insert into WorkOrderTypes (" +
+                "workOrderType, orderNumber," +
                 " recordCreate_userName, recordCreate_timeMillis," +
                 " recordUpdate_userName, recordUpdate_timeMillis)" +
                 " values (?, ?, ?, ?, ?, ?)")
-            .run(lotTypeForm.lotType,
-                (lotTypeForm.orderNumber || 0),
+            .run(workOrderTypeForm.workOrderType,
+                (workOrderTypeForm.orderNumber || -1),
                 requestSession.user.userName,
                 rightNowMillis,
                 requestSession.user.userName,
@@ -39,10 +39,10 @@ export const addLotType =
 
         database.close();
 
-        clearLotTypesCache();
+        clearWorkOrderTypesCache();
 
         return result.lastInsertRowid as number;
     };
 
 
-export default addLotType;
+export default addWorkOrderType;

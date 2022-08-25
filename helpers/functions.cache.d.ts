@@ -15,3 +15,5 @@ export declare function getOccupancyTypes(): recordTypes.OccupancyType[];
 export declare function getOccupancyTypeById(occupancyTypeId: number): recordTypes.OccupancyType;
 export declare function getOccupancyTypeByOccupancyType(occupancyTypeString: string): recordTypes.OccupancyType;
 export declare function clearOccupancyTypesCache(): void;
+export declare function getWorkOrderTypes(): recordTypes.WorkOrderType[];
+export declare function clearWorkOrderTypesCache(): void;

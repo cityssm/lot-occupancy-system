@@ -15,6 +15,10 @@ import {
 } from "./lotOccupancyDB/getOccupancyTypes.js";
 
 import {
+    getWorkOrderTypes as getWorkOrderTypesFromDatabase
+} from "./lotOccupancyDB/getWorkOrderTypes.js";
+
+import {
     getOccupancyType
 } from "./lotOccupancyDB/getOccupancyType.js";
 
@@ -187,4 +191,23 @@ export function getOccupancyTypeByOccupancyType(occupancyTypeString: string) {
 export function clearOccupancyTypesCache() {
     occupancyTypes = undefined;
     occupancyTypeMap.clear();
+}
+
+/*
+ * Work Order Types
+ */
+
+let workOrderTypes: recordTypes.WorkOrderType[];
+
+export function getWorkOrderTypes() {
+    
+    if (!workOrderTypes) {
+        workOrderTypes = getWorkOrderTypesFromDatabase();
+    }
+
+    return workOrderTypes;
+}
+
+export function clearWorkOrderTypesCache() {
+    workOrderTypes = undefined;
 }
