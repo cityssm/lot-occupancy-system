@@ -177,8 +177,9 @@ function purgeTables() {
     database.prepare("delete from LotOccupancyComments").run();
     database.prepare("delete from LotOccupancyOccupants").run();
     database.prepare("delete from LotOccupancies").run();
+    database.prepare("delete from LotComments").run();
     database.prepare("delete from Lots").run();
-    database.prepare("delete from sqlite_sequence where name in ('Lots', 'LotOccupancies', 'LotOccupancyComments')").run();
+    database.prepare("delete from sqlite_sequence where name in ('Lots', 'LotComments', 'LotOccupancies', 'LotOccupancyComments')").run();
     database.close();
 }
 
