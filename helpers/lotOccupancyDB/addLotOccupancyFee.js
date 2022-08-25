@@ -18,7 +18,7 @@ export const addLotOccupancyFee = (lotOccupancyFeeForm, requestSession) => {
         feeAmount = calculateFeeAmount(fee, lotOccupancy);
         taxAmount = calculateTaxAmount(fee, feeAmount);
     }
-    const record = database.prepare("select recordDelete_timeMillis" +
+    const record = database.prepare("select feeAmount, taxAmount, recordDelete_timeMillis" +
         " from LotOccupancyFees" +
         " where lotOccupancyId = ?" +
         " and feeId = ?")
@@ -31,18 +31,32 @@ export const addLotOccupancyFee = (lotOccupancyFeeForm, requestSession) => {
                 " and feeId = ?")
                 .run(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
         }
-        else {
+        else if (record.feeAmount === feeAmount && record.taxAmount === taxAmount) {
             database.prepare("update LotOccupancyFees" +
                 " set quantity = quantity + ?," +
-                " feeAmount = feeAmount + ?," +
-                " taxAmount = taxAmount + ?," +
                 " recordUpdate_userName = ?," +
                 " recordUpdate_timeMillis = ?" +
                 " where lotOccupancyId = ?" +
                 " and feeId = ?")
-                .run(lotOccupancyFeeForm.quantity, feeAmount, taxAmount, requestSession.user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
+                .run(lotOccupancyFeeForm.quantity, requestSession.user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
             database.close();
-            return false;
+            return true;
+        }
+        else {
+            const quantity = typeof (lotOccupancyFeeForm.quantity) === "string" ?
+                Number.parseFloat(lotOccupancyFeeForm.quantity) :
+                lotOccupancyFeeForm.quantity;
+            database.prepare("update LotOccupancyFees" +
+                " set feeAmount = (feeAmount * quantity) + ?," +
+                " taxAmount = (taxAmount * quantity) + ?," +
+                " quantity = 1," +
+                " recordUpdate_userName = ?," +
+                " recordUpdate_timeMillis = ?" +
+                " where lotOccupancyId = ?" +
+                " and feeId = ?")
+                .run((feeAmount * quantity), (taxAmount * quantity), requestSession.user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
+            database.close();
+            return true;
         }
     }
     const result = database

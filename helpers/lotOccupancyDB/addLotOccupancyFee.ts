@@ -33,7 +33,7 @@ export const addLotOccupancyFee =
     (lotOccupancyFeeForm: AddLotOccupancyFeeForm, requestSession: recordTypes.PartialSession): boolean => {
 
         const database = sqlite(databasePath);
-        
+
         const rightNowMillis = Date.now();
 
         // Calculate fee and tax (if not set)
@@ -42,8 +42,8 @@ export const addLotOccupancyFee =
         let taxAmount: number;
 
         if (lotOccupancyFeeForm.feeAmount) {
-            feeAmount = typeof(lotOccupancyFeeForm.feeAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.feeAmount) : feeAmount;
-            taxAmount = typeof(lotOccupancyFeeForm.taxAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.taxAmount) : taxAmount;
+            feeAmount = typeof (lotOccupancyFeeForm.feeAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.feeAmount) : feeAmount;
+            taxAmount = typeof (lotOccupancyFeeForm.taxAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.taxAmount) : taxAmount;
         } else {
 
             const lotOccupancy = getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId);
@@ -56,8 +56,10 @@ export const addLotOccupancyFee =
         // Check if record already exists
 
         const record: {
+                feeAmount ? : number;
+                taxAmount ? : number;
                 recordDelete_timeMillis ? : number
-            } = database.prepare("select recordDelete_timeMillis" +
+            } = database.prepare("select feeAmount, taxAmount, recordDelete_timeMillis" +
                 " from LotOccupancyFees" +
                 " where lotOccupancyId = ?" +
                 " and feeId = ?")
@@ -71,28 +73,53 @@ export const addLotOccupancyFee =
                         " and lotOccupancyId = ?" +
                         " and feeId = ?")
                     .run(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
-            } else {
+
+            } else if (record.feeAmount === feeAmount && record.taxAmount === taxAmount) {
 
                 database.prepare("update LotOccupancyFees" +
-                " set quantity = quantity + ?," +
-                " feeAmount = feeAmount + ?," +
-                " taxAmount = taxAmount + ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where lotOccupancyId = ?" +
-                " and feeId = ?")
-                .run(
-                    lotOccupancyFeeForm.quantity,
-                    feeAmount,
-                    taxAmount,
-                    requestSession.user.userName,
-                    rightNowMillis,
-                    lotOccupancyFeeForm.lotOccupancyId,
-                    lotOccupancyFeeForm.feeId);
+                        " set quantity = quantity + ?," +
+                        " recordUpdate_userName = ?," +
+                        " recordUpdate_timeMillis = ?" +
+                        " where lotOccupancyId = ?" +
+                        " and feeId = ?")
+                    .run(
+                        lotOccupancyFeeForm.quantity,
+                        requestSession.user.userName,
+                        rightNowMillis,
+                        lotOccupancyFeeForm.lotOccupancyId,
+                        lotOccupancyFeeForm.feeId);
 
                 database.close();
-                return false;
+
+                return true;
+
+            } else {
+
+                const quantity = typeof (lotOccupancyFeeForm.quantity) === "string" ?
+                    Number.parseFloat(lotOccupancyFeeForm.quantity) :
+                    lotOccupancyFeeForm.quantity;
+
+                database.prepare("update LotOccupancyFees" +
+                        " set feeAmount = (feeAmount * quantity) + ?," +
+                        " taxAmount = (taxAmount * quantity) + ?," +
+                        " quantity = 1," +
+                        " recordUpdate_userName = ?," +
+                        " recordUpdate_timeMillis = ?" +
+                        " where lotOccupancyId = ?" +
+                        " and feeId = ?")
+                    .run(
+                        (feeAmount * quantity),
+                        (taxAmount * quantity),
+                        requestSession.user.userName,
+                        rightNowMillis,
+                        lotOccupancyFeeForm.lotOccupancyId,
+                        lotOccupancyFeeForm.feeId);
+
+                database.close();
+
+                return true;
             }
+
         }
 
         // Create new record
