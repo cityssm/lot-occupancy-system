@@ -10,7 +10,7 @@ export const addLotOccupantType = (lotOccupantTypeForm, requestSession) => {
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
         " values (?, ?, ?, ?, ?, ?)")
-        .run(lotOccupantTypeForm.lotOccupantType, (lotOccupantTypeForm.orderNumber || 0), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(lotOccupantTypeForm.lotOccupantType, (lotOccupantTypeForm.orderNumber || -1), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     database.close();
     clearLotOccupantTypesCache();
     return result.lastInsertRowid;

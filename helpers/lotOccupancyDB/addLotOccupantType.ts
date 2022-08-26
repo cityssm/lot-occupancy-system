@@ -28,7 +28,7 @@ export const addLotOccupantType =
                 " recordUpdate_userName, recordUpdate_timeMillis)" +
                 " values (?, ?, ?, ?, ?, ?)")
             .run(lotOccupantTypeForm.lotOccupantType,
-                (lotOccupantTypeForm.orderNumber || 0),
+                (lotOccupantTypeForm.orderNumber || -1),
                 requestSession.user.userName,
                 rightNowMillis,
                 requestSession.user.userName,
