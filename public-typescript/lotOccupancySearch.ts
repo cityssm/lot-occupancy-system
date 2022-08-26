@@ -76,7 +76,7 @@ declare const cityssm: cityssmGlobal;
                             "</a>" +
                             "</td>") +
                         ("<td>" +
-                            cityssm.escapeHTML(lotOccupancy.lotName || "(No " + exports.aliases.lot + ")") + "<br />" +
+                            (lotOccupancy.lotName ? cityssm.escapeHTML(lotOccupancy.lotName) : "<span class=\"has-text-grey\">(No " + cityssm.escapeHTML(exports.aliases.lot) + ")</span>") + "<br />" +
                             "<span class=\"is-size-7\">" + cityssm.escapeHTML(lotOccupancy.mapName || "") + "</span>" +
                             "</td>") +
                         ("<td>" +
@@ -85,7 +85,7 @@ declare const cityssm: cityssmGlobal;
                         ("<td>" +
                             (lotOccupancy.occupancyEndDate ?
                                 lotOccupancy.occupancyEndDateString :
-                                "(No End Date)") +
+                                "<span class=\"has-text-grey\">(No End Date)</span>") +
                             "</td>") +
                         "<td>" + occupantsHTML + "</td>" +
                         "</tr>");

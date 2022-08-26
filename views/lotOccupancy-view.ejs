@@ -67,7 +67,7 @@
                     <% if (lotOccupancy.lotId) { %>
                         <a href="<%= urlPrefix %>/lots/<%= lotOccupancy.lotId %>"><%= lotOccupancy.lotName %></a>
                     <% } else { %>
-                        (No <%= configFunctions.getProperty("aliases.lot") %>)
+                        <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.lot") %>)</span>
                     <% } %>
                 </p>
                 <p>
@@ -75,7 +75,7 @@
                     <% if (lotOccupancy.mapId) { %>
                         <a href="<%= urlPrefix %>/maps/<%= lotOccupancy.mapId %>"><%= lotOccupancy.mapName %></a>
                     <% } else { %>
-                        (No <%= configFunctions.getProperty("aliases.map") %>)
+                        <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.map") %>)</span>
                     <% } %>
                 </p>
             </div>
@@ -86,7 +86,7 @@
                 </p>
                 <p>
                     <strong>End Date</strong><br />
-                    <%= (lotOccupancy.occupancyEndDateString === "" ? "(No End Date)" : lotOccupancy.occupancyEndDateString) %>
+                    <span class="has-text-grey"><%= (lotOccupancy.occupancyEndDateString === "" ? "(No End Date)" : lotOccupancy.occupancyEndDateString) %></span>
                 </p>
             </div>
             <% if (lotOccupancy.lotOccupancyFields.length > 0) { %>
