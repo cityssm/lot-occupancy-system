@@ -37,7 +37,7 @@
                 <div>
                     <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
                     <a href="<%= urlPrefix %>/maps/<%= lot.mapId %>">
-                        <%= lot.mapName %>
+                        <%= lot.mapName || "(No Name)" %>
                     </a>
                 </div>
                 <div class="mt-2">

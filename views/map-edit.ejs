@@ -13,7 +13,7 @@
                     </a>
                 </li>
                 <% if (!isCreate) { %>
-                    <li><a href="<%= urlPrefix %>/maps/<%= map.mapId %>"><%= map.mapName %></a></li>
+                    <li><a href="<%= urlPrefix %>/maps/<%= map.mapId %>"><%= map.mapName || "(No Name)" %></a></li>
                 <% } %>
                 <li class="is-active">
                     <a href="#" aria-current="page">

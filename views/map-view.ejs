@@ -14,14 +14,14 @@
                 </li>
                 <li class="is-active">
                     <a href="#" aria-current="page">
-                        <%= map.mapName %>
+                        <%= map.mapName || "(No Name)" %>
                     </a>
                 </li>
             </ul>
         </nav>
 
         <h1 class="title is-1">
-            <%= map.mapName %>
+            <%= map.mapName || "(No Name)" %>
         </h1>
 
         <% if (user.userProperties.canUpdate) { %>
