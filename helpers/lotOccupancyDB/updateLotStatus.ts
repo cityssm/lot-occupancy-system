@@ -5,43 +5,43 @@ import {
 } from "../../data/databasePaths.js";
 
 import {
-    clearWorkOrderTypesCache
+    clearLotStatusesCache
 } from "../functions.cache.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
 
-interface UpdateWorkOrderTypeForm {
-    workOrderTypeId: number | string;
-    workOrderType: string;
+interface UpdateLotStatusForm {
+    lotStatusId: number | string;
+    lotStatus: string;
 }
 
 
-export const updateWorkOrderType =
-    (workOrderTypeForm: UpdateWorkOrderTypeForm, requestSession: recordTypes.PartialSession): boolean => {
+export const updateLotStatus =
+    (lotStatusForm: UpdateLotStatusForm, requestSession: recordTypes.PartialSession): boolean => {
 
         const database = sqlite(databasePath);
 
         const rightNowMillis = Date.now();
 
         const result = database
-            .prepare("update WorkOrderTypes" +
-                " set workOrderType = ?," +
+            .prepare("update LotStatuses" +
+                " set lotStatus = ?," +
                 " recordUpdate_userName = ?," +
                 " recordUpdate_timeMillis = ?" +
-                " where workOrderTypeId = ?" +
+                " where lotStatusId = ?" +
                 " and recordDelete_timeMillis is null")
-            .run(workOrderTypeForm.workOrderType,
+            .run(lotStatusForm.lotStatus,
                 requestSession.user.userName,
                 rightNowMillis,
-                workOrderTypeForm.workOrderTypeId);
+                lotStatusForm.lotStatusId);
 
         database.close();
 
-        clearWorkOrderTypesCache();
+        clearLotStatusesCache();
 
         return result.changes > 0;
     };
 
 
-export default updateWorkOrderType;
+export default updateLotStatus;

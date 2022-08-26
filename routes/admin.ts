@@ -21,6 +21,12 @@ import handler_doMoveWorkOrderTypeUp from "../handlers/admin-post/doMoveWorkOrde
 import handler_doMoveWorkOrderTypeDown from "../handlers/admin-post/doMoveWorkOrderTypeDown.js";
 import handler_doDeleteWorkOrderType from "../handlers/admin-post/doDeleteWorkOrderType.js";
 
+import handler_doAddLotStatus from "../handlers/admin-post/doAddLotStatus.js";
+import handler_doUpdateLotStatus from "../handlers/admin-post/doUpdateLotStatus.js";
+import handler_doMoveLotStatusUp from "../handlers/admin-post/doMoveLotStatusUp.js";
+import handler_doMoveLotStatusDown from "../handlers/admin-post/doMoveLotStatusDown.js";
+import handler_doDeleteLotStatus from "../handlers/admin-post/doDeleteLotStatus.js";
+
 
 export const router = Router();
 
@@ -61,6 +67,8 @@ router.get("/tables",
     permissionHandlers.adminGetHandler,
     handler_tables);
 
+// Config Tables - Work Order Types
+
 router.post("/doAddWorkOrderType",
     permissionHandlers.adminPostHandler,
     handler_doAddWorkOrderType);
@@ -80,6 +88,29 @@ router.post("/doMoveWorkOrderTypeDown",
 router.post("/doDeleteWorkOrderType",
     permissionHandlers.adminPostHandler,
     handler_doDeleteWorkOrderType);
+
+// Config Tables - Lot Statuses
+
+
+router.post("/doAddLotStatus",
+    permissionHandlers.adminPostHandler,
+    handler_doAddLotStatus);
+
+router.post("/doUpdateLotStatuse",
+    permissionHandlers.adminPostHandler,
+    handler_doUpdateLotStatus);
+
+router.post("/doMoveLotStatusUp",
+    permissionHandlers.adminPostHandler,
+    handler_doMoveLotStatusUp);
+
+router.post("/doMoveLotStatusDown",
+    permissionHandlers.adminPostHandler,
+    handler_doMoveLotStatusDown);
+
+router.post("/doDeleteLotStatus",
+    permissionHandlers.adminPostHandler,
+    handler_doDeleteLotStatus);
 
 
 export default router;

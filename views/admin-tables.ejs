@@ -77,6 +77,33 @@
     </div>
     <div class="is-hidden" id="tab--lotStatuses">
         <h2 class="title is-4"><%= configFunctions.getProperty("aliases.lot") %> Statuses</h2>
+        <table class="table is-striped is-hoverable">
+            <thead>
+                <tr>
+                    <th><%= configFunctions.getProperty("aliases.lot") %> Status</th>
+                    <th class="has-text-centered has-width-1">Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <form id="form--addLotStatus">
+                            <div class="field has-addons">
+                                <div class="control is-expanded">
+                                    <input class="input" name="lotStatus" type="text" maxlength="100" placeholder="New <%= configFunctions.getProperty("aliases.lot") %> Status" required />
+                                </div>
+                                <div class="control">
+                                    <button class="button is-success" data-tooltip="Add Status" type="submit" aria-label="Add Status">
+                                        <i class="fas fa-plus" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody id="container--lotStatuses"></tbody>
+        </table>
     </div>
     <div class="is-hidden" id="tab--lotOccupantTypes">
         <h2 class="title is-4"><%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupant") %> Types</h2>

@@ -5,14 +5,14 @@ import {
 } from "../../data/databasePaths.js";
 
 import {
-    clearWorkOrderTypesCache
+    clearLotStatusesCache
 } from "../functions.cache.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
 
-export const deleteWorkOrderType =
-    (workOrderTypeId: number | string,
+export const deleteLotStatus =
+    (lotStatusId: number | string,
         requestSession: recordTypes.PartialSession): boolean => {
 
         const database = sqlite(databasePath);
@@ -20,20 +20,20 @@ export const deleteWorkOrderType =
         const rightNowMillis = Date.now();
 
         const result = database
-            .prepare("update WorkOrderTypes" +
+            .prepare("update LotStatuses" +
                 " set recordDelete_userName = ?," +
                 " recordDelete_timeMillis = ?" +
-                " where workOrderTypeId = ?")
+                " where lotStatusId = ?")
             .run(requestSession.user.userName,
                 rightNowMillis,
-                workOrderTypeId);
+                lotStatusId);
 
         database.close();
 
-        clearWorkOrderTypesCache();
+        clearLotStatusesCache();
 
         return (result.changes > 0);
     };
 
 
-export default deleteWorkOrderType;
+export default deleteLotStatus;

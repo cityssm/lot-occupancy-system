@@ -28,7 +28,7 @@ export const addLotStatus =
                 " recordUpdate_userName, recordUpdate_timeMillis)" +
                 " values (?, ?, ?, ?, ?, ?)")
             .run(lotStatusForm.lotStatus,
-                (lotStatusForm.orderNumber || 0),
+                (lotStatusForm.orderNumber || -1),
                 requestSession.user.userName,
                 rightNowMillis,
                 requestSession.user.userName,
