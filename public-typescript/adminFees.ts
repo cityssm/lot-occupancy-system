@@ -253,6 +253,8 @@ declare const bulmaJS: BulmaJS;
                 editCloseModalFunction = closeModalFunction;
 
                 modalElement.querySelector("form").addEventListener("submit", doUpdateFeeCategory);
+
+                (modalElement.querySelector("#feeCategoryEdit--feeCategory") as HTMLInputElement).focus();
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
@@ -377,6 +379,8 @@ declare const bulmaJS: BulmaJS;
                 addCloseModalFunction = closeModalFunction;
 
                 modalElement.querySelector("form").addEventListener("submit", doAddFee);
+
+                (modalElement.querySelector("#feeAdd--feeName") as HTMLInputElement).focus();
 
                 modalElement.querySelector("#feeAdd--feeFunction").addEventListener("change", () => {
 

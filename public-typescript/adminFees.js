@@ -181,6 +181,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
                 editCloseModalFunction = closeModalFunction;
                 modalElement.querySelector("form").addEventListener("submit", doUpdateFeeCategory);
+                modalElement.querySelector("#feeCategoryEdit--feeCategory").focus();
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
@@ -269,6 +270,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
                 addCloseModalFunction = closeModalFunction;
                 modalElement.querySelector("form").addEventListener("submit", doAddFee);
+                modalElement.querySelector("#feeAdd--feeName").focus();
                 modalElement.querySelector("#feeAdd--feeFunction").addEventListener("change", () => {
                     const feeAmountElement = modalElement.querySelector("#feeAdd--feeAmount");
                     const feeFunctionElement = modalElement.querySelector("#feeAdd--feeFunction");
