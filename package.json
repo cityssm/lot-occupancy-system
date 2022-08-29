@@ -83,7 +83,7 @@
     "bulma": "^0.9.4",
     "cypress": "^10.6.0",
     "cypress-axe": "^1.0.0",
-    "eslint": "^8.22.0",
+    "eslint": "^8.23.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.1",
