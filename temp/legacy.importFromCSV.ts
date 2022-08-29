@@ -4,6 +4,7 @@ import fs from "node:fs";
 import papa from "papaparse";
 
 import sqlite from "better-sqlite3";
+
 import {
     lotOccupancyDB as databasePath
 } from "../data/databasePaths.js";
@@ -59,6 +60,14 @@ import {
 import {
     addLotOccupancyTransaction
 } from "../helpers/lotOccupancyDB/addLotOccupancyTransaction.js";
+
+import {
+    addWorkOrder
+} from "../helpers/lotOccupancyDB/addWorkOrder.js";
+
+import {
+    addWorkOrderLot
+} from "../helpers/lotOccupancyDB/addWorkOrderLot.js";
 
 import type * as recordTypes from "../types/recordTypes";
 
@@ -229,7 +238,8 @@ const cemeteryToMapName = {
     "PG": "Pine Grove",
     "UG": "New Greenwood - Urn Garden",
     "WK": "West Korah"
-}
+};
+
 
 const mapCache: Map < string, recordTypes.Map > = new Map();
 
@@ -434,9 +444,11 @@ function importFromMasterCSV() {
                 }, user);
             }
 
+            let preneedOccupancyStartDateString: string;
+
             if (masterRow.CM_PRENEED_ORDER) {
 
-                let occupancyStartDateString = formatDateString(masterRow.CM_PURCHASE_YR,
+                preneedOccupancyStartDateString = formatDateString(masterRow.CM_PURCHASE_YR,
                     masterRow.CM_PURCHASE_MON,
                     masterRow.CM_PURCHASE_DAY);
 
@@ -449,25 +461,25 @@ function importFromMasterCSV() {
                 }
 
                 // if purchase date unavailable
-                if (occupancyStartDateString === "0000-00-00" && occupancyEndDateString !== "") {
-                    occupancyStartDateString = occupancyEndDateString;
+                if (preneedOccupancyStartDateString === "0000-00-00" && occupancyEndDateString !== "") {
+                    preneedOccupancyStartDateString = occupancyEndDateString;
                 }
 
                 // if end date unavailable
-                if (occupancyStartDateString === "0000-00-00" && masterRow.CM_DEATH_YR !== "" && masterRow.CM_DEATH_YR !== "0") {
-                    occupancyStartDateString = formatDateString(masterRow.CM_DEATH_YR,
+                if (preneedOccupancyStartDateString === "0000-00-00" && masterRow.CM_DEATH_YR !== "" && masterRow.CM_DEATH_YR !== "0") {
+                    preneedOccupancyStartDateString = formatDateString(masterRow.CM_DEATH_YR,
                         masterRow.CM_DEATH_MON,
                         masterRow.CM_DEATH_DAY);
                 }
 
-                if (occupancyStartDateString === "" || occupancyStartDateString === "0000-00-00") {
-                    occupancyStartDateString = "0001-01-01";
+                if (preneedOccupancyStartDateString === "" || preneedOccupancyStartDateString === "0000-00-00") {
+                    preneedOccupancyStartDateString = "0001-01-01";
                 }
 
                 const lotOccupancyId = addLotOccupancy({
                     occupancyTypeId: preneedOccupancyType.occupancyTypeId,
                     lotId,
-                    occupancyStartDateString,
+                    occupancyStartDateString: preneedOccupancyStartDateString,
                     occupancyEndDateString,
                     occupancyTypeFieldIds: ""
                 }, user);
@@ -489,7 +501,7 @@ function importFromMasterCSV() {
                 if (masterRow.CM_REMARK1 !== "") {
                     addLotOccupancyComment({
                         lotOccupancyId,
-                        lotOccupancyCommentDateString: occupancyStartDateString,
+                        lotOccupancyCommentDateString: preneedOccupancyStartDateString,
                         lotOccupancyCommentTimeString: "00:00",
                         lotOccupancyComment: masterRow.CM_REMARK1
                     }, user);
@@ -498,7 +510,7 @@ function importFromMasterCSV() {
                 if (masterRow.CM_REMARK2 !== "") {
                     addLotOccupancyComment({
                         lotOccupancyId,
-                        lotOccupancyCommentDateString: occupancyStartDateString,
+                        lotOccupancyCommentDateString: preneedOccupancyStartDateString,
                         lotOccupancyCommentTimeString: "00:00",
                         lotOccupancyComment: masterRow.CM_REMARK2
                     }, user);
@@ -509,29 +521,31 @@ function importFromMasterCSV() {
                 }
             }
 
+            let deceasedOccupancyStartDateString: string;
+
             if (masterRow.CM_DECEASED_NAME) {
 
-                let occupancyStartDateString = formatDateString(masterRow.CM_INTERMENT_YR,
+                deceasedOccupancyStartDateString = formatDateString(masterRow.CM_INTERMENT_YR,
                     masterRow.CM_INTERMENT_MON,
                     masterRow.CM_INTERMENT_DAY);
 
                 const occupancyEndDateString = "";
 
                 // if interment date unavailable
-                if (occupancyStartDateString === "0000-00-00" && masterRow.CM_DEATH_YR !== "" && masterRow.CM_DEATH_YR !== "0") {
-                    occupancyStartDateString = formatDateString(masterRow.CM_DEATH_YR,
+                if (deceasedOccupancyStartDateString === "0000-00-00" && masterRow.CM_DEATH_YR !== "" && masterRow.CM_DEATH_YR !== "0") {
+                    deceasedOccupancyStartDateString = formatDateString(masterRow.CM_DEATH_YR,
                         masterRow.CM_DEATH_MON,
                         masterRow.CM_DEATH_DAY);
                 }
 
-                if (occupancyStartDateString === "" || occupancyStartDateString === "0000-00-00") {
-                    occupancyStartDateString = "0001-01-01";
+                if (deceasedOccupancyStartDateString === "" || deceasedOccupancyStartDateString === "0000-00-00") {
+                    deceasedOccupancyStartDateString = "0001-01-01";
                 }
 
                 const lotOccupancyId = addLotOccupancy({
                     occupancyTypeId: lotId ? deceasedOccupancyType.occupancyTypeId : cremationOccupancyType.occupancyTypeId,
                     lotId,
-                    occupancyStartDateString,
+                    occupancyStartDateString: deceasedOccupancyStartDateString,
                     occupancyEndDateString,
                     occupancyTypeFieldIds: ""
                 }, user);
@@ -644,7 +658,7 @@ function importFromMasterCSV() {
                 if (masterRow.CM_REMARK1 !== "") {
                     addLotOccupancyComment({
                         lotOccupancyId,
-                        lotOccupancyCommentDateString: occupancyStartDateString,
+                        lotOccupancyCommentDateString: deceasedOccupancyStartDateString,
                         lotOccupancyCommentTimeString: "00:00",
                         lotOccupancyComment: masterRow.CM_REMARK1
                     }, user);
@@ -653,13 +667,30 @@ function importFromMasterCSV() {
                 if (masterRow.CM_REMARK2 !== "") {
                     addLotOccupancyComment({
                         lotOccupancyId,
-                        lotOccupancyCommentDateString: occupancyStartDateString,
+                        lotOccupancyCommentDateString: deceasedOccupancyStartDateString,
                         lotOccupancyCommentTimeString: "00:00",
                         lotOccupancyComment: masterRow.CM_REMARK2
                     }, user);
                 }
 
                 updateLotStatus(lotId, takenLotStatus.lotStatusId, user);
+            }
+
+            if (masterRow.CM_WORK_ORDER) {
+
+                const workOrderId = addWorkOrder({
+                    workOrderNumber: masterRow.CM_WORK_ORDER,
+                    workOrderTypeId: 1,
+                    workOrderDescription: "",
+                    workOrderOpenDateString: deceasedOccupancyStartDateString || preneedOccupancyStartDateString
+                }, user);
+
+                if (lotId) {
+                    addWorkOrderLot({
+                        workOrderId,
+                        lotId
+                    }, user);
+                }
             }
         }
     } catch (error) {

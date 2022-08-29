@@ -3,20 +3,20 @@ import type {
 } from "express";
 
 import {
-    getLots
-} from "../../helpers/lotOccupancyDB/getLots.js";
+    getWorkOrders
+} from "../../helpers/lotOccupancyDB/getWorkOrders.js";
 
 
 export const handler: RequestHandler = async (request, response) => {
 
-    const result = getLots(request.body, {
+    const result = getWorkOrders(request.body, {
         limit: request.body.limit,
         offset: request.body.offset
     });
 
     response.json({
         count: result.count,
-        lots: result.lots
+        workOrders: result.workOrders
     });
 };
 
