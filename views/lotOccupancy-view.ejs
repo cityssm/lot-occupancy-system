@@ -86,7 +86,11 @@
                 </p>
                 <p>
                     <strong>End Date</strong><br />
-                    <span class="has-text-grey"><%= (lotOccupancy.occupancyEndDateString === "" ? "(No End Date)" : lotOccupancy.occupancyEndDateString) %></span>
+                    <% if (lotOccupancy.occupancyEndDateString === "") { %>
+                        <span class="has-text-grey">(No End Date)</span>
+                    <% } else { %>
+                        <%= lotOccupancy.occupancyEndDateString %>
+                    <% } %>
                 </p>
             </div>
             <% if (lotOccupancy.lotOccupancyFields.length > 0) { %>
