@@ -1,11 +1,18 @@
 import sqlite from "better-sqlite3";
+
 import {
     lotOccupancyDB as databasePath
 } from "../../data/databasePaths.js";
 
+import {
+    getLotComments
+} from "./getLotComments.js";
+
+import {
+    getLotOccupancies
+} from "./getLotOccupancies.js";
+
 import type * as recordTypes from "../../types/recordTypes";
-import { getLotComments } from "./getLotComments.js";
-import { getLotOccupancies } from "./getLotOccupancies.js";
 
 
 export const getLot = (lotId: number | string): recordTypes.Lot => {
