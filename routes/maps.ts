@@ -12,6 +12,7 @@ import handler_edit from "../handlers/maps-get/edit.js";
 
 import handler_doCreateMap from "../handlers/maps-post/doCreateMap.js";
 import handler_doUpdateMap from "../handlers/maps-post/doUpdateMap.js";
+import handler_doDeleteMap from "../handlers/maps-post/doDeleteMap.js";
 
 
 export const router = Router();
@@ -43,6 +44,11 @@ router.post("/doCreateMap",
 router.post("/doUpdateMap",
   permissionHandlers.updatePostHandler,
   handler_doUpdateMap);
+
+
+router.post("/doDeleteMap",
+  permissionHandlers.updatePostHandler,
+  handler_doDeleteMap);
 
 
 export default router;

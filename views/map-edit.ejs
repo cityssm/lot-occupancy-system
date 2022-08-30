@@ -160,8 +160,31 @@
             <div class="has-text-right is-hidden-print">
                 <button class="button is-primary" type="submit">
                     <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
-                    <span>Update <%= configFunctions.getProperty("aliases.map") %></span>
+                    <span>
+                        <%= (isCreate ? "Create": "Update") %>
+                        <%= configFunctions.getProperty("aliases.map") %>
+                    </span>
                 </button>
+                <% if (!isCreate) { %>
+                    <div class="dropdown is-right ml-2">
+                        <div class="dropdown-trigger">
+                            <button class="button" type="button">
+                                <span>More Options</span>
+                                <span class="icon is-small">
+                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                          </button>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-content">
+                                <a class="dropdown-item" id="button--deleteMap" href="#">
+                                    <span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
+                                    <span>Delete <%= configFunctions.getProperty("aliases.map") %></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
             </div>
         </form>
     </div>

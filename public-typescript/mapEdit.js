@@ -29,4 +29,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     mapForm.addEventListener("submit", updateMap);
+    if (!isCreate) {
+        document.querySelector("#button--deleteMap").addEventListener("click", (clickEvent) => {
+            clickEvent.preventDefault();
+            const doDelete = () => {
+                cityssm.postJSON(urlPrefix + "/maps/doDeleteMap", {
+                    mapId
+                }, (responseJSON) => {
+                    if (responseJSON.success) {
+                        window.location.href = urlPrefix + "/maps?t=" + Date.now();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: "Error Deleting " + exports.aliases.map,
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                });
+            };
+            bulmaJS.confirm({
+                title: "Delete " + exports.aliases.map,
+                message: "Are you sure you want to delete this " + exports.aliases.map.toLowerCase() + "?",
+                contextualColorName: "warning",
+                okButton: {
+                    text: "Yes, Delete " + exports.aliases.map + "?",
+                    callbackFunction: doDelete
+                }
+            });
+        });
+    }
 })();
