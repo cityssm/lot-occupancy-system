@@ -94,7 +94,11 @@
                     <% for (const lotOccupancyField of lotOccupancy.lotOccupancyFields) { %>
                         <p class="mb-2">
                             <strong><%= lotOccupancyField.occupancyTypeField %></strong><br />
-                            <%= lotOccupancyField.lotOccupancyFieldValue || "(No Value)" %>
+                            <% if (lotOccupancyField.lotOccupancyFieldValue) { %>
+                                <%= lotOccupancyField.lotOccupancyFieldValue %>
+                            <% } else { %>
+                                <span class="has-text-grey">(No Value)</span>
+                            <% } %>
                         </p>
                     <% } %>
                 </div>

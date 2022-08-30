@@ -156,18 +156,18 @@
                         <td><%= lotOccupancy.occupancyStartDateString %></td>
                         <td>
                             <% if (lotOccupancy.occupancyEndDate) { %>
-                            <%= lotOccupancy.occupancyEndDateString %>
+                                <%= lotOccupancy.occupancyEndDateString %>
                             <% } else { %>
-                            (No End Date)
+                                <span class="has-text-grey">(No End Date)</span>
                             <% } %>
                         </td>
                         <td>
                             <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
-                            (No <%= configFunctions.getProperty("aliases.occupants") %>)
+                                <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.occupants") %>)</span>
                             <% } else { %>
-                            <% const occupant = lotOccupancy.lotOccupancyOccupants[0]; %>
-                            <%= occupant.occupantName %>
-                            <%= (lotOccupancy.lotOccupancyOccupants.length > 1 ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1) : "") %>
+                                <% const occupant = lotOccupancy.lotOccupancyOccupants[0]; %>
+                                <%= occupant.occupantName %>
+                                <%= (lotOccupancy.lotOccupancyOccupants.length > 1 ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1) : "") %>
                             <% } %>
                         </td>
                     </tr>
