@@ -6,6 +6,9 @@ import handler_search from "../handlers/lots-get/search.js";
 import handler_doSearchLots from "../handlers/lots-post/doSearchLots.js";
 
 import handler_view from "../handlers/lots-get/view.js";
+import handler_next from "../handlers/lots-get/next.js";
+import handler_previous from "../handlers/lots-get/previous.js";
+
 import handler_new from "../handlers/lots-get/new.js";
 import handler_edit from "../handlers/lots-get/edit.js";
 
@@ -44,6 +47,14 @@ router.get("/new",
 
 router.get("/:lotId",
   handler_view);
+
+
+router.get("/:lotId/next",
+  handler_next);
+
+
+router.get("/:lotId/previous",
+  handler_previous);
 
 
 router.get("/:lotId/edit",
