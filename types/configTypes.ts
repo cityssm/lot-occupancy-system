@@ -22,18 +22,22 @@ export interface Config {
         occupancies ? : string;
         occupant ? : string;
         occupants ? : string;
-        externalReceiptNumber ?: string;
+        externalReceiptNumber ? : string;
     };
     settings ? : {
         fees ? : {
             taxPercentageDefault ? : number;
-        },
+        };
+        map ? : {
+            mapCityDefault ? : string;
+            mapProvinceDefault ? : string;
+        };
         lotOccupancy ? : {
             lotIdIsRequired ? : boolean;
             occupancyEndDateIsRequired ? : boolean;
             occupantCityDefault ? : string;
             occupantProvinceDefault ? : string;
-        }
+        };
     };
 }
 
@@ -43,7 +47,7 @@ interface ConfigApplication {
     logoURL ? : string;
     httpPort ? : number;
     userDomain ? : string;
-    useTestDatabases ?: boolean;
+    useTestDatabases ? : boolean;
 }
 
 

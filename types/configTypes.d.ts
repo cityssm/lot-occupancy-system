@@ -28,6 +28,10 @@ export interface Config {
         fees?: {
             taxPercentageDefault?: number;
         };
+        map?: {
+            mapCityDefault?: string;
+            mapProvinceDefault?: string;
+        };
         lotOccupancy?: {
             lotIdIsRequired?: boolean;
             occupancyEndDateIsRequired?: boolean;
