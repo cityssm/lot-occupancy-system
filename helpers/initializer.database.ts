@@ -21,7 +21,7 @@ export const initializeDatabase = (): boolean => {
     const lotOccupancyDB = sqlite(databasePath);
 
     const row = lotOccupancyDB
-        .prepare("select name from sqlite_master where type = 'table' and name = 'Fees'")
+        .prepare("select name from sqlite_master where type = 'table' and name = 'WorkOrderComments'")
         .get();
 
     if (!row) {
@@ -311,6 +311,15 @@ export const initializeDatabase = (): boolean => {
             " primary key (workOrderId, lotId)," +
             " foreign key (workOrderId) references WorkOrders (workOrderId)," +
             " foreign key (lotId) references Lots (lotId)" +
+            ") without rowid").run();
+
+        lotOccupancyDB.prepare("create table if not exists WorkOrderLotOccupancies (" +
+            "workOrderId integer not null," +
+            " lotOccupancyId integer not null," +
+            recordColumns + "," +
+            " primary key (workOrderId, lotOccupancyId)," +
+            " foreign key (workOrderId) references WorkOrders (workOrderId)," +
+            " foreign key (lotOccupancyId) references LotOccupancies (lotOccupancyId)" +
             ") without rowid").run();
 
         lotOccupancyDB.prepare("create table if not exists WorkOrderComments (" +

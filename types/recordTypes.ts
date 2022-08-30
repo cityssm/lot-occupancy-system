@@ -276,22 +276,38 @@ export interface WorkOrderType extends Record {
 }
 
 
+export interface WorkOrderComment extends Record {
+    workOrderCommentId ? : number;
+    workOrderId ? : number;
+
+    workOrderCommentDate ? : number;
+    workOrderCommentDateString ? : string;
+
+    workOrderCommentTime ? : number;
+    workOrderCommentTimeString ? : string;
+
+    workOrderComment ? : string;
+}
+
+
 export interface WorkOrder extends Record {
-    workOrderId?: number;
+    workOrderId ? : number;
 
-    workOrderTypeId?: number;
-    workOrderType?: string;
+    workOrderTypeId ? : number;
+    workOrderType ? : string;
 
-    workOrderNumber?: string;
-    workOrderDescription?: string;
+    workOrderNumber ? : string;
+    workOrderDescription ? : string;
 
-    workOrderOpenDate?: number;
-    workOrderOpenDateString?: string;
+    workOrderOpenDate ? : number;
+    workOrderOpenDateString ? : string;
 
-    workOrderCloseDate?: number;
-    workOrderCloseDateString?: string;
+    workOrderCloseDate ? : number;
+    workOrderCloseDateString ? : string;
 
-    workOrderLots?: Lot[];
+    workOrderComments ? : WorkOrderComment[];
+    workOrderLots ? : Lot[];
+    workOrderLotOccupancies ? : LotOccupancy[];
 }
 
 

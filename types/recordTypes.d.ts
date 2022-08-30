@@ -190,6 +190,15 @@ export interface WorkOrderType extends Record {
     workOrderType?: string;
     orderNumber?: number;
 }
+export interface WorkOrderComment extends Record {
+    workOrderCommentId?: number;
+    workOrderId?: number;
+    workOrderCommentDate?: number;
+    workOrderCommentDateString?: string;
+    workOrderCommentTime?: number;
+    workOrderCommentTimeString?: string;
+    workOrderComment?: string;
+}
 export interface WorkOrder extends Record {
     workOrderId?: number;
     workOrderTypeId?: number;
@@ -200,7 +209,9 @@ export interface WorkOrder extends Record {
     workOrderOpenDateString?: string;
     workOrderCloseDate?: number;
     workOrderCloseDateString?: string;
+    workOrderComments?: WorkOrderComment[];
     workOrderLots?: Lot[];
+    workOrderLotOccupancies?: LotOccupancy[];
 }
 export interface User {
     userName: string;
