@@ -29,18 +29,15 @@
 </nav>
 
 <h1 class="title is-1">
-  <%= lot.lotName %>
+    <% if (isCreate) { %>
+        Create a New <%= configFunctions.getProperty("aliases.lot") %>
+    <% } else { %>
+        <%= lot.lotName %>
+    <% } %>
 </h1>
 
 <form id="form--lot">
     <input id="lot--lotId" name="lotId" type="hidden" value="<%= lot.lotId %>" />
-
-    <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-        <button class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("aliases.lot") %>" type="submit">
-            <i class="fas fa-save" aria-hidden="true"></i>
-            <span class="sr-only">Update <%= configFunctions.getProperty("aliases.lot") %></span>
-        </button>
-    </div>
 
     <div class="panel">
         <div class="panel-block is-block">
@@ -51,7 +48,6 @@
                             <%= configFunctions.getProperty("aliases.lot") %> Name
                         </label>
                         <div class="control">
-                            <input class="input" id="lot--lotName" name="lotName" value="<%= lot.lotName %>" maxlength="100" required />
                             <input class="input" id="lot--lotName" name="lotName" value="<%= lot.lotName %>" 
                                 <% if (configFunctions.getProperty("settings.lot.lotNamePattern")) { %>
                                     pattern="<%= configFunctions.getProperty("settings.lot.lotNamePattern").source %>"
@@ -177,7 +173,7 @@
                                         <option value="<%= map.mapId %>"
                                             <%= (lot.mapId === map.mapId ? " selected" : "") %>
                                             <%= (!isCreate && lot.mapId !== map.mapId ? " disabled" : "") %>>
-                                            <%= map.mapName %>
+                                            <%= map.mapName || "(No Name)"  %>
                                         </option>
                                     <% } %>
                                     <% if (lot.mapId && !mapIsFound) { %>
@@ -218,6 +214,16 @@
             Additional Details
         </h2>
         <div class="panel-block"></div>
+    </div>
+
+    <div class="has-text-right mb-4 is-hidden-print">
+        <button class="button is-primary" type="submit">
+            <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
+            <span>
+                <%= (isCreate ? "Create" : "Update") %>
+                <%= configFunctions.getProperty("aliases.lot") %>
+            </span>
+        </button>
     </div>
 </form>
 
@@ -272,62 +278,63 @@
                 </div>
             </div>
         </div>
+        <div class="panel-block is-block">
+            <% if (lot.lotOccupancies.length === 0) { %>
+            <div class="message is-info">
+                <p class="message-body">There are no <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> records asscociated with this <%= configFunctions.getProperty("aliases.lot") %>.</p>
+            </div>
+            <% } else { %>
+            <table class="table is-fullwidth is-striped is-hoverable">
+                <thead>
+                <tr>
+                    <th class="has-width-10">&nbsp;</th>
+                    <th><%= configFunctions.getProperty("aliases.occupancy") %> Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th><%= configFunctions.getProperty("aliases.occupants") %></th>
+                </tr>
+                </thead>
+                <tbody>
+                <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
+                <% for (const lotOccupancy of lot.lotOccupancies) { %>
+                    <% const isActive = !(lotOccupancy.occupancyEndDate && lotOccupancy.occupancyEndDate < currentDate); %>
+                    <tr>
+                        <td class="has-text-centered">
+                            <% if (isActive) { %>
+                                <i class="fas fa-play" title="Current <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
+                            <% } else { %>
+                                <i class="fas fa-stop" title="Previous <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
+                            <% } %>
+                        </td>
+                        <td>
+                            <a class="has-text-weight-bold" href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
+                                <%= lotOccupancy.occupancyType %>
+                            </a>
+                        </td>
+                        <td><%= lotOccupancy.occupancyStartDateString %></td>
+                        <td>
+                            <% if (lotOccupancy.occupancyEndDate) { %>
+                            <%= lotOccupancy.occupancyEndDateString %>
+                            <% } else { %>
+                                <span class="has-text-grey">(No End Date)</span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
+                                <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.occupants") %>)</span>
+                            <% } else { %>
+                                <% const occupant = lotOccupancy.lotOccupancyOccupants[0]; %>
+                                <%= occupant.occupantName %>
+                                <%= (lotOccupancy.lotOccupancyOccupants.length > 1 ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1) : "") %>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+            <% } %>
+        </div>
     </div>
-
-    <% if (lot.lotOccupancies.length === 0) { %>
-    <div class="message is-info">
-        <p class="message-body">There are no <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> records asscociated with this <%= configFunctions.getProperty("aliases.lot") %>.</p>
-    </div>
-    <% } else { %>
-    <table class="table is-fullwidth is-striped is-hoverable">
-        <thead>
-        <tr>
-            <th class="has-width-10">&nbsp;</th>
-            <th><%= configFunctions.getProperty("aliases.occupancy") %> Type</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th><%= configFunctions.getProperty("aliases.occupants") %></th>
-        </tr>
-        </thead>
-        <tbody>
-        <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
-        <% for (const lotOccupancy of lot.lotOccupancies) { %>
-            <% const isActive = !(lotOccupancy.occupancyEndDate && lotOccupancy.occupancyEndDate < currentDate); %>
-            <tr>
-                <td class="has-text-centered">
-                    <% if (isActive) { %>
-                        <i class="fas fa-play" title="Current <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
-                    <% } else { %>
-                        <i class="fas fa-stop" title="Previous <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
-                    <% } %>
-                </td>
-                <td>
-                    <a class="has-text-weight-bold" href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
-                        <%= lotOccupancy.occupancyType %>
-                    </a>
-                </td>
-                <td><%= lotOccupancy.occupancyStartDateString %></td>
-                <td>
-                    <% if (lotOccupancy.occupancyEndDate) { %>
-                    <%= lotOccupancy.occupancyEndDateString %>
-                    <% } else { %>
-                        <span class="has-text-grey">(No End Date)</span>
-                    <% } %>
-                </td>
-                <td>
-                    <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
-                        <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.occupants") %>)</span>
-                    <% } else { %>
-                        <% const occupant = lotOccupancy.lotOccupancyOccupants[0]; %>
-                        <%= occupant.occupantName %>
-                        <%= (lotOccupancy.lotOccupancyOccupants.length > 1 ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1) : "") %>
-                    <% } %>
-                </td>
-            </tr>
-        <% } %>
-        </tbody>
-    </table>
-    <% } %>
 <% } %>
 
 <%- include('_footerA'); -%>
