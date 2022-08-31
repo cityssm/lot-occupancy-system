@@ -52,6 +52,12 @@
                         </label>
                         <div class="control">
                             <input class="input" id="lot--lotName" name="lotName" value="<%= lot.lotName %>" maxlength="100" required />
+                            <input class="input" id="lot--lotName" name="lotName" value="<%= lot.lotName %>" 
+                                <% if (configFunctions.getProperty("settings.lot.lotNamePattern")) { %>
+                                    pattern="<%= configFunctions.getProperty("settings.lot.lotNamePattern").source %>"
+                                <% } %>
+                                maxlength="100" 
+                                required />
                         </div>
                     </div>
                 </div>

@@ -33,6 +33,7 @@ export interface Config {
             mapProvinceDefault ? : string;
         };
         lot ? : {
+            lotNamePattern ? : RegExp;
             lotNameSortNameFunction ? : (lotName: string) => string;
         };
         lotOccupancy ? : {

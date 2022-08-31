@@ -5,6 +5,7 @@ import {
 export const config = Object.assign({}, cemeteryConfig);
 
 config.settings.lot = {
+    lotNamePattern: /^[A-Z]{2}(-\d*[A-Z]?){3,5}$/,
     lotNameSortNameFunction: (lotName) => {
 
         const numericPadding = "00000";
