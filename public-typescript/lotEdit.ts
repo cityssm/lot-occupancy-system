@@ -62,7 +62,7 @@ declare const bulmaJS: BulmaJS;
     // Comments
 
     let lotComments: recordTypes.LotComment[] = exports.lotComments;
-
+    delete exports.lotComments;
     
     const openEditLotComment = (clickEvent: Event) => {
 

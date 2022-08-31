@@ -245,6 +245,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     los.initializeUnlockFieldButtons(formElement);
     if (!isCreate) {
         let lotOccupancyOccupants = exports.lotOccupancyOccupants;
+        delete exports.lotOccupancyOccupants;
         const openEditLotOccupancyOccupant = (clickEvent) => {
             const lotOccupantIndex = Number.parseInt(clickEvent.currentTarget.closest("tr").dataset.lotOccupantIndex, 10);
             const lotOccupancyOccupant = lotOccupancyOccupants.find((currentLotOccupancyOccupant) => {
@@ -441,6 +442,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     if (!isCreate) {
         let lotOccupancyComments = exports.lotOccupancyComments;
+        delete exports.lotOccupancyComments;
         const openEditLotOccupancyComment = (clickEvent) => {
             const lotOccupancyCommentId = Number.parseInt(clickEvent.currentTarget.closest("tr").dataset.lotOccupancyCommentId, 10);
             const lotOccupancyComment = lotOccupancyComments.find((currentLotOccupancyComment) => {
@@ -601,6 +603,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     if (!isCreate) {
         let lotOccupancyFees = exports.lotOccupancyFees;
+        delete exports.lotOccupancyFees;
         const lotOccupancyFeesContainerElement = document.querySelector("#container--lotOccupancyFees");
         const getFeeGrandTotal = () => {
             let feeGrandTotal = 0;
@@ -828,6 +831,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         });
         let lotOccupancyTransactions = exports.lotOccupancyTransactions;
+        delete exports.lotOccupancyTransactions;
         const lotOccupancyTransactionsContainerElement = document.querySelector("#container--lotOccupancyTransactions");
         const getTransactionGrandTotal = () => {
             let transactionGrandTotal = 0;

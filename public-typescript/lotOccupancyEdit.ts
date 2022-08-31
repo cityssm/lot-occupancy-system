@@ -366,6 +366,7 @@ declare const bulmaJS: BulmaJS;
 
     if (!isCreate) {
         let lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[] = exports.lotOccupancyOccupants;
+        delete exports.lotOccupancyOccupants;
 
         const openEditLotOccupancyOccupant = (clickEvent: Event) => {
             const lotOccupantIndex = Number.parseInt((clickEvent.currentTarget as HTMLElement).closest("tr").dataset.lotOccupantIndex, 10);
@@ -630,6 +631,7 @@ declare const bulmaJS: BulmaJS;
 
     if (!isCreate) {
         let lotOccupancyComments: recordTypes.LotOccupancyComment[] = exports.lotOccupancyComments;
+        delete exports.lotOccupancyComments;
 
         const openEditLotOccupancyComment = (clickEvent: Event) => {
 
@@ -854,6 +856,8 @@ declare const bulmaJS: BulmaJS;
     if (!isCreate) {
 
         let lotOccupancyFees: recordTypes.LotOccupancyFee[] = exports.lotOccupancyFees;
+        delete exports.lotOccupancyFees;
+
         const lotOccupancyFeesContainerElement = document.querySelector("#container--lotOccupancyFees") as HTMLElement;
 
         const getFeeGrandTotal = (): number => {
@@ -1153,6 +1157,8 @@ declare const bulmaJS: BulmaJS;
         });
 
         let lotOccupancyTransactions: recordTypes.LotOccupancyTransaction[] = exports.lotOccupancyTransactions;
+        delete exports.lotOccupancyTransactions;
+
         const lotOccupancyTransactionsContainerElement = document.querySelector("#container--lotOccupancyTransactions") as HTMLElement;
 
         const getTransactionGrandTotal = (): number => {

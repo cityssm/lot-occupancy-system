@@ -32,6 +32,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     formElement.addEventListener("submit", updateLot);
     los.initializeUnlockFieldButtons(formElement);
     let lotComments = exports.lotComments;
+    delete exports.lotComments;
     const openEditLotComment = (clickEvent) => {
         const lotCommentId = Number.parseInt(clickEvent.currentTarget.closest("tr").dataset.lotCommentId, 10);
         const lotComment = lotComments.find((currentLotComment) => {
