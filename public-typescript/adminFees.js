@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const feeCategoriesContainerElement = document.querySelector("#container--feeCategories");
     let feeCategories = exports.feeCategories;
+    delete exports.feeCategories;
     const renderFeeCategories = () => {
         if (feeCategories.length === 0) {
             feeCategoriesContainerElement.innerHTML = "<div class=\"message is-warning\">" +
@@ -55,13 +56,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const panelElement = document.createElement("div");
                 panelElement.className = "panel";
                 for (const fee of feeCategory.fees) {
-                    const panelBlockElement = document.createElement("a");
+                    const panelBlockElement = document.createElement("div");
                     panelBlockElement.className = "panel-block is-block container--fee";
                     panelBlockElement.dataset.feeId = fee.feeId.toString();
                     panelBlockElement.innerHTML = "<div class=\"columns\">" +
                         ("<div class=\"column is-half\">" +
                             "<p>" +
-                            "<strong>" + cityssm.escapeHTML(fee.feeName) + "</strong><br />" +
+                            "<a class=\"has-text-weight-bold\" href=\"#\">" + cityssm.escapeHTML(fee.feeName) + "</a><br />" +
                             "<small>" + cityssm.escapeHTML(fee.feeDescription).replace(/\n/g, "<br />") + "</small>" +
                             "</p>" +
                             "<p class=\"tags\">" +
@@ -98,7 +99,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 "") +
                             "</div>") +
                         "</div>";
-                    panelBlockElement.addEventListener("click", openEditFee);
+                    panelBlockElement.querySelector("a").addEventListener("click", openEditFee);
                     panelElement.append(panelBlockElement);
                 }
                 feeCategoryContainerElement.append(panelElement);
@@ -311,8 +312,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     const openEditFee = (clickEvent) => {
         clickEvent.preventDefault();
-        const feeId = Number.parseInt(clickEvent.currentTarget.dataset.feeId, 10);
-        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId);
+        const feeContainerElement = clickEvent.currentTarget.closest(".container--fee");
+        const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
+        const feeCategoryId = Number.parseInt(feeContainerElement.closest(".container--feeCategory").dataset.feeCategoryId);
         const feeCategory = feeCategories.find((currentFeeCategory) => {
             return currentFeeCategory.feeCategoryId === feeCategoryId;
         });

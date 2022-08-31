@@ -6,5 +6,5 @@ interface GetFeeCategoriesFilters {
 interface GetFeeCategoriesOptions {
     includeFees?: boolean;
 }
-export declare const getFeeCategories: (filters?: GetFeeCategoriesFilters, options?: GetFeeCategoriesOptions) => recordTypes.FeeCategory[];
+export declare const getFeeCategories: (filters: GetFeeCategoriesFilters, options: GetFeeCategoriesOptions) => recordTypes.FeeCategory[];
 export default getFeeCategories;

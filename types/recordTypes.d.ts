@@ -101,6 +101,7 @@ export interface FeeCategory extends Record {
     feeCategoryId?: number;
     feeCategory?: string;
     fees?: Fee[];
+    orderNumber?: number;
 }
 export interface Fee extends Record {
     feeId?: number;
@@ -119,6 +120,7 @@ export interface Fee extends Record {
     taxAmount?: number;
     taxPercentage?: number;
     isRequired?: boolean;
+    orderNumber?: number;
 }
 export interface LotOccupancyFee extends Fee, Record {
     lotOccupancyId?: number;

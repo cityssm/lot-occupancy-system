@@ -23,6 +23,7 @@ declare const bulmaJS: BulmaJS;
     const feeCategoriesContainerElement = document.querySelector("#container--feeCategories") as HTMLElement;
 
     let feeCategories: recordTypes.FeeCategory[] = exports.feeCategories;
+    delete exports.feeCategories;
 
     const renderFeeCategories = () => {
 
@@ -85,14 +86,14 @@ declare const bulmaJS: BulmaJS;
 
                 for (const fee of feeCategory.fees) {
 
-                    const panelBlockElement = document.createElement("a");
+                    const panelBlockElement = document.createElement("div");
                     panelBlockElement.className = "panel-block is-block container--fee";
                     panelBlockElement.dataset.feeId = fee.feeId.toString();
 
                     panelBlockElement.innerHTML = "<div class=\"columns\">" +
                         ("<div class=\"column is-half\">" +
                             "<p>" +
-                            "<strong>" + cityssm.escapeHTML(fee.feeName) + "</strong><br />" +
+                            "<a class=\"has-text-weight-bold\" href=\"#\">" + cityssm.escapeHTML(fee.feeName) + "</a><br />" +
                             "<small>" + cityssm.escapeHTML(fee.feeDescription).replace(/\n/g, "<br />") + "</small>" +
                             "</p>" +
                             "<p class=\"tags\">" +
@@ -130,7 +131,7 @@ declare const bulmaJS: BulmaJS;
                             "</div>") +
                         "</div>";
 
-                    panelBlockElement.addEventListener("click", openEditFee);
+                    panelBlockElement.querySelector("a").addEventListener("click", openEditFee);
 
                     panelElement.append(panelBlockElement);
                 }
@@ -435,8 +436,10 @@ declare const bulmaJS: BulmaJS;
     const openEditFee = (clickEvent: Event) => {
         clickEvent.preventDefault();
 
-        const feeId = Number.parseInt((clickEvent.currentTarget as HTMLElement).dataset.feeId, 10);
-        const feeCategoryId = Number.parseInt(((clickEvent.currentTarget as HTMLElement).closest(".container--feeCategory") as HTMLElement).dataset.feeCategoryId);
+        const feeContainerElement = (clickEvent.currentTarget as HTMLElement).closest(".container--fee") as HTMLElement;
+
+        const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
+        const feeCategoryId = Number.parseInt((feeContainerElement.closest(".container--feeCategory") as HTMLElement).dataset.feeCategoryId);
 
         const feeCategory = feeCategories.find((currentFeeCategory) => {
             return currentFeeCategory.feeCategoryId === feeCategoryId;

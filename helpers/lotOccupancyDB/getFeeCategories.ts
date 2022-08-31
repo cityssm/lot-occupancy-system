@@ -17,13 +17,15 @@ interface GetFeeCategoriesOptions {
 }
 
 
-export const getFeeCategories = (filters ? : GetFeeCategoriesFilters, options ? : GetFeeCategoriesOptions): recordTypes.FeeCategory[] => {
+export const getFeeCategories = (filters: GetFeeCategoriesFilters, options: GetFeeCategoriesOptions): recordTypes.FeeCategory[] => {
+
+    const updateOrderNumbers = !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees;
 
     const database = sqlite(databasePath, {
-        readonly: true
+        readonly: !updateOrderNumbers
     });
 
-    let sql = "select feeCategoryId, feeCategory" +
+    let sql = "select feeCategoryId, feeCategory, orderNumber" +
         " from FeeCategories" +
         " where recordDelete_timeMillis is null";
 
@@ -52,8 +54,21 @@ export const getFeeCategories = (filters ? : GetFeeCategoriesFilters, options ? 
         .all(sqlParameters);
 
     if (options.includeFees) {
-        
+
+        let expectedFeeCategoryOrderNumber = -1;
+
         for (const feeCategory of feeCategories) {
+
+            expectedFeeCategoryOrderNumber += 1;
+
+            if (feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
+                database.prepare("update FeeCategories" +
+                        " set orderNumber = ?" +
+                        " where feeCategoryId = ?")
+                    .run(expectedFeeCategoryOrderNumber, feeCategory.feeCategoryId);
+
+                feeCategory.orderNumber = expectedFeeCategoryOrderNumber;
+            }
 
             sql = "select f.feeId, f.feeName, f.feeDescription," +
                 " f.occupancyTypeId, o.occupancyType," +
@@ -61,13 +76,13 @@ export const getFeeCategories = (filters ? : GetFeeCategoriesFilters, options ? 
                 " ifnull(f.feeAmount, 0) as feeAmount, f.feeFunction," +
                 " f.taxAmount, f.taxPercentage," +
                 " f.includeQuantity, f.quantityUnit," +
-                " f.isRequired" +
+                " f.isRequired, f.orderNumber" +
                 " from Fees f" +
                 " left join OccupancyTypes o on f.occupancyTypeId = o.occupancyTypeId" +
                 " left join LotTypes l on f.lotTypeId = l.lotTypeId" +
                 " where f.recordDelete_timeMillis is null" +
                 " and f.feeCategoryId = ?";
-    
+
             sqlParameters = [];
 
             sqlParameters.push(feeCategory.feeCategoryId);
@@ -87,6 +102,26 @@ export const getFeeCategories = (filters ? : GetFeeCategoriesFilters, options ? 
             feeCategory.fees = database.prepare(sql +
                     " order by f.orderNumber, f.feeName")
                 .all(sqlParameters);
+
+            if (updateOrderNumbers) {
+
+                let expectedFeeOrderNumber = -1;
+
+                for (const fee of feeCategory.fees) {
+
+                    expectedFeeOrderNumber += 1;
+
+                    if (fee.orderNumber !== expectedFeeOrderNumber) {
+
+                        database.prepare("update Fees" +
+                                " set orderNumber = ?" +
+                                " where feeId = ?")
+                            .run(expectedFeeOrderNumber, fee.feeId);
+
+                        fee.orderNumber = expectedFeeOrderNumber;
+                    }
+                }
+            }
         }
     }
 
