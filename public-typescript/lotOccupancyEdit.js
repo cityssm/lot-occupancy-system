@@ -213,7 +213,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 lotNameFilterElement.value = currentLotName;
                 lotNameFilterElement.focus();
                 lotNameFilterElement.addEventListener("change", searchLots);
-                modalElement.querySelector("#lotSelect--occupancyStatus").addEventListener("change", searchLots);
+                const occupancyStatusFilterElement = modalElement.querySelector("#lotSelect--occupancyStatus");
+                occupancyStatusFilterElement.addEventListener("change", searchLots);
+                if (currentLotName !== "") {
+                    occupancyStatusFilterElement.value = "";
+                }
                 lotSelectFormElement = modalElement.querySelector("#form--lotSelect");
                 lotSelectResultsElement = modalElement.querySelector("#resultsContainer--lotSelect");
                 lotSelectFormElement.addEventListener("submit", (submitEvent) => {

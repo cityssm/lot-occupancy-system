@@ -319,7 +319,12 @@ declare const bulmaJS: BulmaJS;
                 lotNameFilterElement.focus();
                 lotNameFilterElement.addEventListener("change", searchLots);
 
-                modalElement.querySelector("#lotSelect--occupancyStatus").addEventListener("change", searchLots);
+                const occupancyStatusFilterElement = modalElement.querySelector("#lotSelect--occupancyStatus") as HTMLSelectElement;
+                occupancyStatusFilterElement.addEventListener("change", searchLots);
+
+                if (currentLotName !== "") {
+                    occupancyStatusFilterElement.value = "";
+                }
 
                 lotSelectFormElement = modalElement.querySelector("#form--lotSelect");
                 lotSelectResultsElement = modalElement.querySelector("#resultsContainer--lotSelect");
