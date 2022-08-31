@@ -4,13 +4,16 @@ import {
     lotOccupancyDB as databasePath
 } from "../../data/databasePaths.js";
 
+import {
+    clearOccupancyTypesCache
+} from "../functions.cache.js";
+
 import type * as recordTypes from "../../types/recordTypes";
-import { clearOccupancyTypesCache } from "../functions.cache.js";
 
 
 interface AddOccupancyTypeForm {
     occupancyType: string;
-    orderNumber?: number;
+    orderNumber ? : number;
 }
 
 

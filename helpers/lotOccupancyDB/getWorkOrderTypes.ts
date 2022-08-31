@@ -1,4 +1,5 @@
 import sqlite from "better-sqlite3";
+
 import {
     lotOccupancyDB as databasePath
 } from "../../data/databasePaths.js";

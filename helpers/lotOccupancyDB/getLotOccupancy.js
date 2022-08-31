@@ -1,6 +1,6 @@
-import { dateIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { dateIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { getLotOccupancyOccupants } from "./getLotOccupancyOccupants.js";
 import { getLotOccupancyComments } from "./getLotOccupancyComments.js";
 import { getLotOccupancyFields } from "./getLotOccupancyFields.js";

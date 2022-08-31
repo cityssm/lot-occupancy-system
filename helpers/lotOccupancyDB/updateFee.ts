@@ -1,5 +1,8 @@
 import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+
+import {
+    lotOccupancyDB as databasePath
+} from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -9,14 +12,14 @@ interface UpdateFeeForm {
     feeCategoryId: string;
     feeName: string;
     feeDescription: string;
-    occupancyTypeId?: string;
-    lotTypeId?: string;
-    feeAmount?: string;
-    feeFunction?: string;
-    taxAmount?: string;
-    taxPercentage?: string;
+    occupancyTypeId ? : string;
+    lotTypeId ? : string;
+    feeAmount ? : string;
+    feeFunction ? : string;
+    taxAmount ? : string;
+    taxPercentage ? : string;
     includeQuantity: "" | "1";
-    quantityUnit?: string;
+    quantityUnit ? : string;
     isRequired: "" | "1";
 }
 
