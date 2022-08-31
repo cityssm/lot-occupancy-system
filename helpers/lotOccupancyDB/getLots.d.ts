@@ -6,6 +6,7 @@ interface GetLotsFilters {
     lotTypeId?: number | string;
     lotStatusId?: number | string;
     occupancyStatus?: "" | "occupied" | "unoccupied";
+    workOrderId?: number | string;
 }
 interface GetLotsOptions {
     limit: number;

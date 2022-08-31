@@ -60,6 +60,10 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
         sqlWhereClause += " and l.lotTypeId = ?";
         sqlParameters.push(filters.lotTypeId);
     }
+    if (filters.workOrderId) {
+        sqlWhereClause += " and o.lotOccupancyId in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)";
+        sqlParameters.push(filters.workOrderId);
+    }
     const count = database.prepare("select count(*) as recordCount" +
         " from LotOccupancies o" +
         " left join Lots l on o.lotId = l.lotId" +

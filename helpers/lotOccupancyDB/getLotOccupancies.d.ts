@@ -9,6 +9,7 @@ interface GetLotOccupanciesFilters {
     mapId?: number | string;
     lotName?: string;
     lotTypeId?: number | string;
+    workOrderId?: number | string;
 }
 interface GetLotOccupanciesOptions {
     limit: -1 | number;

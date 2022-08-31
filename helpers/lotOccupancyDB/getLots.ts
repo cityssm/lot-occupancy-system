@@ -19,6 +19,7 @@ interface GetLotsFilters {
     lotTypeId ? : number | string;
     lotStatusId ? : number | string;
     occupancyStatus ? : "" | "occupied" | "unoccupied";
+    workOrderId ? : number | string;
 }
 
 interface GetLotsOptions {
@@ -70,6 +71,11 @@ export const getLots = (filters: GetLotsFilters,
         } else if (filters.occupancyStatus === "unoccupied") {
             sqlWhereClause += " and (lotOccupancyCount is null or lotOccupancyCount = 0)";
         }
+    }
+
+    if (filters.workOrderId) {
+        sqlWhereClause += " and l.lotId in (select lotId from WorkOrderLots where recordDelete_timeMillis is null and workOrderId = ?)";
+        sqlParameters.push(filters.workOrderId);
     }
 
     const currentDate = dateToInteger(new Date());

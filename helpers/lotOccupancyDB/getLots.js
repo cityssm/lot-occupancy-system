@@ -35,6 +35,10 @@ export const getLots = (filters, options, connectedDatabase) => {
             sqlWhereClause += " and (lotOccupancyCount is null or lotOccupancyCount = 0)";
         }
     }
+    if (filters.workOrderId) {
+        sqlWhereClause += " and l.lotId in (select lotId from WorkOrderLots where recordDelete_timeMillis is null and workOrderId = ?)";
+        sqlParameters.push(filters.workOrderId);
+    }
     const currentDate = dateToInteger(new Date());
     const count = database.prepare("select count(*) as recordCount" +
         " from Lots l" +
