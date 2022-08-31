@@ -26,6 +26,7 @@ configFallbackValues.set("aliases.occupants", "Occupants");
 configFallbackValues.set("aliases.externalReceiptNumber", "External Receipt Number");
 configFallbackValues.set("settings.map.mapCityDefault", "");
 configFallbackValues.set("settings.map.mapProvinceDefault", "");
+configFallbackValues.set("settings.lot.lotNameSortNameFunction", (lotName) => lotName);
 configFallbackValues.set("settings.lotOccupancy.occupancyEndDateIsRequired", true);
 configFallbackValues.set("settings.lotOccupancy.occupantCityDefault", "");
 configFallbackValues.set("settings.lotOccupancy.occupantProvinceDefault", "");

@@ -1,8 +1,9 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
-export const getLots = (filters, options) => {
-    const database = sqlite(databasePath, {
+import * as configFunctions from "../functions.config.js";
+export const getLots = (filters, options, connectedDatabase) => {
+    const database = connectedDatabase || sqlite(databasePath, {
         readonly: true
     });
     let sqlWhereClause = " where l.recordDelete_timeMillis is null";
@@ -50,6 +51,7 @@ export const getLots = (filters, options) => {
         .recordCount;
     let lots = [];
     if (count > 0) {
+        database.function("userFn_lotNameSortName", configFunctions.getProperty("settings.lot.lotNameSortNameFunction"));
         lots = database
             .prepare("select l.lotId, l.lotName," +
             " t.lotType," +
@@ -69,13 +71,15 @@ export const getLots = (filters, options) => {
                 " group by lotId" +
                 ") o on l.lotId = o.lotId") +
             sqlWhereClause +
-            " order by l.lotName, l.lotId" +
+            " order by userFn_lotNameSortName(l.lotName), l.lotId" +
             (options ?
                 " limit " + options.limit + " offset " + options.offset :
                 ""))
             .all(sqlParameters);
     }
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
     return {
         count,
         lots

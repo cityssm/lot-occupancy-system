@@ -32,6 +32,9 @@ export interface Config {
             mapCityDefault?: string;
             mapProvinceDefault?: string;
         };
+        lot?: {
+            lotNameSortNameFunction?: (lotName: string) => string;
+        };
         lotOccupancy?: {
             lotIdIsRequired?: boolean;
             occupancyEndDateIsRequired?: boolean;

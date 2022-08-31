@@ -46,6 +46,8 @@ configFallbackValues.set("aliases.externalReceiptNumber", "External Receipt Numb
 configFallbackValues.set("settings.map.mapCityDefault", "");
 configFallbackValues.set("settings.map.mapProvinceDefault", "");
 
+configFallbackValues.set("settings.lot.lotNameSortNameFunction", (lotName: string) => lotName);
+
 configFallbackValues.set("settings.lotOccupancy.occupancyEndDateIsRequired", true);
 configFallbackValues.set("settings.lotOccupancy.occupantCityDefault", "");
 configFallbackValues.set("settings.lotOccupancy.occupantProvinceDefault", "");
@@ -90,6 +92,8 @@ export function getProperty(propertyName: "aliases.externalReceiptNumber"): stri
 
 export function getProperty(propertyName: "settings.map.mapCityDefault"): string;
 export function getProperty(propertyName: "settings.map.mapProvinceDefault"): string;
+
+export function getProperty(propertyName: "settings.lot.lotNameSortNameFunction"): (lotName: string) => string;
 
 export function getProperty(propertyName: "settings.lotOccupancy.occupancyEndDateIsRequired"): boolean;
 export function getProperty(propertyName: "settings.lotOccupancy.occupantCityDefault"): string;

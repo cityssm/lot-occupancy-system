@@ -459,6 +459,9 @@ function importFromPrepaidCSV() {
                 const possibleLots = getLots({
                     mapId: map.mapId,
                     lotName
+                }, {
+                    limit: -1,
+                    offset: 0
                 });
                 if (possibleLots.lots.length > 0) {
                     lot = possibleLots.lots[0];

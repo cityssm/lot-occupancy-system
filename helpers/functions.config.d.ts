@@ -26,6 +26,7 @@ export declare function getProperty(propertyName: "aliases.occupants"): string;
 export declare function getProperty(propertyName: "aliases.externalReceiptNumber"): string;
 export declare function getProperty(propertyName: "settings.map.mapCityDefault"): string;
 export declare function getProperty(propertyName: "settings.map.mapProvinceDefault"): string;
+export declare function getProperty(propertyName: "settings.lot.lotNameSortNameFunction"): (lotName: string) => string;
 export declare function getProperty(propertyName: "settings.lotOccupancy.occupancyEndDateIsRequired"): boolean;
 export declare function getProperty(propertyName: "settings.lotOccupancy.occupantCityDefault"): string;
 export declare function getProperty(propertyName: "settings.lotOccupancy.occupantProvinceDefault"): string;

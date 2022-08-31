@@ -8,6 +8,8 @@ import {
     dateToInteger
 } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
+import * as configFunctions from "../functions.config.js";
+
 import type * as recordTypes from "../../types/recordTypes";
 
 
@@ -25,12 +27,14 @@ interface GetLotsOptions {
 }
 
 
-export const getLots = (filters ? : GetLotsFilters, options ? : GetLotsOptions): {
+export const getLots = (filters: GetLotsFilters,
+    options: GetLotsOptions,
+    connectedDatabase ? : sqlite.Database): {
     count: number;
     lots: recordTypes.Lot[];
 } => {
 
-    const database = sqlite(databasePath, {
+    const database = connectedDatabase || sqlite(databasePath, {
         readonly: true
     });
 
@@ -88,6 +92,8 @@ export const getLots = (filters ? : GetLotsFilters, options ? : GetLotsOptions):
 
     if (count > 0) {
 
+        database.function("userFn_lotNameSortName", configFunctions.getProperty("settings.lot.lotNameSortNameFunction"));
+
         lots = database
             .prepare("select l.lotId, l.lotName," +
                 " t.lotType," +
@@ -107,14 +113,16 @@ export const getLots = (filters ? : GetLotsFilters, options ? : GetLotsOptions):
                     " group by lotId" +
                     ") o on l.lotId = o.lotId") +
                 sqlWhereClause +
-                " order by l.lotName, l.lotId" +
+                " order by userFn_lotNameSortName(l.lotName), l.lotId" +
                 (options ?
                     " limit " + options.limit + " offset " + options.offset :
                     ""))
             .all(sqlParameters);
     }
 
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
 
     return {
         count,
