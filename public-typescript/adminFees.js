@@ -33,18 +33,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</button>" +
                             "</div>" :
                         "") +
-                    "<div class=\"level-item\">" +
-                    "<button class=\"button is-small is-primary button--editFeeCategory\" type=\"button\">" +
-                    "<span class=\"icon is-small\"><i class=\"fas fa-pencil-alt\" aria-hidden=\"true\"></i></span>" +
-                    "<span>Edit Category</span>" +
-                    "</button>" +
-                    "</div>" +
-                    "<div class=\"level-item\">" +
-                    "<button class=\"button is-small is-success button--addFee\" type=\"button\">" +
-                    "<span class=\"icon is-small\"><i class=\"fas fa-plus\" aria-hidden=\"true\"></i></span>" +
-                    "<span>Add Fee</span>" +
-                    "</button>" +
-                    "</div>" +
+                    ("<div class=\"level-item\">" +
+                        "<button class=\"button is-small is-primary button--editFeeCategory\" type=\"button\">" +
+                        "<span class=\"icon is-small\"><i class=\"fas fa-pencil-alt\" aria-hidden=\"true\"></i></span>" +
+                        "<span>Edit Category</span>" +
+                        "</button>" +
+                        "</div>") +
+                    ("<div class=\"level-item\">" +
+                        "<button class=\"button is-small is-success button--addFee\" type=\"button\">" +
+                        "<span class=\"icon is-small\"><i class=\"fas fa-plus\" aria-hidden=\"true\"></i></span>" +
+                        "<span>Add Fee</span>" +
+                        "</button>" +
+                        "</div>") +
+                    ("<div class=\"level-item\">" +
+                        "<div class=\"field has-addons\">" +
+                        "<div class=\"control\">" +
+                        "<button class=\"button is-small button--moveFeeCategoryUp\" data-tooltip=\"Move Up\" type=\"button\" aria-label=\"Move Up\">" +
+                        "<i class=\"fas fa-arrow-up\" aria-hidden=\"true\"></i>" +
+                        "</button>" +
+                        "</div>" +
+                        "<div class=\"control\">" +
+                        "<button class=\"button is-small button--moveFeeCategoryDown\" data-tooltip=\"Move Down\" type=\"button\" aria-label=\"Move Down\">" +
+                        "<i class=\"fas fa-arrow-down\" aria-hidden=\"true\"></i>" +
+                        "</button>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>") +
                     "</div>") +
                 "</div>");
             if (feeCategory.fees.length === 0) {
@@ -98,25 +112,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                     "<small>Quantity</small>" :
                                 "") +
                             "</div>") +
+                        ("<div class=\"column is-narrow\">" +
+                            "<div class=\"field has-addons\">" +
+                            "<div class=\"control\">" +
+                            "<button class=\"button is-small button--moveFeeUp\" data-tooltip=\"Move Up\" type=\"button\" aria-label=\"Move Up\">" +
+                            "<i class=\"fas fa-arrow-up\" aria-hidden=\"true\"></i>" +
+                            "</button>" +
+                            "</div>" +
+                            "<div class=\"control\">" +
+                            "<button class=\"button is-small button--moveFeeDown\" data-tooltip=\"Move Down\" type=\"button\" aria-label=\"Move Down\">" +
+                            "<i class=\"fas fa-arrow-down\" aria-hidden=\"true\"></i>" +
+                            "</button>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>") +
                         "</div>";
                     panelBlockElement.querySelector("a").addEventListener("click", openEditFee);
+                    panelBlockElement.querySelector(".button--moveFeeUp").addEventListener("click", moveFeeUp);
+                    panelBlockElement.querySelector(".button--moveFeeDown").addEventListener("click", moveFeeDown);
                     panelElement.append(panelBlockElement);
                 }
                 feeCategoryContainerElement.append(panelElement);
             }
+            if (feeCategory.fees.length === 0) {
+                feeCategoryContainerElement.querySelector(".button--deleteFeeCategory")
+                    .addEventListener("click", confirmDeleteFeeCategory);
+            }
+            feeCategoryContainerElement.querySelector(".button--editFeeCategory")
+                .addEventListener("click", openEditFeeCategory);
+            feeCategoryContainerElement.querySelector(".button--addFee")
+                .addEventListener("click", openAddFee);
+            feeCategoryContainerElement.querySelector(".button--moveFeeCategoryUp")
+                .addEventListener("click", moveFeeCategoryUp);
+            feeCategoryContainerElement.querySelector(".button--moveFeeCategoryDown")
+                .addEventListener("click", moveFeeCategoryDown);
             feeCategoriesContainerElement.append(feeCategoryContainerElement);
-        }
-        const deleteCategoryButtonElements = feeCategoriesContainerElement.querySelectorAll(".button--deleteFeeCategory");
-        for (const deleteCategoryButtonElement of deleteCategoryButtonElements) {
-            deleteCategoryButtonElement.addEventListener("click", confirmDeleteFeeCategory);
-        }
-        const editCategoryButtonElements = feeCategoriesContainerElement.querySelectorAll(".button--editFeeCategory");
-        for (const editCategoryButtonElement of editCategoryButtonElements) {
-            editCategoryButtonElement.addEventListener("click", openEditFeeCategory);
-        }
-        const addFeeButtonElements = feeCategoriesContainerElement.querySelectorAll(".button--addFee");
-        for (const addFeeButtonElement of addFeeButtonElements) {
-            addFeeButtonElement.addEventListener("click", openAddFee);
         }
     };
     document.querySelector("#button--addFeeCategory").addEventListener("click", () => {
@@ -215,6 +245,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
             okButton: {
                 text: "Yes, Delete the Fee Category",
                 callbackFunction: doDelete
+            }
+        });
+    };
+    const moveFeeCategoryUp = (clickEvent) => {
+        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
+        cityssm.postJSON(urlPrefix + "/admin/doMoveFeeCategoryUp", {
+            feeCategoryId
+        }, (responseJSON) => {
+            if (responseJSON.success) {
+                feeCategories = responseJSON.feeCategories;
+                renderFeeCategories();
+            }
+            else {
+                bulmaJS.alert({
+                    title: "Error Moving Fee Category",
+                    message: responseJSON.errorMessage,
+                    contextualColorName: "danger"
+                });
+            }
+        });
+    };
+    const moveFeeCategoryDown = (clickEvent) => {
+        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
+        cityssm.postJSON(urlPrefix + "/admin/doMoveFeeCategoryDown", {
+            feeCategoryId
+        }, (responseJSON) => {
+            if (responseJSON.success) {
+                feeCategories = responseJSON.feeCategories;
+                renderFeeCategories();
+            }
+            else {
+                bulmaJS.alert({
+                    title: "Error Moving Fee Category",
+                    message: responseJSON.errorMessage,
+                    contextualColorName: "danger"
+                });
             }
         });
     };
@@ -467,6 +533,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
+            }
+        });
+    };
+    const moveFeeUp = (clickEvent) => {
+        const feeContainerElement = clickEvent.currentTarget.closest(".container--fee");
+        const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
+        cityssm.postJSON(urlPrefix + "/admin/doMoveFeeUp", {
+            feeId
+        }, (responseJSON) => {
+            if (responseJSON.success) {
+                feeCategories = responseJSON.feeCategories;
+                renderFeeCategories();
+            }
+            else {
+                bulmaJS.alert({
+                    title: "Error Moving Fee",
+                    message: responseJSON.errorMessage,
+                    contextualColorName: "danger"
+                });
+            }
+        });
+    };
+    const moveFeeDown = (clickEvent) => {
+        const feeContainerElement = clickEvent.currentTarget.closest(".container--fee");
+        const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
+        cityssm.postJSON(urlPrefix + "/admin/doMoveFeeDown", {
+            feeId
+        }, (responseJSON) => {
+            if (responseJSON.success) {
+                feeCategories = responseJSON.feeCategories;
+                renderFeeCategories();
+            }
+            else {
+                bulmaJS.alert({
+                    title: "Error Moving Fee",
+                    message: responseJSON.errorMessage,
+                    contextualColorName: "danger"
+                });
             }
         });
     };

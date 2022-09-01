@@ -59,18 +59,32 @@ declare const bulmaJS: BulmaJS;
                         "</button>" +
                         "</div>" :
                         "") +
-                    "<div class=\"level-item\">" +
-                    "<button class=\"button is-small is-primary button--editFeeCategory\" type=\"button\">" +
-                    "<span class=\"icon is-small\"><i class=\"fas fa-pencil-alt\" aria-hidden=\"true\"></i></span>" +
-                    "<span>Edit Category</span>" +
-                    "</button>" +
-                    "</div>" +
-                    "<div class=\"level-item\">" +
-                    "<button class=\"button is-small is-success button--addFee\" type=\"button\">" +
-                    "<span class=\"icon is-small\"><i class=\"fas fa-plus\" aria-hidden=\"true\"></i></span>" +
-                    "<span>Add Fee</span>" +
-                    "</button>" +
-                    "</div>" +
+                    ("<div class=\"level-item\">" +
+                        "<button class=\"button is-small is-primary button--editFeeCategory\" type=\"button\">" +
+                        "<span class=\"icon is-small\"><i class=\"fas fa-pencil-alt\" aria-hidden=\"true\"></i></span>" +
+                        "<span>Edit Category</span>" +
+                        "</button>" +
+                        "</div>") +
+                    ("<div class=\"level-item\">" +
+                        "<button class=\"button is-small is-success button--addFee\" type=\"button\">" +
+                        "<span class=\"icon is-small\"><i class=\"fas fa-plus\" aria-hidden=\"true\"></i></span>" +
+                        "<span>Add Fee</span>" +
+                        "</button>" +
+                        "</div>") +
+                    ("<div class=\"level-item\">" +
+                        "<div class=\"field has-addons\">" +
+                        "<div class=\"control\">" +
+                        "<button class=\"button is-small button--moveFeeCategoryUp\" data-tooltip=\"Move Up\" type=\"button\" aria-label=\"Move Up\">" +
+                        "<i class=\"fas fa-arrow-up\" aria-hidden=\"true\"></i>" +
+                        "</button>" +
+                        "</div>" +
+                        "<div class=\"control\">" +
+                        "<button class=\"button is-small button--moveFeeCategoryDown\" data-tooltip=\"Move Down\" type=\"button\" aria-label=\"Move Down\">" +
+                        "<i class=\"fas fa-arrow-down\" aria-hidden=\"true\"></i>" +
+                        "</button>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>") +
                     "</div>") +
                 "</div>");
 
@@ -129,9 +143,26 @@ declare const bulmaJS: BulmaJS;
                                 "<small>Quantity</small>" :
                                 "") +
                             "</div>") +
+                        ("<div class=\"column is-narrow\">" +
+                            "<div class=\"field has-addons\">" +
+                            "<div class=\"control\">" +
+                            "<button class=\"button is-small button--moveFeeUp\" data-tooltip=\"Move Up\" type=\"button\" aria-label=\"Move Up\">" +
+                            "<i class=\"fas fa-arrow-up\" aria-hidden=\"true\"></i>" +
+                            "</button>" +
+                            "</div>" +
+                            "<div class=\"control\">" +
+                            "<button class=\"button is-small button--moveFeeDown\" data-tooltip=\"Move Down\" type=\"button\" aria-label=\"Move Down\">" +
+                            "<i class=\"fas fa-arrow-down\" aria-hidden=\"true\"></i>" +
+                            "</button>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>") +
                         "</div>";
 
                     panelBlockElement.querySelector("a").addEventListener("click", openEditFee);
+
+                    panelBlockElement.querySelector(".button--moveFeeUp").addEventListener("click", moveFeeUp);
+                    panelBlockElement.querySelector(".button--moveFeeDown").addEventListener("click", moveFeeDown);
 
                     panelElement.append(panelBlockElement);
                 }
@@ -139,25 +170,24 @@ declare const bulmaJS: BulmaJS;
                 feeCategoryContainerElement.append(panelElement);
             }
 
+            if (feeCategory.fees.length === 0) {
+                feeCategoryContainerElement.querySelector(".button--deleteFeeCategory")
+                    .addEventListener("click", confirmDeleteFeeCategory);
+            }
+
+            feeCategoryContainerElement.querySelector(".button--editFeeCategory")
+                .addEventListener("click", openEditFeeCategory);
+
+            feeCategoryContainerElement.querySelector(".button--addFee")
+                .addEventListener("click", openAddFee);
+
+            feeCategoryContainerElement.querySelector(".button--moveFeeCategoryUp")
+                .addEventListener("click", moveFeeCategoryUp);
+
+            feeCategoryContainerElement.querySelector(".button--moveFeeCategoryDown")
+                .addEventListener("click", moveFeeCategoryDown);
+
             feeCategoriesContainerElement.append(feeCategoryContainerElement);
-        }
-
-        const deleteCategoryButtonElements = feeCategoriesContainerElement.querySelectorAll(".button--deleteFeeCategory");
-
-        for (const deleteCategoryButtonElement of deleteCategoryButtonElements) {
-            deleteCategoryButtonElement.addEventListener("click", confirmDeleteFeeCategory);
-        }
-
-        const editCategoryButtonElements = feeCategoriesContainerElement.querySelectorAll(".button--editFeeCategory");
-
-        for (const editCategoryButtonElement of editCategoryButtonElements) {
-            editCategoryButtonElement.addEventListener("click", openEditFeeCategory);
-        }
-
-        const addFeeButtonElements = feeCategoriesContainerElement.querySelectorAll(".button--addFee");
-
-        for (const addFeeButtonElement of addFeeButtonElements) {
-            addFeeButtonElement.addEventListener("click", openAddFee);
         }
     };
 
@@ -270,21 +300,23 @@ declare const bulmaJS: BulmaJS;
         const doDelete = () => {
 
             cityssm.postJSON(urlPrefix + "/admin/doDeleteFeeCategory", {
-                feeCategoryId
-            },
-            (responseJSON: {success: boolean; errorMessage?: string; feeCategories?: recordTypes.FeeCategory[];}) => {
+                    feeCategoryId
+                },
+                (responseJSON: {
+                    success: boolean;errorMessage ? : string;feeCategories ? : recordTypes.FeeCategory[];
+                }) => {
 
-                if (responseJSON.success) {
-                    feeCategories = responseJSON.feeCategories;
-                    renderFeeCategories();
-                } else {
-                    bulmaJS.alert({
-                        title: "Error Updating Fee Category",
-                        message: responseJSON.errorMessage,
-                        contextualColorName: "danger"
-                    });
-                }
-            });
+                    if (responseJSON.success) {
+                        feeCategories = responseJSON.feeCategories;
+                        renderFeeCategories();
+                    } else {
+                        bulmaJS.alert({
+                            title: "Error Updating Fee Category",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                });
         };
 
         bulmaJS.confirm({
@@ -296,6 +328,56 @@ declare const bulmaJS: BulmaJS;
                 callbackFunction: doDelete
             }
         })
+    };
+
+    const moveFeeCategoryUp = (clickEvent: Event) => {
+
+        const feeCategoryId = Number.parseInt(((clickEvent.currentTarget as HTMLElement).closest(".container--feeCategory") as HTMLElement).dataset.feeCategoryId, 10);
+
+        cityssm.postJSON(urlPrefix + "/admin/doMoveFeeCategoryUp", {
+                feeCategoryId
+            },
+            (responseJSON: {
+                success: boolean;
+                errorMessage ? : string;
+                feeCategories ? : recordTypes.FeeCategory[];
+            }) => {
+                if (responseJSON.success) {
+                    feeCategories = responseJSON.feeCategories;
+                    renderFeeCategories();
+                } else {
+                    bulmaJS.alert({
+                        title: "Error Moving Fee Category",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            });
+    };
+
+    const moveFeeCategoryDown = (clickEvent: Event) => {
+
+        const feeCategoryId = Number.parseInt(((clickEvent.currentTarget as HTMLElement).closest(".container--feeCategory") as HTMLElement).dataset.feeCategoryId, 10);
+
+        cityssm.postJSON(urlPrefix + "/admin/doMoveFeeCategoryDown", {
+                feeCategoryId
+            },
+            (responseJSON: {
+                success: boolean;
+                errorMessage ? : string;
+                feeCategories ? : recordTypes.FeeCategory[];
+            }) => {
+                if (responseJSON.success) {
+                    feeCategories = responseJSON.feeCategories;
+                    renderFeeCategories();
+                } else {
+                    bulmaJS.alert({
+                        title: "Error Moving Fee Category",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            });
     };
 
     /*
@@ -663,6 +745,61 @@ declare const bulmaJS: BulmaJS;
             }
         });
     };
+
+    const moveFeeUp = (clickEvent: Event) => {
+
+        const feeContainerElement = (clickEvent.currentTarget as HTMLElement).closest(".container--fee") as HTMLElement;
+
+        const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
+
+        cityssm.postJSON(urlPrefix + "/admin/doMoveFeeUp", {
+                feeId
+            },
+            (responseJSON: {
+                success: boolean;
+                errorMessage ? : string;
+                feeCategories ? : recordTypes.FeeCategory[];
+            }) => {
+                if (responseJSON.success) {
+                    feeCategories = responseJSON.feeCategories;
+                    renderFeeCategories();
+                } else {
+                    bulmaJS.alert({
+                        title: "Error Moving Fee",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            });
+    };
+
+    const moveFeeDown = (clickEvent: Event) => {
+
+        const feeContainerElement = (clickEvent.currentTarget as HTMLElement).closest(".container--fee") as HTMLElement;
+
+        const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
+
+        cityssm.postJSON(urlPrefix + "/admin/doMoveFeeDown", {
+                feeId
+            },
+            (responseJSON: {
+                success: boolean;
+                errorMessage ? : string;
+                feeCategories ? : recordTypes.FeeCategory[];
+            }) => {
+                if (responseJSON.success) {
+                    feeCategories = responseJSON.feeCategories;
+                    renderFeeCategories();
+                } else {
+                    bulmaJS.alert({
+                        title: "Error Moving Fee",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            });
+    };
+
 
     /*
      * Initialize

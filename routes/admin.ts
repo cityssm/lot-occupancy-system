@@ -7,10 +7,14 @@ import * as permissionHandlers from "../handlers/permissions.js";
 import handler_fees from "../handlers/admin-get/fees.js";
 import handler_doAddFeeCategory from "../handlers/admin-post/doAddFeeCategory.js";
 import handler_doUpdateFeeCategory from "../handlers/admin-post/doUpdateFeeCategory.js";
+import handler_doMoveFeeCategoryUp from "../handlers/admin-post/doMoveFeeCategoryUp.js";
+import handler_doMoveFeeCategoryDown from "../handlers/admin-post/doMoveFeeCategoryDown.js";
 import handler_doDeleteFeeCategory from "../handlers/admin-post/doDeleteFeeCategory.js";
 
 import handler_doAddFee from "../handlers/admin-post/doAddFee.js";
 import handler_doUpdateFee from "../handlers/admin-post/doUpdateFee.js";
+import handler_doMoveFeeUp from "../handlers/admin-post/doMoveFeeUp.js";
+import handler_doMoveFeeDown from "../handlers/admin-post/doMoveFeeDown.js";
 import handler_doDeleteFee from "../handlers/admin-post/doDeleteFee.js";
 
 import handler_tables from "../handlers/admin-get/tables.js";
@@ -51,6 +55,14 @@ router.post("/doUpdateFeeCategory",
     permissionHandlers.adminPostHandler,
     handler_doUpdateFeeCategory);
 
+router.post("/doMoveFeeCategoryUp",
+    permissionHandlers.adminPostHandler,
+    handler_doMoveFeeCategoryUp);
+
+router.post("/doMoveFeeCategoryDown",
+    permissionHandlers.adminPostHandler,
+    handler_doMoveFeeCategoryDown);
+
 router.post("/doDeleteFeeCategory",
     permissionHandlers.adminPostHandler,
     handler_doDeleteFeeCategory);
@@ -62,6 +74,14 @@ router.post("/doAddFee",
 router.post("/doUpdateFee",
     permissionHandlers.adminPostHandler,
     handler_doUpdateFee);
+
+router.post("/doMoveFeeUp",
+    permissionHandlers.adminPostHandler,
+    handler_doMoveFeeUp);
+
+router.post("/doMoveFeeDown",
+    permissionHandlers.adminPostHandler,
+    handler_doMoveFeeDown);
 
 router.post("/doDeleteFee",
     permissionHandlers.adminPostHandler,
