@@ -780,7 +780,7 @@ function importFromPrepaidCSV() {
                 }, {
                     limit: -1,
                     offset: 0
-                };
+                });
 
                 if (possibleLots.lots.length > 0) {
                     lot = possibleLots.lots[0];
