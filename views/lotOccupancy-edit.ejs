@@ -1,36 +1,36 @@
 <%- include('_header'); -%>
 
 <nav class="breadcrumb">
-  <ul>
-    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-    <li>
-        <a href="<%= urlPrefix %>/lotOccupancies">
-            <span class="icon is-small">
-                <span class="fa-layers fa-fw" aria-hidden="true">
-                    <i class="fas fa-vector-square"></i>
-                    <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+    <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li>
+            <a href="<%= urlPrefix %>/lotOccupancies">
+                <span class="icon is-small">
+                    <span class="fa-layers fa-fw" aria-hidden="true">
+                        <i class="fas fa-vector-square"></i>
+                        <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+                    </span>
                 </span>
-            </span>
-            <span><%= configFunctions.getProperty("aliases.lots") %> <%= configFunctions.getProperty("aliases.occupancies") %></span>
-        </a>
-    </li>
-    <% if (!isCreate) { %>
-    <li>
-        <a href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
-            <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
-        </a>
-    </li>
-    <% } %>
-    <li class="is-active">
-        <a href="#" aria-current="page">
-            <% if (isCreate) { %>
-                Create a New <%= configFunctions.getProperty("aliases.occupancy") %> Record
-            <% } else { %>
-                Update <%= configFunctions.getProperty("aliases.occupancy") %>
-            <% } %>
-        </a>
-    </li>
-  </ul>
+                <span><%= configFunctions.getProperty("aliases.lots") %> <%= configFunctions.getProperty("aliases.occupancies") %></span>
+            </a>
+        </li>
+        <% if (!isCreate) { %>
+        <li>
+            <a href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
+                <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
+            </a>
+        </li>
+        <% } %>
+        <li class="is-active">
+            <a href="#" aria-current="page">
+                <% if (isCreate) { %>
+                    Create a New <%= configFunctions.getProperty("aliases.occupancy") %> Record
+                <% } else { %>
+                    Update <%= configFunctions.getProperty("aliases.occupancy") %>
+                <% } %>
+            </a>
+        </li>
+    </ul>
 </nav>
 
 <% if (isCreate) { %>
@@ -109,9 +109,14 @@
                     </label>
                     <div class="field has-addons">
                         <div class="control is-expanded">
-                            <input class="input has-text-left" id="lotOccupancy--lotName" type="button" value="<%= lotOccupancy.lotName %>"
+                            <input class="input is-clickable has-text-left" id="lotOccupancy--lotName" type="button" value="<%= lotOccupancy.lotName || "(No " + configFunctions.getProperty("aliases.lot") + ")" %>"
                             <%= (configFunctions.getProperty("settings.lotOccupancy.lotIdIsRequired") ? " required" : "") %>
                             <%= (isCreate ? "" : " disabled") %> />
+                        </div>
+                        <div class="control is-hidden-print">
+                            <button class="button is-clear-lot-button" data-tooltip="Clear" type="button" aria-label="Clear <%= configFunctions.getProperty("aliases.lot") %></button> Field">
+                                <i class="fas fa-eraser" aria-hidden="true"></i>
+                            </button>
                         </div>
                         <div class="control is-hidden-print">
                             <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock <%= configFunctions.getProperty("aliases.lot") %></button> Field">
@@ -125,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="column">
+                <div class="column is-3">
                     <div class="field">
                         <label class="label" for="lotOccupancy--occupancyStartDateString">Start Date</label>
                         <div class="control">

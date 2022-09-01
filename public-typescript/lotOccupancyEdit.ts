@@ -224,7 +224,9 @@ declare const bulmaJS: BulmaJS;
 
     // Lot Selector
 
-    document.querySelector("#lotOccupancy--lotName").addEventListener("click", (clickEvent) => {
+    const lotNameElement = document.querySelector("#lotOccupancy--lotName") as HTMLInputElement;
+
+    lotNameElement.addEventListener("click", (clickEvent) => {
 
         const currentLotName = (clickEvent.currentTarget as HTMLInputElement).value;
 
@@ -302,7 +304,7 @@ declare const bulmaJS: BulmaJS;
                 lotSelectResultsElement.innerHTML = "";
                 lotSelectResultsElement.append(panelElement);
             });
-        }
+        };
 
         cityssm.openHtmlModal("lotOccupancy-selectLot", {
             onshow: (modalElement) => {
@@ -315,7 +317,11 @@ declare const bulmaJS: BulmaJS;
                 lotSelectCloseModalFunction = closeModalFunction;
 
                 const lotNameFilterElement = modalElement.querySelector("#lotSelect--lotName") as HTMLInputElement;
-                lotNameFilterElement.value = currentLotName;
+
+                if ((document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value !== "") {
+                    lotNameFilterElement.value = currentLotName;
+                }
+
                 lotNameFilterElement.focus();
                 lotNameFilterElement.addEventListener("change", searchLots);
 
@@ -352,6 +358,20 @@ declare const bulmaJS: BulmaJS;
                 message: "No " + exports.aliases.lot.toLowerCase() + " selected.",
                 contextualColorName: "info"
             });
+        }
+    });
+
+    document.querySelector(".is-clear-lot-button").addEventListener("click", () => {
+
+        if (lotNameElement.disabled) {
+            bulmaJS.alert({
+                message: "You need to unlock the field before clearing it.",
+                contextualColorName: "info"
+            });
+        } else {
+            lotNameElement.value = "(No " + exports.aliases.lot + ")";
+            (document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value = "";
+            setUnsavedChanges();
         }
     });
 

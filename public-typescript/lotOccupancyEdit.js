@@ -147,7 +147,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    document.querySelector("#lotOccupancy--lotName").addEventListener("click", (clickEvent) => {
+    const lotNameElement = document.querySelector("#lotOccupancy--lotName");
+    lotNameElement.addEventListener("click", (clickEvent) => {
         const currentLotName = clickEvent.currentTarget.value;
         let lotSelectCloseModalFunction;
         let lotSelectFormElement;
@@ -210,7 +211,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
                 lotSelectCloseModalFunction = closeModalFunction;
                 const lotNameFilterElement = modalElement.querySelector("#lotSelect--lotName");
-                lotNameFilterElement.value = currentLotName;
+                if (document.querySelector("#lotOccupancy--lotId").value !== "") {
+                    lotNameFilterElement.value = currentLotName;
+                }
                 lotNameFilterElement.focus();
                 lotNameFilterElement.addEventListener("change", searchLots);
                 const occupancyStatusFilterElement = modalElement.querySelector("#lotSelect--occupancyStatus");
@@ -240,6 +243,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 message: "No " + exports.aliases.lot.toLowerCase() + " selected.",
                 contextualColorName: "info"
             });
+        }
+    });
+    document.querySelector(".is-clear-lot-button").addEventListener("click", () => {
+        if (lotNameElement.disabled) {
+            bulmaJS.alert({
+                message: "You need to unlock the field before clearing it.",
+                contextualColorName: "info"
+            });
+        }
+        else {
+            lotNameElement.value = "(No " + exports.aliases.lot + ")";
+            document.querySelector("#lotOccupancy--lotId").value = "";
+            setUnsavedChanges();
         }
     });
     document.querySelector("#lotOccupancy--occupancyStartDateString").addEventListener("change", () => {
