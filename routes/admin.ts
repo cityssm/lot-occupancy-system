@@ -18,6 +18,10 @@ import handler_doMoveFeeUp from "../handlers/admin-post/doMoveFeeUp.js";
 import handler_doMoveFeeDown from "../handlers/admin-post/doMoveFeeDown.js";
 import handler_doDeleteFee from "../handlers/admin-post/doDeleteFee.js";
 
+// Occupancy Type Management
+
+import handler_occupancyTypes from "../handlers/admin-get/occupancyTypes.js";
+
 // Config Table Management
 
 import handler_tables from "../handlers/admin-get/tables.js";
@@ -104,8 +108,16 @@ router.post(
     handler_doDeleteFee
 );
 
+/*
+ * Occupancy Type Management
+ */
 
+router.get(
+    "/occupancyTypes",
     permissionHandlers.adminGetHandler,
+    handler_occupancyTypes
+);
+
 /*
  * Config Tables
  */
