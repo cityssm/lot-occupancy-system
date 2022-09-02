@@ -1,24 +1,18 @@
-import type {
-    RequestHandler
-} from "express";
+import type { RequestHandler } from "express";
 
-import {
-    addFee
-} from "../../helpers/lotOccupancyDB/addFee.js";
+import { addFee } from "../../helpers/lotOccupancyDB/addFee.js";
 
-import {
-    getFeeCategories
-} from "../../helpers/lotOccupancyDB/getFeeCategories.js";
-
-
+import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.js";
 
 export const handler: RequestHandler = async (request, response) => {
-
     const feeId = addFee(request.body, request.session);
 
-    const feeCategories = getFeeCategories({}, {
-        includeFees: true
-    });
+    const feeCategories = getFeeCategories(
+        {},
+        {
+            includeFees: true
+        }
+    );
 
     response.json({
         success: true,
@@ -26,6 +20,5 @@ export const handler: RequestHandler = async (request, response) => {
         feeCategories
     });
 };
-
 
 export default handler;

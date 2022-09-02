@@ -2,28 +2,19 @@
 
 import * as assert from "assert";
 
-import {
-    portNumber
-} from "./_globals.js";
+import { portNumber } from "./_globals.js";
 
-import {
-    exec
-} from "child_process";
+import { exec } from "child_process";
 
 import * as http from "http";
-import {
-    app
-} from "../app.js";
-
+import { app } from "../app.js";
 
 describe("lot-occupancy-system", () => {
-
     const httpServer = http.createServer(app);
 
     let serverStarted = false;
 
     before(() => {
-
         httpServer.listen(portNumber);
 
         httpServer.on("listening", () => {
@@ -44,12 +35,14 @@ describe("lot-occupancy-system", () => {
     });
 
     describe("Cypress tests", () => {
-
         it("should run Cypress tests", (done) => {
+            let cypressCommand =
+                "cypress run --config-file cypress.config.ts --browser chrome";
 
-            let cypressCommand = "cypress run --config-file cypress.config.ts --browser chrome";
-
-            if (process.env.CYPRESS_RECORD_KEY && process.env.CYPRESS_RECORD_KEY !== "") {
+            if (
+                process.env.CYPRESS_RECORD_KEY &&
+                process.env.CYPRESS_RECORD_KEY !== ""
+            ) {
                 cypressCommand += " --record";
             }
 

@@ -1,67 +1,65 @@
 export interface Config {
-    application ? : ConfigApplication;
-    session ? : ConfigSession;
-    reverseProxy ? : {
+    application?: ConfigApplication;
+    session?: ConfigSession;
+    reverseProxy?: {
         disableCompression: boolean;
         disableEtag: boolean;
         urlPrefix: string;
     };
-    activeDirectory ? : ConfigActiveDirectory;
-    users ? : {
-        testing ? : string[];
-        canLogin ? : string[];
-        canUpdate ? : string[];
-        isAdmin ? : string[];
+    activeDirectory?: ConfigActiveDirectory;
+    users?: {
+        testing?: string[];
+        canLogin?: string[];
+        canUpdate?: string[];
+        isAdmin?: string[];
     };
-    aliases ? : {
-        lot ? : string;
-        lots ? : string;
-        map ? : string;
-        maps ? : string;
-        occupancy ? : string;
-        occupancies ? : string;
-        occupant ? : string;
-        occupants ? : string;
-        externalReceiptNumber ? : string;
+    aliases?: {
+        lot?: string;
+        lots?: string;
+        map?: string;
+        maps?: string;
+        occupancy?: string;
+        occupancies?: string;
+        occupant?: string;
+        occupants?: string;
+        externalReceiptNumber?: string;
     };
-    settings ? : {
-        fees ? : {
-            taxPercentageDefault ? : number;
+    settings?: {
+        fees?: {
+            taxPercentageDefault?: number;
         };
-        map ? : {
-            mapCityDefault ? : string;
-            mapProvinceDefault ? : string;
+        map?: {
+            mapCityDefault?: string;
+            mapProvinceDefault?: string;
         };
-        lot ? : {
-            lotNamePattern ? : RegExp;
-            lotNameSortNameFunction ? : (lotName: string) => string;
+        lot?: {
+            lotNamePattern?: RegExp;
+            lotNameSortNameFunction?: (lotName: string) => string;
         };
-        lotOccupancy ? : {
-            lotIdIsRequired ? : boolean;
-            occupancyEndDateIsRequired ? : boolean;
-            occupantCityDefault ? : string;
-            occupantProvinceDefault ? : string;
+        lotOccupancy?: {
+            lotIdIsRequired?: boolean;
+            occupancyEndDateIsRequired?: boolean;
+            occupantCityDefault?: string;
+            occupantProvinceDefault?: string;
         };
     };
 }
 
 interface ConfigApplication {
-    applicationName ? : string;
-    backgroundURL ? : string;
-    logoURL ? : string;
-    httpPort ? : number;
-    userDomain ? : string;
-    useTestDatabases ? : boolean;
+    applicationName?: string;
+    backgroundURL?: string;
+    logoURL?: string;
+    httpPort?: number;
+    userDomain?: string;
+    useTestDatabases?: boolean;
 }
-
 
 interface ConfigSession {
-    cookieName ? : string;
-    secret ? : string;
-    maxAgeMillis ? : number;
-    doKeepAlive ? : boolean;
+    cookieName?: string;
+    secret?: string;
+    maxAgeMillis?: number;
+    doKeepAlive?: boolean;
 }
-
 
 export interface ConfigActiveDirectory {
     url: string;

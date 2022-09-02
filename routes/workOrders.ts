@@ -1,6 +1,4 @@
-import {
-    Router
-} from "express";
+import { Router } from "express";
 
 import * as permissionHandlers from "../handlers/permissions.js";
 import * as configFunctions from "../helpers/functions.config.js";
@@ -10,20 +8,12 @@ import handler_doSearchWorkOrders from "../handlers/workOrders-post/doSearchWork
 
 import handler_view from "../handlers/workOrders-get/view.js";
 
-
 export const router = Router();
 
+router.get("/", handler_search);
 
-router.get("/",
-    handler_search);
+router.post("/doSearchWorkOrders", handler_doSearchWorkOrders);
 
-router.post("/doSearchWorkOrders",
-    handler_doSearchWorkOrders);
-
-
-router.get("/:workOrderId",
-    handler_view);
-
-
+router.get("/:workOrderId", handler_view);
 
 export default router;

@@ -19,72 +19,58 @@ import handler_doAddLotComment from "../handlers/lots-post/doAddLotComment.js";
 import handler_doUpdateLotComment from "../handlers/lots-post/doUpdateLotComment.js";
 import handler_doDeleteLotComment from "../handlers/lots-post/doDeleteLotComment.js";
 
-
 export const router = Router();
-
 
 /*
  * Lot Search
  */
 
+router.get("/", handler_search);
 
-router.get("/", 
-  handler_search);
-  
-router.post("/doSearchLots", 
-  handler_doSearchLots);
-
+router.post("/doSearchLots", handler_doSearchLots);
 
 /*
  * Lot View / Edit
  */
 
+router.get("/new", permissionHandlers.updateGetHandler, handler_new);
 
-router.get("/new",
-  permissionHandlers.updateGetHandler,
-  handler_new);
+router.get("/:lotId", handler_view);
 
+router.get("/:lotId/next", handler_next);
 
-router.get("/:lotId",
-  handler_view);
+router.get("/:lotId/previous", handler_previous);
 
+router.get("/:lotId/edit", permissionHandlers.updateGetHandler, handler_edit);
 
-router.get("/:lotId/next",
-  handler_next);
+router.post(
+    "/doCreateLot",
+    permissionHandlers.updatePostHandler,
+    handler_doCreateLot
+);
 
+router.post(
+    "/doUpdateLot",
+    permissionHandlers.updatePostHandler,
+    handler_doUpdateLot
+);
 
-router.get("/:lotId/previous",
-  handler_previous);
+router.post(
+    "/doAddLotComment",
+    permissionHandlers.updatePostHandler,
+    handler_doAddLotComment
+);
 
+router.post(
+    "/doUpdateLotComment",
+    permissionHandlers.updatePostHandler,
+    handler_doUpdateLotComment
+);
 
-router.get("/:lotId/edit",
-  permissionHandlers.updateGetHandler,
-  handler_edit);
-
-  
-router.post("/doCreateLot",
-  permissionHandlers.updatePostHandler,
-  handler_doCreateLot);
-
-
-router.post("/doUpdateLot",
-  permissionHandlers.updatePostHandler,
-  handler_doUpdateLot);
-
-
-router.post("/doAddLotComment",
-  permissionHandlers.updatePostHandler,
-  handler_doAddLotComment);
-
-
-router.post("/doUpdateLotComment",
-  permissionHandlers.updatePostHandler,
-  handler_doUpdateLotComment);
-
-
-router.post("/doDeleteLotComment",
-  permissionHandlers.updatePostHandler,
-  handler_doDeleteLotComment);
-
+router.post(
+    "/doDeleteLotComment",
+    permissionHandlers.updatePostHandler,
+    handler_doDeleteLotComment
+);
 
 export default router;

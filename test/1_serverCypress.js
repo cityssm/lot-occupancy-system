@@ -25,7 +25,8 @@ describe("lot-occupancy-system", () => {
     describe("Cypress tests", () => {
         it("should run Cypress tests", (done) => {
             let cypressCommand = "cypress run --config-file cypress.config.ts --browser chrome";
-            if (process.env.CYPRESS_RECORD_KEY && process.env.CYPRESS_RECORD_KEY !== "") {
+            if (process.env.CYPRESS_RECORD_KEY &&
+                process.env.CYPRESS_RECORD_KEY !== "") {
                 cypressCommand += " --record";
             }
             const childProcess = exec(cypressCommand);

@@ -1,19 +1,12 @@
-import type {
-    Request
-} from "express";
+import type { Request } from "express";
 
-import type {
-    Session
-} from "express-session";
-
+import type { Session } from "express-session";
 
 export const testView = "*testView";
 export const testUpdate = "*testUpdate";
 export const testAdmin = "*testAdmin";
 
-
 export const portNumber = 7000;
-
 
 export const fakeViewOnlySession: Session = {
     id: "",
@@ -27,7 +20,6 @@ export const fakeViewOnlySession: Session = {
     user: undefined
 };
 
-
 export const fakeAdminSession: Session = {
     id: "",
     cookie: undefined,
@@ -39,7 +31,6 @@ export const fakeAdminSession: Session = {
     touch: undefined,
     user: undefined
 };
-
 
 export const fakeRequest: Request = {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -132,14 +123,10 @@ export const fakeRequest: Request = {
     xhr: undefined
 };
 
+export const fakeViewOnlyRequest = Object.assign({}, fakeRequest, {
+    session: fakeViewOnlySession
+});
 
-export const fakeViewOnlyRequest =
-    Object.assign({}, fakeRequest, {
-        session: fakeViewOnlySession
-    });
-
-
-export const fakeAdminRequest =
-    Object.assign({}, fakeRequest, {
-        session: fakeAdminSession
-    });
+export const fakeAdminRequest = Object.assign({}, fakeRequest, {
+    session: fakeAdminSession
+});

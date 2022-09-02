@@ -10,6 +10,12 @@
             </a>
         </li>
         <li>
+            <a class="<%= (headTitle.endsWith("Type Management") ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/occupancyTypes">
+                <span class="icon is-small"><i class="fas fa-fw fa-user-friends" aria-hidden="true"></i></span>
+                <span><%= configFunctions.getProperty("aliases.occupancy") %> Type Management</span>
+            </a>
+        </li>
+        <li>
             <a class="<%= (headTitle === "Config Table Management" ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/tables">
                 <span class="icon is-small"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
                 <span>Config Table Management</span>

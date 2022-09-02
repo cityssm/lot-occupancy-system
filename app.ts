@@ -24,28 +24,22 @@ import * as dateTimeFns from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as stringFns from "@cityssm/expressjs-server-js/stringFns.js";
 import * as htmlFns from "@cityssm/expressjs-server-js/htmlFns.js";
 
-import {
-    version
-} from "./version.js";
+import { version } from "./version.js";
 
 import * as databaseInitializer from "./helpers/initializer.database.js";
 
 import debug from "debug";
 const debugApp = debug("lot-occupancy-system:app");
 
-
 /*
  * INITALIZE THE DATABASE
  */
 
-
 databaseInitializer.initializeDatabase();
-
 
 /*
  * INITIALIZE APP
  */
-
 
 const __dirname = ".";
 
@@ -70,15 +64,18 @@ app.use((request, _response, next) => {
 
 app.use(express.json());
 
-app.use(express.urlencoded({
-    extended: false
-}));
+app.use(
+    express.urlencoded({
+        extended: false
+    })
+);
 
 app.use(cookieParser());
-app.use(csurf({
-    cookie: true
-}));
-
+app.use(
+    csurf({
+        cookie: true
+    })
+);
 
 /*
  * Rate Limiter
@@ -91,11 +88,9 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-
 /*
  * STATIC ROUTES
  */
-
 
 const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
 
@@ -105,48 +100,59 @@ if (urlPrefix !== "") {
 
 app.use(urlPrefix, express.static(path.join("public")));
 
-app.use(urlPrefix + "/lib/fa",
-    express.static(path.join("node_modules", "@fortawesome", "fontawesome-free")));
+app.use(
+    urlPrefix + "/lib/fa",
+    express.static(
+        path.join("node_modules", "@fortawesome", "fontawesome-free")
+    )
+);
 
-app.use(urlPrefix + "/lib/cityssm-bulma-webapp-js",
-    express.static(path.join("node_modules", "@cityssm", "bulma-webapp-js")));
+app.use(
+    urlPrefix + "/lib/cityssm-bulma-webapp-js",
+    express.static(path.join("node_modules", "@cityssm", "bulma-webapp-js"))
+);
 
-app.use(urlPrefix + "/lib/cityssm-bulma-js",
-    express.static(path.join("node_modules", "@cityssm", "bulma-js", "dist")));
+app.use(
+    urlPrefix + "/lib/cityssm-bulma-js",
+    express.static(path.join("node_modules", "@cityssm", "bulma-js", "dist"))
+);
 
-app.use(urlPrefix + "/lib/leaflet",
-    express.static(path.join("node_modules", "leaflet", "dist")));
-
+app.use(
+    urlPrefix + "/lib/leaflet",
+    express.static(path.join("node_modules", "leaflet", "dist"))
+);
 
 /*
  * SESSION MANAGEMENT
  */
 
-const sessionCookieName: string = configFunctions.getProperty("session.cookieName");
+const sessionCookieName: string =
+    configFunctions.getProperty("session.cookieName");
 
 const FileStoreSession = FileStore(session);
 
 // Initialize session
-app.use(session({
-    store: new FileStoreSession({
-        path: "./data/sessions",
-        logFn: debug("general-licence-manager:session"),
-        retries: 10
-    }),
-    name: sessionCookieName,
-    secret: configFunctions.getProperty("session.secret"),
-    resave: true,
-    saveUninitialized: false,
-    rolling: true,
-    cookie: {
-        maxAge: configFunctions.getProperty("session.maxAgeMillis"),
-        sameSite: "strict"
-    }
-}));
+app.use(
+    session({
+        store: new FileStoreSession({
+            path: "./data/sessions",
+            logFn: debug("general-licence-manager:session"),
+            retries: 10
+        }),
+        name: sessionCookieName,
+        secret: configFunctions.getProperty("session.secret"),
+        resave: true,
+        saveUninitialized: false,
+        rolling: true,
+        cookie: {
+            maxAge: configFunctions.getProperty("session.maxAgeMillis"),
+            sameSite: "strict"
+        }
+    })
+);
 
 // Clear cookie if no corresponding session
 app.use((request, response, next) => {
-
     if (request.cookies[sessionCookieName] && !request.session.user) {
         response.clearCookie(sessionCookieName);
     }
@@ -155,25 +161,27 @@ app.use((request, response, next) => {
 });
 
 // Redirect logged in users
-const sessionChecker = (request: express.Request, response: express.Response, next: express.NextFunction) => {
-
+const sessionChecker = (
+    request: express.Request,
+    response: express.Response,
+    next: express.NextFunction
+) => {
     if (request.session.user && request.cookies[sessionCookieName]) {
         return next();
     }
 
-    return response.redirect(`${urlPrefix}/login?redirect=${request.originalUrl}`);
+    return response.redirect(
+        `${urlPrefix}/login?redirect=${request.originalUrl}`
+    );
 };
-
 
 /*
  * ROUTES
  */
 
-
 // Make the user and config objects available to the templates
 
 app.use((request, response, next) => {
-
     response.locals.buildNumber = version;
 
     response.locals.user = request.session.user;
@@ -184,11 +192,12 @@ app.use((request, response, next) => {
     response.locals.stringFunctions = stringFns;
     response.locals.htmlFunctions = htmlFns;
 
-    response.locals.urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
+    response.locals.urlPrefix = configFunctions.getProperty(
+        "reverseProxy.urlPrefix"
+    );
 
     next();
 });
-
 
 app.get(urlPrefix + "/", sessionChecker, (_request, response) => {
     response.redirect(urlPrefix + "/dashboard");
@@ -211,20 +220,16 @@ app.all(urlPrefix + "/keepAlive", (_request, response) => {
 app.use(urlPrefix + "/login", routerLogin);
 
 app.get(urlPrefix + "/logout", (request, response) => {
-
     if (request.session.user && request.cookies[sessionCookieName]) {
-
         // eslint-disable-next-line unicorn/no-null
         request.session.destroy(null);
         request.session = undefined;
         response.clearCookie(sessionCookieName);
         response.redirect(urlPrefix + "/");
-
     } else {
         response.redirect(urlPrefix + "/login");
     }
 });
-
 
 // Catch 404 and forward to error handler
 app.use((_request, _response, next) => {
@@ -232,19 +237,24 @@ app.use((_request, _response, next) => {
 });
 
 // Error handler
-app.use((error: {
-        status: number;message: string
-    },
-    request: express.Request, response: express.Response) => {
+app.use(
+    (
+        error: {
+            status: number;
+            message: string;
+        },
+        request: express.Request,
+        response: express.Response
+    ) => {
+        // Set locals, only providing error in development
+        response.locals.message = error.message;
+        response.locals.error =
+            request.app.get("env") === "development" ? error : {};
 
-    // Set locals, only providing error in development
-    response.locals.message = error.message;
-    response.locals.error = request.app.get("env") === "development" ? error : {};
-
-    // Render the error page
-    response.status(error.status || 500);
-    response.render("error");
-});
-
+        // Render the error page
+        response.status(error.status || 500);
+        response.render("error");
+    }
+);
 
 export default app;

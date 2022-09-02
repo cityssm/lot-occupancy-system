@@ -105,59 +105,76 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const renderWorkOrderTypes = () => {
         const containerElement = document.querySelector("#container--workOrderTypes");
         if (workOrderTypes.length === 0) {
-            containerElement.innerHTML = "<tr>" +
-                "<td colspan=\"2\">" +
-                "<div class=\"message is-warning\">" +
-                "<p class=\"message-body\">There are no active work order types.</p>" +
-                "</div>" +
-                "</td>" +
-                "</tr>";
+            containerElement.innerHTML =
+                "<tr>" +
+                    '<td colspan="2">' +
+                    '<div class="message is-warning">' +
+                    '<p class="message-body">There are no active work order types.</p>' +
+                    "</div>" +
+                    "</td>" +
+                    "</tr>";
             return;
         }
         containerElement.innerHTML = "";
         for (const workOrderType of workOrderTypes) {
             const tableRowElement = document.createElement("tr");
-            tableRowElement.dataset.workOrderTypeId = workOrderType.workOrderTypeId.toString();
-            tableRowElement.innerHTML = "<td>" +
-                "<form>" +
-                "<input name=\"workOrderTypeId\" type=\"hidden\" value=\"" + workOrderType.workOrderTypeId.toString() + "\" />" +
-                ("<div class=\"field has-addons\">" +
-                    "<div class=\"control\">" +
-                    "<input class=\"input\" name=\"workOrderType\" type=\"text\" value=\"" + cityssm.escapeHTML(workOrderType.workOrderType) + "\" maxlength=\"100\" required />" +
+            tableRowElement.dataset.workOrderTypeId =
+                workOrderType.workOrderTypeId.toString();
+            tableRowElement.innerHTML =
+                "<td>" +
+                    "<form>" +
+                    '<input name="workOrderTypeId" type="hidden" value="' +
+                    workOrderType.workOrderTypeId.toString() +
+                    '" />' +
+                    ('<div class="field has-addons">' +
+                        '<div class="control">' +
+                        '<input class="input" name="workOrderType" type="text" value="' +
+                        cityssm.escapeHTML(workOrderType.workOrderType) +
+                        '" maxlength="100" required />' +
+                        "</div>" +
+                        '<div class="control">' +
+                        '<button class="button is-success" type="submit"><i class="fas fa-save" aria-hidden="true"></i></button>' +
+                        "</div>" +
+                        "</div>") +
+                    "</form>" +
+                    "</td>" +
+                    '<td class="is-nowrap">' +
+                    '<div class="field is-grouped">' +
+                    '<div class="control">' +
+                    ('<div class="field has-addons">' +
+                        '<div class="control">' +
+                        '<button class="button button--moveWorkOrderTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
+                        "</div>" +
+                        '<div class="control">' +
+                        '<button class="button button--moveWorkOrderTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
+                        "</div>" +
+                        "</div>") +
                     "</div>" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button is-success\" type=\"submit\"><i class=\"fas fa-save\" aria-hidden=\"true\"></i></button>" +
+                    '<div class="control">' +
+                    '<button class="button is-danger is-light button--deleteWorkOrderType" data-tooltip="Delete Work Order Type" type="button" aria-label="Delete Work Order Type">' +
+                    '<i class="fas fa-trash" aria-hidden="true"></i>' +
+                    "</button>" +
                     "</div>" +
-                    "</div>") +
-                "</form>" +
-                "</td>" +
-                "<td class=\"is-nowrap\">" +
-                "<div class=\"field is-grouped\">" +
-                "<div class=\"control\">" +
-                ("<div class=\"field has-addons\">" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button button--moveWorkOrderTypeUp\" data-tooltip=\"Move Up\" type=\"button\" aria-label=\"Move Up\"><i class=\"fas fa-arrow-up\" aria-hidden=\"true\"></i></button>" +
                     "</div>" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button button--moveWorkOrderTypeDown\" data-tooltip=\"Move Down\" type=\"button\" aria-label=\"Move Down\"><i class=\"fas fa-arrow-down\" aria-hidden=\"true\"></i></button>" +
-                    "</div>" +
-                    "</div>") +
-                "</div>" +
-                "<div class=\"control\">" +
-                "<button class=\"button is-danger is-light button--deleteWorkOrderType\" data-tooltip=\"Delete Work Order Type\" type=\"button\" aria-label=\"Delete Work Order Type\">" +
-                "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
-                "</button>" +
-                "</div>" +
-                "</div>" +
-                "</td>";
-            tableRowElement.querySelector("form").addEventListener("submit", updateWorkOrderType);
-            tableRowElement.querySelector(".button--moveWorkOrderTypeUp").addEventListener("click", moveWorkOrderTypeUp);
-            tableRowElement.querySelector(".button--moveWorkOrderTypeDown").addEventListener("click", moveWorkOrderTypeDown);
-            tableRowElement.querySelector(".button--deleteWorkOrderType").addEventListener("click", deleteWorkOrderType);
+                    "</td>";
+            tableRowElement
+                .querySelector("form")
+                .addEventListener("submit", updateWorkOrderType);
+            tableRowElement
+                .querySelector(".button--moveWorkOrderTypeUp")
+                .addEventListener("click", moveWorkOrderTypeUp);
+            tableRowElement
+                .querySelector(".button--moveWorkOrderTypeDown")
+                .addEventListener("click", moveWorkOrderTypeDown);
+            tableRowElement
+                .querySelector(".button--deleteWorkOrderType")
+                .addEventListener("click", deleteWorkOrderType);
             containerElement.append(tableRowElement);
         }
     };
-    document.querySelector("#form--addWorkOrderType").addEventListener("submit", (submitEvent) => {
+    document
+        .querySelector("#form--addWorkOrderType")
+        .addEventListener("submit", (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(urlPrefix + "/admin/doAddWorkOrderType", formElement, (responseJSON) => {
@@ -185,7 +202,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 lotStatuses = responseJSON.lotStatuses;
                 bulmaJS.alert({
-                    message: exports.aliases.lot + " Status Updated Successfully",
+                    message: exports.aliases.lot +
+                        " Status Updated Successfully",
                     contextualColorName: "success"
                 });
             }
@@ -214,13 +232,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         tableRowElement.remove();
                     }
                     bulmaJS.alert({
-                        message: exports.aliases.lot + " Status Deleted Successfully",
+                        message: exports.aliases.lot +
+                            " Status Deleted Successfully",
                         contextualColorName: "success"
                     });
                 }
                 else {
                     bulmaJS.alert({
-                        title: "Error Deleting " + exports.aliases.lot + " Status",
+                        title: "Error Deleting " +
+                            exports.aliases.lot +
+                            " Status",
                         message: responseJSON.errorMessage,
                         contextualColorName: "danger"
                     });
@@ -230,7 +251,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         bulmaJS.confirm({
             title: "Delete " + exports.aliases.lot + " Status",
             message: "Are you sure you want to delete this status?<br />" +
-                "Note that no " + exports.aliases.lots.toLowerCase() + " will be removed.",
+                "Note that no " +
+                exports.aliases.lots.toLowerCase() +
+                " will be removed.",
             messageIsHtml: true,
             contextualColorName: "warning",
             okButton: {
@@ -280,59 +303,78 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const renderLotStatuses = () => {
         const containerElement = document.querySelector("#container--lotStatuses");
         if (workOrderTypes.length === 0) {
-            containerElement.innerHTML = "<tr>" +
-                "<td colspan=\"2\">" +
-                "<div class=\"message is-warning\">" +
-                "<p class=\"message-body\">There are no active " + cityssm.escapeHTML(exports.aliases.lot.toLowerCase()) + " statuses.</p>" +
-                "</div>" +
-                "</td>" +
-                "</tr>";
+            containerElement.innerHTML =
+                "<tr>" +
+                    '<td colspan="2">' +
+                    '<div class="message is-warning">' +
+                    '<p class="message-body">There are no active ' +
+                    cityssm.escapeHTML(exports.aliases.lot.toLowerCase()) +
+                    " statuses.</p>" +
+                    "</div>" +
+                    "</td>" +
+                    "</tr>";
             return;
         }
         containerElement.innerHTML = "";
         for (const lotStatus of lotStatuses) {
             const tableRowElement = document.createElement("tr");
-            tableRowElement.dataset.lotStatusId = lotStatus.lotStatusId.toString();
-            tableRowElement.innerHTML = "<td>" +
-                "<form>" +
-                "<input name=\"lotStatusId\" type=\"hidden\" value=\"" + lotStatus.lotStatusId.toString() + "\" />" +
-                ("<div class=\"field has-addons\">" +
-                    "<div class=\"control\">" +
-                    "<input class=\"input\" name=\"lotStatus\" type=\"text\" value=\"" + cityssm.escapeHTML(lotStatus.lotStatus) + "\" maxlength=\"100\" required />" +
+            tableRowElement.dataset.lotStatusId =
+                lotStatus.lotStatusId.toString();
+            tableRowElement.innerHTML =
+                "<td>" +
+                    "<form>" +
+                    '<input name="lotStatusId" type="hidden" value="' +
+                    lotStatus.lotStatusId.toString() +
+                    '" />' +
+                    ('<div class="field has-addons">' +
+                        '<div class="control">' +
+                        '<input class="input" name="lotStatus" type="text" value="' +
+                        cityssm.escapeHTML(lotStatus.lotStatus) +
+                        '" maxlength="100" required />' +
+                        "</div>" +
+                        '<div class="control">' +
+                        '<button class="button is-success" type="submit"><i class="fas fa-save" aria-hidden="true"></i></button>' +
+                        "</div>" +
+                        "</div>") +
+                    "</form>" +
+                    "</td>" +
+                    '<td class="is-nowrap">' +
+                    '<div class="field is-grouped">' +
+                    '<div class="control">' +
+                    ('<div class="field has-addons">' +
+                        '<div class="control">' +
+                        '<button class="button button--moveLotStatusUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
+                        "</div>" +
+                        '<div class="control">' +
+                        '<button class="button button--moveLotStatusDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
+                        "</div>" +
+                        "</div>") +
                     "</div>" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button is-success\" type=\"submit\"><i class=\"fas fa-save\" aria-hidden=\"true\"></i></button>" +
+                    '<div class="control">' +
+                    '<button class="button is-danger is-light button--deleteLotStatus" data-tooltip="Delete Status" type="button" aria-label="Delete Status">' +
+                    '<i class="fas fa-trash" aria-hidden="true"></i>' +
+                    "</button>" +
                     "</div>" +
-                    "</div>") +
-                "</form>" +
-                "</td>" +
-                "<td class=\"is-nowrap\">" +
-                "<div class=\"field is-grouped\">" +
-                "<div class=\"control\">" +
-                ("<div class=\"field has-addons\">" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button button--moveLotStatusUp\" data-tooltip=\"Move Up\" type=\"button\" aria-label=\"Move Up\"><i class=\"fas fa-arrow-up\" aria-hidden=\"true\"></i></button>" +
                     "</div>" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button button--moveLotStatusDown\" data-tooltip=\"Move Down\" type=\"button\" aria-label=\"Move Down\"><i class=\"fas fa-arrow-down\" aria-hidden=\"true\"></i></button>" +
-                    "</div>" +
-                    "</div>") +
-                "</div>" +
-                "<div class=\"control\">" +
-                "<button class=\"button is-danger is-light button--deleteLotStatus\" data-tooltip=\"Delete Status\" type=\"button\" aria-label=\"Delete Status\">" +
-                "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
-                "</button>" +
-                "</div>" +
-                "</div>" +
-                "</td>";
-            tableRowElement.querySelector("form").addEventListener("submit", updateLotStatus);
-            tableRowElement.querySelector(".button--moveLotStatusUp").addEventListener("click", moveLotStatusUp);
-            tableRowElement.querySelector(".button--moveLotStatusDown").addEventListener("click", moveLotStatusDown);
-            tableRowElement.querySelector(".button--deleteLotStatus").addEventListener("click", deleteLotStatus);
+                    "</td>";
+            tableRowElement
+                .querySelector("form")
+                .addEventListener("submit", updateLotStatus);
+            tableRowElement
+                .querySelector(".button--moveLotStatusUp")
+                .addEventListener("click", moveLotStatusUp);
+            tableRowElement
+                .querySelector(".button--moveLotStatusDown")
+                .addEventListener("click", moveLotStatusDown);
+            tableRowElement
+                .querySelector(".button--deleteLotStatus")
+                .addEventListener("click", deleteLotStatus);
             containerElement.append(tableRowElement);
         }
     };
-    document.querySelector("#form--addLotStatus").addEventListener("submit", (submitEvent) => {
+    document
+        .querySelector("#form--addLotStatus")
+        .addEventListener("submit", (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(urlPrefix + "/admin/doAddLotStatus", formElement, (responseJSON) => {
@@ -344,7 +386,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
-                    title: "Error Adding " + exports.aliases.lot + " Status",
+                    title: "Error Adding " +
+                        exports.aliases.lot +
+                        " Status",
                     message: responseJSON.errorMessage,
                     contextualColorName: "danger"
                 });
@@ -360,13 +404,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
                 bulmaJS.alert({
-                    message: exports.aliases.lot + " " + exports.aliases.occupant + " Type Updated Successfully",
+                    message: exports.aliases.lot +
+                        " " +
+                        exports.aliases.occupant +
+                        " Type Updated Successfully",
                     contextualColorName: "success"
                 });
             }
             else {
                 bulmaJS.alert({
-                    title: "Error Updating " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+                    title: "Error Updating " +
+                        exports.aliases.lot +
+                        " " +
+                        exports.aliases.occupant +
+                        " Type",
                     message: responseJSON.errorMessage,
                     contextualColorName: "danger"
                 });
@@ -389,13 +440,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         tableRowElement.remove();
                     }
                     bulmaJS.alert({
-                        message: exports.aliases.lot + " " + exports.aliases.occupant + " Type Deleted Successfully",
+                        message: exports.aliases.lot +
+                            " " +
+                            exports.aliases.occupant +
+                            " Type Deleted Successfully",
                         contextualColorName: "success"
                     });
                 }
                 else {
                     bulmaJS.alert({
-                        title: "Error Deleting " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+                        title: "Error Deleting " +
+                            exports.aliases.lot +
+                            " " +
+                            exports.aliases.occupant +
+                            " Type",
                         message: responseJSON.errorMessage,
                         contextualColorName: "danger"
                     });
@@ -403,13 +461,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         };
         bulmaJS.confirm({
-            title: "Delete " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
-            message: "Are you sure you want to delete this " + exports.aliases.lot.toLowerCase() + " " + exports.aliases.occupant.toLowerCase() + " type?<br />" +
-                "Note that no " + exports.aliases.lot.toLowerCase() + " " + exports.aliases.occupancy.toLowerCase() + " will be removed.",
+            title: "Delete " +
+                exports.aliases.lot +
+                " " +
+                exports.aliases.occupant +
+                " Type",
+            message: "Are you sure you want to delete this " +
+                exports.aliases.lot.toLowerCase() +
+                " " +
+                exports.aliases.occupant.toLowerCase() +
+                " type?<br />" +
+                "Note that no " +
+                exports.aliases.lot.toLowerCase() +
+                " " +
+                exports.aliases.occupancy.toLowerCase() +
+                " will be removed.",
             messageIsHtml: true,
             contextualColorName: "warning",
             okButton: {
-                text: "Yes, Delete " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+                text: "Yes, Delete " +
+                    exports.aliases.lot +
+                    " " +
+                    exports.aliases.occupant +
+                    " Type",
                 callbackFunction: doDelete
             }
         });
@@ -426,7 +500,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
-                    title: "Error Moving " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+                    title: "Error Moving " +
+                        exports.aliases.lot +
+                        " " +
+                        exports.aliases.occupant +
+                        " Type",
                     message: responseJSON.errorMessage,
                     contextualColorName: "danger"
                 });
@@ -445,7 +523,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
-                    title: "Error Moving " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+                    title: "Error Moving " +
+                        exports.aliases.lot +
+                        " " +
+                        exports.aliases.occupant +
+                        " Type",
                     message: responseJSON.errorMessage,
                     contextualColorName: "danger"
                 });
@@ -455,61 +537,90 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const renderLotOccupantTypes = () => {
         const containerElement = document.querySelector("#container--lotOccupantTypes");
         if (workOrderTypes.length === 0) {
-            containerElement.innerHTML = "<tr>" +
-                "<td colspan=\"2\">" +
-                "<div class=\"message is-warning\">" +
-                "<p class=\"message-body\">There are no active " + cityssm.escapeHTML(exports.aliases.lot.toLowerCase()) + " " + cityssm.escapeHTML(exports.aliases.occupant.toLowerCase()) + " types.</p>" +
-                "</div>" +
-                "</td>" +
-                "</tr>";
+            containerElement.innerHTML =
+                "<tr>" +
+                    '<td colspan="2">' +
+                    '<div class="message is-warning">' +
+                    '<p class="message-body">There are no active ' +
+                    cityssm.escapeHTML(exports.aliases.lot.toLowerCase()) +
+                    " " +
+                    cityssm.escapeHTML(exports.aliases.occupant.toLowerCase()) +
+                    " types.</p>" +
+                    "</div>" +
+                    "</td>" +
+                    "</tr>";
             return;
         }
         containerElement.innerHTML = "";
         for (const lotOccupantType of lotOccupantTypes) {
             const tableRowElement = document.createElement("tr");
-            tableRowElement.dataset.lotOccupantTypeId = lotOccupantType.lotOccupantTypeId.toString();
-            tableRowElement.innerHTML = "<td>" +
-                "<form>" +
-                "<input name=\"lotOccupantTypeId\" type=\"hidden\" value=\"" + lotOccupantType.lotOccupantTypeId.toString() + "\" />" +
-                ("<div class=\"field has-addons\">" +
-                    "<div class=\"control\">" +
-                    "<input class=\"input\" name=\"lotOccupantType\" type=\"text\" value=\"" + cityssm.escapeHTML(lotOccupantType.lotOccupantType) + "\" maxlength=\"100\" required />" +
+            tableRowElement.dataset.lotOccupantTypeId =
+                lotOccupantType.lotOccupantTypeId.toString();
+            tableRowElement.innerHTML =
+                "<td>" +
+                    "<form>" +
+                    '<input name="lotOccupantTypeId" type="hidden" value="' +
+                    lotOccupantType.lotOccupantTypeId.toString() +
+                    '" />' +
+                    ('<div class="field has-addons">' +
+                        '<div class="control">' +
+                        '<input class="input" name="lotOccupantType" type="text" value="' +
+                        cityssm.escapeHTML(lotOccupantType.lotOccupantType) +
+                        '" maxlength="100" required />' +
+                        "</div>" +
+                        '<div class="control">' +
+                        '<button class="button is-success" type="submit"><i class="fas fa-save" aria-hidden="true"></i></button>' +
+                        "</div>" +
+                        "</div>") +
+                    "</form>" +
+                    "</td>" +
+                    '<td class="is-nowrap">' +
+                    '<div class="field is-grouped">' +
+                    '<div class="control">' +
+                    ('<div class="field has-addons">' +
+                        '<div class="control">' +
+                        '<button class="button button--moveLotOccupantTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
+                        "</div>" +
+                        '<div class="control">' +
+                        '<button class="button button--moveLotOccupantTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
+                        "</div>" +
+                        "</div>") +
                     "</div>" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button is-success\" type=\"submit\"><i class=\"fas fa-save\" aria-hidden=\"true\"></i></button>" +
+                    '<div class="control">' +
+                    '<button class="button is-danger is-light button--deleteLotOccupantType"' +
+                    ' data-tooltip="Delete ' +
+                    cityssm.escapeHTML(exports.aliases.lot) +
+                    " " +
+                    cityssm.escapeHTML(exports.aliases.occupant) +
+                    ' Type" type="button"' +
+                    ' aria-label="Delete ' +
+                    cityssm.escapeHTML(exports.aliases.lot) +
+                    " " +
+                    cityssm.escapeHTML(exports.aliases.occupant) +
+                    ' Type">' +
+                    '<i class="fas fa-trash" aria-hidden="true"></i>' +
+                    "</button>" +
                     "</div>" +
-                    "</div>") +
-                "</form>" +
-                "</td>" +
-                "<td class=\"is-nowrap\">" +
-                "<div class=\"field is-grouped\">" +
-                "<div class=\"control\">" +
-                ("<div class=\"field has-addons\">" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button button--moveLotOccupantTypeUp\" data-tooltip=\"Move Up\" type=\"button\" aria-label=\"Move Up\"><i class=\"fas fa-arrow-up\" aria-hidden=\"true\"></i></button>" +
                     "</div>" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button button--moveLotOccupantTypeDown\" data-tooltip=\"Move Down\" type=\"button\" aria-label=\"Move Down\"><i class=\"fas fa-arrow-down\" aria-hidden=\"true\"></i></button>" +
-                    "</div>" +
-                    "</div>") +
-                "</div>" +
-                "<div class=\"control\">" +
-                "<button class=\"button is-danger is-light button--deleteLotOccupantType\"" +
-                " data-tooltip=\"Delete " + cityssm.escapeHTML(exports.aliases.lot) + " " + cityssm.escapeHTML(exports.aliases.occupant) + " Type\" type=\"button\"" +
-                " aria-label=\"Delete " + cityssm.escapeHTML(exports.aliases.lot) + " " + cityssm.escapeHTML(exports.aliases.occupant) + " Type\">" +
-                "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
-                "</button>" +
-                "</div>" +
-                "</div>" +
-                "</td>";
-            tableRowElement.querySelector("form").addEventListener("submit", updateLotOccupantType);
-            tableRowElement.querySelector(".button--moveLotOccupantTypeUp").addEventListener("click", moveLotOccupantTypeUp);
-            tableRowElement.querySelector(".button--moveLotOccupantTypeDown").addEventListener("click", moveLotOccupantTypeDown);
-            tableRowElement.querySelector(".button--deleteLotOccupantType").addEventListener("click", deleteLotOccupantType);
+                    "</td>";
+            tableRowElement
+                .querySelector("form")
+                .addEventListener("submit", updateLotOccupantType);
+            tableRowElement
+                .querySelector(".button--moveLotOccupantTypeUp")
+                .addEventListener("click", moveLotOccupantTypeUp);
+            tableRowElement
+                .querySelector(".button--moveLotOccupantTypeDown")
+                .addEventListener("click", moveLotOccupantTypeDown);
+            tableRowElement
+                .querySelector(".button--deleteLotOccupantType")
+                .addEventListener("click", deleteLotOccupantType);
             containerElement.append(tableRowElement);
         }
     };
-    document.querySelector("#form--addLotOccupantType").addEventListener("submit", (submitEvent) => {
+    document
+        .querySelector("#form--addLotOccupantType")
+        .addEventListener("submit", (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(urlPrefix + "/admin/doAddLotOccupantType", formElement, (responseJSON) => {
@@ -521,7 +632,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
-                    title: "Error Adding " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+                    title: "Error Adding " +
+                        exports.aliases.lot +
+                        " " +
+                        exports.aliases.occupant +
+                        " Type",
                     message: responseJSON.errorMessage,
                     contextualColorName: "danger"
                 });

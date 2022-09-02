@@ -3,18 +3,22 @@
 import type * as globalTypes from "../types/globalTypes";
 
 (() => {
-
-    const highlightMap = (mapContainerElement: HTMLElement, mapKey: string, contextualClass: "success" | "danger") => {
-
+    const highlightMap = (
+        mapContainerElement: HTMLElement,
+        mapKey: string,
+        contextualClass: "success" | "danger"
+    ) => {
         // Search for ID
 
         let svgId = mapKey;
         let svgElementToHighlight: SVGElement;
 
         // eslint-disable-next-line no-constant-condition
-        while(true) {
-            svgElementToHighlight = mapContainerElement.querySelector("#" + svgId);
-            
+        while (true) {
+            svgElementToHighlight = mapContainerElement.querySelector(
+                "#" + svgId
+            );
+
             if (svgElementToHighlight || !svgId.includes("-")) {
                 break;
             }
@@ -23,15 +27,17 @@ import type * as globalTypes from "../types/globalTypes";
         }
 
         if (svgElementToHighlight) {
-
             // eslint-disable-next-line unicorn/no-null
             svgElementToHighlight.style.fill = null;
-            
-            svgElementToHighlight.classList.add("highlight", "is-" + contextualClass);
 
-            const childPathElements = svgElementToHighlight.querySelectorAll("path");
+            svgElementToHighlight.classList.add(
+                "highlight",
+                "is-" + contextualClass
+            );
+
+            const childPathElements =
+                svgElementToHighlight.querySelectorAll("path");
             for (const pathElement of childPathElements) {
-                
                 // eslint-disable-next-line unicorn/no-null
                 pathElement.style.fill = null;
             }
@@ -39,15 +45,19 @@ import type * as globalTypes from "../types/globalTypes";
     };
 
     const unlockField = (clickEvent: Event) => {
+        const fieldElement = (clickEvent.currentTarget as HTMLElement).closest(
+            ".field"
+        );
 
-        const fieldElement = (clickEvent.currentTarget as HTMLElement).closest(".field");
-
-        const inputOrSelectElement = fieldElement.querySelector("input, select") as HTMLInputElement | HTMLSelectElement;
+        const inputOrSelectElement = fieldElement.querySelector(
+            "input, select"
+        ) as HTMLInputElement | HTMLSelectElement;
 
         if (inputOrSelectElement.tagName === "INPUT") {
             inputOrSelectElement.disabled = false;
         } else {
-            const optionElements = inputOrSelectElement.querySelectorAll("option");
+            const optionElements =
+                inputOrSelectElement.querySelectorAll("option");
             for (const optionElement of optionElements) {
                 optionElement.disabled = false;
             }
@@ -57,8 +67,9 @@ import type * as globalTypes from "../types/globalTypes";
     };
 
     const initializeUnlockFieldButtons = (containerElement: HTMLElement) => {
-
-        const unlockFieldButtonElements = containerElement.querySelectorAll(".is-unlock-field-button");
+        const unlockFieldButtonElements = containerElement.querySelectorAll(
+            ".is-unlock-field-button"
+        );
 
         for (const unlockFieldButtonElement of unlockFieldButtonElements) {
             unlockFieldButtonElement.addEventListener("click", unlockField);
@@ -66,39 +77,42 @@ import type * as globalTypes from "../types/globalTypes";
     };
 
     const populateAliases = (containerElement: HTMLElement) => {
-
-        const aliasElements = containerElement.querySelectorAll(".alias") as NodeListOf<HTMLElement>;
+        const aliasElements = containerElement.querySelectorAll(
+            ".alias"
+        ) as NodeListOf<HTMLElement>;
 
         for (const aliasElement of aliasElements) {
-            
             switch (aliasElement.dataset.alias) {
-
                 case "Lot":
                     aliasElement.textContent = exports.aliases.lot;
                     break;
-                    
+
                 case "lot":
-                    aliasElement.textContent = exports.aliases.lot.toLowerCase();
+                    aliasElement.textContent =
+                        exports.aliases.lot.toLowerCase();
                     break;
 
                 case "Occupancy":
                     aliasElement.textContent = exports.aliases.occupancy;
                     break;
-                    
+
                 case "occupancy":
-                    aliasElement.textContent = exports.aliases.occupancy.toLowerCase();
+                    aliasElement.textContent =
+                        exports.aliases.occupancy.toLowerCase();
                     break;
 
                 case "Occupant":
                     aliasElement.textContent = exports.aliases.occupant;
                     break;
-                    
+
                 case "occupant":
-                    aliasElement.textContent = exports.aliases.occupant.toLowerCase();
+                    aliasElement.textContent =
+                        exports.aliases.occupant.toLowerCase();
                     break;
 
                 case "ExternalReceiptNumber":
-                    aliasElement.textContent = exports.aliases.externalReceiptNumber;
+                    aliasElement.textContent =
+                        exports.aliases.externalReceiptNumber;
                     break;
             }
         }

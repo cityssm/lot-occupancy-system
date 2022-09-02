@@ -1,18 +1,10 @@
-import type {
-    RequestHandler
-} from "express";
+import type { RequestHandler } from "express";
 
-import {
-    moveLotOccupantTypeUp
-} from "../../helpers/lotOccupancyDB/moveLotOccupantTypeUp.js";
+import { moveLotOccupantTypeUp } from "../../helpers/lotOccupancyDB/moveLotOccupantTypeUp.js";
 
-import {
-    getLotOccupantTypes
-} from "../../helpers/functions.cache.js";
-
+import { getLotOccupantTypes } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
-
     const success = moveLotOccupantTypeUp(request.body.lotOccupantTypeId);
 
     const lotOccupantTypes = getLotOccupantTypes();
@@ -22,6 +14,5 @@ export const handler: RequestHandler = async (request, response) => {
         lotOccupantTypes
     });
 };
-
 
 export default handler;

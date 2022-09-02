@@ -42,13 +42,17 @@ function purgeTables() {
     database.prepare("delete from LotOccupancies").run();
     database.prepare("delete from LotComments").run();
     database.prepare("delete from Lots").run();
-    database.prepare("delete from sqlite_sequence where name in ('Lots', 'LotComments', 'LotOccupancies', 'LotOccupancyComments', 'WorkOrders', 'WorkOrderComments')").run();
+    database
+        .prepare("delete from sqlite_sequence where name in ('Lots', 'LotComments', 'LotOccupancies', 'LotOccupancyComments', 'WorkOrders', 'WorkOrderComments')")
+        .run();
     database.close();
 }
 function purgeConfigTables() {
     const database = sqlite(databasePath);
     database.prepare("delete from Maps").run();
-    database.prepare("delete from sqlite_sequence where name in ('Maps')").run();
+    database
+        .prepare("delete from sqlite_sequence where name in ('Maps')")
+        .run();
     database.close();
 }
 function getMapByMapDescription(mapDescription) {
@@ -56,29 +60,30 @@ function getMapByMapDescription(mapDescription) {
         readonly: true
     });
     const map = database
-        .prepare("select * from Maps" +
-        " where mapDescription = ?")
+        .prepare("select * from Maps" + " where mapDescription = ?")
         .get(mapDescription);
     database.close();
     return map;
 }
 function formatDateString(year, month, day) {
-    return ("0000" + year).slice(-4) + "-" +
-        ("00" + month).slice(-2) + "-" +
-        ("00" + day).slice(-2);
+    return (("0000" + year).slice(-4) +
+        "-" +
+        ("00" + month).slice(-2) +
+        "-" +
+        ("00" + day).slice(-2));
 }
 const cemeteryToMapName = {
     "00": "Crematorium",
-    "GC": "New Greenwood - Columbarium",
-    "HC": "Holy Sepulchre - Columbarium",
-    "HS": "Holy Sepulchre",
-    "MA": "Holy Sepulchre - Mausoleum",
-    "NG": "New Greenwood",
-    "NW": "Niche Wall",
-    "OG": "Old Greenwood",
-    "PG": "Pine Grove",
-    "UG": "New Greenwood - Urn Garden",
-    "WK": "West Korah"
+    GC: "New Greenwood - Columbarium",
+    HC: "Holy Sepulchre - Columbarium",
+    HS: "Holy Sepulchre",
+    MA: "Holy Sepulchre - Mausoleum",
+    NG: "New Greenwood",
+    NW: "Niche Wall",
+    OG: "Old Greenwood",
+    PG: "Pine Grove",
+    UG: "New Greenwood - Urn Garden",
+    WK: "West Korah"
 };
 const mapCache = new Map();
 function getMap(dataRow) {
@@ -125,16 +130,19 @@ function getFeeIdByFeeDescription(feeDescription) {
     return feeCache.get(feeDescription);
 }
 function buildLotName(lotNamePieces) {
-    return lotNamePieces.cemetery + "-" +
+    return (lotNamePieces.cemetery +
+        "-" +
         (lotNamePieces.block === "" ? "" : lotNamePieces.block + "-") +
-        (lotNamePieces.range1 === "0" && lotNamePieces.range2 === "" ?
-            "" :
-            (lotNamePieces.range1 + lotNamePieces.range2) + "-") +
-        (lotNamePieces.lot1 === "0" && lotNamePieces.lot2 === "" ?
-            "" :
-            lotNamePieces.lot1 + lotNamePieces.lot2 + "-") +
-        lotNamePieces.grave1 + lotNamePieces.grave2 + "-" +
-        lotNamePieces.interment;
+        (lotNamePieces.range1 === "0" && lotNamePieces.range2 === ""
+            ? ""
+            : lotNamePieces.range1 + lotNamePieces.range2 + "-") +
+        (lotNamePieces.lot1 === "0" && lotNamePieces.lot2 === ""
+            ? ""
+            : lotNamePieces.lot1 + lotNamePieces.lot2 + "-") +
+        lotNamePieces.grave1 +
+        lotNamePieces.grave2 +
+        "-" +
+        lotNamePieces.interment);
 }
 const casketLotType = cacheFunctions.getLotTypesByLotType("Casket Grave");
 const columbariumLotType = cacheFunctions.getLotTypesByLotType("Columbarium");
@@ -219,16 +227,21 @@ function importFromMasterCSV() {
             if (masterRow.CM_PRENEED_ORDER) {
                 preneedOccupancyStartDateString = formatDateString(masterRow.CM_PURCHASE_YR, masterRow.CM_PURCHASE_MON, masterRow.CM_PURCHASE_DAY);
                 let occupancyEndDateString = "";
-                if (masterRow.CM_INTERMENT_YR !== "" && masterRow.CM_INTERMENT_YR !== "0") {
+                if (masterRow.CM_INTERMENT_YR !== "" &&
+                    masterRow.CM_INTERMENT_YR !== "0") {
                     occupancyEndDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
                 }
-                if (preneedOccupancyStartDateString === "0000-00-00" && occupancyEndDateString !== "") {
+                if (preneedOccupancyStartDateString === "0000-00-00" &&
+                    occupancyEndDateString !== "") {
                     preneedOccupancyStartDateString = occupancyEndDateString;
                 }
-                if (preneedOccupancyStartDateString === "0000-00-00" && masterRow.CM_DEATH_YR !== "" && masterRow.CM_DEATH_YR !== "0") {
+                if (preneedOccupancyStartDateString === "0000-00-00" &&
+                    masterRow.CM_DEATH_YR !== "" &&
+                    masterRow.CM_DEATH_YR !== "0") {
                     preneedOccupancyStartDateString = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
                 }
-                if (preneedOccupancyStartDateString === "" || preneedOccupancyStartDateString === "0000-00-00") {
+                if (preneedOccupancyStartDateString === "" ||
+                    preneedOccupancyStartDateString === "0000-00-00") {
                     preneedOccupancyStartDateString = "0001-01-01";
                 }
                 preneedLotOccupancyId = addLotOccupancy({
@@ -238,7 +251,9 @@ function importFromMasterCSV() {
                     occupancyEndDateString,
                     occupancyTypeFieldIds: ""
                 }, user);
-                const occupantPostalCode = ((masterRow.CM_POST1 || "") + " " + (masterRow.CM_POST2 || "")).trim();
+                const occupantPostalCode = ((masterRow.CM_POST1 || "") +
+                    " " +
+                    (masterRow.CM_POST2 || "")).trim();
                 addLotOccupancyOccupant({
                     lotOccupancyId: preneedLotOccupancyId,
                     lotOccupantTypeId: preneedOwnerLotOccupantType.lotOccupantTypeId,
@@ -275,20 +290,27 @@ function importFromMasterCSV() {
             if (masterRow.CM_DECEASED_NAME) {
                 deceasedOccupancyStartDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
                 const occupancyEndDateString = "";
-                if (deceasedOccupancyStartDateString === "0000-00-00" && masterRow.CM_DEATH_YR !== "" && masterRow.CM_DEATH_YR !== "0") {
+                if (deceasedOccupancyStartDateString === "0000-00-00" &&
+                    masterRow.CM_DEATH_YR !== "" &&
+                    masterRow.CM_DEATH_YR !== "0") {
                     deceasedOccupancyStartDateString = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
                 }
-                if (deceasedOccupancyStartDateString === "" || deceasedOccupancyStartDateString === "0000-00-00") {
+                if (deceasedOccupancyStartDateString === "" ||
+                    deceasedOccupancyStartDateString === "0000-00-00") {
                     deceasedOccupancyStartDateString = "0001-01-01";
                 }
                 deceasedLotOccupancyId = addLotOccupancy({
-                    occupancyTypeId: lotId ? deceasedOccupancyType.occupancyTypeId : cremationOccupancyType.occupancyTypeId,
+                    occupancyTypeId: lotId
+                        ? deceasedOccupancyType.occupancyTypeId
+                        : cremationOccupancyType.occupancyTypeId,
                     lotId,
                     occupancyStartDateString: deceasedOccupancyStartDateString,
                     occupancyEndDateString,
                     occupancyTypeFieldIds: ""
                 }, user);
-                const deceasedPostalCode = ((masterRow.CM_POST1 || "") + " " + (masterRow.CM_POST2 || "")).trim();
+                const deceasedPostalCode = ((masterRow.CM_POST1 || "") +
+                    " " +
+                    (masterRow.CM_POST2 || "")).trim();
                 addLotOccupancyOccupant({
                     lotOccupancyId: deceasedLotOccupancyId,
                     lotOccupantTypeId: deceasedLotOccupantType.lotOccupantTypeId,
@@ -305,7 +327,8 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Death Date";
+                            return (occupancyTypeField.occupancyTypeField ===
+                                "Death Date");
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue
                     }, user);
@@ -314,7 +337,8 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Death Age";
+                            return (occupancyTypeField.occupancyTypeField ===
+                                "Death Age");
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: masterRow.CM_AGE
                     }, user);
@@ -323,7 +347,8 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Death Age Period";
+                            return (occupancyTypeField.occupancyTypeField ===
+                                "Death Age Period");
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: masterRow.CM_PERIOD
                     }, user);
@@ -332,7 +357,8 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Funeral Home";
+                            return (occupancyTypeField.occupancyTypeField ===
+                                "Funeral Home");
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: masterRow.CM_FUNERAL_HOME
                     }, user);
@@ -342,7 +368,8 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Funeral Date";
+                            return (occupancyTypeField.occupancyTypeField ===
+                                "Funeral Date");
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue
                     }, user);
@@ -351,7 +378,8 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Container Type";
+                            return (occupancyTypeField.occupancyTypeField ===
+                                "Container Type");
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: masterRow.CM_CONTAINER_TYPE
                     }, user);
@@ -364,7 +392,8 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
                         occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Committal Type";
+                            return (occupancyTypeField.occupancyTypeField ===
+                                "Committal Type");
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: commitalType
                     }, user);
@@ -392,7 +421,8 @@ function importFromMasterCSV() {
                     workOrderNumber: masterRow.CM_WORK_ORDER,
                     workOrderTypeId: 1,
                     workOrderDescription: "",
-                    workOrderOpenDateString: deceasedOccupancyStartDateString || preneedOccupancyStartDateString
+                    workOrderOpenDateString: deceasedOccupancyStartDateString ||
+                        preneedOccupancyStartDateString
                 }, user);
                 if (lotId) {
                     addWorkOrderLot({
@@ -499,7 +529,8 @@ function importFromPrepaidCSV() {
                     offset: 0
                 });
                 if (possibleLotOccupancies.lotOccupancies.length > 0) {
-                    lotOccupancyId = possibleLotOccupancies.lotOccupancies[0].lotOccupancyId;
+                    lotOccupancyId =
+                        possibleLotOccupancies.lotOccupancies[0].lotOccupancyId;
                 }
             }
             if (!lotOccupancyId) {
@@ -597,7 +628,8 @@ function importFromPrepaidCSV() {
                     taxAmount: prepaidRow.CMPP_GST_NICHE
                 }, user);
             }
-            if (prepaidRow.CMPP_FEE_DISINTERMENT !== "0.0" && prepaidRow.CMPP_FEE_DISINTERMENT !== "20202.02") {
+            if (prepaidRow.CMPP_FEE_DISINTERMENT !== "0.0" &&
+                prepaidRow.CMPP_FEE_DISINTERMENT !== "20202.02") {
                 addLotOccupancyFee({
                     lotOccupancyId,
                     feeId: getFeeIdByFeeDescription("CMPP_FEE_DISINTERMENT"),
@@ -620,8 +652,12 @@ function importFromPrepaidCSV() {
                 Number.parseFloat(prepaidRow.CMPP_GST_CREM) +
                 Number.parseFloat(prepaidRow.CMPP_FEE_NICHE) +
                 Number.parseFloat(prepaidRow.CMPP_GST_NICHE) +
-                Number.parseFloat(prepaidRow.CMPP_FEE_DISINTERMENT === "20202.02" ? "0" : prepaidRow.CMPP_FEE_DISINTERMENT) +
-                Number.parseFloat(prepaidRow.CMPP_GST_DISINTERMENT === "20202.02" ? "0" : prepaidRow.CMPP_GST_DISINTERMENT);
+                Number.parseFloat(prepaidRow.CMPP_FEE_DISINTERMENT === "20202.02"
+                    ? "0"
+                    : prepaidRow.CMPP_FEE_DISINTERMENT) +
+                Number.parseFloat(prepaidRow.CMPP_GST_DISINTERMENT === "20202.02"
+                    ? "0"
+                    : prepaidRow.CMPP_GST_DISINTERMENT);
             addLotOccupancyTransaction({
                 lotOccupancyId,
                 externalReceiptNumber: prepaidRow.CMPP_ORDER_NO,

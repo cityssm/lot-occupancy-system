@@ -1,18 +1,10 @@
-import type {
-    RequestHandler
-} from "express";
+import type { RequestHandler } from "express";
 
-import {
-    addLotStatus
-} from "../../helpers/lotOccupancyDB/addLotStatus.js";
+import { addLotStatus } from "../../helpers/lotOccupancyDB/addLotStatus.js";
 
-import {
-    getLotStatuses
-} from "../../helpers/functions.cache.js";
-
+import { getLotStatuses } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
-
     const lotStatusId = addLotStatus(request.body, request.session);
 
     const lotStatuses = getLotStatuses();
@@ -23,6 +15,5 @@ export const handler: RequestHandler = async (request, response) => {
         lotStatuses
     });
 };
-
 
 export default handler;

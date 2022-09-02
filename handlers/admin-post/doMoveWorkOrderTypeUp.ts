@@ -1,18 +1,10 @@
-import type {
-    RequestHandler
-} from "express";
+import type { RequestHandler } from "express";
 
-import {
-    moveWorkOrderTypeUp
-} from "../../helpers/lotOccupancyDB/moveWorkOrderTypeUp.js";
+import { moveWorkOrderTypeUp } from "../../helpers/lotOccupancyDB/moveWorkOrderTypeUp.js";
 
-import {
-    getWorkOrderTypes
-} from "../../helpers/functions.cache.js";
-
+import { getWorkOrderTypes } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
-
     const success = moveWorkOrderTypeUp(request.body.workOrderTypeId);
 
     const workOrderTypes = getWorkOrderTypes();
@@ -22,6 +14,5 @@ export const handler: RequestHandler = async (request, response) => {
         workOrderTypes
     });
 };
-
 
 export default handler;

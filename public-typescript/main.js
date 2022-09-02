@@ -48,22 +48,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     aliasElement.textContent = exports.aliases.lot;
                     break;
                 case "lot":
-                    aliasElement.textContent = exports.aliases.lot.toLowerCase();
+                    aliasElement.textContent =
+                        exports.aliases.lot.toLowerCase();
                     break;
                 case "Occupancy":
                     aliasElement.textContent = exports.aliases.occupancy;
                     break;
                 case "occupancy":
-                    aliasElement.textContent = exports.aliases.occupancy.toLowerCase();
+                    aliasElement.textContent =
+                        exports.aliases.occupancy.toLowerCase();
                     break;
                 case "Occupant":
                     aliasElement.textContent = exports.aliases.occupant;
                     break;
                 case "occupant":
-                    aliasElement.textContent = exports.aliases.occupant.toLowerCase();
+                    aliasElement.textContent =
+                        exports.aliases.occupant.toLowerCase();
                     break;
                 case "ExternalReceiptNumber":
-                    aliasElement.textContent = exports.aliases.externalReceiptNumber;
+                    aliasElement.textContent =
+                        exports.aliases.externalReceiptNumber;
                     break;
             }
         }

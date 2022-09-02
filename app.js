@@ -131,7 +131,8 @@ app.use((_request, _response, next) => {
 });
 app.use((error, request, response) => {
     response.locals.message = error.message;
-    response.locals.error = request.app.get("env") === "development" ? error : {};
+    response.locals.error =
+        request.app.get("env") === "development" ? error : {};
     response.status(error.status || 500);
     response.render("error");
 });

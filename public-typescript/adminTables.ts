@@ -2,17 +2,12 @@
 
 import type * as recordTypes from "../types/recordTypes";
 
-import type {
-    cityssmGlobal
-} from "@cityssm/bulma-webapp-js/src/types";
+import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 
-import type {
-    BulmaJS
-} from "@cityssm/bulma-js/types";
+import type { BulmaJS } from "@cityssm/bulma-js/types";
 
 declare const cityssm: cityssmGlobal;
 declare const bulmaJS: BulmaJS;
-
 
 (() => {
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
@@ -25,25 +20,23 @@ declare const bulmaJS: BulmaJS;
     delete exports.workOrderTypes;
 
     const updateWorkOrderType = (submitEvent: SubmitEvent) => {
-
         submitEvent.preventDefault();
 
-        cityssm.postJSON(urlPrefix + "/admin/doUpdateWorkOrderType",
+        cityssm.postJSON(
+            urlPrefix + "/admin/doUpdateWorkOrderType",
             submitEvent.currentTarget,
             (responseJSON: {
                 success: boolean;
-                errorMessage ? : string;
-                workOrderTypes ? : recordTypes.WorkOrderType[];
+                errorMessage?: string;
+                workOrderTypes?: recordTypes.WorkOrderType[];
             }) => {
                 if (responseJSON.success) {
-
                     workOrderTypes = responseJSON.workOrderTypes;
 
                     bulmaJS.alert({
                         message: "Work Order Type Updated Successfully",
                         contextualColorName: "success"
                     });
-
                 } else {
                     bulmaJS.alert({
                         title: "Error Updating Work Order Type",
@@ -51,28 +44,29 @@ declare const bulmaJS: BulmaJS;
                         contextualColorName: "danger"
                     });
                 }
-            });
+            }
+        );
     };
 
     const deleteWorkOrderType = (clickEvent: Event) => {
-
-        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
+        const tableRowElement = (
+            clickEvent.currentTarget as HTMLElement
+        ).closest("tr");
 
         const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
 
         const doDelete = () => {
-
-            cityssm.postJSON(urlPrefix + "/admin/doDeleteWorkOrderType", {
+            cityssm.postJSON(
+                urlPrefix + "/admin/doDeleteWorkOrderType",
+                {
                     workOrderTypeId
                 },
                 (responseJSON: {
                     success: boolean;
-                    errorMessage ? : string;
-                    workOrderTypes ? : recordTypes.WorkOrderType[];
+                    errorMessage?: string;
+                    workOrderTypes?: recordTypes.WorkOrderType[];
                 }) => {
-
                     if (responseJSON.success) {
-
                         workOrderTypes = responseJSON.workOrderTypes;
 
                         if (workOrderTypes.length === 0) {
@@ -85,7 +79,6 @@ declare const bulmaJS: BulmaJS;
                             message: "Work Order Type Deleted Successfully",
                             contextualColorName: "success"
                         });
-
                     } else {
                         bulmaJS.alert({
                             title: "Error Deleting Work Order Type",
@@ -93,12 +86,14 @@ declare const bulmaJS: BulmaJS;
                             contextualColorName: "danger"
                         });
                     }
-                });
+                }
+            );
         };
 
         bulmaJS.confirm({
             title: "Delete Work Order Type",
-            message: "Are you sure you want to delete this work order type?<br />" +
+            message:
+                "Are you sure you want to delete this work order type?<br />" +
                 "Note that no work orders will be removed.",
             messageIsHtml: true,
             contextualColorName: "warning",
@@ -110,25 +105,25 @@ declare const bulmaJS: BulmaJS;
     };
 
     const moveWorkOrderTypeUp = (clickEvent: Event) => {
-
-        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
+        const tableRowElement = (
+            clickEvent.currentTarget as HTMLElement
+        ).closest("tr");
 
         const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
 
-        cityssm.postJSON(urlPrefix + "/admin/doMoveWorkOrderTypeUp", {
+        cityssm.postJSON(
+            urlPrefix + "/admin/doMoveWorkOrderTypeUp",
+            {
                 workOrderTypeId
             },
             (responseJSON: {
                 success: boolean;
-                errorMessage ? : string;
-                workOrderTypes ? : recordTypes.WorkOrderType[];
+                errorMessage?: string;
+                workOrderTypes?: recordTypes.WorkOrderType[];
             }) => {
-
                 if (responseJSON.success) {
-
                     workOrderTypes = responseJSON.workOrderTypes;
                     renderWorkOrderTypes();
-
                 } else {
                     bulmaJS.alert({
                         title: "Error Moving Work Order Type",
@@ -136,29 +131,30 @@ declare const bulmaJS: BulmaJS;
                         contextualColorName: "danger"
                     });
                 }
-            });
+            }
+        );
     };
 
     const moveWorkOrderTypeDown = (clickEvent: Event) => {
-
-        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
+        const tableRowElement = (
+            clickEvent.currentTarget as HTMLElement
+        ).closest("tr");
 
         const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
 
-        cityssm.postJSON(urlPrefix + "/admin/doMoveWorkOrderTypeDown", {
+        cityssm.postJSON(
+            urlPrefix + "/admin/doMoveWorkOrderTypeDown",
+            {
                 workOrderTypeId
             },
             (responseJSON: {
                 success: boolean;
-                errorMessage ? : string;
-                workOrderTypes ? : recordTypes.WorkOrderType[];
+                errorMessage?: string;
+                workOrderTypes?: recordTypes.WorkOrderType[];
             }) => {
-
                 if (responseJSON.success) {
-
                     workOrderTypes = responseJSON.workOrderTypes;
                     renderWorkOrderTypes();
-
                 } else {
                     bulmaJS.alert({
                         title: "Error Moving Work Order Type",
@@ -166,18 +162,21 @@ declare const bulmaJS: BulmaJS;
                         contextualColorName: "danger"
                     });
                 }
-            });
+            }
+        );
     };
 
     const renderWorkOrderTypes = () => {
-
-        const containerElement = document.querySelector("#container--workOrderTypes") as HTMLTableSectionElement;
+        const containerElement = document.querySelector(
+            "#container--workOrderTypes"
+        ) as HTMLTableSectionElement;
 
         if (workOrderTypes.length === 0) {
-            containerElement.innerHTML = "<tr>" +
-                "<td colspan=\"2\">" +
-                "<div class=\"message is-warning\">" +
-                "<p class=\"message-body\">There are no active work order types.</p>" +
+            containerElement.innerHTML =
+                "<tr>" +
+                '<td colspan="2">' +
+                '<div class="message is-warning">' +
+                '<p class="message-body">There are no active work order types.</p>' +
                 "</div>" +
                 "</td>" +
                 "</tr>";
@@ -188,82 +187,96 @@ declare const bulmaJS: BulmaJS;
         containerElement.innerHTML = "";
 
         for (const workOrderType of workOrderTypes) {
-
             const tableRowElement = document.createElement("tr");
 
-            tableRowElement.dataset.workOrderTypeId = workOrderType.workOrderTypeId.toString();
+            tableRowElement.dataset.workOrderTypeId =
+                workOrderType.workOrderTypeId.toString();
 
-            tableRowElement.innerHTML = "<td>" +
+            tableRowElement.innerHTML =
+                "<td>" +
                 "<form>" +
-                "<input name=\"workOrderTypeId\" type=\"hidden\" value=\"" + workOrderType.workOrderTypeId.toString() + "\" />" +
-                ("<div class=\"field has-addons\">" +
-                    "<div class=\"control\">" +
-                    "<input class=\"input\" name=\"workOrderType\" type=\"text\" value=\"" + cityssm.escapeHTML(workOrderType.workOrderType) + "\" maxlength=\"100\" required />" +
+                '<input name="workOrderTypeId" type="hidden" value="' +
+                workOrderType.workOrderTypeId.toString() +
+                '" />' +
+                ('<div class="field has-addons">' +
+                    '<div class="control">' +
+                    '<input class="input" name="workOrderType" type="text" value="' +
+                    cityssm.escapeHTML(workOrderType.workOrderType) +
+                    '" maxlength="100" required />' +
                     "</div>" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button is-success\" type=\"submit\"><i class=\"fas fa-save\" aria-hidden=\"true\"></i></button>" +
+                    '<div class="control">' +
+                    '<button class="button is-success" type="submit"><i class="fas fa-save" aria-hidden="true"></i></button>' +
                     "</div>" +
                     "</div>") +
                 "</form>" +
                 "</td>" +
-                "<td class=\"is-nowrap\">" +
-                "<div class=\"field is-grouped\">" +
-                "<div class=\"control\">" +
-                ("<div class=\"field has-addons\">" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button button--moveWorkOrderTypeUp\" data-tooltip=\"Move Up\" type=\"button\" aria-label=\"Move Up\"><i class=\"fas fa-arrow-up\" aria-hidden=\"true\"></i></button>" +
+                '<td class="is-nowrap">' +
+                '<div class="field is-grouped">' +
+                '<div class="control">' +
+                ('<div class="field has-addons">' +
+                    '<div class="control">' +
+                    '<button class="button button--moveWorkOrderTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
                     "</div>" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button button--moveWorkOrderTypeDown\" data-tooltip=\"Move Down\" type=\"button\" aria-label=\"Move Down\"><i class=\"fas fa-arrow-down\" aria-hidden=\"true\"></i></button>" +
+                    '<div class="control">' +
+                    '<button class="button button--moveWorkOrderTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
                     "</div>" +
                     "</div>") +
                 "</div>" +
-                "<div class=\"control\">" +
-                "<button class=\"button is-danger is-light button--deleteWorkOrderType\" data-tooltip=\"Delete Work Order Type\" type=\"button\" aria-label=\"Delete Work Order Type\">" +
-                "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
+                '<div class="control">' +
+                '<button class="button is-danger is-light button--deleteWorkOrderType" data-tooltip="Delete Work Order Type" type="button" aria-label="Delete Work Order Type">' +
+                '<i class="fas fa-trash" aria-hidden="true"></i>' +
                 "</button>" +
                 "</div>" +
                 "</div>" +
                 "</td>";
 
-            tableRowElement.querySelector("form").addEventListener("submit", updateWorkOrderType);
-            tableRowElement.querySelector(".button--moveWorkOrderTypeUp").addEventListener("click", moveWorkOrderTypeUp);
-            tableRowElement.querySelector(".button--moveWorkOrderTypeDown").addEventListener("click", moveWorkOrderTypeDown);
-            tableRowElement.querySelector(".button--deleteWorkOrderType").addEventListener("click", deleteWorkOrderType);
+            tableRowElement
+                .querySelector("form")
+                .addEventListener("submit", updateWorkOrderType);
+            tableRowElement
+                .querySelector(".button--moveWorkOrderTypeUp")
+                .addEventListener("click", moveWorkOrderTypeUp);
+            tableRowElement
+                .querySelector(".button--moveWorkOrderTypeDown")
+                .addEventListener("click", moveWorkOrderTypeDown);
+            tableRowElement
+                .querySelector(".button--deleteWorkOrderType")
+                .addEventListener("click", deleteWorkOrderType);
 
             containerElement.append(tableRowElement);
         }
-
     };
 
-    document.querySelector("#form--addWorkOrderType").addEventListener("submit", (submitEvent: SubmitEvent) => {
+    document
+        .querySelector("#form--addWorkOrderType")
+        .addEventListener("submit", (submitEvent: SubmitEvent) => {
+            submitEvent.preventDefault();
 
-        submitEvent.preventDefault();
+            const formElement = submitEvent.currentTarget as HTMLFormElement;
 
-        const formElement = submitEvent.currentTarget as HTMLFormElement;
-
-        cityssm.postJSON(urlPrefix + "/admin/doAddWorkOrderType",
-            formElement,
-            (responseJSON: {
-                success: boolean;
-                errorMessage ? : string;
-                workOrderTypes ? : recordTypes.WorkOrderType[];
-            }) => {
-
-                if (responseJSON.success) {
-                    workOrderTypes = responseJSON.workOrderTypes;
-                    renderWorkOrderTypes();
-                    formElement.reset();
-                    formElement.querySelector("input").focus();
-                } else {
-                    bulmaJS.alert({
-                        title: "Error Adding Work Order Type",
-                        message: responseJSON.errorMessage,
-                        contextualColorName: "danger"
-                    });
+            cityssm.postJSON(
+                urlPrefix + "/admin/doAddWorkOrderType",
+                formElement,
+                (responseJSON: {
+                    success: boolean;
+                    errorMessage?: string;
+                    workOrderTypes?: recordTypes.WorkOrderType[];
+                }) => {
+                    if (responseJSON.success) {
+                        workOrderTypes = responseJSON.workOrderTypes;
+                        renderWorkOrderTypes();
+                        formElement.reset();
+                        formElement.querySelector("input").focus();
+                    } else {
+                        bulmaJS.alert({
+                            title: "Error Adding Work Order Type",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
                 }
-            });
-    });
+            );
+        });
 
     renderWorkOrderTypes();
 
@@ -275,54 +288,56 @@ declare const bulmaJS: BulmaJS;
     delete exports.lotStatuses;
 
     const updateLotStatus = (submitEvent: SubmitEvent) => {
-
         submitEvent.preventDefault();
 
-        cityssm.postJSON(urlPrefix + "/admin/doUpdateLotStatus",
+        cityssm.postJSON(
+            urlPrefix + "/admin/doUpdateLotStatus",
             submitEvent.currentTarget,
             (responseJSON: {
                 success: boolean;
-                errorMessage ? : string;
-                lotStatuses ? : recordTypes.LotStatus[];
+                errorMessage?: string;
+                lotStatuses?: recordTypes.LotStatus[];
             }) => {
                 if (responseJSON.success) {
-
                     lotStatuses = responseJSON.lotStatuses;
 
                     bulmaJS.alert({
-                        message: exports.aliases.lot + " Status Updated Successfully",
+                        message:
+                            exports.aliases.lot +
+                            " Status Updated Successfully",
                         contextualColorName: "success"
                     });
-
                 } else {
                     bulmaJS.alert({
-                        title: "Error Updating " + exports.aliases.lot + " Status",
+                        title:
+                            "Error Updating " + exports.aliases.lot + " Status",
                         message: responseJSON.errorMessage,
                         contextualColorName: "danger"
                     });
                 }
-            });
+            }
+        );
     };
 
     const deleteLotStatus = (clickEvent: Event) => {
-
-        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
+        const tableRowElement = (
+            clickEvent.currentTarget as HTMLElement
+        ).closest("tr");
 
         const lotStatusId = tableRowElement.dataset.lotStatusId;
 
         const doDelete = () => {
-
-            cityssm.postJSON(urlPrefix + "/admin/doDeleteLotStatus", {
+            cityssm.postJSON(
+                urlPrefix + "/admin/doDeleteLotStatus",
+                {
                     lotStatusId
                 },
                 (responseJSON: {
                     success: boolean;
-                    errorMessage ? : string;
-                    lotStatuses ? : recordTypes.LotStatus[];
+                    errorMessage?: string;
+                    lotStatuses?: recordTypes.LotStatus[];
                 }) => {
-
                     if (responseJSON.success) {
-
                         lotStatuses = responseJSON.lotStatuses;
 
                         if (lotStatuses.length === 0) {
@@ -332,24 +347,32 @@ declare const bulmaJS: BulmaJS;
                         }
 
                         bulmaJS.alert({
-                            message: exports.aliases.lot + " Status Deleted Successfully",
+                            message:
+                                exports.aliases.lot +
+                                " Status Deleted Successfully",
                             contextualColorName: "success"
                         });
-
                     } else {
                         bulmaJS.alert({
-                            title: "Error Deleting " + exports.aliases.lot + " Status",
+                            title:
+                                "Error Deleting " +
+                                exports.aliases.lot +
+                                " Status",
                             message: responseJSON.errorMessage,
                             contextualColorName: "danger"
                         });
                     }
-                });
+                }
+            );
         };
 
         bulmaJS.confirm({
             title: "Delete " + exports.aliases.lot + " Status",
-            message: "Are you sure you want to delete this status?<br />" +
-                "Note that no " + exports.aliases.lots.toLowerCase() + " will be removed.",
+            message:
+                "Are you sure you want to delete this status?<br />" +
+                "Note that no " +
+                exports.aliases.lots.toLowerCase() +
+                " will be removed.",
             messageIsHtml: true,
             contextualColorName: "warning",
             okButton: {
@@ -360,74 +383,82 @@ declare const bulmaJS: BulmaJS;
     };
 
     const moveLotStatusUp = (clickEvent: Event) => {
-
-        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
+        const tableRowElement = (
+            clickEvent.currentTarget as HTMLElement
+        ).closest("tr");
 
         const lotStatusId = tableRowElement.dataset.lotStatusId;
 
-        cityssm.postJSON(urlPrefix + "/admin/doMoveLotStatusUp", {
+        cityssm.postJSON(
+            urlPrefix + "/admin/doMoveLotStatusUp",
+            {
                 lotStatusId
             },
             (responseJSON: {
                 success: boolean;
-                errorMessage ? : string;
-                lotStatuses ? : recordTypes.LotStatus[];
+                errorMessage?: string;
+                lotStatuses?: recordTypes.LotStatus[];
             }) => {
-
                 if (responseJSON.success) {
-
                     lotStatuses = responseJSON.lotStatuses;
                     renderLotStatuses();
-
                 } else {
                     bulmaJS.alert({
-                        title: "Error Moving " + exports.aliases.lot + " Status",
+                        title:
+                            "Error Moving " + exports.aliases.lot + " Status",
                         message: responseJSON.errorMessage,
                         contextualColorName: "danger"
                     });
                 }
-            });
+            }
+        );
     };
 
     const moveLotStatusDown = (clickEvent: Event) => {
-
-        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
+        const tableRowElement = (
+            clickEvent.currentTarget as HTMLElement
+        ).closest("tr");
 
         const lotStatusId = tableRowElement.dataset.lotStatusId;
 
-        cityssm.postJSON(urlPrefix + "/admin/doMoveLotStatusDown", {
+        cityssm.postJSON(
+            urlPrefix + "/admin/doMoveLotStatusDown",
+            {
                 lotStatusId
             },
             (responseJSON: {
                 success: boolean;
-                errorMessage ? : string;
-                lotStatuses ? : recordTypes.LotStatus[];
+                errorMessage?: string;
+                lotStatuses?: recordTypes.LotStatus[];
             }) => {
-
                 if (responseJSON.success) {
-
                     lotStatuses = responseJSON.lotStatuses;
                     renderLotStatuses();
-
                 } else {
                     bulmaJS.alert({
-                        title: "Error Moving " + exports.aliases.lot + " Status",
+                        title:
+                            "Error Moving " + exports.aliases.lot + " Status",
                         message: responseJSON.errorMessage,
                         contextualColorName: "danger"
                     });
                 }
-            });
+            }
+        );
     };
 
     const renderLotStatuses = () => {
-
-        const containerElement = document.querySelector("#container--lotStatuses") as HTMLTableSectionElement;
+        const containerElement = document.querySelector(
+            "#container--lotStatuses"
+        ) as HTMLTableSectionElement;
 
         if (workOrderTypes.length === 0) {
-            containerElement.innerHTML = "<tr>" +
-                "<td colspan=\"2\">" +
-                "<div class=\"message is-warning\">" +
-                "<p class=\"message-body\">There are no active " + cityssm.escapeHTML(exports.aliases.lot.toLowerCase()) + " statuses.</p>" +
+            containerElement.innerHTML =
+                "<tr>" +
+                '<td colspan="2">' +
+                '<div class="message is-warning">' +
+                '<p class="message-body">There are no active ' +
+                cityssm.escapeHTML(exports.aliases.lot.toLowerCase()) +
+                " statuses.</p>" +
                 "</div>" +
                 "</td>" +
                 "</tr>";
@@ -438,82 +469,99 @@ declare const bulmaJS: BulmaJS;
         containerElement.innerHTML = "";
 
         for (const lotStatus of lotStatuses) {
-
             const tableRowElement = document.createElement("tr");
 
-            tableRowElement.dataset.lotStatusId = lotStatus.lotStatusId.toString();
+            tableRowElement.dataset.lotStatusId =
+                lotStatus.lotStatusId.toString();
 
-            tableRowElement.innerHTML = "<td>" +
+            tableRowElement.innerHTML =
+                "<td>" +
                 "<form>" +
-                "<input name=\"lotStatusId\" type=\"hidden\" value=\"" + lotStatus.lotStatusId.toString() + "\" />" +
-                ("<div class=\"field has-addons\">" +
-                    "<div class=\"control\">" +
-                    "<input class=\"input\" name=\"lotStatus\" type=\"text\" value=\"" + cityssm.escapeHTML(lotStatus.lotStatus) + "\" maxlength=\"100\" required />" +
+                '<input name="lotStatusId" type="hidden" value="' +
+                lotStatus.lotStatusId.toString() +
+                '" />' +
+                ('<div class="field has-addons">' +
+                    '<div class="control">' +
+                    '<input class="input" name="lotStatus" type="text" value="' +
+                    cityssm.escapeHTML(lotStatus.lotStatus) +
+                    '" maxlength="100" required />' +
                     "</div>" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button is-success\" type=\"submit\"><i class=\"fas fa-save\" aria-hidden=\"true\"></i></button>" +
+                    '<div class="control">' +
+                    '<button class="button is-success" type="submit"><i class="fas fa-save" aria-hidden="true"></i></button>' +
                     "</div>" +
                     "</div>") +
                 "</form>" +
                 "</td>" +
-                "<td class=\"is-nowrap\">" +
-                "<div class=\"field is-grouped\">" +
-                "<div class=\"control\">" +
-                ("<div class=\"field has-addons\">" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button button--moveLotStatusUp\" data-tooltip=\"Move Up\" type=\"button\" aria-label=\"Move Up\"><i class=\"fas fa-arrow-up\" aria-hidden=\"true\"></i></button>" +
+                '<td class="is-nowrap">' +
+                '<div class="field is-grouped">' +
+                '<div class="control">' +
+                ('<div class="field has-addons">' +
+                    '<div class="control">' +
+                    '<button class="button button--moveLotStatusUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
                     "</div>" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button button--moveLotStatusDown\" data-tooltip=\"Move Down\" type=\"button\" aria-label=\"Move Down\"><i class=\"fas fa-arrow-down\" aria-hidden=\"true\"></i></button>" +
+                    '<div class="control">' +
+                    '<button class="button button--moveLotStatusDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
                     "</div>" +
                     "</div>") +
                 "</div>" +
-                "<div class=\"control\">" +
-                "<button class=\"button is-danger is-light button--deleteLotStatus\" data-tooltip=\"Delete Status\" type=\"button\" aria-label=\"Delete Status\">" +
-                "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
+                '<div class="control">' +
+                '<button class="button is-danger is-light button--deleteLotStatus" data-tooltip="Delete Status" type="button" aria-label="Delete Status">' +
+                '<i class="fas fa-trash" aria-hidden="true"></i>' +
                 "</button>" +
                 "</div>" +
                 "</div>" +
                 "</td>";
 
-            tableRowElement.querySelector("form").addEventListener("submit", updateLotStatus);
-            tableRowElement.querySelector(".button--moveLotStatusUp").addEventListener("click", moveLotStatusUp);
-            tableRowElement.querySelector(".button--moveLotStatusDown").addEventListener("click", moveLotStatusDown);
-            tableRowElement.querySelector(".button--deleteLotStatus").addEventListener("click", deleteLotStatus);
+            tableRowElement
+                .querySelector("form")
+                .addEventListener("submit", updateLotStatus);
+            tableRowElement
+                .querySelector(".button--moveLotStatusUp")
+                .addEventListener("click", moveLotStatusUp);
+            tableRowElement
+                .querySelector(".button--moveLotStatusDown")
+                .addEventListener("click", moveLotStatusDown);
+            tableRowElement
+                .querySelector(".button--deleteLotStatus")
+                .addEventListener("click", deleteLotStatus);
 
             containerElement.append(tableRowElement);
         }
-
     };
 
-    document.querySelector("#form--addLotStatus").addEventListener("submit", (submitEvent: SubmitEvent) => {
+    document
+        .querySelector("#form--addLotStatus")
+        .addEventListener("submit", (submitEvent: SubmitEvent) => {
+            submitEvent.preventDefault();
 
-        submitEvent.preventDefault();
+            const formElement = submitEvent.currentTarget as HTMLFormElement;
 
-        const formElement = submitEvent.currentTarget as HTMLFormElement;
-
-        cityssm.postJSON(urlPrefix + "/admin/doAddLotStatus",
-            formElement,
-            (responseJSON: {
-                success: boolean;
-                errorMessage ? : string;
-                lotStatuses ? : recordTypes.LotStatus[];
-            }) => {
-
-                if (responseJSON.success) {
-                    lotStatuses = responseJSON.lotStatuses;
-                    renderLotStatuses();
-                    formElement.reset();
-                    formElement.querySelector("input").focus();
-                } else {
-                    bulmaJS.alert({
-                        title: "Error Adding " + exports.aliases.lot + " Status",
-                        message: responseJSON.errorMessage,
-                        contextualColorName: "danger"
-                    });
+            cityssm.postJSON(
+                urlPrefix + "/admin/doAddLotStatus",
+                formElement,
+                (responseJSON: {
+                    success: boolean;
+                    errorMessage?: string;
+                    lotStatuses?: recordTypes.LotStatus[];
+                }) => {
+                    if (responseJSON.success) {
+                        lotStatuses = responseJSON.lotStatuses;
+                        renderLotStatuses();
+                        formElement.reset();
+                        formElement.querySelector("input").focus();
+                    } else {
+                        bulmaJS.alert({
+                            title:
+                                "Error Adding " +
+                                exports.aliases.lot +
+                                " Status",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
                 }
-            });
-    });
+            );
+        });
 
     renderLotStatuses();
 
@@ -521,59 +569,67 @@ declare const bulmaJS: BulmaJS;
      * Lot Occupant Types
      */
 
-
-    let lotOccupantTypes: recordTypes.LotOccupantType[] = exports.lotOccupantTypes;
+    let lotOccupantTypes: recordTypes.LotOccupantType[] =
+        exports.lotOccupantTypes;
     delete exports.lotOccupantTypes;
 
     const updateLotOccupantType = (submitEvent: SubmitEvent) => {
-
         submitEvent.preventDefault();
 
-        cityssm.postJSON(urlPrefix + "/admin/doUpdateLotOccupantType",
+        cityssm.postJSON(
+            urlPrefix + "/admin/doUpdateLotOccupantType",
             submitEvent.currentTarget,
             (responseJSON: {
                 success: boolean;
-                errorMessage ? : string;
-                lotOccupantTypes ? : recordTypes.LotOccupantType[];
+                errorMessage?: string;
+                lotOccupantTypes?: recordTypes.LotOccupantType[];
             }) => {
                 if (responseJSON.success) {
-
                     lotOccupantTypes = responseJSON.lotOccupantTypes;
 
                     bulmaJS.alert({
-                        message: exports.aliases.lot + " " + exports.aliases.occupant + " Type Updated Successfully",
+                        message:
+                            exports.aliases.lot +
+                            " " +
+                            exports.aliases.occupant +
+                            " Type Updated Successfully",
                         contextualColorName: "success"
                     });
-
                 } else {
                     bulmaJS.alert({
-                        title: "Error Updating " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+                        title:
+                            "Error Updating " +
+                            exports.aliases.lot +
+                            " " +
+                            exports.aliases.occupant +
+                            " Type",
                         message: responseJSON.errorMessage,
                         contextualColorName: "danger"
                     });
                 }
-            });
+            }
+        );
     };
 
     const deleteLotOccupantType = (clickEvent: Event) => {
-
-        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
+        const tableRowElement = (
+            clickEvent.currentTarget as HTMLElement
+        ).closest("tr");
 
         const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
 
         const doDelete = () => {
-
-            cityssm.postJSON(urlPrefix + "/admin/doDeleteLotOccupantType", {
+            cityssm.postJSON(
+                urlPrefix + "/admin/doDeleteLotOccupantType",
+                {
                     lotOccupantTypeId
                 },
                 (responseJSON: {
                     success: boolean;
-                    errorMessage ? : string;
-                    lotOccupantTypes ? : recordTypes.LotOccupantType[];
+                    errorMessage?: string;
+                    lotOccupantTypes?: recordTypes.LotOccupantType[];
                 }) => {
-
                     if (responseJSON.success) {
-
                         lotOccupantTypes = responseJSON.lotOccupantTypes;
 
                         if (lotOccupantTypes.length === 0) {
@@ -583,102 +639,148 @@ declare const bulmaJS: BulmaJS;
                         }
 
                         bulmaJS.alert({
-                            message: exports.aliases.lot + " " + exports.aliases.occupant + " Type Deleted Successfully",
+                            message:
+                                exports.aliases.lot +
+                                " " +
+                                exports.aliases.occupant +
+                                " Type Deleted Successfully",
                             contextualColorName: "success"
                         });
-
                     } else {
                         bulmaJS.alert({
-                            title: "Error Deleting " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+                            title:
+                                "Error Deleting " +
+                                exports.aliases.lot +
+                                " " +
+                                exports.aliases.occupant +
+                                " Type",
                             message: responseJSON.errorMessage,
                             contextualColorName: "danger"
                         });
                     }
-                });
+                }
+            );
         };
 
         bulmaJS.confirm({
-            title: "Delete " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
-            message: "Are you sure you want to delete this " + exports.aliases.lot.toLowerCase() + " " + exports.aliases.occupant.toLowerCase() + " type?<br />" +
-                "Note that no " + exports.aliases.lot.toLowerCase() + " " + exports.aliases.occupancy.toLowerCase() + " will be removed.",
+            title:
+                "Delete " +
+                exports.aliases.lot +
+                " " +
+                exports.aliases.occupant +
+                " Type",
+            message:
+                "Are you sure you want to delete this " +
+                exports.aliases.lot.toLowerCase() +
+                " " +
+                exports.aliases.occupant.toLowerCase() +
+                " type?<br />" +
+                "Note that no " +
+                exports.aliases.lot.toLowerCase() +
+                " " +
+                exports.aliases.occupancy.toLowerCase() +
+                " will be removed.",
             messageIsHtml: true,
             contextualColorName: "warning",
             okButton: {
-                text: "Yes, Delete " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+                text:
+                    "Yes, Delete " +
+                    exports.aliases.lot +
+                    " " +
+                    exports.aliases.occupant +
+                    " Type",
                 callbackFunction: doDelete
             }
         });
     };
 
     const moveLotOccupantTypeUp = (clickEvent: Event) => {
-
-        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
+        const tableRowElement = (
+            clickEvent.currentTarget as HTMLElement
+        ).closest("tr");
 
         const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
 
-        cityssm.postJSON(urlPrefix + "/admin/doMoveLotOccupantTypeUp", {
-            lotOccupantTypeId
+        cityssm.postJSON(
+            urlPrefix + "/admin/doMoveLotOccupantTypeUp",
+            {
+                lotOccupantTypeId
             },
             (responseJSON: {
                 success: boolean;
-                errorMessage ? : string;
-                lotOccupantTypes ? : recordTypes.LotOccupantType[];
+                errorMessage?: string;
+                lotOccupantTypes?: recordTypes.LotOccupantType[];
             }) => {
-
                 if (responseJSON.success) {
-
                     lotOccupantTypes = responseJSON.lotOccupantTypes;
                     renderLotOccupantTypes();
-
                 } else {
                     bulmaJS.alert({
-                        title: "Error Moving " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+                        title:
+                            "Error Moving " +
+                            exports.aliases.lot +
+                            " " +
+                            exports.aliases.occupant +
+                            " Type",
                         message: responseJSON.errorMessage,
                         contextualColorName: "danger"
                     });
                 }
-            });
+            }
+        );
     };
 
     const moveLotOccupantTypeDown = (clickEvent: Event) => {
-
-        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
+        const tableRowElement = (
+            clickEvent.currentTarget as HTMLElement
+        ).closest("tr");
 
         const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
 
-        cityssm.postJSON(urlPrefix + "/admin/doMoveLotOccupantTypeDown", {
-            lotOccupantTypeId
+        cityssm.postJSON(
+            urlPrefix + "/admin/doMoveLotOccupantTypeDown",
+            {
+                lotOccupantTypeId
             },
             (responseJSON: {
                 success: boolean;
-                errorMessage ? : string;
-                lotOccupantTypes ? : recordTypes.LotOccupantType[];
+                errorMessage?: string;
+                lotOccupantTypes?: recordTypes.LotOccupantType[];
             }) => {
-
                 if (responseJSON.success) {
-
                     lotOccupantTypes = responseJSON.lotOccupantTypes;
                     renderLotOccupantTypes();
-
                 } else {
                     bulmaJS.alert({
-                        title: "Error Moving " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+                        title:
+                            "Error Moving " +
+                            exports.aliases.lot +
+                            " " +
+                            exports.aliases.occupant +
+                            " Type",
                         message: responseJSON.errorMessage,
                         contextualColorName: "danger"
                     });
                 }
-            });
+            }
+        );
     };
 
     const renderLotOccupantTypes = () => {
-
-        const containerElement = document.querySelector("#container--lotOccupantTypes") as HTMLTableSectionElement;
+        const containerElement = document.querySelector(
+            "#container--lotOccupantTypes"
+        ) as HTMLTableSectionElement;
 
         if (workOrderTypes.length === 0) {
-            containerElement.innerHTML = "<tr>" +
-                "<td colspan=\"2\">" +
-                "<div class=\"message is-warning\">" +
-                "<p class=\"message-body\">There are no active " + cityssm.escapeHTML(exports.aliases.lot.toLowerCase()) + " " + cityssm.escapeHTML(exports.aliases.occupant.toLowerCase()) + " types.</p>" +
+            containerElement.innerHTML =
+                "<tr>" +
+                '<td colspan="2">' +
+                '<div class="message is-warning">' +
+                '<p class="message-body">There are no active ' +
+                cityssm.escapeHTML(exports.aliases.lot.toLowerCase()) +
+                " " +
+                cityssm.escapeHTML(exports.aliases.occupant.toLowerCase()) +
+                " types.</p>" +
                 "</div>" +
                 "</td>" +
                 "</tr>";
@@ -689,84 +791,111 @@ declare const bulmaJS: BulmaJS;
         containerElement.innerHTML = "";
 
         for (const lotOccupantType of lotOccupantTypes) {
-
             const tableRowElement = document.createElement("tr");
 
-            tableRowElement.dataset.lotOccupantTypeId = lotOccupantType.lotOccupantTypeId.toString();
+            tableRowElement.dataset.lotOccupantTypeId =
+                lotOccupantType.lotOccupantTypeId.toString();
 
-            tableRowElement.innerHTML = "<td>" +
+            tableRowElement.innerHTML =
+                "<td>" +
                 "<form>" +
-                "<input name=\"lotOccupantTypeId\" type=\"hidden\" value=\"" + lotOccupantType.lotOccupantTypeId.toString() + "\" />" +
-                ("<div class=\"field has-addons\">" +
-                    "<div class=\"control\">" +
-                    "<input class=\"input\" name=\"lotOccupantType\" type=\"text\" value=\"" + cityssm.escapeHTML(lotOccupantType.lotOccupantType) + "\" maxlength=\"100\" required />" +
+                '<input name="lotOccupantTypeId" type="hidden" value="' +
+                lotOccupantType.lotOccupantTypeId.toString() +
+                '" />' +
+                ('<div class="field has-addons">' +
+                    '<div class="control">' +
+                    '<input class="input" name="lotOccupantType" type="text" value="' +
+                    cityssm.escapeHTML(lotOccupantType.lotOccupantType) +
+                    '" maxlength="100" required />' +
                     "</div>" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button is-success\" type=\"submit\"><i class=\"fas fa-save\" aria-hidden=\"true\"></i></button>" +
+                    '<div class="control">' +
+                    '<button class="button is-success" type="submit"><i class="fas fa-save" aria-hidden="true"></i></button>' +
                     "</div>" +
                     "</div>") +
                 "</form>" +
                 "</td>" +
-                "<td class=\"is-nowrap\">" +
-                "<div class=\"field is-grouped\">" +
-                "<div class=\"control\">" +
-                ("<div class=\"field has-addons\">" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button button--moveLotOccupantTypeUp\" data-tooltip=\"Move Up\" type=\"button\" aria-label=\"Move Up\"><i class=\"fas fa-arrow-up\" aria-hidden=\"true\"></i></button>" +
+                '<td class="is-nowrap">' +
+                '<div class="field is-grouped">' +
+                '<div class="control">' +
+                ('<div class="field has-addons">' +
+                    '<div class="control">' +
+                    '<button class="button button--moveLotOccupantTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
                     "</div>" +
-                    "<div class=\"control\">" +
-                    "<button class=\"button button--moveLotOccupantTypeDown\" data-tooltip=\"Move Down\" type=\"button\" aria-label=\"Move Down\"><i class=\"fas fa-arrow-down\" aria-hidden=\"true\"></i></button>" +
+                    '<div class="control">' +
+                    '<button class="button button--moveLotOccupantTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
                     "</div>" +
                     "</div>") +
                 "</div>" +
-                "<div class=\"control\">" +
-                "<button class=\"button is-danger is-light button--deleteLotOccupantType\"" +
-                " data-tooltip=\"Delete " + cityssm.escapeHTML(exports.aliases.lot) + " " + cityssm.escapeHTML(exports.aliases.occupant) + " Type\" type=\"button\"" +
-                " aria-label=\"Delete " + cityssm.escapeHTML(exports.aliases.lot) + " " + cityssm.escapeHTML(exports.aliases.occupant) + " Type\">" +
-                "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
+                '<div class="control">' +
+                '<button class="button is-danger is-light button--deleteLotOccupantType"' +
+                ' data-tooltip="Delete ' +
+                cityssm.escapeHTML(exports.aliases.lot) +
+                " " +
+                cityssm.escapeHTML(exports.aliases.occupant) +
+                ' Type" type="button"' +
+                ' aria-label="Delete ' +
+                cityssm.escapeHTML(exports.aliases.lot) +
+                " " +
+                cityssm.escapeHTML(exports.aliases.occupant) +
+                ' Type">' +
+                '<i class="fas fa-trash" aria-hidden="true"></i>' +
                 "</button>" +
                 "</div>" +
                 "</div>" +
                 "</td>";
 
-            tableRowElement.querySelector("form").addEventListener("submit", updateLotOccupantType);
-            tableRowElement.querySelector(".button--moveLotOccupantTypeUp").addEventListener("click", moveLotOccupantTypeUp);
-            tableRowElement.querySelector(".button--moveLotOccupantTypeDown").addEventListener("click", moveLotOccupantTypeDown);
-            tableRowElement.querySelector(".button--deleteLotOccupantType").addEventListener("click", deleteLotOccupantType);
+            tableRowElement
+                .querySelector("form")
+                .addEventListener("submit", updateLotOccupantType);
+            tableRowElement
+                .querySelector(".button--moveLotOccupantTypeUp")
+                .addEventListener("click", moveLotOccupantTypeUp);
+            tableRowElement
+                .querySelector(".button--moveLotOccupantTypeDown")
+                .addEventListener("click", moveLotOccupantTypeDown);
+            tableRowElement
+                .querySelector(".button--deleteLotOccupantType")
+                .addEventListener("click", deleteLotOccupantType);
 
             containerElement.append(tableRowElement);
         }
-
     };
 
-    document.querySelector("#form--addLotOccupantType").addEventListener("submit", (submitEvent: SubmitEvent) => {
+    document
+        .querySelector("#form--addLotOccupantType")
+        .addEventListener("submit", (submitEvent: SubmitEvent) => {
+            submitEvent.preventDefault();
 
-        submitEvent.preventDefault();
+            const formElement = submitEvent.currentTarget as HTMLFormElement;
 
-        const formElement = submitEvent.currentTarget as HTMLFormElement;
-
-        cityssm.postJSON(urlPrefix + "/admin/doAddLotOccupantType",
-            formElement,
-            (responseJSON: {
-                success: boolean;
-                errorMessage ? : string;
-                lotOccupantTypes ? : recordTypes.LotOccupantType[];
-            }) => {
-
-                if (responseJSON.success) {
-                    lotOccupantTypes = responseJSON.lotOccupantTypes;
-                    renderLotOccupantTypes();
-                    formElement.reset();
-                    formElement.querySelector("input").focus();
-                } else {
-                    bulmaJS.alert({
-                        title: "Error Adding " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
-                        message: responseJSON.errorMessage,
-                        contextualColorName: "danger"
-                    });
+            cityssm.postJSON(
+                urlPrefix + "/admin/doAddLotOccupantType",
+                formElement,
+                (responseJSON: {
+                    success: boolean;
+                    errorMessage?: string;
+                    lotOccupantTypes?: recordTypes.LotOccupantType[];
+                }) => {
+                    if (responseJSON.success) {
+                        lotOccupantTypes = responseJSON.lotOccupantTypes;
+                        renderLotOccupantTypes();
+                        formElement.reset();
+                        formElement.querySelector("input").focus();
+                    } else {
+                        bulmaJS.alert({
+                            title:
+                                "Error Adding " +
+                                exports.aliases.lot +
+                                " " +
+                                exports.aliases.occupant +
+                                " Type",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
                 }
-            });
-    });
+            );
+        });
 
     renderLotOccupantTypes();
 })();

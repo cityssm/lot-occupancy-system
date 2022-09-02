@@ -1,6 +1,4 @@
-import {
-    Router
-} from "express";
+import { Router } from "express";
 
 import handler_search from "../handlers/lotOccupancies-get/search.js";
 import handler_doSearchLotOccupancies from "../handlers/lotOccupancies-post/doSearchLotOccupancies.js";
@@ -33,103 +31,128 @@ import handler_doDeleteLotOccupancyTransaction from "../handlers/lotOccupancies-
 
 import * as permissionHandlers from "../handlers/permissions.js";
 
-
 export const router = Router();
 
 // Search
 
-router.get("/",
-    handler_search);
+router.get("/", handler_search);
 
-router.post("/doSearchLotOccupancies",
-    handler_doSearchLotOccupancies);
+router.post("/doSearchLotOccupancies", handler_doSearchLotOccupancies);
 
 // Create
 
-router.get("/new",
-    permissionHandlers.updateGetHandler,
-    handler_new);
-    
-router.post("/doGetOccupancyTypeFields",
-    permissionHandlers.updatePostHandler,
-    handler_doGetOccupancyTypeFields);    
+router.get("/new", permissionHandlers.updateGetHandler, handler_new);
 
-router.post("/doCreateLotOccupancy",
+router.post(
+    "/doGetOccupancyTypeFields",
     permissionHandlers.updatePostHandler,
-    handler_doCreateLotOccupancy);
+    handler_doGetOccupancyTypeFields
+);
+
+router.post(
+    "/doCreateLotOccupancy",
+    permissionHandlers.updatePostHandler,
+    handler_doCreateLotOccupancy
+);
 
 // View
 
-router.get("/:lotOccupancyId",
-    handler_view);
+router.get("/:lotOccupancyId", handler_view);
 
-router.get("/:lotOccupancyId/print",
-    handler_print);
+router.get("/:lotOccupancyId/print", handler_print);
 
 // Edit
 
-router.get("/:lotOccupancyId/edit",
+router.get(
+    "/:lotOccupancyId/edit",
     permissionHandlers.updateGetHandler,
-    handler_edit);
+    handler_edit
+);
 
-router.post("/doUpdateLotOccupancy",
+router.post(
+    "/doUpdateLotOccupancy",
     permissionHandlers.updatePostHandler,
-    handler_doUpdateLotOccupancy);
+    handler_doUpdateLotOccupancy
+);
 
-router.post("/doDeleteLotOccupancy",
+router.post(
+    "/doDeleteLotOccupancy",
     permissionHandlers.updatePostHandler,
-    handler_doDeleteLotOccupancy);
+    handler_doDeleteLotOccupancy
+);
 
 // Occupants
 
-router.post("/doAddLotOccupancyOccupant",
+router.post(
+    "/doAddLotOccupancyOccupant",
     permissionHandlers.updatePostHandler,
-    handler_doAddLotOccupancyOccupant);
+    handler_doAddLotOccupancyOccupant
+);
 
-router.post("/doUpdateLotOccupancyOccupant",
+router.post(
+    "/doUpdateLotOccupancyOccupant",
     permissionHandlers.updatePostHandler,
-    handler_doUpdateLotOccupancyOccupant);
+    handler_doUpdateLotOccupancyOccupant
+);
 
-router.post("/doDeleteLotOccupancyOccupant",
+router.post(
+    "/doDeleteLotOccupancyOccupant",
     permissionHandlers.updatePostHandler,
-    handler_doDeleteLotOccupancyOccupant);
+    handler_doDeleteLotOccupancyOccupant
+);
 
 // Comments
 
-router.post("/doAddLotOccupancyComment",
+router.post(
+    "/doAddLotOccupancyComment",
     permissionHandlers.updatePostHandler,
-    handler_doAddLotOccupancyComment);
+    handler_doAddLotOccupancyComment
+);
 
-router.post("/doUpdateLotOccupancyComment",
+router.post(
+    "/doUpdateLotOccupancyComment",
     permissionHandlers.updatePostHandler,
-    handler_doUpdateLotOccupancyComment);
+    handler_doUpdateLotOccupancyComment
+);
 
-router.post("/doDeleteLotOccupancyComment",
+router.post(
+    "/doDeleteLotOccupancyComment",
     permissionHandlers.updatePostHandler,
-    handler_doDeleteLotOccupancyComment);
+    handler_doDeleteLotOccupancyComment
+);
 
 // Fees
 
-router.post("/doGetFees",
+router.post(
+    "/doGetFees",
     permissionHandlers.updatePostHandler,
-    handler_doGetFees);
+    handler_doGetFees
+);
 
-router.post("/doAddLotOccupancyFee",
+router.post(
+    "/doAddLotOccupancyFee",
     permissionHandlers.updatePostHandler,
-    handler_doAddLotOccupancyFee);
-    
-router.post("/doDeleteLotOccupancyFee",
+    handler_doAddLotOccupancyFee
+);
+
+router.post(
+    "/doDeleteLotOccupancyFee",
     permissionHandlers.updatePostHandler,
-    handler_doDeleteLotOccupancyFee);
+    handler_doDeleteLotOccupancyFee
+);
 
 // Transactions
 
-router.post("/doAddLotOccupancyTransaction",
+router.post(
+    "/doAddLotOccupancyTransaction",
     permissionHandlers.updatePostHandler,
-    handler_doAddLotOccupancyTransaction);
+    handler_doAddLotOccupancyTransaction
+);
 
-router.post("/doDeleteLotOccupancyTransaction",
+router.post(
+    "/doDeleteLotOccupancyTransaction",
     permissionHandlers.updatePostHandler,
-    handler_doDeleteLotOccupancyTransaction);
+    handler_doDeleteLotOccupancyTransaction
+);
 
 export default router;

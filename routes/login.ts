@@ -1,6 +1,4 @@
-import {
-    Router
-} from "express";
+import { Router } from "express";
 
 import * as configFunctions from "../helpers/functions.config.js";
 
@@ -10,19 +8,17 @@ import { useTestDatabases } from "../data/databasePaths.js";
 
 import type * as recordTypes from "../types/recordTypes";
 
-
 export const router = Router();
 
-
 const getSafeRedirectURL = (possibleRedirectURL = "") => {
-
     const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
 
-    if (typeof (possibleRedirectURL) === "string") {
-        
-        const urlToCheck = (possibleRedirectURL.startsWith(urlPrefix) ?
-            possibleRedirectURL.slice(urlPrefix.length) :
-            possibleRedirectURL).toLowerCase();
+    if (typeof possibleRedirectURL === "string") {
+        const urlToCheck = (
+            possibleRedirectURL.startsWith(urlPrefix)
+                ? possibleRedirectURL.slice(urlPrefix.length)
+                : possibleRedirectURL
+        ).toLowerCase();
 
         switch (urlToCheck) {
             case "/admin/fees":
@@ -31,7 +27,6 @@ const getSafeRedirectURL = (possibleRedirectURL = "") => {
             case "/maps":
             case "/workOrders":
             case "/reports":
-
                 return urlPrefix + urlToCheck;
         }
     }
@@ -39,20 +34,19 @@ const getSafeRedirectURL = (possibleRedirectURL = "") => {
     return urlPrefix + "/dashboard";
 };
 
-
-router.route("/")
+router
+    .route("/")
     .get((request, response) => {
-
-        const sessionCookieName = configFunctions.getProperty("session.cookieName");
+        const sessionCookieName =
+            configFunctions.getProperty("session.cookieName");
 
         if (request.session.user && request.cookies[sessionCookieName]) {
-
-            const redirectURL = getSafeRedirectURL((request.query.redirect || "") as string);
+            const redirectURL = getSafeRedirectURL(
+                (request.query.redirect || "") as string
+            );
 
             response.redirect(redirectURL);
-
         } else {
-
             response.render("login", {
                 userName: "",
                 message: "",
@@ -62,38 +56,45 @@ router.route("/")
         }
     })
     .post(async (request, response) => {
-
         const userName = request.body.userName as string;
         const passwordPlain = request.body.password as string;
 
         const unsafeRedirectURL = request.body.redirect;
 
-        const redirectURL = getSafeRedirectURL(typeof (unsafeRedirectURL) === "string" ?
-            unsafeRedirectURL :
-            "");
+        const redirectURL = getSafeRedirectURL(
+            typeof unsafeRedirectURL === "string" ? unsafeRedirectURL : ""
+        );
 
-        const isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain)
+        const isAuthenticated = await authenticationFunctions.authenticate(
+            userName,
+            passwordPlain
+        );
         let userObject: recordTypes.User;
 
         if (isAuthenticated) {
-
             const userNameLowerCase = userName.toLowerCase();
 
-            const canLogin = configFunctions.getProperty("users.canLogin")
+            const canLogin = configFunctions
+                .getProperty("users.canLogin")
                 .some((currentUserName) => {
                     return userNameLowerCase === currentUserName.toLowerCase();
                 });
 
             if (canLogin) {
-
-                const canUpdate = configFunctions.getProperty("users.canUpdate")
+                const canUpdate = configFunctions
+                    .getProperty("users.canUpdate")
                     .some((currentUserName) => {
-                        return userNameLowerCase === currentUserName.toLowerCase();
+                        return (
+                            userNameLowerCase === currentUserName.toLowerCase()
+                        );
                     });
 
-                const isAdmin = configFunctions.getProperty("users.isAdmin")
+                const isAdmin = configFunctions
+                    .getProperty("users.isAdmin")
                     .some((currentUserName) => {
-                        return userNameLowerCase === currentUserName.toLowerCase();
+                        return (
+                            userNameLowerCase === currentUserName.toLowerCase()
+                        );
                     });
 
                 userObject = {
@@ -107,13 +108,10 @@ router.route("/")
         }
 
         if (isAuthenticated && userObject) {
-
             request.session.user = userObject;
 
             response.redirect(redirectURL);
-
         } else {
-
             response.render("login", {
                 userName,
                 message: "Login Failed",
@@ -122,6 +120,5 @@ router.route("/")
             });
         }
     });
-
 
 export default router;

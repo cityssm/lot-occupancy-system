@@ -1,19 +1,14 @@
-import type {
-    RequestHandler
-} from "express";
+import type { RequestHandler } from "express";
 
-import {
-    deleteWorkOrderType
-} from "../../helpers/lotOccupancyDB/deleteWorkOrderType.js";
+import { deleteWorkOrderType } from "../../helpers/lotOccupancyDB/deleteWorkOrderType.js";
 
-import {
-    getWorkOrderTypes
-} from "../../helpers/functions.cache.js";
-
+import { getWorkOrderTypes } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
-
-    const success = deleteWorkOrderType(request.body.workOrderTypeId, request.session);
+    const success = deleteWorkOrderType(
+        request.body.workOrderTypeId,
+        request.session
+    );
 
     const workOrderTypes = getWorkOrderTypes();
 
@@ -22,6 +17,5 @@ export const handler: RequestHandler = async (request, response) => {
         workOrderTypes
     });
 };
-
 
 export default handler;
