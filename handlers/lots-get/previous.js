@@ -4,8 +4,11 @@ export const handler = (request, response) => {
     const lotId = request.params.lotId;
     const previousLotId = getPreviousLotId(lotId);
     if (!previousLotId) {
-        return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") + "/lots/?error=noPreviousLotIdFound");
+        return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") +
+            "/lots/?error=noPreviousLotIdFound");
     }
-    return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") + "/lots/" + previousLotId);
+    return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") +
+        "/lots/" +
+        previousLotId);
 };
 export default handler;

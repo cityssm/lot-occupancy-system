@@ -20,17 +20,33 @@ export const getReportData = (reportName, reportParameters) => {
             sql = "select * from Maps";
             break;
         case "maps-formatted":
-            sql = "select mapName as " + mapNameAlias + "," +
-                " mapDescription as " + mapDescriptionAlias + "," +
-                " mapAddress1 as " + mapAddress1Alias + "," +
-                " mapAddress2 as " + mapAddress2Alias + "," +
-                " mapCity as " + mapCityAlias + "," +
-                " mapProvince as " + mapProvinceAlias + "," +
-                " mapPostalCode as " + mapPostalCodeAlias + "," +
-                " mapPhoneNumber as " + mapPhoneNumberAlias +
-                " from Maps" +
-                " where recordDelete_timeMillis is null" +
-                " order by mapName";
+            sql =
+                "select mapName as " +
+                    mapNameAlias +
+                    "," +
+                    " mapDescription as " +
+                    mapDescriptionAlias +
+                    "," +
+                    " mapAddress1 as " +
+                    mapAddress1Alias +
+                    "," +
+                    " mapAddress2 as " +
+                    mapAddress2Alias +
+                    "," +
+                    " mapCity as " +
+                    mapCityAlias +
+                    "," +
+                    " mapProvince as " +
+                    mapProvinceAlias +
+                    "," +
+                    " mapPostalCode as " +
+                    mapPostalCodeAlias +
+                    "," +
+                    " mapPhoneNumber as " +
+                    mapPhoneNumberAlias +
+                    " from Maps" +
+                    " where recordDelete_timeMillis is null" +
+                    " order by mapName";
             break;
         case "lots-all":
             sql = "select * from Lots";
@@ -103,8 +119,7 @@ export const getReportData = (reportName, reportParameters) => {
     });
     database.function("userFn_dateIntegerToString", dateTimeFunctions.dateIntegerToString);
     database.function("userFn_timeIntegerToString", dateTimeFunctions.timeIntegerToString);
-    const rows = database.prepare(sql)
-        .all(sqlParameters);
+    const rows = database.prepare(sql).all(sqlParameters);
     database.close();
     return rows;
 };

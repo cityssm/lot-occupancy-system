@@ -11,7 +11,8 @@ export const getLotStatuses = () => {
     let expectedOrderNumber = 0;
     for (const lotStatus of lotStatuses) {
         if (lotStatus.orderNumber !== expectedOrderNumber) {
-            database.prepare("update LotStatuses" +
+            database
+                .prepare("update LotStatuses" +
                 " set orderNumber = ?" +
                 " where lotStatusId = ?")
                 .run(expectedOrderNumber, lotStatus.lotStatusId);

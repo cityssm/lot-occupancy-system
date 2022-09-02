@@ -13,6 +13,6 @@ export const deleteLotOccupancyField = (lotOccupancyId, occupancyTypeFieldId, re
     if (!connectedDatabase) {
         database.close();
     }
-    return (result.changes > 0);
+    return result.changes > 0;
 };
 export default deleteLotOccupancyField;

@@ -2,9 +2,7 @@ import * as configFunctions from "../helpers/functions.config.js";
 import * as userFunctions from "../helpers/functions.user.js";
 const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
 export const forbiddenJSON = (response) => {
-    return response
-        .status(403)
-        .json({
+    return response.status(403).json({
         success: false,
         message: "Forbidden"
     });

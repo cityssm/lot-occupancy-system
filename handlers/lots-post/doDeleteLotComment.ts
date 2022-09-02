@@ -1,19 +1,14 @@
-import type {
-    RequestHandler
-} from "express";
+import type { RequestHandler } from "express";
 
-import {
-    deleteLotComment
-} from "../../helpers/lotOccupancyDB/deleteLotComment.js";
+import { deleteLotComment } from "../../helpers/lotOccupancyDB/deleteLotComment.js";
 
-import {
-    getLotComments
-} from "../../helpers/lotOccupancyDB/getLotComments.js";
-
+import { getLotComments } from "../../helpers/lotOccupancyDB/getLotComments.js";
 
 export const handler: RequestHandler = async (request, response) => {
-
-    const success = deleteLotComment(request.body.lotCommentId, request.session);
+    const success = deleteLotComment(
+        request.body.lotCommentId,
+        request.session
+    );
 
     const lotComments = getLotComments(request.body.lotId);
 
@@ -22,6 +17,5 @@ export const handler: RequestHandler = async (request, response) => {
         lotComments
     });
 };
-
 
 export default handler;

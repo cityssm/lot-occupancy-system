@@ -10,7 +10,7 @@ export const addLotStatus = (lotStatusForm, requestSession) => {
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
         " values (?, ?, ?, ?, ?, ?)")
-        .run(lotStatusForm.lotStatus, (lotStatusForm.orderNumber || -1), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(lotStatusForm.lotStatus, lotStatusForm.orderNumber || -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     database.close();
     clearLotStatusesCache();
     return result.lastInsertRowid;

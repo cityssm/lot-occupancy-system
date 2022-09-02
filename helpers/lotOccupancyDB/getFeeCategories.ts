@@ -1,38 +1,39 @@
 import sqlite from "better-sqlite3";
 
-import {
-    lotOccupancyDB as databasePath
-} from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-
 interface GetFeeCategoriesFilters {
-    occupancyTypeId ? : number | string;
-    lotTypeId ? : number | string;
+    occupancyTypeId?: number | string;
+    lotTypeId?: number | string;
 }
 
 interface GetFeeCategoriesOptions {
-    includeFees ? : boolean;
+    includeFees?: boolean;
 }
 
-
-export const getFeeCategories = (filters: GetFeeCategoriesFilters, options: GetFeeCategoriesOptions): recordTypes.FeeCategory[] => {
-
-    const updateOrderNumbers = !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees;
+export const getFeeCategories = (
+    filters: GetFeeCategoriesFilters,
+    options: GetFeeCategoriesOptions
+): recordTypes.FeeCategory[] => {
+    const updateOrderNumbers =
+        !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees;
 
     const database = sqlite(databasePath, {
         readonly: !updateOrderNumbers
     });
 
-    let sql = "select feeCategoryId, feeCategory, orderNumber" +
+    let sql =
+        "select feeCategoryId, feeCategory, orderNumber" +
         " from FeeCategories" +
         " where recordDelete_timeMillis is null";
 
     let sqlParameters = [];
 
     if (filters.occupancyTypeId) {
-        sql += " and feeCategoryId in (" +
+        sql +=
+            " and feeCategoryId in (" +
             "select feeCategoryId from Fees" +
             " where recordDelete_timeMillis is null" +
             " and (occupancyTypeId is null or occupancyTypeId = ?))";
@@ -41,7 +42,8 @@ export const getFeeCategories = (filters: GetFeeCategoriesFilters, options: GetF
     }
 
     if (filters.lotTypeId) {
-        sql += " and feeCategoryId in (" +
+        sql +=
+            " and feeCategoryId in (" +
             "select feeCategoryId from Fees" +
             " where recordDelete_timeMillis is null" +
             " and (lotTypeId is null or lotTypeId = ?))";
@@ -49,28 +51,33 @@ export const getFeeCategories = (filters: GetFeeCategoriesFilters, options: GetF
         sqlParameters.push(filters.lotTypeId);
     }
 
-    const feeCategories: recordTypes.FeeCategory[] = database.prepare(sql +
-            " order by orderNumber, feeCategory")
+    const feeCategories: recordTypes.FeeCategory[] = database
+        .prepare(sql + " order by orderNumber, feeCategory")
         .all(sqlParameters);
 
     if (options.includeFees) {
-
         let expectedFeeCategoryOrderNumber = -1;
 
         for (const feeCategory of feeCategories) {
-
             expectedFeeCategoryOrderNumber += 1;
 
             if (feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
-                database.prepare("update FeeCategories" +
-                        " set orderNumber = ?" +
-                        " where feeCategoryId = ?")
-                    .run(expectedFeeCategoryOrderNumber, feeCategory.feeCategoryId);
+                database
+                    .prepare(
+                        "update FeeCategories" +
+                            " set orderNumber = ?" +
+                            " where feeCategoryId = ?"
+                    )
+                    .run(
+                        expectedFeeCategoryOrderNumber,
+                        feeCategory.feeCategoryId
+                    );
 
                 feeCategory.orderNumber = expectedFeeCategoryOrderNumber;
             }
 
-            sql = "select f.feeId, f.feeName, f.feeDescription," +
+            sql =
+                "select f.feeId, f.feeName, f.feeDescription," +
                 " f.occupancyTypeId, o.occupancyType," +
                 " f.lotTypeId, l.lotType," +
                 " ifnull(f.feeAmount, 0) as feeAmount, f.feeFunction," +
@@ -88,7 +95,8 @@ export const getFeeCategories = (filters: GetFeeCategoriesFilters, options: GetF
             sqlParameters.push(feeCategory.feeCategoryId);
 
             if (filters.occupancyTypeId) {
-                sql += " and (f.occupancyTypeId is null or f.occupancyTypeId = ?)";
+                sql +=
+                    " and (f.occupancyTypeId is null or f.occupancyTypeId = ?)";
 
                 sqlParameters.push(filters.occupancyTypeId);
             }
@@ -99,23 +107,23 @@ export const getFeeCategories = (filters: GetFeeCategoriesFilters, options: GetF
                 sqlParameters.push(filters.lotTypeId);
             }
 
-            feeCategory.fees = database.prepare(sql +
-                    " order by f.orderNumber, f.feeName")
+            feeCategory.fees = database
+                .prepare(sql + " order by f.orderNumber, f.feeName")
                 .all(sqlParameters);
 
             if (updateOrderNumbers) {
-
                 let expectedFeeOrderNumber = -1;
 
                 for (const fee of feeCategory.fees) {
-
                     expectedFeeOrderNumber += 1;
 
                     if (fee.orderNumber !== expectedFeeOrderNumber) {
-
-                        database.prepare("update Fees" +
-                                " set orderNumber = ?" +
-                                " where feeId = ?")
+                        database
+                            .prepare(
+                                "update Fees" +
+                                    " set orderNumber = ?" +
+                                    " where feeId = ?"
+                            )
                             .run(expectedFeeOrderNumber, fee.feeId);
 
                         fee.orderNumber = expectedFeeOrderNumber;
@@ -129,6 +137,5 @@ export const getFeeCategories = (filters: GetFeeCategoriesFilters, options: GetF
 
     return feeCategories;
 };
-
 
 export default getFeeCategories;

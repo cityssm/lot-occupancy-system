@@ -1,15 +1,10 @@
 import sqlite from "better-sqlite3";
 
-import {
-    lotOccupancyDB as databasePath
-} from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import {
-    dateStringToInteger
-} from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { dateStringToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import type * as recordTypes from "../../types/recordTypes";
-
 
 interface UpdateLotCommentForm {
     lotCommentId: string | number;
@@ -18,34 +13,37 @@ interface UpdateLotCommentForm {
     lotComment: string;
 }
 
+export const updateLotComment = (
+    commentForm: UpdateLotCommentForm,
+    requestSession: recordTypes.PartialSession
+): boolean => {
+    const rightNowMillis = Date.now();
 
-export const updateLotComment =
-    (commentForm: UpdateLotCommentForm, requestSession: recordTypes.PartialSession): boolean => {
+    const database = sqlite(databasePath);
 
-        const rightNowMillis = Date.now();
-
-        const database = sqlite(databasePath);
-
-        const result = database
-            .prepare("update LotComments" +
+    const result = database
+        .prepare(
+            "update LotComments" +
                 " set lotCommentDate = ?," +
                 " lotCommentTime = ?," +
                 " lotComment = ?," +
                 " recordUpdate_userName = ?," +
                 " recordUpdate_timeMillis = ?" +
                 " where recordDelete_timeMillis is null" +
-                " and lotCommentId = ?")
-            .run(dateStringToInteger(commentForm.lotCommentDateString),
-                dateStringToInteger(commentForm.lotCommentTimeString),
-                commentForm.lotComment,
-                requestSession.user.userName,
-                rightNowMillis,
-                commentForm.lotCommentId);
+                " and lotCommentId = ?"
+        )
+        .run(
+            dateStringToInteger(commentForm.lotCommentDateString),
+            dateStringToInteger(commentForm.lotCommentTimeString),
+            commentForm.lotComment,
+            requestSession.user.userName,
+            rightNowMillis,
+            commentForm.lotCommentId
+        );
 
-        database.close();
+    database.close();
 
-        return result.changes > 0;
-    };
-
+    return result.changes > 0;
+};
 
 export default updateLotComment;

@@ -1,21 +1,22 @@
 import sqlite from "better-sqlite3";
 
-import {
-    lotOccupancyDB as databasePath
-} from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-
-export const getLotOccupancyOccupants = (lotOccupancyId: number | string,
-    connectedDatabase ? : sqlite.Database): recordTypes.LotOccupancyOccupant[] => {
-
-    const database = connectedDatabase || sqlite(databasePath, {
-        readonly: true
-    });
+export const getLotOccupancyOccupants = (
+    lotOccupancyId: number | string,
+    connectedDatabase?: sqlite.Database
+): recordTypes.LotOccupancyOccupant[] => {
+    const database =
+        connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
 
     const lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[] = database
-            .prepare("select o.lotOccupancyId, o.lotOccupantIndex," +
+        .prepare(
+            "select o.lotOccupancyId, o.lotOccupantIndex," +
                 " o.occupantName, o.occupantAddress1, o.occupantAddress2," +
                 " o.occupantCity, o.occupantProvince, o.occupantPostalCode, o.occupantPhoneNumber," +
                 " o.lotOccupantTypeId, t.lotOccupantType" +
@@ -23,8 +24,9 @@ export const getLotOccupancyOccupants = (lotOccupancyId: number | string,
                 " left join LotOccupantTypes t on o.lotOccupantTypeId = t.lotOccupantTypeId" +
                 " where o.recordDelete_timeMillis is null" +
                 " and o.lotOccupancyId = ?" +
-                " order by t.orderNumber, t.lotOccupantType, o.occupantName, o.lotOccupantIndex")
-            .all(lotOccupancyId);
+                " order by t.orderNumber, t.lotOccupantType, o.occupantName, o.lotOccupantIndex"
+        )
+        .all(lotOccupancyId);
 
     if (!connectedDatabase) {
         database.close();
@@ -32,6 +34,5 @@ export const getLotOccupancyOccupants = (lotOccupancyId: number | string,
 
     return lotOccupancyOccupants;
 };
-
 
 export default getLotOccupancyOccupants;

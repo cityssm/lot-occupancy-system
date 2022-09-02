@@ -37,73 +37,74 @@ declare const bulmaJS: BulmaJS;
         for (const feeCategory of feeCategories) {
             const feeCategoryContainerElement =
                 document.createElement("section");
+
             feeCategoryContainerElement.className =
-                "container--feeCategory mb-5";
+                "panel container--feeCategory";
+
             feeCategoryContainerElement.dataset.feeCategoryId =
                 feeCategory.feeCategoryId.toString();
 
-            feeCategoryContainerElement.insertAdjacentHTML(
-                "beforeend",
+            feeCategoryContainerElement.innerHTML =
+                '<div class="panel-heading">' +
                 '<div class="level is-mobile">' +
-                    ('<div class="level-left">' +
-                        '<div class="level-item">' +
-                        '<h2 class="title is-4">' +
-                        cityssm.escapeHTML(feeCategory.feeCategory) +
-                        "</h2>" +
+                ('<div class="level-left">' +
+                    '<div class="level-item">' +
+                    '<h2 class="title is-4">' +
+                    cityssm.escapeHTML(feeCategory.feeCategory) +
+                    "</h2>" +
+                    "</div>" +
+                    "</div>") +
+                ('<div class="level-right">' +
+                    (feeCategory.fees.length === 0
+                        ? '<div class="level-item">' +
+                          '<button class="button is-small is-danger button--deleteFeeCategory" type="button">' +
+                          '<span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>' +
+                          "<span>Delete Category</span>" +
+                          "</button>" +
+                          "</div>"
+                        : "") +
+                    ('<div class="level-item">' +
+                        '<button class="button is-small is-primary button--editFeeCategory" type="button">' +
+                        '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
+                        "<span>Edit Category</span>" +
+                        "</button>" +
+                        "</div>") +
+                    ('<div class="level-item">' +
+                        '<button class="button is-small is-success button--addFee" type="button">' +
+                        '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
+                        "<span>Add Fee</span>" +
+                        "</button>" +
+                        "</div>") +
+                    ('<div class="level-item">' +
+                        '<div class="field has-addons">' +
+                        '<div class="control">' +
+                        '<button class="button is-small button--moveFeeCategoryUp" data-tooltip="Move Up" type="button" aria-label="Move Up">' +
+                        '<i class="fas fa-arrow-up" aria-hidden="true"></i>' +
+                        "</button>" +
+                        "</div>" +
+                        '<div class="control">' +
+                        '<button class="button is-small button--moveFeeCategoryDown" data-tooltip="Move Down" type="button" aria-label="Move Down">' +
+                        '<i class="fas fa-arrow-down" aria-hidden="true"></i>' +
+                        "</button>" +
+                        "</div>" +
                         "</div>" +
                         "</div>") +
-                    ('<div class="level-right">' +
-                        (feeCategory.fees.length === 0
-                            ? '<div class="level-item">' +
-                              '<button class="button is-small is-danger button--deleteFeeCategory" type="button">' +
-                              '<span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>' +
-                              "<span>Delete Category</span>" +
-                              "</button>" +
-                              "</div>"
-                            : "") +
-                        ('<div class="level-item">' +
-                            '<button class="button is-small is-primary button--editFeeCategory" type="button">' +
-                            '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
-                            "<span>Edit Category</span>" +
-                            "</button>" +
-                            "</div>") +
-                        ('<div class="level-item">' +
-                            '<button class="button is-small is-success button--addFee" type="button">' +
-                            '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
-                            "<span>Add Fee</span>" +
-                            "</button>" +
-                            "</div>") +
-                        ('<div class="level-item">' +
-                            '<div class="field has-addons">' +
-                            '<div class="control">' +
-                            '<button class="button is-small button--moveFeeCategoryUp" data-tooltip="Move Up" type="button" aria-label="Move Up">' +
-                            '<i class="fas fa-arrow-up" aria-hidden="true"></i>' +
-                            "</button>" +
-                            "</div>" +
-                            '<div class="control">' +
-                            '<button class="button is-small button--moveFeeCategoryDown" data-tooltip="Move Down" type="button" aria-label="Move Down">' +
-                            '<i class="fas fa-arrow-down" aria-hidden="true"></i>' +
-                            "</button>" +
-                            "</div>" +
-                            "</div>" +
-                            "</div>") +
-                        "</div>") +
-                    "</div>"
-            );
+                    "</div>") +
+                "</div>" +
+                "</div>";
 
             if (feeCategory.fees.length === 0) {
                 feeCategoryContainerElement.insertAdjacentHTML(
                     "beforeend",
-                    '<div class="message is-info">' +
+                    '<div class="panel-block is-block">' +
+                        '<div class="message is-info">' +
                         '<p class="message-body">There are no fees in the "' +
                         cityssm.escapeHTML(feeCategory.feeCategory) +
                         '" category.</p>' +
+                        "</div>" +
                         "</div>"
                 );
             } else {
-                const panelElement = document.createElement("div");
-                panelElement.className = "panel";
-
                 for (const fee of feeCategory.fees) {
                     const panelBlockElement = document.createElement("div");
                     panelBlockElement.className =
@@ -195,10 +196,8 @@ declare const bulmaJS: BulmaJS;
                         .querySelector(".button--moveFeeDown")
                         .addEventListener("click", moveFeeDown);
 
-                    panelElement.append(panelBlockElement);
+                    feeCategoryContainerElement.append(panelBlockElement);
                 }
-
-                feeCategoryContainerElement.append(panelElement);
             }
 
             if (feeCategory.fees.length === 0) {

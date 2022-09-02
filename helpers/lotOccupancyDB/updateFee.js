@@ -21,7 +21,7 @@ export const updateFee = (feeForm, requestSession) => {
         " recordUpdate_timeMillis = ?" +
         " where recordDelete_timeMillis is null" +
         " and feeId = ?")
-        .run(feeForm.feeCategoryId, feeForm.feeName, feeForm.feeDescription, (feeForm.occupancyTypeId || undefined), (feeForm.lotTypeId || undefined), (feeForm.feeAmount || undefined), (feeForm.feeFunction || undefined), (feeForm.taxAmount || undefined), (feeForm.taxPercentage || undefined), (feeForm.includeQuantity ? 1 : 0), feeForm.quantityUnit, (feeForm.isRequired ? 1 : 0), requestSession.user.userName, rightNowMillis, feeForm.feeId);
+        .run(feeForm.feeCategoryId, feeForm.feeName, feeForm.feeDescription, feeForm.occupancyTypeId || undefined, feeForm.lotTypeId || undefined, feeForm.feeAmount || undefined, feeForm.feeFunction || undefined, feeForm.taxAmount || undefined, feeForm.taxPercentage || undefined, feeForm.includeQuantity ? 1 : 0, feeForm.quantityUnit, feeForm.isRequired ? 1 : 0, requestSession.user.userName, rightNowMillis, feeForm.feeId);
     database.close();
     return result.changes > 0;
 };

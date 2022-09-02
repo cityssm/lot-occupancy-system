@@ -12,6 +12,6 @@ export const deleteLotOccupantType = (lotOccupantTypeId, requestSession) => {
         .run(requestSession.user.userName, rightNowMillis, lotOccupantTypeId);
     database.close();
     clearLotOccupantTypesCache();
-    return (result.changes > 0);
+    return result.changes > 0;
 };
 export default deleteLotOccupantType;

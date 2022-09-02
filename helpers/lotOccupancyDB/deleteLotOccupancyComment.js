@@ -10,6 +10,6 @@ export const deleteLotOccupancyComment = (lotOccupancyCommentId, requestSession)
         " where lotOccupancyCommentId = ?")
         .run(requestSession.user.userName, rightNowMillis, lotOccupancyCommentId);
     database.close();
-    return (result.changes > 0);
+    return result.changes > 0;
 };
 export default deleteLotOccupancyComment;

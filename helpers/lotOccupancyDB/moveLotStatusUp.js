@@ -3,11 +3,11 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { clearLotStatusesCache } from "../functions.cache.js";
 export const moveLotStatusUp = (lotStatusId) => {
     const database = sqlite(databasePath);
-    const currentOrderNumber = database.prepare("select orderNumber" +
+    const currentOrderNumber = database
+        .prepare("select orderNumber" +
         " from LotStatuses" +
         " where lotStatusId = ?")
-        .get(lotStatusId)
-        .orderNumber;
+        .get(lotStatusId).orderNumber;
     if (currentOrderNumber <= 0) {
         database.close();
         return true;

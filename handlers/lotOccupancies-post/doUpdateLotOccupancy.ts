@@ -1,14 +1,8 @@
-import type {
-    RequestHandler
-} from "express";
+import type { RequestHandler } from "express";
 
-import {
-    updateLotOccupancy
-} from "../../helpers/lotOccupancyDB/updateLotOccupancy.js";
-
+import { updateLotOccupancy } from "../../helpers/lotOccupancyDB/updateLotOccupancy.js";
 
 export const handler: RequestHandler = async (request, response) => {
-
     const success = updateLotOccupancy(request.body, request.session);
 
     response.json({
@@ -16,6 +10,5 @@ export const handler: RequestHandler = async (request, response) => {
         lotOccupancyId: request.body.lotOccupancyId
     });
 };
-
 
 export default handler;

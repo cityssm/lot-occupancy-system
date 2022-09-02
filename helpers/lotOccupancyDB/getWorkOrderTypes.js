@@ -11,7 +11,8 @@ export const getWorkOrderTypes = () => {
     let expectedOrderNumber = 0;
     for (const workOrderType of workOrderTypes) {
         if (workOrderType.orderNumber !== expectedOrderNumber) {
-            database.prepare("update WorkOrderTypes" +
+            database
+                .prepare("update WorkOrderTypes" +
                 " set orderNumber = ?" +
                 " where workOrderTypeId = ?")
                 .run(expectedOrderNumber, workOrderType.workOrderTypeId);

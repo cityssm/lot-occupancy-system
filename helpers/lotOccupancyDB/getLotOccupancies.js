@@ -3,9 +3,10 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { dateIntegerToString, dateStringToInteger, dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { getLotOccupancyOccupants } from "./getLotOccupancyOccupants.js";
 export const getLotOccupancies = (filters, options, connectedDatabase) => {
-    const database = connectedDatabase || sqlite(databasePath, {
-        readonly: true
-    });
+    const database = connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
     database.function("userFn_dateIntegerToString", dateIntegerToString);
     let sqlWhereClause = " where o.recordDelete_timeMillis is null";
     const sqlParameters = [];
@@ -21,9 +22,12 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
         }
     }
     if (filters.occupantName) {
-        const occupantNamePieces = filters.occupantName.toLowerCase().split(" ");
+        const occupantNamePieces = filters.occupantName
+            .toLowerCase()
+            .split(" ");
         for (const occupantNamePiece of occupantNamePieces) {
-            sqlWhereClause += " and o.lotOccupancyId in (select oo.lotOccupancyId from LotOccupancyOccupants oo where oo.recordDelete_timeMillis is null and instr(lower(oo.occupantName), ?))";
+            sqlWhereClause +=
+                " and o.lotOccupancyId in (select oo.lotOccupancyId from LotOccupancyOccupants oo where oo.recordDelete_timeMillis is null and instr(lower(oo.occupantName), ?))";
             sqlParameters.push(occupantNamePiece);
         }
     }
@@ -35,7 +39,8 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
         const currentDateString = dateToInteger(new Date());
         switch (filters.occupancyTime) {
             case "current":
-                sqlWhereClause += " and o.occupancyStartDate <= ? and (o.occupancyEndDate is null or o.occupancyEndDate >= ?)";
+                sqlWhereClause +=
+                    " and o.occupancyStartDate <= ? and (o.occupancyEndDate is null or o.occupancyEndDate >= ?)";
                 sqlParameters.push(currentDateString, currentDateString);
                 break;
             case "past":
@@ -61,15 +66,16 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
         sqlParameters.push(filters.lotTypeId);
     }
     if (filters.workOrderId) {
-        sqlWhereClause += " and o.lotOccupancyId in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)";
+        sqlWhereClause +=
+            " and o.lotOccupancyId in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)";
         sqlParameters.push(filters.workOrderId);
     }
-    const count = database.prepare("select count(*) as recordCount" +
+    const count = database
+        .prepare("select count(*) as recordCount" +
         " from LotOccupancies o" +
         " left join Lots l on o.lotId = l.lotId" +
         sqlWhereClause)
-        .get(sqlParameters)
-        .recordCount;
+        .get(sqlParameters).recordCount;
     let lotOccupancies = [];
     if (count > 0) {
         lotOccupancies = database
@@ -85,9 +91,12 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
             " left join Maps m on l.mapId = m.mapId" +
             sqlWhereClause +
             " order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId" +
-            (options.limit !== -1 ?
-                " limit " + options.limit + " offset " + options.offset :
-                ""))
+            (options.limit !== -1
+                ? " limit " +
+                    options.limit +
+                    " offset " +
+                    options.offset
+                : ""))
             .all(sqlParameters);
         if (options.includeOccupants) {
             for (const lotOccupancy of lotOccupancies) {

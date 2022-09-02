@@ -11,6 +11,6 @@ export const deleteLotOccupancyTransaction = (lotOccupancyId, transactionIndex, 
         " and transactionIndex = ?")
         .run(requestSession.user.userName, rightNowMillis, lotOccupancyId, transactionIndex);
     database.close();
-    return (result.changes > 0);
+    return result.changes > 0;
 };
 export default deleteLotOccupancyTransaction;

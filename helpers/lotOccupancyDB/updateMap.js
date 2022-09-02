@@ -20,7 +20,7 @@ export const updateMap = (mapForm, requestSession) => {
         " recordUpdate_timeMillis = ?" +
         " where mapId = ?" +
         " and recordDelete_timeMillis is null")
-        .run(mapForm.mapName, mapForm.mapDescription, mapForm.mapSVG, (mapForm.mapLatitude === "" ? undefined : mapForm.mapLatitude), (mapForm.mapLongitude === "" ? undefined : mapForm.mapLongitude), mapForm.mapAddress1, mapForm.mapAddress2, mapForm.mapCity, mapForm.mapProvince, mapForm.mapPostalCode, mapForm.mapPhoneNumber, requestSession.user.userName, rightNowMillis, mapForm.mapId);
+        .run(mapForm.mapName, mapForm.mapDescription, mapForm.mapSVG, mapForm.mapLatitude === "" ? undefined : mapForm.mapLatitude, mapForm.mapLongitude === "" ? undefined : mapForm.mapLongitude, mapForm.mapAddress1, mapForm.mapAddress2, mapForm.mapCity, mapForm.mapProvince, mapForm.mapPostalCode, mapForm.mapPhoneNumber, requestSession.user.userName, rightNowMillis, mapForm.mapId);
     database.close();
     return result.changes > 0;
 };

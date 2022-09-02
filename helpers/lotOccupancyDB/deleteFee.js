@@ -10,6 +10,6 @@ export const deleteFee = (feeId, requestSession) => {
         " where feeId = ?")
         .run(requestSession.user.userName, rightNowMillis, feeId);
     database.close();
-    return (result.changes > 0);
+    return result.changes > 0;
 };
 export default deleteFee;

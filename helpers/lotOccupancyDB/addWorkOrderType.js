@@ -10,7 +10,7 @@ export const addWorkOrderType = (workOrderTypeForm, requestSession) => {
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
         " values (?, ?, ?, ?, ?, ?)")
-        .run(workOrderTypeForm.workOrderType, (workOrderTypeForm.orderNumber || -1), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(workOrderTypeForm.workOrderType, workOrderTypeForm.orderNumber || -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     database.close();
     clearWorkOrderTypesCache();
     return result.lastInsertRowid;

@@ -11,7 +11,14 @@ async function importMaps() {
             " left join Legacy_Layers l on m.ID = l.Map_ID");
         for (const layer of result.recordset) {
             const imageBuffer = layer.layerImage;
-            const fileName = layer.mapName + " - " + layer.layerName + " (" + layer.mapId + ", " + layer.layerId + ").wmf";
+            const fileName = layer.mapName +
+                " - " +
+                layer.layerName +
+                " (" +
+                layer.mapId +
+                ", " +
+                layer.layerId +
+                ").wmf";
             fs.writeFile("./temp/wmf/" + fileName, imageBuffer, (error) => {
                 if (error) {
                     console.log(error);

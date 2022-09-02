@@ -17,7 +17,11 @@ export const handler = (request, response) => {
     }
     const occupancyTypes = getOccupancyTypes();
     return response.render("lotOccupancy-edit", {
-        headTitle: "Create a New " + configFunctions.getProperty("aliases.lot") + " " + configFunctions.getProperty("aliases.occupancy") + "  Record",
+        headTitle: "Create a New " +
+            configFunctions.getProperty("aliases.lot") +
+            " " +
+            configFunctions.getProperty("aliases.occupancy") +
+            "  Record",
         lotOccupancy,
         occupancyTypes,
         isCreate: true

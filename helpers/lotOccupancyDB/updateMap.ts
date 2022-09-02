@@ -1,11 +1,8 @@
 import sqlite from "better-sqlite3";
 
-import {
-    lotOccupancyDB as databasePath
-} from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
-
 
 interface UpdateMapForm {
     mapId: string;
@@ -22,16 +19,17 @@ interface UpdateMapForm {
     mapPhoneNumber: string;
 }
 
+export const updateMap = (
+    mapForm: UpdateMapForm,
+    requestSession: recordTypes.PartialSession
+): boolean => {
+    const database = sqlite(databasePath);
 
-export const updateMap =
-    (mapForm: UpdateMapForm, requestSession: recordTypes.PartialSession): boolean => {
+    const rightNowMillis = Date.now();
 
-        const database = sqlite(databasePath);
-
-        const rightNowMillis = Date.now();
-
-        const result = database
-            .prepare("update Maps" +
+    const result = database
+        .prepare(
+            "update Maps" +
                 " set mapName = ?," +
                 " mapDescription = ?," +
                 " mapSVG = ?," +
@@ -46,26 +44,28 @@ export const updateMap =
                 " recordUpdate_userName = ?," +
                 " recordUpdate_timeMillis = ?" +
                 " where mapId = ?" +
-                " and recordDelete_timeMillis is null")
-            .run(mapForm.mapName,
-                mapForm.mapDescription,
-                mapForm.mapSVG,
-                (mapForm.mapLatitude === "" ? undefined : mapForm.mapLatitude),
-                (mapForm.mapLongitude === "" ? undefined : mapForm.mapLongitude),
-                mapForm.mapAddress1,
-                mapForm.mapAddress2,
-                mapForm.mapCity,
-                mapForm.mapProvince,
-                mapForm.mapPostalCode,
-                mapForm.mapPhoneNumber,
-                requestSession.user.userName,
-                rightNowMillis,
-                mapForm.mapId);
+                " and recordDelete_timeMillis is null"
+        )
+        .run(
+            mapForm.mapName,
+            mapForm.mapDescription,
+            mapForm.mapSVG,
+            mapForm.mapLatitude === "" ? undefined : mapForm.mapLatitude,
+            mapForm.mapLongitude === "" ? undefined : mapForm.mapLongitude,
+            mapForm.mapAddress1,
+            mapForm.mapAddress2,
+            mapForm.mapCity,
+            mapForm.mapProvince,
+            mapForm.mapPostalCode,
+            mapForm.mapPhoneNumber,
+            requestSession.user.userName,
+            rightNowMillis,
+            mapForm.mapId
+        );
 
-        database.close();
+    database.close();
 
-        return result.changes > 0;
-    };
-
+    return result.changes > 0;
+};
 
 export default updateMap;

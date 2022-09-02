@@ -1,8 +1,6 @@
 import sqlite from "better-sqlite3";
 
-import {
-    lotOccupancyDB as databasePath
-} from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import {
     dateIntegerToString,
@@ -10,25 +8,21 @@ import {
     dateToInteger
 } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
-import {
-    getLotOccupancyOccupants
-} from "./getLotOccupancyOccupants.js";
+import { getLotOccupancyOccupants } from "./getLotOccupancyOccupants.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-
 interface GetLotOccupanciesFilters {
-    lotId ? : number | string;
-    occupancyTime ? : "" | "past" | "current" | "future";
+    lotId?: number | string;
+    occupancyTime?: "" | "past" | "current" | "future";
     occupancyStartDateString?: string;
-    occupantName ? : string;
-    occupancyTypeId ? : number | string;
-    mapId ? : number | string;
-    lotName ? : string;
-    lotTypeId ? : number | string;
+    occupantName?: string;
+    occupancyTypeId?: number | string;
+    mapId?: number | string;
+    lotName?: string;
+    lotTypeId?: number | string;
     workOrderId?: number | string;
 }
-
 
 interface GetLotOccupanciesOptions {
     limit: -1 | number;
@@ -36,17 +30,19 @@ interface GetLotOccupanciesOptions {
     includeOccupants: boolean;
 }
 
-
-export const getLotOccupancies = (filters: GetLotOccupanciesFilters,
+export const getLotOccupancies = (
+    filters: GetLotOccupanciesFilters,
     options: GetLotOccupanciesOptions,
-    connectedDatabase ? : sqlite.Database): {
+    connectedDatabase?: sqlite.Database
+): {
     count: number;
     lotOccupancies: recordTypes.LotOccupancy[];
 } => {
-
-    const database = connectedDatabase || sqlite(databasePath, {
-        readonly: true
-    });
+    const database =
+        connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
 
     database.function("userFn_dateIntegerToString", dateIntegerToString);
 
@@ -67,9 +63,12 @@ export const getLotOccupancies = (filters: GetLotOccupanciesFilters,
     }
 
     if (filters.occupantName) {
-        const occupantNamePieces = filters.occupantName.toLowerCase().split(" ");
+        const occupantNamePieces = filters.occupantName
+            .toLowerCase()
+            .split(" ");
         for (const occupantNamePiece of occupantNamePieces) {
-            sqlWhereClause += " and o.lotOccupancyId in (select oo.lotOccupancyId from LotOccupancyOccupants oo where oo.recordDelete_timeMillis is null and instr(lower(oo.occupantName), ?))";
+            sqlWhereClause +=
+                " and o.lotOccupancyId in (select oo.lotOccupancyId from LotOccupancyOccupants oo where oo.recordDelete_timeMillis is null and instr(lower(oo.occupantName), ?))";
             sqlParameters.push(occupantNamePiece);
         }
     }
@@ -80,13 +79,12 @@ export const getLotOccupancies = (filters: GetLotOccupanciesFilters,
     }
 
     if (filters.occupancyTime) {
-
         const currentDateString = dateToInteger(new Date());
 
         switch (filters.occupancyTime) {
-
             case "current":
-                sqlWhereClause += " and o.occupancyStartDate <= ? and (o.occupancyEndDate is null or o.occupancyEndDate >= ?)";
+                sqlWhereClause +=
+                    " and o.occupancyStartDate <= ? and (o.occupancyEndDate is null or o.occupancyEndDate >= ?)";
                 sqlParameters.push(currentDateString, currentDateString);
                 break;
 
@@ -99,13 +97,14 @@ export const getLotOccupancies = (filters: GetLotOccupanciesFilters,
                 sqlWhereClause += " and o.occupancyStartDate > ?";
                 sqlParameters.push(currentDateString);
                 break;
-
         }
     }
 
     if (filters.occupancyStartDateString) {
         sqlWhereClause += " and o.occupancyStartDate = ?";
-        sqlParameters.push(dateStringToInteger(filters.occupancyStartDateString));
+        sqlParameters.push(
+            dateStringToInteger(filters.occupancyStartDateString)
+        );
     }
 
     if (filters.mapId) {
@@ -119,42 +118,52 @@ export const getLotOccupancies = (filters: GetLotOccupanciesFilters,
     }
 
     if (filters.workOrderId) {
-        sqlWhereClause += " and o.lotOccupancyId in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)";
+        sqlWhereClause +=
+            " and o.lotOccupancyId in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)";
         sqlParameters.push(filters.workOrderId);
     }
 
-    const count: number = database.prepare("select count(*) as recordCount" +
-            " from LotOccupancies o" +
-            " left join Lots l on o.lotId = l.lotId" +
-            sqlWhereClause)
-        .get(sqlParameters)
-        .recordCount;
+    const count: number = database
+        .prepare(
+            "select count(*) as recordCount" +
+                " from LotOccupancies o" +
+                " left join Lots l on o.lotId = l.lotId" +
+                sqlWhereClause
+        )
+        .get(sqlParameters).recordCount;
 
     let lotOccupancies: recordTypes.LotOccupancy[] = [];
 
     if (count > 0) {
-
         lotOccupancies = database
-            .prepare("select o.lotOccupancyId," +
-                " o.occupancyTypeId, t.occupancyType," +
-                " o.lotId, l.lotName," +
-                " l.mapId, m.mapName," +
-                " o.occupancyStartDate, userFn_dateIntegerToString(o.occupancyStartDate) as occupancyStartDateString," +
-                " o.occupancyEndDate,  userFn_dateIntegerToString(o.occupancyEndDate) as occupancyEndDateString" +
-                " from LotOccupancies o" +
-                " left join OccupancyTypes t on o.occupancyTypeId = t.occupancyTypeId" +
-                " left join Lots l on o.lotId = l.lotId" +
-                " left join Maps m on l.mapId = m.mapId" +
-                sqlWhereClause +
-                " order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId" +
-                (options.limit !== -1 ?
-                    " limit " + options.limit + " offset " + options.offset :
-                    ""))
+            .prepare(
+                "select o.lotOccupancyId," +
+                    " o.occupancyTypeId, t.occupancyType," +
+                    " o.lotId, l.lotName," +
+                    " l.mapId, m.mapName," +
+                    " o.occupancyStartDate, userFn_dateIntegerToString(o.occupancyStartDate) as occupancyStartDateString," +
+                    " o.occupancyEndDate,  userFn_dateIntegerToString(o.occupancyEndDate) as occupancyEndDateString" +
+                    " from LotOccupancies o" +
+                    " left join OccupancyTypes t on o.occupancyTypeId = t.occupancyTypeId" +
+                    " left join Lots l on o.lotId = l.lotId" +
+                    " left join Maps m on l.mapId = m.mapId" +
+                    sqlWhereClause +
+                    " order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId" +
+                    (options.limit !== -1
+                        ? " limit " +
+                          options.limit +
+                          " offset " +
+                          options.offset
+                        : "")
+            )
             .all(sqlParameters);
 
         if (options.includeOccupants) {
             for (const lotOccupancy of lotOccupancies) {
-                lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(lotOccupancy.lotOccupancyId, database);
+                lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(
+                    lotOccupancy.lotOccupancyId,
+                    database
+                );
             }
         }
     }
@@ -168,6 +177,5 @@ export const getLotOccupancies = (filters: GetLotOccupanciesFilters,
         lotOccupancies
     };
 };
-
 
 export default getLotOccupancies;

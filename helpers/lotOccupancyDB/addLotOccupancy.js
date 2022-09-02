@@ -16,11 +16,9 @@ export const addLotOccupancy = (lotOccupancyForm, requestSession) => {
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
         " values (?, ?, ?, ?, ?, ?, ?, ?)")
-        .run(lotOccupancyForm.occupancyTypeId, (lotOccupancyForm.lotId === "" ?
-        undefined :
-        lotOccupancyForm.lotId), occupancyStartDate, (lotOccupancyForm.occupancyEndDateString === "" ?
-        undefined :
-        dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyEndDateString)), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(lotOccupancyForm.occupancyTypeId, lotOccupancyForm.lotId === "" ? undefined : lotOccupancyForm.lotId, occupancyStartDate, lotOccupancyForm.occupancyEndDateString === ""
+        ? undefined
+        : dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyEndDateString), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     const lotOccupancyId = result.lastInsertRowid;
     const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds || "").split(",");
     for (const occupancyTypeFieldId of occupancyTypeFieldIds) {

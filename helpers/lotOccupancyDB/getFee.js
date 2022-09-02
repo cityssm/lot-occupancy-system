@@ -4,7 +4,8 @@ export const getFee = (feeId) => {
     const database = sqlite(databasePath, {
         readonly: true
     });
-    const fee = database.prepare("select f.feeId," +
+    const fee = database
+        .prepare("select f.feeId," +
         " f.feeCategoryId, c.feeCategory," +
         " f.feeName, f.feeDescription," +
         " f.occupancyTypeId, o.occupancyType," +

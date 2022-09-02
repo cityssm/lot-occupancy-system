@@ -11,7 +11,8 @@ export const getLotOccupantTypes = () => {
     let expectedOrderNumber = 0;
     for (const lotOccupantType of lotOccupantTypes) {
         if (lotOccupantType.orderNumber !== expectedOrderNumber) {
-            database.prepare("update LotOccupantTypes" +
+            database
+                .prepare("update LotOccupantTypes" +
                 " set orderNumber = ?" +
                 " where lotOccupantTypeId = ?")
                 .run(expectedOrderNumber, lotOccupantType.lotOccupantTypeId);

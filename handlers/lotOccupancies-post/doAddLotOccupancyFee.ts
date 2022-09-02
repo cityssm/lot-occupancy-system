@@ -1,18 +1,10 @@
-import type {
-    RequestHandler
-} from "express";
+import type { RequestHandler } from "express";
 
-import {
-    addLotOccupancyFee
-} from "../../helpers/lotOccupancyDB/addLotOccupancyFee.js";
+import { addLotOccupancyFee } from "../../helpers/lotOccupancyDB/addLotOccupancyFee.js";
 
-import {
-    getLotOccupancyFees
-} from "../../helpers/lotOccupancyDB/getLotOccupancyFees.js";
-
+import { getLotOccupancyFees } from "../../helpers/lotOccupancyDB/getLotOccupancyFees.js";
 
 export const handler: RequestHandler = async (request, response) => {
-
     addLotOccupancyFee(request.body, request.session);
 
     const lotOccupancyFees = getLotOccupancyFees(request.body.lotOccupancyId);
@@ -22,6 +14,5 @@ export const handler: RequestHandler = async (request, response) => {
         lotOccupancyFees
     });
 };
-
 
 export default handler;

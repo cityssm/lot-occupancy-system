@@ -3,11 +3,11 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { clearWorkOrderTypesCache } from "../functions.cache.js";
 export const moveWorkOrderTypeDown = (workOrderTypeId) => {
     const database = sqlite(databasePath);
-    const currentOrderNumber = database.prepare("select orderNumber" +
+    const currentOrderNumber = database
+        .prepare("select orderNumber" +
         " from WorkOrderTypes" +
         " where workOrderTypeId = ?")
-        .get(workOrderTypeId)
-        .orderNumber;
+        .get(workOrderTypeId).orderNumber;
     database
         .prepare("update WorkOrderTypes" +
         " set orderNumber = orderNumber - 1" +

@@ -9,8 +9,14 @@ export const addLotOccupancyFee = (lotOccupancyFeeForm, requestSession) => {
     let feeAmount;
     let taxAmount;
     if (lotOccupancyFeeForm.feeAmount) {
-        feeAmount = typeof (lotOccupancyFeeForm.feeAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.feeAmount) : feeAmount;
-        taxAmount = typeof (lotOccupancyFeeForm.taxAmount) === "string" ? Number.parseFloat(lotOccupancyFeeForm.taxAmount) : taxAmount;
+        feeAmount =
+            typeof lotOccupancyFeeForm.feeAmount === "string"
+                ? Number.parseFloat(lotOccupancyFeeForm.feeAmount)
+                : feeAmount;
+        taxAmount =
+            typeof lotOccupancyFeeForm.taxAmount === "string"
+                ? Number.parseFloat(lotOccupancyFeeForm.taxAmount)
+                : taxAmount;
     }
     else {
         const lotOccupancy = getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId);
@@ -18,21 +24,25 @@ export const addLotOccupancyFee = (lotOccupancyFeeForm, requestSession) => {
         feeAmount = calculateFeeAmount(fee, lotOccupancy);
         taxAmount = calculateTaxAmount(fee, feeAmount);
     }
-    const record = database.prepare("select feeAmount, taxAmount, recordDelete_timeMillis" +
+    const record = database
+        .prepare("select feeAmount, taxAmount, recordDelete_timeMillis" +
         " from LotOccupancyFees" +
         " where lotOccupancyId = ?" +
         " and feeId = ?")
         .get(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
     if (record) {
         if (record.recordDelete_timeMillis) {
-            database.prepare("delete from LotOccupancyFees" +
+            database
+                .prepare("delete from LotOccupancyFees" +
                 " where recordDelete_timeMillis is not null" +
                 " and lotOccupancyId = ?" +
                 " and feeId = ?")
                 .run(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
         }
-        else if (record.feeAmount === feeAmount && record.taxAmount === taxAmount) {
-            database.prepare("update LotOccupancyFees" +
+        else if (record.feeAmount === feeAmount &&
+            record.taxAmount === taxAmount) {
+            database
+                .prepare("update LotOccupancyFees" +
                 " set quantity = quantity + ?," +
                 " recordUpdate_userName = ?," +
                 " recordUpdate_timeMillis = ?" +
@@ -43,10 +53,11 @@ export const addLotOccupancyFee = (lotOccupancyFeeForm, requestSession) => {
             return true;
         }
         else {
-            const quantity = typeof (lotOccupancyFeeForm.quantity) === "string" ?
-                Number.parseFloat(lotOccupancyFeeForm.quantity) :
-                lotOccupancyFeeForm.quantity;
-            database.prepare("update LotOccupancyFees" +
+            const quantity = typeof lotOccupancyFeeForm.quantity === "string"
+                ? Number.parseFloat(lotOccupancyFeeForm.quantity)
+                : lotOccupancyFeeForm.quantity;
+            database
+                .prepare("update LotOccupancyFees" +
                 " set feeAmount = (feeAmount * quantity) + ?," +
                 " taxAmount = (taxAmount * quantity) + ?," +
                 " quantity = 1," +
@@ -54,7 +65,7 @@ export const addLotOccupancyFee = (lotOccupancyFeeForm, requestSession) => {
                 " recordUpdate_timeMillis = ?" +
                 " where lotOccupancyId = ?" +
                 " and feeId = ?")
-                .run((feeAmount * quantity), (taxAmount * quantity), requestSession.user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
+                .run(feeAmount * quantity, taxAmount * quantity, requestSession.user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
             database.close();
             return true;
         }

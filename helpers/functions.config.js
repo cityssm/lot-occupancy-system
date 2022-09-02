@@ -43,6 +43,6 @@ export function getProperty(propertyName) {
     }
     return currentObject;
 }
-export const keepAliveMillis = getProperty("session.doKeepAlive") ?
-    Math.max(getProperty("session.maxAgeMillis") / 2, getProperty("session.maxAgeMillis") - (10 * 60 * 1000)) :
-    0;
+export const keepAliveMillis = getProperty("session.doKeepAlive")
+    ? Math.max(getProperty("session.maxAgeMillis") / 2, getProperty("session.maxAgeMillis") - 10 * 60 * 1000)
+    : 0;

@@ -3,7 +3,8 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 export const addLotOccupancyOccupant = (lotOccupancyOccupantForm, requestSession) => {
     const database = sqlite(databasePath);
     let lotOccupantIndex = 0;
-    const maxIndexResult = database.prepare("select lotOccupantIndex" +
+    const maxIndexResult = database
+        .prepare("select lotOccupantIndex" +
         " from LotOccupancyOccupants" +
         " where lotOccupancyId = ?" +
         " order by lotOccupantIndex desc" +

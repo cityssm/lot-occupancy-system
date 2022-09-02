@@ -26,6 +26,6 @@ export const addOrUpdateLotOccupancyField = (lotOccupancyFieldForm, requestSessi
     if (!connectedDatabase) {
         database.close();
     }
-    return (result.changes > 0);
+    return result.changes > 0;
 };
 export default addOrUpdateLotOccupancyField;

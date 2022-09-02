@@ -11,7 +11,11 @@ export const addWorkOrder = (workOrderForm, requestSession) => {
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
         " values (?, ?, ?, ?, ?, ?, ?, ?, ?)")
-        .run(workOrderForm.workOrderTypeId, workOrderForm.workOrderNumber, workOrderForm.workOrderDescription, (workOrderForm.workOrderOpenDateString ? dateStringToInteger(workOrderForm.workOrderOpenDateString) : dateToInteger(rightNow)), (workOrderForm.workOrderCloseDateString ? dateStringToInteger(workOrderForm.workOrderCloseDateString) : undefined), requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
+        .run(workOrderForm.workOrderTypeId, workOrderForm.workOrderNumber, workOrderForm.workOrderDescription, workOrderForm.workOrderOpenDateString
+        ? dateStringToInteger(workOrderForm.workOrderOpenDateString)
+        : dateToInteger(rightNow), workOrderForm.workOrderCloseDateString
+        ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
+        : undefined, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
     database.close();
     return result.lastInsertRowid;
 };

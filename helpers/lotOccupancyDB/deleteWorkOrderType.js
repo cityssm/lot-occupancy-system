@@ -12,6 +12,6 @@ export const deleteWorkOrderType = (workOrderTypeId, requestSession) => {
         .run(requestSession.user.userName, rightNowMillis, workOrderTypeId);
     database.close();
     clearWorkOrderTypesCache();
-    return (result.changes > 0);
+    return result.changes > 0;
 };
 export default deleteWorkOrderType;

@@ -1,26 +1,19 @@
+import type { RequestHandler } from "express";
+
 import {
     dateToInteger,
     dateToString
 } from "@cityssm/expressjs-server-js/dateTimeFns.js";
-import type {
-    RequestHandler
-} from "express";
 
-import {
-    getOccupancyTypes
-} from "../../helpers/functions.cache.js";
+import { getOccupancyTypes } from "../../helpers/functions.cache.js";
 
-import {
-    getLot
-} from "../../helpers/lotOccupancyDB/getLot.js";
+import { getLot } from "../../helpers/lotOccupancyDB/getLot.js";
 
 import * as configFunctions from "../../helpers/functions.config.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-
 export const handler: RequestHandler = (request, response) => {
-
     const startDate = new Date();
 
     const lotOccupancy: recordTypes.LotOccupancy = {
@@ -39,13 +32,17 @@ export const handler: RequestHandler = (request, response) => {
     const occupancyTypes = getOccupancyTypes();
 
     return response.render("lotOccupancy-edit", {
-        headTitle: "Create a New " + configFunctions.getProperty("aliases.lot") + " " + configFunctions.getProperty("aliases.occupancy") + "  Record",
+        headTitle:
+            "Create a New " +
+            configFunctions.getProperty("aliases.lot") +
+            " " +
+            configFunctions.getProperty("aliases.occupancy") +
+            "  Record",
         lotOccupancy,
 
         occupancyTypes,
         isCreate: true
     });
 };
-
 
 export default handler;

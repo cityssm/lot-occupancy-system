@@ -1,49 +1,49 @@
 import sqlite from "better-sqlite3";
 
-import {
-    lotOccupancyDB as databasePath
-} from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import {
-    clearWorkOrderTypesCache
-} from "../functions.cache.js";
+import { clearWorkOrderTypesCache } from "../functions.cache.js";
 
+export const moveWorkOrderTypeUp = (
+    workOrderTypeId: number | string
+): boolean => {
+    const database = sqlite(databasePath);
 
-export const moveWorkOrderTypeUp =
-    (workOrderTypeId: number | string): boolean => {
-
-        const database = sqlite(databasePath);
-
-        const currentOrderNumber: number = database.prepare("select orderNumber" +
+    const currentOrderNumber: number = database
+        .prepare(
+            "select orderNumber" +
                 " from WorkOrderTypes" +
-                " where workOrderTypeId = ?")
-            .get(workOrderTypeId)
-            .orderNumber;
+                " where workOrderTypeId = ?"
+        )
+        .get(workOrderTypeId).orderNumber;
 
-        if (currentOrderNumber <= 0) {
-            database.close();
-            return true;
-        }
+    if (currentOrderNumber <= 0) {
+        database.close();
+        return true;
+    }
 
-        database
-            .prepare("update WorkOrderTypes" +
+    database
+        .prepare(
+            "update WorkOrderTypes" +
                 " set orderNumber = orderNumber + 1" +
                 " where recordDelete_timeMillis is null" +
-                " and orderNumber = ? - 1")
-            .run(currentOrderNumber);
+                " and orderNumber = ? - 1"
+        )
+        .run(currentOrderNumber);
 
-        const result = database
-            .prepare("update WorkOrderTypes" +
+    const result = database
+        .prepare(
+            "update WorkOrderTypes" +
                 " set orderNumber = ? - 1" +
-                " where workOrderTypeId = ?")
-            .run(currentOrderNumber, workOrderTypeId);
+                " where workOrderTypeId = ?"
+        )
+        .run(currentOrderNumber, workOrderTypeId);
 
-        database.close();
+    database.close();
 
-        clearWorkOrderTypesCache();
+    clearWorkOrderTypesCache();
 
-        return result.changes > 0;
-    };
-
+    return result.changes > 0;
+};
 
 export default moveWorkOrderTypeUp;

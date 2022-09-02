@@ -10,6 +10,6 @@ export const deleteFeeCategory = (feeCategoryId, requestSession) => {
         " where feeCategoryId = ?")
         .run(requestSession.user.userName, rightNowMillis, feeCategoryId);
     database.close();
-    return (result.changes > 0);
+    return result.changes > 0;
 };
 export default deleteFeeCategory;

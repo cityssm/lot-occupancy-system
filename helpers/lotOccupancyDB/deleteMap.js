@@ -10,6 +10,6 @@ export const deleteMap = (mapId, requestSession) => {
         " where mapId = ?")
         .run(requestSession.user.userName, rightNowMillis, mapId);
     database.close();
-    return (result.changes > 0);
+    return result.changes > 0;
 };
 export default deleteMap;

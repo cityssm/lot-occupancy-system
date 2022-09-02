@@ -1,8 +1,6 @@
 import sqlite from "better-sqlite3";
 
-import {
-    lotOccupancyDB as databasePath
-} from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import {
     dateStringToInteger,
@@ -13,52 +11,58 @@ import {
 
 import type * as recordTypes from "../../types/recordTypes";
 
-
 interface AddLotOccupancyCommentForm {
     lotOccupancyId: string | number;
-    lotOccupancyCommentDateString ? : string;
-    lotOccupancyCommentTimeString ? : string;
+    lotOccupancyCommentDateString?: string;
+    lotOccupancyCommentTimeString?: string;
     lotOccupancyComment: string;
 }
 
+export const addLotOccupancyComment = (
+    commentForm: AddLotOccupancyCommentForm,
+    requestSession: recordTypes.PartialSession
+): number => {
+    const rightNow = new Date();
 
-export const addLotOccupancyComment =
-    (commentForm: AddLotOccupancyCommentForm, requestSession: recordTypes.PartialSession): number => {
+    let lotOccupancyCommentDate: number;
+    let lotOccupancyCommentTime: number;
 
-        const rightNow = new Date();
+    if (commentForm.lotOccupancyCommentDateString) {
+        lotOccupancyCommentDate = dateStringToInteger(
+            commentForm.lotOccupancyCommentDateString
+        );
+        lotOccupancyCommentTime = timeStringToInteger(
+            commentForm.lotOccupancyCommentTimeString
+        );
+    } else {
+        lotOccupancyCommentDate = dateToInteger(rightNow);
+        lotOccupancyCommentTime = dateToTimeInteger(rightNow);
+    }
 
-        let lotOccupancyCommentDate: number;
-        let lotOccupancyCommentTime: number;
+    const database = sqlite(databasePath);
 
-        if (commentForm.lotOccupancyCommentDateString) {
-            lotOccupancyCommentDate = dateStringToInteger(commentForm.lotOccupancyCommentDateString);
-            lotOccupancyCommentTime = timeStringToInteger(commentForm.lotOccupancyCommentTimeString);
-        } else {
-            lotOccupancyCommentDate = dateToInteger(rightNow);
-            lotOccupancyCommentTime = dateToTimeInteger(rightNow);
-        }
-
-        const database = sqlite(databasePath);
-
-        const result = database
-            .prepare("insert into LotOccupancyComments (" +
+    const result = database
+        .prepare(
+            "insert into LotOccupancyComments (" +
                 "lotOccupancyId, lotOccupancyCommentDate, lotOccupancyCommentTime, lotOccupancyComment," +
                 " recordCreate_userName, recordCreate_timeMillis," +
                 " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?)")
-            .run(commentForm.lotOccupancyId,
-                lotOccupancyCommentDate,
-                lotOccupancyCommentTime,
-                commentForm.lotOccupancyComment,
-                requestSession.user.userName,
-                rightNow.getTime(),
-                requestSession.user.userName,
-                rightNow.getTime());
+                " values (?, ?, ?, ?, ?, ?, ?, ?)"
+        )
+        .run(
+            commentForm.lotOccupancyId,
+            lotOccupancyCommentDate,
+            lotOccupancyCommentTime,
+            commentForm.lotOccupancyComment,
+            requestSession.user.userName,
+            rightNow.getTime(),
+            requestSession.user.userName,
+            rightNow.getTime()
+        );
 
-        database.close();
+    database.close();
 
-        return result.lastInsertRowid as number;
-    };
-
+    return result.lastInsertRowid as number;
+};
 
 export default addLotOccupancyComment;

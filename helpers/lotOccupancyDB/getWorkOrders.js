@@ -12,11 +12,11 @@ export const getWorkOrders = (filters, options) => {
         sqlWhereClause += " and w.workOrderTypeId = ?";
         sqlParameters.push(filters.workOrderTypeId);
     }
-    const count = database.prepare("select count(*) as recordCount" +
+    const count = database
+        .prepare("select count(*) as recordCount" +
         " from WorkOrders w" +
         sqlWhereClause)
-        .get(sqlParameters)
-        .recordCount;
+        .get(sqlParameters).recordCount;
     let workOrders = [];
     if (count > 0) {
         workOrders = database
@@ -29,9 +29,12 @@ export const getWorkOrders = (filters, options) => {
             " left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId" +
             sqlWhereClause +
             " order by w.workOrderOpenDate desc, w.workOrderNumber" +
-            (options ?
-                " limit " + options.limit + " offset " + options.offset :
-                ""))
+            (options
+                ? " limit " +
+                    options.limit +
+                    " offset " +
+                    options.offset
+                : ""))
             .all(sqlParameters);
     }
     database.close();

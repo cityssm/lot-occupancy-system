@@ -11,6 +11,8 @@ const getSafeRedirectURL = (possibleRedirectURL = "") => {
             : possibleRedirectURL).toLowerCase();
         switch (urlToCheck) {
             case "/admin/fees":
+            case "/admin/occupancyTypes":
+            case "/admin/tables":
             case "/lotOccupancies":
             case "/lots":
             case "/maps":

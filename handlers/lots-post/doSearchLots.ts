@@ -1,14 +1,8 @@
-import type {
-    RequestHandler
-} from "express";
+import type { RequestHandler } from "express";
 
-import {
-    getLots
-} from "../../helpers/lotOccupancyDB/getLots.js";
-
+import { getLots } from "../../helpers/lotOccupancyDB/getLots.js";
 
 export const handler: RequestHandler = async (request, response) => {
-
     const result = getLots(request.body, {
         limit: request.body.limit,
         offset: request.body.offset
@@ -19,6 +13,5 @@ export const handler: RequestHandler = async (request, response) => {
         lots: result.lots
     });
 };
-
 
 export default handler;

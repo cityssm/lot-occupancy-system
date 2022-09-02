@@ -4,7 +4,8 @@ import { getMapSVGs } from "../../helpers/functions.map.js";
 export const handler = async (request, response) => {
     const map = getMap(request.params.mapId);
     if (!map) {
-        return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") + "/maps/?error=mapIdNotFound");
+        return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") +
+            "/maps/?error=mapIdNotFound");
     }
     const mapSVGs = await getMapSVGs();
     response.render("map-edit", {

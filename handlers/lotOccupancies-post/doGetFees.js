@@ -10,7 +10,7 @@ export const handler = (request, response) => {
         includeFees: true
     });
     response.json({
-        feeCategories,
+        feeCategories
     });
 };
 export default handler;

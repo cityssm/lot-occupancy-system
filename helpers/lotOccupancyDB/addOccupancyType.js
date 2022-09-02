@@ -10,7 +10,7 @@ export const addOccupancyType = (occupancyTypeForm, requestSession) => {
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
         " values (?, ?, ?, ?, ?, ?)")
-        .run(occupancyTypeForm.occupancyType, (occupancyTypeForm.orderNumber || 0), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(occupancyTypeForm.occupancyType, occupancyTypeForm.orderNumber || 0, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     database.close();
     clearOccupancyTypesCache();
     return result.lastInsertRowid;

@@ -1,43 +1,43 @@
 import sqlite from "better-sqlite3";
 
-import {
-    lotOccupancyDB as databasePath
-} from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
+export const moveFeeCategoryUp = (feeCategoryId: number | string): boolean => {
+    const database = sqlite(databasePath);
 
-export const moveFeeCategoryUp =
-    (feeCategoryId: number | string): boolean => {
-
-        const database = sqlite(databasePath);
-
-        const currentOrderNumber: number = database.prepare("select orderNumber" +
+    const currentOrderNumber: number = database
+        .prepare(
+            "select orderNumber" +
                 " from FeeCategories" +
-                " where feeCategoryId = ?")
-            .get(feeCategoryId)
-            .orderNumber;
+                " where feeCategoryId = ?"
+        )
+        .get(feeCategoryId).orderNumber;
 
-        if (currentOrderNumber <= 0) {
-            database.close();
-            return true;
-        }
+    if (currentOrderNumber <= 0) {
+        database.close();
+        return true;
+    }
 
-        database
-            .prepare("update FeeCategories" +
+    database
+        .prepare(
+            "update FeeCategories" +
                 " set orderNumber = orderNumber + 1" +
                 " where recordDelete_timeMillis is null" +
-                " and orderNumber = ? - 1")
-            .run(currentOrderNumber);
+                " and orderNumber = ? - 1"
+        )
+        .run(currentOrderNumber);
 
-        const result = database
-            .prepare("update FeeCategories" +
+    const result = database
+        .prepare(
+            "update FeeCategories" +
                 " set orderNumber = ? - 1" +
-                " where feeCategoryId = ?")
-            .run(currentOrderNumber, feeCategoryId);
+                " where feeCategoryId = ?"
+        )
+        .run(currentOrderNumber, feeCategoryId);
 
-        database.close();
+    database.close();
 
-        return result.changes > 0;
-    };
-
+    return result.changes > 0;
+};
 
 export default moveFeeCategoryUp;

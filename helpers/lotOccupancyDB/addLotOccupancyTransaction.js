@@ -4,7 +4,8 @@ import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInte
 export const addLotOccupancyTransaction = (lotOccupancyTransactionForm, requestSession) => {
     const database = sqlite(databasePath);
     let transactionIndex = 0;
-    const maxIndexResult = database.prepare("select transactionIndex" +
+    const maxIndexResult = database
+        .prepare("select transactionIndex" +
         " from LotOccupancyTransactions" +
         " where lotOccupancyId = ?" +
         " order by transactionIndex desc" +
@@ -14,12 +15,12 @@ export const addLotOccupancyTransaction = (lotOccupancyTransactionForm, requestS
         transactionIndex = maxIndexResult.transactionIndex + 1;
     }
     const rightNow = new Date();
-    const transactionDate = lotOccupancyTransactionForm.transactionDateString ?
-        dateStringToInteger(lotOccupancyTransactionForm.transactionDateString) :
-        dateToInteger(rightNow);
-    const transactionTime = lotOccupancyTransactionForm.transactionTimeString ?
-        timeStringToInteger(lotOccupancyTransactionForm.transactionTimeString) :
-        dateToTimeInteger(rightNow);
+    const transactionDate = lotOccupancyTransactionForm.transactionDateString
+        ? dateStringToInteger(lotOccupancyTransactionForm.transactionDateString)
+        : dateToInteger(rightNow);
+    const transactionTime = lotOccupancyTransactionForm.transactionTimeString
+        ? timeStringToInteger(lotOccupancyTransactionForm.transactionTimeString)
+        : dateToTimeInteger(rightNow);
     database
         .prepare("insert into LotOccupancyTransactions (" +
         "lotOccupancyId, transactionIndex," +

@@ -2,11 +2,11 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 export const moveFeeCategoryUp = (feeCategoryId) => {
     const database = sqlite(databasePath);
-    const currentOrderNumber = database.prepare("select orderNumber" +
+    const currentOrderNumber = database
+        .prepare("select orderNumber" +
         " from FeeCategories" +
         " where feeCategoryId = ?")
-        .get(feeCategoryId)
-        .orderNumber;
+        .get(feeCategoryId).orderNumber;
     if (currentOrderNumber <= 0) {
         database.close();
         return true;

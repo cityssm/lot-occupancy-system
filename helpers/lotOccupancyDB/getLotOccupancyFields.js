@@ -1,9 +1,10 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 export const getLotOccupancyFields = (lotOccupancyId, connectedDatabase) => {
-    const database = connectedDatabase || sqlite(databasePath, {
-        readonly: true
-    });
+    const database = connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
     const lotOccupancyFields = database
         .prepare("select o.lotOccupancyId," +
         " o.occupancyTypeFieldId, o.lotOccupancyFieldValue," +

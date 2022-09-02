@@ -1,26 +1,12 @@
-import {
-    getLotOccupantTypes as getLotOccupantTypesFromDatabase
-} from "./lotOccupancyDB/getLotOccupantTypes.js";
+import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from "./lotOccupancyDB/getLotOccupantTypes.js";
 
-import {
-    getLotStatuses as getLotStatusesFromDatabase
-} from "./lotOccupancyDB/getLotStatuses.js";
+import { getLotStatuses as getLotStatusesFromDatabase } from "./lotOccupancyDB/getLotStatuses.js";
 
-import {
-    getLotTypes as getLotTypesFromDatabase
-} from "./lotOccupancyDB/getLotTypes.js";
+import { getLotTypes as getLotTypesFromDatabase } from "./lotOccupancyDB/getLotTypes.js";
 
-import {
-    getOccupancyTypes as getOccupancyTypesFromDatabase
-} from "./lotOccupancyDB/getOccupancyTypes.js";
+import { getOccupancyTypes as getOccupancyTypesFromDatabase } from "./lotOccupancyDB/getOccupancyTypes.js";
 
-import {
-    getWorkOrderTypes as getWorkOrderTypesFromDatabase
-} from "./lotOccupancyDB/getWorkOrderTypes.js";
-
-import {
-    getOccupancyType
-} from "./lotOccupancyDB/getOccupancyType.js";
+import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from "./lotOccupancyDB/getWorkOrderTypes.js";
 
 import type * as recordTypes from "../types/recordTypes";
 
@@ -31,7 +17,6 @@ import type * as recordTypes from "../types/recordTypes";
 let lotOccupantTypes: recordTypes.LotOccupantType[];
 
 export function getLotOccupantTypes() {
-
     if (!lotOccupantTypes) {
         lotOccupantTypes = getLotOccupantTypesFromDatabase();
     }
@@ -40,7 +25,6 @@ export function getLotOccupantTypes() {
 }
 
 export function getLotOccupantTypeById(lotOccupantTypeId: number) {
-
     const cachedLotOccupantTypes = getLotOccupantTypes();
 
     return cachedLotOccupantTypes.find((currentLotOccupantType) => {
@@ -49,20 +33,21 @@ export function getLotOccupantTypeById(lotOccupantTypeId: number) {
 }
 
 export function getLotOccupantTypesByLotOccupantType(lotOccupantType: string) {
-
     const cachedLotOccupantTypes = getLotOccupantTypes();
 
     const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase();
 
     return cachedLotOccupantTypes.find((currentLotOccupantType) => {
-        return currentLotOccupantType.lotOccupantType.toLowerCase() === lotOccupantTypeLowerCase;
+        return (
+            currentLotOccupantType.lotOccupantType.toLowerCase() ===
+            lotOccupantTypeLowerCase
+        );
     });
 }
 
 export function clearLotOccupantTypesCache() {
     lotOccupantTypes = undefined;
 }
-
 
 /*
  * Lot Statuses
@@ -71,7 +56,6 @@ export function clearLotOccupantTypesCache() {
 let lotStatuses: recordTypes.LotStatus[];
 
 export function getLotStatuses() {
-
     if (!lotStatuses) {
         lotStatuses = getLotStatusesFromDatabase();
     }
@@ -80,7 +64,6 @@ export function getLotStatuses() {
 }
 
 export function getLotStatusById(lotStatusId: number) {
-
     const cachedLotStatuses = getLotStatuses();
 
     return cachedLotStatuses.find((currentLotStatus) => {
@@ -89,7 +72,6 @@ export function getLotStatusById(lotStatusId: number) {
 }
 
 export function getLotStatusByLotStatus(lotStatus: string) {
-
     const cachedLotStatuses = getLotStatuses();
 
     const lotStatusLowerCase = lotStatus.toLowerCase();
@@ -110,7 +92,6 @@ export function clearLotStatusesCache() {
 let lotTypes: recordTypes.LotType[];
 
 export function getLotTypes() {
-
     if (!lotTypes) {
         lotTypes = getLotTypesFromDatabase();
     }
@@ -119,7 +100,6 @@ export function getLotTypes() {
 }
 
 export function getLotTypeById(lotTypeId: number) {
-
     const cachedLotTypes = getLotTypes();
 
     return cachedLotTypes.find((currentLotType) => {
@@ -128,7 +108,6 @@ export function getLotTypeById(lotTypeId: number) {
 }
 
 export function getLotTypesByLotType(lotType: string) {
-
     const cachedLotTypes = getLotTypes();
 
     const lotTypeLowerCase = lotType.toLowerCase();
@@ -147,11 +126,8 @@ export function clearLotTypesCache() {
  */
 
 let occupancyTypes: recordTypes.OccupancyType[];
-const occupancyTypeMap = new Map < number,
-    recordTypes.OccupancyType > ();
 
 export function getOccupancyTypes() {
-
     if (!occupancyTypes) {
         occupancyTypes = getOccupancyTypesFromDatabase();
     }
@@ -160,37 +136,28 @@ export function getOccupancyTypes() {
 }
 
 export function getOccupancyTypeById(occupancyTypeId: number) {
+    const cachedOccupancyTypes = getOccupancyTypes();
 
-    if (!occupancyTypeMap.has(occupancyTypeId)) {
-
-        const occupancyType = getOccupancyType(occupancyTypeId);
-        occupancyTypeMap.set(occupancyTypeId, occupancyType);
-    }
-
-    return occupancyTypeMap.get(occupancyTypeId);
+    return cachedOccupancyTypes.find((currentOccupancyType) => {
+        return currentOccupancyType.occupancyTypeId === occupancyTypeId;
+    });
 }
 
 export function getOccupancyTypeByOccupancyType(occupancyTypeString: string) {
-
     const cachedOccupancyTypes = getOccupancyTypes();
 
     const occupancyTypeLowerCase = occupancyTypeString.toLowerCase();
 
-    let occupancyType = cachedOccupancyTypes.find((currentOccupancyType) => {
-        return currentOccupancyType.occupancyType.toLowerCase() === occupancyTypeLowerCase;
+    return cachedOccupancyTypes.find((currentOccupancyType) => {
+        return (
+            currentOccupancyType.occupancyType.toLowerCase() ===
+            occupancyTypeLowerCase
+        );
     });
-
-    // get object with related fields
-    if (occupancyType) {
-        occupancyType = getOccupancyTypeById(occupancyType.occupancyTypeId);
-    }
-
-    return occupancyType;
 }
 
 export function clearOccupancyTypesCache() {
     occupancyTypes = undefined;
-    occupancyTypeMap.clear();
 }
 
 /*
@@ -200,7 +167,6 @@ export function clearOccupancyTypesCache() {
 let workOrderTypes: recordTypes.WorkOrderType[];
 
 export function getWorkOrderTypes() {
-    
     if (!workOrderTypes) {
         workOrderTypes = getWorkOrderTypesFromDatabase();
     }

@@ -12,6 +12,6 @@ export const deleteLotStatus = (lotStatusId, requestSession) => {
         .run(requestSession.user.userName, rightNowMillis, lotStatusId);
     database.close();
     clearLotStatusesCache();
-    return (result.changes > 0);
+    return result.changes > 0;
 };
 export default deleteLotStatus;

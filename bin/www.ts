@@ -11,51 +11,47 @@ import exitHook from "exit-hook";
 import debug from "debug";
 const debugWWW = debug("lot-occupancy-system:www");
 
-
 let httpServer: http.Server;
 
-
 interface ServerError extends Error {
-  syscall: string;
-  code: string;
+    syscall: string;
+    code: string;
 }
 
 const onError = (error: ServerError) => {
+    if (error.syscall !== "listen") {
+        throw error;
+    }
 
-  if (error.syscall !== "listen") {
-    throw error;
-  }
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        // eslint-disable-next-line no-fallthrough
+        case "EACCES":
+            debugWWW("Requires elevated privileges");
+            process.exit(1);
+        // break;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
+        // eslint-disable-next-line no-fallthrough
+        case "EADDRINUSE":
+            debugWWW("Port is already in use.");
+            process.exit(1);
+        // break;
 
-    // eslint-disable-next-line no-fallthrough
-    case "EACCES":
-      debugWWW("Requires elevated privileges");
-      process.exit(1);
-    // break;
-
-    // eslint-disable-next-line no-fallthrough
-    case "EADDRINUSE":
-      debugWWW("Port is already in use.");
-      process.exit(1);
-    // break;
-
-    // eslint-disable-next-line no-fallthrough
-    default:
-      throw error;
-  }
+        // eslint-disable-next-line no-fallthrough
+        default:
+            throw error;
+    }
 };
 
 const onListening = (server: http.Server) => {
+    const addr = server.address();
 
-  const addr = server.address();
+    const bind =
+        typeof addr === "string"
+            ? "pipe " + addr
+            : "port " + addr.port.toString();
 
-  const bind = typeof addr === "string"
-    ? "pipe " + addr
-    : "port " + addr.port.toString();
-
-  debugWWW("Listening on " + bind);
+    debugWWW("Listening on " + bind);
 };
 
 /**
@@ -65,25 +61,22 @@ const onListening = (server: http.Server) => {
 const httpPort = configFunctions.getProperty("application.httpPort");
 
 if (httpPort) {
+    httpServer = http.createServer(app);
 
-  httpServer = http.createServer(app);
+    httpServer.listen(httpPort);
 
-  httpServer.listen(httpPort);
+    httpServer.on("error", onError);
+    httpServer.on("listening", () => {
+        onListening(httpServer);
+    });
 
-  httpServer.on("error", onError);
-  httpServer.on("listening", () => {
-    onListening(httpServer);
-  });
-
-  debugWWW("HTTP listening on " + httpPort.toString());
+    debugWWW("HTTP listening on " + httpPort.toString());
 }
 
-
 exitHook(() => {
-
-  if (httpServer) {
-    debugWWW("Closing HTTP");
-    httpServer.close();
-    httpServer = undefined;
-  }
+    if (httpServer) {
+        debugWWW("Closing HTTP");
+        httpServer.close();
+        httpServer = undefined;
+    }
 });

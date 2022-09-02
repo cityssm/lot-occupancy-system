@@ -1,10 +1,6 @@
-import {
-    logout
-} from "../../support/index.js";
-
+import { logout } from "../../support/index.js";
 
 describe("Login Page", () => {
-
     before(logout);
 
     it("Has no detectable accessibility issues", () => {
@@ -29,7 +25,7 @@ describe("Login Page", () => {
             .should("have.length", 1)
             .invoke("attr", "type")
             .should("equal", "password");
-    })
+    });
 
     it("Contains a help link", () => {
         cy.get("a").contains("help", {

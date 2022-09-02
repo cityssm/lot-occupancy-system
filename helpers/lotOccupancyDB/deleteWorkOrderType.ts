@@ -1,39 +1,33 @@
 import sqlite from "better-sqlite3";
 
-import {
-    lotOccupancyDB as databasePath
-} from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import {
-    clearWorkOrderTypesCache
-} from "../functions.cache.js";
+import { clearWorkOrderTypesCache } from "../functions.cache.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
+export const deleteWorkOrderType = (
+    workOrderTypeId: number | string,
+    requestSession: recordTypes.PartialSession
+): boolean => {
+    const database = sqlite(databasePath);
 
-export const deleteWorkOrderType =
-    (workOrderTypeId: number | string,
-        requestSession: recordTypes.PartialSession): boolean => {
+    const rightNowMillis = Date.now();
 
-        const database = sqlite(databasePath);
-
-        const rightNowMillis = Date.now();
-
-        const result = database
-            .prepare("update WorkOrderTypes" +
+    const result = database
+        .prepare(
+            "update WorkOrderTypes" +
                 " set recordDelete_userName = ?," +
                 " recordDelete_timeMillis = ?" +
-                " where workOrderTypeId = ?")
-            .run(requestSession.user.userName,
-                rightNowMillis,
-                workOrderTypeId);
+                " where workOrderTypeId = ?"
+        )
+        .run(requestSession.user.userName, rightNowMillis, workOrderTypeId);
 
-        database.close();
+    database.close();
 
-        clearWorkOrderTypesCache();
+    clearWorkOrderTypesCache();
 
-        return (result.changes > 0);
-    };
-
+    return result.changes > 0;
+};
 
 export default deleteWorkOrderType;
