@@ -16,6 +16,7 @@ import handler_doAddOccupancyType from "../handlers/admin-post/doAddOccupancyTyp
 import handler_doUpdateOccupancyType from "../handlers/admin-post/doUpdateOccupancyType.js";
 import handler_doMoveOccupancyTypeUp from "../handlers/admin-post/doMoveOccupancyTypeUp.js";
 import handler_doMoveOccupancyTypeDown from "../handlers/admin-post/doMoveOccupancyTypeDown.js";
+import handler_doDeleteOccupancyType from "../handlers/admin-post/doDeleteOccupancyType.js";
 import handler_tables from "../handlers/admin-get/tables.js";
 import handler_doAddWorkOrderType from "../handlers/admin-post/doAddWorkOrderType.js";
 import handler_doUpdateWorkOrderType from "../handlers/admin-post/doUpdateWorkOrderType.js";
@@ -49,6 +50,7 @@ router.post("/doAddOccupancyType", permissionHandlers.adminPostHandler, handler_
 router.post("/doUpdateOccupancyType", permissionHandlers.adminPostHandler, handler_doUpdateOccupancyType);
 router.post("/doMoveOccupancyTypeUp", permissionHandlers.adminPostHandler, handler_doMoveOccupancyTypeUp);
 router.post("/doMoveOccupancyTypeDown", permissionHandlers.adminPostHandler, handler_doMoveOccupancyTypeDown);
+router.post("/doDeleteOccupancyType", permissionHandlers.adminPostHandler, handler_doDeleteOccupancyType);
 router.get("/tables", permissionHandlers.adminGetHandler, handler_tables);
 router.post("/doAddWorkOrderType", permissionHandlers.adminPostHandler, handler_doAddWorkOrderType);
 router.post("/doUpdateWorkOrderType", permissionHandlers.adminPostHandler, handler_doUpdateWorkOrderType);

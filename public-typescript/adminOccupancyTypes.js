@@ -25,6 +25,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
             panelBlockElement.classList.toggle("is-hidden");
         }
     };
+    const deleteOccupancyType = (clickEvent) => {
+        const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId, 10);
+        const doDelete = () => {
+            cityssm.postJSON(urlPrefix + "/admin/doDeleteOccupancyType", {
+                occupancyTypeId
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    occupancyTypes = responseJSON.occupancyTypes;
+                    renderOccupancyTypes();
+                }
+                else {
+                    bulmaJS.alert({
+                        title: "Error Deleting " +
+                            exports.aliases.occupancy +
+                            " Type",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            });
+        };
+        bulmaJS.confirm({
+            title: "Delete " + exports.aliases.occupancy + " Type",
+            message: "Are you sure you want to delete this " + exports.aliases.occupancy.toLowerCase() + " type?",
+            contextualColorName: "warning",
+            okButton: {
+                text: "Yes, Delete " + exports.aliases.occupancy + " Type",
+                callbackFunction: doDelete
+            }
+        });
+    };
     const openEditOccupancyType = (clickEvent) => {
         const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId, 10);
         const occupancyType = occupancyTypes.find((currentOccupancyType) => {
@@ -145,20 +176,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</div>" +
                         "</div>") +
                     ('<div class="level-right">' +
-                        '<div class="level-item">' +
-                        '<button class="button is-primary is-small button--editOccupancyType" type="button">' +
-                        '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
-                        "<span>Edit " +
-                        exports.aliases.occupancy +
-                        " Type</span>" +
-                        "</button>" +
-                        "</div>" +
-                        '<div class="level-item">' +
-                        '<button class="button is-success is-small button--addOccupancyTypeField" type="button">' +
-                        '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
-                        "<span>Add Field</span>" +
-                        "</button>" +
-                        "</div>" +
+                        ('<div class="level-item">' +
+                            '<button class="button is-danger is-small button--deleteOccupancyType" type="button">' +
+                            '<span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>' +
+                            "<span>Delete</span>" +
+                            "</button>" +
+                            "</div>") +
+                        ('<div class="level-item">' +
+                            '<button class="button is-primary is-small button--editOccupancyType" type="button">' +
+                            '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
+                            "<span>Edit " +
+                            exports.aliases.occupancy +
+                            " Type</span>" +
+                            "</button>" +
+                            "</div>") +
+                        ('<div class="level-item">' +
+                            '<button class="button is-success is-small button--addOccupancyTypeField" type="button">' +
+                            '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
+                            "<span>Add Field</span>" +
+                            "</button>" +
+                            "</div>") +
                         ('<div class="level-item">' +
                             '<div class="field has-addons">' +
                             '<div class="control">' +
@@ -232,6 +269,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             occupancyTypeContainer
                 .querySelector(".button--editOccupancyType")
                 .addEventListener("click", openEditOccupancyType);
+            occupancyTypeContainer
+                .querySelector(".button--deleteOccupancyType")
+                .addEventListener("click", deleteOccupancyType);
             occupancyTypeContainer
                 .querySelector(".button--moveOccupancyTypeUp")
                 .addEventListener("click", moveOccupancyTypeUp);
