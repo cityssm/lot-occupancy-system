@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const containerElement = document.querySelector("#container--occupancyTypes");
-    const occupancyTypes = exports.occupancyTypes;
+    let occupancyTypes = exports.occupancyTypes;
     delete exports.occupancyTypes;
     const expandedOccupancyTypes = new Set();
     const toggleOccupancyTypeFields = (clickEvent) => {
@@ -23,6 +23,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
         for (const panelBlockElement of panelBlockElements) {
             panelBlockElement.classList.toggle("is-hidden");
         }
+    };
+    const moveOccupancyTypeUp = (clickEvent) => {
+        clickEvent.preventDefault();
+        const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId;
+        cityssm.postJSON(urlPrefix + "/admin/doMoveOccupancyTypeUp", {
+            occupancyTypeId
+        }, (responseJSON) => {
+            if (responseJSON.success) {
+                occupancyTypes = responseJSON.occupancyTypes;
+                renderOccupancyTypes();
+            }
+            else {
+                bulmaJS.alert({
+                    title: "Error Moving Occupancy Type",
+                    message: responseJSON.errorMessage,
+                    contextualColorName: "danger"
+                });
+            }
+        });
+    };
+    const moveOccupancyTypeDown = (clickEvent) => {
+        clickEvent.preventDefault();
+        const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId;
+        cityssm.postJSON(urlPrefix + "/admin/doMoveOccupancyTypeDown", {
+            occupancyTypeId
+        }, (responseJSON) => {
+            if (responseJSON.success) {
+                occupancyTypes = responseJSON.occupancyTypes;
+                renderOccupancyTypes();
+            }
+            else {
+                bulmaJS.alert({
+                    title: "Error Moving Occupancy Type",
+                    message: responseJSON.errorMessage,
+                    contextualColorName: "danger"
+                });
+            }
+        });
     };
     const renderOccupancyTypes = () => {
         if (occupancyTypes.length === 0) {
@@ -142,6 +180,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             occupancyTypeContainer
                 .querySelector(".button--toggleOccupancyTypeFields")
                 .addEventListener("click", toggleOccupancyTypeFields);
+            occupancyTypeContainer
+                .querySelector(".button--moveOccupancyTypeUp")
+                .addEventListener("click", moveOccupancyTypeUp);
+            occupancyTypeContainer
+                .querySelector(".button--moveOccupancyTypeDown")
+                .addEventListener("click", moveOccupancyTypeDown);
             containerElement.append(occupancyTypeContainer);
         }
     };

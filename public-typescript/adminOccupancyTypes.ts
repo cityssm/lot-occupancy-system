@@ -17,7 +17,7 @@ declare const bulmaJS: BulmaJS;
         "#container--occupancyTypes"
     ) as HTMLElement;
 
-    const occupancyTypes: recordTypes.OccupancyType[] = exports.occupancyTypes;
+    let occupancyTypes: recordTypes.OccupancyType[] = exports.occupancyTypes;
     delete exports.occupancyTypes;
 
     const expandedOccupancyTypes = new Set<number>();
@@ -53,6 +53,72 @@ declare const bulmaJS: BulmaJS;
         for (const panelBlockElement of panelBlockElements) {
             panelBlockElement.classList.toggle("is-hidden");
         }
+    };
+
+    const moveOccupancyTypeUp = (clickEvent: Event) => {
+        clickEvent.preventDefault();
+
+        const occupancyTypeId = (
+            (clickEvent.currentTarget as HTMLElement).closest(
+                ".container--occupancyType"
+            ) as HTMLElement
+        ).dataset.occupancyTypeId;
+
+        cityssm.postJSON(
+            urlPrefix + "/admin/doMoveOccupancyTypeUp",
+            {
+                occupancyTypeId
+            },
+            (responseJSON: {
+                success: boolean;
+                errorMessage?: string;
+                occupancyTypes?: recordTypes.OccupancyType[];
+            }) => {
+                if (responseJSON.success) {
+                    occupancyTypes = responseJSON.occupancyTypes;
+                    renderOccupancyTypes();
+                } else {
+                    bulmaJS.alert({
+                        title: "Error Moving Occupancy Type",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            }
+        );
+    };
+
+    const moveOccupancyTypeDown = (clickEvent: Event) => {
+        clickEvent.preventDefault();
+
+        const occupancyTypeId = (
+            (clickEvent.currentTarget as HTMLElement).closest(
+                ".container--occupancyType"
+            ) as HTMLElement
+        ).dataset.occupancyTypeId;
+
+        cityssm.postJSON(
+            urlPrefix + "/admin/doMoveOccupancyTypeDown",
+            {
+                occupancyTypeId
+            },
+            (responseJSON: {
+                success: boolean;
+                errorMessage?: string;
+                occupancyTypes?: recordTypes.OccupancyType[];
+            }) => {
+                if (responseJSON.success) {
+                    occupancyTypes = responseJSON.occupancyTypes;
+                    renderOccupancyTypes();
+                } else {
+                    bulmaJS.alert({
+                        title: "Error Moving Occupancy Type",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            }
+        );
     };
 
     const renderOccupancyTypes = () => {
@@ -195,6 +261,14 @@ declare const bulmaJS: BulmaJS;
             occupancyTypeContainer
                 .querySelector(".button--toggleOccupancyTypeFields")
                 .addEventListener("click", toggleOccupancyTypeFields);
+
+            occupancyTypeContainer
+                .querySelector(".button--moveOccupancyTypeUp")
+                .addEventListener("click", moveOccupancyTypeUp);
+
+            occupancyTypeContainer
+                .querySelector(".button--moveOccupancyTypeDown")
+                .addEventListener("click", moveOccupancyTypeDown);
 
             containerElement.append(occupancyTypeContainer);
         }
