@@ -23,6 +23,7 @@ import handler_doDeleteFee from "../handlers/admin-post/doDeleteFee.js";
 import handler_occupancyTypes from "../handlers/admin-get/occupancyTypes.js";
 
 import handler_doAddOccupancyType from "../handlers/admin-post/doAddOccupancyType.js";
+import handler_doUpdateOccupancyType from "../handlers/admin-post/doUpdateOccupancyType.js";
 import handler_doMoveOccupancyTypeUp from "../handlers/admin-post/doMoveOccupancyTypeUp.js";
 import handler_doMoveOccupancyTypeDown from "../handlers/admin-post/doMoveOccupancyTypeDown.js";
 
@@ -126,6 +127,12 @@ router.post(
     "/doAddOccupancyType",
     permissionHandlers.adminPostHandler,
     handler_doAddOccupancyType
+);
+
+router.post(
+    "/doUpdateOccupancyType",
+    permissionHandlers.adminPostHandler,
+    handler_doUpdateOccupancyType
 );
 
 router.post(

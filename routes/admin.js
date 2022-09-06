@@ -13,6 +13,7 @@ import handler_doMoveFeeDown from "../handlers/admin-post/doMoveFeeDown.js";
 import handler_doDeleteFee from "../handlers/admin-post/doDeleteFee.js";
 import handler_occupancyTypes from "../handlers/admin-get/occupancyTypes.js";
 import handler_doAddOccupancyType from "../handlers/admin-post/doAddOccupancyType.js";
+import handler_doUpdateOccupancyType from "../handlers/admin-post/doUpdateOccupancyType.js";
 import handler_doMoveOccupancyTypeUp from "../handlers/admin-post/doMoveOccupancyTypeUp.js";
 import handler_doMoveOccupancyTypeDown from "../handlers/admin-post/doMoveOccupancyTypeDown.js";
 import handler_tables from "../handlers/admin-get/tables.js";
@@ -45,6 +46,7 @@ router.post("/doMoveFeeDown", permissionHandlers.adminPostHandler, handler_doMov
 router.post("/doDeleteFee", permissionHandlers.adminPostHandler, handler_doDeleteFee);
 router.get("/occupancyTypes", permissionHandlers.adminGetHandler, handler_occupancyTypes);
 router.post("/doAddOccupancyType", permissionHandlers.adminPostHandler, handler_doAddOccupancyType);
+router.post("/doUpdateOccupancyType", permissionHandlers.adminPostHandler, handler_doUpdateOccupancyType);
 router.post("/doMoveOccupancyTypeUp", permissionHandlers.adminPostHandler, handler_doMoveOccupancyTypeUp);
 router.post("/doMoveOccupancyTypeDown", permissionHandlers.adminPostHandler, handler_doMoveOccupancyTypeDown);
 router.get("/tables", permissionHandlers.adminGetHandler, handler_tables);

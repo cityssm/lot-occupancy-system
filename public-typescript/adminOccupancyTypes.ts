@@ -57,6 +57,88 @@ declare const bulmaJS: BulmaJS;
         }
     };
 
+    const openEditOccupancyType = (clickEvent: Event) => {
+        const occupancyTypeId = Number.parseInt(
+            (
+                (clickEvent.currentTarget as HTMLElement).closest(
+                    ".container--occupancyType"
+                ) as HTMLElement
+            ).dataset.occupancyTypeId,
+            10
+        );
+
+        const occupancyType = occupancyTypes.find((currentOccupancyType) => {
+            return occupancyTypeId === currentOccupancyType.occupancyTypeId;
+        });
+
+        let editCloseModalFunction: () => void;
+
+        const doEdit = (submitEvent: SubmitEvent) => {
+            submitEvent.preventDefault();
+
+            cityssm.postJSON(
+                urlPrefix + "/admin/doUpdateOccupancyType",
+                submitEvent.currentTarget,
+                (responseJSON: {
+                    success: boolean;
+                    errorMessage?: string;
+                    occupancyTypes?: recordTypes.OccupancyType[];
+                }) => {
+                    if (responseJSON.success) {
+                        editCloseModalFunction();
+                        occupancyTypes = responseJSON.occupancyTypes;
+                        renderOccupancyTypes();
+                    } else {
+                        bulmaJS.alert({
+                            title:
+                                "Error Updating " +
+                                exports.aliases.occupancy +
+                                " Type",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                }
+            );
+        };
+
+        cityssm.openHtmlModal("adminOccupancyTypes-editOccupancyType", {
+            onshow: (modalElement) => {
+                los.populateAliases(modalElement);
+
+                (
+                    modalElement.querySelector(
+                        "#occupancyTypeEdit--occupancyTypeId"
+                    ) as HTMLInputElement
+                ).value = occupancyTypeId.toString();
+
+                (
+                    modalElement.querySelector(
+                        "#occupancyTypeEdit--occupancyType"
+                    ) as HTMLInputElement
+                ).value = occupancyType.occupancyType;
+            },
+            onshown: (modalElement, closeModalFunction) => {
+                editCloseModalFunction = closeModalFunction;
+
+                (
+                    modalElement.querySelector(
+                        "#occupancyTypeEdit--occupancyType"
+                    ) as HTMLInputElement
+                ).focus();
+
+                modalElement
+                    .querySelector("form")
+                    .addEventListener("submit", doEdit);
+
+                bulmaJS.toggleHtmlClipped();
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
+            }
+        });
+    };
+
     const moveOccupancyTypeUp = (clickEvent: Event) => {
         clickEvent.preventDefault();
 
@@ -269,6 +351,10 @@ declare const bulmaJS: BulmaJS;
             occupancyTypeContainer
                 .querySelector(".button--toggleOccupancyTypeFields")
                 .addEventListener("click", toggleOccupancyTypeFields);
+
+            occupancyTypeContainer
+                .querySelector(".button--editOccupancyType")
+                .addEventListener("click", openEditOccupancyType);
 
             occupancyTypeContainer
                 .querySelector(".button--moveOccupancyTypeUp")
