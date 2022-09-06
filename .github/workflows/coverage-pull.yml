@@ -1,7 +1,6 @@
 name: Coverage Testing (Pull)
 
-on:
-  pull_request:
+on: pull_request
 
 permissions: read-all
 
