@@ -2,9 +2,9 @@ import type * as recordTypes from "../../types/recordTypes";
 interface AddOccupancyTypeFieldForm {
     occupancyTypeId: string | number;
     occupancyTypeField: string;
-    occupancyTypeFieldValues: string;
+    occupancyTypeFieldValues?: string;
     isRequired?: string;
-    pattern: string;
+    pattern?: string;
     minimumLength: string | number;
     maximumLength: string | number;
     orderNumber?: number;

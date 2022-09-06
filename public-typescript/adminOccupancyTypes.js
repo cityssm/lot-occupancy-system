@@ -48,7 +48,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         bulmaJS.confirm({
             title: "Delete " + exports.aliases.occupancy + " Type",
-            message: "Are you sure you want to delete this " + exports.aliases.occupancy.toLowerCase() + " type?",
+            message: "Are you sure you want to delete this " +
+                exports.aliases.occupancy.toLowerCase() +
+                " type?",
             contextualColorName: "warning",
             okButton: {
                 text: "Yes, Delete " + exports.aliases.occupancy + " Type",
@@ -93,6 +95,48 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement
                     .querySelector("form")
                     .addEventListener("submit", doEdit);
+                bulmaJS.toggleHtmlClipped();
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
+            }
+        });
+    };
+    const openAddOccupancyTypeField = (clickEvent) => {
+        const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId, 10);
+        const occupancyType = occupancyTypes.find((currentOccupancyType) => {
+            return occupancyTypeId === currentOccupancyType.occupancyTypeId;
+        });
+        let addCloseModalFunction;
+        const doAdd = (submitEvent) => {
+            submitEvent.preventDefault();
+            cityssm.postJSON(urlPrefix + "/admin/doAddOccupancyTypeField", submitEvent.currentTarget, (responseJSON) => {
+                if (responseJSON.success) {
+                    expandedOccupancyTypes.add(occupancyTypeId);
+                    addCloseModalFunction();
+                    occupancyTypes = responseJSON.occupancyTypes;
+                    renderOccupancyTypes();
+                }
+                else {
+                    bulmaJS.alert({
+                        title: "Error Adding Field",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            });
+        };
+        cityssm.openHtmlModal("adminOccupancyTypes-addOccupancyTypeField", {
+            onshow: (modalElement) => {
+                los.populateAliases(modalElement);
+                modalElement.querySelector("#occupancyTypeFieldAdd--occupancyTypeId").value = occupancyTypeId.toString();
+            },
+            onshown: (modalElement, closeModalFunction) => {
+                addCloseModalFunction = closeModalFunction;
+                modalElement.querySelector("#occupancyTypeFieldAdd--occupancyTypeField").focus();
+                modalElement
+                    .querySelector("form")
+                    .addEventListener("submit", doAdd);
                 bulmaJS.toggleHtmlClipped();
             },
             onremoved: () => {
@@ -267,11 +311,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 .querySelector(".button--toggleOccupancyTypeFields")
                 .addEventListener("click", toggleOccupancyTypeFields);
             occupancyTypeContainer
+                .querySelector(".button--deleteOccupancyType")
+                .addEventListener("click", deleteOccupancyType);
+            occupancyTypeContainer
                 .querySelector(".button--editOccupancyType")
                 .addEventListener("click", openEditOccupancyType);
             occupancyTypeContainer
-                .querySelector(".button--deleteOccupancyType")
-                .addEventListener("click", deleteOccupancyType);
+                .querySelector(".button--addOccupancyTypeField")
+                .addEventListener("click", openAddOccupancyTypeField);
             occupancyTypeContainer
                 .querySelector(".button--moveOccupancyTypeUp")
                 .addEventListener("click", moveOccupancyTypeUp);

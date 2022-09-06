@@ -3,13 +3,14 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
+import { clearOccupancyTypesCache } from "../functions.cache.js";
 
 interface AddOccupancyTypeFieldForm {
     occupancyTypeId: string | number;
     occupancyTypeField: string;
-    occupancyTypeFieldValues: string;
+    occupancyTypeFieldValues?: string;
     isRequired?: string;
-    pattern: string;
+    pattern?: string;
     minimumLength: string | number;
     maximumLength: string | number;
     orderNumber?: number;
@@ -37,12 +38,12 @@ export const addOccupancyTypeField = (
         .run(
             occupancyTypeFieldForm.occupancyTypeId,
             occupancyTypeFieldForm.occupancyTypeField,
-            occupancyTypeFieldForm.occupancyTypeFieldValues,
+            occupancyTypeFieldForm.occupancyTypeFieldValues || "",
             occupancyTypeFieldForm.isRequired ? 1 : 0,
-            occupancyTypeFieldForm.pattern,
+            occupancyTypeFieldForm.pattern || "",
             occupancyTypeFieldForm.minimumLength || 0,
             occupancyTypeFieldForm.maximumLength || 100,
-            occupancyTypeFieldForm.orderNumber || 0,
+            occupancyTypeFieldForm.orderNumber || -1,
             requestSession.user.userName,
             rightNowMillis,
             requestSession.user.userName,
@@ -50,6 +51,8 @@ export const addOccupancyTypeField = (
         );
 
     database.close();
+
+    clearOccupancyTypesCache();
 
     return result.lastInsertRowid as number;
 };

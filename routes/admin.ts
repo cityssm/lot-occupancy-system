@@ -28,6 +28,8 @@ import handler_doMoveOccupancyTypeUp from "../handlers/admin-post/doMoveOccupanc
 import handler_doMoveOccupancyTypeDown from "../handlers/admin-post/doMoveOccupancyTypeDown.js";
 import handler_doDeleteOccupancyType from "../handlers/admin-post/doDeleteOccupancyType.js";
 
+import handler_doAddOccupancyTypeField from "../handlers/admin-post/doAddOccupancyTypeField.js";
+
 // Config Table Management
 
 import handler_tables from "../handlers/admin-get/tables.js";
@@ -154,6 +156,13 @@ router.post(
     handler_doDeleteOccupancyType
 );
 
+// Occupancy Type Fields
+
+router.post(
+    "/doAddOccupancyTypeField",
+    permissionHandlers.adminPostHandler,
+    handler_doAddOccupancyTypeField
+);
 
 /*
  * Config Tables
