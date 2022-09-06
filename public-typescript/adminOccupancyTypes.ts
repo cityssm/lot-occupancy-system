@@ -201,10 +201,6 @@ declare const bulmaJS: BulmaJS;
             10
         );
 
-        const occupancyType = occupancyTypes.find((currentOccupancyType) => {
-            return occupancyTypeId === currentOccupancyType.occupancyTypeId;
-        });
-
         let addCloseModalFunction: () => void;
 
         const doAdd = (submitEvent: SubmitEvent) => {
@@ -217,6 +213,7 @@ declare const bulmaJS: BulmaJS;
                     success: boolean;
                     errorMessage?: string;
                     occupancyTypes?: recordTypes.OccupancyType[];
+                    occupancyTypeFieldId?: number;
                 }) => {
                     if (responseJSON.success) {
                         expandedOccupancyTypes.add(occupancyTypeId);
@@ -224,6 +221,11 @@ declare const bulmaJS: BulmaJS;
                         addCloseModalFunction();
                         occupancyTypes = responseJSON.occupancyTypes;
                         renderOccupancyTypes();
+
+                        openEditOccupancyTypeField(
+                            occupancyTypeId,
+                            responseJSON.occupancyTypeFieldId
+                        );
                     } else {
                         bulmaJS.alert({
                             title: "Error Adding Field",
@@ -336,6 +338,175 @@ declare const bulmaJS: BulmaJS;
                 }
             }
         );
+    };
+
+    const openEditOccupancyTypeField = (
+        occupancyTypeId: number,
+        occupancyTypeFieldId: number
+    ) => {
+        const occupancyType = occupancyTypes.find((currentOccupancyType) => {
+            return currentOccupancyType.occupancyTypeId === occupancyTypeId;
+        });
+
+        const occupancyTypeField = occupancyType.occupancyTypeFields.find(
+            (currentOccupancyTypeField) => {
+                return (
+                    currentOccupancyTypeField.occupancyTypeFieldId ===
+                    occupancyTypeFieldId
+                );
+            }
+        );
+
+        let minimumLengthElement: HTMLInputElement;
+        let maximumLengthElement: HTMLInputElement;
+        let patternElement: HTMLInputElement;
+        let occupancyTypeFieldValuesElement: HTMLTextAreaElement;
+
+        let editCloseModalFunction: () => void;
+
+        const updateMaximumLengthMin = () => {
+            maximumLengthElement.min = minimumLengthElement.value;
+        };
+
+        const toggleInputFields = () => {
+            if (occupancyTypeFieldValuesElement.value === "") {
+                minimumLengthElement.disabled = false;
+                maximumLengthElement.disabled = false;
+                patternElement.disabled = false;
+            } else {
+                minimumLengthElement.disabled = true;
+                maximumLengthElement.disabled = true;
+                patternElement.disabled = true;
+            }
+        };
+
+        const doUpdate = (submitEvent: SubmitEvent) => {
+            submitEvent.preventDefault();
+
+            cityssm.postJSON(
+                urlPrefix + "/admin/doUpdateOccupancyTypeField",
+                submitEvent.currentTarget,
+                (responseJSON: {
+                    success: boolean;
+                    errorMessage?: string;
+                    occupancyTypes?: recordTypes.OccupancyType[];
+                }) => {
+                    if (responseJSON.success) {
+                        occupancyTypes = responseJSON.occupancyTypes;
+                        editCloseModalFunction();
+                        renderOccupancyTypes();
+                    } else {
+                        bulmaJS.alert({
+                            title: "Error Updating Field",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                }
+            );
+        };
+
+        cityssm.openHtmlModal("adminOccupancyTypes-editOccupancyTypeField", {
+            onshow: (modalElement) => {
+                los.populateAliases(modalElement);
+
+                (
+                    modalElement.querySelector(
+                        "#occupancyTypeFieldEdit--occupancyTypeFieldId"
+                    ) as HTMLInputElement
+                ).value = occupancyTypeField.occupancyTypeFieldId.toString();
+
+                (
+                    modalElement.querySelector(
+                        "#occupancyTypeFieldEdit--occupancyTypeField"
+                    ) as HTMLInputElement
+                ).value = occupancyTypeField.occupancyTypeField;
+
+                (
+                    modalElement.querySelector(
+                        "#occupancyTypeFieldEdit--isRequired"
+                    ) as HTMLSelectElement
+                ).value = occupancyTypeField.isRequired ? "1" : "0";
+
+                minimumLengthElement = modalElement.querySelector(
+                    "#occupancyTypeFieldEdit--minimumLength"
+                );
+
+                minimumLengthElement.value =
+                    occupancyTypeField.minimumLength.toString();
+
+                maximumLengthElement = modalElement.querySelector(
+                    "#occupancyTypeFieldEdit--maximumLength"
+                );
+
+                maximumLengthElement.value =
+                    occupancyTypeField.maximumLength.toString();
+
+                patternElement = modalElement.querySelector(
+                    "#occupancyTypeFieldEdit--pattern"
+                );
+
+                patternElement.value = occupancyTypeField.pattern;
+
+                occupancyTypeFieldValuesElement = modalElement.querySelector(
+                    "#occupancyTypeFieldEdit--occupancyTypeFieldValues"
+                );
+
+                occupancyTypeFieldValuesElement.value =
+                    occupancyTypeField.occupancyTypeFieldValues;
+
+                toggleInputFields();
+            },
+            onshown: (modalElement, closeModalFunction) => {
+                editCloseModalFunction = closeModalFunction;
+
+                bulmaJS.toggleHtmlClipped();
+                cityssm.enableNavBlocker();
+
+                modalElement
+                    .querySelector("form")
+                    .addEventListener("submit", doUpdate);
+
+                minimumLengthElement.addEventListener(
+                    "keyup",
+                    updateMaximumLengthMin
+                );
+                updateMaximumLengthMin();
+
+                occupancyTypeFieldValuesElement.addEventListener(
+                    "keyup",
+                    toggleInputFields
+                );
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
+                cityssm.disableNavBlocker();
+            }
+        });
+    };
+
+    const openEditOccupancyTypeFieldByClick = (clickEvent: Event) => {
+        clickEvent.preventDefault();
+
+        const occupancyTypeFieldId = Number.parseInt(
+            (
+                (clickEvent.currentTarget as HTMLElement).closest(
+                    ".container--occupancyTypeField"
+                ) as HTMLElement
+            ).dataset.occupancyTypeFieldId,
+            10
+        );
+
+        const occupancyTypeId = Number.parseInt(
+            (
+                (clickEvent.currentTarget as HTMLElement).closest(
+                    ".container--occupancyType"
+                ) as HTMLElement
+            ).dataset.occupancyTypeId,
+            10
+        );
+
+        openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId);
     };
 
     const renderOccupancyTypes = () => {
@@ -476,6 +647,13 @@ declare const bulmaJS: BulmaJS;
                             "</div>") +
                         "</div>" +
                         "</div>";
+
+                    panelBlockElement
+                        .querySelector(".button--editOccupancyTypeField")
+                        .addEventListener(
+                            "click",
+                            openEditOccupancyTypeFieldByClick
+                        );
 
                     occupancyTypeContainer.append(panelBlockElement);
                 }

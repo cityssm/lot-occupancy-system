@@ -104,9 +104,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     const openAddOccupancyTypeField = (clickEvent) => {
         const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId, 10);
-        const occupancyType = occupancyTypes.find((currentOccupancyType) => {
-            return occupancyTypeId === currentOccupancyType.occupancyTypeId;
-        });
         let addCloseModalFunction;
         const doAdd = (submitEvent) => {
             submitEvent.preventDefault();
@@ -116,6 +113,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     addCloseModalFunction();
                     occupancyTypes = responseJSON.occupancyTypes;
                     renderOccupancyTypes();
+                    openEditOccupancyTypeField(occupancyTypeId, responseJSON.occupancyTypeFieldId);
                 }
                 else {
                     bulmaJS.alert({
@@ -185,6 +183,93 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
         });
+    };
+    const openEditOccupancyTypeField = (occupancyTypeId, occupancyTypeFieldId) => {
+        const occupancyType = occupancyTypes.find((currentOccupancyType) => {
+            return currentOccupancyType.occupancyTypeId === occupancyTypeId;
+        });
+        const occupancyTypeField = occupancyType.occupancyTypeFields.find((currentOccupancyTypeField) => {
+            return (currentOccupancyTypeField.occupancyTypeFieldId ===
+                occupancyTypeFieldId);
+        });
+        let minimumLengthElement;
+        let maximumLengthElement;
+        let patternElement;
+        let occupancyTypeFieldValuesElement;
+        let editCloseModalFunction;
+        const updateMaximumLengthMin = () => {
+            maximumLengthElement.min = minimumLengthElement.value;
+        };
+        const toggleInputFields = () => {
+            if (occupancyTypeFieldValuesElement.value === "") {
+                minimumLengthElement.disabled = false;
+                maximumLengthElement.disabled = false;
+                patternElement.disabled = false;
+            }
+            else {
+                minimumLengthElement.disabled = true;
+                maximumLengthElement.disabled = true;
+                patternElement.disabled = true;
+            }
+        };
+        const doUpdate = (submitEvent) => {
+            submitEvent.preventDefault();
+            cityssm.postJSON(urlPrefix + "/admin/doUpdateOccupancyTypeField", submitEvent.currentTarget, (responseJSON) => {
+                if (responseJSON.success) {
+                    occupancyTypes = responseJSON.occupancyTypes;
+                    editCloseModalFunction();
+                    renderOccupancyTypes();
+                }
+                else {
+                    bulmaJS.alert({
+                        title: "Error Updating Field",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            });
+        };
+        cityssm.openHtmlModal("adminOccupancyTypes-editOccupancyTypeField", {
+            onshow: (modalElement) => {
+                los.populateAliases(modalElement);
+                modalElement.querySelector("#occupancyTypeFieldEdit--occupancyTypeFieldId").value = occupancyTypeField.occupancyTypeFieldId.toString();
+                modalElement.querySelector("#occupancyTypeFieldEdit--occupancyTypeField").value = occupancyTypeField.occupancyTypeField;
+                modalElement.querySelector("#occupancyTypeFieldEdit--isRequired").value = occupancyTypeField.isRequired ? "1" : "0";
+                minimumLengthElement = modalElement.querySelector("#occupancyTypeFieldEdit--minimumLength");
+                minimumLengthElement.value =
+                    occupancyTypeField.minimumLength.toString();
+                maximumLengthElement = modalElement.querySelector("#occupancyTypeFieldEdit--maximumLength");
+                maximumLengthElement.value =
+                    occupancyTypeField.maximumLength.toString();
+                patternElement = modalElement.querySelector("#occupancyTypeFieldEdit--pattern");
+                patternElement.value = occupancyTypeField.pattern;
+                occupancyTypeFieldValuesElement = modalElement.querySelector("#occupancyTypeFieldEdit--occupancyTypeFieldValues");
+                occupancyTypeFieldValuesElement.value =
+                    occupancyTypeField.occupancyTypeFieldValues;
+                toggleInputFields();
+            },
+            onshown: (modalElement, closeModalFunction) => {
+                editCloseModalFunction = closeModalFunction;
+                bulmaJS.toggleHtmlClipped();
+                cityssm.enableNavBlocker();
+                modalElement
+                    .querySelector("form")
+                    .addEventListener("submit", doUpdate);
+                minimumLengthElement.addEventListener("keyup", updateMaximumLengthMin);
+                updateMaximumLengthMin();
+                occupancyTypeFieldValuesElement.addEventListener("keyup", toggleInputFields);
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
+                cityssm.disableNavBlocker();
+            }
+        });
+    };
+    const openEditOccupancyTypeFieldByClick = (clickEvent) => {
+        clickEvent.preventDefault();
+        const occupancyTypeFieldId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyTypeField").dataset.occupancyTypeFieldId, 10);
+        const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId, 10);
+        openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId);
     };
     const renderOccupancyTypes = () => {
         if (occupancyTypes.length === 0) {
@@ -304,6 +389,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 "</div>") +
                             "</div>" +
                             "</div>";
+                    panelBlockElement
+                        .querySelector(".button--editOccupancyTypeField")
+                        .addEventListener("click", openEditOccupancyTypeFieldByClick);
                     occupancyTypeContainer.append(panelBlockElement);
                 }
             }
