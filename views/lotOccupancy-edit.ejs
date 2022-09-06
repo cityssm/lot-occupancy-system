@@ -171,16 +171,48 @@
                                         <%= lotOccupancyField.occupancyTypeField %>
                                     </label>
                                     <div class="control">
-                                        <input class="input"
-                                            id="lotOccupancy--lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
-                                            name="lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
-                                            type="text"
-                                            value="<%= lotOccupancyField.lotOccupancyFieldValue %>"
-                                            <% if (lotOccupancyField.pattern !== "") { %>
-                                                pattern="<%= lotOccupancyField.pattern %>"
-                                            <% } %>
-                                            minlength="<%= lotOccupancyField.minimumLength %>"
-                                            maxlength="<%= lotOccupancyField.maximumLength %>" />
+                                        <% if (lotOccupancyField.occupancyTypeFieldValues === "") { %>
+                                            <input class="input"
+                                                id="lotOccupancy--lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
+                                                name="lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
+                                                type="text"
+                                                value="<%= lotOccupancyField.lotOccupancyFieldValue %>"
+                                                <% if (lotOccupancyField.pattern !== "") { %>
+                                                    pattern="<%= lotOccupancyField.pattern %>"
+                                                <% } %>
+                                                minlength="<%= lotOccupancyField.minimumLength %>"
+                                                maxlength="<%= lotOccupancyField.maximumLength %>"
+                                                <%= lotOccupancyField.isRequired ? " required" : "" %> />
+                                        <% } else { %>
+                                            <%
+                                                const fieldValues = lotOccupancyField.occupancyTypeFieldValues.split("\n");
+                                                let valueFound = false;
+                                            %>
+                                            <div class="select is-fullwidth">
+                                                <select id="lotOccupancy--lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
+                                                    name="lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>">
+                                                    <% if (!lotOccupancyField.isRequired || lotOccupancyField.lotOccupancyFieldValue === "") { %>
+                                                        <option value="">(Not Set)</option>
+                                                    <% } %>
+                                                    <% for (const fieldValue of fieldValues) { %>
+                                                        <% 
+                                                            if (fieldValue === lotOccupancyField.lotOccupancyFieldValue) {
+                                                                valueFound = true;
+                                                            }
+                                                        %>
+                                                        <option value="<%= fieldValue %>"
+                                                            <%= (fieldValue === lotOccupancyField.lotOccupancyFieldValue ? " selected" : "") %>>
+                                                            <%= fieldValue %>
+                                                        </option>
+                                                    <% } %>
+                                                    <% if (!valueFound && lotOccupancyField.lotOccupancyFieldValue !== "") { %>
+                                                        <option value="<%= lotOccupancyField.lotOccupancyFieldValue %>" selected>
+                                                            <%= lotOccupancyField.lotOccupancyFieldValue %>
+                                                        </option>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        <% } %>
                                     </div>
                                 </div>
                             <% } %>
