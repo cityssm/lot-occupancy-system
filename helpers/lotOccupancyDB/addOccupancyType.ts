@@ -29,7 +29,7 @@ export const addOccupancyType = (
         )
         .run(
             occupancyTypeForm.occupancyType,
-            occupancyTypeForm.orderNumber || 0,
+            occupancyTypeForm.orderNumber || -1,
             requestSession.user.userName,
             rightNowMillis,
             requestSession.user.userName,

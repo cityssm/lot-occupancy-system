@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    const los = exports.los;
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const containerElement = document.querySelector("#container--occupancyTypes");
     let occupancyTypes = exports.occupancyTypes;
@@ -36,7 +37,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
-                    title: "Error Moving Occupancy Type",
+                    title: "Error Moving " +
+                        exports.aliases.occupancy +
+                        " Type",
                     message: responseJSON.errorMessage,
                     contextualColorName: "danger"
                 });
@@ -55,7 +58,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
-                    title: "Error Moving Occupancy Type",
+                    title: "Error Moving " +
+                        exports.aliases.occupancy +
+                        " Type",
                     message: responseJSON.errorMessage,
                     contextualColorName: "danger"
                 });
@@ -189,5 +194,45 @@ Object.defineProperty(exports, "__esModule", { value: true });
             containerElement.append(occupancyTypeContainer);
         }
     };
+    document
+        .querySelector("#button--addOccupancyType")
+        .addEventListener("click", () => {
+        let addCloseModalFunction;
+        const doAdd = (submitEvent) => {
+            submitEvent.preventDefault();
+            cityssm.postJSON(urlPrefix + "/admin/doAddOccupancyType", submitEvent.currentTarget, (responseJSON) => {
+                if (responseJSON.success) {
+                    addCloseModalFunction();
+                    occupancyTypes = responseJSON.occupancyTypes;
+                    renderOccupancyTypes();
+                }
+                else {
+                    bulmaJS.alert({
+                        title: "Error Adding " +
+                            exports.aliases.occupancy +
+                            " Type",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            });
+        };
+        cityssm.openHtmlModal("adminOccupancyTypes-addOccupancyType", {
+            onshow: (modalElement) => {
+                los.populateAliases(modalElement);
+            },
+            onshown: (modalElement, closeModalFunction) => {
+                addCloseModalFunction = closeModalFunction;
+                modalElement.querySelector("#occupancyTypeAdd--occupancyType").focus();
+                modalElement
+                    .querySelector("form")
+                    .addEventListener("submit", doAdd);
+                bulmaJS.toggleHtmlClipped();
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
+            }
+        });
+    });
     renderOccupancyTypes();
 })();
