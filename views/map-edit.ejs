@@ -1,194 +1,189 @@
 <%- include('_header'); -%>
 
-<div class="columns is-variable is-4-mobile is-4-tablet is-block-print" id="is-site-layout">
-
-    <div class="column is-block-print">
-        <nav class="breadcrumb">
-            <ul>
-                <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-                <li>
-                    <a href="<%= urlPrefix %>/maps">
-                       <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
-                        <span><%= configFunctions.getProperty("aliases.maps") %></span>
-                    </a>
-                </li>
-                <% if (!isCreate) { %>
-                    <li><a href="<%= urlPrefix %>/maps/<%= map.mapId %>"><%= map.mapName || "(No Name)" %></a></li>
+<nav class="breadcrumb">
+    <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li>
+            <a href="<%= urlPrefix %>/maps">
+                <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
+                <span><%= configFunctions.getProperty("aliases.maps") %></span>
+            </a>
+        </li>
+        <% if (!isCreate) { %>
+            <li><a href="<%= urlPrefix %>/maps/<%= map.mapId %>"><%= map.mapName || "(No Name)" %></a></li>
+        <% } %>
+        <li class="is-active">
+            <a href="#" aria-current="page">
+                <% if (isCreate) { %>
+                    Create a New <%= configFunctions.getProperty("aliases.map") %>
+                <% } else { %>
+                    Update
                 <% } %>
-                <li class="is-active">
-                    <a href="#" aria-current="page">
-                        <% if (isCreate) { %>
-                            Create a New <%= configFunctions.getProperty("aliases.map") %>
-                        <% } else { %>
-                            Update
-                        <% } %>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+            </a>
+        </li>
+    </ul>
+</nav>
 
-        <h1 class="title is-1">
-            <% if (isCreate) { %>
-            Create a New <%= configFunctions.getProperty("aliases.map") %>
-            <% } else { %>
-            Update <%= configFunctions.getProperty("aliases.map") %>
-            <% } %>
-        </h1>
+<h1 class="title is-1">
+    <% if (isCreate) { %>
+    Create a New <%= configFunctions.getProperty("aliases.map") %>
+    <% } else { %>
+    Update <%= configFunctions.getProperty("aliases.map") %>
+    <% } %>
+</h1>
 
-        <form id="form--map">
-            <input id="map--mapId" name="mapId" type="hidden" value="<%= map.mapId %>" />
+<form id="form--map">
+    <input id="map--mapId" name="mapId" type="hidden" value="<%= map.mapId %>" />
 
-            <div class="columns">
-                <div class="column">
-                    <div class="panel">
-                        <div class="panel-block is-block">
+    <div class="columns">
+        <div class="column">
+            <div class="panel">
+                <div class="panel-block is-block">
+                    <div class="field">
+                        <label class="label" for="map--mapName"><%= configFunctions.getProperty("aliases.map") %> Name</label>
+                        <div class="control">
+                            <input class="input" id="map--mapName" name="mapName" type="text" value="<%= map.mapName %>" maxlength="200" required />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="map--mapDescription"><%= configFunctions.getProperty("aliases.map") %> Description</label>
+                        <div class="control">
+                            <textarea class="textarea" id="map--mapDescription" name="mapDescription"><%= map.mapDescription %></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="panel">
+                <h2 class="panel-heading">Address</h2>
+                <div class="panel-block is-block">
+                    <div class="field">
+                        <label class="label" for="map--mapAddress1">Address</label>
+                        <div class="control">
+                            <input class="input" id="map--mapAddress1" name="mapAddress1" type="text" value="<%= map.mapAddress1 %>" maxlength="50" placeholder="Line 1" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" id="map--mapAddress2" name="mapAddress2" type="text" value="<%= map.mapAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-8">
                             <div class="field">
-                                <label class="label" for="map--mapName"><%= configFunctions.getProperty("aliases.map") %> Name</label>
+                                <label class="label" for="map--mapCity">City</label>
                                 <div class="control">
-                                    <input class="input" id="map--mapName" name="mapName" type="text" value="<%= map.mapName %>" maxlength="200" required />
+                                    <input class="input" id="map--mapCity" name="mapCity" value="<%= map.mapCity %>" maxlength="20" />
                                 </div>
                             </div>
+                        </div>
+                        <div class="column">
                             <div class="field">
-                                <label class="label" for="map--mapDescription"><%= configFunctions.getProperty("aliases.map") %> Description</label>
+                                <label class="label" for="map--mapProvince">Province</label>
                                 <div class="control">
-                                    <textarea class="textarea" id="map--mapDescription" name="mapDescription"><%= map.mapDescription %></textarea>
+                                    <input class="input" id="map--mapProvince" name="mapProvince" value="<%= map.mapProvince %>" maxlength="2" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="column">
-                    <div class="panel">
-                        <h2 class="panel-heading">Address</h2>
-                        <div class="panel-block is-block">
+                    <div class="columns">
+                        <div class="column">
                             <div class="field">
-                                <label class="label" for="map--mapAddress1">Address</label>
+                                <label class="label" for="map--mapPostalCode">Postal Code</label>
                                 <div class="control">
-                                    <input class="input" id="map--mapAddress1" name="mapAddress1" type="text" value="<%= map.mapAddress1 %>" maxlength="50" placeholder="Line 1" />
+                                    <input class="input" id="map--mapPostalCode" name="mapPostalCode" value="<%= map.mapPostalCode %>" maxlength="7" />
                                 </div>
                             </div>
+                        </div>
+                        <div class="column">
                             <div class="field">
+                                <label class="label" for="map--mapPhoneNumber">Phone Number</label>
                                 <div class="control">
-                                    <input class="input" id="map--mapAddress2" name="mapAddress2" type="text" value="<%= map.mapAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-8">
-                                    <div class="field">
-                                        <label class="label" for="map--mapCity">City</label>
-                                        <div class="control">
-                                            <input class="input" id="map--mapCity" name="mapCity" value="<%= map.mapCity %>" maxlength="20" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="column">
-                                    <div class="field">
-                                        <label class="label" for="map--mapProvince">Province</label>
-                                        <div class="control">
-                                            <input class="input" id="map--mapProvince" name="mapProvince" value="<%= map.mapProvince %>" maxlength="2" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column">
-                                    <div class="field">
-                                        <label class="label" for="map--mapPostalCode">Postal Code</label>
-                                        <div class="control">
-                                            <input class="input" id="map--mapPostalCode" name="mapPostalCode" value="<%= map.mapPostalCode %>" maxlength="7" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="column">
-                                    <div class="field">
-                                        <label class="label" for="map--mapPhoneNumber">Phone Number</label>
-                                        <div class="control">
-                                            <input class="input" id="map--mapPhoneNumber" name="mapPhoneNumber" value="<%= map.mapPhoneNumber %>" maxlength="30" />
-                                        </div>
-                                    </div>
+                                    <input class="input" id="map--mapPhoneNumber" name="mapPhoneNumber" value="<%= map.mapPhoneNumber %>" maxlength="30" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="columns">
-                <div class="column">
-                    <div class="panel">
-                        <h2 class="panel-heading">Geographic Location</h2>
-                        <div class="panel-block is-block">
-                            <div class="field">
-                                <label class="label" for="map--mapLatitude">Latitude</label>
-                                <div class="control">
-                                    <input class="input" id="map--mapLatitude" name="mapLatitude" type="number" min="-90" max="90" step="0.00000001" value="<%= map.mapLatitude %>" />
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label class="label" for="map--mapLongitude">Longitude</label>
-                                <div class="control">
-                                    <input class="input" id="map--mapLongitude" name="mapLongitude" type="number" min="-180" max="180" step="0.00000001" value="<%= map.mapLongitude %>" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="panel">
-                        <h2 class="panel-heading">Image</h2>
-                        <div class="panel-block is-block">
-                            <div class="field">
-                                <label class="label" for="map--mapSVG">SVG File</label>
-                                <div class="control">
-                                    <div class="select is-fullwidth">
-                                        <select id="map--mapSVG" name="mapSVG">
-                                            <option value="">(Select a File)</option>
-                                            <% for (const mapSVG of mapSVGs) { %>
-                                                <option value="<%= mapSVG %>" <%= (map.mapSVG === mapSVG) ? " selected" : "" %>>
-                                                    <%= mapSVG %>
-                                                </option>
-                                            <% } %>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-
-            <div class="has-text-right is-hidden-print">
-                <button class="button is-primary" type="submit">
-                    <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
-                    <span>
-                        <%= (isCreate ? "Create": "Update") %>
-                        <%= configFunctions.getProperty("aliases.map") %>
-                    </span>
-                </button>
-                <% if (!isCreate) { %>
-                    <div class="dropdown is-right ml-2">
-                        <div class="dropdown-trigger">
-                            <button class="button" type="button">
-                                <span>More Options</span>
-                                <span class="icon is-small">
-                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
-                                </span>
-                          </button>
-                        </div>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-content">
-                                <a class="dropdown-item" id="button--deleteMap" href="#">
-                                    <span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
-                                    <span>Delete <%= configFunctions.getProperty("aliases.map") %></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                <% } %>
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+    <div class="columns">
+        <div class="column">
+            <div class="panel">
+                <h2 class="panel-heading">Geographic Location</h2>
+                <div class="panel-block is-block">
+                    <div class="field">
+                        <label class="label" for="map--mapLatitude">Latitude</label>
+                        <div class="control">
+                            <input class="input" id="map--mapLatitude" name="mapLatitude" type="number" min="-90" max="90" step="0.00000001" value="<%= map.mapLatitude %>" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="map--mapLongitude">Longitude</label>
+                        <div class="control">
+                            <input class="input" id="map--mapLongitude" name="mapLongitude" type="number" min="-180" max="180" step="0.00000001" value="<%= map.mapLongitude %>" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="panel">
+                <h2 class="panel-heading">Image</h2>
+                <div class="panel-block is-block">
+                    <div class="field">
+                        <label class="label" for="map--mapSVG">SVG File</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select id="map--mapSVG" name="mapSVG">
+                                    <option value="">(Select a File)</option>
+                                    <% for (const mapSVG of mapSVGs) { %>
+                                        <option value="<%= mapSVG %>" <%= (map.mapSVG === mapSVG) ? " selected" : "" %>>
+                                            <%= mapSVG %>
+                                        </option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="has-text-right is-hidden-print">
+        <button class="button is-primary" type="submit">
+            <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
+            <span>
+                <%= (isCreate ? "Create": "Update") %>
+                <%= configFunctions.getProperty("aliases.map") %>
+            </span>
+        </button>
+        <% if (!isCreate) { %>
+            <div class="dropdown is-right ml-2">
+                <div class="dropdown-trigger">
+                    <button class="button" type="button">
+                        <span>More Options</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu">
+                    <div class="dropdown-content">
+                        <a class="dropdown-item" id="button--deleteMap" href="#">
+                            <span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
+                            <span>Delete <%= configFunctions.getProperty("aliases.map") %></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</form>
 
 <%- include('_footerA'); -%>
 

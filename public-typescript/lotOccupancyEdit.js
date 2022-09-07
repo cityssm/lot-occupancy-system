@@ -64,6 +64,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     lotOccupancyId
                 }, (responseJSON) => {
                     if (responseJSON.success) {
+                        cityssm.disableNavBlocker();
                         window.location.href =
                             urlPrefix +
                                 "/lotOccupancies?t=" +
@@ -119,36 +120,58 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 for (const occupancyTypeField of responseJSON.occupancyTypeFields) {
                     occupancyTypeFieldIds +=
                         "," + occupancyTypeField.occupancyTypeFieldId;
+                    const fieldName = "lotOccupancyFieldValue_" +
+                        occupancyTypeField.occupancyTypeFieldId;
+                    const fieldId = "lotOccupancy--" + fieldName;
                     const fieldElement = document.createElement("div");
                     fieldElement.className = "field";
                     fieldElement.innerHTML =
-                        '<label class="label" for="lotOccupancy--lotOccupancyFieldValue_' +
-                            occupancyTypeField.occupancyTypeFieldId +
+                        '<label class="label" for="' +
+                            fieldId +
                             '"></label>' +
                             '<div class="control"></div>';
                     fieldElement.querySelector("label").textContent =
                         occupancyTypeField.occupancyTypeField;
-                    const inputElement = document.createElement("input");
-                    inputElement.className = "input";
-                    inputElement.id =
-                        "lotOccupancy--lotOccupancyFieldValue_" +
-                            occupancyTypeField.occupancyTypeFieldId;
-                    inputElement.name =
-                        "lotOccupancyFieldValue_" +
-                            occupancyTypeField.occupancyTypeFieldId;
-                    inputElement.type = "text";
-                    inputElement.required = occupancyTypeField.isRequired;
-                    inputElement.minLength =
-                        occupancyTypeField.minimumLength;
-                    inputElement.maxLength =
-                        occupancyTypeField.maximumLength;
-                    if (occupancyTypeField.pattern &&
-                        occupancyTypeField.pattern !== "") {
-                        inputElement.pattern = occupancyTypeField.pattern;
+                    if (occupancyTypeField.occupancyTypeFieldValues === "") {
+                        const inputElement = document.createElement("input");
+                        inputElement.className = "input";
+                        inputElement.id = fieldId;
+                        inputElement.name = fieldName;
+                        inputElement.type = "text";
+                        inputElement.required =
+                            occupancyTypeField.isRequired;
+                        inputElement.minLength =
+                            occupancyTypeField.minimumLength;
+                        inputElement.maxLength =
+                            occupancyTypeField.maximumLength;
+                        if (occupancyTypeField.pattern &&
+                            occupancyTypeField.pattern !== "") {
+                            inputElement.pattern =
+                                occupancyTypeField.pattern;
+                        }
+                        fieldElement
+                            .querySelector(".control")
+                            .append(inputElement);
                     }
-                    fieldElement
-                        .querySelector(".control")
-                        .append(inputElement);
+                    else {
+                        fieldElement.querySelector(".control").innerHTML =
+                            '<div class="select is-fullwidth"><select id="' +
+                                fieldId +
+                                '" name="' +
+                                fieldName +
+                                '">' +
+                                '<option value="">(Not Set)</option>' +
+                                "</select></div>";
+                        fieldElement.querySelector("select").required =
+                            occupancyTypeField.isRequired;
+                        const optionValues = occupancyTypeField.occupancyTypeFieldValues.split("\n");
+                        for (const optionValue of optionValues) {
+                            const optionElement = document.createElement("option");
+                            optionElement.value = optionValue;
+                            optionElement.textContent = optionValue;
+                            fieldElement.querySelector("select").append(optionElement);
+                        }
+                    }
                     lotOccupancyFieldsContainerElement.append(fieldElement);
                 }
                 lotOccupancyFieldsContainerElement.insertAdjacentHTML("beforeend", '<input name="occupancyTypeFieldIds" type="hidden" value="' +
