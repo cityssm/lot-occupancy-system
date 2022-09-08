@@ -8,6 +8,10 @@ import { getLots } from "./getLots.js";
 
 import { getLotOccupancies } from "./getLotOccupancies.js";
 
+import { getWorkOrderComments } from "./getWorkOrderComments.js";
+
+import { getWorkOrderMilestones } from "./getWorkOrderMilestones.js";
+
 import type * as recordTypes from "../../types/recordTypes";
 
 const baseSQL =
@@ -57,6 +61,16 @@ const _getWorkOrder = (
             },
             database
         ).lotOccupancies;
+
+        workOrder.workOrderComments = getWorkOrderComments(
+            workOrder.workOrderId,
+            database
+        );
+
+        workOrder.workOrderMilestones = getWorkOrderMilestones(
+            workOrder.workOrderId,
+            database
+        );
     }
 
     database.close();

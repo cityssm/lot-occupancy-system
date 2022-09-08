@@ -3,6 +3,8 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { dateIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { getLots } from "./getLots.js";
 import { getLotOccupancies } from "./getLotOccupancies.js";
+import { getWorkOrderComments } from "./getWorkOrderComments.js";
+import { getWorkOrderMilestones } from "./getWorkOrderMilestones.js";
 const baseSQL = "select w.workOrderId," +
     " w.workOrderTypeId, t.workOrderType," +
     " w.workOrderNumber, w.workOrderDescription," +
@@ -33,6 +35,8 @@ const _getWorkOrder = (sql, workOrderId_or_workOrderNumber) => {
             offset: 0,
             includeOccupants: true
         }, database).lotOccupancies;
+        workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId, database);
+        workOrder.workOrderMilestones = getWorkOrderMilestones(workOrder.workOrderId, database);
     }
     database.close();
     return workOrder;
