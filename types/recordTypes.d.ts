@@ -192,6 +192,11 @@ export interface WorkOrderType extends Record {
     workOrderType?: string;
     orderNumber?: number;
 }
+export interface WorkOrderMilestoneType extends Record {
+    workOrderMilestoneTypeId?: number;
+    workOrderMilestoneType?: string;
+    orderNumber?: number;
+}
 export interface WorkOrderComment extends Record {
     workOrderCommentId?: number;
     workOrderId?: number;
@@ -200,6 +205,21 @@ export interface WorkOrderComment extends Record {
     workOrderCommentTime?: number;
     workOrderCommentTimeString?: string;
     workOrderComment?: string;
+}
+export interface WorkOrderMilestone extends Record {
+    workOrderMilestoneId?: number;
+    workOrderId?: number;
+    workOrderMilestoneTypeId?: number;
+    workOrderMilestoneType?: string;
+    workOrderMilestoneDate?: number;
+    workOrderMilestoneDateString?: string;
+    workOrderMilestoneTime?: number;
+    workOrderMilestoneTimeString?: string;
+    workOrderMilestoneDescription?: string;
+    workOrderMilestoneCompletionDate?: number;
+    workOrderMilestoneCompletionDateString?: string;
+    workOrderMilestoneCompletionTime?: number;
+    workOrderMilestoneCompletionTimeString?: string;
 }
 export interface WorkOrder extends Record {
     workOrderId?: number;
@@ -211,6 +231,7 @@ export interface WorkOrder extends Record {
     workOrderOpenDateString?: string;
     workOrderCloseDate?: number;
     workOrderCloseDateString?: string;
+    workOrderMilestones?: WorkOrderMilestone[];
     workOrderComments?: WorkOrderComment[];
     workOrderLots?: Lot[];
     workOrderLotOccupancies?: LotOccupancy[];
