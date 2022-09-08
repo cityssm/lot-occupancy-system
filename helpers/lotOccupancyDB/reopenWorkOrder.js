@@ -4,7 +4,7 @@ export const reopenWorkOrder = (workOrderId, requestSession) => {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare("update Maps" +
+        .prepare("update WorkOrders" +
         " set workOrderCloseDate = null," +
         " recordUpdate_userName = ?," +
         " recordUpdate_timeMillis = ?" +

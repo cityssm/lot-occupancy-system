@@ -14,7 +14,7 @@ export const reopenWorkOrder = (
 
     const result = database
         .prepare(
-            "update Maps" +
+            "update WorkOrders" +
                 " set workOrderCloseDate = null," +
                 " recordUpdate_userName = ?," +
                 " recordUpdate_timeMillis = ?" +
