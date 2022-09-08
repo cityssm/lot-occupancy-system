@@ -20,7 +20,9 @@ import { addWorkOrderLot } from "../helpers/lotOccupancyDB/addWorkOrderLot.js";
 import { addWorkOrderLotOccupancy } from "../helpers/lotOccupancyDB/addWorkOrderLotOccupancy.js";
 import { getWorkOrder, getWorkOrderByWorkOrderNumber } from "../helpers/lotOccupancyDB/getWorkOrder.js";
 import { reopenWorkOrder } from "../helpers/lotOccupancyDB/reopenWorkOrder.js";
-import { dateIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { dateIntegerToString, dateToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import addWorkOrderMilestone from "../helpers/lotOccupancyDB/addWorkOrderMilestone.js";
+import closeWorkOrder from "../helpers/lotOccupancyDB/closeWorkOrder.js";
 const user = {
     user: {
         userName: "import.unix",
@@ -32,6 +34,7 @@ const user = {
 };
 function purgeTables() {
     const database = sqlite(databasePath);
+    database.prepare("delete from WorkOrderMilestones").run();
     database.prepare("delete from WorkOrderComments").run();
     database.prepare("delete from WorkOrderLots").run();
     database.prepare("delete from WorkOrderLotOccupancies").run();
@@ -45,7 +48,7 @@ function purgeTables() {
     database.prepare("delete from LotComments").run();
     database.prepare("delete from Lots").run();
     database
-        .prepare("delete from sqlite_sequence where name in ('Lots', 'LotComments', 'LotOccupancies', 'LotOccupancyComments', 'WorkOrders', 'WorkOrderComments')")
+        .prepare("delete from sqlite_sequence where name in ('Lots', 'LotComments', 'LotOccupancies', 'LotOccupancyComments', 'WorkOrders', 'WorkOrderComments', 'WorkOrderMilestones')")
         .run();
     database.close();
 }
@@ -73,6 +76,9 @@ function formatDateString(year, month, day) {
         ("00" + month).slice(-2) +
         "-" +
         ("00" + day).slice(-2));
+}
+function formatTimeString(hour, minute) {
+    return ("00" + hour).slice(-2) + ":" + ("00" + minute).slice(-2);
 }
 const cemeteryToMapName = {
     "00": "Crematorium",
@@ -182,6 +188,11 @@ const cremationOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("C
 const preneedOwnerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
 const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Deceased");
 const arrangerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Arranger");
+const acknowledgedWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Acknowledged");
+const deathWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Death");
+const funeralWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Funeral");
+const cremationWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Cremation");
+const intermentWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Interment");
 function importFromMasterCSV() {
     let masterRow;
     const rawData = fs.readFileSync("./temp/CMMASTER.csv").toString();
@@ -692,6 +703,7 @@ function importFromWorkOrderCSV() {
     for (const parseError of cmwkordr.errors) {
         console.log(parseError);
     }
+    const currentDateString = dateToString(new Date());
     try {
         for (workOrderRow of cmwkordr.data) {
             let workOrder = getWorkOrderByWorkOrderNumber(workOrderRow.WO_WORK_ORDER);
@@ -861,6 +873,95 @@ function importFromWorkOrderCSV() {
                 workOrderId: workOrder.workOrderId,
                 lotOccupancyId
             }, user);
+            let hasIncompleteMilestones = !workOrderRow.WO_CONFIRMATION_IN;
+            let maxMilestoneCompletionDateString = workOrderOpenDateString;
+            addWorkOrderMilestone({
+                workOrderId: workOrder.workOrderId,
+                workOrderMilestoneTypeId: acknowledgedWorkOrderMilestoneType.workOrderMilestoneTypeId,
+                workOrderMilestoneDateString: workOrderOpenDateString,
+                workOrderMilestoneDescription: "",
+                workOrderMilestoneCompletionDateString: workOrderRow.WO_CONFIRMATION_IN
+                    ? workOrderOpenDateString
+                    : undefined,
+                workOrderMilestoneCompletionTimeString: workOrderRow.WO_CONFIRMATION_IN ? "00:00" : undefined
+            }, user);
+            if (workOrderRow.WO_DEATH_YR) {
+                const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_DEATH_YR, workOrderRow.WO_DEATH_MON, workOrderRow.WO_DEATH_DAY);
+                addWorkOrderMilestone({
+                    workOrderId: workOrder.workOrderId,
+                    workOrderMilestoneTypeId: deathWorkOrderMilestoneType.workOrderMilestoneTypeId,
+                    workOrderMilestoneDateString,
+                    workOrderMilestoneDescription: "Death Place: " + workOrderRow.WO_DEATH_PLACE,
+                    workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString
+                        ? workOrderMilestoneDateString
+                        : undefined,
+                    workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString
+                        ? "00:00"
+                        : undefined
+                }, user);
+                if (workOrderMilestoneDateString >
+                    maxMilestoneCompletionDateString) {
+                    maxMilestoneCompletionDateString =
+                        workOrderMilestoneDateString;
+                }
+                if (workOrderMilestoneDateString >= currentDateString) {
+                    hasIncompleteMilestones = true;
+                }
+            }
+            if (workOrderRow.WO_FUNERAL_YR) {
+                const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_FUNERAL_YR, workOrderRow.WO_FUNERAL_MON, workOrderRow.WO_FUNERAL_DAY);
+                const workOrderMilestoneTimeString = formatTimeString(workOrderRow.WO_FUNERAL_HR, workOrderRow.WO_FUNERAL_MIN);
+                addWorkOrderMilestone({
+                    workOrderId: workOrder.workOrderId,
+                    workOrderMilestoneTypeId: funeralWorkOrderMilestoneType.workOrderMilestoneTypeId,
+                    workOrderMilestoneDateString,
+                    workOrderMilestoneTimeString,
+                    workOrderMilestoneDescription: "Funeral Home: " + workOrderRow.WO_FUNERAL_HOME,
+                    workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString
+                        ? workOrderMilestoneDateString
+                        : undefined,
+                    workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString
+                        ? workOrderMilestoneTimeString
+                        : undefined
+                }, user);
+                if (workOrderMilestoneDateString >
+                    maxMilestoneCompletionDateString) {
+                    maxMilestoneCompletionDateString =
+                        workOrderMilestoneDateString;
+                }
+                if (workOrderMilestoneDateString >= currentDateString) {
+                    hasIncompleteMilestones = true;
+                }
+            }
+            if (workOrderRow.WO_INTERMENT_YR) {
+                const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_INTERMENT_YR, workOrderRow.WO_INTERMENT_MON, workOrderRow.WO_INTERMENT_DAY);
+                addWorkOrderMilestone({
+                    workOrderId: workOrder.workOrderId,
+                    workOrderMilestoneTypeId: intermentWorkOrderMilestoneType.workOrderMilestoneTypeId,
+                    workOrderMilestoneDateString,
+                    workOrderMilestoneDescription: "Depth: " + workOrderRow.WO_DEPTH,
+                    workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString
+                        ? workOrderMilestoneDateString
+                        : undefined,
+                    workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString
+                        ? "00:00"
+                        : undefined
+                }, user);
+                if (workOrderMilestoneDateString >
+                    maxMilestoneCompletionDateString) {
+                    maxMilestoneCompletionDateString =
+                        workOrderMilestoneDateString;
+                }
+                if (workOrderMilestoneDateString >= currentDateString) {
+                    hasIncompleteMilestones = true;
+                }
+            }
+            if (!hasIncompleteMilestones) {
+                closeWorkOrder({
+                    workOrderId: workOrder.workOrderId,
+                    workOrderCloseDateString: maxMilestoneCompletionDateString
+                }, user);
+            }
         }
     }
     catch (error) {
