@@ -11,7 +11,7 @@ const recordColumns = " recordCreate_userName varchar(30) not null," +
 export const initializeDatabase = () => {
     const lotOccupancyDB = sqlite(databasePath);
     const row = lotOccupancyDB
-        .prepare("select name from sqlite_master where type = 'table' and name = 'WorkOrderComments'")
+        .prepare("select name from sqlite_master where type = 'table' and name = 'WorkOrderMilestones'")
         .get();
     if (!row) {
         debugSQL("Creating " + databasePath);
@@ -355,6 +355,30 @@ export const initializeDatabase = () => {
         lotOccupancyDB
             .prepare("create index if not exists idx_workordercomments_datetime" +
             " on WorkOrderComments (workOrderId, workOrderCommentDate, workOrderCommentTime)")
+            .run();
+        lotOccupancyDB
+            .prepare("create table if not exists WorkOrderMilestoneTypes (" +
+            "workOrderMilestoneTypeId integer not null primary key autoincrement," +
+            " workOrderMilestoneType varchar(100) not null," +
+            " orderNumber smallint not null default 0," +
+            recordColumns +
+            ")")
+            .run();
+        lotOccupancyDB
+            .prepare("create table if not exists WorkOrderMilestones (" +
+            "workOrderMilestoneId integer not null primary key autoincrement," +
+            " workOrderId integer not null," +
+            " workOrderMilestoneTypeId integer," +
+            " workOrderMilestoneDate integer not null check (workOrderMilestoneDate > 0)," +
+            " workOrderMilestoneTime integer not null check (workOrderMilestoneTime >= 0)," +
+            " workOrderMilestoneDescription text not null," +
+            " workOrderMilestoneCompletionDate integer check (workOrderMilestoneCompletionDate > 0)," +
+            " workOrderMilestoneCompletionTime integer check (workOrderMilestoneCompletionTime >= 0)," +
+            recordColumns +
+            "," +
+            " foreign key (workOrderId) references WorkOrders (workOrderId)," +
+            " foreign key (workOrderMilestoneTypeId) references WorkOrderMilestoneTypes (workOrderMilestoneTypeId)" +
+            ")")
             .run();
         lotOccupancyDB.close();
         return true;
