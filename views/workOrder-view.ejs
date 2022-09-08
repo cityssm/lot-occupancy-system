@@ -30,169 +30,186 @@
     </div>
 <% } %>
 
-<div class="panel">
-    <div class="panel-block is-block">
-        <div class="columns">
-            <div class="column">
-                <p class="mb-2">
-                    <strong>Work Order Type</strong><br />
-                    <%= workOrder.workOrderType %>
-                </p>
-                <p>
-                    <strong>Description</strong><br />
-                    <% if (workOrder.workOrderDescription) { %>
-                        <%= workOrder.workOrderDescription %>
-                    <% } else { %>
-                        <span class="has-text-grey">(No Description)</span>
-                    <% } %>
-                </p>
-            </div>
-            <div class="column">
-                <p class="mb-2">
-                    <strong>Open Date</strong><br />
-                    <%= workOrder.workOrderOpenDateString %>
-                </p>
-                <p>
-                    <strong>Close Date</strong><br />
-                    <% if (workOrder.workOrderCloseDate) { %>
-                        <%= workOrder.workOrderCloseDateString %>
-                    <% } else { %>
-                        <span class="has-text-grey">(No Close Date)</span>
-                    <% } %>
-                </p>
+<div class="columns">
+    <div class="column">
+        <div class="panel">
+            <div class="panel-block is-block">
+                <div class="columns">
+                    <div class="column">
+                        <p class="mb-2">
+                            <strong>Work Order Type</strong><br />
+                            <%= workOrder.workOrderType %>
+                        </p>
+                        <p>
+                            <strong>Description</strong><br />
+                            <% if (workOrder.workOrderDescription) { %>
+                                <%= workOrder.workOrderDescription %>
+                            <% } else { %>
+                                <span class="has-text-grey">(No Description)</span>
+                            <% } %>
+                        </p>
+                    </div>
+                    <div class="column">
+                        <p class="mb-2">
+                            <strong>Open Date</strong><br />
+                            <%= workOrder.workOrderOpenDateString %>
+                        </p>
+                        <p>
+                            <strong>Close Date</strong><br />
+                            <% if (workOrder.workOrderCloseDate) { %>
+                                <%= workOrder.workOrderCloseDateString %>
+                            <% } else { %>
+                                <span class="has-text-grey">(No Close Date)</span>
+                            <% } %>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="panel">
-    <h2 class="panel-heading">Related <%= configFunctions.getProperty("aliases.lots") %></h2>
-    <div class="panel-block is-block">
-        <%
-            const tabToSelect = (workOrder.workOrderLotOccupancies.length > 0 || workOrder.workOrderLots.length === 0 ? "lotOccupancies" : "lots");
-        %>
-        <div class="tabs is-boxed">
-            <ul>
-                <li class="<%= (tabToSelect === "lotOccupancies" ? "is-active" : "") %>">
-                    <a href="#relatedTab--lotOccupancies">
-                        <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
-                        <span class="ml-2 tag"><%= workOrder.workOrderLotOccupancies.length %></span>
-                    </a>
-                </li>
-                <li class="<%= (tabToSelect === "lots" ? "is-active" : "") %>">
-                    <a href="#relatedTab--lots">
-                        <span><%= configFunctions.getProperty("aliases.lots") %></span>
-                        <span class="ml-2 tag"><%= workOrder.workOrderLots.length %></span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-container">
-            <div class="<%= (tabToSelect === "lotOccupancies" ? "" : "is-hidden") %>" id="relatedTab--lotOccupancies">
-                <% if (workOrder.workOrderLotOccupancies.length === 0) { %>
-                    <div class="message is-info">
-                        <p class="message-body">
-                            There are no
-                            <%= configFunctions.getProperty("aliases.lot").toLowerCase() %>
-                            <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %>
-                            records associated with this work order.
-                        </p>
+        <div class="panel">
+            <h2 class="panel-heading">Related <%= configFunctions.getProperty("aliases.lots") %></h2>
+            <div class="panel-block is-block">
+                <%
+                    const tabToSelect = (workOrder.workOrderLotOccupancies.length > 0 || workOrder.workOrderLots.length === 0 ? "lotOccupancies" : "lots");
+                %>
+                <div class="tabs is-boxed">
+                    <ul>
+                        <li class="<%= (tabToSelect === "lotOccupancies" ? "is-active" : "") %>">
+                            <a href="#relatedTab--lotOccupancies">
+                                <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
+                                <span class="ml-2 tag"><%= workOrder.workOrderLotOccupancies.length %></span>
+                            </a>
+                        </li>
+                        <li class="<%= (tabToSelect === "lots" ? "is-active" : "") %>">
+                            <a href="#relatedTab--lots">
+                                <span><%= configFunctions.getProperty("aliases.lots") %></span>
+                                <span class="ml-2 tag"><%= workOrder.workOrderLots.length %></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-container">
+                    <div class="<%= (tabToSelect === "lotOccupancies" ? "" : "is-hidden") %>" id="relatedTab--lotOccupancies">
+                        <% if (workOrder.workOrderLotOccupancies.length === 0) { %>
+                            <div class="message is-info">
+                                <p class="message-body">
+                                    There are no
+                                    <%= configFunctions.getProperty("aliases.lot").toLowerCase() %>
+                                    <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %>
+                                    records associated with this work order.
+                                </p>
+                            </div>
+                        <% } else { %>
+                            <table class="table is-fullwidth is-striped is-hoverable">
+                                <thead>
+                                    <tr>
+                                        <th class="has-width-1"></th>
+                                        <th>Occupancy Type</th>
+                                        <th><%= configFunctions.getProperty("aliases.lot") %></th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th><%= configFunctions.getProperty("aliases.occupants") %></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (const lotOccupancy of workOrder.workOrderLotOccupancies) { %>
+                                        <% const isActive = !(lotOccupancy.occupancyEndDate && lotOccupancy.occupancyEndDate < currentDate); %>
+                                        <tr>
+                                            <td class="has-text-centered">
+                                                <% if (isActive) { %>
+                                                <i class="fas fa-play" title="Current <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
+                                                <% } else { %>
+                                                <i class="fas fa-stop" title="Previous <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <a class="has-text-weight-bold"
+                                                    href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
+                                                    <%= lotOccupancy.occupancyType %>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <% if (lotOccupancy.lotId) { %>
+                                                    <%= lotOccupancy.lotName %>
+                                                <% } else { %>
+                                                    <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.lot") %>)</span>
+                                                <% } %>
+                                            </td>
+                                            <td><%= lotOccupancy.occupancyStartDateString %></td>
+                                            <td>
+                                                <% if (lotOccupancy.occupancyEndDate) { %>
+                                                    <%= lotOccupancy.occupancyEndDateString %>
+                                                <% } else { %>
+                                                    <span class="has-text-grey">(No End Date)</span>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
+                                                    <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.occupants") %>)</span>
+                                                <% } else { %>
+                                                    <% const occupant = lotOccupancy.lotOccupancyOccupants[0]; %>
+                                                    <%= occupant.occupantName %>
+                                                    <%= (lotOccupancy.lotOccupancyOccupants.length > 1 ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1) : "") %>
+                                                <% } %>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        <% } %>
                     </div>
-                <% } else { %>
-                    <table class="table is-fullwidth is-striped is-hoverable">
-                        <thead>
-                            <tr>
-                                <th class="has-width-1"></th>
-                                <th>Occupancy Type</th>
-                                <th><%= configFunctions.getProperty("aliases.lot") %></th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th><%= configFunctions.getProperty("aliases.occupants") %></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for (const lotOccupancy of workOrder.workOrderLotOccupancies) { %>
-                                <% const isActive = !(lotOccupancy.occupancyEndDate && lotOccupancy.occupancyEndDate < currentDate); %>
-                                <tr>
-                                    <td class="has-text-centered">
-                                        <% if (isActive) { %>
-                                        <i class="fas fa-play" title="Current <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
-                                        <% } else { %>
-                                        <i class="fas fa-stop" title="Previous <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
-                                        <% } %>
-                                    </td>
-                                    <td>
-                                        <a class="has-text-weight-bold"
-                                            href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
-                                            <%= lotOccupancy.occupancyType %>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <% if (lotOccupancy.lotId) { %>
-                                            <%= lotOccupancy.lotName %>
-                                        <% } else { %>
-                                            <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.lot") %>)</span>
-                                        <% } %>
-                                    </td>
-                                    <td><%= lotOccupancy.occupancyStartDateString %></td>
-                                    <td>
-                                        <% if (lotOccupancy.occupancyEndDate) { %>
-                                            <%= lotOccupancy.occupancyEndDateString %>
-                                        <% } else { %>
-                                            <span class="has-text-grey">(No End Date)</span>
-                                        <% } %>
-                                    </td>
-                                    <td>
-                                        <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
-                                            <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.occupants") %>)</span>
-                                        <% } else { %>
-                                            <% const occupant = lotOccupancy.lotOccupancyOccupants[0]; %>
-                                            <%= occupant.occupantName %>
-                                            <%= (lotOccupancy.lotOccupancyOccupants.length > 1 ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1) : "") %>
-                                        <% } %>
-                                    </td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                <% } %>
-            </div>
-            <div class="<%= (tabToSelect === "lots" ? "" : "is-hidden") %>" id="relatedTab--lots">
-                <% if (workOrder.workOrderLots.length === 0) { %>
-                    <div class="message is-info">
-                        <p class="message-body">
-                            There are no
-                            <%= configFunctions.getProperty("aliases.lots").toLowerCase() %>
-                            records associated with this work order.
-                        </p>
+                    <div class="<%= (tabToSelect === "lots" ? "" : "is-hidden") %>" id="relatedTab--lots">
+                        <% if (workOrder.workOrderLots.length === 0) { %>
+                            <div class="message is-info">
+                                <p class="message-body">
+                                    There are no
+                                    <%= configFunctions.getProperty("aliases.lots").toLowerCase() %>
+                                    records associated with this work order.
+                                </p>
+                            </div>
+                        <% } else { %>
+                            <table class="table is-fullwidth is-striped is-hoverable">
+                                <thead>
+                                    <tr>
+                                        <th><%= configFunctions.getProperty("aliases.lot") %></th>
+                                        <th><%= configFunctions.getProperty("aliases.map") %></th>
+                                        <th><%= configFunctions.getProperty("aliases.lot") %> Type</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (const lot of workOrder.workOrderLots) { %>
+                                        <tr>
+                                            <td>
+                                                <a class="has-text-weight-bold" href="<%= urlPrefix %>/lots/<%= lot.lotId %>"><%= lot.lotName %></a>
+                                            </td>
+                                            <td><%= lot.mapName %></td>
+                                            <td><%= lot.lotType %></td>
+                                            <td><%= lot.lotStatus %></td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        <% } %>
                     </div>
-                <% } else { %>
-                    <table class="table is-fullwidth is-striped is-hoverable">
-                        <thead>
-                            <tr>
-                                <th><%= configFunctions.getProperty("aliases.lot") %></th>
-                                <th><%= configFunctions.getProperty("aliases.map") %></th>
-                                <th><%= configFunctions.getProperty("aliases.lot") %> Type</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for (const lot of workOrder.workOrderLots) { %>
-                                <tr>
-                                    <td>
-                                        <a class="has-text-weight-bold" href="<%= urlPrefix %>/lots/<%= lot.lotId %>"><%= lot.lotName %></a>
-                                    </td>
-                                    <td><%= lot.mapName %></td>
-                                    <td><%= lot.lotType %></td>
-                                    <td><%= lot.lotStatus %></td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                <% } %>
+                </div>
             </div>
         </div>
+
+        <% if (workOrder.workOrderComments.length > 0) { %>
+            <div class="panel">
+                <h2 class="panel-heading">Work Order Comments</h2>
+            </div>
+        <% } %>
     </div>
+    <% if (workOrder.workOrderMilestones.length > 0) { %>
+        <div class="column is-4">
+            <div class="panel">
+                <h2 class="panel-heading">Milestones</h2>
+            </div>
+        </div>
+    <% } %>
 </div>
 
 <%- include('_footerA'); -%>
