@@ -302,7 +302,6 @@ function importFromMasterCSV() {
             let deceasedLotOccupancyId;
             if (masterRow.CM_DECEASED_NAME) {
                 deceasedOccupancyStartDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
-                const occupancyEndDateString = "";
                 if (deceasedOccupancyStartDateString === "0000-00-00" &&
                     masterRow.CM_DEATH_YR !== "" &&
                     masterRow.CM_DEATH_YR !== "0") {
@@ -312,13 +311,16 @@ function importFromMasterCSV() {
                     deceasedOccupancyStartDateString === "0000-00-00") {
                     deceasedOccupancyStartDateString = "0001-01-01";
                 }
+                const deceasedOccupancyEndDateString = lotId
+                    ? ""
+                    : deceasedOccupancyStartDateString;
                 deceasedLotOccupancyId = addLotOccupancy({
                     occupancyTypeId: lotId
                         ? deceasedOccupancyType.occupancyTypeId
                         : cremationOccupancyType.occupancyTypeId,
                     lotId,
                     occupancyStartDateString: deceasedOccupancyStartDateString,
-                    occupancyEndDateString,
+                    occupancyEndDateString: deceasedOccupancyEndDateString,
                     occupancyTypeFieldIds: ""
                 }, user);
                 const deceasedPostalCode = ((masterRow.CM_POST1 || "") +

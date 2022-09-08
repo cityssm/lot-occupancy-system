@@ -630,8 +630,6 @@ function importFromMasterCSV() {
                     masterRow.CM_INTERMENT_DAY
                 );
 
-                const occupancyEndDateString = "";
-
                 // if interment date unavailable
                 if (
                     deceasedOccupancyStartDateString === "0000-00-00" &&
@@ -652,6 +650,10 @@ function importFromMasterCSV() {
                     deceasedOccupancyStartDateString = "0001-01-01";
                 }
 
+                const deceasedOccupancyEndDateString = lotId
+                    ? ""
+                    : deceasedOccupancyStartDateString;
+
                 deceasedLotOccupancyId = addLotOccupancy(
                     {
                         occupancyTypeId: lotId
@@ -660,7 +662,7 @@ function importFromMasterCSV() {
                         lotId,
                         occupancyStartDateString:
                             deceasedOccupancyStartDateString,
-                        occupancyEndDateString,
+                        occupancyEndDateString: deceasedOccupancyEndDateString,
                         occupancyTypeFieldIds: ""
                     },
                     user
