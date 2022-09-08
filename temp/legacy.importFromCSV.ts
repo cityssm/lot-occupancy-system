@@ -23,9 +23,7 @@ import { addLotOccupancyComment } from "../helpers/lotOccupancyDB/addLotOccupanc
 
 import { addOrUpdateLotOccupancyField } from "../helpers/lotOccupancyDB/addOrUpdateLotOccupancyField.js";
 
-import { getLot } from "../helpers/lotOccupancyDB/getLot.js";
-
-import { getLots } from "../helpers/lotOccupancyDB/getLots.js";
+import { getLot, getLotByLotName } from "../helpers/lotOccupancyDB/getLot.js";
 
 import { getLotOccupancies } from "../helpers/lotOccupancyDB/getLotOccupancies.js";
 
@@ -38,6 +36,15 @@ import { addWorkOrder } from "../helpers/lotOccupancyDB/addWorkOrder.js";
 import { addWorkOrderLot } from "../helpers/lotOccupancyDB/addWorkOrderLot.js";
 
 import { addWorkOrderLotOccupancy } from "../helpers/lotOccupancyDB/addWorkOrderLotOccupancy.js";
+
+import {
+    getWorkOrder,
+    getWorkOrderByWorkOrderNumber
+} from "../helpers/lotOccupancyDB/getWorkOrder.js";
+
+import { reopenWorkOrder } from "../helpers/lotOccupancyDB/reopenWorkOrder.js";
+
+import { dateIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import type * as recordTypes from "../types/recordTypes";
 
@@ -132,6 +139,56 @@ interface PrepaidRecord {
     CMPP_GST_DISINTERMENT: string;
     CMPP_REMARK1: string;
     CMPP_REMARK2: string;
+}
+
+interface WorkOrderRecord {
+    WO_SYSREC: string;
+    WO_DECEASED_NAME: string;
+    WO_DECEASED_SEQ: string;
+    WO_CEMETERY: string;
+    WO_BLOCK: string;
+    WO_RANGE1: string;
+    WO_RANGE2: string;
+    WO_LOT1: string;
+    WO_LOT2: string;
+    WO_GRAVE1: string;
+    WO_GRAVE2: string;
+    WO_INTERMENT: string;
+    WO_ADDRESS: string;
+    WO_CITY: string;
+    WO_PROV: string;
+    WO_POST1: string;
+    WO_POST2: string;
+    WO_DEATH_YR: string;
+    WO_DEATH_MON: string;
+    WO_DEATH_DAY: string;
+    WO_AGE: string;
+    WO_FUNERAL_HOME: string;
+    WO_FUNERAL_YR: string;
+    WO_FUNERAL_MON: string;
+    WO_FUNERAL_DAY: string;
+    WO_FUNERAL_HR: string;
+    WO_FUNERAL_MIN: string;
+    WO_INTERMENT_YR: string;
+    WO_INTERMENT_MON: string;
+    WO_INTERMENT_DAY: string;
+    WO_COST: string;
+    WO_COMMITTAL_TYPE: string;
+    WO_CONTAINER_TYPE: string;
+    WO_CREMATION: string;
+    WO_CONFIRMATION_IN: string;
+    WO_COMPLETION_YR: string;
+    WO_COMPLETION_MON: string;
+    WO_COMPLETION_DAY: string;
+    WO_INITIATION_DATE: string;
+    WO_WORK_ORDER: string;
+    WO_REMARK1: string;
+    WO_REMARK2: string;
+    WO_REMARK3: string;
+    WO_PERIOD: string;
+    WO_RESIDENT_TYPE: string;
+    WO_DEPTH: string;
+    WO_DEATH_PLACE: string;
 }
 
 const user: recordTypes.PartialSession = {
@@ -783,14 +840,17 @@ function importFromMasterCSV() {
             }
 
             if (masterRow.CM_WORK_ORDER) {
+                const workOrderDateString =
+                    deceasedOccupancyStartDateString ||
+                    preneedOccupancyStartDateString;
+
                 const workOrderId = addWorkOrder(
                     {
                         workOrderNumber: masterRow.CM_WORK_ORDER,
                         workOrderTypeId: 1,
                         workOrderDescription: "",
-                        workOrderOpenDateString:
-                            deceasedOccupancyStartDateString ||
-                            preneedOccupancyStartDateString
+                        workOrderOpenDateString: workOrderDateString,
+                        workOrderCloseDateString: workOrderDateString
                     },
                     user
                 );
@@ -876,20 +936,9 @@ function importFromPrepaidCSV() {
                     interment: prepaidRow.CMPP_INTERMENT
                 });
 
-                const possibleLots = getLots(
-                    {
-                        mapId: map.mapId,
-                        lotName
-                    },
-                    {
-                        limit: -1,
-                        offset: 0
-                    }
-                );
+                lot = getLotByLotName(lotName);
 
-                if (possibleLots.lots.length > 0) {
-                    lot = possibleLots.lots[0];
-                } else {
+                if (!lot) {
                     const lotType = getLotType({
                         cemetery
                     });
@@ -1165,7 +1214,313 @@ function importFromPrepaidCSV() {
     }
 }
 
+function importFromWorkOrderCSV() {
+    let workOrderRow: WorkOrderRecord;
+
+    const rawData = fs.readFileSync("./temp/CMWKORDR.csv").toString();
+
+    const cmwkordr: papa.ParseResult<WorkOrderRecord> = papa.parse(rawData, {
+        delimiter: ",",
+        header: true,
+        skipEmptyLines: true
+    });
+
+    for (const parseError of cmwkordr.errors) {
+        console.log(parseError);
+    }
+
+    try {
+        for (workOrderRow of cmwkordr.data) {
+            let workOrder = getWorkOrderByWorkOrderNumber(
+                workOrderRow.WO_WORK_ORDER
+            );
+
+            const workOrderOpenDateString = dateIntegerToString(
+                Number.parseInt(workOrderRow.WO_INITIATION_DATE, 10)
+            );
+
+            if (workOrder) {
+                if (workOrder.workOrderCloseDate) {
+                    reopenWorkOrder(workOrder.workOrderId, user);
+                    delete workOrder.workOrderCloseDate;
+                    delete workOrder.workOrderCloseDateString;
+                }
+            } else {
+                const workOrderId = addWorkOrder(
+                    {
+                        workOrderNumber: workOrderRow.WO_WORK_ORDER,
+                        workOrderTypeId: 1,
+                        workOrderDescription: (
+                            workOrderRow.WO_REMARK1 +
+                            " " +
+                            workOrderRow.WO_REMARK2 +
+                            " " +
+                            workOrderRow.WO_REMARK3
+                        ).trim(),
+                        workOrderOpenDateString
+                    },
+                    user
+                );
+
+                workOrder = getWorkOrder(workOrderId);
+            }
+
+            let lot: recordTypes.Lot;
+
+            if (workOrderRow.WO_CEMETERY !== "00") {
+                const lotName = buildLotName({
+                    cemetery: workOrderRow.WO_CEMETERY,
+                    block: workOrderRow.WO_BLOCK,
+                    range1: workOrderRow.WO_RANGE1,
+                    range2: workOrderRow.WO_RANGE2,
+                    lot1: workOrderRow.WO_LOT1,
+                    lot2: workOrderRow.WO_LOT2,
+                    grave1: workOrderRow.WO_GRAVE1,
+                    grave2: workOrderRow.WO_GRAVE2,
+                    interment: workOrderRow.WO_INTERMENT
+                });
+
+                lot = getLotByLotName(lotName);
+
+                if (!lot) {
+                    const map = getMap({ cemetery: workOrderRow.WO_CEMETERY });
+
+                    const lotType = getLotType({
+                        cemetery: workOrderRow.WO_CEMETERY
+                    });
+
+                    const lotId = addLot(
+                        {
+                            mapId: map.mapId,
+                            lotName,
+                            mapKey: lotName,
+                            lotStatusId: takenLotStatus.lotStatusId,
+                            lotTypeId: lotType.lotTypeId,
+                            lotLatitude: "",
+                            lotLongitude: ""
+                        },
+                        user
+                    );
+
+                    lot = getLot(lotId);
+                } else {
+                    updateLotStatus(
+                        lot.lotId,
+                        takenLotStatus.lotStatusId,
+                        user
+                    );
+                }
+
+                const workOrderContainsLot = workOrder.workOrderLots.find(
+                    (possibleLot) => {
+                        return (possibleLot.lotId = lot.lotId);
+                    }
+                );
+
+                if (!workOrderContainsLot) {
+                    addWorkOrderLot(
+                        {
+                            workOrderId: workOrder.workOrderId,
+                            lotId: lot.lotId
+                        },
+                        user
+                    );
+
+                    workOrder.workOrderLots.push(lot);
+                }
+            }
+
+            let occupancyStartDateString = workOrderOpenDateString;
+
+            if (workOrderRow.WO_INTERMENT_YR) {
+                occupancyStartDateString = formatDateString(workOrderRow.WO_INTERMENT_YR,
+                    workOrderRow.WO_INTERMENT_MON,
+                    workOrderRow.WO_INTERMENT_DAY);
+            }
+
+            const lotOccupancyId = addLotOccupancy({
+                lotId: lot ? lot.lotId : "",
+                occupancyTypeId: deceasedOccupancyType.occupancyTypeId,
+                occupancyStartDateString,
+                occupancyEndDateString: ""
+            }, user);
+
+            addLotOccupancyOccupant({
+                lotOccupancyId,
+                lotOccupantTypeId: deceasedLotOccupantType.lotOccupantTypeId,
+                occupantName: workOrderRow.WO_DECEASED_NAME,
+                occupantAddress1: workOrderRow.WO_ADDRESS,
+                occupantAddress2: "",
+                occupantCity: workOrderRow.WO_CITY,
+                occupantProvince: workOrderRow. WO_PROV.slice(0, 2),
+                occupantPostalCode: workOrderRow.WO_POST1 + " " + workOrderRow.WO_POST2,
+                occupantPhoneNumber: ""
+            }, user);
+
+            if (workOrderRow.WO_DEATH_YR !== "") {
+                const lotOccupancyFieldValue = formatDateString(
+                    workOrderRow.WO_DEATH_YR,
+                    workOrderRow.WO_DEATH_MON,
+                    workOrderRow.WO_DEATH_DAY
+                );
+
+                addOrUpdateLotOccupancyField(
+                    {
+                        lotOccupancyId: lotOccupancyId,
+                        occupancyTypeFieldId:
+                            deceasedOccupancyType.occupancyTypeFields.find(
+                                (occupancyTypeField) => {
+                                    return (
+                                        occupancyTypeField.occupancyTypeField ===
+                                        "Death Date"
+                                    );
+                                }
+                            ).occupancyTypeFieldId,
+                        lotOccupancyFieldValue
+                    },
+                    user
+                );
+            }
+
+            if (workOrderRow.WO_AGE !== "") {
+                addOrUpdateLotOccupancyField(
+                    {
+                        lotOccupancyId: lotOccupancyId,
+                        occupancyTypeFieldId:
+                            deceasedOccupancyType.occupancyTypeFields.find(
+                                (occupancyTypeField) => {
+                                    return (
+                                        occupancyTypeField.occupancyTypeField ===
+                                        "Death Age"
+                                    );
+                                }
+                            ).occupancyTypeFieldId,
+                        lotOccupancyFieldValue: workOrderRow.WO_AGE
+                    },
+                    user
+                );
+            }
+
+            if (workOrderRow.WO_PERIOD !== "") {
+                addOrUpdateLotOccupancyField(
+                    {
+                        lotOccupancyId: lotOccupancyId,
+                        occupancyTypeFieldId:
+                            deceasedOccupancyType.occupancyTypeFields.find(
+                                (occupancyTypeField) => {
+                                    return (
+                                        occupancyTypeField.occupancyTypeField ===
+                                        "Death Age Period"
+                                    );
+                                }
+                            ).occupancyTypeFieldId,
+                        lotOccupancyFieldValue: workOrderRow.WO_PERIOD
+                    },
+                    user
+                );
+            }
+
+            if (workOrderRow.WO_FUNERAL_HOME !== "") {
+                addOrUpdateLotOccupancyField(
+                    {
+                        lotOccupancyId: lotOccupancyId,
+                        occupancyTypeFieldId:
+                            deceasedOccupancyType.occupancyTypeFields.find(
+                                (occupancyTypeField) => {
+                                    return (
+                                        occupancyTypeField.occupancyTypeField ===
+                                        "Funeral Home"
+                                    );
+                                }
+                            ).occupancyTypeFieldId,
+                        lotOccupancyFieldValue: workOrderRow.WO_FUNERAL_HOME
+                    },
+                    user
+                );
+            }
+
+            if (workOrderRow.WO_FUNERAL_YR !== "") {
+                const lotOccupancyFieldValue = formatDateString(
+                    workOrderRow.WO_FUNERAL_YR,
+                    workOrderRow.WO_FUNERAL_MON,
+                    workOrderRow.WO_FUNERAL_DAY
+                );
+
+                addOrUpdateLotOccupancyField(
+                    {
+                        lotOccupancyId: lotOccupancyId,
+                        occupancyTypeFieldId:
+                            deceasedOccupancyType.occupancyTypeFields.find(
+                                (occupancyTypeField) => {
+                                    return (
+                                        occupancyTypeField.occupancyTypeField ===
+                                        "Funeral Date"
+                                    );
+                                }
+                            ).occupancyTypeFieldId,
+                        lotOccupancyFieldValue
+                    },
+                    user
+                );
+            }
+
+            if (workOrderRow.WO_CONTAINER_TYPE !== "") {
+                addOrUpdateLotOccupancyField(
+                    {
+                        lotOccupancyId: lotOccupancyId,
+                        occupancyTypeFieldId:
+                            deceasedOccupancyType.occupancyTypeFields.find(
+                                (occupancyTypeField) => {
+                                    return (
+                                        occupancyTypeField.occupancyTypeField ===
+                                        "Container Type"
+                                    );
+                                }
+                            ).occupancyTypeFieldId,
+                        lotOccupancyFieldValue: workOrderRow.WO_CONTAINER_TYPE
+                    },
+                    user
+                );
+            }
+
+            if (workOrderRow.WO_COMMITTAL_TYPE !== "") {
+                let commitalType = workOrderRow.WO_COMMITTAL_TYPE;
+
+                if (commitalType === "GS") {
+                    commitalType = "Graveside";
+                }
+
+                addOrUpdateLotOccupancyField(
+                    {
+                        lotOccupancyId: lotOccupancyId,
+                        occupancyTypeFieldId:
+                            deceasedOccupancyType.occupancyTypeFields.find(
+                                (occupancyTypeField) => {
+                                    return (
+                                        occupancyTypeField.occupancyTypeField ===
+                                        "Committal Type"
+                                    );
+                                }
+                            ).occupancyTypeFieldId,
+                        lotOccupancyFieldValue: commitalType
+                    },
+                    user
+                );
+            }
+
+            addWorkOrderLotOccupancy({
+                workOrderId: workOrder.workOrderId,
+                lotOccupancyId
+            }, user);
+        }
+    } catch (error) {
+        console.error(error);
+        console.log(workOrderRow);
+    }
+}
+
 purgeTables();
 // purgeConfigTables();
 importFromMasterCSV();
 importFromPrepaidCSV();
+importFromWorkOrderCSV();
