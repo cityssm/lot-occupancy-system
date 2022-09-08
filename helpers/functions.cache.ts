@@ -8,6 +8,8 @@ import { getOccupancyTypes as getOccupancyTypesFromDatabase } from "./lotOccupan
 
 import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from "./lotOccupancyDB/getWorkOrderTypes.js";
 
+import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from "./lotOccupancyDB/getWorkOrderMilestoneTypes.js";
+
 import type * as recordTypes from "../types/recordTypes";
 
 /*
@@ -176,4 +178,35 @@ export function getWorkOrderTypes() {
 
 export function clearWorkOrderTypesCache() {
     workOrderTypes = undefined;
+}
+
+/*
+ * Work Order Milestone Types
+ */
+
+let workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[];
+
+export function getWorkOrderMilestoneTypes() {
+    if (!workOrderMilestoneTypes) {
+        workOrderMilestoneTypes = getWorkOrderMilestoneTypesFromDatabase();
+    }
+
+    return workOrderMilestoneTypes;
+}
+
+export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString: string) {
+    const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+
+    const workOrderMilestoneTypeLowerCase = workOrderMilestoneTypeString.toLowerCase();
+
+    return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => {
+        return (
+            currentWorkOrderMilestoneType.workOrderMilestoneType.toLowerCase() ===
+            workOrderMilestoneTypeLowerCase
+        );
+    });
+}
+
+export function clearWorkOrderMilestoneTypesCache() {
+    workOrderMilestoneTypes = undefined;
 }

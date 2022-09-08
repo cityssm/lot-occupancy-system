@@ -17,3 +17,6 @@ export declare function getOccupancyTypeByOccupancyType(occupancyTypeString: str
 export declare function clearOccupancyTypesCache(): void;
 export declare function getWorkOrderTypes(): recordTypes.WorkOrderType[];
 export declare function clearWorkOrderTypesCache(): void;
+export declare function getWorkOrderMilestoneTypes(): recordTypes.WorkOrderMilestoneType[];
+export declare function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString: string): recordTypes.WorkOrderMilestoneType;
+export declare function clearWorkOrderMilestoneTypesCache(): void;
