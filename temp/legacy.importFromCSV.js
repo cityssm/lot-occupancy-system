@@ -20,9 +20,9 @@ import { addWorkOrderLot } from "../helpers/lotOccupancyDB/addWorkOrderLot.js";
 import { addWorkOrderLotOccupancy } from "../helpers/lotOccupancyDB/addWorkOrderLotOccupancy.js";
 import { getWorkOrder, getWorkOrderByWorkOrderNumber } from "../helpers/lotOccupancyDB/getWorkOrder.js";
 import { reopenWorkOrder } from "../helpers/lotOccupancyDB/reopenWorkOrder.js";
+import { addWorkOrderMilestone } from "../helpers/lotOccupancyDB/addWorkOrderMilestone.js";
+import { closeWorkOrder } from "../helpers/lotOccupancyDB/closeWorkOrder.js";
 import { dateIntegerToString, dateToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
-import addWorkOrderMilestone from "../helpers/lotOccupancyDB/addWorkOrderMilestone.js";
-import closeWorkOrder from "../helpers/lotOccupancyDB/closeWorkOrder.js";
 const user = {
     user: {
         userName: "import.unix",
@@ -237,7 +237,7 @@ function importFromMasterCSV() {
             }
             let preneedOccupancyStartDateString;
             let preneedLotOccupancyId;
-            if (masterRow.CM_PRENEED_ORDER) {
+            if (masterRow.CM_PRENEED_ORDER || masterRow.CM_STATUS === "P") {
                 preneedOccupancyStartDateString = formatDateString(masterRow.CM_PURCHASE_YR, masterRow.CM_PURCHASE_MON, masterRow.CM_PURCHASE_DAY);
                 let occupancyEndDateString = "";
                 if (masterRow.CM_INTERMENT_YR !== "" &&

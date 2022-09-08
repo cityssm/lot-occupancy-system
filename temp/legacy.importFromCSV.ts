@@ -44,14 +44,16 @@ import {
 
 import { reopenWorkOrder } from "../helpers/lotOccupancyDB/reopenWorkOrder.js";
 
+import { addWorkOrderMilestone } from "../helpers/lotOccupancyDB/addWorkOrderMilestone.js";
+
+import { closeWorkOrder } from "../helpers/lotOccupancyDB/closeWorkOrder.js";
+
 import {
     dateIntegerToString,
     dateToString
 } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import type * as recordTypes from "../types/recordTypes";
-import addWorkOrderMilestone from "../helpers/lotOccupancyDB/addWorkOrderMilestone.js";
-import closeWorkOrder from "../helpers/lotOccupancyDB/closeWorkOrder.js";
 
 interface MasterRecord {
     CM_SYSREC: string;
@@ -505,7 +507,7 @@ function importFromMasterCSV() {
             let preneedOccupancyStartDateString: string;
             let preneedLotOccupancyId: number;
 
-            if (masterRow.CM_PRENEED_ORDER) {
+            if (masterRow.CM_PRENEED_ORDER || masterRow.CM_STATUS === "P") {
                 preneedOccupancyStartDateString = formatDateString(
                     masterRow.CM_PURCHASE_YR,
                     masterRow.CM_PURCHASE_MON,
