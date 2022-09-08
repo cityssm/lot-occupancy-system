@@ -933,6 +933,20 @@ function importFromWorkOrderCSV() {
                     hasIncompleteMilestones = true;
                 }
             }
+            if (workOrderRow.WO_CREMATION === "Y") {
+                addWorkOrderMilestone({
+                    workOrderId: workOrder.workOrderId,
+                    workOrderMilestoneTypeId: cremationWorkOrderMilestoneType.workOrderMilestoneTypeId,
+                    workOrderMilestoneDateString: maxMilestoneCompletionDateString,
+                    workOrderMilestoneDescription: "",
+                    workOrderMilestoneCompletionDateString: maxMilestoneCompletionDateString < currentDateString
+                        ? maxMilestoneCompletionDateString
+                        : undefined,
+                    workOrderMilestoneCompletionTimeString: maxMilestoneCompletionDateString < currentDateString
+                        ? "00:00"
+                        : undefined
+                }, user);
+            }
             if (workOrderRow.WO_INTERMENT_YR) {
                 const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_INTERMENT_YR, workOrderRow.WO_INTERMENT_MON, workOrderRow.WO_INTERMENT_DAY);
                 addWorkOrderMilestone({
