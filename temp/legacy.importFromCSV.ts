@@ -1710,7 +1710,7 @@ function importFromWorkOrderCSV() {
                                 : undefined,
                         workOrderMilestoneCompletionTimeString:
                             workOrderMilestoneDateString < currentDateString
-                                ? "00:00"
+                                ? "23:59"
                                 : undefined
                     },
                     user
