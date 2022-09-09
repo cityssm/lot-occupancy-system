@@ -21,7 +21,7 @@
     Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
 </h1>
 
-<% if (user.userProperties.canUpdate) { %>
+<% if (user.userProperties.canUpdate && !workOrder.workOrderCloseDate) { %>
     <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
         <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update Work Order" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>/edit">
             <i class="fas fa-pencil-alt" aria-hidden="true"></i>
@@ -65,6 +65,13 @@
                     </div>
                 </div>
             </div>
+            <% if (user.userProperties.canUpdate && workOrder.workOrderCloseDate) { %>
+                <div class="panel-block is-justify-content-flex-end">
+                    <button class="button is-warning" id="button--reopenWorkOrder" data-work-order-id="<%= workOrder.workOrderId %>" type="button">
+                        Reopen Work Order
+                    </button>
+                </div>
+            <% } %>
         </div>
 
         <div class="panel">
@@ -101,6 +108,7 @@
                                 </p>
                             </div>
                         <% } else { %>
+                            <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
                             <table class="table is-fullwidth is-striped is-hoverable">
                                 <thead>
                                     <tr>
@@ -207,11 +215,41 @@
         <div class="column is-4">
             <div class="panel">
                 <h2 class="panel-heading">Milestones</h2>
+                <% for (const milestone of workOrder.workOrderMilestones) { %>
+                    <div class="panel-block is-block">
+                        <div class="columns">
+                            <div class="column is-narrow">
+                                <% if (milestone.workOrderMilestoneCompletionDate) { %>
+                                    <span class="icon is-small" data-tooltip="Completed <%= milestone.workOrderMilestoneCompletionDateString %>">
+                                        <i class="fas fa-check" aria-label="Completed <%= milestone.workOrderMilestoneCompletionDateString %>"></i>
+                                    </span>
+                                <% } else { %>
+                                    <span class="icon is-small">
+                                        <i class="far fa-square has-text-grey" aria-label="Incomplete"></i>
+                                    </span>
+                                <% } %>
+                            </div>
+                            <div class="column">
+                                <% if (milestone.workOrderMilestoneTypeId) { %>
+                                    <strong><%= milestone.workOrderMilestoneType %></strong><br />
+                                <% } %>
+                                <%= milestone.workOrderMilestoneDateString %>
+                                <% if (milestone.workOrderMilestoneTime !== 0) { %>
+                                    <%= milestone.workOrderMilestoneTimeString %>
+                                <% } %>
+                                <br />
+                                <span class="is-size-7"><%= milestone.workOrderMilestoneDescription %></span>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
             </div>
         </div>
     <% } %>
 </div>
 
 <%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/workOrderView.min.js"></script>
 
 <%- include('_footerB'); -%>

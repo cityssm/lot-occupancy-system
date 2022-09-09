@@ -1,3 +1,4 @@
+import { getWorkOrderTypes } from "../../helpers/functions.cache.js";
 import * as configFunctions from "../../helpers/functions.config.js";
 import { getWorkOrder } from "../../helpers/lotOccupancyDB/getWorkOrder.js";
 export const handler = (request, response) => {
@@ -6,9 +7,16 @@ export const handler = (request, response) => {
         return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") +
             "/workOrders/?error=workOrderIdNotFound");
     }
+    if (workOrder.workOrderCloseDate) {
+        return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") +
+            "/workOrders/" + workOrder.workOrderId.toString() + "/?error=workOrderIsClosed");
+    }
+    const workOrderTypes = getWorkOrderTypes();
     response.render("workOrder-edit", {
         headTitle: "Work Order #" + workOrder.workOrderNumber,
-        workOrder
+        workOrder,
+        isCreate: false,
+        workOrderTypes
     });
 };
 export default handler;

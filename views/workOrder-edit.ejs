@@ -9,19 +9,181 @@
                 <span>Work Orders</span>
             </a>
         </li>
-        <li>
-            <a href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
-                Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
-            </a>
-        </li>
-        <li class="is-active">
-            <a href="#" aria-current="page">
-                Update Work Order
-            </a>
-        </li>
+        <% if (isCreate) { %>
+            <li class="is-active">
+                <a href="#" aria-current="page">
+                    Create a New Work Order
+                </a>
+            </li>
+        <% } else { %>
+            <li>
+                <a href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
+                    Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
+                </a>
+            </li>
+            <li class="is-active">
+                <a href="#" aria-current="page">
+                    Update Work Order
+                </a>
+            </li>
+        <% } %>
     </ul>
 </nav>
 
+<h1 class="title is-1">
+    <% if (isCreate) { %>
+        Create a New Work Order
+    <% } else { %>
+        Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
+    <% } %>
+</h1>
+
+<form id="form--workOrderEdit">
+    <input id="workOrderEdit--workOrderId" name="workOrderId" type="hidden" value="<%= workOrder.workOrderId %>" />
+    <div class="panel">
+        <div class="panel-block is-block">
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label" for="workOrderEdit--workOrderNumber">Work Order Number</label>
+                        <div class="control">
+                            <input class="input" id="workOrderEdit--workOrderNumber" name="workOrderNumber" type="text" value="<%= workOrder.workOrderNumber %>" maxlength="50" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label" for="workOrderEdit--workOrderTypeId">Work Order Type</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select id="workOrderEdit--workOrderTypeId" name="workOrderTypeId" required>
+                                    <% if (isCreate) { %>
+                                        <option value="">(Select Type)</option>
+                                    <% } %>
+                                    <% for (const workOrderType of workOrderTypes) { %>
+                                        <option value="<%= workOrderType.workOrderTypeId %>" <%= (workOrder.workOrderTypeId === workOrderType.workOrderTypeId ? " selected" : "") %>>
+                                            <%= workOrderType.workOrderType %>
+                                        </option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="workOrderEdit--workOrderDescription">Description</label>
+                <div class="control">
+                    <textarea class="textarea" id="workOrderEdit--workOrderDescription" name="workOrderDescription"><%= workOrder.workOrderDescription %></textarea>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label" for="workOrderEdit--workOrderOpenDateString">Open Date</label>
+                        <div class="control">
+                            <input class="input" id="workOrderEdit--workOrderOpenDateString" name="workOrderOpenDateString" type="date" value="<%= workOrder.workOrderOpenDateString %>" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label" for="workOrderEdit--workOrderCloseDateString">Close Date</label>
+                        <div class="control">
+                            <input class="input" id="workOrderEdit--workOrderCloseDateString" name="workOrderCloseDateString" type="date" value="<%= workOrder.workOrderCloseDateString %>" disabled readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-block is-justify-content-flex-end">
+            <button class="button is-success" type="submit">
+                <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
+                <span>
+                    <%= (isCreate ? "Create" : "Update") %>
+                    Work Order
+                </span>
+            </button>
+            <% if (!isCreate) { %>
+                <div class="dropdown is-right ml-2">
+                    <div class="dropdown-trigger">
+                        <button class="button" type="button">
+                            <span>More Options</span>
+                            <span class="icon is-small"><i class="fas fa-caret-down" aria-hidden="true"></i></span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                            <a class="dropdown-item" href="#">
+                                <span class="icon is-small">
+                                    <i class="fas fa-trash has-text-danger" aria-hidden="true"></i>
+                                </span>
+                                <span>Delete Work Order</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <% if (!isCreate) { %>
+    <div class="panel">
+        <div class="panel-heading">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h2 class="title has-text-weight-bold is-5">Related <%= configFunctions.getProperty("aliases.lots") %></h2>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <button class="button is-small is-success" id="button--addWorkOrderLot" type="button">
+                            <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                            <span>Add <%= configFunctions.getProperty("aliases.lots") %></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-block is-block">
+            <%
+                const tabToSelect = (workOrder.workOrderLotOccupancies.length > 0 || workOrder.workOrderLots.length === 0 ? "lotOccupancies" : "lots");
+            %>
+            <div class="tabs is-boxed">
+                <ul>
+                    <li class="<%= (tabToSelect === "lotOccupancies" ? "is-active" : "") %>">
+                        <a href="#relatedTab--lotOccupancies">
+                            <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
+                            <span class="ml-2 tag"></span>
+                        </a>
+                    </li>
+                    <li class="<%= (tabToSelect === "lots" ? "is-active" : "") %>">
+                        <a href="#relatedTab--lots">
+                            <span><%= configFunctions.getProperty("aliases.lots") %></span>
+                            <span class="ml-2 tag"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-container">
+                <div class="<%= (tabToSelect === "lotOccupancies" ? "" : "is-hidden") %>" id="relatedTab--lotOccupancies">
+                </div>
+                <div class="<%= (tabToSelect === "lots" ? "" : "is-hidden") %>" id="relatedTab--lots">
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</form>
+
 <%- include('_footerA'); -%>
+
+<script>
+    exports.workOrderComments = <%- JSON.stringify(workOrder.workOrderComments) %>;
+    exports.workOrderLots = <%- JSON.stringify(workOrder.workOrderLots) %>;
+    exports.workOrderLotOccupancies = <%- JSON.stringify(workOrder.workOrderLotOccupancies) %>;
+    exports.workOrderMilestones = <%- JSON.stringify(workOrder.workOrderMilestones) %>;
+</script>
+<script src="<% urlPrefix %>/javascripts/workOrderEdit.min.js"></script>
 
 <%- include('_footerB'); -%>
