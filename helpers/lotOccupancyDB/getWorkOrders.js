@@ -12,6 +12,14 @@ export const getWorkOrders = (filters, options) => {
         sqlWhereClause += " and w.workOrderTypeId = ?";
         sqlParameters.push(filters.workOrderTypeId);
     }
+    if (filters.workOrderOpenStatus) {
+        if (filters.workOrderOpenStatus === "open") {
+            sqlWhereClause += " and w.workOrderCloseDate is null";
+        }
+        else if (filters.workOrderOpenStatus === "closed") {
+            sqlWhereClause += " and w.workOrderCloseDate is not null";
+        }
+    }
     const count = database
         .prepare("select count(*) as recordCount" +
         " from WorkOrders w" +

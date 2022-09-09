@@ -32,21 +32,40 @@
         <input id="searchFilter--limit" name="limit" type="hidden" value="100" />
         <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
 
-        <div class="field">
-            <label class="label" for="searchFilter--workOrderTypeId">Work Order Type</label>
-            <div class="control has-icons-left">
-                <div class="select is-fullwidth">
-                <select id="searchFilter--workOrderTypeId" name="workOrderTypeId">
-                    <option value="">(All Work Order Types Types)</option>
-                    <% for (const workOrderType of workOrderTypes) { %>
-                    <option value="<%= workOrderType.workOrderTypeId %>"><%= workOrderType.workOrderType || "(No Name)" %></option>
-                    <% } %>
-                </select>
+        <div class="columns">
+            <div class="column">
+                <div class="field">
+                    <label class="label" for="searchFilter--workOrderTypeId">Work Order Type</label>
+                    <div class="control has-icons-left">
+                        <div class="select is-fullwidth">
+                        <select id="searchFilter--workOrderTypeId" name="workOrderTypeId">
+                            <option value="">(All Work Order Types Types)</option>
+                            <% for (const workOrderType of workOrderTypes) { %>
+                            <option value="<%= workOrderType.workOrderTypeId %>"><%= workOrderType.workOrderType || "(No Name)" %></option>
+                            <% } %>
+                        </select>
+                        </div>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                        </span>
+                    </div>
                 </div>
-                <span class="icon is-small is-left">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                </span>
             </div>
+            <div class="column">
+                <div class="field">
+                    <label class="label" for="searchFilter--workOrderOpenStatus">Open Status</label>
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select id="searchFilter--workOrderOpenStatus" name="workOrderOpenStatus">
+                                <option value="">(All Statuses)</option>
+                                <option value="open" selected>Open</option>
+                                <option value="closed">Closed</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>  
         </div>
     </form>
 </div>

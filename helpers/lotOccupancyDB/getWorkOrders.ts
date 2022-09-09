@@ -8,6 +8,7 @@ import type * as recordTypes from "../../types/recordTypes";
 
 interface GetWorkOrdersFilters {
     workOrderTypeId?: number | string;
+    workOrderOpenStatus?: "" | "open" | "closed";
 }
 
 interface GetWorkOrdersOptions {
@@ -34,6 +35,14 @@ export const getWorkOrders = (
     if (filters.workOrderTypeId) {
         sqlWhereClause += " and w.workOrderTypeId = ?";
         sqlParameters.push(filters.workOrderTypeId);
+    }
+    
+    if (filters.workOrderOpenStatus) {
+        if (filters.workOrderOpenStatus === "open") {
+            sqlWhereClause += " and w.workOrderCloseDate is null";
+        } else if (filters.workOrderOpenStatus === "closed") {
+            sqlWhereClause += " and w.workOrderCloseDate is not null";
+        }
     }
 
     const count: number = database
