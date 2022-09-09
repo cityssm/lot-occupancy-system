@@ -3,22 +3,32 @@ import * as configFunctions from "../helpers/functions.config.js";
 import * as authenticationFunctions from "../helpers/functions.authentication.js";
 import { useTestDatabases } from "../data/databasePaths.js";
 export const router = Router();
+const safeRedirects = [
+    "/admin/fees",
+    "/admin/occupancytypes",
+    "/admin/tables",
+    "/lotoccupancies",
+    "/lotoccupancies/new",
+    "/lots",
+    "/lots/new",
+    "/maps",
+    "/maps/new",
+    "/workorders",
+    "/workorders/new",
+    "/reports"
+];
 const getSafeRedirectURL = (possibleRedirectURL = "") => {
     const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
     if (typeof possibleRedirectURL === "string") {
         const urlToCheck = (possibleRedirectURL.startsWith(urlPrefix)
             ? possibleRedirectURL.slice(urlPrefix.length)
             : possibleRedirectURL).toLowerCase();
-        switch (urlToCheck) {
-            case "/admin/fees":
-            case "/admin/occupancyTypes":
-            case "/admin/tables":
-            case "/lotOccupancies":
-            case "/lots":
-            case "/maps":
-            case "/workOrders":
-            case "/reports":
-                return urlPrefix + urlToCheck;
+        if (safeRedirects.includes(urlToCheck) ||
+            /^(\/maps\/)\d+(\/edit)?$/.test(urlToCheck) ||
+            /^(\/lots\/)\d+(\/edit)?$/.test(urlToCheck) ||
+            /^(\/lotoccupancies\/)\d+(\/edit)?$/.test(urlToCheck) ||
+            /^(\/workorders\/)\d+(\/edit)?$/.test(urlToCheck)) {
+            return urlPrefix + urlToCheck;
         }
     }
     return urlPrefix + "/dashboard";
