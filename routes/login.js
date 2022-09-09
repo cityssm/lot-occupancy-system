@@ -3,7 +3,7 @@ import * as configFunctions from "../helpers/functions.config.js";
 import * as authenticationFunctions from "../helpers/functions.authentication.js";
 import { useTestDatabases } from "../data/databasePaths.js";
 export const router = Router();
-const safeRedirects = [
+const safeRedirects = new Set([
     "/admin/fees",
     "/admin/occupancytypes",
     "/admin/tables",
@@ -16,14 +16,14 @@ const safeRedirects = [
     "/workorders",
     "/workorders/new",
     "/reports"
-];
+]);
 const getSafeRedirectURL = (possibleRedirectURL = "") => {
     const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
     if (typeof possibleRedirectURL === "string") {
         const urlToCheck = (possibleRedirectURL.startsWith(urlPrefix)
             ? possibleRedirectURL.slice(urlPrefix.length)
             : possibleRedirectURL).toLowerCase();
-        if (safeRedirects.includes(urlToCheck) ||
+        if (safeRedirects.has(urlToCheck) ||
             /^(\/maps\/)\d+(\/edit)?$/.test(urlToCheck) ||
             /^(\/lots\/)\d+(\/edit)?$/.test(urlToCheck) ||
             /^(\/lotoccupancies\/)\d+(\/edit)?$/.test(urlToCheck) ||

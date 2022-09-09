@@ -10,7 +10,7 @@ import type * as recordTypes from "../types/recordTypes";
 
 export const router = Router();
 
-const safeRedirects = [
+const safeRedirects = new Set([
     "/admin/fees",
     "/admin/occupancytypes",
     "/admin/tables",
@@ -23,7 +23,7 @@ const safeRedirects = [
     "/workorders",
     "/workorders/new",
     "/reports"
-];
+]);
 
 const getSafeRedirectURL = (possibleRedirectURL = "") => {
     const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
@@ -36,7 +36,7 @@ const getSafeRedirectURL = (possibleRedirectURL = "") => {
         ).toLowerCase();
 
         if (
-            safeRedirects.includes(urlToCheck) ||
+            safeRedirects.has(urlToCheck) ||
             /^(\/maps\/)\d+(\/edit)?$/.test(urlToCheck) ||
             /^(\/lots\/)\d+(\/edit)?$/.test(urlToCheck) ||
             /^(\/lotoccupancies\/)\d+(\/edit)?$/.test(urlToCheck) ||
