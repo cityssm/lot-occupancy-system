@@ -140,3 +140,24 @@ $black-ter: hsl(0, 0%, 14%);
 .menu .menu-label {
   color: $black-ter;
 }
+
+/*
+ * z-index to compensate for leaflet
+ */
+
+.navbar.is-fixed-top {
+  z-index: 1100;
+}
+
+.modal {
+  z-index: 1200;
+}
+
+/*
+ * Static button pointer events
+ */
+
+span.button.is-static {
+  pointer-events: all;
+  cursor: default;
+}
