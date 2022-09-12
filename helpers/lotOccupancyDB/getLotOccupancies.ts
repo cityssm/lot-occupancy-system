@@ -16,12 +16,14 @@ interface GetLotOccupanciesFilters {
     lotId?: number | string;
     occupancyTime?: "" | "past" | "current" | "future";
     occupancyStartDateString?: string;
+    occupancyEffectiveDateString?: string;
     occupantName?: string;
     occupancyTypeId?: number | string;
     mapId?: number | string;
     lotName?: string;
     lotTypeId?: number | string;
     workOrderId?: number | string;
+    notWorkOrderId?: number | string;
 }
 
 interface GetLotOccupanciesOptions {
@@ -107,6 +109,15 @@ export const getLotOccupancies = (
         );
     }
 
+    if (filters.occupancyEffectiveDateString) {
+        sqlWhereClause +=
+            " and (o.occupancyStartDate <= ? and (o.occupancyEndDate is null or o.occupancyEndDate >= ?))";
+        sqlParameters.push(
+            dateStringToInteger(filters.occupancyEffectiveDateString),
+            dateStringToInteger(filters.occupancyEffectiveDateString)
+        );
+    }
+
     if (filters.mapId) {
         sqlWhereClause += " and l.mapId = ?";
         sqlParameters.push(filters.mapId);
@@ -121,6 +132,12 @@ export const getLotOccupancies = (
         sqlWhereClause +=
             " and o.lotOccupancyId in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)";
         sqlParameters.push(filters.workOrderId);
+    }
+
+    if (filters.notWorkOrderId) {
+        sqlWhereClause +=
+            " and o.lotOccupancyId not in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)";
+        sqlParameters.push(filters.notWorkOrderId);
     }
 
     const count: number = database

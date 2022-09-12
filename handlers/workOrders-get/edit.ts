@@ -1,5 +1,9 @@
 import type { RequestHandler } from "express";
-import { getWorkOrderTypes } from "../../helpers/functions.cache.js";
+
+import {
+    getLotStatuses,
+    getWorkOrderTypes
+} from "../../helpers/functions.cache.js";
 
 import * as configFunctions from "../../helpers/functions.config.js";
 
@@ -18,17 +22,22 @@ export const handler: RequestHandler = (request, response) => {
     if (workOrder.workOrderCloseDate) {
         return response.redirect(
             configFunctions.getProperty("reverseProxy.urlPrefix") +
-                "/workOrders/" + workOrder.workOrderId.toString() + "/?error=workOrderIsClosed"
+                "/workOrders/" +
+                workOrder.workOrderId.toString() +
+                "/?error=workOrderIsClosed"
         );
     }
 
     const workOrderTypes = getWorkOrderTypes();
 
+    const lotStatuses = getLotStatuses();
+
     response.render("workOrder-edit", {
         headTitle: "Work Order #" + workOrder.workOrderNumber,
         workOrder,
         isCreate: false,
-        workOrderTypes
+        workOrderTypes,
+        lotStatuses
     });
 };
 

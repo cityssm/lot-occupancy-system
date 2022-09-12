@@ -57,6 +57,11 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
         sqlWhereClause += " and o.occupancyStartDate = ?";
         sqlParameters.push(dateStringToInteger(filters.occupancyStartDateString));
     }
+    if (filters.occupancyEffectiveDateString) {
+        sqlWhereClause +=
+            " and (o.occupancyStartDate <= ? and (o.occupancyEndDate is null or o.occupancyEndDate >= ?))";
+        sqlParameters.push(dateStringToInteger(filters.occupancyEffectiveDateString), dateStringToInteger(filters.occupancyEffectiveDateString));
+    }
     if (filters.mapId) {
         sqlWhereClause += " and l.mapId = ?";
         sqlParameters.push(filters.mapId);
@@ -69,6 +74,11 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
         sqlWhereClause +=
             " and o.lotOccupancyId in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)";
         sqlParameters.push(filters.workOrderId);
+    }
+    if (filters.notWorkOrderId) {
+        sqlWhereClause +=
+            " and o.lotOccupancyId not in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)";
+        sqlParameters.push(filters.notWorkOrderId);
     }
     const count = database
         .prepare("select count(*) as recordCount" +

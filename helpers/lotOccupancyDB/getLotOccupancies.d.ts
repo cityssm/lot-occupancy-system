@@ -4,12 +4,14 @@ interface GetLotOccupanciesFilters {
     lotId?: number | string;
     occupancyTime?: "" | "past" | "current" | "future";
     occupancyStartDateString?: string;
+    occupancyEffectiveDateString?: string;
     occupantName?: string;
     occupancyTypeId?: number | string;
     mapId?: number | string;
     lotName?: string;
     lotTypeId?: number | string;
     workOrderId?: number | string;
+    notWorkOrderId?: number | string;
 }
 interface GetLotOccupanciesOptions {
     limit: -1 | number;
