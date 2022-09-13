@@ -24,7 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const fieldElement = clickEvent.currentTarget.closest(".field");
         const inputOrSelectElement = fieldElement.querySelector("input, select");
         if (inputOrSelectElement.tagName === "INPUT") {
-            inputOrSelectElement.disabled = false;
+            inputOrSelectElement.readOnly = false;
         }
         else {
             const optionElements = inputOrSelectElement.querySelectorAll("option");

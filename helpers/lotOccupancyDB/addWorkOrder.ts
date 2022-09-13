@@ -2,6 +2,8 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
+import { getNextWorkOrderNumber } from "./getNextWorkOrderNumber.js";
+
 import {
     dateStringToInteger,
     dateToInteger
@@ -11,7 +13,7 @@ import type * as recordTypes from "../../types/recordTypes";
 
 interface AddWorkOrderForm {
     workOrderTypeId: number | string;
-    workOrderNumber: string;
+    workOrderNumber?: string;
     workOrderDescription: string;
     workOrderOpenDateString?: string;
     workOrderCloseDateString?: string;
@@ -25,6 +27,12 @@ export const addWorkOrder = (
 
     const rightNow = new Date();
 
+    let workOrderNumber = workOrderForm.workOrderNumber;
+
+    if (!workOrderNumber) {
+        workOrderNumber = getNextWorkOrderNumber(database);
+    }
+
     const result = database
         .prepare(
             "insert into WorkOrders (" +
@@ -36,7 +44,7 @@ export const addWorkOrder = (
         )
         .run(
             workOrderForm.workOrderTypeId,
-            workOrderForm.workOrderNumber,
+            workOrderNumber,
             workOrderForm.workOrderDescription,
             workOrderForm.workOrderOpenDateString
                 ? dateStringToInteger(workOrderForm.workOrderOpenDateString)

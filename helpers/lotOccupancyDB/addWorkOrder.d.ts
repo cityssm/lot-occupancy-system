@@ -1,7 +1,7 @@
 import type * as recordTypes from "../../types/recordTypes";
 interface AddWorkOrderForm {
     workOrderTypeId: number | string;
-    workOrderNumber: string;
+    workOrderNumber?: string;
     workOrderDescription: string;
     workOrderOpenDateString?: string;
     workOrderCloseDateString?: string;

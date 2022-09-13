@@ -5,8 +5,6 @@ import type { BulmaJS } from "@cityssm/bulma-js/types";
 
 import type * as globalTypes from "../types/globalTypes";
 import type * as recordTypes from "../types/recordTypes";
-import { response } from "express";
-import { closeDelimiter } from "ejs";
 
 declare const cityssm: cityssmGlobal;
 declare const bulmaJS: BulmaJS;
@@ -23,6 +21,10 @@ declare const bulmaJS: BulmaJS;
     ).value;
 
     const isCreate = workOrderId === "";
+
+    los.initializeUnlockFieldButtons(
+        document.querySelector("#form--workOrderEdit")
+    );
 
     document
         .querySelector("#form--workOrderEdit")

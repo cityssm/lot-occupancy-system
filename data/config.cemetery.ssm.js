@@ -24,5 +24,8 @@ config.settings.lot = {
 };
 config.settings.lotOccupancy.occupantCityDefault = "Sault Ste. Marie";
 config.settings.map.mapCityDefault = "Sault Ste. Marie";
+config.settings.workOrders = {
+    workOrderNumberLength: 6
+};
 config.aliases.externalReceiptNumber = "GP Receipt Number";
 export default config;

@@ -4,6 +4,8 @@ import handler_search from "../handlers/workOrders-get/search.js";
 import handler_doSearchWorkOrders from "../handlers/workOrders-post/doSearchWorkOrders.js";
 import handler_view from "../handlers/workOrders-get/view.js";
 import handler_doReopenWorkOrder from "../handlers/workOrders-post/doReopenWorkOrder.js";
+import handler_new from "../handlers/workOrders-get/new.js";
+import handler_doCreateWorkOrder from "../handlers/workOrders-post/doCreateWorkOrder.js";
 import handler_edit from "../handlers/workOrders-get/edit.js";
 import handler_doUpdateWorkOrder from "../handlers/workOrders-post/doUpdateWorkOrder.js";
 import handler_doAddWorkOrderLotOccupancy from "../handlers/workOrders-post/doAddWorkOrderLotOccupancy.js";
@@ -18,6 +20,8 @@ import handler_doDeleteWorkOrderMilestone from "../handlers/workOrders-post/doDe
 export const router = Router();
 router.get("/", handler_search);
 router.post("/doSearchWorkOrders", handler_doSearchWorkOrders);
+router.get("/new", permissionHandlers.adminGetHandler, handler_new);
+router.post("/doCreateWorkOrder", permissionHandlers.updatePostHandler, handler_doCreateWorkOrder);
 router.get("/:workOrderId", handler_view);
 router.post("/doReopenWorkOrder", permissionHandlers.updatePostHandler, handler_doReopenWorkOrder);
 router.get("/:workOrderId/edit", permissionHandlers.updateGetHandler, handler_edit);

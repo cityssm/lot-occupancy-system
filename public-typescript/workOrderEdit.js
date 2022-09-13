@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const workOrderId = document.querySelector("#workOrderEdit--workOrderId").value;
     const isCreate = workOrderId === "";
+    los.initializeUnlockFieldButtons(document.querySelector("#form--workOrderEdit"));
     document
         .querySelector("#form--workOrderEdit")
         .addEventListener("submit", (submitEvent) => {

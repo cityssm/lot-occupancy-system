@@ -46,12 +46,20 @@
                 <div class="panel-block is-block">
                     <div class="columns">
                         <div class="column">
-                            <div class="field">
-                                <label class="label" for="workOrderEdit--workOrderNumber">Work Order Number</label>
+                            <label class="label" for="workOrderEdit--workOrderNumber">Work Order Number</label>
+                            <div class="field has-addons">
+                                <div class="control is-expanded">
+                                    <input class="input" id="workOrderEdit--workOrderNumber" name="workOrderNumber" type="text" value="<%= workOrder.workOrderNumber %>" maxlength="50" required readonly />
+                                </div>
                                 <div class="control">
-                                    <input class="input" id="workOrderEdit--workOrderNumber" name="workOrderNumber" type="text" value="<%= workOrder.workOrderNumber %>" maxlength="50" required />
+                                    <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
+                                        <i class="fas fa-unlock" aria-hidden="true"></i>
+                                    </button>
                                 </div>
                             </div>
+                            <% if (isCreate) { %>
+                                <p class="help">Leave work order number blank to autopopulate.</p>
+                            <% } %>
                         </div>
                         <div class="column">
                             <div class="field">
@@ -205,6 +213,7 @@
 
 <%- include('_footerA'); -%>
 
+<% if (!isCreate) { %>
 <script>
     exports.workOrderComments = <%- JSON.stringify(workOrder.workOrderComments) %>;
     exports.workOrderLots = <%- JSON.stringify(workOrder.workOrderLots) %>;
@@ -214,6 +223,7 @@
     exports.lotStatuses = <%- JSON.stringify(lotStatuses) %>;
     exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
 </script>
+<% } %>
 <script src="<% urlPrefix %>/javascripts/workOrderEdit.min.js"></script>
 
 <%- include('_footerB'); -%>

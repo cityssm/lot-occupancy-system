@@ -42,6 +42,9 @@ export interface Config {
             occupantCityDefault?: string;
             occupantProvinceDefault?: string;
         };
+        workOrders?: {
+            workOrderNumberLength?: number;
+        };
     };
 }
 interface ConfigApplication {

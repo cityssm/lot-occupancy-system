@@ -62,6 +62,8 @@ configFallbackValues.set("settings.lotOccupancy.occupantProvinceDefault", "");
 
 configFallbackValues.set("settings.fees.taxPercentageDefault", 0);
 
+configFallbackValues.set("settings.workOrders.workOrderNumberLength", 6);
+
 /*
  * Set up function overloads
  */
@@ -140,6 +142,10 @@ export function getProperty(
 
 export function getProperty(
     propertyName: "settings.fees.taxPercentageDefault"
+): number;
+
+export function getProperty(
+    propertyName: "settings.workOrders.workOrderNumberLength"
 ): number;
 
 export function getProperty(propertyName: string): unknown {
