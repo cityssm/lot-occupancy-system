@@ -315,6 +315,9 @@ export interface WorkOrder extends Record {
     workOrderCloseDateString?: string;
 
     workOrderMilestones?: WorkOrderMilestone[];
+    workOrderMilestoneCount?: number;
+    workOrderMilestoneCompletionCount?: number;
+
     workOrderComments?: WorkOrderComment[];
     workOrderLots?: Lot[];
     workOrderLotOccupancies?: LotOccupancy[];

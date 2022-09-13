@@ -48,6 +48,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             ? workOrder.workOrderCloseDateString
                             : '<span class="has-text-grey">(No Close Date)</span>') +
                         "</td>") +
+                    ("<td>" +
+                        (workOrder.workOrderMilestoneCount === 0
+                            ? "-"
+                            : workOrder.workOrderMilestoneCompletionCount +
+                                " / " +
+                                workOrder.workOrderMilestoneCount) +
+                        "</td>") +
                     "</tr>");
             }
             searchResultsContainerElement.innerHTML =
@@ -58,6 +65,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "<th>Work Order Description</th>" +
                     "<th>Open Date</th>" +
                     "<th>Close Date</th>" +
+                    "<th>Progress</th>" +
                     "</tr></thead>" +
                     "<table>" +
                     '<div class="level">' +

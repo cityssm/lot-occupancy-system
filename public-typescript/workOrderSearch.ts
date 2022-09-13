@@ -79,6 +79,13 @@ declare const cityssm: cityssmGlobal;
                                     ? workOrder.workOrderCloseDateString
                                     : '<span class="has-text-grey">(No Close Date)</span>') +
                                 "</td>") +
+                            ("<td>" +
+                                (workOrder.workOrderMilestoneCount === 0
+                                    ? "-"
+                                    : workOrder.workOrderMilestoneCompletionCount +
+                                      " / " +
+                                      workOrder.workOrderMilestoneCount) +
+                                "</td>") +
                             "</tr>"
                     );
                 }
@@ -91,6 +98,7 @@ declare const cityssm: cityssmGlobal;
                     "<th>Work Order Description</th>" +
                     "<th>Open Date</th>" +
                     "<th>Close Date</th>" +
+                    "<th>Progress</th>" +
                     "</tr></thead>" +
                     "<table>" +
                     '<div class="level">' +
