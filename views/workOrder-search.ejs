@@ -39,7 +39,7 @@
                     <div class="control has-icons-left">
                         <div class="select is-fullwidth">
                         <select id="searchFilter--workOrderTypeId" name="workOrderTypeId">
-                            <option value="">(All Work Order Types Types)</option>
+                            <option value="">(All Work Order Types)</option>
                             <% for (const workOrderType of workOrderTypes) { %>
                             <option value="<%= workOrderType.workOrderTypeId %>"><%= workOrderType.workOrderType || "(No Name)" %></option>
                             <% } %>
