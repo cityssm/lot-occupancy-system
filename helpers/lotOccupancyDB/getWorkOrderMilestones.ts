@@ -37,8 +37,8 @@ export const getWorkOrderMilestones = (
                 " where m.recordDelete_timeMillis is null" +
                 " and m.workOrderId = ?" +
                 " order by" +
-                " m.workOrderMilestoneDate, m.workOrderMilestoneTime," +
                 " m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime," +
+                " m.workOrderMilestoneDate, case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end," +
                 " t.orderNumber, m.workOrderMilestoneId"
         )
         .all(workOrderId);

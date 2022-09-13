@@ -6,6 +6,7 @@ import type { BulmaJS } from "@cityssm/bulma-js/types";
 import type * as globalTypes from "../types/globalTypes";
 import type * as recordTypes from "../types/recordTypes";
 import { response } from "express";
+import { closeDelimiter } from "ejs";
 
 declare const cityssm: cityssmGlobal;
 declare const bulmaJS: BulmaJS;
@@ -844,6 +845,23 @@ declare const bulmaJS: BulmaJS;
             exports.workOrderMilestones as recordTypes.WorkOrderMilestone[];
         delete exports.workOrderMilestones;
 
+        const processMilestoneResponse = (responseJSON: {
+            success: boolean;
+            errorMessage?: string;
+            workOrderMilestones?: recordTypes.WorkOrderMilestone[];
+        }) => {
+            if (responseJSON.success) {
+                workOrderMilestones = responseJSON.workOrderMilestones;
+                renderMilestones();
+            } else {
+                bulmaJS.alert({
+                    title: "Error Reopening Milestone",
+                    message: responseJSON.errorMessage,
+                    contextualColorName: "danger"
+                });
+            }
+        };
+
         const completeMilestone = (clickEvent: Event) => {
             clickEvent.preventDefault();
 
@@ -874,23 +892,7 @@ declare const bulmaJS: BulmaJS;
                         workOrderId,
                         workOrderMilestoneId
                     },
-                    (responseJSON: {
-                        success: boolean;
-                        errorMessage?: string;
-                        workOrderMilestones?: recordTypes.WorkOrderMilestone[];
-                    }) => {
-                        if (responseJSON.success) {
-                            workOrderMilestones =
-                                responseJSON.workOrderMilestones;
-                            renderMilestones();
-                        } else {
-                            bulmaJS.alert({
-                                title: "Error Completing Milestone",
-                                message: responseJSON.errorMessage,
-                                contextualColorName: "danger"
-                            });
-                        }
-                    }
+                    processMilestoneResponse
                 );
             };
 
@@ -927,23 +929,7 @@ declare const bulmaJS: BulmaJS;
                         workOrderId,
                         workOrderMilestoneId
                     },
-                    (responseJSON: {
-                        success: boolean;
-                        errorMessage?: string;
-                        workOrderMilestones?: recordTypes.WorkOrderMilestone[];
-                    }) => {
-                        if (responseJSON.success) {
-                            workOrderMilestones =
-                                responseJSON.workOrderMilestones;
-                            renderMilestones();
-                        } else {
-                            bulmaJS.alert({
-                                title: "Error Reopening Milestone",
-                                message: responseJSON.errorMessage,
-                                contextualColorName: "danger"
-                            });
-                        }
-                    }
+                    processMilestoneResponse
                 );
             };
 
@@ -960,6 +946,37 @@ declare const bulmaJS: BulmaJS;
         };
 
         const deleteMilestone = (clickEvent: Event) => {
+            clickEvent.preventDefault();
+
+            const workOrderMilestoneId = (
+                (clickEvent.currentTarget as HTMLElement).closest(
+                    ".container--milestone"
+                ) as HTMLElement
+            ).dataset.workOrderMilestoneId;
+
+            const doDelete = () => {
+                cityssm.postJSON(
+                    urlPrefix + "/workOrders/doDeleteWorkOrderMilestone",
+                    {
+                        workOrderMilestoneId,
+                        workOrderId
+                    },
+                    processMilestoneResponse
+                );
+            };
+
+            bulmaJS.confirm({
+                title: "Delete Milestone",
+                message: "Are you sure you want to delete this milestone?",
+                contextualColorName: "warning",
+                okButton: {
+                    text: "Yes, Delete Milestone",
+                    callbackFunction: doDelete
+                }
+            });
+        };
+
+        const editMilestone = (clickEvent: Event) => {
             clickEvent.preventDefault();
         };
 
@@ -1009,6 +1026,9 @@ declare const bulmaJS: BulmaJS;
                               "</strong><br />"
                             : "") +
                         milestone.workOrderMilestoneDateString +
+                        (milestone.workOrderMilestoneTime
+                            ? " " + milestone.workOrderMilestoneTimeString
+                            : "") +
                         "<br />" +
                         '<span class="is-size-7">' +
                         cityssm.escapeHTML(
@@ -1029,9 +1049,12 @@ declare const bulmaJS: BulmaJS;
                                 ? '<a class="dropdown-item button--reopenMilestone" href="#">' +
                                   '<span class="icon is-small"><i class="fas fa-times" aria-hidden="true"></i></span>' +
                                   " <span>Reopen Milestone</span>" +
-                                  "</a>" +
-                                  '<hr class="dropdown-divider" />'
-                                : "") +
+                                  "</a>"
+                                : '<a class="dropdown-item button--editMilestone" href="#">' +
+                                  '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
+                                  " <span>Edit Milestone</span>" +
+                                  "</a>") +
+                            '<hr class="dropdown-divider" />' +
                             '<a class="dropdown-item button--deleteMilestone" href="#">' +
                             '<span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>' +
                             " <span>Delete Milestone</span>" +
@@ -1048,6 +1071,10 @@ declare const bulmaJS: BulmaJS;
                         .addEventListener("click", reopenMilestone);
                 } else {
                     panelBlockElement
+                        .querySelector(".button--editMilestone")
+                        .addEventListener("click", editMilestone);
+
+                    panelBlockElement
                         .querySelector(".button--completeMilestone")
                         .addEventListener("click", completeMilestone);
                 }
@@ -1063,5 +1090,71 @@ declare const bulmaJS: BulmaJS;
         };
 
         renderMilestones();
+
+        document
+            .querySelector("#button--addMilestone")
+            .addEventListener("click", () => {
+                let addCloseModalFunction: () => void;
+
+                const doAdd = (submitEvent: SubmitEvent) => {
+                    submitEvent.preventDefault();
+
+                    cityssm.postJSON(
+                        urlPrefix + "/workOrders/doAddWorkOrderMilestone",
+                        submitEvent.currentTarget,
+                        (responseJSON: {
+                            success: boolean;
+                            errorMessage?: string;
+                            workOrderMilestones?: recordTypes.WorkOrderMilestone[];
+                        }) => {
+                            processMilestoneResponse(responseJSON);
+
+                            if (responseJSON.success) {
+                                addCloseModalFunction();
+                            }
+                        }
+                    );
+                };
+
+                cityssm.openHtmlModal("workOrder-addMilestone", {
+                    onshow: (modalElement) => {
+                        (
+                            modalElement.querySelector(
+                                "#milestoneAdd--workOrderId"
+                            ) as HTMLInputElement
+                        ).value = workOrderId;
+
+                        const milestoneTypeElement = modalElement.querySelector(
+                            "#milestoneAdd--workOrderMilestoneTypeId"
+                        ) as HTMLSelectElement;
+
+                        for (const milestoneType of exports.workOrderMilestoneTypes as recordTypes.WorkOrderMilestoneType[]) {
+                            const optionElement =
+                                document.createElement("option");
+
+                            optionElement.value =
+                                milestoneType.workOrderMilestoneTypeId.toString();
+                            optionElement.textContent =
+                                milestoneType.workOrderMilestoneType;
+
+                            milestoneTypeElement.append(optionElement);
+                        }
+
+                        (
+                            modalElement.querySelector(
+                                "#milestoneAdd--workOrderMilestoneDateString"
+                            ) as HTMLInputElement
+                        ).valueAsDate = new Date();
+                    },
+                    onshown: (modalElement, closeModalFunction) => {
+                        addCloseModalFunction = closeModalFunction;
+                        bulmaJS.toggleHtmlClipped();
+                        modalElement.querySelector("form").addEventListener("submit", doAdd);
+                    },
+                    onremoved: () => {
+                        bulmaJS.toggleHtmlClipped();
+                    }
+                });
+            });
     }
 })();

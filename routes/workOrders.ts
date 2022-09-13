@@ -17,8 +17,10 @@ import handler_doDeleteWorkOrderLotOccupancy from "../handlers/workOrders-post/d
 import handler_doAddWorkOrderLot from "../handlers/workOrders-post/doAddWorkOrderLot.js";
 import handler_doDeleteWorkOrderLot from "../handlers/workOrders-post/doDeleteWorkOrderLot.js";
 
+import handler_doAddWorkOrderMilestone from "../handlers/workOrders-post/doAddWorkOrderMilestone.js";
 import handler_doCompleteWorkOrderMilestone from "../handlers/workOrders-post/doCompleteWorkOrderMilestone.js";
 import handler_doReopenWorkOrderMilestone from "../handlers/workOrders-post/doReopenWorkOrderMilestone.js";
+import handler_doDeleteWorkOrderMilestone from "../handlers/workOrders-post/doDeleteWorkOrderMilestone.js";
 
 export const router = Router();
 
@@ -70,6 +72,14 @@ router.post(
     handler_doDeleteWorkOrderLot
 );
 
+// Milestones
+
+router.post(
+    "/doAddWorkOrderMilestone",
+    permissionHandlers.updatePostHandler,
+    handler_doAddWorkOrderMilestone
+);
+
 router.post(
     "/doCompleteWorkOrderMilestone",
     permissionHandlers.updatePostHandler,
@@ -80,6 +90,12 @@ router.post(
     "/doReopenWorkOrderMilestone",
     permissionHandlers.updatePostHandler,
     handler_doReopenWorkOrderMilestone
+);
+
+router.post(
+    "/doDeleteWorkOrderMilestone",
+    permissionHandlers.updatePostHandler,
+    handler_doDeleteWorkOrderMilestone
 );
 
 export default router;

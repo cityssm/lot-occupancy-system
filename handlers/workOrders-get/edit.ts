@@ -2,6 +2,7 @@ import type { RequestHandler } from "express";
 
 import {
     getLotStatuses,
+    getWorkOrderMilestoneTypes,
     getWorkOrderTypes
 } from "../../helpers/functions.cache.js";
 
@@ -30,6 +31,8 @@ export const handler: RequestHandler = (request, response) => {
 
     const workOrderTypes = getWorkOrderTypes();
 
+    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+
     const lotStatuses = getLotStatuses();
 
     response.render("workOrder-edit", {
@@ -37,6 +40,7 @@ export const handler: RequestHandler = (request, response) => {
         workOrder,
         isCreate: false,
         workOrderTypes,
+        workOrderMilestoneTypes,
         lotStatuses
     });
 };

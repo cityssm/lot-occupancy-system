@@ -1,4 +1,4 @@
-import { getLotStatuses, getWorkOrderTypes } from "../../helpers/functions.cache.js";
+import { getLotStatuses, getWorkOrderMilestoneTypes, getWorkOrderTypes } from "../../helpers/functions.cache.js";
 import * as configFunctions from "../../helpers/functions.config.js";
 import { getWorkOrder } from "../../helpers/lotOccupancyDB/getWorkOrder.js";
 export const handler = (request, response) => {
@@ -14,12 +14,14 @@ export const handler = (request, response) => {
             "/?error=workOrderIsClosed");
     }
     const workOrderTypes = getWorkOrderTypes();
+    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
     const lotStatuses = getLotStatuses();
     response.render("workOrder-edit", {
         headTitle: "Work Order #" + workOrder.workOrderNumber,
         workOrder,
         isCreate: false,
         workOrderTypes,
+        workOrderMilestoneTypes,
         lotStatuses
     });
 };
