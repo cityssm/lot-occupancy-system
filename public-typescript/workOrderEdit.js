@@ -596,14 +596,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
         delete exports.workOrderMilestones;
         const completeMilestone = (clickEvent) => {
             clickEvent.preventDefault();
-            const workOrderMilestoneId = clickEvent.currentTarget.closest(".container--milestone").dataset.workOrderMilestoneId;
+            const currentDateString = cityssm.dateToString(new Date());
+            const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest(".container--milestone").dataset.workOrderMilestoneId, 10);
+            const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
+                return (currentMilestone.workOrderMilestoneId ===
+                    workOrderMilestoneId);
+            });
             const doComplete = () => {
                 cityssm.postJSON(urlPrefix + "/workOrders/doCompleteWorkOrderMilestone", {
                     workOrderId,
                     workOrderMilestoneId
                 }, (responseJSON) => {
                     if (responseJSON.success) {
-                        workOrderMilestones = responseJSON.workOrderMilestones;
+                        workOrderMilestones =
+                            responseJSON.workOrderMilestones;
                         renderMilestones();
                     }
                     else {
@@ -617,7 +623,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             };
             bulmaJS.confirm({
                 title: "Complete Milestone",
-                message: "Are you sure you want to complete this milestone?",
+                message: "Are you sure you want to complete this milestone?" +
+                    (workOrderMilestone.workOrderMilestoneDateString >
+                        currentDateString
+                        ? "<br /><strong>Note that this milestone is expected to be completed in the future.</strong>"
+                        : ""),
+                messageIsHtml: true,
                 contextualColorName: "warning",
                 okButton: {
                     text: "Yes, Complete Milestone",
@@ -634,7 +645,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     workOrderMilestoneId
                 }, (responseJSON) => {
                     if (responseJSON.success) {
-                        workOrderMilestones = responseJSON.workOrderMilestones;
+                        workOrderMilestones =
+                            responseJSON.workOrderMilestones;
                         renderMilestones();
                     }
                     else {

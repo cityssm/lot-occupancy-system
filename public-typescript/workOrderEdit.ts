@@ -847,34 +847,62 @@ declare const bulmaJS: BulmaJS;
         const completeMilestone = (clickEvent: Event) => {
             clickEvent.preventDefault();
 
-            const workOrderMilestoneId = (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--milestone"
-                ) as HTMLElement
-            ).dataset.workOrderMilestoneId;
+            const currentDateString = cityssm.dateToString(new Date());
+
+            const workOrderMilestoneId = Number.parseInt(
+                (
+                    (clickEvent.currentTarget as HTMLElement).closest(
+                        ".container--milestone"
+                    ) as HTMLElement
+                ).dataset.workOrderMilestoneId,
+                10
+            );
+
+            const workOrderMilestone = workOrderMilestones.find(
+                (currentMilestone) => {
+                    return (
+                        currentMilestone.workOrderMilestoneId ===
+                        workOrderMilestoneId
+                    );
+                }
+            );
 
             const doComplete = () => {
-                cityssm.postJSON(urlPrefix + "/workOrders/doCompleteWorkOrderMilestone", {
-                    workOrderId,
-                    workOrderMilestoneId
-                },
-                (responseJSON: {success: boolean; errorMessage?: string; workOrderMilestones?: recordTypes.WorkOrderMilestone[];}) => {
-                    if (responseJSON.success) {
-                        workOrderMilestones = responseJSON.workOrderMilestones;
-                        renderMilestones();
-                    } else {
-                        bulmaJS.alert({
-                            title: "Error Completing Milestone",
-                            message: responseJSON.errorMessage,
-                            contextualColorName: "danger"
-                        });
+                cityssm.postJSON(
+                    urlPrefix + "/workOrders/doCompleteWorkOrderMilestone",
+                    {
+                        workOrderId,
+                        workOrderMilestoneId
+                    },
+                    (responseJSON: {
+                        success: boolean;
+                        errorMessage?: string;
+                        workOrderMilestones?: recordTypes.WorkOrderMilestone[];
+                    }) => {
+                        if (responseJSON.success) {
+                            workOrderMilestones =
+                                responseJSON.workOrderMilestones;
+                            renderMilestones();
+                        } else {
+                            bulmaJS.alert({
+                                title: "Error Completing Milestone",
+                                message: responseJSON.errorMessage,
+                                contextualColorName: "danger"
+                            });
+                        }
                     }
-                });
+                );
             };
 
             bulmaJS.confirm({
                 title: "Complete Milestone",
-                message: "Are you sure you want to complete this milestone?",
+                message:
+                    "Are you sure you want to complete this milestone?" +
+                    (workOrderMilestone.workOrderMilestoneDateString >
+                    currentDateString
+                        ? "<br /><strong>Note that this milestone is expected to be completed in the future.</strong>"
+                        : ""),
+                messageIsHtml: true,
                 contextualColorName: "warning",
                 okButton: {
                     text: "Yes, Complete Milestone",
@@ -893,27 +921,36 @@ declare const bulmaJS: BulmaJS;
             ).dataset.workOrderMilestoneId;
 
             const doReopen = () => {
-                cityssm.postJSON(urlPrefix + "/workOrders/doReopenWorkOrderMilestone", {
-                    workOrderId,
-                    workOrderMilestoneId
-                },
-                (responseJSON: {success: boolean; errorMessage?: string; workOrderMilestones?: recordTypes.WorkOrderMilestone[];}) => {
-                    if (responseJSON.success) {
-                        workOrderMilestones = responseJSON.workOrderMilestones;
-                        renderMilestones();
-                    } else {
-                        bulmaJS.alert({
-                            title: "Error Reopening Milestone",
-                            message: responseJSON.errorMessage,
-                            contextualColorName: "danger"
-                        });
+                cityssm.postJSON(
+                    urlPrefix + "/workOrders/doReopenWorkOrderMilestone",
+                    {
+                        workOrderId,
+                        workOrderMilestoneId
+                    },
+                    (responseJSON: {
+                        success: boolean;
+                        errorMessage?: string;
+                        workOrderMilestones?: recordTypes.WorkOrderMilestone[];
+                    }) => {
+                        if (responseJSON.success) {
+                            workOrderMilestones =
+                                responseJSON.workOrderMilestones;
+                            renderMilestones();
+                        } else {
+                            bulmaJS.alert({
+                                title: "Error Reopening Milestone",
+                                message: responseJSON.errorMessage,
+                                contextualColorName: "danger"
+                            });
+                        }
                     }
-                });
+                );
             };
 
             bulmaJS.confirm({
                 title: "Reopen Milestone",
-                message: "Are you sure you want to remove the completion status from this milestone, and reopen it?",
+                message:
+                    "Are you sure you want to remove the completion status from this milestone, and reopen it?",
                 contextualColorName: "warning",
                 okButton: {
                     text: "Yes, Reopen Milestone",
