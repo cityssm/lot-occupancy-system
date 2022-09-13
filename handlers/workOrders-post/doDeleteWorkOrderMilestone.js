@@ -2,7 +2,9 @@ import { deleteWorkOrderMilestone } from "../../helpers/lotOccupancyDB/deleteWor
 import { getWorkOrderMilestones } from "../../helpers/lotOccupancyDB/getWorkOrderMilestones.js";
 export const handler = async (request, response) => {
     const success = deleteWorkOrderMilestone(request.body.workOrderMilestoneId, request.session);
-    const workOrderMilestones = getWorkOrderMilestones(request.body.workOrderId);
+    const workOrderMilestones = getWorkOrderMilestones({
+        workOrderId: request.body.workOrderId
+    });
     response.json({
         success,
         workOrderMilestones

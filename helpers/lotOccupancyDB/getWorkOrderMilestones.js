@@ -1,13 +1,19 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { dateIntegerToString, timeIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
-export const getWorkOrderMilestones = (workOrderId, connectedDatabase) => {
+export const getWorkOrderMilestones = (filters, connectedDatabase) => {
     const database = connectedDatabase ||
         sqlite(databasePath, {
             readonly: true
         });
     database.function("userFn_dateIntegerToString", dateIntegerToString);
     database.function("userFn_timeIntegerToString", timeIntegerToString);
+    let sqlWhereClause = " where m.recordDelete_timeMillis is null";
+    const sqlParameters = [];
+    if (filters.workOrderId) {
+        sqlWhereClause += " and m.workOrderId = ?";
+        sqlParameters.push(filters.workOrderId);
+    }
     const workOrderMilestones = database
         .prepare("select m.workOrderMilestoneId," +
         " m.workOrderMilestoneTypeId, t.workORderMilestoneType," +
@@ -19,13 +25,12 @@ export const getWorkOrderMilestones = (workOrderId, connectedDatabase) => {
         " m.recordCreate_userName, m.recordUpdate_userName" +
         " from WorkOrderMilestones m" +
         " left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId" +
-        " where m.recordDelete_timeMillis is null" +
-        " and m.workOrderId = ?" +
+        sqlWhereClause +
         " order by" +
         " m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime," +
         " m.workOrderMilestoneDate, case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end," +
         " t.orderNumber, m.workOrderMilestoneId")
-        .all(workOrderId);
+        .all(sqlParameters);
     if (!connectedDatabase) {
         database.close();
     }

@@ -9,8 +9,12 @@ import {
 
 import type * as recordTypes from "../../types/recordTypes";
 
+interface WorkOrderMilestoneFilters {
+    workOrderId?: number | string;
+}
+
 export const getWorkOrderMilestones = (
-    workOrderId: number | string,
+    filters: WorkOrderMilestoneFilters,
     connectedDatabase?: sqlite.Database
 ): recordTypes.WorkOrderMilestone[] => {
     const database =
@@ -21,6 +25,14 @@ export const getWorkOrderMilestones = (
 
     database.function("userFn_dateIntegerToString", dateIntegerToString);
     database.function("userFn_timeIntegerToString", timeIntegerToString);
+
+    let sqlWhereClause = " where m.recordDelete_timeMillis is null";
+    const sqlParameters = [];
+
+    if (filters.workOrderId) {
+        sqlWhereClause += " and m.workOrderId = ?";
+        sqlParameters.push(filters.workOrderId);
+    }
 
     const workOrderMilestones = database
         .prepare(
@@ -34,14 +46,13 @@ export const getWorkOrderMilestones = (
                 " m.recordCreate_userName, m.recordUpdate_userName" +
                 " from WorkOrderMilestones m" +
                 " left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId" +
-                " where m.recordDelete_timeMillis is null" +
-                " and m.workOrderId = ?" +
+                sqlWhereClause +
                 " order by" +
                 " m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime," +
                 " m.workOrderMilestoneDate, case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end," +
                 " t.orderNumber, m.workOrderMilestoneId"
         )
-        .all(workOrderId);
+        .all(sqlParameters);
 
     if (!connectedDatabase) {
         database.close();

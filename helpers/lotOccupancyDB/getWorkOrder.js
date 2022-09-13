@@ -36,7 +36,9 @@ const _getWorkOrder = (sql, workOrderId_or_workOrderNumber) => {
             includeOccupants: true
         }, database).lotOccupancies;
         workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId, database);
-        workOrder.workOrderMilestones = getWorkOrderMilestones(workOrder.workOrderId, database);
+        workOrder.workOrderMilestones = getWorkOrderMilestones({
+            workOrderId: workOrder.workOrderId
+        }, database);
     }
     database.close();
     return workOrder;

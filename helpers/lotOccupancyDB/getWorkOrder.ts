@@ -68,7 +68,9 @@ const _getWorkOrder = (
         );
 
         workOrder.workOrderMilestones = getWorkOrderMilestones(
-            workOrder.workOrderId,
+            {
+                workOrderId: workOrder.workOrderId
+            },
             database
         );
     }

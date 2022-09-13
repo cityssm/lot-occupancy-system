@@ -2,7 +2,9 @@ import { addWorkOrderMilestone } from "../../helpers/lotOccupancyDB/addWorkOrder
 import { getWorkOrderMilestones } from "../../helpers/lotOccupancyDB/getWorkOrderMilestones.js";
 export const handler = async (request, response) => {
     const success = addWorkOrderMilestone(request.body, request.session);
-    const workOrderMilestones = getWorkOrderMilestones(request.body.workOrderId);
+    const workOrderMilestones = getWorkOrderMilestones({
+        workOrderId: request.body.workOrderId
+    });
     response.json({
         success,
         workOrderMilestones

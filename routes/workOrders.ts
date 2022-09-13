@@ -5,6 +5,8 @@ import * as permissionHandlers from "../handlers/permissions.js";
 import handler_search from "../handlers/workOrders-get/search.js";
 import handler_doSearchWorkOrders from "../handlers/workOrders-post/doSearchWorkOrders.js";
 
+import handler_milestoneCalendar from "../handlers/workOrders-get/milestoneCalendar.js";
+
 import handler_view from "../handlers/workOrders-get/view.js";
 import handler_doReopenWorkOrder from "../handlers/workOrders-post/doReopenWorkOrder.js";
 
@@ -28,9 +30,17 @@ import handler_doDeleteWorkOrderMilestone from "../handlers/workOrders-post/doDe
 
 export const router = Router();
 
+// Search
+
 router.get("/", handler_search);
 
 router.post("/doSearchWorkOrders", handler_doSearchWorkOrders);
+
+// Milestone Calendar
+
+router.get("/milestoneCalendar", handler_milestoneCalendar);
+
+// New
 
 router.get("/new", permissionHandlers.adminGetHandler, handler_new);
 
@@ -40,6 +50,8 @@ router.post(
     handler_doCreateWorkOrder
 );
 
+// View
+
 router.get("/:workOrderId", handler_view);
 
 router.post(
@@ -47,6 +59,8 @@ router.post(
     permissionHandlers.updatePostHandler,
     handler_doReopenWorkOrder
 );
+
+// Edit
 
 router.get(
     "/:workOrderId/edit",
