@@ -18,6 +18,7 @@ import handler_doAddWorkOrderLot from "../handlers/workOrders-post/doAddWorkOrde
 import handler_doDeleteWorkOrderLot from "../handlers/workOrders-post/doDeleteWorkOrderLot.js";
 
 import handler_doAddWorkOrderMilestone from "../handlers/workOrders-post/doAddWorkOrderMilestone.js";
+import handler_doUpdateWorkOrderMilestone from "../handlers/workOrders-post/doUpdateWorkOrderMilestone.js";
 import handler_doCompleteWorkOrderMilestone from "../handlers/workOrders-post/doCompleteWorkOrderMilestone.js";
 import handler_doReopenWorkOrderMilestone from "../handlers/workOrders-post/doReopenWorkOrderMilestone.js";
 import handler_doDeleteWorkOrderMilestone from "../handlers/workOrders-post/doDeleteWorkOrderMilestone.js";
@@ -78,6 +79,12 @@ router.post(
     "/doAddWorkOrderMilestone",
     permissionHandlers.updatePostHandler,
     handler_doAddWorkOrderMilestone
+);
+
+router.post(
+    "/doUpdateWorkOrderMilestone",
+    permissionHandlers.updatePostHandler,
+    handler_doUpdateWorkOrderMilestone
 );
 
 router.post(

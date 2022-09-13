@@ -676,6 +676,66 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         const editMilestone = (clickEvent) => {
             clickEvent.preventDefault();
+            const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest(".container--milestone").dataset.workOrderMilestoneId, 10);
+            const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
+                return (currentMilestone.workOrderMilestoneId ===
+                    workOrderMilestoneId);
+            });
+            let editCloseModalFunction;
+            const doEdit = (submitEvent) => {
+                submitEvent.preventDefault();
+                cityssm.postJSON(urlPrefix + "/workOrders/doUpdateWorkOrderMilestone", submitEvent.currentTarget, (responseJSON) => {
+                    processMilestoneResponse(responseJSON);
+                    if (responseJSON.success) {
+                        editCloseModalFunction();
+                    }
+                });
+            };
+            cityssm.openHtmlModal("workOrder-editMilestone", {
+                onshow: (modalElement) => {
+                    modalElement.querySelector("#milestoneEdit--workOrderId").value = workOrderId;
+                    modalElement.querySelector("#milestoneEdit--workOrderMilestoneId").value =
+                        workOrderMilestone.workOrderMilestoneId.toString();
+                    const milestoneTypeElement = modalElement.querySelector("#milestoneEdit--workOrderMilestoneTypeId");
+                    let milestoneTypeFound = false;
+                    for (const milestoneType of exports.workOrderMilestoneTypes) {
+                        const optionElement = document.createElement("option");
+                        optionElement.value =
+                            milestoneType.workOrderMilestoneTypeId.toString();
+                        optionElement.textContent =
+                            milestoneType.workOrderMilestoneType;
+                        if (milestoneType.workOrderMilestoneTypeId ===
+                            workOrderMilestone.workOrderMilestoneTypeId) {
+                            optionElement.selected = true;
+                            milestoneTypeFound = true;
+                        }
+                        milestoneTypeElement.append(optionElement);
+                    }
+                    if (!milestoneTypeFound &&
+                        workOrderMilestone.workOrderMilestoneTypeId) {
+                        const optionElement = document.createElement("option");
+                        optionElement.value =
+                            workOrderMilestone.workOrderMilestoneTypeId.toString();
+                        optionElement.textContent =
+                            workOrderMilestone.workOrderMilestoneType;
+                        optionElement.selected = true;
+                        milestoneTypeElement.append(optionElement);
+                    }
+                    modalElement.querySelector("#milestoneEdit--workOrderMilestoneDateString").value = workOrderMilestone.workOrderMilestoneDateString;
+                    modalElement.querySelector("#milestoneEdit--workOrderMilestoneTimeString").value = workOrderMilestone.workOrderMilestoneTimeString;
+                    modalElement.querySelector("#milestoneEdit--workOrderMilestoneDescription").value = workOrderMilestone.workOrderMilestoneDescription;
+                },
+                onshown: (modalElement, closeModalFunction) => {
+                    editCloseModalFunction = closeModalFunction;
+                    bulmaJS.toggleHtmlClipped();
+                    modalElement
+                        .querySelector("form")
+                        .addEventListener("submit", doEdit);
+                },
+                onremoved: () => {
+                    bulmaJS.toggleHtmlClipped();
+                }
+            });
         };
         const renderMilestones = () => {
             const milestonesPanelElement = document.querySelector("#panel--milestones");
@@ -798,7 +858,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 onshown: (modalElement, closeModalFunction) => {
                     addCloseModalFunction = closeModalFunction;
                     bulmaJS.toggleHtmlClipped();
-                    modalElement.querySelector("form").addEventListener("submit", doAdd);
+                    modalElement
+                        .querySelector("form")
+                        .addEventListener("submit", doAdd);
                 },
                 onremoved: () => {
                     bulmaJS.toggleHtmlClipped();

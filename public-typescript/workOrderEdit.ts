@@ -978,6 +978,129 @@ declare const bulmaJS: BulmaJS;
 
         const editMilestone = (clickEvent: Event) => {
             clickEvent.preventDefault();
+
+            const workOrderMilestoneId = Number.parseInt(
+                (
+                    (clickEvent.currentTarget as HTMLElement).closest(
+                        ".container--milestone"
+                    ) as HTMLElement
+                ).dataset.workOrderMilestoneId,
+                10
+            );
+
+            const workOrderMilestone = workOrderMilestones.find(
+                (currentMilestone) => {
+                    return (
+                        currentMilestone.workOrderMilestoneId ===
+                        workOrderMilestoneId
+                    );
+                }
+            );
+
+            let editCloseModalFunction: () => void;
+
+            const doEdit = (submitEvent: SubmitEvent) => {
+                submitEvent.preventDefault();
+
+                cityssm.postJSON(
+                    urlPrefix + "/workOrders/doUpdateWorkOrderMilestone",
+                    submitEvent.currentTarget,
+                    (responseJSON: {
+                        success: boolean;
+                        errorMessage?: string;
+                        workOrderMilestones?: recordTypes.WorkOrderMilestone[];
+                    }) => {
+                        processMilestoneResponse(responseJSON);
+                        if (responseJSON.success) {
+                            editCloseModalFunction();
+                        }
+                    }
+                );
+            };
+
+            cityssm.openHtmlModal("workOrder-editMilestone", {
+                onshow: (modalElement) => {
+                    (
+                        modalElement.querySelector(
+                            "#milestoneEdit--workOrderId"
+                        ) as HTMLInputElement
+                    ).value = workOrderId;
+
+                    (
+                        modalElement.querySelector(
+                            "#milestoneEdit--workOrderMilestoneId"
+                        ) as HTMLInputElement
+                    ).value =
+                        workOrderMilestone.workOrderMilestoneId.toString();
+
+                    const milestoneTypeElement = modalElement.querySelector(
+                        "#milestoneEdit--workOrderMilestoneTypeId"
+                    ) as HTMLSelectElement;
+
+                    let milestoneTypeFound = false;
+
+                    for (const milestoneType of exports.workOrderMilestoneTypes as recordTypes.WorkOrderMilestoneType[]) {
+                        const optionElement = document.createElement("option");
+
+                        optionElement.value =
+                            milestoneType.workOrderMilestoneTypeId.toString();
+                        optionElement.textContent =
+                            milestoneType.workOrderMilestoneType;
+
+                        if (
+                            milestoneType.workOrderMilestoneTypeId ===
+                            workOrderMilestone.workOrderMilestoneTypeId
+                        ) {
+                            optionElement.selected = true;
+                            milestoneTypeFound = true;
+                        }
+
+                        milestoneTypeElement.append(optionElement);
+                    }
+
+                    if (
+                        !milestoneTypeFound &&
+                        workOrderMilestone.workOrderMilestoneTypeId
+                    ) {
+                        const optionElement = document.createElement("option");
+                        optionElement.value =
+                            workOrderMilestone.workOrderMilestoneTypeId.toString();
+                        optionElement.textContent =
+                            workOrderMilestone.workOrderMilestoneType;
+                        optionElement.selected = true;
+                        milestoneTypeElement.append(optionElement);
+                    }
+
+                    (
+                        modalElement.querySelector(
+                            "#milestoneEdit--workOrderMilestoneDateString"
+                        ) as HTMLInputElement
+                    ).value = workOrderMilestone.workOrderMilestoneDateString;
+
+                    (
+                        modalElement.querySelector(
+                            "#milestoneEdit--workOrderMilestoneTimeString"
+                        ) as HTMLInputElement
+                    ).value = workOrderMilestone.workOrderMilestoneTimeString;
+                    (
+                        modalElement.querySelector(
+                            "#milestoneEdit--workOrderMilestoneDescription"
+                        ) as HTMLTextAreaElement
+                    ).value = workOrderMilestone.workOrderMilestoneDescription;
+                },
+                onshown: (modalElement, closeModalFunction) => {
+                    editCloseModalFunction = closeModalFunction;
+
+                    bulmaJS.toggleHtmlClipped();
+
+                    modalElement
+                        .querySelector("form")
+                        .addEventListener("submit", doEdit);
+                },
+                onremoved: () => {
+                    bulmaJS.toggleHtmlClipped();
+                }
+            });
         };
 
         const renderMilestones = () => {
@@ -1149,7 +1272,9 @@ declare const bulmaJS: BulmaJS;
                     onshown: (modalElement, closeModalFunction) => {
                         addCloseModalFunction = closeModalFunction;
                         bulmaJS.toggleHtmlClipped();
-                        modalElement.querySelector("form").addEventListener("submit", doAdd);
+                        modalElement
+                            .querySelector("form")
+                            .addEventListener("submit", doAdd);
                     },
                     onremoved: () => {
                         bulmaJS.toggleHtmlClipped();

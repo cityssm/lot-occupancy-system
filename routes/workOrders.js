@@ -11,6 +11,7 @@ import handler_doDeleteWorkOrderLotOccupancy from "../handlers/workOrders-post/d
 import handler_doAddWorkOrderLot from "../handlers/workOrders-post/doAddWorkOrderLot.js";
 import handler_doDeleteWorkOrderLot from "../handlers/workOrders-post/doDeleteWorkOrderLot.js";
 import handler_doAddWorkOrderMilestone from "../handlers/workOrders-post/doAddWorkOrderMilestone.js";
+import handler_doUpdateWorkOrderMilestone from "../handlers/workOrders-post/doUpdateWorkOrderMilestone.js";
 import handler_doCompleteWorkOrderMilestone from "../handlers/workOrders-post/doCompleteWorkOrderMilestone.js";
 import handler_doReopenWorkOrderMilestone from "../handlers/workOrders-post/doReopenWorkOrderMilestone.js";
 import handler_doDeleteWorkOrderMilestone from "../handlers/workOrders-post/doDeleteWorkOrderMilestone.js";
@@ -26,6 +27,7 @@ router.post("/doDeleteWorkOrderLotOccupancy", permissionHandlers.updatePostHandl
 router.post("/doAddWorkOrderLot", permissionHandlers.updatePostHandler, handler_doAddWorkOrderLot);
 router.post("/doDeleteWorkOrderLot", permissionHandlers.updatePostHandler, handler_doDeleteWorkOrderLot);
 router.post("/doAddWorkOrderMilestone", permissionHandlers.updatePostHandler, handler_doAddWorkOrderMilestone);
+router.post("/doUpdateWorkOrderMilestone", permissionHandlers.updatePostHandler, handler_doUpdateWorkOrderMilestone);
 router.post("/doCompleteWorkOrderMilestone", permissionHandlers.updatePostHandler, handler_doCompleteWorkOrderMilestone);
 router.post("/doReopenWorkOrderMilestone", permissionHandlers.updatePostHandler, handler_doReopenWorkOrderMilestone);
 router.post("/doDeleteWorkOrderMilestone", permissionHandlers.updatePostHandler, handler_doDeleteWorkOrderMilestone);
