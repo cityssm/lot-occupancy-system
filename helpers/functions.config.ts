@@ -63,6 +63,14 @@ configFallbackValues.set("settings.lotOccupancy.occupantProvinceDefault", "");
 configFallbackValues.set("settings.fees.taxPercentageDefault", 0);
 
 configFallbackValues.set("settings.workOrders.workOrderNumberLength", 6);
+configFallbackValues.set(
+    "settings.workOrders.workOrderMilestoneDateRecentBeforeDays",
+    5
+);
+configFallbackValues.set(
+    "settings.workOrders.workOrderMilestoneDateRecentAfterDays",
+    60
+);
 
 /*
  * Set up function overloads
@@ -146,6 +154,14 @@ export function getProperty(
 
 export function getProperty(
     propertyName: "settings.workOrders.workOrderNumberLength"
+): number;
+
+export function getProperty(
+    propertyName: "settings.workOrders.workOrderMilestoneDateRecentBeforeDays"
+): number;
+
+export function getProperty(
+    propertyName: "settings.workOrders.workOrderMilestoneDateRecentAfterDays"
 ): number;
 
 export function getProperty(propertyName: string): unknown {

@@ -1295,7 +1295,11 @@ function importFromWorkOrderCSV() {
                     user
                 );
 
-                workOrder = getWorkOrder(workOrderId);
+                workOrder = getWorkOrder(workOrderId,  {
+                    includeLotsAndLotOccupancies: true,
+                    includeComments: true,
+                    includeMilestones: true
+                });
             }
 
             let lot: recordTypes.Lot;
@@ -1628,8 +1632,13 @@ function importFromWorkOrderCSV() {
                     workOrderRow.WO_FUNERAL_DAY
                 );
 
+                let funeralHour = Number.parseInt(workOrderRow.WO_FUNERAL_HR, 10);
+                if (funeralHour <= 6) {
+                    funeralHour += 12;
+                }
+
                 const workOrderMilestoneTimeString = formatTimeString(
-                    workOrderRow.WO_FUNERAL_HR,
+                    funeralHour.toString(),
                     workOrderRow.WO_FUNERAL_MIN
                 );
 

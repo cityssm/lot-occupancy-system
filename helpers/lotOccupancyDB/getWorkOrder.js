@@ -13,40 +13,56 @@ const baseSQL = "select w.workOrderId," +
     " from WorkOrders w" +
     " left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId" +
     " where w.recordDelete_timeMillis is null";
-const _getWorkOrder = (sql, workOrderId_or_workOrderNumber) => {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+const _getWorkOrder = (sql, workOrderId_or_workOrderNumber, options, connectedDatabase) => {
+    const database = connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
     database.function("userFn_dateIntegerToString", dateIntegerToString);
     const workOrder = database
         .prepare(sql)
         .get(workOrderId_or_workOrderNumber);
     if (workOrder) {
-        workOrder.workOrderLots = getLots({
-            workOrderId: workOrder.workOrderId
-        }, {
-            limit: -1,
-            offset: 0
-        }, database).lots;
-        workOrder.workOrderLotOccupancies = getLotOccupancies({
-            workOrderId: workOrder.workOrderId
-        }, {
-            limit: -1,
-            offset: 0,
-            includeOccupants: true
-        }, database).lotOccupancies;
-        workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId, database);
-        workOrder.workOrderMilestones = getWorkOrderMilestones({
-            workOrderId: workOrder.workOrderId
-        }, database);
+        if (options.includeLotsAndLotOccupancies) {
+            workOrder.workOrderLots = getLots({
+                workOrderId: workOrder.workOrderId
+            }, {
+                limit: -1,
+                offset: 0
+            }, database).lots;
+            workOrder.workOrderLotOccupancies = getLotOccupancies({
+                workOrderId: workOrder.workOrderId
+            }, {
+                limit: -1,
+                offset: 0,
+                includeOccupants: true
+            }, database).lotOccupancies;
+        }
+        if (options.includeComments) {
+            workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId, database);
+        }
+        if (options.includeMilestones) {
+            workOrder.workOrderMilestones = getWorkOrderMilestones({
+                workOrderId: workOrder.workOrderId
+            }, {
+                includeWorkOrders: false,
+                orderBy: "completion"
+            }, database);
+        }
     }
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
     return workOrder;
 };
 export const getWorkOrderByWorkOrderNumber = (workOrderNumber) => {
-    return _getWorkOrder(baseSQL + " and w.workOrderNumber = ?", workOrderNumber);
+    return _getWorkOrder(baseSQL + " and w.workOrderNumber = ?", workOrderNumber, {
+        includeLotsAndLotOccupancies: true,
+        includeComments: true,
+        includeMilestones: true
+    });
 };
-export const getWorkOrder = (workOrderId) => {
-    return _getWorkOrder(baseSQL + " and w.workOrderId = ?", workOrderId);
+export const getWorkOrder = (workOrderId, options, connectedDatabase) => {
+    return _getWorkOrder(baseSQL + " and w.workOrderId = ?", workOrderId, options, connectedDatabase);
 };
 export default getWorkOrder;

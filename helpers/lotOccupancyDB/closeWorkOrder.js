@@ -14,6 +14,6 @@ export const closeWorkOrder = (workOrderForm, requestSession) => {
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
         : dateToInteger(new Date()), requestSession.user.userName, rightNow.getTime(), workOrderForm.workOrderId);
     database.close();
-    return result.lastInsertRowid;
+    return result.changes > 0;
 };
 export default closeWorkOrder;

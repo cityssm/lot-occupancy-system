@@ -728,7 +728,11 @@ function importFromWorkOrderCSV() {
                         workOrderRow.WO_REMARK3).trim(),
                     workOrderOpenDateString
                 }, user);
-                workOrder = getWorkOrder(workOrderId);
+                workOrder = getWorkOrder(workOrderId, {
+                    includeLotsAndLotOccupancies: true,
+                    includeComments: true,
+                    includeMilestones: true
+                });
             }
             let lot;
             if (workOrderRow.WO_CEMETERY !== "00") {
@@ -912,7 +916,11 @@ function importFromWorkOrderCSV() {
             }
             if (workOrderRow.WO_FUNERAL_YR) {
                 const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_FUNERAL_YR, workOrderRow.WO_FUNERAL_MON, workOrderRow.WO_FUNERAL_DAY);
-                const workOrderMilestoneTimeString = formatTimeString(workOrderRow.WO_FUNERAL_HR, workOrderRow.WO_FUNERAL_MIN);
+                let funeralHour = Number.parseInt(workOrderRow.WO_FUNERAL_HR, 10);
+                if (funeralHour <= 6) {
+                    funeralHour += 12;
+                }
+                const workOrderMilestoneTimeString = formatTimeString(funeralHour.toString(), workOrderRow.WO_FUNERAL_MIN);
                 addWorkOrderMilestone({
                     workOrderId: workOrder.workOrderId,
                     workOrderMilestoneTypeId: funeralWorkOrderMilestoneType.workOrderMilestoneTypeId,

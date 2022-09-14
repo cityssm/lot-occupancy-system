@@ -6,6 +6,7 @@ import handler_search from "../handlers/workOrders-get/search.js";
 import handler_doSearchWorkOrders from "../handlers/workOrders-post/doSearchWorkOrders.js";
 
 import handler_milestoneCalendar from "../handlers/workOrders-get/milestoneCalendar.js";
+import handler_doGetWorkOrderMilestones from "../handlers/workOrders-post/doGetWorkOrderMilestones.js";
 
 import handler_view from "../handlers/workOrders-get/view.js";
 import handler_doReopenWorkOrder from "../handlers/workOrders-post/doReopenWorkOrder.js";
@@ -15,6 +16,8 @@ import handler_doCreateWorkOrder from "../handlers/workOrders-post/doCreateWorkO
 
 import handler_edit from "../handlers/workOrders-get/edit.js";
 import handler_doUpdateWorkOrder from "../handlers/workOrders-post/doUpdateWorkOrder.js";
+import handler_doCloseWorkOrder from "../handlers/workOrders-post/doCloseWorkOrder.js";
+import handler_doDeleteWorkOrder from "../handlers/workOrders-post/doDeleteWorkOrder.js";
 
 import handler_doAddWorkOrderLotOccupancy from "../handlers/workOrders-post/doAddWorkOrderLotOccupancy.js";
 import handler_doDeleteWorkOrderLotOccupancy from "../handlers/workOrders-post/doDeleteWorkOrderLotOccupancy.js";
@@ -39,6 +42,8 @@ router.post("/doSearchWorkOrders", handler_doSearchWorkOrders);
 // Milestone Calendar
 
 router.get("/milestoneCalendar", handler_milestoneCalendar);
+
+router.post("/doGetWorkOrderMilestones", handler_doGetWorkOrderMilestones);
 
 // New
 
@@ -73,6 +78,20 @@ router.post(
     permissionHandlers.updatePostHandler,
     handler_doUpdateWorkOrder
 );
+
+router.post(
+    "/doCloseWorkOrder",
+    permissionHandlers.updatePostHandler,
+    handler_doCloseWorkOrder
+);
+
+router.post(
+    "/doDeleteWorkOrder",
+    permissionHandlers.updatePostHandler,
+    handler_doDeleteWorkOrder
+);
+
+// Lot Occupancy
 
 router.post(
     "/doAddWorkOrderLotOccupancy",

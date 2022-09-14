@@ -44,6 +44,8 @@ export interface Config {
         };
         workOrders?: {
             workOrderNumberLength?: number;
+            workOrderMilestoneDateRecentBeforeDays?: number;
+            workOrderMilestoneDateRecentAfterDays?: number;
         };
     };
 }

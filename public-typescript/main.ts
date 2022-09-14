@@ -118,10 +118,29 @@ import type * as globalTypes from "../types/globalTypes";
         }
     };
 
+    const hues = ["red", "green", "orange", "blue", "pink", "yellow", "purple"];
+    const luminosity = ["bright", "light", "dark"];
+
+    const getRandomColor = (seedString: string) => {
+
+        let actualSeedString = seedString;
+
+        if (actualSeedString.length < 2) {
+            actualSeedString = actualSeedString + "a1";
+        }
+
+        return exports.randomColor({
+            seed: actualSeedString + actualSeedString,
+            hue: hues[actualSeedString.codePointAt(actualSeedString.length - 1) % hues.length],
+            luminosity: luminosity[actualSeedString.codePointAt(actualSeedString.length - 2) % luminosity.length]
+        });
+    };
+
     const los: globalTypes.LOS = {
         highlightMap,
         initializeUnlockFieldButtons,
-        populateAliases
+        populateAliases,
+        getRandomColor
     };
 
     exports.los = los;

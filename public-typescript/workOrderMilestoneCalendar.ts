@@ -1,21 +1,152 @@
 /* eslint-disable unicorn/prefer-module */
 
 import type * as recordTypes from "../types/recordTypes";
-
+import type * as globalTypes from "../types/globalTypes";
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 
 declare const cityssm: cityssmGlobal;
 
 (() => {
+    const los = exports.los as globalTypes.LOS;
+
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
-    const workOrderSearchFiltersFormElement = document.querySelector("#form--searchFilters") as HTMLFormElement;
+    const workOrderSearchFiltersFormElement = document.querySelector(
+        "#form--searchFilters"
+    ) as HTMLFormElement;
 
-    const workOrderMilestoneDateFilterElement = workOrderSearchFiltersFormElement.querySelector("#searchFilter--workOrderMilestoneDateFilter") as HTMLSelectElement;
-    const workOrderMilestoneDateStringElement = workOrderSearchFiltersFormElement.querySelector("#searchFilter--workOrderMilestoneDateString") as HTMLInputElement;
+    const workOrderMilestoneDateFilterElement =
+        workOrderSearchFiltersFormElement.querySelector(
+            "#searchFilter--workOrderMilestoneDateFilter"
+        ) as HTMLSelectElement;
 
-    const renderMilestones = (workOrderMilestones: recordTypes.WorkOrderMilestone[]) => {
+    const workOrderMilestoneDateStringElement =
+        workOrderSearchFiltersFormElement.querySelector(
+            "#searchFilter--workOrderMilestoneDateString"
+        ) as HTMLInputElement;
 
+    const milestoneCalendarContainerElement = document.querySelector(
+        "#container--milestoneCalendar"
+    ) as HTMLElement;
+
+    const renderMilestones = (
+        workOrderMilestones: recordTypes.WorkOrderMilestone[]
+    ) => {
+        if (workOrderMilestones.length === 0) {
+            milestoneCalendarContainerElement.innerHTML =
+                '<div class="message is-info">' +
+                '<p class="message-body">There are no milestones that meet the search criteria.</p>' +
+                "</div>";
+            return;
+        }
+
+        milestoneCalendarContainerElement.innerHTML = "";
+
+        let currentDate = cityssm.dateToString(new Date());
+
+        let currentPanelElement: HTMLElement;
+        let currentPanelDateString = "";
+
+        for (const milestone of workOrderMilestones) {
+            if (currentPanelDateString !== milestone.workOrderMilestoneDateString) {
+                if (currentPanelElement) {
+                    milestoneCalendarContainerElement.append(
+                        currentPanelElement
+                    );
+                }
+
+                currentPanelElement = document.createElement("div");
+                currentPanelElement.className = "panel";
+
+                currentPanelElement.innerHTML =
+                    '<h2 class="panel-heading">' +
+                    milestone.workOrderMilestoneDateString +
+                    "</h2>";
+
+                    currentPanelDateString = milestone.workOrderMilestoneDateString;
+            }
+
+            const panelBlockElement = document.createElement("div");
+
+            panelBlockElement.className = "panel-block is-block";
+
+            if (!milestone.workOrderMilestoneCompletionDate && milestone.workOrderMilestoneDateString < currentDate) {
+                panelBlockElement.classList.add("has-background-warning-light");
+            }
+
+            let lotOccupancyHTML = "";
+
+            for (const lot of milestone.workOrder.workOrderLots) {
+                lotOccupancyHTML +=
+                    '<i class="fas fa-vector-square" aria-label="' +
+                    cityssm.escapeHTML(exports.aliases.lot) +
+                    '"></i> ' +
+                    cityssm.escapeHTML(lot.lotName) +
+                    "<br />";
+            }
+
+            for (const lotOccupancy of milestone.workOrder
+                .workOrderLotOccupancies) {
+                if (lotOccupancy.lotOccupancyOccupants.length > 0) {
+                    lotOccupancyHTML +=
+                        '<i class="fas fa-user" aria-label="' +
+                        cityssm.escapeHTML(exports.aliases.lotOccupancy) +
+                        '"></i> ' +
+                        cityssm.escapeHTML(
+                            lotOccupancy.lotOccupancyOccupants[0].occupantName
+                        ) +
+                        "<br />";
+                }
+            }
+
+            panelBlockElement.innerHTML =
+                '<div class="columns">' +
+                ('<div class="column is-narrow">' +
+                    '<span class="icon is-small">' +
+                    (milestone.workOrderMilestoneCompletionDate
+                        ? '<i class="fas fa-check" aria-label="Completed"></i>'
+                        : '<i class="far fa-square has-text-grey" aria-label="Incomplete"></i>') +
+                    "</span>" +
+                    "</div>") +
+                ('<div class="column">' +
+                    (milestone.workOrderMilestoneTime === 0
+                        ? ""
+                        : milestone.workOrderMilestoneTimeString + "<br />") +
+                    (milestone.workOrderMilestoneTypeId
+                        ? "<strong>" +
+                          cityssm.escapeHTML(milestone.workOrderMilestoneType) +
+                          "</strong><br />"
+                        : "") +
+                    '<span class="is-size-7">' +
+                    cityssm.escapeHTML(
+                        milestone.workOrderMilestoneDescription
+                    ) +
+                    "</span>" +
+                    "</div>") +
+                ('<div class="column">' +
+                    "<i class=\"fas fa-circle\" style=\"color:" + los.getRandomColor(milestone.workOrder.workOrderNumber) + "\" aria-hidden=\"true\"></i>" +
+                    ' <a class="has-text-weight-bold" href="' +
+                    urlPrefix +
+                    "/workOrders/" +
+                    milestone.workOrderId +
+                    '">' +
+                    cityssm.escapeHTML(milestone.workOrder.workOrderNumber) +
+                    "</a><br />" +
+                    '<span class="is-size-7">' +
+                    cityssm.escapeHTML(
+                        milestone.workOrder.workOrderDescription
+                    ) +
+                    "</span>" +
+                    "</div>") +
+                ('<div class="column is-size-7">' +
+                    lotOccupancyHTML +
+                    "</div>") +
+                "</div>";
+
+            currentPanelElement.append(panelBlockElement);
+        }
+
+        milestoneCalendarContainerElement.append(currentPanelElement);
     };
 
     const getMilestones = (event?: Event) => {
@@ -23,19 +154,33 @@ declare const cityssm: cityssmGlobal;
             event.preventDefault();
         }
 
-        cityssm.postJSON(urlPrefix + "/workOrders/doGetWorkOrderMilestones",
-        workOrderSearchFiltersFormElement,
-        (responseJSON: {workOrderMilestones: recordTypes.WorkOrderMilestone[]}) => {
-            renderMilestones(responseJSON.workOrderMilestones);
-        })
-    } ;
+        milestoneCalendarContainerElement.innerHTML =
+            '<div class="has-text-grey has-text-centered">' +
+            '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
+            "Loading Milestones..." +
+            "</div>";
+
+        cityssm.postJSON(
+            urlPrefix + "/workOrders/doGetWorkOrderMilestones",
+            workOrderSearchFiltersFormElement,
+            (responseJSON: {
+                workOrderMilestones: recordTypes.WorkOrderMilestone[];
+            }) => {
+                renderMilestones(responseJSON.workOrderMilestones);
+            }
+        );
+    };
 
     workOrderMilestoneDateFilterElement.addEventListener("change", () => {
-        workOrderMilestoneDateStringElement.disabled = (workOrderMilestoneDateFilterElement.value !== "date");
+        workOrderMilestoneDateStringElement.disabled =
+            workOrderMilestoneDateFilterElement.value !== "date";
         getMilestones();
     });
 
-    workOrderMilestoneDateStringElement.addEventListener("change", getMilestones);
+    workOrderMilestoneDateStringElement.addEventListener(
+        "change",
+        getMilestones
+    );
     workOrderSearchFiltersFormElement.addEventListener("submit", getMilestones);
 
     getMilestones();

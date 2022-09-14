@@ -17,7 +17,7 @@ interface AddWorkOrderForm {
 export const closeWorkOrder = (
     workOrderForm: AddWorkOrderForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): boolean => {
     const database = sqlite(databasePath);
 
     const rightNow = new Date();
@@ -41,7 +41,7 @@ export const closeWorkOrder = (
 
     database.close();
 
-    return result.lastInsertRowid as number;
+    return result.changes > 0;
 };
 
 export default closeWorkOrder;

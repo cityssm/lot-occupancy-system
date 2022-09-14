@@ -122,6 +122,11 @@ app.use(
     express.static(path.join("node_modules", "leaflet", "dist"))
 );
 
+app.use(
+    urlPrefix + "/lib/randomcolor",
+    express.static(path.join("node_modules", "randomcolor"))
+);
+
 /*
  * SESSION MANAGEMENT
  */

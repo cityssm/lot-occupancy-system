@@ -6,6 +6,8 @@ export const handler = async (request, response) => {
     }, request.session);
     const workOrderMilestones = getWorkOrderMilestones({
         workOrderId: request.body.workOrderId
+    }, {
+        orderBy: "completion"
     });
     response.json({
         success,

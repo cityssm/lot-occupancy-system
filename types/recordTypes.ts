@@ -279,7 +279,9 @@ export interface WorkOrderComment extends Record {
 
 export interface WorkOrderMilestone extends Record {
     workOrderMilestoneId?: number;
+
     workOrderId?: number;
+    workOrder?: WorkOrder;
 
     workOrderMilestoneTypeId?: number;
     workOrderMilestoneType?: string;

@@ -6,9 +6,14 @@ import { getWorkOrderMilestones } from "../../helpers/lotOccupancyDB/getWorkOrde
 export const handler: RequestHandler = async (request, response) => {
     const success = addWorkOrderMilestone(request.body, request.session);
 
-    const workOrderMilestones = getWorkOrderMilestones({
-        workOrderId: request.body.workOrderId
-    });
+    const workOrderMilestones = getWorkOrderMilestones(
+        {
+            workOrderId: request.body.workOrderId
+        },
+        {
+            orderBy: "completion"
+        }
+    );
 
     response.json({
         success,

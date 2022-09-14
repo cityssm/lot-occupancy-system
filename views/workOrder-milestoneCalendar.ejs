@@ -1,7 +1,5 @@
 <%- include('_header'); -%>
 
-<%- include('_header'); -%>
-
 <div class="columns">
     <div class="column is-3 is-hidden-mobile">
         <%- include('_menu-workOrders'); -%>
@@ -36,7 +34,7 @@
                             <label class="label" for="searchFilter--workOrderMilestoneDateFilter">Miestone Date Filter Type</label>
                             <div class="control">
                                 <div class="select is-fullwidth">
-                                    <select id="searchFilter--workOrderMilestoneDateFilter">
+                                    <select id="searchFilter--workOrderMilestoneDateFilter" name="workOrderMilestoneDateFilter">
                                         <option value="upcomingMissed" selected>Upcoming and Missed</option>
                                         <option value="recent">Recent</option>
                                         <option value="date">Specific Date</option>
@@ -56,6 +54,8 @@
                 </div>
             </form>
         </div>
+
+        <div id="container--milestoneCalendar"></div>
     </div>
 </div>
 

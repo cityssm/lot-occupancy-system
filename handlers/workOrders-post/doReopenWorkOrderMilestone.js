@@ -4,6 +4,8 @@ export const handler = async (request, response) => {
     const success = reopenWorkOrderMilestone(request.body.workOrderMilestoneId, request.session);
     const workOrderMilestones = getWorkOrderMilestones({
         workOrderId: request.body.workOrderId
+    }, {
+        orderBy: "completion"
     });
     response.json({
         success,

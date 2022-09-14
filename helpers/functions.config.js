@@ -32,6 +32,8 @@ configFallbackValues.set("settings.lotOccupancy.occupantCityDefault", "");
 configFallbackValues.set("settings.lotOccupancy.occupantProvinceDefault", "");
 configFallbackValues.set("settings.fees.taxPercentageDefault", 0);
 configFallbackValues.set("settings.workOrders.workOrderNumberLength", 6);
+configFallbackValues.set("settings.workOrders.workOrderMilestoneDateRecentBeforeDays", 5);
+configFallbackValues.set("settings.workOrders.workOrderMilestoneDateRecentAfterDays", 60);
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split(".");
     let currentObject = config;

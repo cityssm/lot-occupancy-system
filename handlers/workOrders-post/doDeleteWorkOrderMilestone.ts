@@ -10,9 +10,14 @@ export const handler: RequestHandler = async (request, response) => {
         request.session
     );
 
-    const workOrderMilestones = getWorkOrderMilestones({
-        workOrderId: request.body.workOrderId
-    });
+    const workOrderMilestones = getWorkOrderMilestones(
+        {
+            workOrderId: request.body.workOrderId
+        },
+        {
+            orderBy: "completion"
+        }
+    );
 
     response.json({
         success,

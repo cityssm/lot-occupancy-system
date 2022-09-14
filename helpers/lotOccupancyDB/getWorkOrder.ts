@@ -14,6 +14,12 @@ import { getWorkOrderMilestones } from "./getWorkOrderMilestones.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
+interface WorkOrderOptions {
+    includeLotsAndLotOccupancies: boolean;
+    includeComments: boolean;
+    includeMilestones: boolean;
+}
+
 const baseSQL =
     "select w.workOrderId," +
     " w.workOrderTypeId, t.workOrderType," +
@@ -26,11 +32,15 @@ const baseSQL =
 
 const _getWorkOrder = (
     sql: string,
-    workOrderId_or_workOrderNumber: number | string
+    workOrderId_or_workOrderNumber: number | string,
+    options: WorkOrderOptions,
+    connectedDatabase?: sqlite.Database
 ): recordTypes.WorkOrder => {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+    const database =
+        connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
 
     database.function("userFn_dateIntegerToString", dateIntegerToString);
 
@@ -39,43 +49,55 @@ const _getWorkOrder = (
         .get(workOrderId_or_workOrderNumber);
 
     if (workOrder) {
-        workOrder.workOrderLots = getLots(
-            {
-                workOrderId: workOrder.workOrderId
-            },
-            {
-                limit: -1,
-                offset: 0
-            },
-            database
-        ).lots;
+        if (options.includeLotsAndLotOccupancies) {
+            workOrder.workOrderLots = getLots(
+                {
+                    workOrderId: workOrder.workOrderId
+                },
+                {
+                    limit: -1,
+                    offset: 0
+                },
+                database
+            ).lots;
 
-        workOrder.workOrderLotOccupancies = getLotOccupancies(
-            {
-                workOrderId: workOrder.workOrderId
-            },
-            {
-                limit: -1,
-                offset: 0,
-                includeOccupants: true
-            },
-            database
-        ).lotOccupancies;
+            workOrder.workOrderLotOccupancies = getLotOccupancies(
+                {
+                    workOrderId: workOrder.workOrderId
+                },
+                {
+                    limit: -1,
+                    offset: 0,
+                    includeOccupants: true
+                },
+                database
+            ).lotOccupancies;
+        }
 
-        workOrder.workOrderComments = getWorkOrderComments(
-            workOrder.workOrderId,
-            database
-        );
+        if (options.includeComments) {
+            workOrder.workOrderComments = getWorkOrderComments(
+                workOrder.workOrderId,
+                database
+            );
+        }
 
-        workOrder.workOrderMilestones = getWorkOrderMilestones(
-            {
-                workOrderId: workOrder.workOrderId
-            },
-            database
-        );
+        if (options.includeMilestones) {
+            workOrder.workOrderMilestones = getWorkOrderMilestones(
+                {
+                    workOrderId: workOrder.workOrderId
+                },
+                {
+                    includeWorkOrders: false,
+                    orderBy: "completion"
+                },
+                database
+            );
+        }
     }
 
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
 
     return workOrder;
 };
@@ -85,14 +107,26 @@ export const getWorkOrderByWorkOrderNumber = (
 ): recordTypes.WorkOrder => {
     return _getWorkOrder(
         baseSQL + " and w.workOrderNumber = ?",
-        workOrderNumber
+        workOrderNumber,
+        {
+            includeLotsAndLotOccupancies: true,
+            includeComments: true,
+            includeMilestones: true
+        }
     );
 };
 
 export const getWorkOrder = (
-    workOrderId: number | string
+    workOrderId: number | string,
+    options: WorkOrderOptions,
+    connectedDatabase?: sqlite.Database
 ): recordTypes.WorkOrder => {
-    return _getWorkOrder(baseSQL + " and w.workOrderId = ?", workOrderId);
+    return _getWorkOrder(
+        baseSQL + " and w.workOrderId = ?",
+        workOrderId,
+        options,
+        connectedDatabase
+    );
 };
 
 export default getWorkOrder;

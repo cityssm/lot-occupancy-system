@@ -33,4 +33,6 @@ export declare function getProperty(propertyName: "settings.lotOccupancy.occupan
 export declare function getProperty(propertyName: "settings.lotOccupancy.occupantProvinceDefault"): string;
 export declare function getProperty(propertyName: "settings.fees.taxPercentageDefault"): number;
 export declare function getProperty(propertyName: "settings.workOrders.workOrderNumberLength"): number;
+export declare function getProperty(propertyName: "settings.workOrders.workOrderMilestoneDateRecentBeforeDays"): number;
+export declare function getProperty(propertyName: "settings.workOrders.workOrderMilestoneDateRecentAfterDays"): number;
 export declare const keepAliveMillis: number;

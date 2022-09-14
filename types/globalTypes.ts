@@ -6,4 +6,5 @@ export interface LOS {
     ) => void;
     initializeUnlockFieldButtons: (containerElement: HTMLElement) => void;
     populateAliases: (containerElement: HTMLElement) => void;
+    getRandomColor: (seedString: string) => string;
 }

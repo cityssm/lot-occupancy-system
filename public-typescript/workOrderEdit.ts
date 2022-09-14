@@ -66,6 +66,105 @@ declare const bulmaJS: BulmaJS;
         });
 
     /*
+     * Work Order Options
+     */
+
+    let workOrderMilestones: recordTypes.WorkOrderMilestone[];
+
+    if (!isCreate) {
+        const doClose = () => {
+            cityssm.postJSON(
+                urlPrefix + "/workOrders/doCloseWorkOrder",
+                {
+                    workOrderId
+                },
+                (responseJSON: { success: boolean; errorMessage?: string }) => {
+                    if (responseJSON.success) {
+                        window.location.href =
+                            urlPrefix + "/workOrders/" + workOrderId;
+                    } else {
+                        bulmaJS.alert({
+                            title: "Error Closing Work Order",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                }
+            );
+        };
+
+        document
+            .querySelector("#button--closeWorkOrder")
+            .addEventListener("click", () => {
+                const hasOpenMilestones = workOrderMilestones.some(
+                    (milestone) => {
+                        return !milestone.workOrderMilestoneCompletionDate;
+                    }
+                );
+
+                if (hasOpenMilestones) {
+                    bulmaJS.confirm({
+                        title: "Close Work Order with Outstanding Milestones",
+                        message:
+                            "Are you sure you want to close this work order with outstanding milestones?",
+                        contextualColorName: "danger",
+                        okButton: {
+                            text: "Yes, Close Work Order",
+                            callbackFunction: doClose
+                        }
+                    });
+                } else {
+                    bulmaJS.confirm({
+                        title: "Close Work Order",
+                        message:
+                            "Are you sure you want to close this work order?",
+                        contextualColorName: "info",
+                        okButton: {
+                            text: "Yes, Close Work Order",
+                            callbackFunction: doClose
+                        }
+                    });
+                }
+            });
+
+        const doDelete = () => {
+            cityssm.postJSON(
+                urlPrefix + "/workOrders/doDeleteWorkOrder",
+                {
+                    workOrderId
+                },
+                (responseJSON: { success: boolean; errorMessage?: string }) => {
+                    if (responseJSON.success) {
+                        window.location.href = urlPrefix + "/workOrders";
+                    } else {
+                        bulmaJS.alert({
+                            title: "Error Deleting Work Order",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                }
+            );
+        };
+
+        document
+            .querySelector("#button--deleteWorkOrder")
+            .addEventListener("click", (clickEvent: Event) => {
+                clickEvent.preventDefault();
+
+                bulmaJS.confirm({
+                    title: "Delete Work Order",
+                    message: "Are you sure you want to delete this work order?",
+                    contextualColorName: "warning",
+                    okButton: {
+                        text: "Yes, Delete Work Order",
+                        callbackFunction: doDelete
+                    }
+                });
+            });
+    }
+
+    /*
      * Related Lots
      */
 
@@ -843,7 +942,7 @@ declare const bulmaJS: BulmaJS;
      */
 
     if (!isCreate) {
-        let workOrderMilestones =
+        workOrderMilestones =
             exports.workOrderMilestones as recordTypes.WorkOrderMilestone[];
         delete exports.workOrderMilestones;
 
@@ -1079,11 +1178,15 @@ declare const bulmaJS: BulmaJS;
                         ) as HTMLInputElement
                     ).value = workOrderMilestone.workOrderMilestoneDateString;
 
-                    (
-                        modalElement.querySelector(
-                            "#milestoneEdit--workOrderMilestoneTimeString"
-                        ) as HTMLInputElement
-                    ).value = workOrderMilestone.workOrderMilestoneTimeString;
+                    if (workOrderMilestone.workOrderMilestoneTime) {
+                        (
+                            modalElement.querySelector(
+                                "#milestoneEdit--workOrderMilestoneTimeString"
+                            ) as HTMLInputElement
+                        ).value =
+                            workOrderMilestone.workOrderMilestoneTimeString;
+                    }
+
                     (
                         modalElement.querySelector(
                             "#milestoneEdit--workOrderMilestoneDescription"
@@ -1219,26 +1322,52 @@ declare const bulmaJS: BulmaJS;
         document
             .querySelector("#button--addMilestone")
             .addEventListener("click", () => {
+                let addModalElement: HTMLElement;
                 let addCloseModalFunction: () => void;
 
                 const doAdd = (submitEvent: SubmitEvent) => {
                     submitEvent.preventDefault();
 
-                    cityssm.postJSON(
-                        urlPrefix + "/workOrders/doAddWorkOrderMilestone",
-                        submitEvent.currentTarget,
-                        (responseJSON: {
-                            success: boolean;
-                            errorMessage?: string;
-                            workOrderMilestones?: recordTypes.WorkOrderMilestone[];
-                        }) => {
-                            processMilestoneResponse(responseJSON);
+                    const currentDateString = cityssm.dateToString(new Date());
 
-                            if (responseJSON.success) {
-                                addCloseModalFunction();
+                    const _doAdd = () => {
+                        cityssm.postJSON(
+                            urlPrefix + "/workOrders/doAddWorkOrderMilestone",
+                            submitEvent.currentTarget,
+                            (responseJSON: {
+                                success: boolean;
+                                errorMessage?: string;
+                                workOrderMilestones?: recordTypes.WorkOrderMilestone[];
+                            }) => {
+                                processMilestoneResponse(responseJSON);
+
+                                if (responseJSON.success) {
+                                    addCloseModalFunction();
+                                }
                             }
-                        }
-                    );
+                        );
+                    };
+
+                    if (
+                        (
+                            addModalElement.querySelector(
+                                "#milestoneAdd--workOrderMilestoneDateString"
+                            ) as HTMLInputElement
+                        ).value < currentDateString
+                    ) {
+                        bulmaJS.confirm({
+                            title: "Milestone Date in the Past",
+                            message:
+                                "Are you sure you want to create a milestone with a date in the past?",
+                            contextualColorName: "warning",
+                            okButton: {
+                                text: "Yes, Create a Past Milestone",
+                                callbackFunction: _doAdd
+                            }
+                        });
+                    } else {
+                        _doAdd();
+                    }
                 };
 
                 cityssm.openHtmlModal("workOrder-addMilestone", {
@@ -1272,8 +1401,11 @@ declare const bulmaJS: BulmaJS;
                         ).valueAsDate = new Date();
                     },
                     onshown: (modalElement, closeModalFunction) => {
+                        addModalElement = modalElement;
                         addCloseModalFunction = closeModalFunction;
+
                         bulmaJS.toggleHtmlClipped();
+
                         modalElement
                             .querySelector("form")
                             .addEventListener("submit", doAdd);
