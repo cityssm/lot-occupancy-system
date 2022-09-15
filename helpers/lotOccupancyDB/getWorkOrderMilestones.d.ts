@@ -4,6 +4,8 @@ interface WorkOrderMilestoneFilters {
     workOrderId?: number | string;
     workOrderMilestoneDateFilter?: "upcomingMissed" | "recent" | "date";
     workOrderMilestoneDateString?: string;
+    workOrderTypeIds?: string;
+    workOrderMilestoneTypeIds?: string;
 }
 interface WorkOrderMilestoneOptions {
     includeWorkOrders?: boolean;

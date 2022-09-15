@@ -12,6 +12,7 @@ import FileStore from "session-file-store";
 
 import routerLogin from "./routes/login.js";
 import routerDashboard from "./routes/dashboard.js";
+import routerApi from "./routes/api.js";
 import routerLots from "./routes/lots.js";
 import routerMaps from "./routes/maps.js";
 import routerLotOccupancies from "./routes/lotOccupancies.js";
@@ -29,6 +30,7 @@ import { version } from "./version.js";
 import * as databaseInitializer from "./helpers/initializer.database.js";
 
 import debug from "debug";
+import { apiGetHandler } from "./handlers/permissions.js";
 const debugApp = debug("lot-occupancy-system:app");
 
 /*
@@ -209,6 +211,8 @@ app.get(urlPrefix + "/", sessionChecker, (_request, response) => {
 });
 
 app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
+
+app.use(urlPrefix + "/api/:apiKey", apiGetHandler, routerApi);
 
 app.use(urlPrefix + "/lots", sessionChecker, routerLots);
 app.use(urlPrefix + "/maps", sessionChecker, routerMaps);

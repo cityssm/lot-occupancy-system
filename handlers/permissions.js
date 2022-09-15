@@ -31,3 +31,9 @@ export const updatePostHandler = (request, response, next) => {
     }
     return response.json(forbiddenJSON);
 };
+export const apiGetHandler = async (request, response, next) => {
+    if (await userFunctions.apiKeyIsValid(request)) {
+        return next();
+    }
+    return response.redirect(urlPrefix + "/login");
+};

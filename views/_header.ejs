@@ -106,6 +106,8 @@
     </nav>
 
     <main class="container pt-2 px-3 mr-auto has-min-page-height"
-        data-session-keep-alive-millis="<%= configFunctions.keepAliveMillis %>" data-url-prefix="<%= urlPrefix %>"
+        data-session-keep-alive-millis="<%= configFunctions.keepAliveMillis %>"
+        data-url-prefix="<%= urlPrefix %>"
         data-can-update="<%= user.userProperties.canUpdate ? "true" : "false" %>"
-        data-is-admin="<%= user.userProperties.isAdmin ? "true" : "false" %>">
+        data-is-admin="<%= user.userProperties.isAdmin ? "true" : "false" %>"
+        data-api-key="<%= user.userProperties.apiKey %>">

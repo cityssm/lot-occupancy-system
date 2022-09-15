@@ -9,10 +9,21 @@
                 <span>Work Order Search</span>
             </a>
         </li>
+    </ul>
+    <h2 class="menu-label">
+        Milestones
+    </h2>
+    <ul class="menu-list">
         <li>
             <a class="<%= (headTitle.endsWith("Milestone Calendar") ? "is-active" : "") %>" href="<%= urlPrefix %>/workOrders/milestoneCalendar">
                 <span class="icon is-small"><i class="fas fa-fw fa-calendar" aria-hidden="true"></i></span>
                 <span>Milestone Calendar</span>
+            </a>
+        </li>
+        <li>
+            <a class="<%= (headTitle.endsWith("Outlook Integration") ? "is-active" : "") %>" href="<%= urlPrefix %>/workOrders/outlook">
+                <span class="icon is-small"><i class="fas fa-fw fa-envelope-open-text" aria-hidden="true"></i></span>
+                <span>Outlook Integration</span>
             </a>
         </li>
     </ul>

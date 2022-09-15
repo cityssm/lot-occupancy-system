@@ -19,12 +19,16 @@ interface WorkOrderMilestoneFilters {
     workOrderId?: number | string;
     workOrderMilestoneDateFilter?: "upcomingMissed" | "recent" | "date";
     workOrderMilestoneDateString?: string;
+    workOrderTypeIds?: string;
+    workOrderMilestoneTypeIds?: string;
 }
 
 interface WorkOrderMilestoneOptions {
     includeWorkOrders?: boolean;
     orderBy: "completion" | "date";
 }
+
+const commaSeparatedNumbersRegex = /^\d+(,\d+)*$/;
 
 export const getWorkOrderMilestones = (
     filters: WorkOrderMilestoneFilters,
@@ -95,6 +99,24 @@ export const getWorkOrderMilestones = (
         );
     }
 
+    if (
+        filters.workOrderTypeIds &&
+        commaSeparatedNumbersRegex.test(filters.workOrderTypeIds)
+    ) {
+        sqlWhereClause +=
+            " and w.workOrderTypeId in (" + filters.workOrderTypeIds + ")";
+    }
+
+    if (
+        filters.workOrderMilestoneTypeIds &&
+        commaSeparatedNumbersRegex.test(filters.workOrderMilestoneTypeIds)
+    ) {
+        sqlWhereClause +=
+            " and m.workOrderMilestoneTypeId in (" +
+            filters.workOrderMilestoneTypeIds +
+            ")";
+    }
+
     // Order By
 
     let orderByClause = "";
@@ -125,9 +147,11 @@ export const getWorkOrderMilestones = (
                 " m.workOrderMilestoneDescription," +
                 " m.workOrderMilestoneCompletionDate, userFn_dateIntegerToString(m.workOrderMilestoneCompletionDate) as workOrderMilestoneCompletionDateString," +
                 " m.workOrderMilestoneCompletionTime, userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString," +
-                " m.recordCreate_userName, m.recordUpdate_userName" +
+                " m.recordCreate_userName, m.recordCreate_timeMillis," +
+                " m.recordUpdate_userName, m.recordUpdate_timeMillis" +
                 " from WorkOrderMilestones m" +
                 " left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId" +
+                " left join WorkOrders w on m.workOrderId = w.workOrderId" +
                 sqlWhereClause +
                 orderByClause
         )

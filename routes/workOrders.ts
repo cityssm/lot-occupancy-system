@@ -8,6 +8,8 @@ import handler_doSearchWorkOrders from "../handlers/workOrders-post/doSearchWork
 import handler_milestoneCalendar from "../handlers/workOrders-get/milestoneCalendar.js";
 import handler_doGetWorkOrderMilestones from "../handlers/workOrders-post/doGetWorkOrderMilestones.js";
 
+import handler_outlook from "../handlers/workOrders-get/outlook.js";
+
 import handler_view from "../handlers/workOrders-get/view.js";
 import handler_doReopenWorkOrder from "../handlers/workOrders-post/doReopenWorkOrder.js";
 
@@ -44,6 +46,10 @@ router.post("/doSearchWorkOrders", handler_doSearchWorkOrders);
 router.get("/milestoneCalendar", handler_milestoneCalendar);
 
 router.post("/doGetWorkOrderMilestones", handler_doGetWorkOrderMilestones);
+
+// Outlook Integration
+
+router.get("/outlook", handler_outlook);
 
 // New
 

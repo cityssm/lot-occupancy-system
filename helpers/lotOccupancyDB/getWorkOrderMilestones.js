@@ -3,6 +3,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { getWorkOrder } from "./getWorkOrder.js";
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as configFunctions from "../functions.config.js";
+const commaSeparatedNumbersRegex = /^\d+(,\d+)*$/;
 export const getWorkOrderMilestones = (filters, options, connectedDatabase) => {
     const database = connectedDatabase ||
         sqlite(databasePath, {
@@ -41,6 +42,18 @@ export const getWorkOrderMilestones = (filters, options, connectedDatabase) => {
         sqlWhereClause += " and m.workOrderMilestoneDate = ?";
         sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString));
     }
+    if (filters.workOrderTypeIds &&
+        commaSeparatedNumbersRegex.test(filters.workOrderTypeIds)) {
+        sqlWhereClause +=
+            " and w.workOrderTypeId in (" + filters.workOrderTypeIds + ")";
+    }
+    if (filters.workOrderMilestoneTypeIds &&
+        commaSeparatedNumbersRegex.test(filters.workOrderMilestoneTypeIds)) {
+        sqlWhereClause +=
+            " and m.workOrderMilestoneTypeId in (" +
+                filters.workOrderMilestoneTypeIds +
+                ")";
+    }
     let orderByClause = "";
     switch (options.orderBy) {
         case "completion":
@@ -63,9 +76,11 @@ export const getWorkOrderMilestones = (filters, options, connectedDatabase) => {
         " m.workOrderMilestoneDescription," +
         " m.workOrderMilestoneCompletionDate, userFn_dateIntegerToString(m.workOrderMilestoneCompletionDate) as workOrderMilestoneCompletionDateString," +
         " m.workOrderMilestoneCompletionTime, userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString," +
-        " m.recordCreate_userName, m.recordUpdate_userName" +
+        " m.recordCreate_userName, m.recordCreate_timeMillis," +
+        " m.recordUpdate_userName, m.recordUpdate_timeMillis" +
         " from WorkOrderMilestones m" +
         " left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId" +
+        " left join WorkOrders w on m.workOrderId = w.workOrderId" +
         sqlWhereClause +
         orderByClause)
         .all(sqlParameters);

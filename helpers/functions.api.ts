@@ -54,3 +54,15 @@ export const getApiKeyFromSession = async (
 ) => {
     return await getApiKey(session.user.userName);
 };
+
+export const getUserNameFromApiKey = async (apiKey: string) => {
+    if (!apiKeys) {
+        await loadApiKeys();
+    }
+
+    for (const [userName, currentApiKey] of Object.entries(apiKeys)) {
+        if (apiKey === currentApiKey) {
+            return userName;
+        }
+    }
+};
