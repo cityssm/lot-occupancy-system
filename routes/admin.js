@@ -25,6 +25,11 @@ import handler_doUpdateWorkOrderType from "../handlers/admin-post/doUpdateWorkOr
 import handler_doMoveWorkOrderTypeUp from "../handlers/admin-post/doMoveWorkOrderTypeUp.js";
 import handler_doMoveWorkOrderTypeDown from "../handlers/admin-post/doMoveWorkOrderTypeDown.js";
 import handler_doDeleteWorkOrderType from "../handlers/admin-post/doDeleteWorkOrderType.js";
+import handler_doAddWorkOrderMilestoneType from "../handlers/admin-post/doAddWorkOrderMilestoneType.js";
+import handler_doUpdateWorkOrderMilestoneType from "../handlers/admin-post/doUpdateWorkOrderMilestoneType.js";
+import handler_doMoveWorkOrderMilestoneTypeUp from "../handlers/admin-post/doMoveWorkOrderMilestoneTypeUp.js";
+import handler_doMoveWorkOrderMilestoneTypeDown from "../handlers/admin-post/doMoveWorkOrderMilestoneTypeDown.js";
+import handler_doDeleteWorkOrderMilestoneType from "../handlers/admin-post/doDeleteWorkOrderMilestoneType.js";
 import handler_doAddLotStatus from "../handlers/admin-post/doAddLotStatus.js";
 import handler_doUpdateLotStatus from "../handlers/admin-post/doUpdateLotStatus.js";
 import handler_doMoveLotStatusUp from "../handlers/admin-post/doMoveLotStatusUp.js";
@@ -61,6 +66,11 @@ router.post("/doUpdateWorkOrderType", permissionHandlers.adminPostHandler, handl
 router.post("/doMoveWorkOrderTypeUp", permissionHandlers.adminPostHandler, handler_doMoveWorkOrderTypeUp);
 router.post("/doMoveWorkOrderTypeDown", permissionHandlers.adminPostHandler, handler_doMoveWorkOrderTypeDown);
 router.post("/doDeleteWorkOrderType", permissionHandlers.adminPostHandler, handler_doDeleteWorkOrderType);
+router.post("/doAddWorkOrderMilestoneType", permissionHandlers.adminPostHandler, handler_doAddWorkOrderMilestoneType);
+router.post("/doUpdateWorkOrderMilestoneType", permissionHandlers.adminPostHandler, handler_doUpdateWorkOrderMilestoneType);
+router.post("/doMoveWorkOrderMilestoneTypeUp", permissionHandlers.adminPostHandler, handler_doMoveWorkOrderMilestoneTypeUp);
+router.post("/doMoveWorkOrderMilestoneTypeDown", permissionHandlers.adminPostHandler, handler_doMoveWorkOrderMilestoneTypeDown);
+router.post("/doDeleteWorkOrderMilestoneType", permissionHandlers.adminPostHandler, handler_doDeleteWorkOrderMilestoneType);
 router.post("/doAddLotStatus", permissionHandlers.adminPostHandler, handler_doAddLotStatus);
 router.post("/doUpdateLotStatus", permissionHandlers.adminPostHandler, handler_doUpdateLotStatus);
 router.post("/doMoveLotStatusUp", permissionHandlers.adminPostHandler, handler_doMoveLotStatusUp);

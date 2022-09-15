@@ -12,7 +12,7 @@ export const getWorkOrderMilestoneTypes = () => {
     for (const workOrderMilestoneType of workOrderMilestoneTypes) {
         if (workOrderMilestoneType.orderNumber !== expectedOrderNumber) {
             database
-                .prepare("update WorkOrdeMilestoneTypes" +
+                .prepare("update WorkOrderMilestoneTypes" +
                 " set orderNumber = ?" +
                 " where workOrderMilestoneTypeId = ?")
                 .run(expectedOrderNumber, workOrderMilestoneType.workOrderMilestoneTypeId);

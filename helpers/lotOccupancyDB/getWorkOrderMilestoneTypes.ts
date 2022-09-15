@@ -22,7 +22,7 @@ export const getWorkOrderMilestoneTypes = (): recordTypes.WorkOrderMilestoneType
         if (workOrderMilestoneType.orderNumber !== expectedOrderNumber) {
             database
                 .prepare(
-                    "update WorkOrdeMilestoneTypes" +
+                    "update WorkOrderMilestoneTypes" +
                         " set orderNumber = ?" +
                         " where workOrderMilestoneTypeId = ?"
                 )

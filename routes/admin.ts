@@ -41,6 +41,12 @@ import handler_doMoveWorkOrderTypeUp from "../handlers/admin-post/doMoveWorkOrde
 import handler_doMoveWorkOrderTypeDown from "../handlers/admin-post/doMoveWorkOrderTypeDown.js";
 import handler_doDeleteWorkOrderType from "../handlers/admin-post/doDeleteWorkOrderType.js";
 
+import handler_doAddWorkOrderMilestoneType from "../handlers/admin-post/doAddWorkOrderMilestoneType.js";
+import handler_doUpdateWorkOrderMilestoneType from "../handlers/admin-post/doUpdateWorkOrderMilestoneType.js";
+import handler_doMoveWorkOrderMilestoneTypeUp from "../handlers/admin-post/doMoveWorkOrderMilestoneTypeUp.js";
+import handler_doMoveWorkOrderMilestoneTypeDown from "../handlers/admin-post/doMoveWorkOrderMilestoneTypeDown.js";
+import handler_doDeleteWorkOrderMilestoneType from "../handlers/admin-post/doDeleteWorkOrderMilestoneType.js";
+
 import handler_doAddLotStatus from "../handlers/admin-post/doAddLotStatus.js";
 import handler_doUpdateLotStatus from "../handlers/admin-post/doUpdateLotStatus.js";
 import handler_doMoveLotStatusUp from "../handlers/admin-post/doMoveLotStatusUp.js";
@@ -207,6 +213,37 @@ router.post(
     "/doDeleteWorkOrderType",
     permissionHandlers.adminPostHandler,
     handler_doDeleteWorkOrderType
+);
+// Config Tables - Work Order Milestone Types
+
+router.post(
+    "/doAddWorkOrderMilestoneType",
+    permissionHandlers.adminPostHandler,
+    handler_doAddWorkOrderMilestoneType
+);
+
+router.post(
+    "/doUpdateWorkOrderMilestoneType",
+    permissionHandlers.adminPostHandler,
+    handler_doUpdateWorkOrderMilestoneType
+);
+
+router.post(
+    "/doMoveWorkOrderMilestoneTypeUp",
+    permissionHandlers.adminPostHandler,
+    handler_doMoveWorkOrderMilestoneTypeUp
+);
+
+router.post(
+    "/doMoveWorkOrderMilestoneTypeDown",
+    permissionHandlers.adminPostHandler,
+    handler_doMoveWorkOrderMilestoneTypeDown
+);
+
+router.post(
+    "/doDeleteWorkOrderMilestoneType",
+    permissionHandlers.adminPostHandler,
+    handler_doDeleteWorkOrderMilestoneType
 );
 
 // Config Tables - Lot Statuses
