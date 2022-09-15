@@ -2,6 +2,7 @@ import { Router } from "express";
 import * as configFunctions from "../helpers/functions.config.js";
 import * as authenticationFunctions from "../helpers/functions.authentication.js";
 import { useTestDatabases } from "../data/databasePaths.js";
+import { getApiKey } from "../helpers/functions.api.js";
 export const router = Router();
 const safeRedirects = new Set([
     "/admin/fees",
@@ -75,11 +76,13 @@ router
                 .some((currentUserName) => {
                 return (userNameLowerCase === currentUserName.toLowerCase());
             });
+            const apiKey = await getApiKey(userNameLowerCase);
             userObject = {
                 userName: userNameLowerCase,
                 userProperties: {
                     canUpdate,
-                    isAdmin
+                    isAdmin,
+                    apiKey
                 }
             };
         }

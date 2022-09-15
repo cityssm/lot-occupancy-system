@@ -6,6 +6,8 @@ import * as authenticationFunctions from "../helpers/functions.authentication.js
 
 import { useTestDatabases } from "../data/databasePaths.js";
 
+import { getApiKey } from "../helpers/functions.api.js";
+
 import type * as recordTypes from "../types/recordTypes";
 
 export const router = Router();
@@ -112,11 +114,14 @@ router
                         );
                     });
 
+                const apiKey = await getApiKey(userNameLowerCase);
+
                 userObject = {
                     userName: userNameLowerCase,
                     userProperties: {
                         canUpdate,
-                        isAdmin
+                        isAdmin,
+                        apiKey
                     }
                 };
             }

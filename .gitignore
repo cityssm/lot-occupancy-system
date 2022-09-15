@@ -1,14 +1,18 @@
 .nyc_output/
 bin/daemon/
 coverage/
+
 cypress/downloads/
 cypress/screenshots/
 cypress/videos/
+
 data/sessions/
+
 node_modules/
 
 data/*.db
 data/*.db-journal
+data/apiKeys.json
 
 data/config.d.ts
 data/config.js

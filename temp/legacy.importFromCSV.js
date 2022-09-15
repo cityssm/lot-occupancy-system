@@ -28,7 +28,8 @@ const user = {
         userName: "import.unix",
         userProperties: {
             canUpdate: true,
-            isAdmin: false
+            isAdmin: false,
+            apiKey: ""
         }
     }
 };

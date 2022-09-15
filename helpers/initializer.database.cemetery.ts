@@ -24,7 +24,8 @@ const session: PartialSession = {
         userName: "init.cemetery",
         userProperties: {
             canUpdate: true,
-            isAdmin: true
+            isAdmin: true,
+            apiKey: ""
         }
     }
 };

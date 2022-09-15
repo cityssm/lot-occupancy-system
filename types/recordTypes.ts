@@ -337,6 +337,7 @@ export interface User {
 export interface UserProperties {
     canUpdate: boolean;
     isAdmin: boolean;
+    apiKey: string;
 }
 
 declare module "express-session" {

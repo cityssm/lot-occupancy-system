@@ -203,7 +203,8 @@ const user: recordTypes.PartialSession = {
         userName: "import.unix",
         userProperties: {
             canUpdate: true,
-            isAdmin: false
+            isAdmin: false,
+            apiKey: ""
         }
     }
 };
