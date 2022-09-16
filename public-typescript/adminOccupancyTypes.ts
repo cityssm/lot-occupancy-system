@@ -6,7 +6,6 @@ import type * as recordTypes from "../types/recordTypes";
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 
 import type { BulmaJS } from "@cityssm/bulma-js/types";
-import { response } from "express";
 
 declare const cityssm: cityssmGlobal;
 declare const bulmaJS: BulmaJS;
