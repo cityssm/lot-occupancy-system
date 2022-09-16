@@ -229,6 +229,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         };
+        const doDelete = () => {
+            const _doDelete = () => {
+                cityssm.postJSON(urlPrefix + "/admin/doDeleteOccupancyTypeField", {
+                    occupancyTypeFieldId
+                }, (responseJSON) => {
+                    if (responseJSON.success) {
+                        occupancyTypes = responseJSON.occupancyTypes;
+                        editCloseModalFunction();
+                        renderOccupancyTypes();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: "Error Deleting Field",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                });
+            };
+            bulmaJS.confirm({
+                title: "Delete Field",
+                message: "Are you sure you want to delete this field?  Note that historical records that make use of this field will not be affected.",
+                contextualColorName: "warning",
+                okButton: {
+                    text: "Yes, Delete Field",
+                    callbackFunction: _doDelete
+                }
+            });
+        };
         cityssm.openHtmlModal("adminOccupancyTypes-editOccupancyTypeField", {
             onshow: (modalElement) => {
                 los.populateAliases(modalElement);
@@ -250,6 +279,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             },
             onshown: (modalElement, closeModalFunction) => {
                 editCloseModalFunction = closeModalFunction;
+                bulmaJS.init(modalElement);
                 bulmaJS.toggleHtmlClipped();
                 cityssm.enableNavBlocker();
                 modalElement
@@ -258,6 +288,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 minimumLengthElement.addEventListener("keyup", updateMaximumLengthMin);
                 updateMaximumLengthMin();
                 occupancyTypeFieldValuesElement.addEventListener("keyup", toggleInputFields);
+                modalElement
+                    .querySelector("#button--deleteOccupancyTypeField")
+                    .addEventListener("click", doDelete);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();

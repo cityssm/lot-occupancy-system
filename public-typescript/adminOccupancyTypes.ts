@@ -6,6 +6,7 @@ import type * as recordTypes from "../types/recordTypes";
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 
 import type { BulmaJS } from "@cityssm/bulma-js/types";
+import { response } from "express";
 
 declare const cityssm: cityssmGlobal;
 declare const bulmaJS: BulmaJS;
@@ -406,6 +407,45 @@ declare const bulmaJS: BulmaJS;
             );
         };
 
+        const doDelete = () => {
+            const _doDelete = () => {
+                cityssm.postJSON(
+                    urlPrefix + "/admin/doDeleteOccupancyTypeField",
+                    {
+                        occupancyTypeFieldId
+                    },
+                    (responseJSON: {
+                        success: boolean;
+                        errorMessage?: string;
+                        occupancyTypes?: recordTypes.OccupancyType[];
+                    }) => {
+                        if (responseJSON.success) {
+                            occupancyTypes = responseJSON.occupancyTypes;
+                            editCloseModalFunction();
+                            renderOccupancyTypes();
+                        } else {
+                            bulmaJS.alert({
+                                title: "Error Deleting Field",
+                                message: responseJSON.errorMessage,
+                                contextualColorName: "danger"
+                            });
+                        }
+                    }
+                );
+            };
+
+            bulmaJS.confirm({
+                title: "Delete Field",
+                message:
+                    "Are you sure you want to delete this field?  Note that historical records that make use of this field will not be affected.",
+                contextualColorName: "warning",
+                okButton: {
+                    text: "Yes, Delete Field",
+                    callbackFunction: _doDelete
+                }
+            });
+        };
+
         cityssm.openHtmlModal("adminOccupancyTypes-editOccupancyTypeField", {
             onshow: (modalElement) => {
                 los.populateAliases(modalElement);
@@ -460,6 +500,7 @@ declare const bulmaJS: BulmaJS;
             onshown: (modalElement, closeModalFunction) => {
                 editCloseModalFunction = closeModalFunction;
 
+                bulmaJS.init(modalElement);
                 bulmaJS.toggleHtmlClipped();
                 cityssm.enableNavBlocker();
 
@@ -477,6 +518,10 @@ declare const bulmaJS: BulmaJS;
                     "keyup",
                     toggleInputFields
                 );
+
+                modalElement
+                    .querySelector("#button--deleteOccupancyTypeField")
+                    .addEventListener("click", doDelete);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
