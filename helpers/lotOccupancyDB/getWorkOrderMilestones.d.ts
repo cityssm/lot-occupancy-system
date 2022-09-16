@@ -1,6 +1,6 @@
 import sqlite from "better-sqlite3";
 import type * as recordTypes from "../../types/recordTypes";
-interface WorkOrderMilestoneFilters {
+export interface WorkOrderMilestoneFilters {
     workOrderId?: number | string;
     workOrderMilestoneDateFilter?: "upcomingMissed" | "recent" | "date";
     workOrderMilestoneDateString?: string;

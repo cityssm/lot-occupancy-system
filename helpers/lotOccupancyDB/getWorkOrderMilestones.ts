@@ -15,7 +15,7 @@ import * as configFunctions from "../functions.config.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-interface WorkOrderMilestoneFilters {
+export interface WorkOrderMilestoneFilters {
     workOrderId?: number | string;
     workOrderMilestoneDateFilter?: "upcomingMissed" | "recent" | "date";
     workOrderMilestoneDateString?: string;

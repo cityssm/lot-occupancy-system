@@ -2,10 +2,12 @@
 
 import ical, { ICalEventData, ICalEventStatus } from "ical-generator";
 
-import { getWorkOrderMilestones } from "../../helpers/lotOccupancyDB/getWorkOrderMilestones.js";
+import {
+    getWorkOrderMilestones,
+    WorkOrderMilestoneFilters
+} from "../../helpers/lotOccupancyDB/getWorkOrderMilestones.js";
 
 import type { RequestHandler } from "express";
-import { dateIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import * as configFunctions from "../../helpers/functions.config.js";
 
@@ -27,13 +29,21 @@ export const handler: RequestHandler = (request, response) => {
             : ":" + configFunctions.getProperty("application.httpPort")) +
         configFunctions.getProperty("reverseProxy.urlPrefix");
 
+    const workOrderMilestoneFilters: WorkOrderMilestoneFilters = {
+        workOrderTypeIds: request.query.workOrderTypeIds as string,
+        workOrderMilestoneTypeIds: request.query
+            .workOrderMilestoneTypeIds as string
+    };
+
+    if (request.query.workOrderId) {
+        workOrderMilestoneFilters.workOrderId = request.query
+            .workOrderId as string;
+    } else {
+        workOrderMilestoneFilters.workOrderMilestoneDateFilter = "recent";
+    }
+
     const workOrderMilestones = getWorkOrderMilestones(
-        {
-            workOrderMilestoneDateFilter: "recent",
-            workOrderTypeIds: request.query.workOrderTypeIds as string,
-            workOrderMilestoneTypeIds: request.query
-                .workOrderMilestoneTypeIds as string
-        },
+        workOrderMilestoneFilters,
         { includeWorkOrders: true, orderBy: "date" }
     );
 
@@ -41,6 +51,11 @@ export const handler: RequestHandler = (request, response) => {
         name: "Work Order Milestone Calendar",
         url: urlRoot + "/workOrders"
     });
+
+    if (request.query.workOrderId && workOrderMilestones.length > 0) {
+        calendar.name("Work Order #" + workOrderMilestones[0].workOrder.workOrderNumber);
+        calendar.url(urlRoot + "/workOrders/" + workOrderMilestones[0].workOrderId);
+    }
 
     calendar.prodId({
         company: "cityssm.github.io",

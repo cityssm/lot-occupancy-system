@@ -12,16 +12,27 @@ export const handler = (request, response) => {
             ? ""
             : ":" + configFunctions.getProperty("application.httpPort")) +
         configFunctions.getProperty("reverseProxy.urlPrefix");
-    const workOrderMilestones = getWorkOrderMilestones({
-        workOrderMilestoneDateFilter: "recent",
+    const workOrderMilestoneFilters = {
         workOrderTypeIds: request.query.workOrderTypeIds,
         workOrderMilestoneTypeIds: request.query
             .workOrderMilestoneTypeIds
-    }, { includeWorkOrders: true, orderBy: "date" });
+    };
+    if (request.query.workOrderId) {
+        workOrderMilestoneFilters.workOrderId = request.query
+            .workOrderId;
+    }
+    else {
+        workOrderMilestoneFilters.workOrderMilestoneDateFilter = "recent";
+    }
+    const workOrderMilestones = getWorkOrderMilestones(workOrderMilestoneFilters, { includeWorkOrders: true, orderBy: "date" });
     const calendar = ical({
         name: "Work Order Milestone Calendar",
         url: urlRoot + "/workOrders"
     });
+    if (request.query.workOrderId && workOrderMilestones.length > 0) {
+        calendar.name("Work Order #" + workOrderMilestones[0].workOrder.workOrderNumber);
+        calendar.url(urlRoot + "/workOrders/" + workOrderMilestones[0].workOrderId);
+    }
     calendar.prodId({
         company: "cityssm.github.io",
         product: configFunctions.getProperty("application.applicationName")
