@@ -3,6 +3,7 @@
     const apiKey = document.querySelector("main").dataset.apiKey;
     const workOrderTypeIdsElement = document.querySelector("#icsFilters--workOrderTypeIds");
     const workOrderMilestoneTypeIdsElement = document.querySelector("#icsFilters--workOrderMilestoneTypeIds");
+    const calendarLinkElement = document.querySelector("#icsFilters--calendarURL");
     const updateCalendarURL = () => {
         let url = window.location.href.slice(0, Math.max(0, window.location.href.indexOf(window.location.pathname) + 1)) +
             urlPrefix +
@@ -27,7 +28,7 @@
             }
             url = url.slice(0, -1) + "&";
         }
-        document.querySelector("#icsFilters--calendarURL").value = url.slice(0, -1);
+        calendarLinkElement.value = url.slice(0, -1);
     };
     document
         .querySelector("#icsFilters--workOrderTypeIds-all")
@@ -46,4 +47,8 @@
         element.addEventListener("change", updateCalendarURL);
     }
     updateCalendarURL();
+    calendarLinkElement.addEventListener("click", () => {
+        calendarLinkElement.focus();
+        calendarLinkElement.select();
+    });
 })();

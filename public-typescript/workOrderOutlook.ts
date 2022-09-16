@@ -10,6 +10,10 @@
         "#icsFilters--workOrderMilestoneTypeIds"
     ) as HTMLSelectElement;
 
+    const calendarLinkElement = document.querySelector(
+        "#icsFilters--calendarURL"
+    ) as HTMLTextAreaElement;
+
     const updateCalendarURL = () => {
         let url =
             window.location.href.slice(
@@ -52,11 +56,7 @@
             url = url.slice(0, -1) + "&";
         }
 
-        (
-            document.querySelector(
-                "#icsFilters--calendarURL"
-            ) as HTMLTextAreaElement
-        ).value = url.slice(0, -1);
+        calendarLinkElement.value = url.slice(0, -1);
     };
 
     document
@@ -86,4 +86,9 @@
     }
 
     updateCalendarURL();
+
+    calendarLinkElement.addEventListener("click", () => {
+        calendarLinkElement.focus();
+        calendarLinkElement.select();
+    })
 })();
