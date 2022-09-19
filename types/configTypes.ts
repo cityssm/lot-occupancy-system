@@ -46,6 +46,7 @@ export interface Config {
             workOrderNumberLength?: number;
             workOrderMilestoneDateRecentBeforeDays?: number;
             workOrderMilestoneDateRecentAfterDays?: number;
+            calendarEmailAddress?: string;
         };
     };
 }

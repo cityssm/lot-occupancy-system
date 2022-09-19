@@ -35,4 +35,5 @@ export declare function getProperty(propertyName: "settings.fees.taxPercentageDe
 export declare function getProperty(propertyName: "settings.workOrders.workOrderNumberLength"): number;
 export declare function getProperty(propertyName: "settings.workOrders.workOrderMilestoneDateRecentBeforeDays"): number;
 export declare function getProperty(propertyName: "settings.workOrders.workOrderMilestoneDateRecentAfterDays"): number;
+export declare function getProperty(propertyName: "settings.workOrders.calendarEmailAddress"): string;
 export declare const keepAliveMillis: number;

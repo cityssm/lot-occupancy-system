@@ -291,12 +291,12 @@ export const handler: RequestHandler = (request, response) => {
                     if (organizerSet) {
                         calendarEvent.createAttendee({
                             name: occupant.occupantName,
-                            email: "no-reply@127.0.0.1"
+                            email: configFunctions.getProperty("settings.workOrders.calendarEmailAddress")
                         });
                     } else {
                         calendarEvent.organizer({
                             name: occupant.occupantName,
-                            email: "no-reply@127.0.0.1"
+                            email: configFunctions.getProperty("settings.workOrders.calendarEmailAddress")
                         });
                         organizerSet = true;
                     }
@@ -305,7 +305,7 @@ export const handler: RequestHandler = (request, response) => {
         } else {
             calendarEvent.organizer({
                 name: milestone.recordCreate_userName,
-                email: "no-reply@127.0.0.1"
+                email: configFunctions.getProperty("settings.workOrders.calendarEmailAddress")
             });
         }
     }
