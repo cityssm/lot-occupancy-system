@@ -33,7 +33,7 @@ export const getLotOccupancyFields = (
                 " f.orderNumber" +
                 " from OccupancyTypeFields f" +
                 " where f.recordDelete_timeMillis is null" +
-                " and f.occupancyTypeId in (select occupancyTypeId from LotOccupancies where lotOccupancyId = ?)" +
+                " and (f.occupancyTypeId is null or f.occupancyTypeId in (select occupancyTypeId from LotOccupancies where lotOccupancyId = ?))" +
                 " and f.occupancyTypeFieldId not in (select occupancyTypeFieldId from LotOccupancyFields where lotOccupancyId = ? and recordDelete_timeMillis is null)" +
                 " order by orderNumber, occupancyTypeField"
         )

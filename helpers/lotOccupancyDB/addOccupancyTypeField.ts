@@ -6,7 +6,7 @@ import type * as recordTypes from "../../types/recordTypes";
 import { clearOccupancyTypesCache } from "../functions.cache.js";
 
 interface AddOccupancyTypeFieldForm {
-    occupancyTypeId: string | number;
+    occupancyTypeId?: string | number;
     occupancyTypeField: string;
     occupancyTypeFieldValues?: string;
     isRequired?: string;
@@ -36,7 +36,7 @@ export const addOccupancyTypeField = (
                 " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         )
         .run(
-            occupancyTypeFieldForm.occupancyTypeId,
+            occupancyTypeFieldForm.occupancyTypeId || undefined,
             occupancyTypeFieldForm.occupancyTypeField,
             occupancyTypeFieldForm.occupancyTypeFieldValues || "",
             occupancyTypeFieldForm.isRequired ? 1 : 0,

@@ -5,6 +5,7 @@ import { getLotStatuses as getLotStatusesFromDatabase } from "./lotOccupancyDB/g
 import { getLotTypes as getLotTypesFromDatabase } from "./lotOccupancyDB/getLotTypes.js";
 
 import { getOccupancyTypes as getOccupancyTypesFromDatabase } from "./lotOccupancyDB/getOccupancyTypes.js";
+import { getOccupancyTypeFields as getOccupancyTypeFieldsFromDatabase } from "./lotOccupancyDB/getOccupancyTypeFields.js";
 
 import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from "./lotOccupancyDB/getWorkOrderTypes.js";
 
@@ -40,10 +41,7 @@ export function getLotOccupantTypesByLotOccupantType(lotOccupantType: string) {
     const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase();
 
     return cachedLotOccupantTypes.find((currentLotOccupantType) => {
-        return (
-            currentLotOccupantType.lotOccupantType.toLowerCase() ===
-            lotOccupantTypeLowerCase
-        );
+        return currentLotOccupantType.lotOccupantType.toLowerCase() === lotOccupantTypeLowerCase;
     });
 }
 
@@ -128,6 +126,7 @@ export function clearLotTypesCache() {
  */
 
 let occupancyTypes: recordTypes.OccupancyType[];
+let allOccupancyTypeFields: recordTypes.OccupancyTypeField[];
 
 export function getOccupancyTypes() {
     if (!occupancyTypes) {
@@ -135,6 +134,13 @@ export function getOccupancyTypes() {
     }
 
     return occupancyTypes;
+}
+
+export function getAllOccupancyTypeFields() {
+    if (!allOccupancyTypeFields) {
+        allOccupancyTypeFields = getOccupancyTypeFieldsFromDatabase();
+    }
+    return allOccupancyTypeFields;
 }
 
 export function getOccupancyTypeById(occupancyTypeId: number) {
@@ -151,15 +157,13 @@ export function getOccupancyTypeByOccupancyType(occupancyTypeString: string) {
     const occupancyTypeLowerCase = occupancyTypeString.toLowerCase();
 
     return cachedOccupancyTypes.find((currentOccupancyType) => {
-        return (
-            currentOccupancyType.occupancyType.toLowerCase() ===
-            occupancyTypeLowerCase
-        );
+        return currentOccupancyType.occupancyType.toLowerCase() === occupancyTypeLowerCase;
     });
 }
 
 export function clearOccupancyTypesCache() {
     occupancyTypes = undefined;
+    allOccupancyTypeFields = undefined;
 }
 
 /*
@@ -194,7 +198,9 @@ export function getWorkOrderMilestoneTypes() {
     return workOrderMilestoneTypes;
 }
 
-export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString: string) {
+export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+    workOrderMilestoneTypeString: string
+) {
     const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
 
     const workOrderMilestoneTypeLowerCase = workOrderMilestoneTypeString.toLowerCase();

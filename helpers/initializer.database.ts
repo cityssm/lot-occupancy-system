@@ -17,9 +17,7 @@ export const initializeDatabase = (): boolean => {
     const lotOccupancyDB = sqlite(databasePath);
 
     const row = lotOccupancyDB
-        .prepare(
-            "select name from sqlite_master where type = 'table' and name = 'WorkOrderMilestones'"
-        )
+        .prepare("select name from sqlite_master where type = 'table' and name = 'WorkOrderMilestones'")
         .get();
 
     if (!row) {
@@ -39,10 +37,7 @@ export const initializeDatabase = (): boolean => {
             .run();
 
         lotOccupancyDB
-            .prepare(
-                "create index if not exists idx_lottypes_ordernumber" +
-                    " on LotTypes (orderNumber, lotType)"
-            )
+            .prepare("create index if not exists idx_lottypes_ordernumber" + " on LotTypes (orderNumber, lotType)")
             .run();
 
         lotOccupancyDB
@@ -84,8 +79,7 @@ export const initializeDatabase = (): boolean => {
 
         lotOccupancyDB
             .prepare(
-                "create index if not exists idx_lotstatuses_ordernumber" +
-                    " on LotStatuses (orderNumber, lotStatus)"
+                "create index if not exists idx_lotstatuses_ordernumber" + " on LotStatuses (orderNumber, lotStatus)"
             )
             .run();
 
@@ -192,7 +186,7 @@ export const initializeDatabase = (): boolean => {
             .prepare(
                 "create table if not exists OccupancyTypeFields (" +
                     "occupancyTypeFieldId integer not null primary key autoincrement," +
-                    " occupancyTypeId integer not null," +
+                    " occupancyTypeId integer," +
                     " occupancyTypeField varchar(100) not null," +
                     " occupancyTypeFieldValues text," +
                     " isRequired bit not null default 0," +
@@ -347,10 +341,7 @@ export const initializeDatabase = (): boolean => {
             .run();
 
         lotOccupancyDB
-            .prepare(
-                "create index if not exists idx_fees_ordernumber" +
-                    " on Fees (orderNumber, feeName)"
-            )
+            .prepare("create index if not exists idx_fees_ordernumber" + " on Fees (orderNumber, feeName)")
             .run();
 
         lotOccupancyDB

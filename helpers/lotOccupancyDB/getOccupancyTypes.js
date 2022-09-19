@@ -1,5 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { getOccupancyTypeFields } from "./getOccupancyTypeFields.js";
 export const getOccupancyTypes = () => {
     const database = sqlite(databasePath);
     const occupancyTypes = database
@@ -13,22 +14,11 @@ export const getOccupancyTypes = () => {
         expectedTypeOrderNumber += 1;
         if (occupancyType.orderNumber !== expectedTypeOrderNumber) {
             database
-                .prepare("update OccupancyTypes" +
-                " set orderNumber = ?" +
-                " where occupancyTypeId = ?")
+                .prepare("update OccupancyTypes" + " set orderNumber = ?" + " where occupancyTypeId = ?")
                 .run(expectedTypeOrderNumber, occupancyType.occupancyTypeId);
             occupancyType.orderNumber = expectedTypeOrderNumber;
         }
-        occupancyType.occupancyTypeFields = database
-            .prepare("select occupancyTypeFieldId," +
-            " occupancyTypeField, occupancyTypeFieldValues, isRequired, pattern," +
-            " minimumLength, maximumLength," +
-            " orderNumber" +
-            " from OccupancyTypeFields" +
-            " where recordDelete_timeMillis is null" +
-            " and occupancyTypeId = ?" +
-            " order by orderNumber, occupancyTypeField")
-            .all(occupancyType.occupancyTypeId);
+        occupancyType.occupancyTypeFields = getOccupancyTypeFields(occupancyType.occupancyTypeId, database);
         let expectedFieldOrderNumber = -1;
         for (const occupancyTypeField of occupancyType.occupancyTypeFields) {
             expectedFieldOrderNumber += 1;

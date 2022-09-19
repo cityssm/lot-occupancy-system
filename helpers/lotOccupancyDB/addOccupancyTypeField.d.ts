@@ -1,6 +1,6 @@
 import type * as recordTypes from "../../types/recordTypes";
 interface AddOccupancyTypeFieldForm {
-    occupancyTypeId: string | number;
+    occupancyTypeId?: string | number;
     occupancyTypeField: string;
     occupancyTypeFieldValues?: string;
     isRequired?: string;

@@ -2,6 +2,8 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
+import { getOccupancyTypeFields } from "./getOccupancyTypeFields.js";
+
 import type * as recordTypes from "../../types/recordTypes";
 
 export const getOccupancyTypes = (): recordTypes.OccupancyType[] => {
@@ -24,27 +26,17 @@ export const getOccupancyTypes = (): recordTypes.OccupancyType[] => {
         if (occupancyType.orderNumber !== expectedTypeOrderNumber) {
             database
                 .prepare(
-                    "update OccupancyTypes" +
-                        " set orderNumber = ?" +
-                        " where occupancyTypeId = ?"
+                    "update OccupancyTypes" + " set orderNumber = ?" + " where occupancyTypeId = ?"
                 )
                 .run(expectedTypeOrderNumber, occupancyType.occupancyTypeId);
 
             occupancyType.orderNumber = expectedTypeOrderNumber;
         }
 
-        occupancyType.occupancyTypeFields = database
-            .prepare(
-                "select occupancyTypeFieldId," +
-                    " occupancyTypeField, occupancyTypeFieldValues, isRequired, pattern," +
-                    " minimumLength, maximumLength," +
-                    " orderNumber" +
-                    " from OccupancyTypeFields" +
-                    " where recordDelete_timeMillis is null" +
-                    " and occupancyTypeId = ?" +
-                    " order by orderNumber, occupancyTypeField"
-            )
-            .all(occupancyType.occupancyTypeId);
+        occupancyType.occupancyTypeFields = getOccupancyTypeFields(
+            occupancyType.occupancyTypeId,
+            database
+        );
 
         let expectedFieldOrderNumber = -1;
 
@@ -58,10 +50,7 @@ export const getOccupancyTypes = (): recordTypes.OccupancyType[] => {
                             " set orderNumber = ?" +
                             " where occupancyTypeFieldId = ?"
                     )
-                    .run(
-                        expectedFieldOrderNumber,
-                        occupancyTypeField.occupancyTypeFieldId
-                    );
+                    .run(expectedFieldOrderNumber, occupancyTypeField.occupancyTypeFieldId);
 
                 occupancyTypeField.orderNumber = expectedFieldOrderNumber;
             }
