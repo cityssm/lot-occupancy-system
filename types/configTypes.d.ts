@@ -48,6 +48,9 @@ export interface Config {
             workOrderMilestoneDateRecentAfterDays?: number;
             calendarEmailAddress?: string;
         };
+        adminCleanup?: {
+            recordDeleteAgeDays?: number;
+        };
     };
 }
 interface ConfigApplication {

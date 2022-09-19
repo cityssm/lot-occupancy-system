@@ -46,7 +46,7 @@ export const getWorkOrderMilestones = (
 
     // Filters
 
-    let sqlWhereClause = " where m.recordDelete_timeMillis is null";
+    let sqlWhereClause = " where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null";
     const sqlParameters = [];
 
     if (filters.workOrderId) {

@@ -23,6 +23,15 @@ export const deleteOccupancyType = (
         )
         .run(requestSession.user.userName, rightNowMillis, occupancyTypeId);
 
+    database
+        .prepare(
+            "update OccupancyTypeFields" +
+                " set recordDelete_userName = ?," +
+                " recordDelete_timeMillis = ?" +
+                " where occupancyTypeId = ?"
+        )
+        .run(requestSession.user.userName, rightNowMillis, occupancyTypeId)
+
     database.close();
 
     clearOccupancyTypesCache();

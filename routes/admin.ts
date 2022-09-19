@@ -62,6 +62,11 @@ import handler_doMoveLotOccupantTypeUp from "../handlers/admin-post/doMoveLotOcc
 import handler_doMoveLotOccupantTypeDown from "../handlers/admin-post/doMoveLotOccupantTypeDown.js";
 import handler_doDeleteLotOccupantType from "../handlers/admin-post/doDeleteLotOccupantType.js";
 
+// Cleanup
+
+import handler_cleanup from "../handlers/admin-get/cleanup.js";
+import handler_doCleanupDatabase from "../handlers/admin-post/doCleanupDatabase.js";
+
 export const router = Router();
 
 /*
@@ -70,11 +75,7 @@ export const router = Router();
 
 router.get("/fees", permissionHandlers.adminGetHandler, handler_fees);
 
-router.post(
-    "/doAddFeeCategory",
-    permissionHandlers.adminPostHandler,
-    handler_doAddFeeCategory
-);
+router.post("/doAddFeeCategory", permissionHandlers.adminPostHandler, handler_doAddFeeCategory);
 
 router.post(
     "/doUpdateFeeCategory",
@@ -102,45 +103,21 @@ router.post(
 
 router.post("/doAddFee", permissionHandlers.adminPostHandler, handler_doAddFee);
 
-router.post(
-    "/doUpdateFee",
-    permissionHandlers.adminPostHandler,
-    handler_doUpdateFee
-);
+router.post("/doUpdateFee", permissionHandlers.adminPostHandler, handler_doUpdateFee);
 
-router.post(
-    "/doMoveFeeUp",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveFeeUp
-);
+router.post("/doMoveFeeUp", permissionHandlers.adminPostHandler, handler_doMoveFeeUp);
 
-router.post(
-    "/doMoveFeeDown",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveFeeDown
-);
+router.post("/doMoveFeeDown", permissionHandlers.adminPostHandler, handler_doMoveFeeDown);
 
-router.post(
-    "/doDeleteFee",
-    permissionHandlers.adminPostHandler,
-    handler_doDeleteFee
-);
+router.post("/doDeleteFee", permissionHandlers.adminPostHandler, handler_doDeleteFee);
 
 /*
  * Occupancy Type Management
  */
 
-router.get(
-    "/occupancyTypes",
-    permissionHandlers.adminGetHandler,
-    handler_occupancyTypes
-);
+router.get("/occupancyTypes", permissionHandlers.adminGetHandler, handler_occupancyTypes);
 
-router.post(
-    "/doAddOccupancyType",
-    permissionHandlers.adminPostHandler,
-    handler_doAddOccupancyType
-);
+router.post("/doAddOccupancyType", permissionHandlers.adminPostHandler, handler_doAddOccupancyType);
 
 router.post(
     "/doUpdateOccupancyType",
@@ -206,11 +183,7 @@ router.get("/tables", permissionHandlers.adminGetHandler, handler_tables);
 
 // Config Tables - Work Order Types
 
-router.post(
-    "/doAddWorkOrderType",
-    permissionHandlers.adminPostHandler,
-    handler_doAddWorkOrderType
-);
+router.post("/doAddWorkOrderType", permissionHandlers.adminPostHandler, handler_doAddWorkOrderType);
 
 router.post(
     "/doUpdateWorkOrderType",
@@ -269,23 +242,11 @@ router.post(
 
 // Config Tables - Lot Statuses
 
-router.post(
-    "/doAddLotStatus",
-    permissionHandlers.adminPostHandler,
-    handler_doAddLotStatus
-);
+router.post("/doAddLotStatus", permissionHandlers.adminPostHandler, handler_doAddLotStatus);
 
-router.post(
-    "/doUpdateLotStatus",
-    permissionHandlers.adminPostHandler,
-    handler_doUpdateLotStatus
-);
+router.post("/doUpdateLotStatus", permissionHandlers.adminPostHandler, handler_doUpdateLotStatus);
 
-router.post(
-    "/doMoveLotStatusUp",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveLotStatusUp
-);
+router.post("/doMoveLotStatusUp", permissionHandlers.adminPostHandler, handler_doMoveLotStatusUp);
 
 router.post(
     "/doMoveLotStatusDown",
@@ -293,11 +254,7 @@ router.post(
     handler_doMoveLotStatusDown
 );
 
-router.post(
-    "/doDeleteLotStatus",
-    permissionHandlers.adminPostHandler,
-    handler_doDeleteLotStatus
-);
+router.post("/doDeleteLotStatus", permissionHandlers.adminPostHandler, handler_doDeleteLotStatus);
 
 // Config Tables - Lot Occupant Types
 
@@ -330,5 +287,11 @@ router.post(
     permissionHandlers.adminPostHandler,
     handler_doDeleteLotOccupantType
 );
+
+// Cleanup
+
+router.get("/cleanup", permissionHandlers.adminGetHandler, handler_cleanup);
+
+router.post("/doCleanupDatabase", permissionHandlers.adminPostHandler, handler_doCleanupDatabase);
 
 export default router;

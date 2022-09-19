@@ -21,6 +21,15 @@ export const deleteFeeCategory = (
         )
         .run(requestSession.user.userName, rightNowMillis, feeCategoryId);
 
+    database
+        .prepare(
+            "update Fees" +
+                " set recordDelete_userName = ?," +
+                " recordDelete_timeMillis = ?" +
+                " where feeCategoryId = ?"
+        )
+        .run(requestSession.user.userName, rightNowMillis, feeCategoryId);
+
     database.close();
 
     return result.changes > 0;

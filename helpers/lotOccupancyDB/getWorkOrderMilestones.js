@@ -11,7 +11,7 @@ export const getWorkOrderMilestones = (filters, options, connectedDatabase) => {
         });
     database.function("userFn_dateIntegerToString", dateIntegerToString);
     database.function("userFn_timeIntegerToString", timeIntegerToString);
-    let sqlWhereClause = " where m.recordDelete_timeMillis is null";
+    let sqlWhereClause = " where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null";
     const sqlParameters = [];
     if (filters.workOrderId) {
         sqlWhereClause += " and m.workOrderId = ?";

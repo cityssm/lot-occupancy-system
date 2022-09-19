@@ -9,6 +9,12 @@ export const deleteMap = (mapId, requestSession) => {
         " recordDelete_timeMillis = ?" +
         " where mapId = ?")
         .run(requestSession.user.userName, rightNowMillis, mapId);
+    database
+        .prepare("update Lots" +
+        " set recordDelete_userName = ?," +
+        " recordDelete_timeMillis = ?" +
+        " where mapId = ?")
+        .run(requestSession.user.userName, rightNowMillis, mapId);
     database.close();
     return result.changes > 0;
 };

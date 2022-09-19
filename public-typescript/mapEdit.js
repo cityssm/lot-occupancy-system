@@ -57,6 +57,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 title: "Delete " + exports.aliases.map,
                 message: "Are you sure you want to delete this " +
                     exports.aliases.map.toLowerCase() +
+                    " and all related " + exports.aliases.lots.toLowerCase() +
                     "?",
                 contextualColorName: "warning",
                 okButton: {

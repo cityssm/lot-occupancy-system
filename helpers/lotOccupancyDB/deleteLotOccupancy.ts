@@ -21,6 +21,35 @@ export const deleteLotOccupancy = (
         )
         .run(requestSession.user.userName, rightNowMillis, lotOccupancyId);
 
+    database
+        .prepare(
+            "update LotOccupancyComments" +
+                " set recordDelete_userName = ?," +
+                " recordDelete_timeMillis = ?" +
+                " where lotOccupancyId = ?"
+        )
+        .run(requestSession.user.userName, rightNowMillis, lotOccupancyId);
+
+    database
+        .prepare(
+            "update LotOccupancyFields" +
+                " set recordDelete_userName = ?," +
+                " recordDelete_timeMillis = ?" +
+                " where lotOccupancyId = ?"
+        )
+        .run(requestSession.user.userName, rightNowMillis, lotOccupancyId);
+
+    database
+        .prepare(
+            "update LotOccupancyOccupants" +
+                " set recordDelete_userName = ?," +
+                " recordDelete_timeMillis = ?" +
+                " where lotOccupancyId = ?"
+        )
+        .run(requestSession.user.userName, rightNowMillis, lotOccupancyId);
+
+    // Do not auto-delete Fees or Transactions.  Maintain financials.
+
     database.close();
 
     return result.changes > 0;

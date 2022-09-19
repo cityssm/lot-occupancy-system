@@ -43,6 +43,8 @@ import handler_doUpdateLotOccupantType from "../handlers/admin-post/doUpdateLotO
 import handler_doMoveLotOccupantTypeUp from "../handlers/admin-post/doMoveLotOccupantTypeUp.js";
 import handler_doMoveLotOccupantTypeDown from "../handlers/admin-post/doMoveLotOccupantTypeDown.js";
 import handler_doDeleteLotOccupantType from "../handlers/admin-post/doDeleteLotOccupantType.js";
+import handler_cleanup from "../handlers/admin-get/cleanup.js";
+import handler_doCleanupDatabase from "../handlers/admin-post/doCleanupDatabase.js";
 export const router = Router();
 router.get("/fees", permissionHandlers.adminGetHandler, handler_fees);
 router.post("/doAddFeeCategory", permissionHandlers.adminPostHandler, handler_doAddFeeCategory);
@@ -87,4 +89,6 @@ router.post("/doUpdateLotOccupantType", permissionHandlers.adminPostHandler, han
 router.post("/doMoveLotOccupantTypeUp", permissionHandlers.adminPostHandler, handler_doMoveLotOccupantTypeUp);
 router.post("/doMoveLotOccupantTypeDown", permissionHandlers.adminPostHandler, handler_doMoveLotOccupantTypeDown);
 router.post("/doDeleteLotOccupantType", permissionHandlers.adminPostHandler, handler_doDeleteLotOccupantType);
+router.get("/cleanup", permissionHandlers.adminGetHandler, handler_cleanup);
+router.post("/doCleanupDatabase", permissionHandlers.adminPostHandler, handler_doCleanupDatabase);
 export default router;

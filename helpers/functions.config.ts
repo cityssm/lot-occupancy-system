@@ -55,6 +55,8 @@ configFallbackValues.set("settings.workOrders.workOrderMilestoneDateRecentBefore
 configFallbackValues.set("settings.workOrders.workOrderMilestoneDateRecentAfterDays", 60);
 configFallbackValues.set("settings.workOrders.calendarEmailAddress", "no-reply@127.0.0.1");
 
+configFallbackValues.set("settings.adminCleanup.recordDeleteAgeDays", 60);
+
 /*
  * Set up function overloads
  */
@@ -124,6 +126,8 @@ export function getProperty(
 ): number;
 
 export function getProperty(propertyName: "settings.workOrders.calendarEmailAddress"): string;
+
+export function getProperty(propertyName: "settings.adminCleanup.recordDeleteAgeDays"): number;
 
 export function getProperty(propertyName: string): unknown {
     const propertyNameSplit = propertyName.split(".");
