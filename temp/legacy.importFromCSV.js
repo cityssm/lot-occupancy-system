@@ -56,9 +56,7 @@ function purgeTables() {
 function purgeConfigTables() {
     const database = sqlite(databasePath);
     database.prepare("delete from Maps").run();
-    database
-        .prepare("delete from sqlite_sequence where name in ('Maps')")
-        .run();
+    database.prepare("delete from sqlite_sequence where name in ('Maps')").run();
     database.close();
 }
 function getMapByMapDescription(mapDescription) {
@@ -72,11 +70,7 @@ function getMapByMapDescription(mapDescription) {
     return map;
 }
 function formatDateString(year, month, day) {
-    return (("0000" + year).slice(-4) +
-        "-" +
-        ("00" + month).slice(-2) +
-        "-" +
-        ("00" + day).slice(-2));
+    return (("0000" + year).slice(-4) + "-" + ("00" + month).slice(-2) + "-" + ("00" + day).slice(-2));
 }
 function formatTimeString(hour, minute) {
     return ("00" + hour).slice(-2) + ":" + ("00" + minute).slice(-2);
@@ -128,8 +122,7 @@ function getFeeIdByFeeDescription(feeDescription) {
             readonly: true
         });
         const records = database
-            .prepare("select feeId, feeDescription from Fees" +
-            " where feeDescription like 'CMPP_FEE_%'")
+            .prepare("select feeId, feeDescription from Fees" + " where feeDescription like 'CMPP_FEE_%'")
             .all();
         for (const record of records) {
             feeCache.set(record.feeDescription, record.feeId);
@@ -186,6 +179,7 @@ const takenLotStatus = cacheFunctions.getLotStatusByLotStatus("Taken");
 const preneedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Preneed");
 const deceasedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Interment");
 const cremationOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Cremation");
+const allOccupancyTypeFields = cacheFunctions.getAllOccupancyTypeFields();
 const preneedOwnerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
 const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Deceased");
 const arrangerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Arranger");
@@ -241,8 +235,7 @@ function importFromMasterCSV() {
             if (masterRow.CM_PRENEED_ORDER || masterRow.CM_STATUS === "P") {
                 preneedOccupancyStartDateString = formatDateString(masterRow.CM_PURCHASE_YR, masterRow.CM_PURCHASE_MON, masterRow.CM_PURCHASE_DAY);
                 let occupancyEndDateString = "";
-                if (masterRow.CM_INTERMENT_YR !== "" &&
-                    masterRow.CM_INTERMENT_YR !== "0") {
+                if (masterRow.CM_INTERMENT_YR !== "" && masterRow.CM_INTERMENT_YR !== "0") {
                     occupancyEndDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
                 }
                 if (preneedOccupancyStartDateString === "0000-00-00" &&
@@ -342,9 +335,8 @@ function importFromMasterCSV() {
                     const lotOccupancyFieldValue = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
-                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return (occupancyTypeField.occupancyTypeField ===
-                                "Death Date");
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Death Date";
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue
                     }, user);
@@ -352,9 +344,8 @@ function importFromMasterCSV() {
                 if (masterRow.CM_AGE !== "") {
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
-                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return (occupancyTypeField.occupancyTypeField ===
-                                "Death Age");
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Death Age";
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: masterRow.CM_AGE
                     }, user);
@@ -362,9 +353,8 @@ function importFromMasterCSV() {
                 if (masterRow.CM_PERIOD !== "") {
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
-                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return (occupancyTypeField.occupancyTypeField ===
-                                "Death Age Period");
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return (occupancyTypeField.occupancyTypeField === "Death Age Period");
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: masterRow.CM_PERIOD
                     }, user);
@@ -372,9 +362,8 @@ function importFromMasterCSV() {
                 if (masterRow.CM_FUNERAL_HOME !== "") {
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
-                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return (occupancyTypeField.occupancyTypeField ===
-                                "Funeral Home");
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Funeral Home";
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: masterRow.CM_FUNERAL_HOME
                     }, user);
@@ -383,9 +372,8 @@ function importFromMasterCSV() {
                     const lotOccupancyFieldValue = formatDateString(masterRow.CM_FUNERAL_YR, masterRow.CM_FUNERAL_MON, masterRow.CM_FUNERAL_DAY);
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
-                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return (occupancyTypeField.occupancyTypeField ===
-                                "Funeral Date");
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Funeral Date";
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue
                     }, user);
@@ -393,9 +381,8 @@ function importFromMasterCSV() {
                 if (masterRow.CM_CONTAINER_TYPE !== "") {
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
-                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return (occupancyTypeField.occupancyTypeField ===
-                                "Container Type");
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return (occupancyTypeField.occupancyTypeField === "Container Type");
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: masterRow.CM_CONTAINER_TYPE
                     }, user);
@@ -407,9 +394,8 @@ function importFromMasterCSV() {
                     }
                     addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
-                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                            return (occupancyTypeField.occupancyTypeField ===
-                                "Committal Type");
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return (occupancyTypeField.occupancyTypeField === "Committal Type");
                         }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: commitalType
                     }, user);
@@ -433,8 +419,7 @@ function importFromMasterCSV() {
                 updateLotStatus(lotId, takenLotStatus.lotStatusId, user);
             }
             if (masterRow.CM_WORK_ORDER) {
-                const workOrderDateString = deceasedOccupancyStartDateString ||
-                    preneedOccupancyStartDateString;
+                const workOrderDateString = deceasedOccupancyStartDateString || preneedOccupancyStartDateString;
                 const workOrderId = addWorkOrder({
                     workOrderNumber: masterRow.CM_WORK_ORDER,
                     workOrderTypeId: 1,
@@ -538,8 +523,7 @@ function importFromPrepaidCSV() {
                     offset: 0
                 });
                 if (possibleLotOccupancies.lotOccupancies.length > 0) {
-                    lotOccupancyId =
-                        possibleLotOccupancies.lotOccupancies[0].lotOccupancyId;
+                    lotOccupancyId = possibleLotOccupancies.lotOccupancies[0].lotOccupancyId;
                 }
             }
             if (!lotOccupancyId) {
@@ -804,9 +788,8 @@ function importFromWorkOrderCSV() {
                 const lotOccupancyFieldValue = formatDateString(workOrderRow.WO_DEATH_YR, workOrderRow.WO_DEATH_MON, workOrderRow.WO_DEATH_DAY);
                 addOrUpdateLotOccupancyField({
                     lotOccupancyId: lotOccupancyId,
-                    occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                        return (occupancyTypeField.occupancyTypeField ===
-                            "Death Date");
+                    occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                        return occupancyTypeField.occupancyTypeField === "Death Date";
                     }).occupancyTypeFieldId,
                     lotOccupancyFieldValue
                 }, user);
@@ -814,9 +797,8 @@ function importFromWorkOrderCSV() {
             if (workOrderRow.WO_AGE !== "") {
                 addOrUpdateLotOccupancyField({
                     lotOccupancyId: lotOccupancyId,
-                    occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                        return (occupancyTypeField.occupancyTypeField ===
-                            "Death Age");
+                    occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                        return occupancyTypeField.occupancyTypeField === "Death Age";
                     }).occupancyTypeFieldId,
                     lotOccupancyFieldValue: workOrderRow.WO_AGE
                 }, user);
@@ -824,9 +806,8 @@ function importFromWorkOrderCSV() {
             if (workOrderRow.WO_PERIOD !== "") {
                 addOrUpdateLotOccupancyField({
                     lotOccupancyId: lotOccupancyId,
-                    occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                        return (occupancyTypeField.occupancyTypeField ===
-                            "Death Age Period");
+                    occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                        return occupancyTypeField.occupancyTypeField === "Death Age Period";
                     }).occupancyTypeFieldId,
                     lotOccupancyFieldValue: workOrderRow.WO_PERIOD
                 }, user);
@@ -834,9 +815,8 @@ function importFromWorkOrderCSV() {
             if (workOrderRow.WO_FUNERAL_HOME !== "") {
                 addOrUpdateLotOccupancyField({
                     lotOccupancyId: lotOccupancyId,
-                    occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                        return (occupancyTypeField.occupancyTypeField ===
-                            "Funeral Home");
+                    occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                        return occupancyTypeField.occupancyTypeField === "Funeral Home";
                     }).occupancyTypeFieldId,
                     lotOccupancyFieldValue: workOrderRow.WO_FUNERAL_HOME
                 }, user);
@@ -845,9 +825,8 @@ function importFromWorkOrderCSV() {
                 const lotOccupancyFieldValue = formatDateString(workOrderRow.WO_FUNERAL_YR, workOrderRow.WO_FUNERAL_MON, workOrderRow.WO_FUNERAL_DAY);
                 addOrUpdateLotOccupancyField({
                     lotOccupancyId: lotOccupancyId,
-                    occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                        return (occupancyTypeField.occupancyTypeField ===
-                            "Funeral Date");
+                    occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                        return occupancyTypeField.occupancyTypeField === "Funeral Date";
                     }).occupancyTypeFieldId,
                     lotOccupancyFieldValue
                 }, user);
@@ -855,9 +834,8 @@ function importFromWorkOrderCSV() {
             if (workOrderRow.WO_CONTAINER_TYPE !== "") {
                 addOrUpdateLotOccupancyField({
                     lotOccupancyId: lotOccupancyId,
-                    occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                        return (occupancyTypeField.occupancyTypeField ===
-                            "Container Type");
+                    occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                        return occupancyTypeField.occupancyTypeField === "Container Type";
                     }).occupancyTypeFieldId,
                     lotOccupancyFieldValue: workOrderRow.WO_CONTAINER_TYPE
                 }, user);
@@ -869,9 +847,8 @@ function importFromWorkOrderCSV() {
                 }
                 addOrUpdateLotOccupancyField({
                     lotOccupancyId: lotOccupancyId,
-                    occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find((occupancyTypeField) => {
-                        return (occupancyTypeField.occupancyTypeField ===
-                            "Committal Type");
+                    occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                        return occupancyTypeField.occupancyTypeField === "Committal Type";
                     }).occupancyTypeFieldId,
                     lotOccupancyFieldValue: commitalType
                 }, user);
@@ -890,7 +867,9 @@ function importFromWorkOrderCSV() {
                 workOrderMilestoneCompletionDateString: workOrderRow.WO_CONFIRMATION_IN
                     ? workOrderOpenDateString
                     : undefined,
-                workOrderMilestoneCompletionTimeString: workOrderRow.WO_CONFIRMATION_IN ? "00:00" : undefined
+                workOrderMilestoneCompletionTimeString: workOrderRow.WO_CONFIRMATION_IN
+                    ? "00:00"
+                    : undefined
             }, user);
             if (workOrderRow.WO_DEATH_YR) {
                 const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_DEATH_YR, workOrderRow.WO_DEATH_MON, workOrderRow.WO_DEATH_DAY);
@@ -902,14 +881,10 @@ function importFromWorkOrderCSV() {
                     workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString
                         ? workOrderMilestoneDateString
                         : undefined,
-                    workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString
-                        ? "00:00"
-                        : undefined
+                    workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString ? "00:00" : undefined
                 }, user);
-                if (workOrderMilestoneDateString >
-                    maxMilestoneCompletionDateString) {
-                    maxMilestoneCompletionDateString =
-                        workOrderMilestoneDateString;
+                if (workOrderMilestoneDateString > maxMilestoneCompletionDateString) {
+                    maxMilestoneCompletionDateString = workOrderMilestoneDateString;
                 }
                 if (workOrderMilestoneDateString >= currentDateString) {
                     hasIncompleteMilestones = true;
@@ -935,10 +910,8 @@ function importFromWorkOrderCSV() {
                         ? workOrderMilestoneTimeString
                         : undefined
                 }, user);
-                if (workOrderMilestoneDateString >
-                    maxMilestoneCompletionDateString) {
-                    maxMilestoneCompletionDateString =
-                        workOrderMilestoneDateString;
+                if (workOrderMilestoneDateString > maxMilestoneCompletionDateString) {
+                    maxMilestoneCompletionDateString = workOrderMilestoneDateString;
                 }
                 if (workOrderMilestoneDateString >= currentDateString) {
                     hasIncompleteMilestones = true;
@@ -968,14 +941,10 @@ function importFromWorkOrderCSV() {
                     workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString
                         ? workOrderMilestoneDateString
                         : undefined,
-                    workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString
-                        ? "23:59"
-                        : undefined
+                    workOrderMilestoneCompletionTimeString: workOrderMilestoneDateString < currentDateString ? "23:59" : undefined
                 }, user);
-                if (workOrderMilestoneDateString >
-                    maxMilestoneCompletionDateString) {
-                    maxMilestoneCompletionDateString =
-                        workOrderMilestoneDateString;
+                if (workOrderMilestoneDateString > maxMilestoneCompletionDateString) {
+                    maxMilestoneCompletionDateString = workOrderMilestoneDateString;
                 }
                 if (workOrderMilestoneDateString >= currentDateString) {
                     hasIncompleteMilestones = true;
