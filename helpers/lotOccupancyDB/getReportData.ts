@@ -114,6 +114,10 @@ export const getReportData = (
             sql = "select * from WorkOrderLots";
             break;
 
+        case "workOrderMilestones-all":
+            sql = "select * from WorkOrderMilestones";
+            break;
+
         case "fees-all":
             sql = "select * from Fees";
             break;
@@ -150,6 +154,10 @@ export const getReportData = (
             sql = "select * from WorkOrderTypes";
             break;
 
+        case "workOrderMilestoneTypes-all":
+            sql = "select * from WorkOrderMilestoneTypes";
+            break;
+    
         default:
             return undefined;
     }
