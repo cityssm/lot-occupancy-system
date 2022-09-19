@@ -282,23 +282,19 @@ declare const bulmaJS: BulmaJS;
     };
 
     const openEditOccupancyTypeField = (occupancyTypeId: number, occupancyTypeFieldId: number) => {
-        let occupancyTypeField: recordTypes.OccupancyTypeField;
+        let occupancyType: recordTypes.OccupancyType;
 
         if (occupancyTypeId) {
-            const occupancyType = occupancyTypes.find((currentOccupancyType) => {
+            occupancyType = occupancyTypes.find((currentOccupancyType) => {
                 return currentOccupancyType.occupancyTypeId === occupancyTypeId;
             });
-
-            occupancyTypeField = occupancyType.occupancyTypeFields.find(
-                (currentOccupancyTypeField) => {
-                    return currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId;
-                }
-            );
-        } else {
-            occupancyTypeField = allOccupancyTypeFields.find((currentOccupancyTypeField) => {
-                return currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId;
-            });
         }
+
+        const occupancyTypeField = (
+            occupancyType ? occupancyType.occupancyTypeFields : allOccupancyTypeFields
+        ).find((currentOccupancyTypeField) => {
+            return currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId;
+        });
 
         let minimumLengthElement: HTMLInputElement;
         let maximumLengthElement: HTMLInputElement;
@@ -469,6 +465,44 @@ declare const bulmaJS: BulmaJS;
         openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId);
     };
 
+    
+    const moveOccupancyTypeFieldUp = (clickEvent: Event) => {
+        clickEvent.preventDefault();
+
+        const occupancyTypeFieldId = (
+            (clickEvent.currentTarget as HTMLElement).closest(
+                ".container--occupancyTypeField"
+            ) as HTMLElement
+        ).dataset.occupancyTypeFieldId;
+
+        cityssm.postJSON(
+            urlPrefix + "/admin/doMoveOccupancyTypeFieldUp",
+            {
+                occupancyTypeFieldId
+            },
+            occupancyTypeResponseHandler
+        );
+    };
+
+    const moveOccupancyTypeFieldDown = (clickEvent: Event) => {
+        clickEvent.preventDefault();
+
+        const occupancyTypeFieldId = (
+            (clickEvent.currentTarget as HTMLElement).closest(
+                ".container--occupancyTypeField"
+            ) as HTMLElement
+        ).dataset.occupancyTypeFieldId;
+
+        cityssm.postJSON(
+            urlPrefix + "/admin/doMoveOccupancyTypeFieldDown",
+            {
+                occupancyTypeFieldId
+            },
+            occupancyTypeResponseHandler
+        );
+    };
+
+
     const renderOccupancyTypeFields = (
         panelElement: HTMLElement,
         occupancyTypeId: number | undefined,
@@ -529,6 +563,14 @@ declare const bulmaJS: BulmaJS;
                 panelBlockElement
                     .querySelector(".button--editOccupancyTypeField")
                     .addEventListener("click", openEditOccupancyTypeFieldByClick);
+
+                panelBlockElement
+                    .querySelector(".button--moveOccupancyTypeFieldUp")
+                    .addEventListener("click", moveOccupancyTypeFieldUp);
+
+                panelBlockElement
+                    .querySelector(".button--moveOccupancyTypeFieldDown")
+                    .addEventListener("click", moveOccupancyTypeFieldDown);
 
                 panelElement.append(panelBlockElement);
             }

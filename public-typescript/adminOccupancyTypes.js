@@ -139,20 +139,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }, occupancyTypeResponseHandler);
     };
     const openEditOccupancyTypeField = (occupancyTypeId, occupancyTypeFieldId) => {
-        let occupancyTypeField;
+        let occupancyType;
         if (occupancyTypeId) {
-            const occupancyType = occupancyTypes.find((currentOccupancyType) => {
+            occupancyType = occupancyTypes.find((currentOccupancyType) => {
                 return currentOccupancyType.occupancyTypeId === occupancyTypeId;
             });
-            occupancyTypeField = occupancyType.occupancyTypeFields.find((currentOccupancyTypeField) => {
-                return currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId;
-            });
         }
-        else {
-            occupancyTypeField = allOccupancyTypeFields.find((currentOccupancyTypeField) => {
-                return currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId;
-            });
-        }
+        const occupancyTypeField = (occupancyType ? occupancyType.occupancyTypeFields : allOccupancyTypeFields).find((currentOccupancyTypeField) => {
+            return currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId;
+        });
         let minimumLengthElement;
         let maximumLengthElement;
         let patternElement;
@@ -244,6 +239,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId, 10);
         openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId);
     };
+    const moveOccupancyTypeFieldUp = (clickEvent) => {
+        clickEvent.preventDefault();
+        const occupancyTypeFieldId = clickEvent.currentTarget.closest(".container--occupancyTypeField").dataset.occupancyTypeFieldId;
+        cityssm.postJSON(urlPrefix + "/admin/doMoveOccupancyTypeFieldUp", {
+            occupancyTypeFieldId
+        }, occupancyTypeResponseHandler);
+    };
+    const moveOccupancyTypeFieldDown = (clickEvent) => {
+        clickEvent.preventDefault();
+        const occupancyTypeFieldId = clickEvent.currentTarget.closest(".container--occupancyTypeField").dataset.occupancyTypeFieldId;
+        cityssm.postJSON(urlPrefix + "/admin/doMoveOccupancyTypeFieldDown", {
+            occupancyTypeFieldId
+        }, occupancyTypeResponseHandler);
+    };
     const renderOccupancyTypeFields = (panelElement, occupancyTypeId, occupancyTypeFields) => {
         if (occupancyTypeFields.length === 0) {
             panelElement.insertAdjacentHTML("beforeend", '<div class="panel-block is-block' +
@@ -294,6 +303,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 panelBlockElement
                     .querySelector(".button--editOccupancyTypeField")
                     .addEventListener("click", openEditOccupancyTypeFieldByClick);
+                panelBlockElement
+                    .querySelector(".button--moveOccupancyTypeFieldUp")
+                    .addEventListener("click", moveOccupancyTypeFieldUp);
+                panelBlockElement
+                    .querySelector(".button--moveOccupancyTypeFieldDown")
+                    .addEventListener("click", moveOccupancyTypeFieldDown);
                 panelElement.append(panelBlockElement);
             }
         }
