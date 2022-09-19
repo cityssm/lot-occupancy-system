@@ -36,10 +36,7 @@ export const moveOccupancyTypeFieldUp = (occupancyTypeFieldId: number | string):
         .prepare(
             "update OccupancyTypeFields" +
                 " set orderNumber = ? - 1" +
-                " where occupancyTypeFieldId = ?" +
-                (currentField.occupancyTypeId
-                    ? " and occupancyTypeId = '" + currentField.occupancyTypeId + "'"
-                    : " and occupancyTypeId is null")
+                " where occupancyTypeFieldId = ?"
         )
         .run(currentField.orderNumber, occupancyTypeFieldId);
 
