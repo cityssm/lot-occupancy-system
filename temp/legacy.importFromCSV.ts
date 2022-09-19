@@ -817,50 +817,6 @@ function importFromMasterCSV() {
 
                 updateLotStatus(lotId, takenLotStatus.lotStatusId, user);
             }
-
-            if (masterRow.CM_WORK_ORDER) {
-                const workOrderDateString =
-                    deceasedOccupancyStartDateString || preneedOccupancyStartDateString;
-
-                const workOrderId = addWorkOrder(
-                    {
-                        workOrderNumber: masterRow.CM_WORK_ORDER,
-                        workOrderTypeId: 1,
-                        workOrderDescription: "",
-                        workOrderOpenDateString: workOrderDateString,
-                        workOrderCloseDateString: workOrderDateString
-                    },
-                    user
-                );
-
-                if (lotId) {
-                    addWorkOrderLot(
-                        {
-                            workOrderId,
-                            lotId
-                        },
-                        user
-                    );
-                }
-
-                if (deceasedLotOccupancyId) {
-                    addWorkOrderLotOccupancy(
-                        {
-                            workOrderId,
-                            lotOccupancyId: deceasedLotOccupancyId
-                        },
-                        user
-                    );
-                } else if (preneedLotOccupancyId) {
-                    addWorkOrderLotOccupancy(
-                        {
-                            workOrderId,
-                            lotOccupancyId: preneedLotOccupancyId
-                        },
-                        user
-                    );
-                }
-            }
         }
     } catch (error) {
         console.error(error);
