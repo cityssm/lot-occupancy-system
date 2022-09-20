@@ -23,8 +23,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const unlockField = (clickEvent) => {
         const fieldElement = clickEvent.currentTarget.closest(".field");
         const inputOrSelectElement = fieldElement.querySelector("input, select");
+        inputOrSelectElement.classList.remove("is-readonly");
         if (inputOrSelectElement.tagName === "INPUT") {
             inputOrSelectElement.readOnly = false;
+            inputOrSelectElement.disabled = false;
         }
         else {
             const optionElements = inputOrSelectElement.querySelectorAll("option");

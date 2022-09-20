@@ -53,8 +53,11 @@ import type * as globalTypes from "../types/globalTypes";
             "input, select"
         ) as HTMLInputElement | HTMLSelectElement;
 
+        inputOrSelectElement.classList.remove("is-readonly");
+
         if (inputOrSelectElement.tagName === "INPUT") {
             (inputOrSelectElement as HTMLInputElement).readOnly = false;
+            (inputOrSelectElement as HTMLInputElement).disabled = false;
         } else {
             const optionElements =
                 inputOrSelectElement.querySelectorAll("option");
