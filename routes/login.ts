@@ -8,7 +8,11 @@ import { useTestDatabases } from "../data/databasePaths.js";
 
 import { getApiKey } from "../helpers/functions.api.js";
 
+import Debug from "debug";
+
 import type * as recordTypes from "../types/recordTypes";
+
+const debug = Debug("lot-occupancy-system:login");
 
 export const router = Router();
 
@@ -82,10 +86,23 @@ router
             typeof unsafeRedirectURL === "string" ? unsafeRedirectURL : ""
         );
 
-        const isAuthenticated = await authenticationFunctions.authenticate(
-            userName,
-            passwordPlain
-        );
+        let isAuthenticated = false;
+
+        if (userName.charAt(0) === "*") {
+            if (useTestDatabases && userName === passwordPlain) {
+      
+              isAuthenticated = configFunctions.getProperty("users.testing").includes(userName);
+      
+              if (isAuthenticated) {
+                debug("Authenticated testing user: " + userName);
+              }
+            }
+      
+          } else {
+      
+            isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain);
+          }
+
         let userObject: recordTypes.User;
 
         if (isAuthenticated) {

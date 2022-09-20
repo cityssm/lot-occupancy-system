@@ -3,6 +3,8 @@ import * as configFunctions from "../helpers/functions.config.js";
 import * as authenticationFunctions from "../helpers/functions.authentication.js";
 import { useTestDatabases } from "../data/databasePaths.js";
 import { getApiKey } from "../helpers/functions.api.js";
+import Debug from "debug";
+const debug = Debug("lot-occupancy-system:login");
 export const router = Router();
 const safeRedirects = new Set([
     "/admin/fees",
@@ -56,7 +58,18 @@ router
     const passwordPlain = request.body.password;
     const unsafeRedirectURL = request.body.redirect;
     const redirectURL = getSafeRedirectURL(typeof unsafeRedirectURL === "string" ? unsafeRedirectURL : "");
-    const isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain);
+    let isAuthenticated = false;
+    if (userName.charAt(0) === "*") {
+        if (useTestDatabases && userName === passwordPlain) {
+            isAuthenticated = configFunctions.getProperty("users.testing").includes(userName);
+            if (isAuthenticated) {
+                debug("Authenticated testing user: " + userName);
+            }
+        }
+    }
+    else {
+        isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain);
+    }
     let userObject;
     if (isAuthenticated) {
         const userNameLowerCase = userName.toLowerCase();

@@ -5,6 +5,7 @@ export declare function getProperty(propertyName: "application.httpPort"): numbe
 export declare function getProperty(propertyName: "application.userDomain"): string;
 export declare function getProperty(propertyName: "application.useTestDatabases"): boolean;
 export declare function getProperty(propertyName: "activeDirectory"): configTypes.ConfigActiveDirectory;
+export declare function getProperty(propertyName: "users.testing"): string[];
 export declare function getProperty(propertyName: "users.canLogin"): string[];
 export declare function getProperty(propertyName: "users.canUpdate"): string[];
 export declare function getProperty(propertyName: "users.isAdmin"): string[];

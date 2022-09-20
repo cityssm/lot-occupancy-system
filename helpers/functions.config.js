@@ -12,6 +12,7 @@ configFallbackValues.set("session.cookieName", "lot-occupancy-system-user-sid");
 configFallbackValues.set("session.secret", "cityssm/lot-occupancy-system");
 configFallbackValues.set("session.maxAgeMillis", 60 * 60 * 1000);
 configFallbackValues.set("session.doKeepAlive", false);
+configFallbackValues.set("users.testing", []);
 configFallbackValues.set("users.canLogin", ["administrator"]);
 configFallbackValues.set("users.canUpdate", []);
 configFallbackValues.set("users.isAdmin", ["administrator"]);
