@@ -14,6 +14,7 @@ import handler_edit from "../handlers/lots-get/edit.js";
 
 import handler_doCreateLot from "../handlers/lots-post/doCreateLot.js";
 import handler_doUpdateLot from "../handlers/lots-post/doUpdateLot.js";
+import handler_doDeleteLot from "../handlers/lots-post/doDeleteLot.js";
 
 import handler_doAddLotComment from "../handlers/lots-post/doAddLotComment.js";
 import handler_doUpdateLotComment from "../handlers/lots-post/doUpdateLotComment.js";
@@ -43,23 +44,13 @@ router.get("/:lotId/previous", handler_previous);
 
 router.get("/:lotId/edit", permissionHandlers.updateGetHandler, handler_edit);
 
-router.post(
-    "/doCreateLot",
-    permissionHandlers.updatePostHandler,
-    handler_doCreateLot
-);
+router.post("/doCreateLot", permissionHandlers.updatePostHandler, handler_doCreateLot);
 
-router.post(
-    "/doUpdateLot",
-    permissionHandlers.updatePostHandler,
-    handler_doUpdateLot
-);
+router.post("/doUpdateLot", permissionHandlers.updatePostHandler, handler_doUpdateLot);
 
-router.post(
-    "/doAddLotComment",
-    permissionHandlers.updatePostHandler,
-    handler_doAddLotComment
-);
+router.post("/doDeleteLot", permissionHandlers.updatePostHandler, handler_doDeleteLot);
+
+router.post("/doAddLotComment", permissionHandlers.updatePostHandler, handler_doAddLotComment);
 
 router.post(
     "/doUpdateLotComment",
