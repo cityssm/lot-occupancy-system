@@ -834,7 +834,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 panelBlockElement.dataset.workOrderMilestoneId =
                     milestone.workOrderMilestoneId.toString();
                 panelBlockElement.innerHTML =
-                    '<div class="columns">' +
+                    '<div class="columns is-mobile">' +
                         ('<div class="column is-narrow">' +
                             (milestone.workOrderMilestoneCompletionDate
                                 ? '<span class="button is-static" data-tooltip="Completed ' +

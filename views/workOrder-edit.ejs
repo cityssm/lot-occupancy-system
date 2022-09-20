@@ -38,7 +38,7 @@
     <% } %>
 </h1>
 
-<div class="columns">
+<div class="columns is-desktop">
     <div class="column">
         <form id="form--workOrderEdit">
             <input id="workOrderEdit--workOrderId" name="workOrderId" type="hidden" value="<%= workOrder.workOrderId %>" />
@@ -49,7 +49,7 @@
                             <label class="label" for="workOrderEdit--workOrderNumber">Work Order Number</label>
                             <div class="field has-addons">
                                 <div class="control is-expanded">
-                                    <input class="input" id="workOrderEdit--workOrderNumber" name="workOrderNumber" type="text" value="<%= workOrder.workOrderNumber %>" maxlength="50" readonly <%= (isCreate ? "" : " required") %> />
+                                    <input class="input <%= (isCreate ? "" : " is-readonly") %>" id="workOrderEdit--workOrderNumber" name="workOrderNumber" type="text" value="<%= workOrder.workOrderNumber %>" maxlength="50" readonly <%= (isCreate ? "" : " required") %> />
                                 </div>
                                 <div class="control">
                                     <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
@@ -192,10 +192,10 @@
         <% } %>
     </div>
     <% if (!isCreate) { %>
-        <div class="column is-4">
+        <div class="column is-4-desktop">
             <div class="panel" id="panel--milestones">
                 <div class="panel-heading">
-                    <div class="level">
+                    <div class="level is-mobile">
                         <div class="level-left">
                             <div class="level-item">
                                 <h2 class="title has-text-weight-bold is-5">Milestones</h2>

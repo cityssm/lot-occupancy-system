@@ -30,7 +30,7 @@
     </div>
 <% } %>
 
-<div class="columns">
+<div class="columns is-desktop">
     <div class="column">
         <div class="panel">
             <div class="panel-block is-block">
@@ -212,10 +212,10 @@
         <% } %>
     </div>
     <% if (workOrder.workOrderMilestones.length > 0) { %>
-        <div class="column is-4">
+        <div class="column is-4-desktop">
             <div class="panel">
                 <div class="panel-heading">
-                    <div class="level">
+                    <div class="level is-mobile">
                         <div class="level-left">
                             <div class="level-item">
                                 <h2 class="title is-5 has-text-weight-bold">Milestones</h2>
@@ -244,7 +244,7 @@
                 </div>
                 <% for (const milestone of workOrder.workOrderMilestones) { %>
                     <div class="panel-block is-block">
-                        <div class="columns">
+                        <div class="columns is-mobile">
                             <div class="column is-narrow">
                                 <% if (milestone.workOrderMilestoneCompletionDate) { %>
                                     <span class="icon is-small" data-tooltip="Completed <%= milestone.workOrderMilestoneCompletionDateString %>">

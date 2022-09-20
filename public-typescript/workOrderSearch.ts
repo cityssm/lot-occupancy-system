@@ -17,13 +17,10 @@ declare const cityssm: cityssmGlobal;
     ) as HTMLElement;
 
     const limit = Number.parseInt(
-        (document.querySelector("#searchFilter--limit") as HTMLInputElement)
-            .value,
+        (document.querySelector("#searchFilter--limit") as HTMLInputElement).value,
         10
     );
-    const offsetElement = document.querySelector(
-        "#searchFilter--offset"
-    ) as HTMLInputElement;
+    const offsetElement = document.querySelector("#searchFilter--offset") as HTMLInputElement;
 
     const getWorkOrders = () => {
         const offset = Number.parseInt(offsetElement.value, 10);
@@ -37,10 +34,7 @@ declare const cityssm: cityssmGlobal;
         cityssm.postJSON(
             urlPrefix + "/workOrders/doSearchWorkOrders",
             searchFilterFormElement,
-            (responseJSON: {
-                count: number;
-                workOrders: recordTypes.WorkOrder[];
-            }) => {
+            (responseJSON: { count: number; workOrders: recordTypes.WorkOrder[] }) => {
                 if (responseJSON.workOrders.length === 0) {
                     searchResultsContainerElement.innerHTML =
                         '<div class="message is-info">' +
@@ -67,17 +61,22 @@ declare const cityssm: cityssmGlobal;
                                 "</td>") +
                             ("<td>" +
                                 cityssm.escapeHTML(workOrder.workOrderType) +
+                                "<br />" +
+                                '<span class="is-size-7">' +
+                                cityssm.escapeHTML(workOrder.workOrderDescription) +
+                                "</span>" +
                                 "</td>") +
-                            "<td>" +
-                            cityssm.escapeHTML(workOrder.workOrderDescription) +
-                            "</td>" +
-                            ("<td>" +
-                                workOrder.workOrderOpenDateString +
-                                "</td>") +
-                            ("<td>" +
-                                (workOrder.workOrderCloseDate
-                                    ? workOrder.workOrderCloseDateString
-                                    : '<span class="has-text-grey">(No Close Date)</span>') +
+                            ('<td class="is-nowrap">' +
+                                ('<span data-tooltip="Open Date">' +
+                                    '<i class="fas fa-fw fa-play" aria-label="Open Date"></i> ' +
+                                    workOrder.workOrderOpenDateString +
+                                    "</span><br />") +
+                                ('<span data-tooltip="Close Date">' +
+                                    '<i class="fas fa-fw fa-stop" aria-label="Close Date"></i> ' +
+                                    (workOrder.workOrderCloseDate
+                                        ? workOrder.workOrderCloseDateString
+                                        : '<span class="has-text-grey">(No Close Date)</span>') +
+                                    "</span>") +
                                 "</td>") +
                             ("<td>" +
                                 (workOrder.workOrderMilestoneCount === 0
@@ -94,10 +93,8 @@ declare const cityssm: cityssmGlobal;
                     '<table class="table is-fullwidth is-striped is-hoverable">' +
                     "<thead><tr>" +
                     "<th>Work Order Number</th>" +
-                    "<th>Work Order Type</th>" +
                     "<th>Work Order Description</th>" +
-                    "<th>Open Date</th>" +
-                    "<th>Close Date</th>" +
+                    "<th>Date</th>" +
                     "<th>Progress</th>" +
                     "</tr></thead>" +
                     "<table>" +
@@ -131,9 +128,7 @@ declare const cityssm: cityssmGlobal;
                         "</div>") +
                     "</div>";
 
-                searchResultsContainerElement
-                    .querySelector("table")
-                    .append(resultsTbodyElement);
+                searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
 
                 if (offset > 0) {
                     searchResultsContainerElement
@@ -164,15 +159,13 @@ declare const cityssm: cityssmGlobal;
     };
 
     const nextAndGetWorkOrders = () => {
-        offsetElement.value = (
-            Number.parseInt(offsetElement.value, 10) + limit
-        ).toString();
+        offsetElement.value = (Number.parseInt(offsetElement.value, 10) + limit).toString();
         getWorkOrders();
     };
 
-    const filterElements = searchFilterFormElement.querySelectorAll(
-        "input, select"
-    ) as NodeListOf<HTMLInputElement | HTMLSelectElement>;
+    const filterElements = searchFilterFormElement.querySelectorAll("input, select") as NodeListOf<
+        HTMLInputElement | HTMLSelectElement
+    >;
 
     for (const filterElement of filterElements) {
         filterElement.addEventListener("change", resetOffsetAndGetWorkOrders);

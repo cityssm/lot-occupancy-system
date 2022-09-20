@@ -4,8 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const searchFilterFormElement = document.querySelector("#form--searchFilters");
     const searchResultsContainerElement = document.querySelector("#container--searchResults");
-    const limit = Number.parseInt(document.querySelector("#searchFilter--limit")
-        .value, 10);
+    const limit = Number.parseInt(document.querySelector("#searchFilter--limit").value, 10);
     const offsetElement = document.querySelector("#searchFilter--offset");
     const getWorkOrders = () => {
         const offset = Number.parseInt(offsetElement.value, 10);
@@ -36,17 +35,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</td>") +
                     ("<td>" +
                         cityssm.escapeHTML(workOrder.workOrderType) +
+                        "<br />" +
+                        '<span class="is-size-7">' +
+                        cityssm.escapeHTML(workOrder.workOrderDescription) +
+                        "</span>" +
                         "</td>") +
-                    "<td>" +
-                    cityssm.escapeHTML(workOrder.workOrderDescription) +
-                    "</td>" +
-                    ("<td>" +
-                        workOrder.workOrderOpenDateString +
-                        "</td>") +
-                    ("<td>" +
-                        (workOrder.workOrderCloseDate
-                            ? workOrder.workOrderCloseDateString
-                            : '<span class="has-text-grey">(No Close Date)</span>') +
+                    ('<td class="is-nowrap">' +
+                        ('<span data-tooltip="Open Date">' +
+                            '<i class="fas fa-fw fa-play" aria-label="Open Date"></i> ' +
+                            workOrder.workOrderOpenDateString +
+                            "</span><br />") +
+                        ('<span data-tooltip="Close Date">' +
+                            '<i class="fas fa-fw fa-stop" aria-label="Close Date"></i> ' +
+                            (workOrder.workOrderCloseDate
+                                ? workOrder.workOrderCloseDateString
+                                : '<span class="has-text-grey">(No Close Date)</span>') +
+                            "</span>") +
                         "</td>") +
                     ("<td>" +
                         (workOrder.workOrderMilestoneCount === 0
@@ -61,10 +65,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '<table class="table is-fullwidth is-striped is-hoverable">' +
                     "<thead><tr>" +
                     "<th>Work Order Number</th>" +
-                    "<th>Work Order Type</th>" +
                     "<th>Work Order Description</th>" +
-                    "<th>Open Date</th>" +
-                    "<th>Close Date</th>" +
+                    "<th>Date</th>" +
                     "<th>Progress</th>" +
                     "</tr></thead>" +
                     "<table>" +
@@ -97,9 +99,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             : "") +
                         "</div>") +
                     "</div>";
-            searchResultsContainerElement
-                .querySelector("table")
-                .append(resultsTbodyElement);
+            searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
             if (offset > 0) {
                 searchResultsContainerElement
                     .querySelector("button[data-page='previous']")

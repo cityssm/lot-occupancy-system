@@ -71,7 +71,11 @@
                     <div class="field has-addons">
                         <div class="control is-expanded">
                             <div class="select is-fullwidth">
-                                <select id="lotOccupancy--occupancyTypeId" name="occupancyTypeId" required>
+                                <select
+                                    <% if (!isCreate) { %>
+                                        class="is-readonly" 
+                                    <% } %>
+                                    id="lotOccupancy--occupancyTypeId" name="occupancyTypeId" required>
                                     <% if (isCreate) { %>
                                         <option value="">(No Type)</option>
                                     <% } %>
@@ -109,9 +113,9 @@
                     </label>
                     <div class="field has-addons">
                         <div class="control is-expanded">
-                            <input class="input is-clickable has-text-left" id="lotOccupancy--lotName" type="button" value="<%= lotOccupancy.lotName || "(No " + configFunctions.getProperty("aliases.lot") + ")" %>"
+                            <input class="input is-clickable has-text-left <%= (isCreate ? "" : " is-readonly") %>" id="lotOccupancy--lotName" type="button" value="<%= lotOccupancy.lotName || "(No " + configFunctions.getProperty("aliases.lot") + ")" %>"
                             <%= (configFunctions.getProperty("settings.lotOccupancy.lotIdIsRequired") ? " required" : "") %>
-                            <%= (isCreate ? "" : " disabled") %> />
+                            <%= (isCreate ? "" : " disabled readonly") %> />
                         </div>
                         <div class="control is-hidden-print">
                             <button class="button is-clear-lot-button" data-tooltip="Clear" type="button" aria-label="Clear <%= configFunctions.getProperty("aliases.lot") %></button> Field">
