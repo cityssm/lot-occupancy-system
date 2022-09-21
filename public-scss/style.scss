@@ -1,19 +1,19 @@
-@use '../node_modules/@cityssm/bulma-webapp-css/cityssm.min.css';
-@import '../node_modules/bulma/sass/utilities/derived-variables.sass';
+@use "@cityssm/bulma-webapp-css/cityssm.css";
+@import "bulma/sass/utilities/derived-variables";
 
 $white: #fff;
 $black: #000;
 
 .is-linethrough {
-  text-decoration: line-through;
+    text-decoration: line-through;
 }
 
 .has-width-10 {
-  width: 10px;
+    width: 10px;
 }
 
 .has-min-page-height {
-  min-height: 100vh;
+    min-height: 100vh;
 }
 
 /*
@@ -24,21 +24,21 @@ $black: #000;
 .has-status-loading .is-hidden-status-loading,
 .has-status-view .is-hidden-status-view,
 fieldset:enabled .is-hidden-enabled {
-  display: none;
+    display: none;
 }
 
 .has-status-view .is-noninteractive-status-view {
-  pointer-events: none;
+    pointer-events: none;
 }
 
 // to fix page titles inside level components, set on .level-left
 
 .has-flex-shrink-1 {
-  flex-shrink: 1;
+    flex-shrink: 1;
 }
 
 .has-border-radius-3 {
-  border-radius: 3px;
+    border-radius: 3px;
 }
 
 /*
@@ -46,28 +46,28 @@ fieldset:enabled .is-hidden-enabled {
  */
 
 .tab-content {
-  display: none;
+    display: none;
 
-  &.is-active {
-    display: block;
-  }
+    &.is-active {
+        display: block;
+    }
 }
 
 #is-login-page {
-  overflow: auto;
-  background-position: top center;
-  background-size: cover;
+    overflow: auto;
+    background-position: top center;
+    background-size: cover;
 
-  body > .columns {
-    min-height: 100vh;
-  }
+    body > .columns {
+        min-height: 100vh;
+    }
 }
 
 .button.is-xsmall {
-  height: 2em;
-  padding-top: 0;
-  padding-bottom: 0;
-  font-size: 0.75rem;
+    height: 2em;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 0.75rem;
 }
 
 /*
@@ -75,17 +75,17 @@ fieldset:enabled .is-hidden-enabled {
  */
 
 .container.is-page {
-  width: 8.5in;
-  padding: 10px 20px 20px;
-  margin: 20px auto;
-  background-color: $white;
-  border: 1px solid $black;
+    width: 8.5in;
+    padding: 10px 20px 20px;
+    margin: 20px auto;
+    background-color: $white;
+    border: 1px solid $black;
 
-  @media print {
-    width: 100%;
-    padding: 0;
-    border: 0;
-  }
+    @media print {
+        width: 100%;
+        padding: 0;
+        border: 0;
+    }
 }
 
 /*
@@ -93,25 +93,24 @@ fieldset:enabled .is-hidden-enabled {
  */
 
 .image svg {
-  display: block;
-  height: auto;
-  width: 100%;
+    display: block;
+    height: auto;
+    width: 100%;
 
-  .highlight,
-  .highlight path {
+    .highlight,
+    .highlight path {
+        &.is-danger {
+            fill: $danger-light;
+        }
 
-    &.is-danger {
-      fill: $danger-light;
+        &.is-success {
+            fill: $success-light;
+        }
     }
-    
-    &.is-success {
-      fill: $success-light;
-    }
-  }
 
-  text {
-    user-select: none;
-  }
+    text {
+        user-select: none;
+    }
 }
 
 /*
@@ -119,15 +118,15 @@ fieldset:enabled .is-hidden-enabled {
  */
 
 .select option:disabled {
-  display: none;
+    display: none;
 }
 
- /*
+/*
   * Modal Size Fix
   */
 
 .modal-card {
-  max-width: 100%;
+    max-width: 100%;
 }
 
 /*
@@ -138,7 +137,7 @@ $black-ter: hsl(0, 0%, 14%);
 
 .control .button.is-static,
 .menu .menu-label {
-  color: $black-ter;
+    color: $black-ter;
 }
 
 /*
@@ -146,11 +145,11 @@ $black-ter: hsl(0, 0%, 14%);
  */
 
 .navbar.is-fixed-top {
-  z-index: 1100;
+    z-index: 1100;
 }
 
 .modal {
-  z-index: 1200;
+    z-index: 1200;
 }
 
 /*
@@ -158,6 +157,6 @@ $black-ter: hsl(0, 0%, 14%);
  */
 
 span.button.is-static {
-  pointer-events: all;
-  cursor: default;
+    pointer-events: all;
+    cursor: default;
 }
