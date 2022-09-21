@@ -5,126 +5,247 @@
 </h1>
 
 <div class="columns">
+    <% if (workOrderMilestones.length > 0) { %>
+        <div class="column is-4">
+            <div class="panel is-info">
+                <h2 class="panel-heading">Today's Milestones</h2>
+                <% for (const milestone of workOrderMilestones) { %>
+                    <a class="panel-block" href="<%= urlPrefix %>/workOrders/<%= milestone.workOrderId %>">
+                        <div class="columns is-mobile">
+                            <div class="column is-narrow">
+                                <div class="icon is-small">
+                                    <% if (milestone.workOrderMilestoneCompletionDate) { %>
+                                        <i class="fas fa-check" aria-label="Completed"></i>
+                                    <% } else { %>
+                                        <i class="far fa-square" aria-label="Incomplete"></i>   
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <% if (milestone.workOrderMilestoneTime) { %>
+                                    <%= milestone.workOrderMilestoneTimeString %><br />
+                                <% } %>
+                                <% if (milestone.workOrderMilestoneTypeId) { %>
+                                    <strong><%= milestone.workOrderMilestoneType %></strong><br />
+                                <% } %>
+                                <span class="is-size-7">
+                                    <i class="fas fa-hard-hat" aria-label="Work Order"></i> <%= milestone.workOrder.workOrderNumber %><br />
+                                    <% 
+                                        if (milestone.workOrder.workOrderLots.length > 0) {
+                                            for (const lot of milestone.workOrder.workOrderLots) {
+                                    %>
+                                    <i class="fas fa-vector-square" aria-label="<%= configFunctions.getProperty("aliases.lot") %>"></i> <%= lot.lotName %><br />
+                                    <%
+                                            }
+                                        }
+                                    
+                                        if (milestone.workOrder.workOrderLotOccupancies.length > 0) {
+                                            for (const occupancy of milestone.workOrder.workOrderLotOccupancies) {
+                                                for (const occupant of occupancy.lotOccupancyOccupants) {
+                                    %>
+                                    <i class="fas fa-user" aria-label="<%= configFunctions.getProperty("aliases.occupancy") %>"></i> <%= occupant.occupantName %><br />
+                                    <%
+                                                }
+                                            }
+                                        }
+                                    %>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    <% } %>
     <div class="column">
-        <div class="card">
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-left">
-                        <span class="fa-layers fa-3x fa-fw" aria-hidden="true">
-                            <i class="fas fa-vector-square"></i>
-                            <i class="fas fa-user" data-fa-transform="shrink-10"></i>
-                        </span>
+        <div class="columns is-desktop">
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <span class="fa-layers fa-3x fa-fw" aria-hidden="true">
+                                    <i class="fas fa-vector-square"></i>
+                                    <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+                                </span>
+                            </div>
+                            <div class="media-content has-text-black">
+                                <h2 class="title is-4 is-marginless">
+                                    <a href="<%= urlPrefix %>/lotOccupancies"><%= configFunctions.getProperty("aliases.lot") %>
+                                        <%= configFunctions.getProperty("aliases.occupancies") %></a>
+                                </h2>
+                                <p>View and maintain current and past
+                                    <%= configFunctions.getProperty("aliases.lot").toLowerCase() %>
+                                    <%= configFunctions.getProperty("aliases.occupancies").toLowerCase() %>.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="media-content has-text-black">
-                        <h2 class="title is-4 is-marginless">
-                            <a href="<%= urlPrefix %>/lotOccupancies"><%= configFunctions.getProperty("aliases.lot") %>
-                                <%= configFunctions.getProperty("aliases.occupancies") %></a>
-                        </h2>
-                        <p>View and maintain current and past
-                            <%= configFunctions.getProperty("aliases.lot").toLowerCase() %>
-                            <%= configFunctions.getProperty("aliases.occupancies").toLowerCase() %>.</p>
-                    </div>
+                    <% if (user.userProperties.canUpdate) { %>
+                        <div class="card-footer">
+                            <a class="card-footer-item" href="<%= urlPrefix %>/lotOccupancies/new">
+                                <span class="icon">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </span>
+                                <span>New <%= configFunctions.getProperty("aliases.occupancy") %></span>
+                            </a>
+                        </div>
+                    <% } %>
                 </div>
             </div>
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-left">
-                        <i class="fas fa-3x fa-fw fa-hard-hat" aria-hidden="true"></i>
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <i class="fas fa-3x fa-fw fa-hard-hat" aria-hidden="true"></i>
+                            </div>
+                            <div class="media-content has-text-black">
+                                <div class="level is-marginless is-mobile">
+                                    <div class="level-left">
+                                        <div class="level-item">
+                                            <h2 class="title is-4 is-marginless">
+                                                <a href="<%= urlPrefix %>/workOrders">Work Orders</a>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <% if (workOrderCount > 0) { %>
+                                        <div class="level-right">
+                                            <div class="level-item">
+                                                <span class="tag is-info"><%= workOrderCount %> Open Today</span>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                <p>View and maintain work orders.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="media-content has-text-black">
-                        <h2 class="title is-4 is-marginless">
-                            <a href="<%= urlPrefix %>/workOrders">Work Orders</a>
-                        </h2>
-                        <p>View and maintain work orders.</p>
+                    <div class="card-footer">
+                        <% if (user.userProperties.canUpdate) { %>
+                            <a class="card-footer-item" href="<%= urlPrefix %>/workOrders/new">
+                                <span class="icon">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </span>
+                                <span>New Work Order</span>
+                            </a>
+                        <% } %>
+                        <a class="card-footer-item" href="<%= urlPrefix %>/workOrders/milestoneCalendar">
+                            <span class="icon">
+                                <i class="fas fa-calendar" aria-hidden="true"></i>
+                            </span>
+                            <span>Milestone Calendar</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="column">
-        <div class="card">
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-left">
-                        <i class="fas fa-3x fa-fw fa-vector-square" aria-hidden="true"></i>
+        <div class="columns">
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <i class="fas fa-3x fa-fw fa-vector-square" aria-hidden="true"></i>
+                            </div>
+                            <div class="media-content has-text-black">
+                                <h2 class="title is-4 is-marginless">
+                                    <a href="<%= urlPrefix %>/lots"><%= configFunctions.getProperty("aliases.lots") %></a>
+                                </h2>
+                                <p>View and maintain <%= configFunctions.getProperty("aliases.lots").toLowerCase() %> within a
+                                    <%= configFunctions.getProperty("aliases.map").toLowerCase() %>.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="media-content has-text-black">
-                        <h2 class="title is-4 is-marginless">
-                            <a href="<%= urlPrefix %>/lots"><%= configFunctions.getProperty("aliases.lots") %></a>
-                        </h2>
-                        <p>View and maintain <%= configFunctions.getProperty("aliases.lots").toLowerCase() %> within a
-                            <%= configFunctions.getProperty("aliases.map").toLowerCase() %>.</p>
+                    <% if (user.userProperties.canUpdate) { %>
+                        <div class="card-footer">
+                            <a class="card-footer-item" href="<%= urlPrefix %>/lots/new">
+                                <span class="icon">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </span>
+                                <span>New <%= configFunctions.getProperty("aliases.lot") %></span>
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <i class="far fa-3x fa-fw fa-map" aria-hidden="true"></i>
+                            </div>
+                            <div class="media-content has-text-black">
+                                <h2 class="title is-4 is-marginless">
+                                    <a href="<%= urlPrefix %>/maps"><%= configFunctions.getProperty("aliases.maps") %></a>
+                                </h2>
+                                <p>View and maintain <%= configFunctions.getProperty("aliases.maps").toLowerCase() %>.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <% if (user.userProperties.canUpdate) { %>
+                        <div class="card-footer">
+                            <a class="card-footer-item" href="<%= urlPrefix %>/maps/new">
+                                <span class="icon">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </span>
+                                <span>New <%= configFunctions.getProperty("aliases.map") %></span>
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <i class="fas fa-3x fa-fw fa-file" aria-hidden="true"></i>
+                            </div>
+                            <div class="media-content has-text-black">
+                                <h2 class="title is-4 is-marginless">
+                                    <a href="<%= urlPrefix %>/reports">Report Library</a>
+                                </h2>
+                                <p>Produce reports and export data.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-left">
-                        <i class="far fa-3x fa-fw fa-map" aria-hidden="true"></i>
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <i class="fas fa-3x fa-fw fa-question-circle" aria-hidden="true"></i>
+                            </div>
+                            <div class="media-content has-text-black">
+                                <h2 class="title is-4 is-marginless">
+                                    <a href="https://cityssm.github.io/lot-occupancy-system/" target="_blank"
+                                        rel="noopener noreferrer">Help Documentation</a>
+                                </h2>
+                                <p>Instructions on how to use this application.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="media-content has-text-black">
-                        <h2 class="title is-4 is-marginless">
-                            <a href="<%= urlPrefix %>/maps"><%= configFunctions.getProperty("aliases.maps") %></a>
-                        </h2>
-                        <p>View and maintain <%= configFunctions.getProperty("aliases.maps").toLowerCase() %>.</p>
+                    <div class="card-footer">
+                        <a class="card-footer-item has-tooltip-bottom" data-tooltip="Latest Updates, Issue Tracker, Say Hello"
+                            href="https://github.com/cityssm/lot-occupancy-system" target="_blank" rel="noreferrer">
+                            <span class="icon">
+                                <i class="fab fa-github" aria-hidden="true"></i>
+                            </span>
+                            GitHub
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="columns">
-    <div class="column">
-        <div class="card">
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-left">
-                        <i class="fas fa-3x fa-fw fa-file" aria-hidden="true"></i>
-                    </div>
-                    <div class="media-content has-text-black">
-                        <h2 class="title is-4 is-marginless">
-                            <a href="<%= urlPrefix %>/reports">Report Library</a>
-                        </h2>
-                        <p>Produce reports and export data.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="column">
-        <div class="card">
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-left">
-                        <i class="fas fa-3x fa-fw fa-question-circle" aria-hidden="true"></i>
-                    </div>
-                    <div class="media-content has-text-black">
-                        <h2 class="title is-4 is-marginless">
-                            <a href="https://cityssm.github.io/lot-occupancy-system/" target="_blank"
-                                rel="noopener noreferrer">Help Documentation</a>
-                        </h2>
-                        <p>Instructions on how to use this application.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="card-footer">
-                <a class="card-footer-item has-tooltip-bottom" data-tooltip="Latest Updates, Issue Tracker, Say Hello"
-                    href="https://github.com/cityssm/lot-occupancy-system" target="_blank" rel="noreferrer">
-                    <span class="icon">
-                        <i class="fab fa-github" aria-hidden="true"></i>
-                    </span>
-                    GitHub
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<% if (user.userProperties.isAdmin) { %>
-<h2 class="title is-3">Administrator Tools</h2>
-
-<div class="columns">
-    <div class="column">
+        
+        <% if (user.userProperties.isAdmin) { %>
+        <h2 class="title is-3">Administrator Tools</h2>
+        
         <div class="card">
             <div class="card-content">
                 <div class="media">
@@ -196,9 +317,10 @@
                 </div>
             </div>
         </div>
+        <% } %>
     </div>
 </div>
-<% } %>
+
 
 <%- include('_footerA'); -%>
 <%- include('_footerB'); -%>

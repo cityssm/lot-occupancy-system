@@ -1,6 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { dateIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { dateIntegerToString, dateStringToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 export const getWorkOrders = (filters, options) => {
     const database = sqlite(databasePath, {
         readonly: true
@@ -19,6 +19,10 @@ export const getWorkOrders = (filters, options) => {
         else if (filters.workOrderOpenStatus === "closed") {
             sqlWhereClause += " and w.workOrderCloseDate is not null";
         }
+    }
+    if (filters.workOrderOpenDateString) {
+        sqlWhereClause += " and w.workOrderOpenDate = ?";
+        sqlParameters.push(dateStringToInteger(filters.workOrderOpenDateString));
     }
     const count = database
         .prepare("select count(*) as recordCount" +

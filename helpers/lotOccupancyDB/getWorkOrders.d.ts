@@ -2,6 +2,7 @@ import type * as recordTypes from "../../types/recordTypes";
 interface GetWorkOrdersFilters {
     workOrderTypeId?: number | string;
     workOrderOpenStatus?: "" | "open" | "closed";
+    workOrderOpenDateString?: string;
 }
 interface GetWorkOrdersOptions {
     limit: number;
