@@ -176,5 +176,33 @@ declare const cityssm: cityssmGlobal;
         resetOffsetAndGetWorkOrders();
     });
 
+    const workOrderOpenDateStringElement = document.querySelector("#searchFilter--workOrderOpenDateString") as HTMLInputElement;
+
+    document.querySelector("#button--workOrderOpenDateString-previous").addEventListener("click", () => {
+
+        if (workOrderOpenDateStringElement.value === "") {
+            workOrderOpenDateStringElement.valueAsDate = new Date();
+        } else {
+            const openDate = workOrderOpenDateStringElement.valueAsDate;
+            openDate.setDate(openDate.getDate() - 1);
+            workOrderOpenDateStringElement.valueAsDate = openDate;
+        }
+
+        resetOffsetAndGetWorkOrders();
+    });
+
+    document.querySelector("#button--workOrderOpenDateString-next").addEventListener("click", () => {
+
+        if (workOrderOpenDateStringElement.value === "") {
+            workOrderOpenDateStringElement.valueAsDate = new Date();
+        } else {
+            const openDate = workOrderOpenDateStringElement.valueAsDate;
+            openDate.setDate(openDate.getDate() + 1);
+            workOrderOpenDateStringElement.valueAsDate = openDate;
+        }
+
+        resetOffsetAndGetWorkOrders();
+    });
+
     getWorkOrders();
 })();

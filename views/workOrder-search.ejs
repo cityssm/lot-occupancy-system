@@ -43,12 +43,12 @@
                             <label class="label" for="searchFilter--workOrderTypeId">Work Order Type</label>
                             <div class="control has-icons-left">
                                 <div class="select is-fullwidth">
-                                <select id="searchFilter--workOrderTypeId" name="workOrderTypeId">
-                                    <option value="">(All Work Order Types)</option>
-                                    <% for (const workOrderType of workOrderTypes) { %>
-                                    <option value="<%= workOrderType.workOrderTypeId %>"><%= workOrderType.workOrderType || "(No Name)" %></option>
-                                    <% } %>
-                                </select>
+                                    <select id="searchFilter--workOrderTypeId" name="workOrderTypeId">
+                                        <option value="">(All Work Order Types)</option>
+                                        <% for (const workOrderType of workOrderTypes) { %>
+                                        <option value="<%= workOrderType.workOrderTypeId %>"><%= workOrderType.workOrderType || "(No Name)" %></option>
+                                        <% } %>
+                                    </select>
                                 </div>
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-search" aria-hidden="true"></i>
@@ -59,18 +59,41 @@
                     <div class="column">
                         <div class="field">
                             <label class="label" for="searchFilter--workOrderOpenStatus">Open Status</label>
-                            <div class="control">
+                            <div class="control has-icons-left">
                                 <div class="select is-fullwidth">
                                     <select id="searchFilter--workOrderOpenStatus" name="workOrderOpenStatus">
-                                        <option value="">(All Statuses)</option>
-                                        <option value="open" selected>Open</option>
+                                        <option value="" <%= (workOrderOpenDateString ? " selected" : "") %>>(All Statuses)</option>
+                                        <option value="open" <%= (workOrderOpenDateString ? "" : " selected") %>>Open</option>
                                         <option value="closed">Closed</option>
                                     </select>
                                 </div>
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                </span>
                             </div>
                         </div>
 
                     </div>  
+                </div>
+
+                <label class="label" for="searchFilter--workOrderOpenDateString">Open Date</label>
+                <div class="field has-addons">
+                    <div class="control">
+                        <button class="button" id="button--workOrderOpenDateString-previous" data-tooltip="Previous Day" type="button" aria-label="Previous Day">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="control is-expanded has-icons-left">
+                        <input class="input" id="searchFilter--workOrderOpenDateString" name="workOrderOpenDateString" type="date" value="<%= workOrderOpenDateString %>" />
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="control">
+                        <button class="button" id="button--workOrderOpenDateString-next" data-tooltip="Next Day" type="button" aria-label="Next Day">
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

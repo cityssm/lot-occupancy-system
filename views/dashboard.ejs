@@ -111,7 +111,7 @@
                                     <% if (workOrderCount > 0) { %>
                                         <div class="level-right">
                                             <div class="level-item">
-                                                <span class="tag is-info"><%= workOrderCount %> Open Today</span>
+                                                <a class="tag is-info" href="<%= urlPrefix %>/workOrders/?workOrderOpenDateString=<%= dateTimeFunctions.dateToString(new Date()) %>"><%= workOrderCount %> Open Today</a>
                                             </div>
                                         </div>
                                     <% } %>
