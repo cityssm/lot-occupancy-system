@@ -17,13 +17,10 @@ declare const cityssm: cityssmGlobal;
     ) as HTMLElement;
 
     const limit = Number.parseInt(
-        (document.querySelector("#searchFilter--limit") as HTMLInputElement)
-            .value,
+        (document.querySelector("#searchFilter--limit") as HTMLInputElement).value,
         10
     );
-    const offsetElement = document.querySelector(
-        "#searchFilter--offset"
-    ) as HTMLInputElement;
+    const offsetElement = document.querySelector("#searchFilter--offset") as HTMLInputElement;
 
     const getLots = () => {
         const offset = Number.parseInt(offsetElement.value, 10);
@@ -63,7 +60,7 @@ declare const cityssm: cityssmGlobal;
                                 "/lots/" +
                                 lot.lotId +
                                 '">' +
-                                lot.lotName +
+                                cityssm.escapeHTML(lot.lotName) +
                                 "</a>" +
                                 "</td>") +
                             ("<td>" +
@@ -72,14 +69,14 @@ declare const cityssm: cityssmGlobal;
                                 "/maps/" +
                                 lot.mapId +
                                 '">' +
-                                lot.mapName +
+                                (lot.mapName
+                                    ? cityssm.escapeHTML(lot.mapName)
+                                    : '<span class="has-text-grey">(No Name)</span>') +
                                 "</a>" +
                                 "</td>") +
-                            "<td>" +
-                            lot.lotType +
-                            "</td>" +
+                            ("<td>" + cityssm.escapeHTML(lot.lotType) + "</td>") +
                             ("<td>" +
-                                lot.lotStatus +
+                                cityssm.escapeHTML(lot.lotStatus) +
                                 "<br />" +
                                 (lot.lotOccupancyCount > 0
                                     ? '<span class="is-size-7">Currently Occupied</span>'
@@ -92,15 +89,9 @@ declare const cityssm: cityssmGlobal;
                 searchResultsContainerElement.innerHTML =
                     '<table class="table is-fullwidth is-striped is-hoverable">' +
                     "<thead><tr>" +
-                    "<th>" +
-                    exports.aliases.lot +
-                    "</th>" +
-                    "<th>" +
-                    exports.aliases.map +
-                    "</th>" +
-                    "<th>" +
-                    exports.aliases.lot +
-                    " Type</th>" +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.lot) + "</th>") +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.map) + "</th>") +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.lot) + " Type</th>") +
                     "<th>Status</th>" +
                     "</tr></thead>" +
                     "<table>" +
@@ -134,9 +125,7 @@ declare const cityssm: cityssmGlobal;
                         "</div>") +
                     "</div>";
 
-                searchResultsContainerElement
-                    .querySelector("table")
-                    .append(resultsTbodyElement);
+                searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
 
                 if (offset > 0) {
                     searchResultsContainerElement
@@ -167,15 +156,13 @@ declare const cityssm: cityssmGlobal;
     };
 
     const nextAndGetLots = () => {
-        offsetElement.value = (
-            Number.parseInt(offsetElement.value, 10) + limit
-        ).toString();
+        offsetElement.value = (Number.parseInt(offsetElement.value, 10) + limit).toString();
         getLots();
     };
 
-    const filterElements = searchFilterFormElement.querySelectorAll(
-        "input, select"
-    ) as NodeListOf<HTMLInputElement | HTMLSelectElement>;
+    const filterElements = searchFilterFormElement.querySelectorAll("input, select") as NodeListOf<
+        HTMLInputElement | HTMLSelectElement
+    >;
 
     for (const filterElement of filterElements) {
         filterElement.addEventListener("change", resetOffsetAndGetLots);

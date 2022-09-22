@@ -17,13 +17,10 @@ declare const cityssm: cityssmGlobal;
     ) as HTMLElement;
 
     const limit = Number.parseInt(
-        (document.querySelector("#searchFilter--limit") as HTMLInputElement)
-            .value,
+        (document.querySelector("#searchFilter--limit") as HTMLInputElement).value,
         10
     );
-    const offsetElement = document.querySelector(
-        "#searchFilter--offset"
-    ) as HTMLInputElement;
+    const offsetElement = document.querySelector("#searchFilter--offset") as HTMLInputElement;
 
     const getLotOccupancies = () => {
         const offset = Number.parseInt(offsetElement.value, 10);
@@ -39,15 +36,12 @@ declare const cityssm: cityssmGlobal;
         cityssm.postJSON(
             urlPrefix + "/lotOccupancies/doSearchLotOccupancies",
             searchFilterFormElement,
-            (responseJSON: {
-                count: number;
-                lotOccupancies: recordTypes.LotOccupancy[];
-            }) => {
+            (responseJSON: { count: number; lotOccupancies: recordTypes.LotOccupancy[] }) => {
                 if (responseJSON.lotOccupancies.length === 0) {
                     searchResultsContainerElement.innerHTML =
                         '<div class="message is-info">' +
                         '<p class="message-body">There are no ' +
-                        exports.aliases.occupancy.toLowerCase() +
+                        cityssm.escapeHTML(exports.aliases.occupancy.toLowerCase()) +
                         " records that meet the search criteria.</p>" +
                         "</div>";
 
@@ -62,19 +56,15 @@ declare const cityssm: cityssmGlobal;
                     let occupancyTimeHTML = "";
 
                     if (
-                        lotOccupancy.occupancyStartDateString <=
-                            nowDateString &&
+                        lotOccupancy.occupancyStartDateString <= nowDateString &&
                         (lotOccupancy.occupancyEndDateString === "" ||
-                            lotOccupancy.occupancyEndDateString >=
-                                nowDateString)
+                            lotOccupancy.occupancyEndDateString >= nowDateString)
                     ) {
                         occupancyTimeHTML =
                             '<i class="fas fa-play" title="Current ' +
                             exports.aliases.occupancy +
                             '"></i>';
-                    } else if (
-                        lotOccupancy.occupancyStartDateString > nowDateString
-                    ) {
+                    } else if (lotOccupancy.occupancyStartDateString > nowDateString) {
                         occupancyTimeHTML =
                             '<i class="fas fa-fast-forward" title="Future ' +
                             exports.aliases.occupancy +
@@ -89,26 +79,20 @@ declare const cityssm: cityssmGlobal;
                     let occupantsHTML = "";
 
                     for (const occupant of lotOccupancy.lotOccupancyOccupants) {
-                        occupantsHTML +=
-                            cityssm.escapeHTML(occupant.occupantName) +
-                            "<br />";
+                        occupantsHTML += cityssm.escapeHTML(occupant.occupantName) + "<br />";
                     }
 
                     resultsTbodyElement.insertAdjacentHTML(
                         "beforeend",
                         "<tr>" +
-                            "<td>" +
-                            occupancyTimeHTML +
-                            "</td>" +
+                            ("<td>" + occupancyTimeHTML + "</td>") +
                             ("<td>" +
                                 '<a class="has-text-weight-bold" href="' +
                                 urlPrefix +
                                 "/lotOccupancies/" +
                                 lotOccupancy.lotOccupancyId +
                                 '">' +
-                                cityssm.escapeHTML(
-                                    lotOccupancy.occupancyType as string
-                                ) +
+                                cityssm.escapeHTML(lotOccupancy.occupancyType as string) +
                                 "</a>" +
                                 "</td>") +
                             ("<td>" +
@@ -122,9 +106,7 @@ declare const cityssm: cityssmGlobal;
                                 cityssm.escapeHTML(lotOccupancy.mapName || "") +
                                 "</span>" +
                                 "</td>") +
-                            ("<td>" +
-                                lotOccupancy.occupancyStartDateString +
-                                "</td>") +
+                            ("<td>" + lotOccupancy.occupancyStartDateString + "</td>") +
                             ("<td>" +
                                 (lotOccupancy.occupancyEndDate
                                     ? lotOccupancy.occupancyEndDateString
@@ -141,17 +123,11 @@ declare const cityssm: cityssmGlobal;
                     '<table class="table is-fullwidth is-striped is-hoverable">' +
                     "<thead><tr>" +
                     "<th></th>" +
-                    "<th>" +
-                    exports.aliases.occupancy +
-                    " Type</th>" +
-                    "<th>" +
-                    exports.aliases.lot +
-                    "</th>" +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.occupancy) + " Type</th>") +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.lot) + "</th>") +
                     "<th>Start Date</th>" +
                     "<th>End Date</th>" +
-                    "<th>" +
-                    exports.aliases.occupants +
-                    "</th>" +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.occupants) + "</th>") +
                     "</tr></thead>" +
                     "<table>" +
                     '<div class="level">' +
@@ -184,17 +160,12 @@ declare const cityssm: cityssmGlobal;
                         "</div>") +
                     "</div>";
 
-                searchResultsContainerElement
-                    .querySelector("table")
-                    .append(resultsTbodyElement);
+                searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
 
                 if (offset > 0) {
                     searchResultsContainerElement
                         .querySelector("button[data-page='previous']")
-                        .addEventListener(
-                            "click",
-                            previousAndGetLotOccupancies
-                        );
+                        .addEventListener("click", previousAndGetLotOccupancies);
                 }
 
                 if (limit + offset < responseJSON.count) {
@@ -220,21 +191,16 @@ declare const cityssm: cityssmGlobal;
     };
 
     const nextAndGetLotOccupancies = () => {
-        offsetElement.value = (
-            Number.parseInt(offsetElement.value, 10) + limit
-        ).toString();
+        offsetElement.value = (Number.parseInt(offsetElement.value, 10) + limit).toString();
         getLotOccupancies();
     };
 
-    const filterElements = searchFilterFormElement.querySelectorAll(
-        "input, select"
-    ) as NodeListOf<HTMLInputElement | HTMLSelectElement>;
+    const filterElements = searchFilterFormElement.querySelectorAll("input, select") as NodeListOf<
+        HTMLInputElement | HTMLSelectElement
+    >;
 
     for (const filterElement of filterElements) {
-        filterElement.addEventListener(
-            "change",
-            resetOffsetAndGetLotOccupancies
-        );
+        filterElement.addEventListener("change", resetOffsetAndGetLotOccupancies);
     }
 
     searchFilterFormElement.addEventListener("submit", (formEvent) => {

@@ -62,8 +62,6 @@ declare const cityssm: cityssmGlobal;
 
             searchResultCount += 1;
 
-            const mapName = map.mapName === "" ? "(No Name)" : map.mapName;
-
             searchResultsTbodyElement.insertAdjacentHTML(
                 "beforeend",
                 "<tr>" +
@@ -73,7 +71,7 @@ declare const cityssm: cityssmGlobal;
                         "/maps/" +
                         map.mapId +
                         '">' +
-                        cityssm.escapeHTML(mapName) +
+                        cityssm.escapeHTML(map.mapName || "(No Name)") +
                         "</a><br />" +
                         cityssm.escapeHTML(map.mapAddress1) +
                         "</td>") +

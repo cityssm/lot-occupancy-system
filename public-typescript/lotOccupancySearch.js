@@ -4,8 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const searchFilterFormElement = document.querySelector("#form--searchFilters");
     const searchResultsContainerElement = document.querySelector("#container--searchResults");
-    const limit = Number.parseInt(document.querySelector("#searchFilter--limit")
-        .value, 10);
+    const limit = Number.parseInt(document.querySelector("#searchFilter--limit").value, 10);
     const offsetElement = document.querySelector("#searchFilter--offset");
     const getLotOccupancies = () => {
         const offset = Number.parseInt(offsetElement.value, 10);
@@ -21,7 +20,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 searchResultsContainerElement.innerHTML =
                     '<div class="message is-info">' +
                         '<p class="message-body">There are no ' +
-                        exports.aliases.occupancy.toLowerCase() +
+                        cityssm.escapeHTML(exports.aliases.occupancy.toLowerCase()) +
                         " records that meet the search criteria.</p>" +
                         "</div>";
                 return;
@@ -30,11 +29,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const nowDateString = cityssm.dateToString(new Date());
             for (const lotOccupancy of responseJSON.lotOccupancies) {
                 let occupancyTimeHTML = "";
-                if (lotOccupancy.occupancyStartDateString <=
-                    nowDateString &&
+                if (lotOccupancy.occupancyStartDateString <= nowDateString &&
                     (lotOccupancy.occupancyEndDateString === "" ||
-                        lotOccupancy.occupancyEndDateString >=
-                            nowDateString)) {
+                        lotOccupancy.occupancyEndDateString >= nowDateString)) {
                     occupancyTimeHTML =
                         '<i class="fas fa-play" title="Current ' +
                             exports.aliases.occupancy +
@@ -54,14 +51,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 let occupantsHTML = "";
                 for (const occupant of lotOccupancy.lotOccupancyOccupants) {
-                    occupantsHTML +=
-                        cityssm.escapeHTML(occupant.occupantName) +
-                            "<br />";
+                    occupantsHTML += cityssm.escapeHTML(occupant.occupantName) + "<br />";
                 }
                 resultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
-                    "<td>" +
-                    occupancyTimeHTML +
-                    "</td>" +
+                    ("<td>" + occupancyTimeHTML + "</td>") +
                     ("<td>" +
                         '<a class="has-text-weight-bold" href="' +
                         urlPrefix +
@@ -82,9 +75,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         cityssm.escapeHTML(lotOccupancy.mapName || "") +
                         "</span>" +
                         "</td>") +
-                    ("<td>" +
-                        lotOccupancy.occupancyStartDateString +
-                        "</td>") +
+                    ("<td>" + lotOccupancy.occupancyStartDateString + "</td>") +
                     ("<td>" +
                         (lotOccupancy.occupancyEndDate
                             ? lotOccupancy.occupancyEndDateString
@@ -99,17 +90,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '<table class="table is-fullwidth is-striped is-hoverable">' +
                     "<thead><tr>" +
                     "<th></th>" +
-                    "<th>" +
-                    exports.aliases.occupancy +
-                    " Type</th>" +
-                    "<th>" +
-                    exports.aliases.lot +
-                    "</th>" +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.occupancy) + " Type</th>") +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.lot) + "</th>") +
                     "<th>Start Date</th>" +
                     "<th>End Date</th>" +
-                    "<th>" +
-                    exports.aliases.occupants +
-                    "</th>" +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.occupants) + "</th>") +
                     "</tr></thead>" +
                     "<table>" +
                     '<div class="level">' +
@@ -141,9 +126,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             : "") +
                         "</div>") +
                     "</div>";
-            searchResultsContainerElement
-                .querySelector("table")
-                .append(resultsTbodyElement);
+            searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
             if (offset > 0) {
                 searchResultsContainerElement
                     .querySelector("button[data-page='previous']")

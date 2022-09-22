@@ -4,8 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const searchFilterFormElement = document.querySelector("#form--searchFilters");
     const searchResultsContainerElement = document.querySelector("#container--searchResults");
-    const limit = Number.parseInt(document.querySelector("#searchFilter--limit")
-        .value, 10);
+    const limit = Number.parseInt(document.querySelector("#searchFilter--limit").value, 10);
     const offsetElement = document.querySelector("#searchFilter--offset");
     const getLots = () => {
         const offset = Number.parseInt(offsetElement.value, 10);
@@ -35,7 +34,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "/lots/" +
                         lot.lotId +
                         '">' +
-                        lot.lotName +
+                        cityssm.escapeHTML(lot.lotName) +
                         "</a>" +
                         "</td>") +
                     ("<td>" +
@@ -44,14 +43,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "/maps/" +
                         lot.mapId +
                         '">' +
-                        lot.mapName +
+                        (lot.mapName
+                            ? cityssm.escapeHTML(lot.mapName)
+                            : '<span class="has-text-grey">(No Name)</span>') +
                         "</a>" +
                         "</td>") +
-                    "<td>" +
-                    lot.lotType +
-                    "</td>" +
+                    ("<td>" + cityssm.escapeHTML(lot.lotType) + "</td>") +
                     ("<td>" +
-                        lot.lotStatus +
+                        cityssm.escapeHTML(lot.lotStatus) +
                         "<br />" +
                         (lot.lotOccupancyCount > 0
                             ? '<span class="is-size-7">Currently Occupied</span>'
@@ -62,15 +61,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             searchResultsContainerElement.innerHTML =
                 '<table class="table is-fullwidth is-striped is-hoverable">' +
                     "<thead><tr>" +
-                    "<th>" +
-                    exports.aliases.lot +
-                    "</th>" +
-                    "<th>" +
-                    exports.aliases.map +
-                    "</th>" +
-                    "<th>" +
-                    exports.aliases.lot +
-                    " Type</th>" +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.lot) + "</th>") +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.map) + "</th>") +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.lot) + " Type</th>") +
                     "<th>Status</th>" +
                     "</tr></thead>" +
                     "<table>" +
@@ -103,9 +96,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             : "") +
                         "</div>") +
                     "</div>";
-            searchResultsContainerElement
-                .querySelector("table")
-                .append(resultsTbodyElement);
+            searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
             if (offset > 0) {
                 searchResultsContainerElement
                     .querySelector("button[data-page='previous']")

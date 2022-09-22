@@ -38,7 +38,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 continue;
             }
             searchResultCount += 1;
-            const mapName = map.mapName === "" ? "(No Name)" : map.mapName;
             searchResultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
                 ("<td>" +
                     '<a class="has-text-weight-bold" href="' +
@@ -46,7 +45,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "/maps/" +
                     map.mapId +
                     '">' +
-                    cityssm.escapeHTML(mapName) +
+                    cityssm.escapeHTML(map.mapName || "(No Name)") +
                     "</a><br />" +
                     cityssm.escapeHTML(map.mapAddress1) +
                     "</td>") +
