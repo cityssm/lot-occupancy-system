@@ -1,5 +1,6 @@
-@use "@cityssm/bulma-webapp-css/cityssm.css";
+@import "@cityssm/bulma-webapp-css/cityssm";
 @import "bulma/sass/utilities/derived-variables";
+@import "bulma-calendar/src/sass/index";
 
 $white: #fff;
 $black: #000;
@@ -159,4 +160,29 @@ $black-ter: hsl(0, 0%, 14%);
 span.button.is-static {
     pointer-events: all;
     cursor: default;
+}
+
+/*
+ * Calendar Picker
+ */
+
+.datetimepicker-dummy {
+    .datetimepicker-dummy-wrapper::before {
+        mask: unset;
+        -webkit-mask: unset;
+        background-color: transparent !important;
+    }
+
+    .datetimepicker-dummy-wrapper .datetimepicker-dummy-input:first-child {
+        text-indent: 2rem;
+    }
+
+    .datetimepicker-clear-button {
+        transform: none;
+        margin-right: 0.5rem;
+    }
+} 
+
+.datetimepicker.is-active {
+    z-index: 10;
 }

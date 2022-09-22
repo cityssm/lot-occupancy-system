@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    const los = exports.los;
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const searchFilterFormElement = document.querySelector("#form--searchFilters");
+    los.initializeDatePickers(searchFilterFormElement);
     const searchResultsContainerElement = document.querySelector("#container--searchResults");
     const limit = Number.parseInt(document.querySelector("#searchFilter--limit").value, 10);
     const offsetElement = document.querySelector("#searchFilter--offset");
@@ -130,29 +132,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     searchFilterFormElement.addEventListener("submit", (formEvent) => {
         formEvent.preventDefault();
-        resetOffsetAndGetWorkOrders();
-    });
-    const workOrderOpenDateStringElement = document.querySelector("#searchFilter--workOrderOpenDateString");
-    document.querySelector("#button--workOrderOpenDateString-previous").addEventListener("click", () => {
-        if (workOrderOpenDateStringElement.value === "") {
-            workOrderOpenDateStringElement.valueAsDate = new Date();
-        }
-        else {
-            const openDate = workOrderOpenDateStringElement.valueAsDate;
-            openDate.setDate(openDate.getDate() - 1);
-            workOrderOpenDateStringElement.valueAsDate = openDate;
-        }
-        resetOffsetAndGetWorkOrders();
-    });
-    document.querySelector("#button--workOrderOpenDateString-next").addEventListener("click", () => {
-        if (workOrderOpenDateStringElement.value === "") {
-            workOrderOpenDateStringElement.valueAsDate = new Date();
-        }
-        else {
-            const openDate = workOrderOpenDateStringElement.valueAsDate;
-            openDate.setDate(openDate.getDate() + 1);
-            workOrderOpenDateStringElement.valueAsDate = openDate;
-        }
         resetOffsetAndGetWorkOrders();
     });
     getWorkOrders();

@@ -5,9 +5,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const workOrderId = document.querySelector("#workOrderEdit--workOrderId").value;
     const isCreate = workOrderId === "";
-    los.initializeUnlockFieldButtons(document.querySelector("#form--workOrderEdit"));
-    document
-        .querySelector("#form--workOrderEdit")
+    const workOrderFormElement = document.querySelector("#form--workOrderEdit");
+    los.initializeDatePickers(workOrderFormElement.querySelector("#workOrderEdit--workOrderOpenDateString").closest(".field"));
+    los.initializeUnlockFieldButtons(workOrderFormElement);
+    workOrderFormElement
         .addEventListener("submit", (submitEvent) => {
         submitEvent.preventDefault();
         cityssm.postJSON(urlPrefix +
@@ -811,6 +812,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onshown: (modalElement, closeModalFunction) => {
                     editCloseModalFunction = closeModalFunction;
+                    los.initializeDatePickers(modalElement);
                     bulmaJS.toggleHtmlClipped();
                     modalElement
                         .querySelector("form")
@@ -960,6 +962,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 onshown: (modalElement, closeModalFunction) => {
                     addModalElement = modalElement;
                     addCloseModalFunction = closeModalFunction;
+                    los.initializeDatePickers(modalElement);
                     bulmaJS.toggleHtmlClipped();
                     modalElement
                         .querySelector("form")

@@ -54,6 +54,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     for (const formInputElement of formInputElements) {
         formInputElement.addEventListener("change", setUnsavedChanges);
     }
+    los.initializeDatePickers(formElement);
     if (!isCreate) {
         document
             .querySelector("#button--deleteLotOccupancy")

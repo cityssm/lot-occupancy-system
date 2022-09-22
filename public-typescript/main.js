@@ -42,6 +42,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
             unlockFieldButtonElement.addEventListener("click", unlockField);
         }
     };
+    const datePickerBaseOptions = {
+        dateFormat: "yyyy-MM-dd",
+        showFooter: false,
+        color: "info"
+    };
+    const initializeDatePickers = (containerElement) => {
+        const dateElements = containerElement.querySelectorAll("input[type='date']");
+        for (const dateElement of dateElements) {
+            const datePickerOptions = Object.assign({}, datePickerBaseOptions);
+            if (dateElement.required) {
+                datePickerOptions.showClearButton = false;
+            }
+            if (dateElement.min) {
+                datePickerOptions.minDate = cityssm.dateStringToDate(dateElement.min);
+            }
+            if (dateElement.max) {
+                datePickerOptions.maxDate = cityssm.dateStringToDate(dateElement.max);
+            }
+            const cal = exports.bulmaCalendar.attach(dateElement, datePickerOptions)[0];
+            cal.on("save", () => {
+                dateElement.dispatchEvent(new Event("change"));
+            });
+            const clearButtonElement = containerElement.querySelector("#" + cal._id + " .datetimepicker-clear-button");
+            if (clearButtonElement) {
+                if (dateElement.required) {
+                    clearButtonElement.remove();
+                }
+                else {
+                    clearButtonElement.dataset.tooltip = "Clear";
+                    clearButtonElement.innerHTML =
+                        '<i class="fas fa-times" aria-hidden="true"></i>';
+                }
+            }
+        }
+    };
     const populateAliases = (containerElement) => {
         const aliasElements = containerElement.querySelectorAll(".alias");
         for (const aliasElement of aliasElements) {
@@ -50,26 +85,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     aliasElement.textContent = exports.aliases.lot;
                     break;
                 case "lot":
-                    aliasElement.textContent =
-                        exports.aliases.lot.toLowerCase();
+                    aliasElement.textContent = exports.aliases.lot.toLowerCase();
                     break;
                 case "Occupancy":
                     aliasElement.textContent = exports.aliases.occupancy;
                     break;
                 case "occupancy":
-                    aliasElement.textContent =
-                        exports.aliases.occupancy.toLowerCase();
+                    aliasElement.textContent = exports.aliases.occupancy.toLowerCase();
                     break;
                 case "Occupant":
                     aliasElement.textContent = exports.aliases.occupant;
                     break;
                 case "occupant":
-                    aliasElement.textContent =
-                        exports.aliases.occupant.toLowerCase();
+                    aliasElement.textContent = exports.aliases.occupant.toLowerCase();
                     break;
                 case "ExternalReceiptNumber":
-                    aliasElement.textContent =
-                        exports.aliases.externalReceiptNumber;
+                    aliasElement.textContent = exports.aliases.externalReceiptNumber;
                     break;
             }
         }
@@ -90,6 +121,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const los = {
         highlightMap,
         initializeUnlockFieldButtons,
+        initializeDatePickers,
         populateAliases,
         getRandomColor
     };

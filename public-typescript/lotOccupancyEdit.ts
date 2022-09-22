@@ -93,6 +93,8 @@ declare const bulmaJS: BulmaJS;
         formInputElement.addEventListener("change", setUnsavedChanges);
     }
 
+    los.initializeDatePickers(formElement);
+    
     if (!isCreate) {
         document
             .querySelector("#button--deleteLotOccupancy")

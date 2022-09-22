@@ -107,10 +107,13 @@ if (urlPrefix !== "") {
 app.use(urlPrefix, express.static(path.join("public")));
 
 app.use(
-    urlPrefix + "/lib/fa",
-    express.static(
-        path.join("node_modules", "@fortawesome", "fontawesome-free")
-    )
+    urlPrefix + "/lib/bulma-calendar",
+    express.static(path.join("node_modules", "bulma-calendar", "dist"))
+);
+
+app.use(
+    urlPrefix + "/lib/cityssm-bulma-js",
+    express.static(path.join("node_modules", "@cityssm", "bulma-js", "dist"))
 );
 
 app.use(
@@ -119,8 +122,10 @@ app.use(
 );
 
 app.use(
-    urlPrefix + "/lib/cityssm-bulma-js",
-    express.static(path.join("node_modules", "@cityssm", "bulma-js", "dist"))
+    urlPrefix + "/lib/fa",
+    express.static(
+        path.join("node_modules", "@fortawesome", "fontawesome-free")
+    )
 );
 
 app.use(

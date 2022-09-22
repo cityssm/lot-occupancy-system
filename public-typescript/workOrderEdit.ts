@@ -22,12 +22,12 @@ declare const bulmaJS: BulmaJS;
 
     const isCreate = workOrderId === "";
 
-    los.initializeUnlockFieldButtons(
-        document.querySelector("#form--workOrderEdit")
-    );
+    const workOrderFormElement = document.querySelector("#form--workOrderEdit") as HTMLFormElement;
 
-    document
-        .querySelector("#form--workOrderEdit")
+    los.initializeDatePickers(workOrderFormElement.querySelector("#workOrderEdit--workOrderOpenDateString").closest(".field"));
+    los.initializeUnlockFieldButtons(workOrderFormElement);
+
+    workOrderFormElement
         .addEventListener("submit", (submitEvent) => {
             submitEvent.preventDefault();
 
@@ -1196,6 +1196,7 @@ declare const bulmaJS: BulmaJS;
                 onshown: (modalElement, closeModalFunction) => {
                     editCloseModalFunction = closeModalFunction;
 
+                    los.initializeDatePickers(modalElement);
                     bulmaJS.toggleHtmlClipped();
 
                     modalElement
@@ -1399,10 +1400,13 @@ declare const bulmaJS: BulmaJS;
                                 "#milestoneAdd--workOrderMilestoneDateString"
                             ) as HTMLInputElement
                         ).valueAsDate = new Date();
+
                     },
                     onshown: (modalElement, closeModalFunction) => {
                         addModalElement = modalElement;
                         addCloseModalFunction = closeModalFunction;
+
+                        los.initializeDatePickers(modalElement);
 
                         bulmaJS.toggleHtmlClipped();
 

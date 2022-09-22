@@ -137,18 +137,24 @@
                 <div class="column is-3">
                     <div class="field">
                         <label class="label" for="lotOccupancy--occupancyStartDateString">Start Date</label>
-                        <div class="control">
+                        <div class="control has-icons-left">
                             <input class="input" id="lotOccupancy--occupancyStartDateString" name="occupancyStartDateString" type="date"
                             value="<%= lotOccupancy.occupancyStartDateString %>" required />
+                            <span class="icon is-left">
+                                <i class="fas fa-calendar" aria-hidden="true"></i>
+                            </span>
                         </div>
                     </div>
                     <div class="field">
                         <label class="label" for="lotOccupancy--occupancyEndDateString">End Date</label>
-                        <div class="control">
+                        <div class="control has-icons-left">
                             <input class="input" id="lotOccupancy--occupancyEndDateString" name="occupancyEndDateString" type="date" 
                                 value="<%= lotOccupancy.occupancyEndDateString %>"
                                 min="<%= lotOccupancy.occupancyStartDateString %>"
                                 <%= (configFunctions.getProperty("settings.lotOccupancy.occupancyEndDateIsRequired") ? " required" : "") %> />
+                            <span class="icon is-left">
+                                <i class="fas fa-calendar" aria-hidden="true"></i>
+                            </span>
                         </div>
                     </div>
                 </div>

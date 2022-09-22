@@ -1,17 +1,22 @@
 /* eslint-disable unicorn/prefer-module */
 
 import type * as recordTypes from "../types/recordTypes";
-
+import type * as globalTypes from "../types/globalTypes";
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 
 declare const cityssm: cityssmGlobal;
 
 (() => {
+    const los = exports.los as globalTypes.LOS;
+
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
     const searchFilterFormElement = document.querySelector(
         "#form--searchFilters"
     ) as HTMLFormElement;
+
+    los.initializeDatePickers(searchFilterFormElement);
+
     const searchResultsContainerElement = document.querySelector(
         "#container--searchResults"
     ) as HTMLElement;
@@ -20,6 +25,7 @@ declare const cityssm: cityssmGlobal;
         (document.querySelector("#searchFilter--limit") as HTMLInputElement).value,
         10
     );
+
     const offsetElement = document.querySelector("#searchFilter--offset") as HTMLInputElement;
 
     const getWorkOrders = () => {
@@ -176,6 +182,7 @@ declare const cityssm: cityssmGlobal;
         resetOffsetAndGetWorkOrders();
     });
 
+    /*
     const workOrderOpenDateStringElement = document.querySelector("#searchFilter--workOrderOpenDateString") as HTMLInputElement;
 
     document.querySelector("#button--workOrderOpenDateString-previous").addEventListener("click", () => {
@@ -203,6 +210,7 @@ declare const cityssm: cityssmGlobal;
 
         resetOffsetAndGetWorkOrders();
     });
+    */
 
     getWorkOrders();
 })();
