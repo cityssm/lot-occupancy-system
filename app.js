@@ -29,6 +29,7 @@ const debugApp = debug("lot-occupancy-system:app");
 databaseInitializer.initializeDatabase();
 const __dirname = ".";
 export const app = express();
+app.disable("X-Powered-By");
 if (!configFunctions.getProperty("reverseProxy.disableEtag")) {
     app.set("etag", false);
 }

@@ -48,9 +48,12 @@ const __dirname = ".";
 
 export const app = express();
 
+app.disable("X-Powered-By");
+
 if (!configFunctions.getProperty("reverseProxy.disableEtag")) {
     app.set("etag", false);
 }
+
 
 // View engine setup
 app.set("views", path.join(__dirname, "views"));
