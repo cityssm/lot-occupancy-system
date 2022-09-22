@@ -31,6 +31,7 @@ import * as databaseInitializer from "./helpers/initializer.database.js";
 
 import debug from "debug";
 import { apiGetHandler } from "./handlers/permissions.js";
+import { getSafeRedirectURL } from "./helpers/functions.authentication.js";
 const debugApp = debug("lot-occupancy-system:app");
 
 /*
@@ -177,8 +178,10 @@ const sessionChecker = (
         return next();
     }
 
+    const redirectUrl = getSafeRedirectURL(request.originalUrl);
+
     return response.redirect(
-        `${urlPrefix}/login?redirect=${request.originalUrl}`
+        `${urlPrefix}/login?redirect=${redirectUrl}`
     );
 };
 

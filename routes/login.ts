@@ -16,45 +16,6 @@ const debug = Debug("lot-occupancy-system:login");
 
 export const router = Router();
 
-const safeRedirects = new Set([
-    "/admin/fees",
-    "/admin/occupancytypes",
-    "/admin/tables",
-    "/lotoccupancies",
-    "/lotoccupancies/new",
-    "/lots",
-    "/lots/new",
-    "/maps",
-    "/maps/new",
-    "/workorders",
-    "/workorders/new",
-    "/reports"
-]);
-
-const getSafeRedirectURL = (possibleRedirectURL = "") => {
-    const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
-
-    if (typeof possibleRedirectURL === "string") {
-        const urlToCheck = (
-            possibleRedirectURL.startsWith(urlPrefix)
-                ? possibleRedirectURL.slice(urlPrefix.length)
-                : possibleRedirectURL
-        ).toLowerCase();
-
-        if (
-            safeRedirects.has(urlToCheck) ||
-            /^(\/maps\/)\d+(\/edit)?$/.test(urlToCheck) ||
-            /^(\/lots\/)\d+(\/edit)?$/.test(urlToCheck) ||
-            /^(\/lotoccupancies\/)\d+(\/edit)?$/.test(urlToCheck) ||
-            /^(\/workorders\/)\d+(\/edit)?$/.test(urlToCheck)
-        ) {
-            return urlPrefix + urlToCheck;
-        }
-    }
-
-    return urlPrefix + "/dashboard";
-};
-
 router
     .route("/")
     .get((request, response) => {
@@ -62,7 +23,7 @@ router
             configFunctions.getProperty("session.cookieName");
 
         if (request.session.user && request.cookies[sessionCookieName]) {
-            const redirectURL = getSafeRedirectURL(
+            const redirectURL = authenticationFunctions.getSafeRedirectURL(
                 (request.query.redirect || "") as string
             );
 
@@ -82,7 +43,7 @@ router
 
         const unsafeRedirectURL = request.body.redirect;
 
-        const redirectURL = getSafeRedirectURL(
+        const redirectURL = authenticationFunctions.getSafeRedirectURL(
             typeof unsafeRedirectURL === "string" ? unsafeRedirectURL : ""
         );
 
