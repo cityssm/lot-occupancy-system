@@ -24,8 +24,8 @@ router
     }
 })
     .post(async (request, response) => {
-    const userName = request.body.userName;
-    const passwordPlain = request.body.password;
+    const userName = (typeof request.body.userName === "string" ? request.body.userName : "");
+    const passwordPlain = (typeof request.body.password === "string" ? request.body.password : "");
     const unsafeRedirectURL = request.body.redirect;
     const redirectURL = authenticationFunctions.getSafeRedirectURL(typeof unsafeRedirectURL === "string" ? unsafeRedirectURL : "");
     let isAuthenticated = false;
@@ -37,7 +37,7 @@ router
             }
         }
     }
-    else {
+    else if (userName !== "" && passwordPlain !== "") {
         isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain);
     }
     let userObject;
@@ -52,12 +52,12 @@ router
             const canUpdate = configFunctions
                 .getProperty("users.canUpdate")
                 .some((currentUserName) => {
-                return (userNameLowerCase === currentUserName.toLowerCase());
+                return userNameLowerCase === currentUserName.toLowerCase();
             });
             const isAdmin = configFunctions
                 .getProperty("users.isAdmin")
                 .some((currentUserName) => {
-                return (userNameLowerCase === currentUserName.toLowerCase());
+                return userNameLowerCase === currentUserName.toLowerCase();
             });
             const apiKey = await getApiKey(userNameLowerCase);
             userObject = {

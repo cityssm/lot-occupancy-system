@@ -19,8 +19,7 @@ export const router = Router();
 router
     .route("/")
     .get((request, response) => {
-        const sessionCookieName =
-            configFunctions.getProperty("session.cookieName");
+        const sessionCookieName = configFunctions.getProperty("session.cookieName");
 
         if (request.session.user && request.cookies[sessionCookieName]) {
             const redirectURL = authenticationFunctions.getSafeRedirectURL(
@@ -38,8 +37,13 @@ router
         }
     })
     .post(async (request, response) => {
-        const userName = request.body.userName as string;
-        const passwordPlain = request.body.password as string;
+        const userName = (
+            typeof request.body.userName === "string" ? request.body.userName : ""
+        ) as string;
+
+        const passwordPlain = (
+            typeof request.body.password === "string" ? request.body.password : ""
+        ) as string;
 
         const unsafeRedirectURL = request.body.redirect;
 
@@ -51,18 +55,15 @@ router
 
         if (userName.charAt(0) === "*") {
             if (useTestDatabases && userName === passwordPlain) {
-      
-              isAuthenticated = configFunctions.getProperty("users.testing").includes(userName);
-      
-              if (isAuthenticated) {
-                debug("Authenticated testing user: " + userName);
-              }
+                isAuthenticated = configFunctions.getProperty("users.testing").includes(userName);
+
+                if (isAuthenticated) {
+                    debug("Authenticated testing user: " + userName);
+                }
             }
-      
-          } else {
-      
+        } else if (userName !== "" && passwordPlain !== "") {
             isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain);
-          }
+        }
 
         let userObject: recordTypes.User;
 
@@ -79,17 +80,13 @@ router
                 const canUpdate = configFunctions
                     .getProperty("users.canUpdate")
                     .some((currentUserName) => {
-                        return (
-                            userNameLowerCase === currentUserName.toLowerCase()
-                        );
+                        return userNameLowerCase === currentUserName.toLowerCase();
                     });
 
                 const isAdmin = configFunctions
                     .getProperty("users.isAdmin")
                     .some((currentUserName) => {
-                        return (
-                            userNameLowerCase === currentUserName.toLowerCase()
-                        );
+                        return userNameLowerCase === currentUserName.toLowerCase();
                     });
 
                 const apiKey = await getApiKey(userNameLowerCase);
