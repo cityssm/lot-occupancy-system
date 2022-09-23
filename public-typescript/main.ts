@@ -74,9 +74,11 @@ declare const cityssm: cityssmGlobal;
     };
 
     const datePickerBaseOptions: BulmaCalendarOptions = {
+        type: "date",
         dateFormat: "yyyy-MM-dd",
         showFooter: false,
-        color: "info"
+        color: "info",
+        displayMode: "dialog"
     };
 
     const initializeDatePickers = (containerElement: HTMLElement) => {
@@ -108,9 +110,25 @@ declare const cityssm: cityssmGlobal;
                 dateElement.dispatchEvent(new Event("change"));
             });
 
-            // style the clear button
-            const clearButtonElement = containerElement.querySelector(
-                "#" + cal._id + " .datetimepicker-clear-button"
+            // Get the datepicker container element
+
+            const datepickerElement = containerElement.querySelector("#" + cal._id) as HTMLElement;
+
+            // Override the previous and next month button styles
+
+            const datePickerNavButtonElements = datepickerElement.querySelectorAll(
+                ".datepicker-nav button.is-text"
+            );
+
+            for (const datePickerNavButtonElement of datePickerNavButtonElements) {
+                datePickerNavButtonElement.classList.add("is-" + datePickerBaseOptions.color);
+                datePickerNavButtonElement.classList.remove("is-text");
+            }
+
+            // Override the clear button style
+
+            const clearButtonElement = datepickerElement.querySelector(
+                ".datetimepicker-clear-button"
             ) as HTMLElement;
 
             if (clearButtonElement) {
@@ -119,7 +137,66 @@ declare const cityssm: cityssmGlobal;
                 } else {
                     clearButtonElement.dataset.tooltip = "Clear";
                     clearButtonElement.innerHTML =
-                        '<i class="fas fa-times" aria-hidden="true"></i>';
+                        '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
+                }
+            }
+        }
+    };
+
+    const timePickerBaseOptions: BulmaCalendarOptions = {
+        type: "time",
+        timeFormat: "hh:mm",
+        color: "info",
+        displayMode: "dialog",
+        validateLabel: "Set Time",
+        minuteSteps: 1
+    };
+
+    const initializeTimePickers = (containerElement: HTMLElement) => {
+        const timeElements = containerElement.querySelectorAll(
+            "input[type='time']"
+        ) as NodeListOf<HTMLInputElement>;
+
+        for (const timeElement of timeElements) {
+            const timePickerOptions = Object.assign({}, timePickerBaseOptions);
+
+            if (timeElement.required) {
+                timePickerOptions.showClearButton = false;
+            }
+
+            const cal = exports.bulmaCalendar.attach(timeElement, timePickerOptions)[0];
+
+            // trigger change event on original element
+            cal.on("save", () => {
+                timeElement.dispatchEvent(new Event("change"));
+            });
+
+            // Get the datepicker container element
+            const timePickerElement = containerElement.querySelector("#" + cal._id) as HTMLElement;
+            
+            // Remove "cancel" button
+
+            const timePickerCancelButtonElement = timePickerElement.querySelector(
+                ".datetimepicker-footer-cancel"
+            );
+
+            if (timePickerCancelButtonElement) {
+                timePickerCancelButtonElement.remove();
+            }
+
+            // Override the clear button style
+
+            const clearButtonElement = timePickerElement.querySelector(
+                ".datetimepicker-clear-button"
+            ) as HTMLElement;
+
+            if (clearButtonElement) {
+                if (timeElement.required) {
+                    clearButtonElement.remove();
+                } else {
+                    clearButtonElement.dataset.tooltip = "Clear";
+                    clearButtonElement.innerHTML =
+                        '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
                 }
             }
         }
@@ -187,6 +264,7 @@ declare const cityssm: cityssmGlobal;
         highlightMap,
         initializeUnlockFieldButtons,
         initializeDatePickers,
+        initializeTimePickers,
         populateAliases,
         getRandomColor
     };

@@ -1196,8 +1196,10 @@ declare const bulmaJS: BulmaJS;
                 onshown: (modalElement, closeModalFunction) => {
                     editCloseModalFunction = closeModalFunction;
 
-                    los.initializeDatePickers(modalElement);
                     bulmaJS.toggleHtmlClipped();
+                    
+                    los.initializeDatePickers(modalElement);
+                    los.initializeTimePickers(modalElement);
 
                     modalElement
                         .querySelector("form")
@@ -1407,6 +1409,7 @@ declare const bulmaJS: BulmaJS;
                         addCloseModalFunction = closeModalFunction;
 
                         los.initializeDatePickers(modalElement);
+                        los.initializeTimePickers(modalElement);
 
                         bulmaJS.toggleHtmlClipped();
 

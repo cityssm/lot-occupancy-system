@@ -164,6 +164,9 @@ declare const bulmaJS: BulmaJS;
             onshown: (modalElement, closeModalFunction) => {
                 bulmaJS.toggleHtmlClipped();
 
+                los.initializeDatePickers(modalElement);
+                los.initializeTimePickers(modalElement);
+
                 (
                     modalElement.querySelector("#lotCommentEdit--lotComment") as HTMLTextAreaElement
                 ).focus();

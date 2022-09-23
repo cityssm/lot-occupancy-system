@@ -43,9 +43,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     };
     const datePickerBaseOptions = {
+        type: "date",
         dateFormat: "yyyy-MM-dd",
         showFooter: false,
-        color: "info"
+        color: "info",
+        displayMode: "dialog"
     };
     const initializeDatePickers = (containerElement) => {
         const dateElements = containerElement.querySelectorAll("input[type='date']");
@@ -64,7 +66,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cal.on("save", () => {
                 dateElement.dispatchEvent(new Event("change"));
             });
-            const clearButtonElement = containerElement.querySelector("#" + cal._id + " .datetimepicker-clear-button");
+            const datepickerElement = containerElement.querySelector("#" + cal._id);
+            const datePickerNavButtonElements = datepickerElement.querySelectorAll(".datepicker-nav button.is-text");
+            for (const datePickerNavButtonElement of datePickerNavButtonElements) {
+                datePickerNavButtonElement.classList.add("is-" + datePickerBaseOptions.color);
+                datePickerNavButtonElement.classList.remove("is-text");
+            }
+            const clearButtonElement = datepickerElement.querySelector(".datetimepicker-clear-button");
             if (clearButtonElement) {
                 if (dateElement.required) {
                     clearButtonElement.remove();
@@ -72,7 +80,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     clearButtonElement.dataset.tooltip = "Clear";
                     clearButtonElement.innerHTML =
-                        '<i class="fas fa-times" aria-hidden="true"></i>';
+                        '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
+                }
+            }
+        }
+    };
+    const timePickerBaseOptions = {
+        type: "time",
+        timeFormat: "hh:mm",
+        color: "info",
+        displayMode: "dialog",
+        validateLabel: "Set Time",
+        minuteSteps: 1
+    };
+    const initializeTimePickers = (containerElement) => {
+        const timeElements = containerElement.querySelectorAll("input[type='time']");
+        for (const timeElement of timeElements) {
+            const timePickerOptions = Object.assign({}, timePickerBaseOptions);
+            if (timeElement.required) {
+                timePickerOptions.showClearButton = false;
+            }
+            const cal = exports.bulmaCalendar.attach(timeElement, timePickerOptions)[0];
+            cal.on("save", () => {
+                timeElement.dispatchEvent(new Event("change"));
+            });
+            const timePickerElement = containerElement.querySelector("#" + cal._id);
+            const timePickerCancelButtonElement = timePickerElement.querySelector(".datetimepicker-footer-cancel");
+            if (timePickerCancelButtonElement) {
+                timePickerCancelButtonElement.remove();
+            }
+            const clearButtonElement = timePickerElement.querySelector(".datetimepicker-clear-button");
+            if (clearButtonElement) {
+                if (timeElement.required) {
+                    clearButtonElement.remove();
+                }
+                else {
+                    clearButtonElement.dataset.tooltip = "Clear";
+                    clearButtonElement.innerHTML =
+                        '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
                 }
             }
         }
@@ -122,6 +167,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         highlightMap,
         initializeUnlockFieldButtons,
         initializeDatePickers,
+        initializeTimePickers,
         populateAliases,
         getRandomColor
     };
