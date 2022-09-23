@@ -3,24 +3,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
-    const workOrderId = document.querySelector("#workOrderEdit--workOrderId").value;
+    const workOrderId = document.querySelector("#workOrderEdit--workOrderId")
+        .value;
     const isCreate = workOrderId === "";
     const workOrderFormElement = document.querySelector("#form--workOrderEdit");
-    los.initializeDatePickers(workOrderFormElement.querySelector("#workOrderEdit--workOrderOpenDateString").closest(".field"));
+    los.initializeDatePickers(workOrderFormElement
+        .querySelector("#workOrderEdit--workOrderOpenDateString")
+        .closest(".field"));
     los.initializeUnlockFieldButtons(workOrderFormElement);
-    workOrderFormElement
-        .addEventListener("submit", (submitEvent) => {
+    workOrderFormElement.addEventListener("submit", (submitEvent) => {
         submitEvent.preventDefault();
-        cityssm.postJSON(urlPrefix +
-            "/workOrders/" +
-            (isCreate ? "doCreateWorkOrder" : "doUpdateWorkOrder"), submitEvent.currentTarget, (responseJSON) => {
+        cityssm.postJSON(urlPrefix + "/workOrders/" + (isCreate ? "doCreateWorkOrder" : "doUpdateWorkOrder"), submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 if (isCreate) {
                     window.location.href =
-                        urlPrefix +
-                            "/workOrders/" +
-                            responseJSON.workOrderId +
-                            "/edit";
+                        urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
                 }
                 else {
                     bulmaJS.alert({
@@ -45,8 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 workOrderId
             }, (responseJSON) => {
                 if (responseJSON.success) {
-                    window.location.href =
-                        urlPrefix + "/workOrders/" + workOrderId;
+                    window.location.href = urlPrefix + "/workOrders/" + workOrderId;
                 }
                 else {
                     bulmaJS.alert({
@@ -57,9 +53,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         };
-        document
-            .querySelector("#button--closeWorkOrder")
-            .addEventListener("click", () => {
+        document.querySelector("#button--closeWorkOrder").addEventListener("click", () => {
             const hasOpenMilestones = workOrderMilestones.some((milestone) => {
                 return !milestone.workOrderMilestoneCompletionDate;
             });
@@ -130,8 +124,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     lotOccupancyId
                 }, (responseJSON) => {
                     if (responseJSON.success) {
-                        workOrderLotOccupancies =
-                            responseJSON.workOrderLotOccupancies;
+                        workOrderLotOccupancies = responseJSON.workOrderLotOccupancies;
                         renderRelatedLotsAndOccupancies();
                     }
                     else {
@@ -188,8 +181,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 lotOccupancyId
             }, (responseJSON) => {
                 if (responseJSON.success) {
-                    workOrderLotOccupancies =
-                        responseJSON.workOrderLotOccupancies;
+                    workOrderLotOccupancies = responseJSON.workOrderLotOccupancies;
                     renderRelatedLotsAndOccupancies();
                 }
                 else {
@@ -205,13 +197,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         };
         const addLotFromLotOccupancy = (clickEvent) => {
-            const lotId = clickEvent.currentTarget.dataset
-                .lotId;
+            const lotId = clickEvent.currentTarget.dataset.lotId;
             addLot(lotId);
         };
         const renderRelatedOccupancies = () => {
             const occupanciesContainerElement = document.querySelector("#container--lotOccupancies");
-            document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent = workOrderLotOccupancies.length.toString();
+            document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent =
+                workOrderLotOccupancies.length.toString();
             if (workOrderLotOccupancies.length === 0) {
                 occupanciesContainerElement.innerHTML =
                     '<div class="message is-info">' +
@@ -240,8 +232,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             for (const lotOccupancy of workOrderLotOccupancies) {
                 const rowElement = document.createElement("tr");
                 rowElement.className = "container--lotOccupancy";
-                rowElement.dataset.lotOccupancyId =
-                    lotOccupancy.lotOccupancyId.toString();
+                rowElement.dataset.lotOccupancyId = lotOccupancy.lotOccupancyId.toString();
                 const isActive = !(lotOccupancy.occupancyEndDate &&
                     lotOccupancy.occupancyEndDateString < currentDateString);
                 const hasLotRecord = lotOccupancy.lotId &&
@@ -306,13 +297,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             ? '<span class="has-text-grey">(No ' +
                                 cityssm.escapeHTML(exports.aliases.occupants) +
                                 ")</span>"
-                            : cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0]
-                                .occupantName) +
+                            : cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0].occupantName) +
                                 (lotOccupancy.lotOccupancyOccupants.length > 1
-                                    ? " plus " +
-                                        (lotOccupancy.lotOccupancyOccupants
-                                            .length -
-                                            1)
+                                    ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1)
                                     : "")) +
                         "</td>") +
                     ("<td>" +
@@ -328,9 +315,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 rowElement
                     .querySelector(".button--deleteLotOccupancy")
                     .addEventListener("click", deleteLotOccupancy);
-                occupanciesContainerElement
-                    .querySelector("tbody")
-                    .append(rowElement);
+                occupanciesContainerElement.querySelector("tbody").append(rowElement);
             }
         };
         const deleteLot = (clickEvent) => {
@@ -373,7 +358,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         const renderRelatedLots = () => {
             const lotsContainerElement = document.querySelector("#container--lots");
-            document.querySelector(".tabs a[href='#relatedTab--lots'] .tag").textContent = workOrderLots.length.toString();
+            document.querySelector(".tabs a[href='#relatedTab--lots'] .tag").textContent =
+                workOrderLots.length.toString();
             if (workOrderLots.length === 0) {
                 lotsContainerElement.innerHTML =
                     '<div class="message is-info">' +
@@ -418,9 +404,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             '<i class="fas fa-trash" aria-hidden="true"></i>' +
                             "</button>" +
                             "</td>");
-                rowElement
-                    .querySelector(".button--deleteLot")
-                    .addEventListener("click", deleteLot);
+                rowElement.querySelector(".button--deleteLot").addEventListener("click", deleteLot);
                 lotsContainerElement.querySelector("tbody").append(rowElement);
             }
         };
@@ -429,9 +413,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             renderRelatedLots();
         };
         renderRelatedLotsAndOccupancies();
-        document
-            .querySelector("#button--addLotOccupancy")
-            .addEventListener("click", () => {
+        document.querySelector("#button--addLotOccupancy").addEventListener("click", () => {
             let searchFormElement;
             let searchResultsContainerElement;
             const doAddLotOccupancy = (clickEvent) => {
@@ -465,9 +447,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "<thead>" +
                             "<tr>" +
                             '<th class="has-width-1"></th>' +
-                            ("<th>" +
-                                exports.aliases.occupancy +
-                                " Type</th>") +
+                            ("<th>" + exports.aliases.occupancy + " Type</th>") +
                             ("<th>" + exports.aliases.lot + "</th>") +
                             "<th>Start Date</th>" +
                             "<th>End Date</th>" +
@@ -478,8 +458,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</table>";
                     for (const lotOccupancy of responseJSON.lotOccupancies) {
                         const rowElement = document.createElement("tr");
-                        rowElement.className =
-                            "container--lotOccupancy";
+                        rowElement.className = "container--lotOccupancy";
                         rowElement.dataset.lotOccupancyId =
                             lotOccupancy.lotOccupancyId.toString();
                         rowElement.innerHTML =
@@ -492,9 +471,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                     cityssm.escapeHTML(lotOccupancy.occupancyType) +
                                     "</td>");
                         if (lotOccupancy.lotId) {
-                            rowElement.insertAdjacentHTML("beforeend", "<td>" +
-                                cityssm.escapeHTML(lotOccupancy.lotName) +
-                                "</td>");
+                            rowElement.insertAdjacentHTML("beforeend", "<td>" + cityssm.escapeHTML(lotOccupancy.lotName) + "</td>");
                         }
                         else {
                             rowElement.insertAdjacentHTML("beforeend", "<td>" +
@@ -512,30 +489,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                     : '<span class="has-text-grey">(No End Date)</span>') +
                                 "</td>") +
                             ("<td>" +
-                                (lotOccupancy.lotOccupancyOccupants
-                                    .length === 0
+                                (lotOccupancy.lotOccupancyOccupants.length === 0
                                     ? '<span class="has-text-grey">(No ' +
                                         cityssm.escapeHTML(exports.aliases.occupants) +
                                         ")</span>"
-                                    : cityssm.escapeHTML(lotOccupancy
-                                        .lotOccupancyOccupants[0]
-                                        .occupantName) +
-                                        (lotOccupancy
-                                            .lotOccupancyOccupants
-                                            .length > 1
+                                    : cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0].occupantName) +
+                                        (lotOccupancy.lotOccupancyOccupants.length > 1
                                             ? " plus " +
-                                                (lotOccupancy
-                                                    .lotOccupancyOccupants
-                                                    .length -
-                                                    1)
+                                                (lotOccupancy.lotOccupancyOccupants.length - 1)
                                             : "")) +
                                 "</td>"));
                         rowElement
                             .querySelector(".button--addLotOccupancy")
                             .addEventListener("click", doAddLotOccupancy);
-                        searchResultsContainerElement
-                            .querySelector("tbody")
-                            .append(rowElement);
+                        searchResultsContainerElement.querySelector("tbody").append(rowElement);
                     }
                 });
             };
@@ -543,8 +510,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 onshow: (modalElement) => {
                     los.populateAliases(modalElement);
                     searchFormElement = modalElement.querySelector("form");
-                    searchResultsContainerElement =
-                        modalElement.querySelector("#resultsContainer--lotOccupancyAdd");
+                    searchResultsContainerElement = modalElement.querySelector("#resultsContainer--lotOccupancyAdd");
                     modalElement.querySelector("#lotOccupancySearch--notWorkOrderId").value = workOrderId;
                     modalElement.querySelector("#lotOccupancySearch--occupancyEffectiveDateString").value = document.querySelector("#workOrderEdit--workOrderOpenDateString").value;
                     doSearch();
@@ -564,9 +530,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         });
-        document
-            .querySelector("#button--addLot")
-            .addEventListener("click", () => {
+        document.querySelector("#button--addLot").addEventListener("click", () => {
             let searchFormElement;
             let searchResultsContainerElement;
             const doAddLot = (clickEvent) => {
@@ -624,18 +588,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 "<td>" +
                                 cityssm.escapeHTML(lot.mapName) +
                                 "</td>" +
-                                ("<td>" +
-                                    cityssm.escapeHTML(lot.lotType) +
-                                    "</td>") +
-                                ("<td>" +
-                                    cityssm.escapeHTML(lot.lotStatus) +
-                                    "</td>");
+                                ("<td>" + cityssm.escapeHTML(lot.lotType) + "</td>") +
+                                ("<td>" + cityssm.escapeHTML(lot.lotStatus) + "</td>");
                         rowElement
                             .querySelector(".button--addLot")
                             .addEventListener("click", doAddLot);
-                        searchResultsContainerElement
-                            .querySelector("tbody")
-                            .append(rowElement);
+                        searchResultsContainerElement.querySelector("tbody").append(rowElement);
                     }
                 });
             };
@@ -643,14 +601,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 onshow: (modalElement) => {
                     los.populateAliases(modalElement);
                     searchFormElement = modalElement.querySelector("form");
-                    searchResultsContainerElement =
-                        modalElement.querySelector("#resultsContainer--lotAdd");
+                    searchResultsContainerElement = modalElement.querySelector("#resultsContainer--lotAdd");
                     modalElement.querySelector("#lotSearch--notWorkOrderId").value = workOrderId;
                     const lotStatusElement = modalElement.querySelector("#lotSearch--lotStatusId");
                     for (const lotStatus of exports.lotStatuses) {
                         const optionElement = document.createElement("option");
-                        optionElement.value =
-                            lotStatus.lotStatusId.toString();
+                        optionElement.value = lotStatus.lotStatusId.toString();
                         optionElement.textContent = lotStatus.lotStatus;
                         lotStatusElement.append(optionElement);
                     }
@@ -672,9 +628,177 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         });
     }
+    let workOrderComments = exports.workOrderComments;
+    delete exports.workOrderComments;
+    const openEditWorkOrderComment = (clickEvent) => {
+        const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest("tr").dataset.workOrderCommentId, 10);
+        const workOrderComment = workOrderComments.find((currentComment) => {
+            return currentComment.workOrderCommentId === workOrderCommentId;
+        });
+        console.log(workOrderComments);
+        let editFormElement;
+        let editCloseModalFunction;
+        const editComment = (submitEvent) => {
+            submitEvent.preventDefault();
+            cityssm.postJSON(urlPrefix + "/workOrders/doUpdateWorkOrderComment", editFormElement, (responseJSON) => {
+                if (responseJSON.success) {
+                    workOrderComments = responseJSON.workOrderComments;
+                    editCloseModalFunction();
+                    renderWorkOrderComments();
+                }
+                else {
+                    bulmaJS.alert({
+                        title: "Error Updating Comment",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            });
+        };
+        cityssm.openHtmlModal("workOrder-editComment", {
+            onshow: (modalElement) => {
+                modalElement.querySelector("#workOrderCommentEdit--workOrderId").value = workOrderId;
+                modalElement.querySelector("#workOrderCommentEdit--workOrderCommentId").value = workOrderCommentId.toString();
+                modalElement.querySelector("#workOrderCommentEdit--workOrderComment").value = workOrderComment.workOrderComment;
+                modalElement.querySelector("#workOrderCommentEdit--workOrderCommentDateString").value = workOrderComment.workOrderCommentDateString;
+                modalElement.querySelector("#workOrderCommentEdit--workOrderCommentTimeString").value = workOrderComment.workOrderCommentTimeString;
+            },
+            onshown: (modalElement, closeModalFunction) => {
+                bulmaJS.toggleHtmlClipped();
+                los.initializeDatePickers(modalElement);
+                los.initializeTimePickers(modalElement);
+                modalElement.querySelector("#workOrderCommentEdit--workOrderComment").focus();
+                editFormElement = modalElement.querySelector("form");
+                editFormElement.addEventListener("submit", editComment);
+                editCloseModalFunction = closeModalFunction;
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
+            }
+        });
+    };
+    const deleteWorkOrderComment = (clickEvent) => {
+        const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest("tr").dataset.workOrderCommentId, 10);
+        const doDelete = () => {
+            cityssm.postJSON(urlPrefix + "/workOrders/doDeleteWorkOrderComment", {
+                workOrderId,
+                workOrderCommentId
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    workOrderComments = responseJSON.workOrderComments;
+                    renderWorkOrderComments();
+                }
+                else {
+                    bulmaJS.alert({
+                        title: "Error Removing Comment",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            });
+        };
+        bulmaJS.confirm({
+            title: "Remove Comment?",
+            message: "Are you sure you want to remove this comment?",
+            okButton: {
+                text: "Yes, Remove Comment",
+                callbackFunction: doDelete
+            },
+            contextualColorName: "warning"
+        });
+    };
+    const renderWorkOrderComments = () => {
+        const containerElement = document.querySelector("#container--workOrderComments");
+        if (workOrderComments.length === 0) {
+            containerElement.innerHTML =
+                '<div class="message is-info">' +
+                    '<p class="message-body">There are no comments to display.</p>' +
+                    "</div>";
+            return;
+        }
+        const tableElement = document.createElement("table");
+        tableElement.className = "table is-fullwidth is-striped is-hoverable";
+        tableElement.innerHTML =
+            "<thead><tr>" +
+                "<th>Commentor</th>" +
+                "<th>Comment Date</th>" +
+                "<th>Comment</th>" +
+                '<th class="is-hidden-print"><span class="is-sr-only">Options</span></th>' +
+                "</tr></thead>" +
+                "<tbody></tbody>";
+        for (const workOrderComment of workOrderComments) {
+            const tableRowElement = document.createElement("tr");
+            tableRowElement.dataset.workOrderCommentId = workOrderComment.workOrderCommentId.toString();
+            tableRowElement.innerHTML =
+                "<td>" +
+                    cityssm.escapeHTML(workOrderComment.recordCreate_userName) +
+                    "</td>" +
+                    "<td>" +
+                    workOrderComment.workOrderCommentDateString +
+                    (workOrderComment.workOrderCommentTime === 0
+                        ? ""
+                        : " " + workOrderComment.workOrderCommentTimeString) +
+                    "</td>" +
+                    "<td>" +
+                    cityssm.escapeHTML(workOrderComment.workOrderComment) +
+                    "</td>" +
+                    ('<td class="is-hidden-print">' +
+                        '<div class="buttons are-small is-justify-content-end">' +
+                        ('<button class="button is-primary button--edit" type="button">' +
+                            '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
+                            " <span>Edit</span>" +
+                            "</button>") +
+                        ('<button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">' +
+                            '<i class="fas fa-trash" aria-hidden="true"></i>' +
+                            "</button>") +
+                        "</div>" +
+                        "</td>");
+            tableRowElement
+                .querySelector(".button--edit")
+                .addEventListener("click", openEditWorkOrderComment);
+            tableRowElement
+                .querySelector(".button--delete")
+                .addEventListener("click", deleteWorkOrderComment);
+            tableElement.querySelector("tbody").append(tableRowElement);
+        }
+        containerElement.innerHTML = "";
+        containerElement.append(tableElement);
+    };
+    const openAddCommentModal = () => {
+        let addCommentCloseModalFunction;
+        const doAddComment = (formEvent) => {
+            formEvent.preventDefault();
+            cityssm.postJSON(urlPrefix + "/workOrders/doAddWorkOrderComment", formEvent.currentTarget, (responseJSON) => {
+                if (responseJSON.success) {
+                    workOrderComments = responseJSON.workOrderComments;
+                    renderWorkOrderComments();
+                    addCommentCloseModalFunction();
+                }
+            });
+        };
+        cityssm.openHtmlModal("workOrder-addComment", {
+            onshow(modalElement) {
+                los.populateAliases(modalElement);
+                modalElement.querySelector("#workOrderCommentAdd--workOrderId").value = workOrderId;
+                modalElement.querySelector("form").addEventListener("submit", doAddComment);
+            },
+            onshown(modalElement, closeModalFunction) {
+                bulmaJS.toggleHtmlClipped();
+                addCommentCloseModalFunction = closeModalFunction;
+                modalElement.querySelector("#workOrderCommentAdd--workOrderComment").focus();
+            },
+            onremoved() {
+                bulmaJS.toggleHtmlClipped();
+                document.querySelector("#workOrderComments--add").focus();
+            }
+        });
+    };
     if (!isCreate) {
-        workOrderMilestones =
-            exports.workOrderMilestones;
+        document.querySelector("#workOrderComments--add").addEventListener("click", openAddCommentModal);
+        renderWorkOrderComments();
+    }
+    if (!isCreate) {
+        workOrderMilestones = exports.workOrderMilestones;
         delete exports.workOrderMilestones;
         const processMilestoneResponse = (responseJSON) => {
             if (responseJSON.success) {
@@ -694,8 +818,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const currentDateString = cityssm.dateToString(new Date());
             const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest(".container--milestone").dataset.workOrderMilestoneId, 10);
             const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
-                return (currentMilestone.workOrderMilestoneId ===
-                    workOrderMilestoneId);
+                return currentMilestone.workOrderMilestoneId === workOrderMilestoneId;
             });
             const doComplete = () => {
                 cityssm.postJSON(urlPrefix + "/workOrders/doCompleteWorkOrderMilestone", {
@@ -706,8 +829,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             bulmaJS.confirm({
                 title: "Complete Milestone",
                 message: "Are you sure you want to complete this milestone?" +
-                    (workOrderMilestone.workOrderMilestoneDateString >
-                        currentDateString
+                    (workOrderMilestone.workOrderMilestoneDateString > currentDateString
                         ? "<br /><strong>Note that this milestone is expected to be completed in the future.</strong>"
                         : ""),
                 messageIsHtml: true,
@@ -760,8 +882,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             clickEvent.preventDefault();
             const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest(".container--milestone").dataset.workOrderMilestoneId, 10);
             const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
-                return (currentMilestone.workOrderMilestoneId ===
-                    workOrderMilestoneId);
+                return currentMilestone.workOrderMilestoneId === workOrderMilestoneId;
             });
             let editCloseModalFunction;
             const doEdit = (submitEvent) => {
@@ -776,16 +897,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.openHtmlModal("workOrder-editMilestone", {
                 onshow: (modalElement) => {
                     modalElement.querySelector("#milestoneEdit--workOrderId").value = workOrderId;
-                    modalElement.querySelector("#milestoneEdit--workOrderMilestoneId").value =
-                        workOrderMilestone.workOrderMilestoneId.toString();
+                    modalElement.querySelector("#milestoneEdit--workOrderMilestoneId").value = workOrderMilestone.workOrderMilestoneId.toString();
                     const milestoneTypeElement = modalElement.querySelector("#milestoneEdit--workOrderMilestoneTypeId");
                     let milestoneTypeFound = false;
                     for (const milestoneType of exports.workOrderMilestoneTypes) {
                         const optionElement = document.createElement("option");
-                        optionElement.value =
-                            milestoneType.workOrderMilestoneTypeId.toString();
-                        optionElement.textContent =
-                            milestoneType.workOrderMilestoneType;
+                        optionElement.value = milestoneType.workOrderMilestoneTypeId.toString();
+                        optionElement.textContent = milestoneType.workOrderMilestoneType;
                         if (milestoneType.workOrderMilestoneTypeId ===
                             workOrderMilestone.workOrderMilestoneTypeId) {
                             optionElement.selected = true;
@@ -793,20 +911,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         }
                         milestoneTypeElement.append(optionElement);
                     }
-                    if (!milestoneTypeFound &&
-                        workOrderMilestone.workOrderMilestoneTypeId) {
+                    if (!milestoneTypeFound && workOrderMilestone.workOrderMilestoneTypeId) {
                         const optionElement = document.createElement("option");
                         optionElement.value =
                             workOrderMilestone.workOrderMilestoneTypeId.toString();
-                        optionElement.textContent =
-                            workOrderMilestone.workOrderMilestoneType;
+                        optionElement.textContent = workOrderMilestone.workOrderMilestoneType;
                         optionElement.selected = true;
                         milestoneTypeElement.append(optionElement);
                     }
                     modalElement.querySelector("#milestoneEdit--workOrderMilestoneDateString").value = workOrderMilestone.workOrderMilestoneDateString;
                     if (workOrderMilestone.workOrderMilestoneTime) {
-                        modalElement.querySelector("#milestoneEdit--workOrderMilestoneTimeString").value =
-                            workOrderMilestone.workOrderMilestoneTimeString;
+                        modalElement.querySelector("#milestoneEdit--workOrderMilestoneTimeString").value = workOrderMilestone.workOrderMilestoneTimeString;
                     }
                     modalElement.querySelector("#milestoneEdit--workOrderMilestoneDescription").value = workOrderMilestone.workOrderMilestoneDescription;
                 },
@@ -815,9 +930,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     bulmaJS.toggleHtmlClipped();
                     los.initializeDatePickers(modalElement);
                     los.initializeTimePickers(modalElement);
-                    modalElement
-                        .querySelector("form")
-                        .addEventListener("submit", doEdit);
+                    modalElement.querySelector("form").addEventListener("submit", doEdit);
                 },
                 onremoved: () => {
                     bulmaJS.toggleHtmlClipped();
@@ -832,8 +945,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             for (const milestone of workOrderMilestones) {
                 const panelBlockElement = document.createElement("div");
-                panelBlockElement.className =
-                    "panel-block is-block container--milestone";
+                panelBlockElement.className = "panel-block is-block container--milestone";
                 panelBlockElement.dataset.workOrderMilestoneId =
                     milestone.workOrderMilestoneId.toString();
                 panelBlockElement.innerHTML =
@@ -915,9 +1027,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             bulmaJS.init(milestonesPanelElement);
         };
         renderMilestones();
-        document
-            .querySelector("#button--addMilestone")
-            .addEventListener("click", () => {
+        document.querySelector("#button--addMilestone").addEventListener("click", () => {
             let addModalElement;
             let addCloseModalFunction;
             const doAdd = (submitEvent) => {
@@ -952,10 +1062,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const milestoneTypeElement = modalElement.querySelector("#milestoneAdd--workOrderMilestoneTypeId");
                     for (const milestoneType of exports.workOrderMilestoneTypes) {
                         const optionElement = document.createElement("option");
-                        optionElement.value =
-                            milestoneType.workOrderMilestoneTypeId.toString();
-                        optionElement.textContent =
-                            milestoneType.workOrderMilestoneType;
+                        optionElement.value = milestoneType.workOrderMilestoneTypeId.toString();
+                        optionElement.textContent = milestoneType.workOrderMilestoneType;
                         milestoneTypeElement.append(optionElement);
                     }
                     modalElement.querySelector("#milestoneAdd--workOrderMilestoneDateString").valueAsDate = new Date();
@@ -966,9 +1074,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     los.initializeDatePickers(modalElement);
                     los.initializeTimePickers(modalElement);
                     bulmaJS.toggleHtmlClipped();
-                    modalElement
-                        .querySelector("form")
-                        .addEventListener("submit", doAdd);
+                    modalElement.querySelector("form").addEventListener("submit", doAdd);
                 },
                 onremoved: () => {
                     bulmaJS.toggleHtmlClipped();

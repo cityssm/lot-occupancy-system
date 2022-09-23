@@ -17,6 +17,9 @@ import handler_doAddWorkOrderLotOccupancy from "../handlers/workOrders-post/doAd
 import handler_doDeleteWorkOrderLotOccupancy from "../handlers/workOrders-post/doDeleteWorkOrderLotOccupancy.js";
 import handler_doAddWorkOrderLot from "../handlers/workOrders-post/doAddWorkOrderLot.js";
 import handler_doDeleteWorkOrderLot from "../handlers/workOrders-post/doDeleteWorkOrderLot.js";
+import handler_doAddWorkOrderComment from "../handlers/workOrders-post/doAddWorkOrderComment.js";
+import handler_doUpdateWorkOrderComment from "../handlers/workOrders-post/doUpdateWorkOrderComment.js";
+import handler_doDeleteWorkOrderComment from "../handlers/workOrders-post/doDeleteWorkOrderComment.js";
 import handler_doAddWorkOrderMilestone from "../handlers/workOrders-post/doAddWorkOrderMilestone.js";
 import handler_doUpdateWorkOrderMilestone from "../handlers/workOrders-post/doUpdateWorkOrderMilestone.js";
 import handler_doCompleteWorkOrderMilestone from "../handlers/workOrders-post/doCompleteWorkOrderMilestone.js";
@@ -40,6 +43,9 @@ router.post("/doAddWorkOrderLotOccupancy", permissionHandlers.updatePostHandler,
 router.post("/doDeleteWorkOrderLotOccupancy", permissionHandlers.updatePostHandler, handler_doDeleteWorkOrderLotOccupancy);
 router.post("/doAddWorkOrderLot", permissionHandlers.updatePostHandler, handler_doAddWorkOrderLot);
 router.post("/doDeleteWorkOrderLot", permissionHandlers.updatePostHandler, handler_doDeleteWorkOrderLot);
+router.post("/doAddWorkOrderComment", permissionHandlers.updatePostHandler, handler_doAddWorkOrderComment);
+router.post("/doUpdateWorkOrderComment", permissionHandlers.updatePostHandler, handler_doUpdateWorkOrderComment);
+router.post("/doDeleteWorkOrderComment", permissionHandlers.updatePostHandler, handler_doDeleteWorkOrderComment);
 router.post("/doAddWorkOrderMilestone", permissionHandlers.updatePostHandler, handler_doAddWorkOrderMilestone);
 router.post("/doUpdateWorkOrderMilestone", permissionHandlers.updatePostHandler, handler_doUpdateWorkOrderMilestone);
 router.post("/doCompleteWorkOrderMilestone", permissionHandlers.updatePostHandler, handler_doCompleteWorkOrderMilestone);

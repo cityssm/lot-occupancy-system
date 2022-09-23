@@ -27,6 +27,10 @@ import handler_doDeleteWorkOrderLotOccupancy from "../handlers/workOrders-post/d
 import handler_doAddWorkOrderLot from "../handlers/workOrders-post/doAddWorkOrderLot.js";
 import handler_doDeleteWorkOrderLot from "../handlers/workOrders-post/doDeleteWorkOrderLot.js";
 
+import handler_doAddWorkOrderComment from "../handlers/workOrders-post/doAddWorkOrderComment.js";
+import handler_doUpdateWorkOrderComment from "../handlers/workOrders-post/doUpdateWorkOrderComment.js";
+import handler_doDeleteWorkOrderComment from "../handlers/workOrders-post/doDeleteWorkOrderComment.js";
+
 import handler_doAddWorkOrderMilestone from "../handlers/workOrders-post/doAddWorkOrderMilestone.js";
 import handler_doUpdateWorkOrderMilestone from "../handlers/workOrders-post/doUpdateWorkOrderMilestone.js";
 import handler_doCompleteWorkOrderMilestone from "../handlers/workOrders-post/doCompleteWorkOrderMilestone.js";
@@ -121,6 +125,26 @@ router.post(
     "/doDeleteWorkOrderLot",
     permissionHandlers.updatePostHandler,
     handler_doDeleteWorkOrderLot
+);
+
+// Comments
+
+router.post(
+    "/doAddWorkOrderComment",
+    permissionHandlers.updatePostHandler,
+    handler_doAddWorkOrderComment
+);
+
+router.post(
+    "/doUpdateWorkOrderComment",
+    permissionHandlers.updatePostHandler,
+    handler_doUpdateWorkOrderComment
+);
+
+router.post(
+    "/doDeleteWorkOrderComment",
+    permissionHandlers.updatePostHandler,
+    handler_doDeleteWorkOrderComment
 );
 
 // Milestones

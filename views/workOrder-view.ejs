@@ -208,6 +208,29 @@
         <% if (workOrder.workOrderComments.length > 0) { %>
             <div class="panel">
                 <h2 class="panel-heading">Work Order Comments</h2>
+                <div class="panel-block is-block">
+                    <table class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>Commentor</th>
+                                <th>Comment Date</th>
+                                <th>Comment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (const workOrderComment of workOrder.workOrderComments) { %>
+                                <tr>
+                                    <td><%= workOrderComment.recordCreate_userName %></td>
+                                    <td>
+                                        <%= workOrderComment.workOrderCommentDateString %>
+                                        <%= (workOrderComment.workOrderCommentTime === 0 ? "" : workOrderComment.workOrderCommentTimeString) %>
+                                    </td>
+                                    <td><%= workOrderComment.workOrderComment %></td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         <% } %>
     </div>
