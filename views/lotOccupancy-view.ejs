@@ -275,7 +275,9 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <% let transactionTotal = 0; %>
                             <% for (const lotOccupancyTransaction of lotOccupancy.lotOccupancyTransactions) { %>
+                                <% transactionTotal += lotOccupancyTransaction.transactionAmount; %>
                                 <tr>
                                     <td><%= lotOccupancyTransaction.transactionDateString %></td>
                                     <td>
@@ -288,6 +290,14 @@
                                 </tr>
                             <% } %>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="2">Transaction Total</th>
+                                <td class="has-text-weight-bold has-text-right">
+                                    $<%= transactionTotal.toFixed(2) %>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
                 <% } %>
             </div>
