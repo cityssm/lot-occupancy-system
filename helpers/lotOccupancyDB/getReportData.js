@@ -78,6 +78,24 @@ export const getReportData = (reportName, reportParameters) => {
         case "workOrders-all":
             sql = "select * from WorkOrders";
             break;
+        case "workOrders-open":
+            sql =
+                "select w.workOrderId, w.workOrderNumber," +
+                    " t.workOrderType, w.workOrderDescription," +
+                    " m.workOrderMilestoneCount, m.workOrderMilestoneCompletionCount" +
+                    " from WorkOrders w" +
+                    " left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId" +
+                    (" left join (" +
+                        "select m.workOrderId," +
+                        " count(m.workOrderMilestoneId) as workOrderMilestoneCount," +
+                        " sum(case when m.workOrderMilestoneCompletionDate is null then 0 else 1 end) as workOrderMilestoneCompletionCount" +
+                        " from WorkOrderMilestones m" +
+                        " where m.recordDelete_timeMillis is null" +
+                        " group by m.workOrderId" +
+                        ") m on w.workOrderId = m.workOrderId") +
+                    " where w.recordDelete_timeMillis is null" +
+                    " and w.workOrderCloseDate is null";
+            break;
         case "workOrderComments-all":
             sql = "select * from WorkOrderComments";
             break;

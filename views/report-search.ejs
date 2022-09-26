@@ -9,15 +9,27 @@
             </h2>
             <ul class="menu-list">
                 <li>
-                    <a class="is-active" href="#tab--maps">
-                        <span class="icon is-small"><i class="far fa-fw fa-map" aria-hidden="true"></i></span>
-                        <span><%= configFunctions.getProperty("aliases.maps") %></span>
+                    <a class="is-active" href="#tab--workOrders">
+                        <span class="icon is-small"><i class="fas fa-fw fa-hard-hat" aria-hidden="true"></i></span>
+                        <span>Work Orders</span>
                     </a>
-                </li>
+                </li> 
+                <li>
+                    <a href="#tab--lotOccupancies">
+                        <span class="icon is-small"><i class="fas fa-fw fa-user" aria-hidden="true"></i></span>
+                        <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
+                    </a>
+                </li> 
                 <li>
                     <a href="#tab--lots">
                         <span class="icon is-small"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
                         <span><%= configFunctions.getProperty("aliases.lots") %></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tab--maps">
+                        <span class="icon is-small"><i class="far fa-fw fa-map" aria-hidden="true"></i></span>
+                        <span><%= configFunctions.getProperty("aliases.maps") %></span>
                     </a>
                 </li>
             </ul>
@@ -33,7 +45,7 @@
                 </li>
                 <li>
                     <a href="#tab--configTableExports">
-                        <span class="icon is-small"><i class="fas fa-fw fa-tablet" aria-hidden="true"></i></span>
+                        <span class="icon is-small"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
                         <span>Config Tables</span>
                     </a>
                 </li>
@@ -54,7 +66,56 @@
         </nav>
 
         <div class="tabs-container">
-            <div id="tab--maps">
+            <div id="tab--workOrders">
+                <h1 class="title is-1">Work Order Reports</h1>
+                <div class="columns">
+                    <div class="column">
+                        <div class="panel">
+                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrders-open" download>
+                                <div class="has-text-centered my-2 ml-2 mr-3">
+                                    <span class="icon has-text-info">
+                                        <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                                    </span><br />
+                                    <span class="tag is-info">CSV</span>
+                                </div>
+                                <div>
+                                    <h3 class="title is-5 is-marginless">Open Work Orders</h3>
+                                    <p>
+                                        All active work orders without completion dates.
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="panel">
+                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/workOrders/outlook">
+                                <div class="has-text-centered my-2 ml-2 mr-3">
+                                    <span class="icon has-text-info">
+                                        <i class="fas fa-2x fa-calendar" aria-hidden="true"></i>
+                                    </span><br />
+                                    <span class="tag is-info">ICS</span>
+                                </div>
+                                <div>
+                                    <h3 class="title is-5 is-marginless">Work Order Milestone Calendar</h3>
+                                    <p>
+                                        Upcoming and recently passed work order milestones,
+                                        compatible with Microsoft Outlook and other calendar tools.
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+               
+            <div class="is-hidden" id="tab--lotOccupancies">
+                <h1 class="title is-1"><%= configFunctions.getProperty("aliases.occupancy") %> Reports</h1>
+            </div>
+            <div class="is-hidden" id="tab--lots">
+                <h1 class="title is-1"><%= configFunctions.getProperty("aliases.lot") %> Reports</h1>
+            </div>
+            <div class="is-hidden" id="tab--maps">
                 <h1 class="title is-1"><%= configFunctions.getProperty("aliases.map") %> Reports</h1>
                 <div class="panel">
                     <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/maps-formatted" download>
@@ -73,9 +134,7 @@
                     </a>
                 </div>
             </div>
-            <div class="is-hidden" id="tab--lots">
-                <h1 class="title is-1"><%= configFunctions.getProperty("aliases.lot") %> Reports</h1>
-            </div>
+
             <div class="is-hidden" id="tab--dataTableExports">
                 <h1 class="title is-1">Data Table Exports</h1>
                 <div class="message is-info">

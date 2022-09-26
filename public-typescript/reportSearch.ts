@@ -1,7 +1,8 @@
 (() => {
-
     const menuTabElements = document.querySelectorAll(".menu a") as NodeListOf<HTMLAnchorElement>;
-    const tabContainerElements = document.querySelectorAll(".tabs-container > div") as NodeListOf<HTMLElement>;
+    const tabContainerElements = document.querySelectorAll(
+        ".tabs-container > div"
+    ) as NodeListOf<HTMLElement>;
 
     const selectTab = (clickEvent: Event) => {
         clickEvent.preventDefault();
@@ -19,10 +20,11 @@
 
         // Hide all but selected tab
 
-        const selectedTabContainerId = selectedTabElement.href.slice(Math.max(0, selectedTabElement.href.indexOf("#") + 1));
+        const selectedTabContainerId = selectedTabElement.href.slice(
+            Math.max(0, selectedTabElement.href.indexOf("#") + 1)
+        );
 
         for (const tabContainerElement of tabContainerElements) {
-
             if (tabContainerElement.id === selectedTabContainerId) {
                 tabContainerElement.classList.remove("is-hidden");
             } else {
@@ -30,7 +32,6 @@
             }
         }
     };
-
 
     for (const menuTabElement of menuTabElements) {
         menuTabElement.addEventListener("click", selectTab);
