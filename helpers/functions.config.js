@@ -31,6 +31,7 @@ configFallbackValues.set("settings.lot.lotNameSortNameFunction", (lotName) => lo
 configFallbackValues.set("settings.lotOccupancy.occupancyEndDateIsRequired", true);
 configFallbackValues.set("settings.lotOccupancy.occupantCityDefault", "");
 configFallbackValues.set("settings.lotOccupancy.occupantProvinceDefault", "");
+configFallbackValues.set("settings.lotOccupancy.prints", ["screen/lotOccupancy"]);
 configFallbackValues.set("settings.fees.taxPercentageDefault", 0);
 configFallbackValues.set("settings.workOrders.workOrderNumberLength", 6);
 configFallbackValues.set("settings.workOrders.workOrderMilestoneDateRecentBeforeDays", 5);

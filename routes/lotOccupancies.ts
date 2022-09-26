@@ -4,7 +4,6 @@ import handler_search from "../handlers/lotOccupancies-get/search.js";
 import handler_doSearchLotOccupancies from "../handlers/lotOccupancies-post/doSearchLotOccupancies.js";
 
 import handler_view from "../handlers/lotOccupancies-get/view.js";
-import handler_print from "../handlers/lotOccupancies-get/print.js";
 
 import handler_new from "../handlers/lotOccupancies-get/new.js";
 import handler_doGetOccupancyTypeFields from "../handlers/lotOccupancies-post/doGetOccupancyTypeFields.js";
@@ -58,8 +57,6 @@ router.post(
 // View
 
 router.get("/:lotOccupancyId", handler_view);
-
-router.get("/:lotOccupancyId/print", handler_print);
 
 // Edit
 

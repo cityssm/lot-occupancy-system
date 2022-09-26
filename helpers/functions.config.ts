@@ -48,6 +48,7 @@ configFallbackValues.set("settings.lot.lotNameSortNameFunction", (lotName: strin
 configFallbackValues.set("settings.lotOccupancy.occupancyEndDateIsRequired", true);
 configFallbackValues.set("settings.lotOccupancy.occupantCityDefault", "");
 configFallbackValues.set("settings.lotOccupancy.occupantProvinceDefault", "");
+configFallbackValues.set("settings.lotOccupancy.prints", ["screen/lotOccupancy"]);
 
 configFallbackValues.set("settings.fees.taxPercentageDefault", 0);
 
@@ -112,8 +113,8 @@ export function getProperty(
 ): boolean;
 
 export function getProperty(propertyName: "settings.lotOccupancy.occupantCityDefault"): string;
-
 export function getProperty(propertyName: "settings.lotOccupancy.occupantProvinceDefault"): string;
+export function getProperty(propertyName: "settings.lotOccupancy.prints"): string[];
 
 export function getProperty(propertyName: "settings.fees.taxPercentageDefault"): number;
 

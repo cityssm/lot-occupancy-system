@@ -13,14 +13,16 @@ import FileStore from "session-file-store";
 import routerLogin from "./routes/login.js";
 import routerDashboard from "./routes/dashboard.js";
 import routerApi from "./routes/api.js";
-import routerLots from "./routes/lots.js";
+import routerPrint from "./routes/print.js";
 import routerMaps from "./routes/maps.js";
+import routerLots from "./routes/lots.js";
 import routerLotOccupancies from "./routes/lotOccupancies.js";
 import routerWorkOrders from "./routes/workOrders.js";
 import routerReports from "./routes/reports.js";
 import routerAdmin from "./routes/admin.js";
 
 import * as configFunctions from "./helpers/functions.config.js";
+import * as printFunctions from "./helpers/functions.print.js";
 import * as dateTimeFns from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as stringFns from "@cityssm/expressjs-server-js/stringFns.js";
 import * as htmlFns from "@cityssm/expressjs-server-js/htmlFns.js";
@@ -53,7 +55,6 @@ app.disable("X-Powered-By");
 if (!configFunctions.getProperty("reverseProxy.disableEtag")) {
     app.set("etag", false);
 }
-
 
 // View engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -123,27 +124,18 @@ app.use(
 
 app.use(
     urlPrefix + "/lib/fa",
-    express.static(
-        path.join("node_modules", "@fortawesome", "fontawesome-free")
-    )
+    express.static(path.join("node_modules", "@fortawesome", "fontawesome-free"))
 );
 
-app.use(
-    urlPrefix + "/lib/leaflet",
-    express.static(path.join("node_modules", "leaflet", "dist"))
-);
+app.use(urlPrefix + "/lib/leaflet", express.static(path.join("node_modules", "leaflet", "dist")));
 
-app.use(
-    urlPrefix + "/lib/randomcolor",
-    express.static(path.join("node_modules", "randomcolor"))
-);
+app.use(urlPrefix + "/lib/randomcolor", express.static(path.join("node_modules", "randomcolor")));
 
 /*
  * SESSION MANAGEMENT
  */
 
-const sessionCookieName: string =
-    configFunctions.getProperty("session.cookieName");
+const sessionCookieName: string = configFunctions.getProperty("session.cookieName");
 
 const FileStoreSession = FileStore(session);
 
@@ -188,9 +180,7 @@ const sessionChecker = (
 
     const redirectUrl = getSafeRedirectURL(request.originalUrl);
 
-    return response.redirect(
-        `${urlPrefix}/login?redirect=${redirectUrl}`
-    );
+    return response.redirect(`${urlPrefix}/login?redirect=${redirectUrl}`);
 };
 
 /*
@@ -206,13 +196,12 @@ app.use((request, response, next) => {
     response.locals.csrfToken = request.csrfToken();
 
     response.locals.configFunctions = configFunctions;
+    response.locals.printFunctions = printFunctions;
     response.locals.dateTimeFunctions = dateTimeFns;
     response.locals.stringFunctions = stringFns;
     response.locals.htmlFunctions = htmlFns;
 
-    response.locals.urlPrefix = configFunctions.getProperty(
-        "reverseProxy.urlPrefix"
-    );
+    response.locals.urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
 
     next();
 });
@@ -225,8 +214,9 @@ app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
 
 app.use(urlPrefix + "/api/:apiKey", apiGetHandler, routerApi);
 
-app.use(urlPrefix + "/lots", sessionChecker, routerLots);
+app.use(urlPrefix + "/print", sessionChecker, routerPrint);
 app.use(urlPrefix + "/maps", sessionChecker, routerMaps);
+app.use(urlPrefix + "/lots", sessionChecker, routerLots);
 app.use(urlPrefix + "/lotOccupancies", sessionChecker, routerLotOccupancies);
 app.use(urlPrefix + "/workOrders", sessionChecker, routerWorkOrders);
 
@@ -253,28 +243,7 @@ app.get(urlPrefix + "/logout", (request, response) => {
 
 // Catch 404 and forward to error handler
 app.use((_request, _response, next) => {
-    next(createError(404));
+    next(createError(404, "File not found."));
 });
-
-// Error handler
-app.use(
-    (
-        error: {
-            status: number;
-            message: string;
-        },
-        request: express.Request,
-        response: express.Response
-    ) => {
-        // Set locals, only providing error in development
-        response.locals.message = error.message;
-        response.locals.error =
-            request.app.get("env") === "development" ? error : {};
-
-        // Render the error page
-        response.status(error.status || 500);
-        response.render("error");
-    }
-);
 
 export default app;

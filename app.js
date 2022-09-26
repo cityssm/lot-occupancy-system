@@ -10,13 +10,15 @@ import FileStore from "session-file-store";
 import routerLogin from "./routes/login.js";
 import routerDashboard from "./routes/dashboard.js";
 import routerApi from "./routes/api.js";
-import routerLots from "./routes/lots.js";
+import routerPrint from "./routes/print.js";
 import routerMaps from "./routes/maps.js";
+import routerLots from "./routes/lots.js";
 import routerLotOccupancies from "./routes/lotOccupancies.js";
 import routerWorkOrders from "./routes/workOrders.js";
 import routerReports from "./routes/reports.js";
 import routerAdmin from "./routes/admin.js";
 import * as configFunctions from "./helpers/functions.config.js";
+import * as printFunctions from "./helpers/functions.print.js";
 import * as dateTimeFns from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as stringFns from "@cityssm/expressjs-server-js/stringFns.js";
 import * as htmlFns from "@cityssm/expressjs-server-js/htmlFns.js";
@@ -102,6 +104,7 @@ app.use((request, response, next) => {
     response.locals.user = request.session.user;
     response.locals.csrfToken = request.csrfToken();
     response.locals.configFunctions = configFunctions;
+    response.locals.printFunctions = printFunctions;
     response.locals.dateTimeFunctions = dateTimeFns;
     response.locals.stringFunctions = stringFns;
     response.locals.htmlFunctions = htmlFns;
@@ -113,8 +116,9 @@ app.get(urlPrefix + "/", sessionChecker, (_request, response) => {
 });
 app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
 app.use(urlPrefix + "/api/:apiKey", apiGetHandler, routerApi);
-app.use(urlPrefix + "/lots", sessionChecker, routerLots);
+app.use(urlPrefix + "/print", sessionChecker, routerPrint);
 app.use(urlPrefix + "/maps", sessionChecker, routerMaps);
+app.use(urlPrefix + "/lots", sessionChecker, routerLots);
 app.use(urlPrefix + "/lotOccupancies", sessionChecker, routerLotOccupancies);
 app.use(urlPrefix + "/workOrders", sessionChecker, routerWorkOrders);
 app.use(urlPrefix + "/reports", sessionChecker, routerReports);
@@ -135,13 +139,6 @@ app.get(urlPrefix + "/logout", (request, response) => {
     }
 });
 app.use((_request, _response, next) => {
-    next(createError(404));
-});
-app.use((error, request, response) => {
-    response.locals.message = error.message;
-    response.locals.error =
-        request.app.get("env") === "development" ? error : {};
-    response.status(error.status || 500);
-    response.render("error");
+    next(createError(404, "File not found."));
 });
 export default app;

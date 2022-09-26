@@ -41,6 +41,7 @@ export interface Config {
             occupancyEndDateIsRequired?: boolean;
             occupantCityDefault?: string;
             occupantProvinceDefault?: string;
+            prints?: string[];
         };
         workOrders?: {
             workOrderNumberLength?: number;

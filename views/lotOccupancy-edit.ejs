@@ -46,14 +46,39 @@
                 </h1>
             </div>
         </div>
-        <div class="level-right">
-            <div class="level-item is-justify-content-right">
-                <a class="button is-link is-hidden-print" href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>/print" target="_blank">
-                    <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
-                    <span>Print</span>
-                </a>
+        <% if (configFunctions.getProperty("settings.lotOccupancy.prints").length > 0) { %>
+            <div class="level-right is-hidden-print">
+                <div class="level-item is-justify-content-right">
+                    <% if (configFunctions.getProperty("settings.lotOccupancy.prints").length === 1) { %>
+                    <a class="button is-link" href="<%= urlPrefix %>/print/screen/lotOccupancy/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
+                        <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
+                        <span>Print</span>
+                    </a>
+                    <% } else { %>
+                    <div class="dropdown is-right">
+                        <div class="dropdown-trigger">
+                            <button class="button is-link" type="button">
+                                <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
+                                <span>Print</span>
+                                <span class="icon is-small"><i class="fas fa-caret-down" aria-hidden="true"></i></span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-content">
+                                <% for (const printName of configFunctions.getProperty("settings.lotOccupancy.prints")) { %>
+                                    <% const printConfig = printFunctions.getPrintConfig(printName); %>
+                                    <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>">
+                                        <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
+                                        <span><%= printConfig.title %></span>
+                                    </a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
             </div>
-        </div>
+        <% } %>
     </div> 
 <% } %>
 
