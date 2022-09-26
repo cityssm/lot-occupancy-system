@@ -430,6 +430,110 @@ declare const bulmaJS: BulmaJS;
             }
         };
 
+        const openEditLotStatus = (clickEvent: Event) => {
+            const lotId = Number.parseInt(
+                (
+                    (clickEvent.currentTarget as HTMLElement).closest(
+                        ".container--lot"
+                    ) as HTMLElement
+                ).dataset.lotId,
+                10
+            );
+
+            const lot = workOrderLots.find((possibleLot) => {
+                return possibleLot.lotId === lotId;
+            });
+
+            let editCloseModalFunction: () => void;
+
+            const doUpdateLotStatus = (submitEvent: SubmitEvent) => {
+                submitEvent.preventDefault();
+
+                cityssm.postJSON(
+                    urlPrefix + "/workOrders/doUpdateLotStatus",
+                    submitEvent.currentTarget,
+                    (responseJSON: {
+                        success: boolean;
+                        errorMessage?: string;
+                        workOrderLots?: recordTypes.Lot[];
+                    }) => {
+                        if (responseJSON.success) {
+                            workOrderLots = responseJSON.workOrderLots;
+                            renderRelatedLotsAndOccupancies();
+                            editCloseModalFunction();
+                        } else {
+                            bulmaJS.alert({
+                                title: "Error Deleting Relationship",
+                                message: responseJSON.errorMessage,
+                                contextualColorName: "danger"
+                            });
+                        }
+                    }
+                );
+            };
+
+            cityssm.openHtmlModal("lot-editLotStatus", {
+                onshow: (modalElement) => {
+                    los.populateAliases(modalElement);
+
+                    (
+                        modalElement.querySelector("#lotStatusEdit--lotId") as HTMLInputElement
+                    ).value = lotId.toString();
+                    (
+                        modalElement.querySelector("#lotStatusEdit--lotName") as HTMLInputElement
+                    ).value = lot.lotName;
+
+                    const lotStatusElement = modalElement.querySelector(
+                        "#lotStatusEdit--lotStatusId"
+                    ) as HTMLSelectElement;
+
+                    let lotStatusFound = false;
+
+                    for (const lotStatus of exports.lotStatuses as recordTypes.LotStatus[]) {
+                        const optionElement = document.createElement("option");
+                        optionElement.value = lotStatus.lotStatusId.toString();
+                        optionElement.textContent = lotStatus.lotStatus;
+
+                        if (lotStatus.lotStatusId === lot.lotStatusId) {
+                            lotStatusFound = true;
+                        }
+
+                        lotStatusElement.append(optionElement);
+                    }
+
+                    if (!lotStatusFound && lot.lotStatusId) {
+                        const optionElement = document.createElement("option");
+                        optionElement.value = lot.lotStatusId.toString();
+                        optionElement.textContent = lot.lotStatus;
+                        lotStatusElement.append(optionElement);
+                    }
+
+                    if (lot.lotStatusId) {
+                        lotStatusElement.value = lot.lotStatusId.toString();
+                    }
+
+                    modalElement
+                        .querySelector("form")
+                        .insertAdjacentHTML(
+                            "beforeend",
+                            '<input name="workOrderId" type="hidden" value="' + workOrderId + '" />'
+                        );
+                },
+                onshown: (modalElement, closeModalFunction) => {
+                    editCloseModalFunction = closeModalFunction;
+
+                    bulmaJS.toggleHtmlClipped();
+
+                    modalElement
+                        .querySelector("form")
+                        .addEventListener("submit", doUpdateLotStatus);
+                },
+                onremoved: () => {
+                    bulmaJS.toggleHtmlClipped();
+                }
+            });
+        };
+
         const deleteLot = (clickEvent: Event) => {
             const lotId = (
                 (clickEvent.currentTarget as HTMLElement).closest(".container--lot") as HTMLElement
@@ -531,12 +635,19 @@ declare const bulmaJS: BulmaJS;
                     "</td>" +
                     ("<td>" + cityssm.escapeHTML(lot.mapName) + "</td>") +
                     ("<td>" + cityssm.escapeHTML(lot.lotType) + "</td>") +
-                    ("<td>" + cityssm.escapeHTML(lot.lotStatus) + "</td>") +
-                    ("<td>" +
-                        '<button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">' +
+                    ("<td>" + (lot.lotStatusId ? cityssm.escapeHTML(lot.lotStatus) : "<span class=\"has-text-grey\">(No Status)</span>") + "</td>") +
+                    ('<td class="is-nowrap">' +
+                        '<button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">' +
+                        '<i class="fas fa-pencil-alt" aria-hidden="true"></i>' +
+                        "</button>" +
+                        ' <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">' +
                         '<i class="fas fa-trash" aria-hidden="true"></i>' +
                         "</button>" +
                         "</td>");
+
+                rowElement
+                    .querySelector(".button--editLotStatus")
+                    .addEventListener("click", openEditLotStatus);
 
                 rowElement.querySelector(".button--deleteLot").addEventListener("click", deleteLot);
 
@@ -865,7 +976,7 @@ declare const bulmaJS: BulmaJS;
             return currentComment.workOrderCommentId === workOrderCommentId;
         });
 
-        console.log(workOrderComments)
+        console.log(workOrderComments);
 
         let editFormElement: HTMLFormElement;
         let editCloseModalFunction: () => void;
@@ -1017,7 +1128,8 @@ declare const bulmaJS: BulmaJS;
 
         for (const workOrderComment of workOrderComments) {
             const tableRowElement = document.createElement("tr");
-            tableRowElement.dataset.workOrderCommentId = workOrderComment.workOrderCommentId.toString();
+            tableRowElement.dataset.workOrderCommentId =
+                workOrderComment.workOrderCommentId.toString();
 
             tableRowElement.innerHTML =
                 "<td>" +
@@ -1094,7 +1206,9 @@ declare const bulmaJS: BulmaJS;
                 bulmaJS.toggleHtmlClipped();
                 addCommentCloseModalFunction = closeModalFunction;
                 (
-                    modalElement.querySelector("#workOrderCommentAdd--workOrderComment") as HTMLTextAreaElement
+                    modalElement.querySelector(
+                        "#workOrderCommentAdd--workOrderComment"
+                    ) as HTMLTextAreaElement
                 ).focus();
             },
             onremoved() {
@@ -1105,7 +1219,9 @@ declare const bulmaJS: BulmaJS;
     };
 
     if (!isCreate) {
-        document.querySelector("#workOrderComments--add").addEventListener("click", openAddCommentModal);
+        document
+            .querySelector("#workOrderComments--add")
+            .addEventListener("click", openAddCommentModal);
         renderWorkOrderComments();
     }
 

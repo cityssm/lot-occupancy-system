@@ -25,6 +25,7 @@ import handler_doAddWorkOrderLotOccupancy from "../handlers/workOrders-post/doAd
 import handler_doDeleteWorkOrderLotOccupancy from "../handlers/workOrders-post/doDeleteWorkOrderLotOccupancy.js";
 
 import handler_doAddWorkOrderLot from "../handlers/workOrders-post/doAddWorkOrderLot.js";
+import handler_doUpdateLotStatus from "../handlers/workOrders-post/doUpdateLotStatus.js";
 import handler_doDeleteWorkOrderLot from "../handlers/workOrders-post/doDeleteWorkOrderLot.js";
 
 import handler_doAddWorkOrderComment from "../handlers/workOrders-post/doAddWorkOrderComment.js";
@@ -119,6 +120,12 @@ router.post(
     "/doAddWorkOrderLot",
     permissionHandlers.updatePostHandler,
     handler_doAddWorkOrderLot
+);
+
+router.post(
+    "/doUpdateLotStatus",
+    permissionHandlers.updatePostHandler,
+    handler_doUpdateLotStatus
 );
 
 router.post(

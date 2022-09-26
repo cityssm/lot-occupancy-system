@@ -111,7 +111,7 @@ export const getLots = (
                 "select l.lotId, l.lotName," +
                     " t.lotType," +
                     " l.mapId, m.mapName, l.mapKey," +
-                    " s.lotStatus," +
+                    " l.lotStatusId, s.lotStatus," +
                     " ifnull(o.lotOccupancyCount, 0) as lotOccupancyCount" +
                     " from Lots l" +
                     " left join LotTypes t on l.lotTypeId = t.lotTypeId" +
