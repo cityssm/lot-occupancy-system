@@ -1,9 +1,7 @@
 import type { RequestHandler } from "express";
 
 import * as configFunctions from "../../helpers/functions.config.js";
-import { getScreenPrintConfig } from "../../helpers/functions.print.js";
-
-import { getLotOccupancy } from "../../helpers/lotOccupancyDB/getLotOccupancy.js";
+import { getReportData, getScreenPrintConfig } from "../../helpers/functions.print.js";
 
 export const handler: RequestHandler = (request, response) => {
     const printName = request.params.printName;
@@ -17,16 +15,7 @@ export const handler: RequestHandler = (request, response) => {
         );
     }
 
-    const reportData: { [dataName: string]: unknown } = {
-        headTitle: printConfig.title
-    };
-
-    if (
-        printConfig.params.includes("lotOccupancyId") &&
-        typeof request.query.lotOccupancyId === "string"
-    ) {
-        reportData.lotOccupancy = getLotOccupancy(request.query.lotOccupancyId);
-    }
+    const reportData = getReportData(printConfig, request.query);
 
     return response.render("print/screen/" + printName, reportData);
 };
