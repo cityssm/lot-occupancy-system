@@ -1,6 +1,6 @@
 name: Coverage Testing
 
-on: [workflow_dispatch, push]
+on: [workflow_dispatch, push, pull_request]
 
 permissions: read-all
 
@@ -32,7 +32,9 @@ jobs:
           ./codeclimate-test-reporter after-build -t lcov --exit-code $?
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        if: github.event_name != 'pull_request'
       - name: Codacy
         run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        if: github.event_name != 'pull_request'
