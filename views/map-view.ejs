@@ -94,16 +94,94 @@
     </div>
 </div>
 
+<% const lotSearchUrl = urlPrefix + "/lots?mapId=" + map.mapId; %>
 <div class="panel">
-    <h2 class="panel-heading">
-        Related Searches
-    </h2>
-    <div class="panel-block">
-        <a class="button is-link" href="<%= urlPrefix %>/lots?mapId=<%= map.mapId %>">
-            <span class="icon is-small"><i class="fas fa-vector-square" aria-hidden="true"></i></span>
-            <span class="mr-2"><%= configFunctions.getProperty("aliases.lots") %></span>
-            <span class="tag"><%= map.lotCount %></span>
-        </a>
+    <div class="panel-heading">
+        <div class="level is-mobile">
+            <div class="level-left">
+                <div class="level-item">
+                    <h2 class="title is-5 has-text-weight-bold">
+                        <%= configFunctions.getProperty("aliases.lot") %> Summaries
+                        <a class="tag is-link ml-2" href="<%= lotSearchUrl %>">
+                            <%= map.lotCount %>
+                        </a>
+                    </h2>
+                </div>
+            </div>
+            <div class="level-right">
+                <div class="level-item">
+                    <a class="button is-small is-link has-text-weight-normal" href="<%=urlPrefix %>/reports/lots-byMapId?mapId=<%= map.mapId %>" download>
+                        <span class="icon"><i class="fas fa-download" aria-hidden="true"></i></span>
+                        <span>Export All</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-block is-block">
+        <% if (map.lotCount === 0) { %>
+            <div class="message is-info">
+                <p class="message-body">
+                    There are no <%= configFunctions.getProperty("aliases.lots").toLowerCase() %>
+                    associated with this <%= configFunctions.getProperty("aliases.map").toLowerCase() %>.
+                </p>
+            </div>
+        <% } else { %>
+            <div class="columns">
+                <div class="column">
+                    <table class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th class="has-text-right">
+                                    <%= configFunctions.getProperty("aliases.lot") %> Count
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (const lotType of lotTypeSummary) { %>
+                                <tr>
+                                    <td>
+                                        <a class="has-text-weight-bold" href="<%= lotSearchUrl %>&lotTypeId=<%= lotType.lotTypeId %>">
+                                            <%= lotType.lotType %>
+                                        </a>
+                                    </td>
+                                    <td class="has-text-right">
+                                        <%= lotType.lotCount %>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column">
+                    <table class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th class="has-text-right">
+                                    <%= configFunctions.getProperty("aliases.lot") %> Count
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (const lotStatus of lotStatusSummary) { %>
+                                <tr>
+                                    <td>
+                                        <a class="has-text-weight-bold" href="<%= lotSearchUrl %>&lotStatusId=<%= lotStatus.lotStatusId %>">
+                                            <%= lotStatus.lotStatus %>
+                                        </a>
+                                    </td>
+                                    <td class="has-text-right">
+                                        <%= lotStatus.lotCount %>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% } %>
     </div>
 </div>
 
