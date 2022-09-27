@@ -23,7 +23,10 @@
 
 <% if (user.userProperties.canUpdate && !workOrder.workOrderCloseDate) { %>
     <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-        <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update Work Order" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>/edit">
+        <a class="button is-circle is-primary has-tooltip-left"
+            data-tooltip="Update Work Order"
+            href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>/edit"
+            accesskey="e">
             <i class="fas fa-pencil-alt" aria-hidden="true"></i>
             <span class="sr-only">Update Work Order</span>
         </a>

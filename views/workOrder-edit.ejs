@@ -17,7 +17,7 @@
             </li>
         <% } else { %>
             <li>
-                <a href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
+                <a href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>" accesskey="v">
                     Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
                 </a>
             </li>
@@ -49,7 +49,7 @@
                             <label class="label" for="workOrderEdit--workOrderNumber">Work Order Number</label>
                             <div class="field has-addons">
                                 <div class="control is-expanded">
-                                    <input class="input <%= (isCreate ? "" : " is-readonly") %>" id="workOrderEdit--workOrderNumber" name="workOrderNumber" type="text" value="<%= workOrder.workOrderNumber %>" maxlength="50" readonly <%= (isCreate ? "" : " required") %> />
+                                    <input class="input <%= (isCreate ? "" : " is-readonly") %>" id="workOrderEdit--workOrderNumber" name="workOrderNumber" type="text" value="<%= workOrder.workOrderNumber %>" maxlength="50" readonly accesskey="f" <%= (isCreate ? "" : " required") %> />
                                 </div>
                                 <div class="control">
                                     <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
@@ -66,7 +66,7 @@
                                 <label class="label" for="workOrderEdit--workOrderTypeId">Work Order Type</label>
                                 <div class="control">
                                     <div class="select is-fullwidth">
-                                        <select id="workOrderEdit--workOrderTypeId" name="workOrderTypeId" required>
+                                        <select id="workOrderEdit--workOrderTypeId" name="workOrderTypeId" required <%= (isCreate ? " autofocus" : "") %>>
                                             <% if (isCreate) { %>
                                                 <option value="">(Select Type)</option>
                                             <% } %>

@@ -10,7 +10,11 @@
             </a>
         </li>
         <% if (!isCreate) { %>
-            <li><a href="<%= urlPrefix %>/maps/<%= map.mapId %>"><%= map.mapName || "(No Name)" %></a></li>
+            <li>
+                <a href="<%= urlPrefix %>/maps/<%= map.mapId %>" accesskey="v">
+                    <%= map.mapName || "(No Name)" %>
+                </a>
+            </li>
         <% } %>
         <li class="is-active">
             <a href="#" aria-current="page">
@@ -42,7 +46,10 @@
                     <div class="field">
                         <label class="label" for="map--mapName"><%= configFunctions.getProperty("aliases.map") %> Name</label>
                         <div class="control">
-                            <input class="input" id="map--mapName" name="mapName" type="text" value="<%= map.mapName %>" maxlength="200" required />
+                            <input class="input" id="map--mapName" name="mapName" type="text"
+                                value="<%= map.mapName %>" maxlength="200" required
+                                accesskey="f"
+                                <%= (isCreate ? " autofocus" : "") %> />
                         </div>
                     </div>
                     <div class="field">

@@ -18,7 +18,10 @@
 
 <% if (user.userProperties.canUpdate) { %>
     <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-        <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Create a New <%= configFunctions.getProperty("aliases.lot") %>" href="<%= urlPrefix %>/lots/new">
+        <a class="button is-circle is-primary has-tooltip-left"
+            data-tooltip="Create a New <%= configFunctions.getProperty("aliases.lot") %>"
+            href="<%= urlPrefix %>/lots/new"
+            accesskey="n">
             <i class="fas fa-plus" aria-hidden="true"></i>
             <span class="sr-only">Create a New <%= configFunctions.getProperty("aliases.lot") %></span>
         </a>
@@ -34,7 +37,7 @@
             <div class="field">
             <label class="label" for="searchFilter--lotName"><%= configFunctions.getProperty("aliases.lot") %></label>
             <div class="control has-icons-left">
-                <input class="input" id="searchFilter--lotName" name="lotName" />
+                <input class="input" id="searchFilter--lotName" name="lotName" accesskey="f" />
                 <span class="icon is-small is-left">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </span>

@@ -11,7 +11,7 @@
     </li>
     <% if (!isCreate) { %>
         <li>
-            <a href="<%= urlPrefix %>/lots/<%= lot.lotId %>">
+            <a href="<%= urlPrefix %>/lots/<%= lot.lotId %>" accesskey="v">
                 <%= lot.lotName %>
             </a>
         </li>
@@ -53,7 +53,9 @@
                                     pattern="<%= configFunctions.getProperty("settings.lot.lotNamePattern").source %>"
                                 <% } %>
                                 maxlength="100" 
-                                required />
+                                required
+                                accesskey="f"
+                                <%= (isCreate ? " autofocus" : "") %> />
                         </div>
                     </div>
                 </div>

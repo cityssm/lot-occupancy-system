@@ -18,7 +18,8 @@
 <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
     <a class="button is-circle is-primary has-tooltip-left"
         data-tooltip="Create a New <%= configFunctions.getProperty("aliases.map") %>"
-        href="<%= urlPrefix %>/maps/new">
+        href="<%= urlPrefix %>/maps/new"
+        accesskey="n">
         <i class="fas fa-plus" aria-hidden="true"></i>
         <span class="sr-only">Create a New <%= configFunctions.getProperty("aliases.map") %></span>
     </a>
@@ -30,7 +31,8 @@
         <div class="field">
             <div class="control has-icons-left">
                 <input class="input" id="searchFilter--map" type="text"
-                    placeholder="Search <%= configFunctions.getProperty("aliases.map").toLowerCase() %> name, description, and address" />
+                    placeholder="Search <%= configFunctions.getProperty("aliases.map").toLowerCase() %> name, description, and address"
+                    accesskey="f" />
                 <span class="icon is-small is-left">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </span>

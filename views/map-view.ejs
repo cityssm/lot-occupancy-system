@@ -23,7 +23,10 @@
 
 <% if (user.userProperties.canUpdate) { %>
     <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-        <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("aliases.map") %>" href="<%= urlPrefix %>/maps/<%= map.mapId %>/edit">
+        <a class="button is-circle is-primary has-tooltip-left"
+            data-tooltip="Update <%= configFunctions.getProperty("aliases.map") %>"
+            href="<%= urlPrefix %>/maps/<%= map.mapId %>/edit"
+            accesskey="e">
             <i class="fas fa-pencil-alt" aria-hidden="true"></i>
             <span class="sr-only">Update <%= configFunctions.getProperty("aliases.map") %></span>
         </a>

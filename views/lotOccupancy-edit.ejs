@@ -16,7 +16,7 @@
         </li>
         <% if (!isCreate) { %>
         <li>
-            <a href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
+            <a href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>" accesskey="v">
                 <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
             </a>
         </li>
@@ -100,7 +100,9 @@
                                     <% if (!isCreate) { %>
                                         class="is-readonly" 
                                     <% } %>
-                                    id="lotOccupancy--occupancyTypeId" name="occupancyTypeId" required>
+                                    id="lotOccupancy--occupancyTypeId" name="occupancyTypeId"
+                                    required accesskey="f"
+                                    <%= (isCreate ? " autofocus" : "") %>>
                                     <% if (isCreate) { %>
                                         <option value="">(No Type)</option>
                                     <% } %>

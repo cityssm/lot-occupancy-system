@@ -22,12 +22,15 @@
 </h1>
 
 <% if (user.userProperties.canUpdate) { %>
-  <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-    <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Create a New <%= configFunctions.getProperty("aliases.occupancy") %>" href="<%= urlPrefix %>/lotOccupancies/new">
-      <i class="fas fa-plus" aria-hidden="true"></i>
-      <span class="sr-only">Create a New <%= configFunctions.getProperty("aliases.occupancy") %></span>
-    </a>
-  </div>
+    <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+        <a class="button is-circle is-primary has-tooltip-left"
+            data-tooltip="Create a New <%= configFunctions.getProperty("aliases.occupancy") %>"
+            href="<%= urlPrefix %>/lotOccupancies/new"
+            accesskey="n">
+            <i class="fas fa-plus" aria-hidden="true"></i>
+            <span class="sr-only">Create a New <%= configFunctions.getProperty("aliases.occupancy") %></span>
+        </a>
+    </div>
 <% } %>
 
 <div class="box">
@@ -39,7 +42,7 @@
             <div class="field">
                 <label class="label" for="searchFilter--occupantName"><%= configFunctions.getProperty("aliases.occupant") %> Name</label>
                 <div class="control has-icons-left">
-                    <input class="input" id="searchFilter--occupantName" name="occupantName" />
+                    <input class="input" id="searchFilter--occupantName" name="occupantName" accesskey="f" />
                     <span class="icon is-small is-left">
                         <i class="fas fa-search" aria-hidden="true"></i>
                     </span>

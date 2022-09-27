@@ -64,39 +64,6 @@
                     <div class="card-content">
                         <div class="media">
                             <div class="media-left">
-                                <span class="fa-layers fa-3x fa-fw" aria-hidden="true">
-                                    <i class="fas fa-vector-square"></i>
-                                    <i class="fas fa-user" data-fa-transform="shrink-10"></i>
-                                </span>
-                            </div>
-                            <div class="media-content has-text-black">
-                                <h2 class="title is-4 is-marginless">
-                                    <a href="<%= urlPrefix %>/lotOccupancies"><%= configFunctions.getProperty("aliases.lot") %>
-                                        <%= configFunctions.getProperty("aliases.occupancies") %></a>
-                                </h2>
-                                <p>View and maintain current and past
-                                    <%= configFunctions.getProperty("aliases.lot").toLowerCase() %>
-                                    <%= configFunctions.getProperty("aliases.occupancies").toLowerCase() %>.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <% if (user.userProperties.canUpdate) { %>
-                        <div class="card-footer">
-                            <a class="card-footer-item" href="<%= urlPrefix %>/lotOccupancies/new">
-                                <span class="icon">
-                                    <i class="fas fa-plus" aria-hidden="true"></i>
-                                </span>
-                                <span>New <%= configFunctions.getProperty("aliases.occupancy") %></span>
-                            </a>
-                        </div>
-                    <% } %>
-                </div>
-            </div>
-            <div class="column">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-left">
                                 <i class="fas fa-3x fa-fw fa-hard-hat" aria-hidden="true"></i>
                             </div>
                             <div class="media-content has-text-black">
@@ -136,6 +103,39 @@
                             <span>Milestone Calendar</span>
                         </a>
                     </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <span class="fa-layers fa-3x fa-fw" aria-hidden="true">
+                                    <i class="fas fa-vector-square"></i>
+                                    <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+                                </span>
+                            </div>
+                            <div class="media-content has-text-black">
+                                <h2 class="title is-4 is-marginless">
+                                    <a href="<%= urlPrefix %>/lotOccupancies"><%= configFunctions.getProperty("aliases.lot") %>
+                                        <%= configFunctions.getProperty("aliases.occupancies") %></a>
+                                </h2>
+                                <p>View and maintain current and past
+                                    <%= configFunctions.getProperty("aliases.lot").toLowerCase() %>
+                                    <%= configFunctions.getProperty("aliases.occupancies").toLowerCase() %>.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <% if (user.userProperties.canUpdate) { %>
+                        <div class="card-footer">
+                            <a class="card-footer-item" href="<%= urlPrefix %>/lotOccupancies/new">
+                                <span class="icon">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </span>
+                                <span>New <%= configFunctions.getProperty("aliases.occupancy") %></span>
+                            </a>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -223,7 +223,7 @@
                             </div>
                             <div class="media-content has-text-black">
                                 <h2 class="title is-4 is-marginless">
-                                    <a href="https://cityssm.github.io/lot-occupancy-system/" target="_blank"
+                                    <a href="https://cityssm.github.io/lot-occupancy-system/docs" target="_blank"
                                         rel="noopener noreferrer">Help Documentation</a>
                                 </h2>
                                 <p>Instructions on how to use this application.</p>
