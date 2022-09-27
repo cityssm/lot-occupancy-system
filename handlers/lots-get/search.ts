@@ -16,7 +16,9 @@ export const handler: RequestHandler = (request, response) => {
         maps,
         lotTypes,
         lotStatuses,
-        mapId: request.query.mapId
+        mapId: request.query.mapId,
+        lotTypeId: request.query.lotTypeId,
+        lotStatusId: request.query.lotStatusId
     });
 };
 
