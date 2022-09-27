@@ -9,7 +9,7 @@ interface GetLotsFilters {
     workOrderId?: number | string;
 }
 interface GetLotsOptions {
-    limit: number;
+    limit: -1 | number;
     offset: number;
 }
 export declare const getLots: (filters: GetLotsFilters, options: GetLotsOptions, connectedDatabase?: sqlite.Database) => {

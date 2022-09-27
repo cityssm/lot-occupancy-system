@@ -65,9 +65,7 @@ export const getLotOccupancies = (
     }
 
     if (filters.occupantName) {
-        const occupantNamePieces = filters.occupantName
-            .toLowerCase()
-            .split(" ");
+        const occupantNamePieces = filters.occupantName.toLowerCase().split(" ");
         for (const occupantNamePiece of occupantNamePieces) {
             sqlWhereClause +=
                 " and o.lotOccupancyId in (select oo.lotOccupancyId from LotOccupancyOccupants oo where oo.recordDelete_timeMillis is null and instr(lower(oo.occupantName), ?))";
@@ -104,9 +102,7 @@ export const getLotOccupancies = (
 
     if (filters.occupancyStartDateString) {
         sqlWhereClause += " and o.occupancyStartDate = ?";
-        sqlParameters.push(
-            dateStringToInteger(filters.occupancyStartDateString)
-        );
+        sqlParameters.push(dateStringToInteger(filters.occupancyStartDateString));
     }
 
     if (filters.occupancyEffectiveDateString) {
@@ -140,18 +136,22 @@ export const getLotOccupancies = (
         sqlParameters.push(filters.notWorkOrderId);
     }
 
-    const count: number = database
-        .prepare(
-            "select count(*) as recordCount" +
-                " from LotOccupancies o" +
-                " left join Lots l on o.lotId = l.lotId" +
-                sqlWhereClause
-        )
-        .get(sqlParameters).recordCount;
+    let count: number;
+
+    if (options.limit !== -1) {
+        count = database
+            .prepare(
+                "select count(*) as recordCount" +
+                    " from LotOccupancies o" +
+                    " left join Lots l on o.lotId = l.lotId" +
+                    sqlWhereClause
+            )
+            .get(sqlParameters).recordCount;
+    }
 
     let lotOccupancies: recordTypes.LotOccupancy[] = [];
 
-    if (count > 0) {
+    if (options.limit === -1 || count > 0) {
         lotOccupancies = database
             .prepare(
                 "select o.lotOccupancyId," +
@@ -167,13 +167,14 @@ export const getLotOccupancies = (
                     sqlWhereClause +
                     " order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId" +
                     (options.limit !== -1
-                        ? " limit " +
-                          options.limit +
-                          " offset " +
-                          options.offset
+                        ? " limit " + options.limit + " offset " + options.offset
                         : "")
             )
             .all(sqlParameters);
+
+        if (options.limit === -1) {
+            count = lotOccupancies.length;
+        }
 
         if (options.includeOccupants) {
             for (const lotOccupancy of lotOccupancies) {

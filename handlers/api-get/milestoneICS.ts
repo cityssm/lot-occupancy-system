@@ -14,10 +14,7 @@ import * as configFunctions from "../../helpers/functions.config.js";
 const timeStringSplitRegex = /[ :-]/;
 
 function escapeHTML(stringToEscape: string) {
-    return stringToEscape.replace(
-        /[^\d A-Za-z]/g,
-        (c) => "&#" + c.codePointAt(0) + ";"
-    );
+    return stringToEscape.replace(/[^\d A-Za-z]/g, (c) => "&#" + c.codePointAt(0) + ";");
 }
 
 export const handler: RequestHandler = (request, response) => {
@@ -31,21 +28,19 @@ export const handler: RequestHandler = (request, response) => {
 
     const workOrderMilestoneFilters: WorkOrderMilestoneFilters = {
         workOrderTypeIds: request.query.workOrderTypeIds as string,
-        workOrderMilestoneTypeIds: request.query
-            .workOrderMilestoneTypeIds as string
+        workOrderMilestoneTypeIds: request.query.workOrderMilestoneTypeIds as string
     };
 
     if (request.query.workOrderId) {
-        workOrderMilestoneFilters.workOrderId = request.query
-            .workOrderId as string;
+        workOrderMilestoneFilters.workOrderId = request.query.workOrderId as string;
     } else {
         workOrderMilestoneFilters.workOrderMilestoneDateFilter = "recent";
     }
 
-    const workOrderMilestones = getWorkOrderMilestones(
-        workOrderMilestoneFilters,
-        { includeWorkOrders: true, orderBy: "date" }
-    );
+    const workOrderMilestones = getWorkOrderMilestones(workOrderMilestoneFilters, {
+        includeWorkOrders: true,
+        orderBy: "date"
+    });
 
     const calendar = ical({
         name: "Work Order Milestone Calendar",
@@ -53,7 +48,7 @@ export const handler: RequestHandler = (request, response) => {
     });
 
     if (request.query.workOrderId && workOrderMilestones.length > 0) {
-        calendar.name("Work Order #" + workOrderMilestones[0].workOrder.workOrderNumber);
+        calendar.name("Work Order #" + workOrderMilestones[0].workOrderNumber);
         calendar.url(urlRoot + "/workOrders/" + workOrderMilestones[0].workOrderId);
     }
 
@@ -77,6 +72,9 @@ export const handler: RequestHandler = (request, response) => {
             Number.parseInt(milestoneTimePieces[4], 10)
         );
 
+        const milestoneEndDate = new Date(milestoneDate.getTime());
+        milestoneEndDate.setHours(milestoneEndDate.getHours() + 1);
+
         // Build summary (title in Outlook)
 
         let summary = (
@@ -85,11 +83,10 @@ export const handler: RequestHandler = (request, response) => {
                 : milestone.workOrderMilestoneDescription
         ).trim();
 
-        if (milestone.workOrder.workOrderLotOccupancies.length > 0) {
+        if (milestone.workOrderLotOccupancies.length > 0) {
             let occupantCount = 0;
 
-            for (const lotOccupancy of milestone.workOrder
-                .workOrderLotOccupancies) {
+            for (const lotOccupancy of milestone.workOrderLotOccupancies) {
                 for (const occupant of lotOccupancy.lotOccupancyOccupants) {
                     occupantCount += 1;
 
@@ -121,13 +118,17 @@ export const handler: RequestHandler = (request, response) => {
             lastModified: new Date(
                 Math.max(
                     milestone.recordUpdate_timeMillis,
-                    milestone.workOrder.recordUpdate_timeMillis
+                    milestone.workOrderRecordUpdate_timeMillis
                 )
             ),
             allDay: !milestone.workOrderMilestoneTime,
             summary,
             url: workOrderURL
         };
+
+        if (!eventData.allDay) {
+            eventData.end = milestoneEndDate;
+        }
 
         const calendarEvent = calendar.createEvent(eventData);
 
@@ -139,39 +140,28 @@ export const handler: RequestHandler = (request, response) => {
             escapeHTML(milestone.workOrderMilestoneDescription) +
             "</p>" +
             "<h2>Work Order #" +
-            milestone.workOrder.workOrderNumber +
+            milestone.workOrderNumber +
             "</h2>" +
-            ("<p>" +
-                escapeHTML(milestone.workOrder.workOrderDescription) +
-                "</p>") +
+            ("<p>" + escapeHTML(milestone.workOrderDescription) + "</p>") +
             ('<p><a href="' + workOrderURL + '">' + workOrderURL + "</a></p>");
 
-        if (milestone.workOrder.workOrderLotOccupancies.length > 0) {
+        if (milestone.workOrderLotOccupancies.length > 0) {
             descriptionHTML +=
                 "<h2>Related " +
                 escapeHTML(configFunctions.getProperty("aliases.occupancies")) +
                 "</h2>" +
                 '<table border="1"><thead><tr>' +
                 ("<th>" +
-                    escapeHTML(
-                        configFunctions.getProperty("aliases.occupancy")
-                    ) +
+                    escapeHTML(configFunctions.getProperty("aliases.occupancy")) +
                     " Type</th>") +
-                ("<th>" +
-                    escapeHTML(configFunctions.getProperty("aliases.lot")) +
-                    "</th>") +
+                ("<th>" + escapeHTML(configFunctions.getProperty("aliases.lot")) + "</th>") +
                 "<th>Start Date</th>" +
                 "<th>End Date</th>" +
-                ("<th>" +
-                    escapeHTML(
-                        configFunctions.getProperty("aliases.occupants")
-                    ) +
-                    "</th>") +
+                ("<th>" + escapeHTML(configFunctions.getProperty("aliases.occupants")) + "</th>") +
                 "</tr></thead>" +
                 "<tbody>";
 
-            for (const occupancy of milestone.workOrder
-                .workOrderLotOccupancies) {
+            for (const occupancy of milestone.workOrderLotOccupancies) {
                 descriptionHTML +=
                     "<tr>" +
                     ("<td>" +
@@ -183,9 +173,7 @@ export const handler: RequestHandler = (request, response) => {
                         escapeHTML(occupancy.occupancyType) +
                         "</a></td>") +
                     ("<td>" +
-                        (occupancy.lotName
-                            ? escapeHTML(occupancy.lotName)
-                            : "(Not Set)") +
+                        (occupancy.lotName ? escapeHTML(occupancy.lotName) : "(Not Set)") +
                         "</td>") +
                     ("<td>" + occupancy.occupancyStartDateString + "</td>") +
                     "<td>" +
@@ -196,8 +184,7 @@ export const handler: RequestHandler = (request, response) => {
                     "<td>";
 
                 for (const occupant of occupancy.lotOccupancyOccupants) {
-                    descriptionHTML +=
-                        escapeHTML(occupant.occupantName) + "<br />";
+                    descriptionHTML += escapeHTML(occupant.occupantName) + "<br />";
                 }
 
                 descriptionHTML += "</td>" + "</tr>";
@@ -206,18 +193,14 @@ export const handler: RequestHandler = (request, response) => {
             descriptionHTML += "</tbody></table>";
         }
 
-        if (milestone.workOrder.workOrderLots.length > 0) {
+        if (milestone.workOrderLots.length > 0) {
             descriptionHTML +=
                 "<h2>Related " +
                 escapeHTML(configFunctions.getProperty("aliases.lots")) +
                 "</h2>" +
                 '<table border="1"><thead><tr>' +
-                ("<th>" +
-                    escapeHTML(configFunctions.getProperty("aliases.lot")) +
-                    " Type</th>") +
-                ("<th>" +
-                    escapeHTML(configFunctions.getProperty("aliases.map")) +
-                    "</th>") +
+                ("<th>" + escapeHTML(configFunctions.getProperty("aliases.lot")) + " Type</th>") +
+                ("<th>" + escapeHTML(configFunctions.getProperty("aliases.map")) + "</th>") +
                 ("<th>" +
                     escapeHTML(configFunctions.getProperty("aliases.lot")) +
                     " Type" +
@@ -226,7 +209,7 @@ export const handler: RequestHandler = (request, response) => {
                 "</tr></thead>" +
                 "<tbody>";
 
-            for (const lot of milestone.workOrder.workOrderLots) {
+            for (const lot of milestone.workOrderLots) {
                 descriptionHTML +=
                     "<tr>" +
                     ("<td>" +
@@ -265,16 +248,16 @@ export const handler: RequestHandler = (request, response) => {
             });
 
             calendarEvent.createCategory({
-                name: milestone.workOrder.workOrderType
+                name: milestone.workOrderType
             });
         }
 
         // Set location
 
-        if (milestone.workOrder.workOrderLots.length > 0) {
+        if (milestone.workOrderLots.length > 0) {
             const lotNames = [];
 
-            for (const lot of milestone.workOrder.workOrderLots) {
+            for (const lot of milestone.workOrderLots) {
                 lotNames.push(lot.mapName + ": " + lot.lotName);
             }
 
@@ -283,20 +266,23 @@ export const handler: RequestHandler = (request, response) => {
 
         // Set organizer / attendees
 
-        if (milestone.workOrder.workOrderLotOccupancies.length > 0) {
+        if (milestone.workOrderLotOccupancies.length > 0) {
             let organizerSet = false;
-            for (const lotOccupancy of milestone.workOrder
-                .workOrderLotOccupancies) {
+            for (const lotOccupancy of milestone.workOrderLotOccupancies) {
                 for (const occupant of lotOccupancy.lotOccupancyOccupants) {
                     if (organizerSet) {
                         calendarEvent.createAttendee({
                             name: occupant.occupantName,
-                            email: configFunctions.getProperty("settings.workOrders.calendarEmailAddress")
+                            email: configFunctions.getProperty(
+                                "settings.workOrders.calendarEmailAddress"
+                            )
                         });
                     } else {
                         calendarEvent.organizer({
                             name: occupant.occupantName,
-                            email: configFunctions.getProperty("settings.workOrders.calendarEmailAddress")
+                            email: configFunctions.getProperty(
+                                "settings.workOrders.calendarEmailAddress"
+                            )
                         });
                         organizerSet = true;
                     }

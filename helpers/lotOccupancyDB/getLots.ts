@@ -18,7 +18,7 @@ interface GetLotsFilters {
 }
 
 interface GetLotsOptions {
-    limit: number;
+    limit: -1 | number;
     offset: number;
 }
 
@@ -79,7 +79,10 @@ export const getLots = (
 
     const currentDate = dateToInteger(new Date());
 
-    const count: number = database
+    let count: number;
+
+    if (options.limit !== -1) {
+    count = database
         .prepare(
             "select count(*) as recordCount" +
                 " from Lots l" +
@@ -97,10 +100,11 @@ export const getLots = (
                 sqlWhereClause
         )
         .get(sqlParameters).recordCount;
+        }
 
     let lots: recordTypes.Lot[] = [];
 
-    if (count > 0) {
+    if (options.limit === -1 || count > 0) {
         database.function(
             "userFn_lotNameSortName",
             configFunctions.getProperty("settings.lot.lotNameSortNameFunction")
@@ -138,6 +142,10 @@ export const getLots = (
                         : "")
             )
             .all(sqlParameters);
+
+        if (options.limit === -1) {
+            count = lots.length;
+        }
     }
 
     if (!connectedDatabase) {

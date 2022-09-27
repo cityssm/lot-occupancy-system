@@ -43,24 +43,27 @@ export const getLots = (filters, options, connectedDatabase) => {
         sqlParameters.push(filters.workOrderId);
     }
     const currentDate = dateToInteger(new Date());
-    const count = database
-        .prepare("select count(*) as recordCount" +
-        " from Lots l" +
-        (" left join (" +
-            "select lotId, count(lotOccupancyId) as lotOccupancyCount" +
-            " from LotOccupancies" +
-            " where recordDelete_timeMillis is null" +
-            " and occupancyStartDate <= " +
-            currentDate +
-            " and (occupancyEndDate is null or occupancyEndDate >= " +
-            currentDate +
-            ")" +
-            " group by lotId" +
-            ") o on l.lotId = o.lotId") +
-        sqlWhereClause)
-        .get(sqlParameters).recordCount;
+    let count;
+    if (options.limit !== -1) {
+        count = database
+            .prepare("select count(*) as recordCount" +
+            " from Lots l" +
+            (" left join (" +
+                "select lotId, count(lotOccupancyId) as lotOccupancyCount" +
+                " from LotOccupancies" +
+                " where recordDelete_timeMillis is null" +
+                " and occupancyStartDate <= " +
+                currentDate +
+                " and (occupancyEndDate is null or occupancyEndDate >= " +
+                currentDate +
+                ")" +
+                " group by lotId" +
+                ") o on l.lotId = o.lotId") +
+            sqlWhereClause)
+            .get(sqlParameters).recordCount;
+    }
     let lots = [];
-    if (count > 0) {
+    if (options.limit === -1 || count > 0) {
         database.function("userFn_lotNameSortName", configFunctions.getProperty("settings.lot.lotNameSortNameFunction"));
         lots = database
             .prepare("select l.lotId, l.lotName," +
@@ -92,6 +95,9 @@ export const getLots = (filters, options, connectedDatabase) => {
                     options.offset
                 : ""))
             .all(sqlParameters);
+        if (options.limit === -1) {
+            count = lots.length;
+        }
     }
     if (!connectedDatabase) {
         database.close();

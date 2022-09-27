@@ -2,8 +2,6 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import { getWorkOrder } from "./getWorkOrder.js";
-
 import {
     dateIntegerToString,
     dateStringToInteger,
@@ -12,6 +10,9 @@ import {
 } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import * as configFunctions from "../functions.config.js";
+
+import { getLots } from "./getLots.js";
+import { getLotOccupancies } from "./getLotOccupancies.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -46,7 +47,8 @@ export const getWorkOrderMilestones = (
 
     // Filters
 
-    let sqlWhereClause = " where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null";
+    let sqlWhereClause =
+        " where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null";
     const sqlParameters = [];
 
     if (filters.workOrderId) {
@@ -71,9 +73,7 @@ export const getWorkOrderMilestones = (
             configFunctions.getProperty(
                 "settings.workOrders.workOrderMilestoneDateRecentBeforeDays"
             ) +
-            configFunctions.getProperty(
-                "settings.workOrders.workOrderMilestoneDateRecentAfterDays"
-            )
+            configFunctions.getProperty("settings.workOrders.workOrderMilestoneDateRecentAfterDays")
     );
 
     const recentAfterDateNumber = dateToInteger(date);
@@ -94,17 +94,11 @@ export const getWorkOrderMilestones = (
 
     if (filters.workOrderMilestoneDateString) {
         sqlWhereClause += " and m.workOrderMilestoneDate = ?";
-        sqlParameters.push(
-            dateStringToInteger(filters.workOrderMilestoneDateString)
-        );
+        sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString));
     }
 
-    if (
-        filters.workOrderTypeIds &&
-        commaSeparatedNumbersRegex.test(filters.workOrderTypeIds)
-    ) {
-        sqlWhereClause +=
-            " and w.workOrderTypeId in (" + filters.workOrderTypeIds + ")";
+    if (filters.workOrderTypeIds && commaSeparatedNumbersRegex.test(filters.workOrderTypeIds)) {
+        sqlWhereClause += " and w.workOrderTypeId in (" + filters.workOrderTypeIds + ")";
     }
 
     if (
@@ -112,9 +106,7 @@ export const getWorkOrderMilestones = (
         commaSeparatedNumbersRegex.test(filters.workOrderMilestoneTypeIds)
     ) {
         sqlWhereClause +=
-            " and m.workOrderMilestoneTypeId in (" +
-            filters.workOrderMilestoneTypeIds +
-            ")";
+            " and m.workOrderMilestoneTypeId in (" + filters.workOrderMilestoneTypeIds + ")";
     }
 
     // Order By
@@ -138,36 +130,57 @@ export const getWorkOrderMilestones = (
 
     // Query
 
+    const sql =
+        "select m.workOrderMilestoneId," +
+        " m.workOrderMilestoneTypeId, t.workOrderMilestoneType," +
+        " m.workOrderMilestoneDate, userFn_dateIntegerToString(m.workOrderMilestoneDate) as workOrderMilestoneDateString," +
+        " m.workOrderMilestoneTime, userFn_timeIntegerToString(m.workOrderMilestoneTime) as workOrderMilestoneTimeString," +
+        " m.workOrderMilestoneDescription," +
+        " m.workOrderMilestoneCompletionDate, userFn_dateIntegerToString(m.workOrderMilestoneCompletionDate) as workOrderMilestoneCompletionDateString," +
+        " m.workOrderMilestoneCompletionTime, userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString," +
+        (options.includeWorkOrders
+            ? " m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription," +
+              " w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString," +
+              " w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString," +
+              " w.recordUpdate_timeMillis as workOrderRecordUpdate_timeMillis,"
+            : "") +
+        " m.recordCreate_userName, m.recordCreate_timeMillis," +
+        " m.recordUpdate_userName, m.recordUpdate_timeMillis" +
+        " from WorkOrderMilestones m" +
+        " left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId" +
+        " left join WorkOrders w on m.workOrderId = w.workOrderId" +
+        " left join WorkOrderTypes wt on w.workOrderTypeId = wt.workOrderTypeId" +
+        sqlWhereClause +
+        orderByClause;
+
     const workOrderMilestones: recordTypes.WorkOrderMilestone[] = database
-        .prepare(
-            "select m.workOrderId, m.workOrderMilestoneId," +
-                " m.workOrderMilestoneTypeId, t.workOrderMilestoneType," +
-                " m.workOrderMilestoneDate, userFn_dateIntegerToString(m.workOrderMilestoneDate) as workOrderMilestoneDateString," +
-                " m.workOrderMilestoneTime, userFn_timeIntegerToString(m.workOrderMilestoneTime) as workOrderMilestoneTimeString," +
-                " m.workOrderMilestoneDescription," +
-                " m.workOrderMilestoneCompletionDate, userFn_dateIntegerToString(m.workOrderMilestoneCompletionDate) as workOrderMilestoneCompletionDateString," +
-                " m.workOrderMilestoneCompletionTime, userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString," +
-                " m.recordCreate_userName, m.recordCreate_timeMillis," +
-                " m.recordUpdate_userName, m.recordUpdate_timeMillis" +
-                " from WorkOrderMilestones m" +
-                " left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId" +
-                " left join WorkOrders w on m.workOrderId = w.workOrderId" +
-                sqlWhereClause +
-                orderByClause
-        )
+        .prepare(sql)
         .all(sqlParameters);
 
     if (options.includeWorkOrders) {
         for (const workOrderMilestone of workOrderMilestones) {
-            workOrderMilestone.workOrder = getWorkOrder(
-                workOrderMilestone.workOrderId,
+            workOrderMilestone.workOrderLots = getLots(
                 {
-                    includeLotsAndLotOccupancies: true,
-                    includeComments: false,
-                    includeMilestones: false
+                    workOrderId: workOrderMilestone.workOrderId
+                },
+                {
+                    limit: -1,
+                    offset: 0
                 },
                 database
-            );
+            ).lots;
+
+            workOrderMilestone.workOrderLotOccupancies = getLotOccupancies(
+                {
+                    workOrderId: workOrderMilestone.workOrderId
+                },
+                {
+                    limit: -1,
+                    offset: 0,
+                    includeOccupants: true
+                },
+                database
+            ).lotOccupancies;
         }
     }
 

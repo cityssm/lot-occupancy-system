@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             return;
         }
         milestoneCalendarContainerElement.innerHTML = "";
-        let currentDate = cityssm.dateToString(new Date());
+        const currentDate = cityssm.dateToString(new Date());
         let currentPanelElement;
         let currentPanelDateString = "";
         for (const milestone of workOrderMilestones) {
@@ -27,18 +27,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 currentPanelElement = document.createElement("div");
                 currentPanelElement.className = "panel";
                 currentPanelElement.innerHTML =
-                    '<h2 class="panel-heading">' +
-                        milestone.workOrderMilestoneDateString +
-                        "</h2>";
+                    '<h2 class="panel-heading">' + milestone.workOrderMilestoneDateString + "</h2>";
                 currentPanelDateString = milestone.workOrderMilestoneDateString;
             }
             const panelBlockElement = document.createElement("div");
             panelBlockElement.className = "panel-block is-block";
-            if (!milestone.workOrderMilestoneCompletionDate && milestone.workOrderMilestoneDateString < currentDate) {
+            if (!milestone.workOrderMilestoneCompletionDate &&
+                milestone.workOrderMilestoneDateString < currentDate) {
                 panelBlockElement.classList.add("has-background-warning-light");
             }
             let lotOccupancyHTML = "";
-            for (const lot of milestone.workOrder.workOrderLots) {
+            for (const lot of milestone.workOrderLots) {
                 lotOccupancyHTML +=
                     '<i class="fas fa-vector-square" aria-label="' +
                         cityssm.escapeHTML(exports.aliases.lot) +
@@ -46,8 +45,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         cityssm.escapeHTML(lot.lotName) +
                         "<br />";
             }
-            for (const lotOccupancy of milestone.workOrder
-                .workOrderLotOccupancies) {
+            for (const lotOccupancy of milestone.workOrderLotOccupancies) {
                 if (lotOccupancy.lotOccupancyOccupants.length > 0) {
                     lotOccupancyHTML +=
                         '<i class="fas fa-user" aria-label="' +
@@ -80,21 +78,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</span>" +
                         "</div>") +
                     ('<div class="column">' +
-                        "<i class=\"fas fa-circle\" style=\"color:" + los.getRandomColor(milestone.workOrder.workOrderNumber) + "\" aria-hidden=\"true\"></i>" +
+                        '<i class="fas fa-circle" style="color:' +
+                        los.getRandomColor(milestone.workOrderNumber) +
+                        '" aria-hidden="true"></i>' +
                         ' <a class="has-text-weight-bold" href="' +
                         urlPrefix +
                         "/workOrders/" +
                         milestone.workOrderId +
                         '">' +
-                        cityssm.escapeHTML(milestone.workOrder.workOrderNumber) +
+                        cityssm.escapeHTML(milestone.workOrderNumber) +
                         "</a><br />" +
                         '<span class="is-size-7">' +
-                        cityssm.escapeHTML(milestone.workOrder.workOrderDescription) +
+                        cityssm.escapeHTML(milestone.workOrderDescription) +
                         "</span>" +
                         "</div>") +
-                    ('<div class="column is-size-7">' +
-                        lotOccupancyHTML +
-                        "</div>") +
+                    ('<div class="column is-size-7">' + lotOccupancyHTML + "</div>") +
                     "</div>";
             currentPanelElement.append(panelBlockElement);
         }

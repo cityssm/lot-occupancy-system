@@ -29,18 +29,18 @@
                                     <strong><%= milestone.workOrderMilestoneType %></strong><br />
                                 <% } %>
                                 <span class="is-size-7">
-                                    <i class="fas fa-hard-hat" aria-label="Work Order"></i> <%= milestone.workOrder.workOrderNumber %><br />
+                                    <i class="fas fa-hard-hat" aria-label="Work Order"></i> <%= milestone.workOrderNumber %><br />
                                     <% 
-                                        if (milestone.workOrder.workOrderLots.length > 0) {
-                                            for (const lot of milestone.workOrder.workOrderLots) {
+                                        if (milestone.workOrderLots.length > 0) {
+                                            for (const lot of milestone.workOrderLots) {
                                     %>
                                     <i class="fas fa-vector-square" aria-label="<%= configFunctions.getProperty("aliases.lot") %>"></i> <%= lot.lotName %><br />
                                     <%
                                             }
                                         }
                                     
-                                        if (milestone.workOrder.workOrderLotOccupancies.length > 0) {
-                                            for (const occupancy of milestone.workOrder.workOrderLotOccupancies) {
+                                        if (milestone.workOrderLotOccupancies.length > 0) {
+                                            for (const occupancy of milestone.workOrderLotOccupancies) {
                                                 for (const occupant of occupancy.lotOccupancyOccupants) {
                                     %>
                                     <i class="fas fa-user" aria-label="<%= configFunctions.getProperty("aliases.occupancy") %>"></i> <%= occupant.occupantName %><br />

@@ -277,11 +277,8 @@ export interface WorkOrderComment extends Record {
     workOrderComment?: string;
 }
 
-export interface WorkOrderMilestone extends Record {
+export interface WorkOrderMilestone extends Record, WorkOrder {
     workOrderMilestoneId?: number;
-
-    workOrderId?: number;
-    workOrder?: WorkOrder;
 
     workOrderMilestoneTypeId?: number;
     workOrderMilestoneType?: string;
@@ -299,6 +296,8 @@ export interface WorkOrderMilestone extends Record {
 
     workOrderMilestoneCompletionTime?: number;
     workOrderMilestoneCompletionTimeString?: string;
+
+    workOrderRecordUpdate_timeMillis?: number;
 }
 
 export interface WorkOrder extends Record {

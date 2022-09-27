@@ -22,9 +22,7 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
         }
     }
     if (filters.occupantName) {
-        const occupantNamePieces = filters.occupantName
-            .toLowerCase()
-            .split(" ");
+        const occupantNamePieces = filters.occupantName.toLowerCase().split(" ");
         for (const occupantNamePiece of occupantNamePieces) {
             sqlWhereClause +=
                 " and o.lotOccupancyId in (select oo.lotOccupancyId from LotOccupancyOccupants oo where oo.recordDelete_timeMillis is null and instr(lower(oo.occupantName), ?))";
@@ -80,14 +78,17 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
             " and o.lotOccupancyId not in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)";
         sqlParameters.push(filters.notWorkOrderId);
     }
-    const count = database
-        .prepare("select count(*) as recordCount" +
-        " from LotOccupancies o" +
-        " left join Lots l on o.lotId = l.lotId" +
-        sqlWhereClause)
-        .get(sqlParameters).recordCount;
+    let count;
+    if (options.limit !== -1) {
+        count = database
+            .prepare("select count(*) as recordCount" +
+            " from LotOccupancies o" +
+            " left join Lots l on o.lotId = l.lotId" +
+            sqlWhereClause)
+            .get(sqlParameters).recordCount;
+    }
     let lotOccupancies = [];
-    if (count > 0) {
+    if (options.limit === -1 || count > 0) {
         lotOccupancies = database
             .prepare("select o.lotOccupancyId," +
             " o.occupancyTypeId, t.occupancyType," +
@@ -102,12 +103,12 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
             sqlWhereClause +
             " order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId" +
             (options.limit !== -1
-                ? " limit " +
-                    options.limit +
-                    " offset " +
-                    options.offset
+                ? " limit " + options.limit + " offset " + options.offset
                 : ""))
             .all(sqlParameters);
+        if (options.limit === -1) {
+            count = lotOccupancies.length;
+        }
         if (options.includeOccupants) {
             for (const lotOccupancy of lotOccupancies) {
                 lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(lotOccupancy.lotOccupancyId, database);
