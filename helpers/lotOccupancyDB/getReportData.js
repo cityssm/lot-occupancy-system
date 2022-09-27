@@ -51,6 +51,45 @@ export const getReportData = (reportName, reportParameters) => {
         case "lots-all":
             sql = "select * from Lots";
             break;
+        case "lots-byLotTypeId":
+            sql =
+                "select l.lotId," +
+                    " m.mapName, l.lotName," +
+                    " t.lotType, s.lotStatus" +
+                    " from Lots l" +
+                    " left join LotTypes t on l.lotTypeId = t.lotTypeId" +
+                    " left join LotStatuses s on l.lotStatusId = s.lotStatusId" +
+                    " left join Maps m on l.mapId = m.mapId" +
+                    " where l.recordDelete_timeMillis is null" +
+                    " and l.lotTypeId = ?";
+            sqlParameters.push(reportParameters.lotTypeId);
+            break;
+        case "lots-byLotStatusId":
+            sql =
+                "select l.lotId," +
+                    " m.mapName, l.lotName," +
+                    " t.lotType, s.lotStatus" +
+                    " from Lots l" +
+                    " left join LotTypes t on l.lotTypeId = t.lotTypeId" +
+                    " left join LotStatuses s on l.lotStatusId = s.lotStatusId" +
+                    " left join Maps m on l.mapId = m.mapId" +
+                    " where l.recordDelete_timeMillis is null" +
+                    " and l.lotStatusId = ?";
+            sqlParameters.push(reportParameters.lotStatusId);
+            break;
+        case "lots-byMapId":
+            sql =
+                "select l.lotId," +
+                    " m.mapName, l.lotName," +
+                    " t.lotType, s.lotStatus" +
+                    " from Lots l" +
+                    " left join LotTypes t on l.lotTypeId = t.lotTypeId" +
+                    " left join LotStatuses s on l.lotStatusId = s.lotStatusId" +
+                    " left join Maps m on l.mapId = m.mapId" +
+                    " where l.recordDelete_timeMillis is null" +
+                    " and l.mapId = ?";
+            sqlParameters.push(reportParameters.mapId);
+            break;
         case "lotComments-all":
             sql = "select * from LotComments";
             break;

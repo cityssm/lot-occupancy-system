@@ -114,6 +114,111 @@
             </div>
             <div class="is-hidden" id="tab--lots">
                 <h1 class="title is-1"><%= configFunctions.getProperty("aliases.lot") %> Reports</h1>
+
+                <div class="panel">
+                    <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byMapId">
+                        <div class="has-text-centered my-2 ml-2 mr-3">
+                            <span class="icon has-text-info">
+                                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                            </span><br />
+                            <span class="tag is-info">CSV</span>
+                        </div>
+                        <div>
+                            <h3 class="title is-5 is-marginless"><%= configFunctions.getProperty("aliases.lots") %> By <%= configFunctions.getProperty("aliases.map") %></h3>
+                            <div class="field has-addons mt-2">
+                                <div class="control">
+                                    <label class="button is-small is-static" for="lots-byMapId--mapId">
+                                        <%= configFunctions.getProperty("aliases.map") %>
+                                    </label>
+                                </div>
+                                <div class="control is-expanded">
+                                    <div class="select is-small is-fullwidth">
+                                        <select id="lots-byMapId--mapId" name="mapId">
+                                            <% for (const map of maps) { %>
+                                                <option value="<%= map.mapId %>">
+                                                    <%= map.mapName || "(No Name)" %>
+                                                </option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control">
+                                    <button class="button is-small is-primary" type="submit">
+                                        Export
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byLotTypeId">
+                        <div class="has-text-centered my-2 ml-2 mr-3">
+                            <span class="icon has-text-info">
+                                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                            </span><br />
+                            <span class="tag is-info">CSV</span>
+                        </div>
+                        <div>
+                            <h3 class="title is-5 is-marginless"><%= configFunctions.getProperty("aliases.lots") %> By Type</h3>
+                            <div class="field has-addons mt-2">
+                                <div class="control">
+                                    <label class="button is-small is-static" for="lots-byLotTypeId--lotTypeId">
+                                        <%= configFunctions.getProperty("aliases.lot") %> Type
+                                    </label>
+                                </div>
+                                <div class="control is-expanded">
+                                    <div class="select is-small is-fullwidth">
+                                        <select id="lots-byLotTypeId--lotTypeId" name="lotTypeId">
+                                            <% for (const lotType of lotTypes) { %>
+                                                <option value="<%= lotType.lotTypeId %>">
+                                                    <%= lotType.lotType %>
+                                                </option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control">
+                                    <button class="button is-small is-primary" type="submit">
+                                        Export
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byLotStatusId">
+                        <div class="has-text-centered my-2 ml-2 mr-3">
+                            <span class="icon has-text-info">
+                                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                            </span><br />
+                            <span class="tag is-info">CSV</span>
+                        </div>
+                        <div>
+                            <h3 class="title is-5 is-marginless"><%= configFunctions.getProperty("aliases.lots") %> By Status</h3>
+                            <div class="field has-addons mt-2">
+                                <div class="control">
+                                    <label class="button is-small is-static" for="lots-byLotStatusId--lotStatusId">
+                                        <%= configFunctions.getProperty("aliases.lot") %> Status
+                                    </label>
+                                </div>
+                                <div class="control is-expanded">
+                                    <div class="select is-small is-fullwidth">
+                                        <select id="lots-byLotStatusId--lotStatusId" name="lotStatusId">
+                                            <% for (const lotStatus of lotStatuses) { %>
+                                                <option value="<%= lotStatus.lotStatusId %>">
+                                                    <%= lotStatus.lotStatus %>
+                                                </option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control">
+                                    <button class="button is-small is-primary" type="submit">
+                                        Export
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="is-hidden" id="tab--maps">
                 <h1 class="title is-1"><%= configFunctions.getProperty("aliases.map") %> Reports</h1>
