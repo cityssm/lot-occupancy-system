@@ -50,19 +50,25 @@
     <div class="column">
         <div class="panel">
             <div class="panel-block is-block">
-                <div>
+                <p>
                     <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
                     <a href="<%= urlPrefix %>/maps/<%= lot.mapId %>">
                         <%= lot.mapName || "(No Name)" %>
                     </a>
-                </div>
-                <div class="mt-2">
-                    <strong><%= configFunctions.getProperty("aliases.lot") %> Type</strong><br />
-                    <%= lot.lotType %>
-                </div>
-                <div class="mt-2">
-                    <strong>Status</strong><br />
-                    <%= lot.lotStatus %>
+                </p>
+                <div class="columns mt-2">
+                    <div class="column">
+                        <p>
+                            <strong><%= configFunctions.getProperty("aliases.lot") %> Type</strong><br />
+                            <%= lot.lotType %>
+                        </p>
+                    </div>
+                    <div class="column">
+                        <p>
+                            <strong>Status</strong><br />
+                            <%= lot.lotStatus %>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
