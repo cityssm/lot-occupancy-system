@@ -53,13 +53,13 @@
                 <%= map.mapCity %>, <%= map.mapProvince %><br />
                 <%= map.mapPostalCode %>
             </div>
+            <% if (map.mapPhoneNumber !== "") { %>
+                <div class="column">
+                    <strong>Phone Number</strong><br />
+                    <%= map.mapPhoneNumber %>
+                </div>
+            <% } %>
         </div>
-        <% if (map.mapPhoneNumber !== "") { %>
-            <div class="column">
-                <strong>Phone Number</strong><br />
-                <%= map.mapPhoneNumber %>
-            </div>
-        <% } %>
     </div>
 </div>
 
