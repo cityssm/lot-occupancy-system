@@ -1,6 +1,7 @@
 import ical, { ICalEventStatus } from "ical-generator";
 import { getWorkOrderMilestones } from "../../helpers/lotOccupancyDB/getWorkOrderMilestones.js";
 import * as configFunctions from "../../helpers/functions.config.js";
+import { getPrintConfig } from "../../helpers/functions.print.js";
 const timeStringSplitRegex = /[ :-]/;
 function escapeHTML(stringToEscape) {
     return stringToEscape.replace(/[^\d A-Za-z]/g, (c) => "&#" + c.codePointAt(0) + ";");
@@ -45,9 +46,10 @@ export const handler = (request, response) => {
         const milestoneDate = new Date(Number.parseInt(milestoneTimePieces[0], 10), Number.parseInt(milestoneTimePieces[1], 10) - 1, Number.parseInt(milestoneTimePieces[2], 10), Number.parseInt(milestoneTimePieces[3], 10), Number.parseInt(milestoneTimePieces[4], 10));
         const milestoneEndDate = new Date(milestoneDate.getTime());
         milestoneEndDate.setHours(milestoneEndDate.getHours() + 1);
-        let summary = (milestone.workOrderMilestoneTypeId
-            ? milestone.workOrderMilestoneType
-            : milestone.workOrderMilestoneDescription).trim();
+        let summary = (milestone.workOrderMilestoneCompletionDate ? "✔ " : "") +
+            (milestone.workOrderMilestoneTypeId
+                ? milestone.workOrderMilestoneType
+                : milestone.workOrderMilestoneDescription).trim();
         if (milestone.workOrderLotOccupancies.length > 0) {
             let occupantCount = 0;
             for (const lotOccupancy of milestone.workOrderLotOccupancies) {
@@ -87,7 +89,7 @@ export const handler = (request, response) => {
             milestone.workOrderNumber +
             "</h2>" +
             ("<p>" + escapeHTML(milestone.workOrderDescription) + "</p>") +
-            ('<p><a href="' + workOrderURL + '">' + workOrderURL + "</a></p>");
+            ("<p>" + workOrderURL + "</p>");
         if (milestone.workOrderLotOccupancies.length > 0) {
             descriptionHTML +=
                 "<h2>Related " +
@@ -164,6 +166,25 @@ export const handler = (request, response) => {
             }
             descriptionHTML += "</tbody></table>";
         }
+        const prints = configFunctions.getProperty("settings.workOrders.prints");
+        if (prints.length > 0) {
+            descriptionHTML += "<h2>Prints</h2>";
+            for (const printName of prints) {
+                const printConfig = getPrintConfig(printName);
+                if (printConfig) {
+                    descriptionHTML +=
+                        "<p>" +
+                            escapeHTML(printConfig.title) +
+                            "<br />" +
+                            (urlRoot +
+                                "/print/" +
+                                printName +
+                                "/?workOrderId=" +
+                                milestone.workOrderId) +
+                            "</p>";
+                }
+            }
+        }
         calendarEvent.description({
             plain: workOrderURL,
             html: descriptionHTML
@@ -177,6 +198,11 @@ export const handler = (request, response) => {
             });
             calendarEvent.createCategory({
                 name: milestone.workOrderType
+            });
+        }
+        if (milestone.workOrderMilestoneCompletionDate) {
+            calendarEvent.createCategory({
+                name: "Completed"
             });
         }
         if (milestone.workOrderLots.length > 0) {

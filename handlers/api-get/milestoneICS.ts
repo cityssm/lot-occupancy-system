@@ -10,6 +10,7 @@ import {
 import type { RequestHandler } from "express";
 
 import * as configFunctions from "../../helpers/functions.config.js";
+import { getPrintConfig } from "../../helpers/functions.print.js";
 
 const timeStringSplitRegex = /[ :-]/;
 
@@ -77,11 +78,12 @@ export const handler: RequestHandler = (request, response) => {
 
         // Build summary (title in Outlook)
 
-        let summary = (
-            milestone.workOrderMilestoneTypeId
+        let summary =
+            (milestone.workOrderMilestoneCompletionDate ? "✔ " : "") +
+            (milestone.workOrderMilestoneTypeId
                 ? milestone.workOrderMilestoneType
                 : milestone.workOrderMilestoneDescription
-        ).trim();
+            ).trim();
 
         if (milestone.workOrderLotOccupancies.length > 0) {
             let occupantCount = 0;
@@ -143,7 +145,7 @@ export const handler: RequestHandler = (request, response) => {
             milestone.workOrderNumber +
             "</h2>" +
             ("<p>" + escapeHTML(milestone.workOrderDescription) + "</p>") +
-            ('<p><a href="' + workOrderURL + '">' + workOrderURL + "</a></p>");
+            ("<p>" + workOrderURL + "</p>");
 
         if (milestone.workOrderLotOccupancies.length > 0) {
             descriptionHTML +=
@@ -229,6 +231,29 @@ export const handler: RequestHandler = (request, response) => {
             descriptionHTML += "</tbody></table>";
         }
 
+        const prints = configFunctions.getProperty("settings.workOrders.prints");
+
+        if (prints.length > 0) {
+            descriptionHTML += "<h2>Prints</h2>";
+
+            for (const printName of prints) {
+                const printConfig = getPrintConfig(printName);
+
+                if (printConfig) {
+                    descriptionHTML +=
+                        "<p>" +
+                        escapeHTML(printConfig.title) +
+                        "<br />" +
+                        (urlRoot +
+                            "/print/" +
+                            printName +
+                            "/?workOrderId=" +
+                            milestone.workOrderId) +
+                        "</p>";
+                }
+            }
+        }
+
         calendarEvent.description({
             plain: workOrderURL,
             html: descriptionHTML
@@ -249,6 +274,12 @@ export const handler: RequestHandler = (request, response) => {
 
             calendarEvent.createCategory({
                 name: milestone.workOrderType
+            });
+        }
+
+        if (milestone.workOrderMilestoneCompletionDate) {
+            calendarEvent.createCategory({
+                name: "Completed"
             });
         }
 
