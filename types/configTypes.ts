@@ -1,19 +1,19 @@
 export interface Config {
-    application?: ConfigApplication;
-    session?: ConfigSession;
-    reverseProxy?: {
-        disableCompression: boolean;
-        disableEtag: boolean;
-        urlPrefix: string;
+    application: ConfigApplication;
+    session: ConfigSession;
+    reverseProxy: {
+        disableCompression?: boolean;
+        disableEtag?: boolean;
+        urlPrefix?: string;
     };
     activeDirectory?: ConfigActiveDirectory;
-    users?: {
+    users: {
         testing?: string[];
         canLogin?: string[];
         canUpdate?: string[];
         isAdmin?: string[];
     };
-    aliases?: {
+    aliases: {
         lot?: string;
         lots?: string;
         map?: string;
@@ -24,32 +24,33 @@ export interface Config {
         occupants?: string;
         externalReceiptNumber?: string;
     };
-    settings?: {
-        fees?: {
+    settings: {
+        fees: {
             taxPercentageDefault?: number;
         };
-        map?: {
+        map: {
             mapCityDefault?: string;
             mapProvinceDefault?: string;
         };
-        lot?: {
+        lot: {
             lotNamePattern?: RegExp;
             lotNameSortNameFunction?: (lotName: string) => string;
         };
-        lotOccupancy?: {
+        lotOccupancy: {
             lotIdIsRequired?: boolean;
             occupancyEndDateIsRequired?: boolean;
             occupantCityDefault?: string;
             occupantProvinceDefault?: string;
             prints?: string[];
         };
-        workOrders?: {
+        workOrders: {
             workOrderNumberLength?: number;
             workOrderMilestoneDateRecentBeforeDays?: number;
             workOrderMilestoneDateRecentAfterDays?: number;
             calendarEmailAddress?: string;
+            prints?: string[];
         };
-        adminCleanup?: {
+        adminCleanup: {
             recordDeleteAgeDays?: number;
         };
     };
