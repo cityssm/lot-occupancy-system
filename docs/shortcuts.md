@@ -4,7 +4,7 @@
 
 # Keyboard Shortcuts
 
-Note that the keys needed to access the keyboard shortcuts
+Note that the key combinations needed to access the keyboard shortcuts
 vary by browser and operating system.
 
 For example, the Mozilla Firefox web browser running on Windows uses <kbd>Shift</kbd> + <kbd>Alt</kbd>,
