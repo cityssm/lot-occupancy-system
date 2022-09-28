@@ -11,6 +11,8 @@ declare const cityssm: cityssmGlobal;
 
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
+    const workOrderPrints: string[] = exports.workOrderPrints;
+
     const searchFilterFormElement = document.querySelector(
         "#form--searchFilters"
     ) as HTMLFormElement;
@@ -91,6 +93,19 @@ declare const cityssm: cityssmGlobal;
                                       " / " +
                                       workOrder.workOrderMilestoneCount) +
                                 "</td>") +
+                            (workOrderPrints.length > 0
+                                ? "<td>" +
+                                  '<a class="button is-small" data-tooltip="Print" href="' +
+                                  urlPrefix +
+                                  "/print/" +
+                                  workOrderPrints[0] +
+                                  "/?workOrderId=" +
+                                  workOrder.workOrderId +
+                                  '" target="_blank">' +
+                                  '<i class="fas fa-print" aria-label="Print"></i>' +
+                                  "</a>" +
+                                  "</td>"
+                                : "") +
                             "</tr>"
                     );
                 }
@@ -102,6 +117,7 @@ declare const cityssm: cityssmGlobal;
                     "<th>Work Order Description</th>" +
                     "<th>Date</th>" +
                     "<th>Progress</th>" +
+                    (workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : "") +
                     "</tr></thead>" +
                     "<table>" +
                     '<div class="level">' +

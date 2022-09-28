@@ -96,6 +96,9 @@
 
 <%- include('_footerA'); -%>
 
+<script>
+    exports.workOrderPrints = <%- JSON.stringify(configFunctions.getProperty("settings.workOrders.prints")) %>;
+</script>
 <script src="<%= urlPrefix %>/javascripts/workOrderSearch.min.js"></script>
 
 <%- include('_footerB'); -%>

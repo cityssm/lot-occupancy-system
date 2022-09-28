@@ -9,9 +9,12 @@ declare const cityssm: cityssmGlobal;
 (() => {
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
+    const lotOccupancyPrints: string[] = exports.lotOccupancyPrints;
+
     const searchFilterFormElement = document.querySelector(
         "#form--searchFilters"
     ) as HTMLFormElement;
+
     const searchResultsContainerElement = document.querySelector(
         "#container--searchResults"
     ) as HTMLElement;
@@ -79,13 +82,18 @@ declare const cityssm: cityssmGlobal;
                     let occupantsHTML = "";
 
                     for (const occupant of lotOccupancy.lotOccupancyOccupants) {
-                        occupantsHTML += cityssm.escapeHTML(occupant.occupantName) + "<br />";
+                        occupantsHTML +=
+                            '<span class="has-tooltip-left" data-tooltip="' +
+                            cityssm.escapeHTML(occupant.lotOccupantType) +
+                            '">' +
+                            cityssm.escapeHTML(occupant.occupantName) +
+                            "</span><br />";
                     }
 
                     resultsTbodyElement.insertAdjacentHTML(
                         "beforeend",
                         "<tr>" +
-                            ("<td>" + occupancyTimeHTML + "</td>") +
+                            ('<td class="has-width-1">' + occupancyTimeHTML + "</td>") +
                             ("<td>" +
                                 '<a class="has-text-weight-bold" href="' +
                                 urlPrefix +
@@ -115,6 +123,19 @@ declare const cityssm: cityssmGlobal;
                             "<td>" +
                             occupantsHTML +
                             "</td>" +
+                            (lotOccupancyPrints.length > 0
+                                ? "<td>" +
+                                  '<a class="button is-small" data-tooltip="Print" href="' +
+                                  urlPrefix +
+                                  "/print/" +
+                                  lotOccupancyPrints[0] +
+                                  "/?lotOccupancyId=" +
+                                  lotOccupancy.lotOccupancyId +
+                                  '" target="_blank">' +
+                                  '<i class="fas fa-print" aria-label="Print"></i>' +
+                                  "</a>" +
+                                  "</td>"
+                                : "") +
                             "</tr>"
                     );
                 }
@@ -122,12 +143,13 @@ declare const cityssm: cityssmGlobal;
                 searchResultsContainerElement.innerHTML =
                     '<table class="table is-fullwidth is-striped is-hoverable">' +
                     "<thead><tr>" +
-                    "<th></th>" +
+                    '<th class="has-width-1"></th>' +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupancy) + " Type</th>") +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.lot) + "</th>") +
                     "<th>Start Date</th>" +
                     "<th>End Date</th>" +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupants) + "</th>") +
+                    (lotOccupancyPrints.length > 0 ? '<th class="has-width-1"></th>' : "") +
                     "</tr></thead>" +
                     "<table>" +
                     '<div class="level">' +

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const workOrderPrints = exports.workOrderPrints;
     const searchFilterFormElement = document.querySelector("#form--searchFilters");
     los.initializeDatePickers(searchFilterFormElement);
     const searchResultsContainerElement = document.querySelector("#container--searchResults");
@@ -61,6 +62,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 " / " +
                                 workOrder.workOrderMilestoneCount) +
                         "</td>") +
+                    (workOrderPrints.length > 0
+                        ? "<td>" +
+                            '<a class="button is-small" data-tooltip="Print" href="' +
+                            urlPrefix +
+                            "/print/" +
+                            workOrderPrints[0] +
+                            "/?workOrderId=" +
+                            workOrder.workOrderId +
+                            '" target="_blank">' +
+                            '<i class="fas fa-print" aria-label="Print"></i>' +
+                            "</a>" +
+                            "</td>"
+                        : "") +
                     "</tr>");
             }
             searchResultsContainerElement.innerHTML =
@@ -70,6 +84,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "<th>Work Order Description</th>" +
                     "<th>Date</th>" +
                     "<th>Progress</th>" +
+                    (workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : "") +
                     "</tr></thead>" +
                     "<table>" +
                     '<div class="level">' +

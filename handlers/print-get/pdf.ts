@@ -30,7 +30,7 @@ export const handler: RequestHandler = async (request, response, next) => {
     const pdfCallbackFunction = (pdf: Buffer) => {
         response.setHeader(
             "Content-Disposition",
-            "inline;" + " filename=" + camelcase(printConfig.title) + ".pdf"
+            "attachment;" + " filename=" + camelcase(printConfig.title) + ".pdf"
         );
 
         response.setHeader("Content-Type", "application/pdf");
