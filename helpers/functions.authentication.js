@@ -46,12 +46,14 @@ export const getSafeRedirectURL = (possibleRedirectURL = "") => {
     if (typeof possibleRedirectURL === "string") {
         const urlToCheck = (possibleRedirectURL.startsWith(urlPrefix)
             ? possibleRedirectURL.slice(urlPrefix.length)
-            : possibleRedirectURL).toLowerCase();
-        if (safeRedirects.has(urlToCheck) ||
-            /^(\/maps\/)\d+(\/edit)?$/.test(urlToCheck) ||
-            /^(\/lots\/)\d+(\/edit)?$/.test(urlToCheck) ||
-            /^(\/lotoccupancies\/)\d+(\/edit)?$/.test(urlToCheck) ||
-            /^(\/workorders\/)\d+(\/edit)?$/.test(urlToCheck)) {
+            : possibleRedirectURL);
+        const urlToCheckLowerCase = urlToCheck.toLowerCase();
+        if (safeRedirects.has(urlToCheckLowerCase) ||
+            /^(\/maps\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||
+            /^(\/lots\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||
+            /^(\/lotoccupancies\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||
+            /^(\/workorders\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||
+            /^\/print\/(pdf|screen)\/[\d/=?A-Za-z-]+$/.test(urlToCheck)) {
             return urlPrefix + urlToCheck;
         }
     }

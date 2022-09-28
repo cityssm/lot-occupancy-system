@@ -180,7 +180,7 @@ const sessionChecker = (
 
     const redirectUrl = getSafeRedirectURL(request.originalUrl);
 
-    return response.redirect(`${urlPrefix}/login?redirect=${redirectUrl}`);
+    return response.redirect(`${urlPrefix}/login?redirect=${encodeURIComponent(redirectUrl)}`);
 };
 
 /*

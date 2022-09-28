@@ -97,7 +97,7 @@ const sessionChecker = (request, response, next) => {
         return next();
     }
     const redirectUrl = getSafeRedirectURL(request.originalUrl);
-    return response.redirect(`${urlPrefix}/login?redirect=${redirectUrl}`);
+    return response.redirect(`${urlPrefix}/login?redirect=${encodeURIComponent(redirectUrl)}`);
 };
 app.use((request, response, next) => {
     response.locals.buildNumber = version;
