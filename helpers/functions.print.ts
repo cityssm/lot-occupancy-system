@@ -31,6 +31,10 @@ const pdfPrintConfigs: { [printName: string]: PrintConfig } = {
         title: "Work Order Field Sheet",
         params: ["workOrderId"]
     },
+    "workOrder-commentLog": {
+        title: "Work Order Field Sheet - Comment Log",
+        params: ["workOrderId"]
+    },
 
     // Occupancy
     "ssm.cemetery.burialPermit": {

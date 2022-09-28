@@ -52,7 +52,7 @@
                         <div class="dropdown-content">
                             <% for (const printName of configFunctions.getProperty("settings.lotOccupancy.prints")) { %>
                                 <% const printConfig = printFunctions.getPrintConfig(printName); %>
-                                <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>">
+                                <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
                                     <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
                                     <span><%= printConfig.title %></span>
                                 </a>
