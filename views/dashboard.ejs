@@ -6,11 +6,12 @@
 
 <div class="columns">
     <% if (workOrderMilestones.length > 0) { %>
+        <% const workOrderPrints = configFunctions.getProperty("settings.workOrders.prints"); %>
         <div class="column is-4">
             <div class="panel is-info">
                 <h2 class="panel-heading">Today's Milestones</h2>
                 <% for (const milestone of workOrderMilestones) { %>
-                    <a class="panel-block" href="<%= urlPrefix %>/workOrders/<%= milestone.workOrderId %>">
+                    <div class="panel-block is-block">
                         <div class="columns is-mobile">
                             <div class="column is-narrow">
                                 <div class="icon is-small">
@@ -22,6 +23,13 @@
                                 </div>
                             </div>
                             <div class="column">
+                                <% if (workOrderPrints.length > 0) { %>
+                                    <span class="is-pulled-right">
+                                        <a class="button is-small" href="<%=urlPrefix %>/print/<%= workOrderPrints[0] %>/?workOrderId=<%= milestone.workOrderId %>" target="_blank">
+                                            <i class="fas fa-print" aria-label="Print"></i>
+                                        </a>
+                                    </span>
+                                <% } %>
                                 <% if (milestone.workOrderMilestoneTime) { %>
                                     <%= milestone.workOrderMilestoneTimeString %><br />
                                 <% } %>
@@ -29,7 +37,9 @@
                                     <strong><%= milestone.workOrderMilestoneType %></strong><br />
                                 <% } %>
                                 <span class="is-size-7">
-                                    <i class="fas fa-hard-hat" aria-label="Work Order"></i> <%= milestone.workOrderNumber %><br />
+                                    <a href="<%= urlPrefix %>/workOrders/<%= milestone.workOrderId %>">
+                                        <i class="fas fa-hard-hat" aria-label="Work Order"></i> <%= milestone.workOrderNumber %>
+                                    </a><br />
                                     <% 
                                         if (milestone.workOrderLots.length > 0) {
                                             for (const lot of milestone.workOrderLots) {
@@ -52,7 +62,7 @@
                                 </span>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 <% } %>
             </div>
         </div>
