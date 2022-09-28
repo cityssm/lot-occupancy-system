@@ -145,7 +145,7 @@ app.use(
         store: new FileStoreSession({
             path: "./data/sessions",
             logFn: debug("general-licence-manager:session"),
-            retries: 10
+            retries: 20
         }),
         name: sessionCookieName,
         secret: configFunctions.getProperty("session.secret"),
