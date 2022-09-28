@@ -10,7 +10,7 @@ const baseSQL = "select w.workOrderId," +
     " w.workOrderNumber, w.workOrderDescription," +
     " w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString," +
     " w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString," +
-    " w.recordUpdate_timeMillis" +
+    " w.recordCreate_timeMillis, w.recordUpdate_timeMillis" +
     " from WorkOrders w" +
     " left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId" +
     " where w.recordDelete_timeMillis is null";

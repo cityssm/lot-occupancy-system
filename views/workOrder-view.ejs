@@ -17,9 +17,48 @@
     </ul>
 </nav>
 
-<h1 class="title is-1">
-    Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
-</h1>
+<div class="level">
+    <div class="level-left">
+        <div class="level-item is-justify-content-left">
+            <h1 class="title is-1">
+                Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
+            </h1>
+        </div>
+    </div>
+    <% if (configFunctions.getProperty("settings.workOrders.prints").length > 0) { %>
+        <div class="level-right is-hidden-print">
+            <div class="level-item is-justify-content-right">
+                <% if (configFunctions.getProperty("settings.workOrders.prints").length === 1) { %>
+                <a class="button is-link" href="<%= urlPrefix %>/print/<%= configFunctions.getProperty("settings.workOrders.prints")[0] %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
+                    <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
+                    <span>Print</span>
+                </a>
+                <% } else { %>
+                <div class="dropdown is-right">
+                    <div class="dropdown-trigger">
+                        <button class="button is-link" type="button">
+                            <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
+                            <span>Print</span>
+                            <span class="icon is-small"><i class="fas fa-caret-down" aria-hidden="true"></i></span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                            <% for (const printName of configFunctions.getProperty("settings.workOrders.prints")) { %>
+                                <% const printConfig = printFunctions.getPrintConfig(printName); %>
+                                <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>">
+                                    <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
+                                    <span><%= printConfig.title %></span>
+                                </a>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    <% } %>
+</div>
 
 <% if (user.userProperties.canUpdate && !workOrder.workOrderCloseDate) { %>
     <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">

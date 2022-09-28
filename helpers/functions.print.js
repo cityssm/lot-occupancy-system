@@ -1,6 +1,7 @@
 import * as configFunctions from "./functions.config.js";
 import { getLot } from "./lotOccupancyDB/getLot.js";
 import { getLotOccupancy } from "./lotOccupancyDB/getLotOccupancy.js";
+import { getWorkOrder } from "./lotOccupancyDB/getWorkOrder.js";
 const screenPrintConfigs = {
     lotOccupancy: {
         title: configFunctions.getProperty("aliases.lot") +
@@ -14,6 +15,10 @@ export const getScreenPrintConfig = (printName) => {
     return screenPrintConfigs[printName];
 };
 const pdfPrintConfigs = {
+    "workOrder": {
+        title: "Work Order Field Sheet",
+        params: ["workOrderId"]
+    },
     "ssm.cemetery.burialPermit": {
         title: "Burial Permit",
         params: ["lotOccupancyId"]
@@ -42,6 +47,14 @@ export const getReportData = (printConfig, requestQuery) => {
             reportData.lotOccupancy.lotId) {
             reportData.lot = getLot(reportData.lotOccupancy.lotId);
         }
+    }
+    if (printConfig.params.includes("workOrderId") &&
+        typeof requestQuery.workOrderId === "string") {
+        reportData.workOrder = getWorkOrder(requestQuery.workOrderId, {
+            includeLotsAndLotOccupancies: true,
+            includeComments: true,
+            includeMilestones: true
+        });
     }
     return reportData;
 };

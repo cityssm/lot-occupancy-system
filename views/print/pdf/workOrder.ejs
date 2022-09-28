@@ -1,0 +1,156 @@
+<html>
+    <head>
+        <style>
+            <%- include('style.css'); %>
+        </style>
+    </head>
+    <body>
+        <table class="layout-table">
+            <tr>
+                <td>
+                    <h1 class="m-0">Work Order #<%= workOrder.workOrderNumber %></h1>
+                </td>
+                <td class="has-text-right is-vcentered">
+                    <strong>
+                        <% if (workOrder.workOrderCloseDate) { %>
+                            CLOSED<br />
+                            <% } %>
+                        <%= workOrder.workOrderType %>
+                    </strong>
+                </td>
+            </tr>
+        </table>
+        <div class="box mt-1">
+            <table class="layout-table">
+                <tr>
+                    <td>
+                        
+                        <p>
+                            <strong>Description</strong><br />
+                            <%= workOrder.workOrderDescription %>
+                        </p>
+                    </td>
+                    <td class="pl-1 is-width-1 has-text-nowrap">
+                        <p>
+                            <strong>Open Date</strong><br />
+                            <%= workOrder.workOrderOpenDateString %>
+                        </p>
+                        <% if (workOrder.workOrderCloseDate) { %>
+                            <p>
+                                <strong>Close Date</strong><br />
+                                <%= workOrder.workOrderCloseDateString %>
+                            </p>
+                        <% } %>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <% if (workOrder.workOrderLots.length > 0) { %>
+            <h2 class="mb-0"><%= configFunctions.getProperty("aliases.lots") %></h2>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th><%= configFunctions.getProperty("aliases.lot") %></th>
+                        <th><%= configFunctions.getProperty("aliases.map") %></th>
+                        <th><%= configFunctions.getProperty("aliases.lot") %> Type</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (const lot of workOrder.workOrderLots) { %>
+                        <tr>
+                            <td><%= lot.lotName %></td>
+                            <td><%= lot.mapName %></td>
+                            <td><%= lot.lotType %></td>
+                            <td><%= lot.lotStatus %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } %>
+
+        <% if (workOrder.workOrderLotOccupancies.length > 0) { %>
+            <h2 class="mb-0"><%= configFunctions.getProperty("aliases.occupancies") %></h2>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th><%= configFunctions.getProperty("aliases.occupancy") %> Type</th>
+                        <th><%= configFunctions.getProperty("aliases.lot") %></th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th><%= configFunctions.getProperty("aliases.occupants") %></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (const occupancy of workOrder.workOrderLotOccupancies) { %>
+                        <tr>
+                            <td><%= occupancy.occupancyType %></td>
+                            <td><%= occupancy.lotName %></td>
+                            <td><%= occupancy.occupancyStartDateString %></td>
+                            <td><%= occupancy.occupancyStartEndString %></td>
+                            <td>
+                                <% for (const occupant of occupancy.lotOccupancyOccupants) { %>
+                                    <%= occupant.occupantName %><br />
+                                <% } %>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } %>
+
+        <% if (workOrder.workOrderMilestones.length > 0) { %>
+            <h2 class="mb-0">Milestones</h2>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th class="is-width-1"></th>
+                        <th>Milestone Description</th>
+                        <th>Due Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (const milestone of workOrder.workOrderMilestones) { %>
+                        <tr>
+                            <td class="is-width-1">
+                                <% if (milestone.workOrderMilestoneCompletionDate) { %>
+                                    <span class="checkbox is-checked"></span>
+                                <% } else { %>
+                                    <span class="checkbox"></span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if (milestone.workOrderMilestoneTypeId) { %>
+                                    <strong><%= milestone.workOrderMilestoneType %></strong><br />
+                                <% } %>
+                                <%= milestone.workOrderMilestoneDescription %>
+                            </td>
+                            <td>
+                                <%= milestone.workOrderMilestoneDateString %>
+                                <% if (milestone.workOrderMilestoneTime) { %>
+                                    <%= milestone.workOrderMilestoneTimeString %>
+                                <% } %>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } %>
+
+        <h2 class="mb-0">Notes</h2>
+
+        <p class="has-text-right has-text-italicized is-8pt" style="position:absolute;bottom:10px;right:10px">
+            <%
+                const recordCreateDate = new Date(workOrder.recordCreate_timeMillis);
+                const currentDate = new Date();
+            %>
+            Work order created <%= dateTimeFunctions.dateToString(recordCreateDate) %> at <%= dateTimeFunctions.dateToTimeString(recordCreateDate) %>.
+            Printed <%= dateTimeFunctions.dateToString(currentDate) %> at <%= dateTimeFunctions.dateToTimeString(currentDate) %>.<br />
+            workOrderId = <%= workOrder.workOrderId %>            
+        </p>
+    </body>
+</html>
