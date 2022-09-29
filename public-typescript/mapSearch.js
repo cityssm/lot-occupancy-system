@@ -82,7 +82,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         else {
             const searchResultsTableElement = document.createElement("table");
             searchResultsTableElement.className =
-                "table is-fullwidth is-striped is-hoverable";
+                "table is-fullwidth is-striped is-hoverable has-sticky-header";
             searchResultsTableElement.innerHTML =
                 "<thead><tr>" +
                     "<th>" +

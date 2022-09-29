@@ -111,7 +111,7 @@ declare const cityssm: cityssmGlobal;
                 }
 
                 searchResultsContainerElement.innerHTML =
-                    '<table class="table is-fullwidth is-striped is-hoverable">' +
+                    '<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">' +
                     "<thead><tr>" +
                     "<th>Work Order Number</th>" +
                     "<th>Work Order Description</th>" +

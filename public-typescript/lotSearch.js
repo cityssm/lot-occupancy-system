@@ -59,7 +59,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</tr>");
             }
             searchResultsContainerElement.innerHTML =
-                '<table class="table is-fullwidth is-striped is-hoverable">' +
+                '<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">' +
                     "<thead><tr>" +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.lot) + "</th>") +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.map) + "</th>") +

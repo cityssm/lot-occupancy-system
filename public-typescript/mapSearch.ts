@@ -110,7 +110,7 @@ declare const cityssm: cityssmGlobal;
         } else {
             const searchResultsTableElement = document.createElement("table");
             searchResultsTableElement.className =
-                "table is-fullwidth is-striped is-hoverable";
+                "table is-fullwidth is-striped is-hoverable has-sticky-header";
             searchResultsTableElement.innerHTML =
                 "<thead><tr>" +
                 "<th>" +
