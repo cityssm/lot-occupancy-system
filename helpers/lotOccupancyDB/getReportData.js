@@ -12,6 +12,16 @@ const mapCityAlias = mapCamelCase + "City";
 const mapProvinceAlias = mapCamelCase + "Province";
 const mapPostalCodeAlias = mapCamelCase + "PostalCode";
 const mapPhoneNumberAlias = mapCamelCase + "PhoneNumber";
+const lotCamelCase = camelCase(configFunctions.getProperty("aliases.lot"));
+const lotIdAlias = lotCamelCase + "Id";
+const lotNameAlias = lotCamelCase + "Name";
+const lotTypeAlias = lotCamelCase + "Type";
+const lotStatusAlias = lotCamelCase + "Status";
+const occupancyCamelCase = camelCase(configFunctions.getProperty("aliases.occupancy"));
+const lotOccupancyIdAlias = occupancyCamelCase + "Id";
+const occupancyTypeAlias = occupancyCamelCase + "Type";
+const occupancyStartDateAlias = occupancyCamelCase + "StartDate";
+const occupancyEndDateAlias = occupancyCamelCase + "EndDate";
 export const getReportData = (reportName, reportParameters) => {
     let sql;
     const sqlParameters = [];
@@ -24,26 +34,19 @@ export const getReportData = (reportName, reportParameters) => {
                 "select mapName as " +
                     mapNameAlias +
                     "," +
-                    " mapDescription as " +
-                    mapDescriptionAlias +
+                    (" mapDescription as " + mapDescriptionAlias) +
                     "," +
-                    " mapAddress1 as " +
-                    mapAddress1Alias +
+                    (" mapAddress1 as " + mapAddress1Alias) +
                     "," +
-                    " mapAddress2 as " +
-                    mapAddress2Alias +
+                    (" mapAddress2 as " + mapAddress2Alias) +
                     "," +
-                    " mapCity as " +
-                    mapCityAlias +
+                    (" mapCity as " + mapCityAlias) +
                     "," +
-                    " mapProvince as " +
-                    mapProvinceAlias +
+                    (" mapProvince as " + mapProvinceAlias) +
                     "," +
-                    " mapPostalCode as " +
-                    mapPostalCodeAlias +
+                    (" mapPostalCode as " + mapPostalCodeAlias) +
                     "," +
-                    " mapPhoneNumber as " +
-                    mapPhoneNumberAlias +
+                    (" mapPhoneNumber as " + mapPhoneNumberAlias) +
                     " from Maps" +
                     " where recordDelete_timeMillis is null" +
                     " order by mapName";
@@ -53,9 +56,16 @@ export const getReportData = (reportName, reportParameters) => {
             break;
         case "lots-byLotTypeId":
             sql =
-                "select l.lotId," +
-                    " m.mapName, l.lotName," +
-                    " t.lotType, s.lotStatus" +
+                "select l.lotId as " +
+                    lotIdAlias +
+                    "," +
+                    (" m.mapName as " + mapNameAlias) +
+                    "," +
+                    (" l.lotName as " + lotNameAlias) +
+                    "," +
+                    (" t.lotType as " + lotTypeAlias) +
+                    "," +
+                    (" s.lotStatus as " + lotStatusAlias) +
                     " from Lots l" +
                     " left join LotTypes t on l.lotTypeId = t.lotTypeId" +
                     " left join LotStatuses s on l.lotStatusId = s.lotStatusId" +
@@ -66,9 +76,16 @@ export const getReportData = (reportName, reportParameters) => {
             break;
         case "lots-byLotStatusId":
             sql =
-                "select l.lotId," +
-                    " m.mapName, l.lotName," +
-                    " t.lotType, s.lotStatus" +
+                "select l.lotId as " +
+                    lotIdAlias +
+                    "," +
+                    (" m.mapName as " + mapNameAlias) +
+                    "," +
+                    (" l.lotName as " + lotNameAlias) +
+                    "," +
+                    (" t.lotType as " + lotTypeAlias) +
+                    "," +
+                    (" s.lotStatus as " + lotStatusAlias) +
                     " from Lots l" +
                     " left join LotTypes t on l.lotTypeId = t.lotTypeId" +
                     " left join LotStatuses s on l.lotStatusId = s.lotStatusId" +
@@ -79,9 +96,16 @@ export const getReportData = (reportName, reportParameters) => {
             break;
         case "lots-byMapId":
             sql =
-                "select l.lotId," +
-                    " m.mapName, l.lotName," +
-                    " t.lotType, s.lotStatus" +
+                "select l.lotId as " +
+                    lotIdAlias +
+                    "," +
+                    (" m.mapName as " + mapNameAlias) +
+                    "," +
+                    (" l.lotName as " + lotNameAlias) +
+                    "," +
+                    (" t.lotType as " + lotTypeAlias) +
+                    "," +
+                    (" s.lotStatus as " + lotStatusAlias) +
                     " from Lots l" +
                     " left join LotTypes t on l.lotTypeId = t.lotTypeId" +
                     " left join LotStatuses s on l.lotStatusId = s.lotStatusId" +
@@ -98,6 +122,29 @@ export const getReportData = (reportName, reportParameters) => {
             break;
         case "lotOccupancies-all":
             sql = "select * from LotOccupancies";
+            break;
+        case "lotOccupancies-current-byMapId":
+            sql =
+                "select o.lotOccupancyId as " +
+                    lotOccupancyIdAlias +
+                    "," +
+                    (" l.lotName as " + lotNameAlias) +
+                    "," +
+                    (" m.mapName as " + mapNameAlias) +
+                    "," +
+                    (" ot.occupancyType as " + occupancyTypeAlias) +
+                    "," +
+                    (" o.occupancyStartDate as " + occupancyStartDateAlias) +
+                    "," +
+                    (" o.occupancyEndDate as " + occupancyEndDateAlias) +
+                    " from LotOccupancies o" +
+                    " left join OccupancyTypes ot on o.occupancyTypeId = ot.occupancyTypeId" +
+                    " left join Lots l on o.lotId = l.lotId" +
+                    " left join Maps m on l.mapId = m.mapId" +
+                    " where o.recordDelete_timeMillis is null" +
+                    " and (o.occupancyEndDate is null or o.occupancyEndDate >= ?)" +
+                    " and l.mapId = ?";
+            sqlParameters.push(dateTimeFunctions.dateToInteger(new Date()), reportParameters.mapId);
             break;
         case "lotOccupancyComments-all":
             sql = "select * from LotOccupancyComments";
@@ -121,6 +168,7 @@ export const getReportData = (reportName, reportParameters) => {
             sql =
                 "select w.workOrderId, w.workOrderNumber," +
                     " t.workOrderType, w.workOrderDescription," +
+                    " w.workOrderOpenDate," +
                     " m.workOrderMilestoneCount, m.workOrderMilestoneCompletionCount" +
                     " from WorkOrders w" +
                     " left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId" +
