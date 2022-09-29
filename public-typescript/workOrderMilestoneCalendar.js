@@ -46,12 +46,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "<br />";
             }
             for (const lotOccupancy of milestone.workOrderLotOccupancies) {
-                if (lotOccupancy.lotOccupancyOccupants.length > 0) {
+                for (const occupant of lotOccupancy.lotOccupancyOccupants) {
                     lotOccupancyHTML +=
-                        '<i class="fas fa-user" aria-label="' +
+                        '<span class="has-tooltip-left" data-tooltip="' +
+                            cityssm.escapeHTML(occupant.lotOccupantType) +
+                            '">' +
+                            '<i class="fas fa-user" aria-label="' +
                             cityssm.escapeHTML(exports.aliases.lotOccupancy) +
                             '"></i> ' +
-                            cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0].occupantName) +
+                            cityssm.escapeHTML(occupant.occupantName) +
+                            "</span>" +
                             "<br />";
                 }
             }

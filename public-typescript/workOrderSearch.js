@@ -33,7 +33,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "/workOrders/" +
                         workOrder.workOrderId +
                         '">' +
-                        cityssm.escapeHTML(workOrder.workOrderNumber) +
+                        (workOrder.workOrderNumber.trim()
+                            ? cityssm.escapeHTML(workOrder.workOrderNumber)
+                            : "(No Number)") +
                         "</a>" +
                         "</td>") +
                     ("<td>" +
@@ -83,7 +85,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "<th>Work Order Number</th>" +
                     "<th>Work Order Description</th>" +
                     "<th>Date</th>" +
-                    "<th>Progress</th>" +
+                    '<th class="has-tooltip-bottom" data-tooltip="Completed / Total Milestones">Progress</th>' +
                     (workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : "") +
                     "</tr></thead>" +
                     "<table>" +

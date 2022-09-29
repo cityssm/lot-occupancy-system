@@ -336,7 +336,7 @@ declare const bulmaJS: BulmaJS;
                     });
 
                 rowElement.innerHTML =
-                    '<td class="has-text-centered">' +
+                    '<td class="is-width-1 has-text-centered">' +
                     (isActive
                         ? '<i class="fas fa-play" title="Current ' +
                           cityssm.escapeHTML(exports.aliases.occupancy) +
@@ -402,12 +402,18 @@ declare const bulmaJS: BulmaJS;
                                 ? '<span class="has-text-grey">(No ' +
                                   cityssm.escapeHTML(exports.aliases.occupants) +
                                   ")</span>"
-                                : cityssm.escapeHTML(
+                                : '<span class="has-tooltip-left" data-tooltip="' +
+                                  cityssm.escapeHTML(
+                                      lotOccupancy.lotOccupancyOccupants[0].lotOccupantType
+                                  ) +
+                                  '">' +
+                                  cityssm.escapeHTML(
                                       lotOccupancy.lotOccupancyOccupants[0].occupantName
                                   ) +
-                                  (lotOccupancy.lotOccupancyOccupants.length > 1
-                                      ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1)
-                                      : "")) +
+                                  "</span>") +
+                            (lotOccupancy.lotOccupancyOccupants.length > 1
+                                ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1)
+                                : "") +
                             "</td>") +
                         ("<td>" +
                             '<button class="button is-small is-light is-danger button--deleteLotOccupancy" data-tooltip="Delete Relationship" type="button">' +
@@ -635,7 +641,11 @@ declare const bulmaJS: BulmaJS;
                     "</td>" +
                     ("<td>" + cityssm.escapeHTML(lot.mapName) + "</td>") +
                     ("<td>" + cityssm.escapeHTML(lot.lotType) + "</td>") +
-                    ("<td>" + (lot.lotStatusId ? cityssm.escapeHTML(lot.lotStatus) : "<span class=\"has-text-grey\">(No Status)</span>") + "</td>") +
+                    ("<td>" +
+                        (lot.lotStatusId
+                            ? cityssm.escapeHTML(lot.lotStatus)
+                            : '<span class="has-text-grey">(No Status)</span>') +
+                        "</td>") +
                     ('<td class="is-nowrap">' +
                         '<button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">' +
                         '<i class="fas fa-pencil-alt" aria-hidden="true"></i>' +

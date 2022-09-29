@@ -93,7 +93,7 @@
                             <td><%= occupancy.occupancyStartEndString %></td>
                             <td>
                                 <% for (const occupant of occupancy.lotOccupancyOccupants) { %>
-                                    <%= occupant.occupantName %><br />
+                                    <%= occupant.lotOccupantType %>: <%= occupant.occupantName %><br />
                                 <% } %>
                             </td>
                         </tr>

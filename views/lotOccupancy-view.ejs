@@ -165,7 +165,9 @@
                     <td><%= lotOccupancyOccupant.lotOccupantType %></td>
                     <td><%= lotOccupancyOccupant.occupantName %></td>
                     <td>
-                        <%= lotOccupancyOccupant.occupantAddress1 %><br />
+                        <% if (lotOccupancyOccupant.occupantAddress1) { %>
+                            <%= lotOccupancyOccupant.occupantAddress1 %><br />
+                        <% } %>
                         <% if (lotOccupancyOccupant.occupantAddress2) { %>
                           <%= lotOccupancyOccupant.occupantAddress2 %><br />
                         <% } %>

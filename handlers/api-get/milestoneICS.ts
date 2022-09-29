@@ -186,7 +186,7 @@ export const handler: RequestHandler = (request, response) => {
                     "<td>";
 
                 for (const occupant of occupancy.lotOccupancyOccupants) {
-                    descriptionHTML += escapeHTML(occupant.occupantName) + "<br />";
+                    descriptionHTML += escapeHTML(occupant.lotOccupantType) + ": " + escapeHTML(occupant.occupantName) + "<br />";
                 }
 
                 descriptionHTML += "</td>" + "</tr>";

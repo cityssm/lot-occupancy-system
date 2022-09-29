@@ -465,7 +465,6 @@ declare const bulmaJS: BulmaJS;
         openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId);
     };
 
-    
     const moveOccupancyTypeFieldUp = (clickEvent: Event) => {
         clickEvent.preventDefault();
 
@@ -501,7 +500,6 @@ declare const bulmaJS: BulmaJS;
             occupancyTypeResponseHandler
         );
     };
-
 
     const renderOccupancyTypeFields = (
         panelElement: HTMLElement,
