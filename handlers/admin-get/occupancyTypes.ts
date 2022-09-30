@@ -9,9 +9,7 @@ export const handler: RequestHandler = (_request, response) => {
     const allOccupancyTypeFields = getAllOccupancyTypeFields();
 
     response.render("admin-occupancyTypes", {
-        headTitle:
-            configFunctions.getProperty("aliases.occupancy") +
-            " Type Management",
+        headTitle: configFunctions.getProperty("aliases.occupancy") + " Type Management",
         occupancyTypes,
         allOccupancyTypeFields
     });

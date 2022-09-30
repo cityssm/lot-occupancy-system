@@ -10,9 +10,15 @@
             </a>
         </li>
         <li>
-            <a class="<%= (headTitle.endsWith("Type Management") ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/occupancyTypes">
+            <a class="<%= (headTitle === configFunctions.getProperty("aliases.occupancy") + " Type Management" ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/occupancyTypes">
                 <span class="icon"><i class="fas fa-fw fa-user-friends" aria-hidden="true"></i></span>
                 <span><%= configFunctions.getProperty("aliases.occupancy") %> Type Management</span>
+            </a>
+        </li>
+        <li>
+            <a class="<%= (headTitle === configFunctions.getProperty("aliases.lot") + " Type Management" ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/lotTypes">
+                <span class="icon"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
+                <span><%= configFunctions.getProperty("aliases.lot") %> Type Management</span>
             </a>
         </li>
         <li>

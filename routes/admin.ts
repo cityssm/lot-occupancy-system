@@ -34,6 +34,22 @@ import handler_doMoveOccupancyTypeFieldUp from "../handlers/admin-post/doMoveOcc
 import handler_doMoveOccupancyTypeFieldDown from "../handlers/admin-post/doMoveOccupancyTypeFieldDown.js";
 import handler_doDeleteOccupancyTypeField from "../handlers/admin-post/doDeleteOccupancyTypeField.js";
 
+// Lot Type Management
+
+import handler_lotTypes from "../handlers/admin-get/lotTypes.js";
+
+import handler_doAddLotType from "../handlers/admin-post/doAddLotType.js";
+import handler_doUpdateLotType from "../handlers/admin-post/doUpdateLotType.js";
+import handler_doMoveLotTypeUp from "../handlers/admin-post/doMoveLotTypeUp.js";
+import handler_doMoveLotTypeDown from "../handlers/admin-post/doMoveLotTypeDown.js";
+import handler_doDeleteLotType from "../handlers/admin-post/doDeleteLotType.js";
+
+import handler_doAddLotTypeField from "../handlers/admin-post/doAddLotTypeField.js";
+import handler_doUpdateLotTypeField from "../handlers/admin-post/doUpdateLotTypeField.js";
+import handler_doMoveLotTypeFieldUp from "../handlers/admin-post/doMoveLotTypeFieldUp.js";
+import handler_doMoveLotTypeFieldDown from "../handlers/admin-post/doMoveLotTypeFieldDown.js";
+import handler_doDeleteLotTypeField from "../handlers/admin-post/doDeleteLotTypeField.js";
+
 // Config Table Management
 
 import handler_tables from "../handlers/admin-get/tables.js";
@@ -173,6 +189,50 @@ router.post(
     "/doDeleteOccupancyTypeField",
     permissionHandlers.adminPostHandler,
     handler_doDeleteOccupancyTypeField
+);
+
+/*
+ * Lot Type Management
+ */
+
+router.get("/lotTypes", permissionHandlers.adminGetHandler, handler_lotTypes);
+
+router.post("/doAddLotType", permissionHandlers.adminPostHandler, handler_doAddLotType);
+
+router.post("/doUpdateLotType", permissionHandlers.adminPostHandler, handler_doUpdateLotType);
+
+router.post("/doMoveLotTypeUp", permissionHandlers.adminPostHandler, handler_doMoveLotTypeUp);
+
+router.post("/doMoveLotTypeDown", permissionHandlers.adminPostHandler, handler_doMoveLotTypeDown);
+
+router.post("/doDeleteLotType", permissionHandlers.adminPostHandler, handler_doDeleteLotType);
+
+// Lot Type Fields
+
+router.post("/doAddLotTypeField", permissionHandlers.adminPostHandler, handler_doAddLotTypeField);
+
+router.post(
+    "/doUpdateLotTypeField",
+    permissionHandlers.adminPostHandler,
+    handler_doUpdateLotTypeField
+);
+
+router.post(
+    "/doMoveLotTypeFieldUp",
+    permissionHandlers.adminPostHandler,
+    handler_doMoveLotTypeFieldUp
+);
+
+router.post(
+    "/doMoveLotTypeFieldDown",
+    permissionHandlers.adminPostHandler,
+    handler_doMoveLotTypeFieldDown
+);
+
+router.post(
+    "/doDeleteLotTypeField",
+    permissionHandlers.adminPostHandler,
+    handler_doDeleteLotTypeField
 );
 
 /*

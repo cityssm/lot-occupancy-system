@@ -6,41 +6,40 @@ import { clearLotTypesCache } from "../functions.cache.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-interface AddLotTypeForm {
+interface UpdateLotTypeForm {
+    lotTypeId: number | string;
     lotType: string;
-    orderNumber?: number;
 }
 
-export const addLotType = (
-    lotTypeForm: AddLotTypeForm,
+export const updateLotType = (
+    lotTypeForm: UpdateLotTypeForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): boolean => {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into LotTypes (" +
-                "lotType, orderNumber," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?)"
+            "update LotTypes" +
+                " set lotType = ?," +
+                " recordUpdate_userName = ?," +
+                " recordUpdate_timeMillis = ?" +
+                " where lotTypeId = ?" +
+                " and recordDelete_timeMillis is null"
         )
         .run(
             lotTypeForm.lotType,
-            lotTypeForm.orderNumber || -1,
             requestSession.user.userName,
             rightNowMillis,
-            requestSession.user.userName,
-            rightNowMillis
+            lotTypeForm.lotTypeId
         );
 
     database.close();
 
     clearLotTypesCache();
 
-    return result.lastInsertRowid as number;
+    return result.changes > 0;
 };
 
-export default addLotType;
+export default updateLotType;
