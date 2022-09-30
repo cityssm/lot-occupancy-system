@@ -73,10 +73,14 @@ declare const cityssm: cityssmGlobal;
 
             for (const lot of milestone.workOrderLots) {
                 lotOccupancyHTML +=
+                    '<span class="has-tooltip-left" data-tooltip="' +
+                    cityssm.escapeHTML(lot.mapName) +
+                    '">' +
                     '<i class="fas fa-vector-square" aria-label="' +
                     cityssm.escapeHTML(exports.aliases.lot) +
                     '"></i> ' +
                     cityssm.escapeHTML(lot.lotName) +
+                    "</span>" +
                     "<br />";
             }
 

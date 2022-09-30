@@ -75,17 +75,41 @@
                         </div>
 
                     </div>  
-                </div>
-
-                <div class="field">
-                    <label class="label" for="searchFilter--workOrderOpenDateString">Open Date</label>
-                    <div class="control is-expanded has-icons-left">
-                        <input class="input" id="searchFilter--workOrderOpenDateString" name="workOrderOpenDateString" type="date" value="<%= workOrderOpenDateString %>" max="<%= dateTimeFunctions.dateToString(new Date()) %>" />
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-calendar" aria-hidden="true"></i>
-                        </span>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="searchFilter--workOrderOpenDateString">Open Date</label>
+                            <div class="control is-expanded has-icons-left">
+                                <input class="input" id="searchFilter--workOrderOpenDateString" name="workOrderOpenDateString" type="date" value="<%= workOrderOpenDateString %>" max="<%= dateTimeFunctions.dateToString(new Date()) %>" />
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="searchFilter--occupantName">Related <%= configFunctions.getProperty("aliases.occupant") %> Name</label>
+                            <div class="control is-expanded has-icons-left">
+                                <input class="input" id="searchFilter--occupantName" name="occupantName" type="text" />
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="searchFilter--lotName">Related <%= configFunctions.getProperty("aliases.lot") %> Name</label>
+                            <div class="control is-expanded has-icons-left">
+                                <input class="input" id="searchFilter--lotName" name="lotName" type="text" />
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

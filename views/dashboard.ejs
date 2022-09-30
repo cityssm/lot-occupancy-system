@@ -44,7 +44,10 @@
                                         if (milestone.workOrderLots.length > 0) {
                                             for (const lot of milestone.workOrderLots) {
                                     %>
-                                    <i class="fas fa-vector-square" aria-label="<%= configFunctions.getProperty("aliases.lot") %>"></i> <%= lot.lotName %><br />
+                                    <span class="has-tooltip-right" data-tooltip="<%= lot.mapName %>">
+                                        <i class="fas fa-vector-square" aria-label="<%= configFunctions.getProperty("aliases.lot") %>"></i>
+                                        <%= lot.lotName %>
+                                    </span><br />
                                     <%
                                             }
                                         }
@@ -53,8 +56,10 @@
                                             for (const occupancy of milestone.workOrderLotOccupancies) {
                                                 for (const occupant of occupancy.lotOccupancyOccupants) {
                                     %>
-                                    <i class="fas fa-user" aria-label="<%= configFunctions.getProperty("aliases.occupancy") %>"></i>
-                                    <span class="has-tooltip-right" data-tooltip="<%= occupant.lotOccupantType %>"><%= occupant.occupantName %></span><br />
+                                    <span class="has-tooltip-right" data-tooltip="<%= occupant.lotOccupantType %>">
+                                        <i class="fas fa-user" aria-label="<%= configFunctions.getProperty("aliases.occupancy") %>"></i>
+                                        <%= occupant.occupantName %>
+                                    </span><br />
                                     <%
                                                 }
                                             }
@@ -261,7 +266,10 @@
             <div class="card-content">
                 <div class="media">
                     <div class="media-left">
-                        <i class="fas fa-3x fa-fw fa-dollar-sign" aria-hidden="true"></i>
+                        <span class="fa-layers fa-3x fa-fw" aria-hidden="true">
+                            <i class="fas fa-dollar-sign"></i>
+                            <i class="fas fa-cog" data-fa-transform="shrink-8 right-8 down-5" data-fa-glow="10"></i>
+                        </span>
                     </div>
                     <div class="media-content has-text-black">
                         <h2 class="title is-4 is-marginless">
@@ -280,7 +288,10 @@
             <div class="card-content">
                 <div class="media">
                     <div class="media-left">
-                        <i class="fas fa-3x fa-fw fa-user-friends" aria-hidden="true"></i>
+                        <span class="fa-layers fa-3x fa-fw" aria-hidden="true">
+                            <i class="fas fa-user-friends"></i>
+                            <i class="fas fa-cog" data-fa-transform="shrink-8 right-8 down-5" data-fa-glow="10"></i>
+                        </span>
                     </div>
                     <div class="media-content has-text-black">
                         <h2 class="title is-4 is-marginless">
@@ -297,7 +308,10 @@
             <div class="card-content">
                 <div class="media">
                     <div class="media-left">
-                        <i class="fas fa-3x fa-fw fa-vector-square" aria-hidden="true"></i>
+                        <span class="fa-layers fa-3x fa-fw" aria-hidden="true">
+                            <i class="fas fa-vector-square"></i>
+                            <i class="fas fa-cog" data-fa-transform="shrink-8 right-8 down-5" data-fa-glow="10"></i>
+                        </span>
                     </div>
                     <div class="media-content has-text-black">
                         <h2 class="title is-4 is-marginless">
@@ -314,7 +328,10 @@
             <div class="card-content">
                 <div class="media">
                     <div class="media-left">
-                        <i class="fas fa-3x fa-fw fa-table" aria-hidden="true"></i>
+                        <span class="fa-layers fa-3x fa-fw" aria-hidden="true">
+                            <i class="fas fa-table"></i>
+                            <i class="fas fa-cog" data-fa-transform="shrink-8 right-8 down-5" data-fa-glow="10"></i>
+                        </span>
                     </div>
                     <div class="media-content has-text-black">
                         <h2 class="title is-4 is-marginless">

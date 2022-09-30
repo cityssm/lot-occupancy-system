@@ -11,10 +11,8 @@ declare const cityssm: cityssmGlobal;
 
     const maps: recordTypes.Map[] = exports.maps;
 
-    const searchFilterElement = document.querySelector(
-        "#searchFilter--map"
-    ) as HTMLInputElement;
-    
+    const searchFilterElement = document.querySelector("#searchFilter--map") as HTMLInputElement;
+
     const searchResultsContainerElement = document.querySelector(
         "#container--searchResults"
     ) as HTMLElement;
@@ -23,18 +21,13 @@ declare const cityssm: cityssmGlobal;
         searchResultsContainerElement.innerHTML =
             '<div class="has-text-grey has-text-centered">' +
             '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-            "Loading " +
-            exports.aliases.maps +
-            "..." +
+            ("Loading " + exports.aliases.maps + "...") +
             "</div>";
 
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement("tbody");
 
-        const filterStringSplit = searchFilterElement.value
-            .trim()
-            .toLowerCase()
-            .split(" ");
+        const filterStringSplit = searchFilterElement.value.trim().toLowerCase().split(" ");
 
         for (const map of maps) {
             const mapSearchString = (
@@ -73,16 +66,30 @@ declare const cityssm: cityssmGlobal;
                         '">' +
                         cityssm.escapeHTML(map.mapName || "(No Name)") +
                         "</a><br />" +
-                        cityssm.escapeHTML(map.mapAddress1) +
+                        '<span class="is-size-7">' +
+                        cityssm.escapeHTML(map.mapDescription) +
+                        "</span>" +
                         "</td>") +
+                    ("<td>" +
+                        (map.mapAddress1 ? cityssm.escapeHTML(map.mapAddress1) + "<br />" : "") +
+                        (map.mapAddress2 ? cityssm.escapeHTML(map.mapAddress2) + "<br />" : "") +
+                        (map.mapCity || map.mapProvince
+                            ? cityssm.escapeHTML(map.mapCity) +
+                              ", " +
+                              cityssm.escapeHTML(map.mapProvince) +
+                              "<br />"
+                            : "") +
+                        (map.mapPostalCode ? cityssm.escapeHTML(map.mapPostalCode) : "") +
+                        "</td>") +
+                    ("<td>" + cityssm.escapeHTML(map.mapPhoneNumber) + "</td>") +
                     '<td class="has-text-centered">' +
                     (map.mapLatitude && map.mapLongitude
-                        ? '<i class="fas fa-map-marker-alt" title="Has Geographic Coordinates"></i>'
+                        ? '<span data-tooltip="Has Geographic Coordinates"><i class="fas fa-map-marker-alt" aria-label="Has Geographic Coordinates"></i></span>'
                         : "") +
                     "</td>" +
                     '<td class="has-text-centered">' +
                     (map.mapSVG
-                        ? '<i class="fas fa-image" title="Has Image"></i>'
+                        ? '<span data-tooltip="Has Image"><i class="fas fa-image" aria-label="Has Image"></i></span>'
                         : "") +
                     "</td>" +
                     ('<td class="has-text-right">' +
@@ -109,18 +116,18 @@ declare const cityssm: cityssmGlobal;
                 "</div>";
         } else {
             const searchResultsTableElement = document.createElement("table");
+
             searchResultsTableElement.className =
                 "table is-fullwidth is-striped is-hoverable has-sticky-header";
+
             searchResultsTableElement.innerHTML =
                 "<thead><tr>" +
-                "<th>" +
-                exports.aliases.map +
-                "</th>" +
+                ("<th>" + exports.aliases.map + "</th>") +
+                "<th>Address</th>" +
+                "<th>Phone Number</th>" +
                 '<th class="has-text-centered">Coordinates</th>' +
                 '<th class="has-text-centered">Image</th>' +
-                '<th class="has-text-right">' +
-                exports.aliases.lot +
-                " Count</th>" +
+                ('<th class="has-text-right">' + exports.aliases.lot + " Count</th>") +
                 "</tr></thead>";
 
             searchResultsTableElement.append(searchResultsTbodyElement);
@@ -130,12 +137,11 @@ declare const cityssm: cityssmGlobal;
     };
 
     searchFilterElement.addEventListener("keyup", renderResults);
-    document
-        .querySelector("#form--searchFilters")
-        .addEventListener("submit", (formEvent) => {
-            formEvent.preventDefault();
-            renderResults();
-        });
+
+    document.querySelector("#form--searchFilters").addEventListener("submit", (formEvent) => {
+        formEvent.preventDefault();
+        renderResults();
+    });
 
     renderResults();
 })();

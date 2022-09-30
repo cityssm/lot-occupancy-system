@@ -5,7 +5,8 @@ import { getWorkOrders } from "../../helpers/lotOccupancyDB/getWorkOrders.js";
 export const handler: RequestHandler = async (request, response) => {
     const result = getWorkOrders(request.body, {
         limit: request.body.limit,
-        offset: request.body.offset
+        offset: request.body.offset,
+        includeLotsAndLotOccupancies: true
     });
 
     response.json({

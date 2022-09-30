@@ -32,7 +32,7 @@ export const getFeeCategories = (filters, options) => {
         let expectedFeeCategoryOrderNumber = -1;
         for (const feeCategory of feeCategories) {
             expectedFeeCategoryOrderNumber += 1;
-            if (feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
+            if (updateOrderNumbers && feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
                 database
                     .prepare("update FeeCategories" +
                     " set orderNumber = ?" +

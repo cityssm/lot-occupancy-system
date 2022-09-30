@@ -61,7 +61,7 @@ export const getFeeCategories = (
         for (const feeCategory of feeCategories) {
             expectedFeeCategoryOrderNumber += 1;
 
-            if (feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
+            if (updateOrderNumbers && feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
                 database
                     .prepare(
                         "update FeeCategories" +

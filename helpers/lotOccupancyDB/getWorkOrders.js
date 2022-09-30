@@ -1,6 +1,10 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { dateIntegerToString, dateStringToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { getWorkOrderComments } from "./getWorkOrderComments.js";
+import { getLots } from "./getLots.js";
+import { getLotOccupancies } from "./getLotOccupancies.js";
+import { getWorkOrderMilestones } from "./getWorkOrderMilestones.js";
 export const getWorkOrders = (filters, options) => {
     const database = sqlite(databasePath, {
         readonly: true
@@ -24,10 +28,26 @@ export const getWorkOrders = (filters, options) => {
         sqlWhereClause += " and w.workOrderOpenDate = ?";
         sqlParameters.push(dateStringToInteger(filters.workOrderOpenDateString));
     }
+    if (filters.occupantName) {
+        const occupantNamePieces = filters.occupantName.toLowerCase().split(" ");
+        for (const occupantNamePiece of occupantNamePieces) {
+            sqlWhereClause +=
+                " and w.workOrderId in (" +
+                    "select workOrderId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and lotOccupancyId in (select lotOccupancyId from LotOccupancyOccupants where recordDelete_timeMillis is null and instr(lower(occupantName), ?)))";
+            sqlParameters.push(occupantNamePiece);
+        }
+    }
+    if (filters.lotName) {
+        const lotNamePieces = filters.lotName.toLowerCase().split(" ");
+        for (const lotNamePiece of lotNamePieces) {
+            sqlWhereClause +=
+                " and w.workOrderId in (" +
+                    "select workOrderId from WorkOrderLots where recordDelete_timeMillis is null and lotId in (select lotId from Lots oo where recordDelete_timeMillis is null and instr(lower(lotName), ?)))";
+            sqlParameters.push(lotNamePiece);
+        }
+    }
     const count = database
-        .prepare("select count(*) as recordCount" +
-        " from WorkOrders w" +
-        sqlWhereClause)
+        .prepare("select count(*) as recordCount" + " from WorkOrders w" + sqlWhereClause)
         .get(sqlParameters).recordCount;
     let workOrders = [];
     if (count > 0) {
@@ -49,13 +69,39 @@ export const getWorkOrders = (filters, options) => {
                 " group by workOrderId) m on w.workOrderId = m.workOrderId") +
             sqlWhereClause +
             " order by w.workOrderOpenDate desc, w.workOrderNumber" +
-            (options
-                ? " limit " +
-                    options.limit +
-                    " offset " +
-                    options.offset
-                : ""))
+            (options ? " limit " + options.limit + " offset " + options.offset : ""))
             .all(sqlParameters);
+    }
+    if (options.includeComments ||
+        options.includeLotsAndLotOccupancies ||
+        options.includeMilestones) {
+        for (const workOrder of workOrders) {
+            if (options.includeComments) {
+                workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId, database);
+            }
+            if (options.includeLotsAndLotOccupancies) {
+                workOrder.workOrderLots = getLots({
+                    workOrderId: workOrder.workOrderId
+                }, {
+                    limit: -1,
+                    offset: 0
+                }, database).lots;
+                workOrder.workOrderLotOccupancies = getLotOccupancies({
+                    workOrderId: workOrder.workOrderId
+                }, {
+                    limit: -1,
+                    offset: 0,
+                    includeOccupants: true
+                }, database).lotOccupancies;
+            }
+            if (options.includeMilestones) {
+                workOrder.workOrderMilestones = getWorkOrderMilestones({
+                    workOrderId: workOrder.workOrderId
+                }, {
+                    orderBy: "date"
+                }, database);
+            }
+        }
     }
     database.close();
     return {

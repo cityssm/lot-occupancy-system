@@ -26,6 +26,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             const resultsTbodyElement = document.createElement("tbody");
             for (const workOrder of responseJSON.workOrders) {
+                let relatedHTML = "";
+                for (const lot of workOrder.workOrderLots) {
+                    relatedHTML +=
+                        '<span class="has-tooltip-left" data-tooltip="' +
+                            cityssm.escapeHTML(lot.mapName) +
+                            '">' +
+                            '<i class="fas fa-vector-square" aria-label="' +
+                            cityssm.escapeHTML(exports.aliases.lot) +
+                            '"></i> ' +
+                            cityssm.escapeHTML(lot.lotName || "(No Lot Name)") +
+                            "</span><br />";
+                }
+                for (const occupancy of workOrder.workOrderLotOccupancies) {
+                    for (const occupant of occupancy.lotOccupancyOccupants) {
+                        relatedHTML +=
+                            '<span class="has-tooltip-left" data-tooltip="' +
+                                cityssm.escapeHTML(occupant.lotOccupantType) +
+                                '">' +
+                                '<i class="fas fa-user" aria-label="' +
+                                cityssm.escapeHTML(exports.aliases.occupant) +
+                                '"></i> ' +
+                                cityssm.escapeHTML(occupant.occupantName || "(No Name)") +
+                                "</span><br />";
+                    }
+                }
                 resultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
                     ("<td>" +
                         '<a class="has-text-weight-bold" href="' +
@@ -45,12 +70,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         cityssm.escapeHTML(workOrder.workOrderDescription) +
                         "</span>" +
                         "</td>") +
+                    ('<td class="is-nowrap"><span class="is-size-7">' +
+                        relatedHTML +
+                        "</span></td>") +
                     ('<td class="is-nowrap">' +
-                        ('<span data-tooltip="Open Date">' +
+                        ('<span class="has-tooltip-left" data-tooltip="Open Date">' +
                             '<i class="fas fa-fw fa-play" aria-label="Open Date"></i> ' +
                             workOrder.workOrderOpenDateString +
                             "</span><br />") +
-                        ('<span data-tooltip="Close Date">' +
+                        ('<span class="has-tooltip-left" data-tooltip="Close Date">' +
                             '<i class="fas fa-fw fa-stop" aria-label="Close Date"></i> ' +
                             (workOrder.workOrderCloseDate
                                 ? workOrder.workOrderCloseDateString
@@ -83,7 +111,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">' +
                     "<thead><tr>" +
                     "<th>Work Order Number</th>" +
-                    "<th>Work Order Description</th>" +
+                    "<th>Description</th>" +
+                    "<th>Related</th>" +
                     "<th>Date</th>" +
                     '<th class="has-tooltip-bottom" data-tooltip="Completed / Total Milestones">Progress</th>' +
                     (workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : "") +

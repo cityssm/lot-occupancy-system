@@ -139,6 +139,7 @@
                                 <th class="has-text-right">
                                     <%= configFunctions.getProperty("aliases.lot") %> Count
                                 </th>
+                                <th class="has-text-right">Percentage</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -151,6 +152,9 @@
                                     </td>
                                     <td class="has-text-right">
                                         <%= lotType.lotCount %>
+                                    </td>
+                                    <td class="has-text-right">
+                                        <%= ((lotType.lotCount / map.lotCount) * 100).toFixed(1) %>%
                                     </td>
                                 </tr>
                             <% } %>
@@ -165,6 +169,7 @@
                                 <th class="has-text-right">
                                     <%= configFunctions.getProperty("aliases.lot") %> Count
                                 </th>
+                                <th class="has-text-right">Percentage</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -177,6 +182,9 @@
                                     </td>
                                     <td class="has-text-right">
                                         <%= lotStatus.lotCount %>
+                                    </td>
+                                    <td class="has-text-right">
+                                        <%= ((lotStatus.lotCount / map.lotCount) * 100).toFixed(1) %>%
                                     </td>
                                 </tr>
                             <% } %>
