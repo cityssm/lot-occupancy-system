@@ -42,7 +42,7 @@ export const getWorkOrders = (filters, options) => {
         for (const lotNamePiece of lotNamePieces) {
             sqlWhereClause +=
                 " and w.workOrderId in (" +
-                    "select workOrderId from WorkOrderLots where recordDelete_timeMillis is null and lotId in (select lotId from Lots oo where recordDelete_timeMillis is null and instr(lower(lotName), ?)))";
+                    "select workOrderId from WorkOrderLots where recordDelete_timeMillis is null and lotId in (select lotId from Lots where recordDelete_timeMillis is null and instr(lower(lotName), ?)))";
             sqlParameters.push(lotNamePiece);
         }
     }
