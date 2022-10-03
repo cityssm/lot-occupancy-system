@@ -25,6 +25,7 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
       - name: Code Climate
+        if: ${{ github.event_name != 'pull_request' && secrets.CC_TEST_REPORTER_ID }}
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./codeclimate-test-reporter
           chmod +x codeclimate-test-reporter
@@ -32,9 +33,8 @@ jobs:
           ./codeclimate-test-reporter after-build -t lcov --exit-code $?
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        if: github.event_name != 'pull_request'
       - name: Codacy
+        if: ${{ github.event_name != 'pull_request' && secrets.CODACY_PROJECT_TOKEN }}
         run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        if: github.event_name != 'pull_request'
