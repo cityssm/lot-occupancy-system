@@ -9,7 +9,7 @@ export const addFeeCategory = (feeCategoryForm, requestSession) => {
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
         " values (?, ?, ?, ?, ?, ?)")
-        .run(feeCategoryForm.feeCategory, feeCategoryForm.orderNumber || 0, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(feeCategoryForm.feeCategory, feeCategoryForm.orderNumber || -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     database.close();
     return result.lastInsertRowid;
 };

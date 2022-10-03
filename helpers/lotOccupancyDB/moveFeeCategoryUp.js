@@ -3,9 +3,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 export const moveFeeCategoryUp = (feeCategoryId) => {
     const database = sqlite(databasePath);
     const currentOrderNumber = database
-        .prepare("select orderNumber" +
-        " from FeeCategories" +
-        " where feeCategoryId = ?")
+        .prepare("select orderNumber from FeeCategories where feeCategoryId = ?")
         .get(feeCategoryId).orderNumber;
     if (currentOrderNumber <= 0) {
         database.close();
@@ -18,11 +16,28 @@ export const moveFeeCategoryUp = (feeCategoryId) => {
         " and orderNumber = ? - 1")
         .run(currentOrderNumber);
     const result = database
-        .prepare("update FeeCategories" +
-        " set orderNumber = ? - 1" +
-        " where feeCategoryId = ?")
+        .prepare("update FeeCategories set orderNumber = ? - 1 where feeCategoryId = ?")
         .run(currentOrderNumber, feeCategoryId);
     database.close();
     return result.changes > 0;
+};
+export const moveFeeCategoryUpToTop = (feeCategoryId) => {
+    const database = sqlite(databasePath);
+    const currentOrderNumber = database
+        .prepare("select orderNumber from FeeCategories where feeCategoryId = ?")
+        .get(feeCategoryId).orderNumber;
+    if (currentOrderNumber > 0) {
+        database
+            .prepare("update FeeCategories set orderNumber = -1 where feeCategoryId = ?")
+            .run(feeCategoryId);
+        database
+            .prepare("update FeeCategories" +
+            " set orderNumber = orderNumber + 1" +
+            " where recordDelete_timeMillis is null" +
+            " and orderNumber < ?")
+            .run(currentOrderNumber);
+    }
+    database.close();
+    return true;
 };
 export default moveFeeCategoryUp;

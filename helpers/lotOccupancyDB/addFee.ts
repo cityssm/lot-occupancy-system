@@ -53,7 +53,7 @@ export const addFee = (
             feeForm.includeQuantity ? 1 : 0,
             feeForm.quantityUnit,
             feeForm.isRequired ? 1 : 0,
-            feeForm.orderNumber || 0,
+            feeForm.orderNumber || -1,
             requestSession.user.userName,
             rightNowMillis,
             requestSession.user.userName,

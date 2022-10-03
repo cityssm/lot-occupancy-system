@@ -8,9 +8,7 @@ export const moveLotTypeFieldUp = (lotTypeFieldId: number | string): boolean => 
     const database = sqlite(databasePath);
 
     const currentField: { lotTypeId: number; orderNumber: number } = database
-        .prepare(
-            "select lotTypeId, orderNumber" + " from LotTypeFields" + " where lotTypeFieldId = ?"
-        )
+        .prepare("select lotTypeId, orderNumber from LotTypeFields where lotTypeFieldId = ?")
         .get(lotTypeFieldId);
 
     if (currentField.orderNumber <= 0) {
@@ -29,7 +27,7 @@ export const moveLotTypeFieldUp = (lotTypeFieldId: number | string): boolean => 
         .run(currentField.lotTypeId, currentField.orderNumber);
 
     const result = database
-        .prepare("update LotTypeFields" + " set orderNumber = ? - 1" + " where lotTypeFieldId = ?")
+        .prepare("update LotTypeFields set orderNumber = ? - 1 where lotTypeFieldId = ?")
         .run(currentField.orderNumber, lotTypeFieldId);
 
     database.close();

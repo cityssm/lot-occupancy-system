@@ -1,7 +1,9 @@
-import { moveFeeUp } from "../../helpers/lotOccupancyDB/moveFeeUp.js";
+import { moveFeeUp, moveFeeUpToTop } from "../../helpers/lotOccupancyDB/moveFeeUp.js";
 import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.js";
 export const handler = async (request, response) => {
-    const success = moveFeeUp(request.body.feeId);
+    const success = request.body.moveToTop === "1"
+        ? moveFeeUpToTop(request.body.feeId)
+        : moveFeeUp(request.body.feeId);
     const feeCategories = getFeeCategories({}, {
         includeFees: true
     });

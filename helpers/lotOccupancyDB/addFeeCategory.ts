@@ -26,7 +26,7 @@ export const addFeeCategory = (
         )
         .run(
             feeCategoryForm.feeCategory,
-            feeCategoryForm.orderNumber || 0,
+            feeCategoryForm.orderNumber || -1,
             requestSession.user.userName,
             rightNowMillis,
             requestSession.user.userName,

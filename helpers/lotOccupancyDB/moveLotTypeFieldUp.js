@@ -4,7 +4,7 @@ import { clearLotTypesCache } from "../functions.cache.js";
 export const moveLotTypeFieldUp = (lotTypeFieldId) => {
     const database = sqlite(databasePath);
     const currentField = database
-        .prepare("select lotTypeId, orderNumber" + " from LotTypeFields" + " where lotTypeFieldId = ?")
+        .prepare("select lotTypeId, orderNumber from LotTypeFields where lotTypeFieldId = ?")
         .get(lotTypeFieldId);
     if (currentField.orderNumber <= 0) {
         database.close();
@@ -18,7 +18,7 @@ export const moveLotTypeFieldUp = (lotTypeFieldId) => {
         " and orderNumber = ? - 1")
         .run(currentField.lotTypeId, currentField.orderNumber);
     const result = database
-        .prepare("update LotTypeFields" + " set orderNumber = ? - 1" + " where lotTypeFieldId = ?")
+        .prepare("update LotTypeFields set orderNumber = ? - 1 where lotTypeFieldId = ?")
         .run(currentField.orderNumber, lotTypeFieldId);
     database.close();
     clearLotTypesCache();

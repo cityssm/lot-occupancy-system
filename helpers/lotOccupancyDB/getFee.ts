@@ -4,10 +4,15 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const getFee = (feeId: number | string): recordTypes.Fee => {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+export const getFee = (
+    feeId: number | string,
+    connectedDatabase?: sqlite.Database
+): recordTypes.Fee => {
+    const database =
+        connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
 
     const fee = database
         .prepare(
@@ -19,7 +24,7 @@ export const getFee = (feeId: number | string): recordTypes.Fee => {
                 " ifnull(f.feeAmount, 0) as feeAmount, f.feeFunction," +
                 " f.taxAmount, f.taxPercentage," +
                 " f.includeQuantity, f.quantityUnit," +
-                " f.isRequired" +
+                " f.isRequired, f.orderNumber" +
                 " from Fees f" +
                 " left join FeeCategories c on f.feeCategoryId = c.feeCategoryId" +
                 " left join OccupancyTypes o on f.occupancyTypeId = o.occupancyTypeId" +
@@ -29,7 +34,9 @@ export const getFee = (feeId: number | string): recordTypes.Fee => {
         )
         .get(feeId);
 
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
 
     return fee;
 };

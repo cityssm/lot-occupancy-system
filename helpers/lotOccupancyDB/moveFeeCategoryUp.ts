@@ -6,11 +6,7 @@ export const moveFeeCategoryUp = (feeCategoryId: number | string): boolean => {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
-        .prepare(
-            "select orderNumber" +
-                " from FeeCategories" +
-                " where feeCategoryId = ?"
-        )
+        .prepare("select orderNumber from FeeCategories where feeCategoryId = ?")
         .get(feeCategoryId).orderNumber;
 
     if (currentOrderNumber <= 0) {
@@ -28,16 +24,39 @@ export const moveFeeCategoryUp = (feeCategoryId: number | string): boolean => {
         .run(currentOrderNumber);
 
     const result = database
-        .prepare(
-            "update FeeCategories" +
-                " set orderNumber = ? - 1" +
-                " where feeCategoryId = ?"
-        )
+        .prepare("update FeeCategories set orderNumber = ? - 1 where feeCategoryId = ?")
         .run(currentOrderNumber, feeCategoryId);
 
     database.close();
 
     return result.changes > 0;
+};
+
+export const moveFeeCategoryUpToTop = (feeCategoryId: number | string): boolean => {
+    const database = sqlite(databasePath);
+
+    const currentOrderNumber: number = database
+        .prepare("select orderNumber from FeeCategories where feeCategoryId = ?")
+        .get(feeCategoryId).orderNumber;
+
+    if (currentOrderNumber > 0) {
+        database
+            .prepare("update FeeCategories set orderNumber = -1 where feeCategoryId = ?")
+            .run(feeCategoryId);
+
+        database
+            .prepare(
+                "update FeeCategories" +
+                    " set orderNumber = orderNumber + 1" +
+                    " where recordDelete_timeMillis is null" +
+                    " and orderNumber < ?"
+            )
+            .run(currentOrderNumber);
+    }
+
+    database.close();
+
+    return true;
 };
 
 export default moveFeeCategoryUp;
