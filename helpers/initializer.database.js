@@ -241,7 +241,7 @@ export const initializeDatabase = () => {
             " lotTypeId integer," +
             " includeQuantity boolean not null default 0," +
             " quantityUnit varchar(30)," +
-            " feeAmount decimal(6, 2)," +
+            " feeAmount decimal(8, 2)," +
             " feeFunction varchar(100)," +
             " taxAmount decimal(6, 2)," +
             " taxPercentage decimal(5, 2)," +
@@ -262,8 +262,8 @@ export const initializeDatabase = () => {
             "lotOccupancyId integer not null," +
             " feeId integer not null," +
             " quantity decimal(4, 1) not null default 1," +
-            " feeAmount decimal(6, 2) not null," +
-            " taxAmount decmial(6, 2) not null," +
+            " feeAmount decimal(8, 2) not null," +
+            " taxAmount decmial(8, 2) not null," +
             recordColumns +
             "," +
             " primary key (lotOccupancyId, feeId)," +
@@ -277,7 +277,7 @@ export const initializeDatabase = () => {
             " transactionIndex integer not null," +
             " transactionDate integer not null check (transactionDate > 0)," +
             " transactionTime integer not null check (transactionTime >= 0)," +
-            " transactionAmount decimal(6, 2) not null," +
+            " transactionAmount decimal(8, 2) not null," +
             " externalReceiptNumber varchar(100)," +
             " transactionNote text," +
             recordColumns +
