@@ -36,6 +36,7 @@ configFallbackValues.set("aliases.map", "Map");
 configFallbackValues.set("aliases.maps", "Maps");
 configFallbackValues.set("aliases.occupancy", "Occupancy");
 configFallbackValues.set("aliases.occupancies", "Occupancies");
+configFallbackValues.set("aliases.occupancyStartDate", "Start Date");
 configFallbackValues.set("aliases.occupant", "Occupant");
 configFallbackValues.set("aliases.occupants", "Occupants");
 configFallbackValues.set("aliases.externalReceiptNumber", "External Receipt Number");
@@ -94,6 +95,7 @@ export function getProperty(propertyName: "aliases.map"): string;
 export function getProperty(propertyName: "aliases.maps"): string;
 export function getProperty(propertyName: "aliases.occupancy"): string;
 export function getProperty(propertyName: "aliases.occupancies"): string;
+export function getProperty(propertyName: "aliases.occupancyStartDate"): string;
 export function getProperty(propertyName: "aliases.occupant"): string;
 export function getProperty(propertyName: "aliases.occupants"): string;
 

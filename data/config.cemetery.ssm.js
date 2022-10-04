@@ -1,5 +1,6 @@
 import { config as cemeteryConfig } from "./config.cemetery.ontario.js";
 export const config = Object.assign({}, cemeteryConfig);
+config.aliases.occupancyStartDate = "Interment Date";
 config.aliases.externalReceiptNumber = "GP Receipt Number";
 config.settings.lot.lotNamePattern = /^[A-Z]{2}(-\d*[A-Z]?){3,5}$/;
 config.settings.lot.lotNameSortNameFunction = (lotName) => {
@@ -22,7 +23,7 @@ config.settings.lot.lotNameSortNameFunction = (lotName) => {
     return cleanLotNamePieces.join("-");
 };
 config.settings.lotOccupancy.occupantCityDefault = "Sault Ste. Marie";
-config.settings.lotOccupancy.prints = ["pdf/ssm.cemetery.burialPermit"];
+config.settings.lotOccupancy.prints = ["screen/lotOccupancy", "pdf/ssm.cemetery.burialPermit"];
 config.settings.map.mapCityDefault = "Sault Ste. Marie";
 config.settings.workOrders.workOrderNumberLength = 6;
 config.settings.workOrders.workOrderMilestoneDateRecentBeforeDays = 7;

@@ -111,7 +111,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '<th class="has-width-1"></th>' +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupancy) + " Type</th>") +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.lot) + "</th>") +
-                    "<th>Start Date</th>" +
+                    "<th>" + cityssm.escapeHTML(exports.aliases.occupancyStartDate) + "</th>" +
                     "<th>End Date</th>" +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupants) + "</th>") +
                     (lotOccupancyPrints.length > 0 ? '<th class="has-width-1"></th>' : "") +

@@ -220,7 +220,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '<th class="has-width-1"></th>' +
                     ("<th>" + exports.aliases.occupancy + " Type</th>") +
                     ("<th>" + exports.aliases.lot + "</th>") +
-                    "<th>Start Date</th>" +
+                    ("<th>" + exports.aliases.occupancyStartDate + "</th>") +
                     "<th>End Date</th>" +
                     ("<th>" + exports.aliases.occupants + "</th>") +
                     '<th class="has-width-1"></th>' +

@@ -22,6 +22,7 @@ export declare function getProperty(propertyName: "aliases.map"): string;
 export declare function getProperty(propertyName: "aliases.maps"): string;
 export declare function getProperty(propertyName: "aliases.occupancy"): string;
 export declare function getProperty(propertyName: "aliases.occupancies"): string;
+export declare function getProperty(propertyName: "aliases.occupancyStartDate"): string;
 export declare function getProperty(propertyName: "aliases.occupant"): string;
 export declare function getProperty(propertyName: "aliases.occupants"): string;
 export declare function getProperty(propertyName: "aliases.externalReceiptNumber"): string;

@@ -20,6 +20,7 @@ export interface Config {
         maps?: string;
         occupancy?: string;
         occupancies?: string;
+        occupancyStartDate?: string;
         occupant?: string;
         occupants?: string;
         externalReceiptNumber?: string;

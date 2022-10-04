@@ -22,6 +22,7 @@ configFallbackValues.set("aliases.map", "Map");
 configFallbackValues.set("aliases.maps", "Maps");
 configFallbackValues.set("aliases.occupancy", "Occupancy");
 configFallbackValues.set("aliases.occupancies", "Occupancies");
+configFallbackValues.set("aliases.occupancyStartDate", "Start Date");
 configFallbackValues.set("aliases.occupant", "Occupant");
 configFallbackValues.set("aliases.occupants", "Occupants");
 configFallbackValues.set("aliases.externalReceiptNumber", "External Receipt Number");
