@@ -9,18 +9,35 @@
         <% const workOrderPrints = configFunctions.getProperty("settings.workOrders.prints"); %>
         <div class="column is-4">
             <div class="panel is-info">
-                <h2 class="panel-heading">Today's Milestones</h2>
+                <div class="panel-heading">
+                    <div class="level is-mobile">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <h2 class="title is-5 has-text-weight-bold has-text-white">
+                                    Today's Milestones
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <div class="level-item">
+                                <span class="tag"><%= workOrderMilestones.length %></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <% for (const milestone of workOrderMilestones) { %>
                     <div class="panel-block is-block">
                         <div class="columns is-mobile">
                             <div class="column is-narrow">
-                                <div class="icon is-small">
-                                    <% if (milestone.workOrderMilestoneCompletionDate) { %>
+                                <% if (milestone.workOrderMilestoneCompletionDate) { %>
+                                    <span class="icon is-small has-tooltip-right" data-tooltip="Completed">
                                         <i class="fas fa-check" aria-label="Completed"></i>
-                                    <% } else { %>
+                                    </span>
+                                <% } else { %>
+                                    <span class="icon is-small has-tooltip-right" data-tooltip="Incomplete">
                                         <i class="far fa-square" aria-label="Incomplete"></i>   
-                                    <% } %>
-                                </div>
+                                    </span>
+                                <% } %>
                             </div>
                             <div class="column">
                                 <% if (workOrderPrints.length > 0) { %>
@@ -38,7 +55,7 @@
                                 <% } %>
                                 <span class="is-size-7">
                                     <a href="<%= urlPrefix %>/workOrders/<%= milestone.workOrderId %>">
-                                        <i class="fas fa-hard-hat" aria-label="Work Order"></i> <%= milestone.workOrderNumber %>
+                                        <i class="fas fa-circle" data-work-order-number="<%= milestone.workOrderNumber %>" aria-label="Work Order"></i> <%= milestone.workOrderNumber %>
                                     </a><br />
                                     <% 
                                         if (milestone.workOrderLots.length > 0) {
@@ -366,6 +383,8 @@
     </div>
 </div>
 
-
 <%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/dashboard.min.js"></script>
+
 <%- include('_footerB'); -%>
