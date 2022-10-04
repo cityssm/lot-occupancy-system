@@ -63,7 +63,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 datePickerOptions.maxDate = cityssm.dateStringToDate(dateElement.max);
             }
             const cal = exports.bulmaCalendar.attach(dateElement, datePickerOptions)[0];
-            cal.on("save", (event) => {
+            cal.on("save", () => {
                 dateElement.value = cal.value();
                 dateElement.dispatchEvent(new Event("change"));
             });
