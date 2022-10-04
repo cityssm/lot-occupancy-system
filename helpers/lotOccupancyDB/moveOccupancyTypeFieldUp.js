@@ -30,4 +30,35 @@ export const moveOccupancyTypeFieldUp = (occupancyTypeFieldId) => {
     clearOccupancyTypesCache();
     return result.changes > 0;
 };
+export const moveOccupancyTypeFieldUpToTop = (occupancyTypeFieldId) => {
+    const database = sqlite(databasePath);
+    const currentField = database
+        .prepare("select occupancyTypeId, orderNumber" +
+        " from OccupancyTypeFields" +
+        " where occupancyTypeFieldId = ?")
+        .get(occupancyTypeFieldId);
+    if (currentField.orderNumber > 0) {
+        database
+            .prepare("update OccupancyTypeFields set orderNumber = -1" +
+            " where occupancyTypeFieldId = ?")
+            .run(occupancyTypeFieldId);
+        const occupancyTypeParameters = [];
+        if (currentField.occupancyTypeId) {
+            occupancyTypeParameters.push(currentField.occupancyTypeId);
+        }
+        occupancyTypeParameters.push(currentField.orderNumber);
+        database
+            .prepare("update OccupancyTypeFields" +
+            " set orderNumber = orderNumber + 1" +
+            " where recordDelete_timeMillis is null" +
+            (currentField.occupancyTypeId
+                ? " and occupancyTypeId = ?"
+                : " and occupancyTypeId is null") +
+            " and orderNumber < ?")
+            .run(occupancyTypeParameters);
+    }
+    database.close();
+    clearOccupancyTypesCache();
+    return true;
+};
 export default moveOccupancyTypeFieldUp;

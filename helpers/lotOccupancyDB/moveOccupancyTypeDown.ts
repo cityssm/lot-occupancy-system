@@ -4,17 +4,11 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearOccupancyTypesCache } from "../functions.cache.js";
 
-export const moveOccupancyTypeDown = (
-    occupancyTypeId: number | string
-): boolean => {
+export const moveOccupancyTypeDown = (occupancyTypeId: number | string): boolean => {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
-        .prepare(
-            "select orderNumber" +
-                " from OccupancyTypes" +
-                " where occupancyTypeId = ?"
-        )
+        .prepare("select orderNumber from OccupancyTypes where occupancyTypeId = ?")
         .get(occupancyTypeId).orderNumber;
 
     database
@@ -27,11 +21,7 @@ export const moveOccupancyTypeDown = (
         .run(currentOrderNumber);
 
     const result = database
-        .prepare(
-            "update OccupancyTypes" +
-                " set orderNumber = ? + 1" +
-                " where occupancyTypeId = ?"
-        )
+        .prepare("update OccupancyTypes set orderNumber = ? + 1 where occupancyTypeId = ?")
         .run(currentOrderNumber, occupancyTypeId);
 
     database.close();
@@ -39,6 +29,43 @@ export const moveOccupancyTypeDown = (
     clearOccupancyTypesCache();
 
     return result.changes > 0;
+};
+
+export const moveOccupancyTypeDownToBottom = (occupancyTypeId: number | string): boolean => {
+    const database = sqlite(databasePath);
+
+    const currentOrderNumber: number = database
+        .prepare("select orderNumber from OccupancyTypes where occupancyTypeId = ?")
+        .get(occupancyTypeId).orderNumber;
+
+    const maxOrderNumber: number = database
+        .prepare(
+            "select max(orderNumber) as maxOrderNumber" +
+                " from OccupancyTypes" +
+                " where recordDelete_timeMillis is null"
+        )
+        .get().maxOrderNumber;
+
+    if (currentOrderNumber !== maxOrderNumber) {
+        database
+            .prepare("update OccupancyTypes set orderNumber = ? + 1 where occupancyTypeId = ?")
+            .run(maxOrderNumber, occupancyTypeId);
+
+        database
+            .prepare(
+                "update OccupancyTypes" +
+                    " set orderNumber = orderNumber - 1" +
+                    " where recordDelete_timeMillis is null" +
+                    " and orderNumber > ?"
+            )
+            .run(currentOrderNumber);
+    }
+
+    database.close();
+
+    clearOccupancyTypesCache();
+
+    return true;
 };
 
 export default moveOccupancyTypeDown;

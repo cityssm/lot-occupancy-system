@@ -245,7 +245,7 @@ declare const bulmaJS: BulmaJS;
         });
     };
 
-    const moveOccupancyTypeUp = (clickEvent: Event) => {
+    const moveOccupancyTypeUp = (clickEvent: MouseEvent) => {
         clickEvent.preventDefault();
 
         const occupancyTypeId = (
@@ -257,13 +257,14 @@ declare const bulmaJS: BulmaJS;
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveOccupancyTypeUp",
             {
-                occupancyTypeId
+                occupancyTypeId,
+                moveToTop: clickEvent.shiftKey ? "1" : "0"
             },
             occupancyTypeResponseHandler
         );
     };
 
-    const moveOccupancyTypeDown = (clickEvent: Event) => {
+    const moveOccupancyTypeDown = (clickEvent: MouseEvent) => {
         clickEvent.preventDefault();
 
         const occupancyTypeId = (
@@ -275,7 +276,8 @@ declare const bulmaJS: BulmaJS;
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveOccupancyTypeDown",
             {
-                occupancyTypeId
+                occupancyTypeId,
+                moveToBottom: clickEvent.shiftKey ? "1" : "0"
             },
             occupancyTypeResponseHandler
         );
@@ -465,7 +467,7 @@ declare const bulmaJS: BulmaJS;
         openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId);
     };
 
-    const moveOccupancyTypeFieldUp = (clickEvent: Event) => {
+    const moveOccupancyTypeFieldUp = (clickEvent: MouseEvent) => {
         clickEvent.preventDefault();
 
         const occupancyTypeFieldId = (
@@ -477,13 +479,14 @@ declare const bulmaJS: BulmaJS;
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveOccupancyTypeFieldUp",
             {
-                occupancyTypeFieldId
+                occupancyTypeFieldId,
+                moveToTop: clickEvent.shiftKey ? "1" : "0"
             },
             occupancyTypeResponseHandler
         );
     };
 
-    const moveOccupancyTypeFieldDown = (clickEvent: Event) => {
+    const moveOccupancyTypeFieldDown = (clickEvent: MouseEvent) => {
         clickEvent.preventDefault();
 
         const occupancyTypeFieldId = (
@@ -495,7 +498,8 @@ declare const bulmaJS: BulmaJS;
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveOccupancyTypeFieldDown",
             {
-                occupancyTypeFieldId
+                occupancyTypeFieldId,
+                moveToBottom: clickEvent.shiftKey ? "1" : "0"
             },
             occupancyTypeResponseHandler
         );

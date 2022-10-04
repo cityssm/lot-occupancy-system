@@ -26,4 +26,42 @@ export const moveOccupancyTypeFieldDown = (occupancyTypeFieldId) => {
     clearOccupancyTypesCache();
     return result.changes > 0;
 };
+export const moveOccupancyTypeFieldDownToBottom = (occupancyTypeFieldId) => {
+    const database = sqlite(databasePath);
+    const currentField = database
+        .prepare("select occupancyTypeId, orderNumber" +
+        " from OccupancyTypeFields" +
+        " where occupancyTypeFieldId = ?")
+        .get(occupancyTypeFieldId);
+    const occupancyTypeParameters = [];
+    if (currentField.occupancyTypeId) {
+        occupancyTypeParameters.push(currentField.occupancyTypeId);
+    }
+    const maxOrderNumber = database
+        .prepare("select max(orderNumber) as maxOrderNumber" +
+        " from OccupancyTypeFields" +
+        " where recordDelete_timeMillis is null" +
+        (currentField.occupancyTypeId
+            ? " and occupancyTypeId = ?"
+            : " and occupancyTypeId is null"))
+        .get(occupancyTypeParameters).maxOrderNumber;
+    if (currentField.orderNumber !== maxOrderNumber) {
+        database
+            .prepare("update OccupancyTypeFields set orderNumber = ? + 1 where occupancyTypeFieldId = ?")
+            .run(maxOrderNumber, occupancyTypeFieldId);
+        occupancyTypeParameters.push(currentField.orderNumber);
+        database
+            .prepare("update OccupancyTypeFields" +
+            " set orderNumber = orderNumber - 1" +
+            " where recordDelete_timeMillis is null" +
+            (currentField.occupancyTypeId
+                ? " and occupancyTypeId = ?"
+                : " and occupancyTypeId is null") +
+            " and orderNumber > ?")
+            .run(occupancyTypeParameters);
+    }
+    database.close();
+    clearOccupancyTypesCache();
+    return true;
+};
 export default moveOccupancyTypeFieldDown;

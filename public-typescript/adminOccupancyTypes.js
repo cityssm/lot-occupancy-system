@@ -128,14 +128,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId;
         cityssm.postJSON(urlPrefix + "/admin/doMoveOccupancyTypeUp", {
-            occupancyTypeId
+            occupancyTypeId,
+            moveToTop: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
     };
     const moveOccupancyTypeDown = (clickEvent) => {
         clickEvent.preventDefault();
         const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId;
         cityssm.postJSON(urlPrefix + "/admin/doMoveOccupancyTypeDown", {
-            occupancyTypeId
+            occupancyTypeId,
+            moveToBottom: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
     };
     const openEditOccupancyTypeField = (occupancyTypeId, occupancyTypeFieldId) => {
@@ -243,14 +245,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const occupancyTypeFieldId = clickEvent.currentTarget.closest(".container--occupancyTypeField").dataset.occupancyTypeFieldId;
         cityssm.postJSON(urlPrefix + "/admin/doMoveOccupancyTypeFieldUp", {
-            occupancyTypeFieldId
+            occupancyTypeFieldId,
+            moveToTop: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
     };
     const moveOccupancyTypeFieldDown = (clickEvent) => {
         clickEvent.preventDefault();
         const occupancyTypeFieldId = clickEvent.currentTarget.closest(".container--occupancyTypeField").dataset.occupancyTypeFieldId;
         cityssm.postJSON(urlPrefix + "/admin/doMoveOccupancyTypeFieldDown", {
-            occupancyTypeFieldId
+            occupancyTypeFieldId,
+            moveToBottom: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
     };
     const renderOccupancyTypeFields = (panelElement, occupancyTypeId, occupancyTypeFields) => {
