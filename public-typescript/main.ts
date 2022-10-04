@@ -175,7 +175,7 @@ declare const cityssm: cityssmGlobal;
 
             // Get the datepicker container element
             const timePickerElement = containerElement.querySelector("#" + cal._id) as HTMLElement;
-            
+
             // Remove "cancel" button
 
             const timePickerCancelButtonElement = timePickerElement.querySelector(
@@ -211,33 +211,40 @@ declare const cityssm: cityssmGlobal;
 
         for (const aliasElement of aliasElements) {
             switch (aliasElement.dataset.alias) {
-                case "Lot":
+                case "Lot": {
                     aliasElement.textContent = exports.aliases.lot;
                     break;
+                }
 
-                case "lot":
+                case "lot": {
                     aliasElement.textContent = exports.aliases.lot.toLowerCase();
                     break;
+                }
 
-                case "Occupancy":
+                case "Occupancy": {
                     aliasElement.textContent = exports.aliases.occupancy;
                     break;
+                }
 
-                case "occupancy":
+                case "occupancy": {
                     aliasElement.textContent = exports.aliases.occupancy.toLowerCase();
                     break;
+                }
 
-                case "Occupant":
+                case "Occupant": {
                     aliasElement.textContent = exports.aliases.occupant;
                     break;
+                }
 
-                case "occupant":
+                case "occupant": {
                     aliasElement.textContent = exports.aliases.occupant.toLowerCase();
                     break;
+                }
 
-                case "ExternalReceiptNumber":
+                case "ExternalReceiptNumber": {
                     aliasElement.textContent = exports.aliases.externalReceiptNumber;
                     break;
+                }
             }
         }
     };
