@@ -138,7 +138,8 @@ app.get(urlPrefix + "/logout", (request, response) => {
         response.redirect(urlPrefix + "/login");
     }
 });
-app.use((_request, _response, next) => {
+app.use((request, _response, next) => {
+    debugApp(request.url);
     next(createError(404, "File not found."));
 });
 export default app;

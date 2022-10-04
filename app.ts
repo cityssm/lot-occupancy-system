@@ -242,7 +242,8 @@ app.get(urlPrefix + "/logout", (request, response) => {
 });
 
 // Catch 404 and forward to error handler
-app.use((_request, _response, next) => {
+app.use((request, _response, next) => {
+    debugApp(request.url);
     next(createError(404, "File not found."));
 });
 
