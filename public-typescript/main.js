@@ -63,7 +63,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 datePickerOptions.maxDate = cityssm.dateStringToDate(dateElement.max);
             }
             const cal = exports.bulmaCalendar.attach(dateElement, datePickerOptions)[0];
-            cal.on("save", () => {
+            cal.on("save", (event) => {
+                dateElement.value = cal.value();
                 dateElement.dispatchEvent(new Event("change"));
             });
             const datepickerElement = containerElement.querySelector("#" + cal._id);
@@ -102,6 +103,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             const cal = exports.bulmaCalendar.attach(timeElement, timePickerOptions)[0];
             cal.on("save", () => {
+                timeElement.value = cal.value();
                 timeElement.dispatchEvent(new Event("change"));
             });
             const timePickerElement = containerElement.querySelector("#" + cal._id);

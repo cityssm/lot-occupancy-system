@@ -106,7 +106,8 @@ declare const cityssm: cityssmGlobal;
             const cal = exports.bulmaCalendar.attach(dateElement, datePickerOptions)[0];
 
             // trigger change event on original element
-            cal.on("save", () => {
+            cal.on("save", (event) => {
+                dateElement.value = cal.value();
                 dateElement.dispatchEvent(new Event("change"));
             });
 
@@ -168,6 +169,7 @@ declare const cityssm: cityssmGlobal;
 
             // trigger change event on original element
             cal.on("save", () => {
+                timeElement.value = cal.value();
                 timeElement.dispatchEvent(new Event("change"));
             });
 
