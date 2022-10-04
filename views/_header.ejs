@@ -10,7 +10,7 @@
         <%= headTitle %>: <%= configFunctions.getProperty("application.applicationName") %>
     </title>
 
-    <link rel="icon" href="<%= urlPrefix %>/images/favicon.png" />
+    <link rel="icon" href="<%= urlPrefix + configFunctions.getProperty("application.logoURL") %>" />
 
     <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/style.css" />
     <link rel="stylesheet" href="<%= urlPrefix %>/lib/leaflet/leaflet.css" />
