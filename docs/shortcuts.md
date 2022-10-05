@@ -45,3 +45,18 @@ for assistance identifying the combination for your web browser - operating syst
 | ------------ | ---------------------------------- |
 | <kbd>f</kbd> | Focus on the first editable field. |
 | <kbd>v</kbd> | Switch to view mode.               |
+
+## Other Shortcuts
+
+### Quick Sorting
+
+![Configuration Tables](images/configTableSorting.png)
+
+Configuration tables with up and down arrow buttons can be reordered one position at a time
+by clicking the arrow buttons.
+
+To send an item to the bottom of the list,
+hold the `Shift` key when clicking the down arrow button.
+
+Similarly, to send an item to the top of the list,
+hold the `Shift` key when clicking the up arrow button.

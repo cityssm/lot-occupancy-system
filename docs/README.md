@@ -13,4 +13,4 @@ Understanding the key terms used in the Lot Occupancy System.
 How to create images compatible with the Lot Occupancy System.
 
 [**Keyboard Shortcuts**](shortcuts.md)<br />
-How to create images compatible with the Lot Occupancy System.
+Shortcuts to speed through tasks in the Lot Occupancy System.
