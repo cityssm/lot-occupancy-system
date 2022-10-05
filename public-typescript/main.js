@@ -128,6 +128,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const aliasElements = containerElement.querySelectorAll(".alias");
         for (const aliasElement of aliasElements) {
             switch (aliasElement.dataset.alias) {
+                case "Map": {
+                    aliasElement.textContent = exports.aliases.map;
+                    break;
+                }
                 case "Lot": {
                     aliasElement.textContent = exports.aliases.lot;
                     break;

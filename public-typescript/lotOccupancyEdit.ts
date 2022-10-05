@@ -284,23 +284,29 @@ declare const bulmaJS: BulmaJS;
         const currentLotName = (clickEvent.currentTarget as HTMLInputElement).value;
 
         let lotSelectCloseModalFunction: () => void;
+        let lotSelectModalElement: HTMLElement;
 
         let lotSelectFormElement: HTMLFormElement;
         let lotSelectResultsElement: HTMLElement;
 
-        const selectLot = (clickEvent: Event) => {
+        const renderSelectedLotAndClose = (lotId: number | string, lotName: string) => {
+            (document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value =
+                lotId.toString();
+            (document.querySelector("#lotOccupancy--lotName") as HTMLInputElement).value = lotName;
+
+            setUnsavedChanges();
+            lotSelectCloseModalFunction();
+        };
+
+        const selectExistingLot = (clickEvent: Event) => {
             clickEvent.preventDefault();
 
             const selectedLotElement = clickEvent.currentTarget as HTMLElement;
 
-            (document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value =
-                selectedLotElement.dataset.lotId;
-            (document.querySelector("#lotOccupancy--lotName") as HTMLInputElement).value =
-                selectedLotElement.dataset.lotName;
-
-            setUnsavedChanges();
-
-            lotSelectCloseModalFunction();
+            renderSelectedLotAndClose(
+                selectedLotElement.dataset.lotId,
+                selectedLotElement.dataset.lotName
+            );
         };
 
         const searchLots = () => {
@@ -354,13 +360,37 @@ declare const bulmaJS: BulmaJS;
                                 "</div>") +
                             "</div>";
 
-                        panelBlockElement.addEventListener("click", selectLot);
+                        panelBlockElement.addEventListener("click", selectExistingLot);
 
                         panelElement.append(panelBlockElement);
                     }
 
                     lotSelectResultsElement.innerHTML = "";
                     lotSelectResultsElement.append(panelElement);
+                }
+            );
+        };
+
+        const createLotAndSelect = (submitEvent: SubmitEvent) => {
+            submitEvent.preventDefault();
+
+            const lotName = (
+                lotSelectModalElement.querySelector("#lotCreate--lotName") as HTMLInputElement
+            ).value;
+
+            cityssm.postJSON(
+                urlPrefix + "/lots/doCreateLot",
+                submitEvent.currentTarget,
+                (responseJSON: { success: boolean; errorMessage?: string; lotId?: number }) => {
+                    if (responseJSON.success) {
+                        renderSelectedLotAndClose(responseJSON.lotId, lotName);
+                    } else {
+                        bulmaJS.alert({
+                            title: "Error Creating " + exports.aliases.lot,
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
                 }
             );
         };
@@ -372,7 +402,12 @@ declare const bulmaJS: BulmaJS;
             onshown: (modalElement, closeModalFunction) => {
                 bulmaJS.toggleHtmlClipped();
 
+                lotSelectModalElement = modalElement;
                 lotSelectCloseModalFunction = closeModalFunction;
+
+                bulmaJS.init(modalElement);
+
+                // search Tab
 
                 const lotNameFilterElement = modalElement.querySelector(
                     "#lotSelect--lotName"
@@ -407,6 +442,53 @@ declare const bulmaJS: BulmaJS;
                 });
 
                 searchLots();
+
+                // Create Tab
+
+                if (exports.lotNamePattern) {
+                    const regex = exports.lotNamePattern as RegExp;
+
+                    (
+                        modalElement.querySelector("#lotCreate--lotName") as HTMLInputElement
+                    ).pattern = regex.source;
+                }
+
+                const lotTypeElement = modalElement.querySelector(
+                    "#lotCreate--lotTypeId"
+                ) as HTMLSelectElement;
+
+                for (const lotType of exports.lotTypes as recordTypes.LotType[]) {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = lotType.lotTypeId.toString();
+                    optionElement.textContent = lotType.lotType;
+                    lotTypeElement.append(optionElement);
+                }
+
+                const lotStatusElement = modalElement.querySelector(
+                    "#lotCreate--lotStatusId"
+                ) as HTMLSelectElement;
+
+                for (const lotStatus of exports.lotStatuses as recordTypes.LotStatus[]) {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = lotStatus.lotStatusId.toString();
+                    optionElement.textContent = lotStatus.lotStatus;
+                    lotStatusElement.append(optionElement);
+                }
+
+                const mapElement = modalElement.querySelector(
+                    "#lotCreate--mapId"
+                ) as HTMLSelectElement;
+
+                for (const map of exports.maps as recordTypes.Map[]) {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = map.mapId.toString();
+                    optionElement.textContent = map.mapName || "(No Name)";
+                    mapElement.append(optionElement);
+                }
+
+                modalElement
+                    .querySelector("#form--lotCreate")
+                    .addEventListener("submit", createLotAndSelect);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();

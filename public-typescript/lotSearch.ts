@@ -76,7 +76,9 @@ declare const cityssm: cityssmGlobal;
                                 "</td>") +
                             ("<td>" + cityssm.escapeHTML(lot.lotType) + "</td>") +
                             ("<td>" +
-                                cityssm.escapeHTML(lot.lotStatus) +
+                                (lot.lotStatusId
+                                    ? cityssm.escapeHTML(lot.lotStatus)
+                                    : '<span class="has-text-grey">(No Status)</span>') +
                                 "<br />" +
                                 (lot.lotOccupancyCount > 0
                                     ? '<span class="is-size-7">Currently Occupied</span>'

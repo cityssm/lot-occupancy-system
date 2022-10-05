@@ -1,6 +1,7 @@
-import { getLotOccupantTypes, getOccupancyTypes } from "../../helpers/functions.cache.js";
+import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypes } from "../../helpers/functions.cache.js";
 import * as configFunctions from "../../helpers/functions.config.js";
 import { getLotOccupancy } from "../../helpers/lotOccupancyDB/getLotOccupancy.js";
+import { getMaps } from "../../helpers/lotOccupancyDB/getMaps.js";
 export const handler = (request, response) => {
     const lotOccupancy = getLotOccupancy(request.params.lotOccupancyId);
     if (!lotOccupancy) {
@@ -9,6 +10,9 @@ export const handler = (request, response) => {
     }
     const occupancyTypes = getOccupancyTypes();
     const lotOccupantTypes = getLotOccupantTypes();
+    const lotTypes = getLotTypes();
+    const lotStatuses = getLotStatuses();
+    const maps = getMaps();
     return response.render("lotOccupancy-edit", {
         headTitle: configFunctions.getProperty("aliases.lot") +
             " " +
@@ -17,6 +21,9 @@ export const handler = (request, response) => {
         lotOccupancy,
         occupancyTypes,
         lotOccupantTypes,
+        lotTypes,
+        lotStatuses,
+        maps,
         isCreate: false
     });
 };

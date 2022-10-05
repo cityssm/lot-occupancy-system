@@ -389,18 +389,26 @@
     
 <%- include('_footerA'); -%>
 
-<% if (!isCreate) { %>
-    <script>
+<script>
+    <% if (!isCreate) { %>
         exports.occupantCityDefault = "<%= configFunctions.getProperty("settings.lotOccupancy.occupantCityDefault") %>";
         exports.occupantProvinceDefault = "<%= configFunctions.getProperty("settings.lotOccupancy.occupantProvinceDefault") %>";
-        exports.lotOccupantTypes = <%- JSON.stringify(lotOccupantTypes) %>;
 
+        exports.lotOccupantTypes = <%- JSON.stringify(lotOccupantTypes) %>;
+        
         exports.lotOccupancyOccupants = <%- JSON.stringify(lotOccupancy.lotOccupancyOccupants) %>;
         exports.lotOccupancyComments = <%- JSON.stringify(lotOccupancy.lotOccupancyComments) %>;
         exports.lotOccupancyFees = <%- JSON.stringify(lotOccupancy.lotOccupancyFees) %>;
         exports.lotOccupancyTransactions = <%- JSON.stringify(lotOccupancy.lotOccupancyTransactions) %>;
-    </script>
-<% } %>
+    <% } %>
+    
+    <% if (configFunctions.getProperty("settings.lot.lotNamePattern")) { %>
+        exports.lotNamePattern = /<%= configFunctions.getProperty("settings.lot.lotNamePattern").source %>/;
+    <% } %>
+    exports.lotTypes = <%- JSON.stringify(lotTypes) %>;
+    exports.lotStatuses = <%- JSON.stringify(lotStatuses) %>;
+    exports.maps = <%- JSON.stringify(maps) %>;
+ </script>
 
 <script src="<%= urlPrefix %>/javascripts/lotOccupancyEdit.min.js"></script>
 

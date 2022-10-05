@@ -211,36 +211,34 @@ declare const cityssm: cityssmGlobal;
 
         for (const aliasElement of aliasElements) {
             switch (aliasElement.dataset.alias) {
+                case "Map": {
+                    aliasElement.textContent = exports.aliases.map;
+                    break;
+                }
                 case "Lot": {
                     aliasElement.textContent = exports.aliases.lot;
                     break;
                 }
-
                 case "lot": {
                     aliasElement.textContent = exports.aliases.lot.toLowerCase();
                     break;
                 }
-
                 case "Occupancy": {
                     aliasElement.textContent = exports.aliases.occupancy;
                     break;
                 }
-
                 case "occupancy": {
                     aliasElement.textContent = exports.aliases.occupancy.toLowerCase();
                     break;
                 }
-
                 case "Occupant": {
                     aliasElement.textContent = exports.aliases.occupant;
                     break;
                 }
-
                 case "occupant": {
                     aliasElement.textContent = exports.aliases.occupant.toLowerCase();
                     break;
                 }
-
                 case "ExternalReceiptNumber": {
                     aliasElement.textContent = exports.aliases.externalReceiptNumber;
                     break;

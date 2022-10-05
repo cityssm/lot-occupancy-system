@@ -199,17 +199,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
     lotNameElement.addEventListener("click", (clickEvent) => {
         const currentLotName = clickEvent.currentTarget.value;
         let lotSelectCloseModalFunction;
+        let lotSelectModalElement;
         let lotSelectFormElement;
         let lotSelectResultsElement;
-        const selectLot = (clickEvent) => {
-            clickEvent.preventDefault();
-            const selectedLotElement = clickEvent.currentTarget;
+        const renderSelectedLotAndClose = (lotId, lotName) => {
             document.querySelector("#lotOccupancy--lotId").value =
-                selectedLotElement.dataset.lotId;
-            document.querySelector("#lotOccupancy--lotName").value =
-                selectedLotElement.dataset.lotName;
+                lotId.toString();
+            document.querySelector("#lotOccupancy--lotName").value = lotName;
             setUnsavedChanges();
             lotSelectCloseModalFunction();
+        };
+        const selectExistingLot = (clickEvent) => {
+            clickEvent.preventDefault();
+            const selectedLotElement = clickEvent.currentTarget;
+            renderSelectedLotAndClose(selectedLotElement.dataset.lotId, selectedLotElement.dataset.lotName);
         };
         const searchLots = () => {
             lotSelectResultsElement.innerHTML =
@@ -252,11 +255,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 "</span>" +
                                 "</div>") +
                             "</div>";
-                    panelBlockElement.addEventListener("click", selectLot);
+                    panelBlockElement.addEventListener("click", selectExistingLot);
                     panelElement.append(panelBlockElement);
                 }
                 lotSelectResultsElement.innerHTML = "";
                 lotSelectResultsElement.append(panelElement);
+            });
+        };
+        const createLotAndSelect = (submitEvent) => {
+            submitEvent.preventDefault();
+            const lotName = lotSelectModalElement.querySelector("#lotCreate--lotName").value;
+            cityssm.postJSON(urlPrefix + "/lots/doCreateLot", submitEvent.currentTarget, (responseJSON) => {
+                if (responseJSON.success) {
+                    renderSelectedLotAndClose(responseJSON.lotId, lotName);
+                }
+                else {
+                    bulmaJS.alert({
+                        title: "Error Creating " + exports.aliases.lot,
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
             });
         };
         cityssm.openHtmlModal("lotOccupancy-selectLot", {
@@ -265,7 +284,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             },
             onshown: (modalElement, closeModalFunction) => {
                 bulmaJS.toggleHtmlClipped();
+                lotSelectModalElement = modalElement;
                 lotSelectCloseModalFunction = closeModalFunction;
+                bulmaJS.init(modalElement);
                 const lotNameFilterElement = modalElement.querySelector("#lotSelect--lotName");
                 if (document.querySelector("#lotOccupancy--lotId").value !==
                     "") {
@@ -284,6 +305,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     submitEvent.preventDefault();
                 });
                 searchLots();
+                if (exports.lotNamePattern) {
+                    const regex = exports.lotNamePattern;
+                    modalElement.querySelector("#lotCreate--lotName").pattern = regex.source;
+                }
+                const lotTypeElement = modalElement.querySelector("#lotCreate--lotTypeId");
+                for (const lotType of exports.lotTypes) {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = lotType.lotTypeId.toString();
+                    optionElement.textContent = lotType.lotType;
+                    lotTypeElement.append(optionElement);
+                }
+                const lotStatusElement = modalElement.querySelector("#lotCreate--lotStatusId");
+                for (const lotStatus of exports.lotStatuses) {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = lotStatus.lotStatusId.toString();
+                    optionElement.textContent = lotStatus.lotStatus;
+                    lotStatusElement.append(optionElement);
+                }
+                const mapElement = modalElement.querySelector("#lotCreate--mapId");
+                for (const map of exports.maps) {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = map.mapId.toString();
+                    optionElement.textContent = map.mapName || "(No Name)";
+                    mapElement.append(optionElement);
+                }
+                modalElement
+                    .querySelector("#form--lotCreate")
+                    .addEventListener("submit", createLotAndSelect);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
