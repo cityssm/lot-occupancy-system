@@ -1,11 +1,17 @@
 import type { RequestHandler } from "express";
 
-import { moveLotTypeFieldUp } from "../../helpers/lotOccupancyDB/moveLotTypeFieldUp.js";
+import {
+    moveLotTypeFieldUp,
+    moveLotTypeFieldUpToTop
+} from "../../helpers/lotOccupancyDB/moveLotTypeFieldUp.js";
 
 import { getLotTypes } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
-    const success = moveLotTypeFieldUp(request.body.lotTypeFieldId);
+    const success =
+        request.body.moveToTop === "1"
+            ? moveLotTypeFieldUpToTop(request.body.lotTypeFieldId)
+            : moveLotTypeFieldUp(request.body.lotTypeFieldId);
 
     const lotTypes = getLotTypes();
 

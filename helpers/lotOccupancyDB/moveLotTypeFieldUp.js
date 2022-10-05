@@ -24,4 +24,25 @@ export const moveLotTypeFieldUp = (lotTypeFieldId) => {
     clearLotTypesCache();
     return result.changes > 0;
 };
+export const moveLotTypeFieldUpToTop = (lotTypeFieldId) => {
+    const database = sqlite(databasePath);
+    const currentField = database
+        .prepare("select lotTypeId, orderNumber from LotTypeFields where lotTypeFieldId = ?")
+        .get(lotTypeFieldId);
+    if (currentField.orderNumber > 0) {
+        database
+            .prepare("update LotTypeFields set orderNumber = -1 where lotTypeFieldId = ?")
+            .run(lotTypeFieldId);
+        database
+            .prepare("update LotTypeFields" +
+            " set orderNumber = orderNumber + 1" +
+            " where recordDelete_timeMillis is null" +
+            " and lotTypeId = ?" +
+            " and orderNumber < ?")
+            .run(currentField.lotTypeId, currentField.orderNumber);
+    }
+    database.close();
+    clearLotTypesCache();
+    return true;
+};
 export default moveLotTypeFieldUp;

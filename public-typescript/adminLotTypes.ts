@@ -221,7 +221,7 @@ declare const bulmaJS: BulmaJS;
         });
     };
 
-    const moveLotTypeUp = (clickEvent: Event) => {
+    const moveLotTypeUp = (clickEvent: MouseEvent) => {
         clickEvent.preventDefault();
 
         const lotTypeId = (
@@ -231,13 +231,14 @@ declare const bulmaJS: BulmaJS;
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveLotTypeUp",
             {
-                lotTypeId
+                lotTypeId,
+                moveToTop: clickEvent.shiftKey ? "1" : "0"
             },
             lotTypeResponseHandler
         );
     };
 
-    const moveLotTypeDown = (clickEvent: Event) => {
+    const moveLotTypeDown = (clickEvent: MouseEvent) => {
         clickEvent.preventDefault();
 
         const lotTypeId = (
@@ -247,7 +248,8 @@ declare const bulmaJS: BulmaJS;
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveLotTypeDown",
             {
-                lotTypeId
+                lotTypeId,
+                moveToBottom: clickEvent.shiftKey ? "1" : "0"
             },
             lotTypeResponseHandler
         );
@@ -429,7 +431,7 @@ declare const bulmaJS: BulmaJS;
         openEditLotTypeField(lotTypeId, lotTypeFieldId);
     };
 
-    const moveLotTypeFieldUp = (clickEvent: Event) => {
+    const moveLotTypeFieldUp = (clickEvent: MouseEvent) => {
         clickEvent.preventDefault();
 
         const lotTypeFieldId = (
@@ -441,13 +443,14 @@ declare const bulmaJS: BulmaJS;
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveLotTypeFieldUp",
             {
-                lotTypeFieldId
+                lotTypeFieldId,
+                moveToTop: clickEvent.shiftKey ? "1" : "0"
             },
             lotTypeResponseHandler
         );
     };
 
-    const moveLotTypeFieldDown = (clickEvent: Event) => {
+    const moveLotTypeFieldDown = (clickEvent: MouseEvent) => {
         clickEvent.preventDefault();
 
         const lotTypeFieldId = (
@@ -459,7 +462,8 @@ declare const bulmaJS: BulmaJS;
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveLotTypeFieldDown",
             {
-                lotTypeFieldId
+                lotTypeFieldId,
+                moveToBottom: clickEvent.shiftKey ? "1" : "0"
             },
             lotTypeResponseHandler
         );

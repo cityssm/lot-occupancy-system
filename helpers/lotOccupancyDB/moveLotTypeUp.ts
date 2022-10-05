@@ -4,17 +4,11 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearLotTypesCache } from "../functions.cache.js";
 
-export const moveLotTypeUp = (
-    lotTypeId: number | string
-): boolean => {
+export const moveLotTypeUp = (lotTypeId: number | string): boolean => {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
-        .prepare(
-            "select orderNumber" +
-                " from LotTypes" +
-                " where lotTypeId = ?"
-        )
+        .prepare("select orderNumber from LotTypes where lotTypeId = ?")
         .get(lotTypeId).orderNumber;
 
     if (currentOrderNumber <= 0) {
@@ -32,11 +26,7 @@ export const moveLotTypeUp = (
         .run(currentOrderNumber);
 
     const result = database
-        .prepare(
-            "update LotTypes" +
-                " set orderNumber = ? - 1" +
-                " where lotTypeId = ?"
-        )
+        .prepare("update LotTypes set orderNumber = ? - 1 where lotTypeId = ?")
         .run(currentOrderNumber, lotTypeId);
 
     database.close();
@@ -44,6 +34,33 @@ export const moveLotTypeUp = (
     clearLotTypesCache();
 
     return result.changes > 0;
+};
+
+export const moveLotTypeUpToTop = (lotTypeId: number | string): boolean => {
+    const database = sqlite(databasePath);
+
+    const currentOrderNumber: number = database
+        .prepare("select orderNumber from LotTypes where lotTypeId = ?")
+        .get(lotTypeId).orderNumber;
+
+    if (currentOrderNumber > 0) {
+        database.prepare("update LotTypes set orderNumber = -1 where lotTypeId = ?").run(lotTypeId);
+
+        database
+            .prepare(
+                "update LotTypes" +
+                    " set orderNumber = orderNumber + 1" +
+                    " where recordDelete_timeMillis is null" +
+                    " and orderNumber < ?"
+            )
+            .run(currentOrderNumber);
+    }
+
+    database.close();
+
+    clearLotTypesCache();
+
+    return true;
 };
 
 export default moveLotTypeUp;

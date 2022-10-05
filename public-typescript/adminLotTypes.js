@@ -127,14 +127,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const lotTypeId = clickEvent.currentTarget.closest(".container--lotType").dataset.lotTypeId;
         cityssm.postJSON(urlPrefix + "/admin/doMoveLotTypeUp", {
-            lotTypeId
+            lotTypeId,
+            moveToTop: clickEvent.shiftKey ? "1" : "0"
         }, lotTypeResponseHandler);
     };
     const moveLotTypeDown = (clickEvent) => {
         clickEvent.preventDefault();
         const lotTypeId = clickEvent.currentTarget.closest(".container--lotType").dataset.lotTypeId;
         cityssm.postJSON(urlPrefix + "/admin/doMoveLotTypeDown", {
-            lotTypeId
+            lotTypeId,
+            moveToBottom: clickEvent.shiftKey ? "1" : "0"
         }, lotTypeResponseHandler);
     };
     const openEditLotTypeField = (lotTypeId, lotTypeFieldId) => {
@@ -239,14 +241,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const lotTypeFieldId = clickEvent.currentTarget.closest(".container--lotTypeField").dataset.lotTypeFieldId;
         cityssm.postJSON(urlPrefix + "/admin/doMoveLotTypeFieldUp", {
-            lotTypeFieldId
+            lotTypeFieldId,
+            moveToTop: clickEvent.shiftKey ? "1" : "0"
         }, lotTypeResponseHandler);
     };
     const moveLotTypeFieldDown = (clickEvent) => {
         clickEvent.preventDefault();
         const lotTypeFieldId = clickEvent.currentTarget.closest(".container--lotTypeField").dataset.lotTypeFieldId;
         cityssm.postJSON(urlPrefix + "/admin/doMoveLotTypeFieldDown", {
-            lotTypeFieldId
+            lotTypeFieldId,
+            moveToBottom: clickEvent.shiftKey ? "1" : "0"
         }, lotTypeResponseHandler);
     };
     const renderLotTypeFields = (panelElement, lotTypeId, lotTypeFields) => {
