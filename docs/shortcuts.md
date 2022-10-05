@@ -56,7 +56,7 @@ Configuration tables with up and down arrow buttons can be reordered one positio
 by clicking the arrow buttons.
 
 To send an item to the bottom of the list,
-hold the `Shift` key when clicking the down arrow button.
+hold the <kbd>Shift</kbd> key when clicking the down arrow button.
 
 Similarly, to send an item to the top of the list,
-hold the `Shift` key when clicking the up arrow button.
+hold the <kbd>Shift</kbd> key when clicking the up arrow button.
