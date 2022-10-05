@@ -72,7 +72,7 @@ const initializeCemeteryDatabase = () => {
         orderNumber: 2
     }, session);
     addLotOccupantType({
-        lotOccupantType: "Arranger",
+        lotOccupantType: "Purchaser",
         orderNumber: 3
     }, session);
     addOccupancyType({

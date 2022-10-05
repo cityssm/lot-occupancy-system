@@ -122,7 +122,7 @@ function getFeeIdByFeeDescription(feeDescription) {
             readonly: true
         });
         const records = database
-            .prepare("select feeId, feeDescription from Fees" + " where feeDescription like 'CMPP_FEE_%'")
+            .prepare("select feeId, feeDescription from Fees where feeDescription like 'CMPP_FEE_%'")
             .all();
         for (const record of records) {
             feeCache.set(record.feeDescription, record.feeId);
@@ -182,7 +182,7 @@ const cremationOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("C
 const allOccupancyTypeFields = cacheFunctions.getAllOccupancyTypeFields();
 const preneedOwnerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
 const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Deceased");
-const arrangerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Arranger");
+const purchaserLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Purchaser");
 const acknowledgedWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Acknowledged");
 const deathWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Death");
 const funeralWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Funeral");
@@ -520,7 +520,7 @@ function importFromPrepaidCSV() {
             if (prepaidRow.CMPP_ARRANGED_BY_NAME) {
                 addLotOccupancyOccupant({
                     lotOccupancyId,
-                    lotOccupantTypeId: arrangerLotOccupantType.lotOccupantTypeId,
+                    lotOccupantTypeId: purchaserLotOccupantType.lotOccupantTypeId,
                     occupantName: prepaidRow.CMPP_ARRANGED_BY_NAME,
                     occupantAddress1: "",
                     occupantAddress2: "",

@@ -333,7 +333,7 @@ function getFeeIdByFeeDescription(feeDescription: string) {
             feeDescription: string;
         }[] = database
             .prepare(
-                "select feeId, feeDescription from Fees" + " where feeDescription like 'CMPP_FEE_%'"
+                "select feeId, feeDescription from Fees where feeDescription like 'CMPP_FEE_%'"
             )
             .all();
 
@@ -418,7 +418,7 @@ const allOccupancyTypeFields = cacheFunctions.getAllOccupancyTypeFields();
 const preneedOwnerLotOccupantType =
     cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
 const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Deceased");
-const arrangerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Arranger");
+const purchaserLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Purchaser");
 
 const acknowledgedWorkOrderMilestoneType =
     cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Acknowledged");
@@ -957,7 +957,7 @@ function importFromPrepaidCSV() {
                 addLotOccupancyOccupant(
                     {
                         lotOccupancyId,
-                        lotOccupantTypeId: arrangerLotOccupantType.lotOccupantTypeId,
+                        lotOccupantTypeId: purchaserLotOccupantType.lotOccupantTypeId,
                         occupantName: prepaidRow.CMPP_ARRANGED_BY_NAME,
                         occupantAddress1: "",
                         occupantAddress2: "",

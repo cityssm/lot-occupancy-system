@@ -151,7 +151,7 @@ const initializeCemeteryDatabase = () => {
 
     addLotOccupantType(
         {
-            lotOccupantType: "Arranger",
+            lotOccupantType: "Purchaser",
             orderNumber: 3
         },
         session
