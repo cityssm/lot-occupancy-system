@@ -41,4 +41,41 @@ export const moveLotOccupantTypeDown = (
     return result.changes > 0;
 };
 
+
+export const moveLotOccupantTypeDownToBottom = (lotOccupantTypeId: number | string): boolean => {
+    const database = sqlite(databasePath);
+
+    const currentOrderNumber: number = database
+        .prepare("select orderNumber from LotOccupantTypes where lotOccupantTypeId = ?")
+        .get(lotOccupantTypeId).orderNumber;
+
+    const maxOrderNumber: number = database
+        .prepare(
+            "select max(orderNumber) as maxOrderNumber" +
+                " from LotOccupantTypes" +
+                " where recordDelete_timeMillis is null"
+        )
+        .get().maxOrderNumber;
+
+    if (currentOrderNumber !== maxOrderNumber) {
+        database
+            .prepare("update LotOccupantTypes set orderNumber = ? + 1 where lotOccupantTypeId = ?")
+            .run(maxOrderNumber, lotOccupantTypeId);
+
+        database
+            .prepare(
+                "update LotOccupantTypes" +
+                    " set orderNumber = orderNumber - 1" +
+                    " where recordDelete_timeMillis is null" +
+                    " and orderNumber > ?"
+            )
+            .run(currentOrderNumber);
+    }
+
+    database.close();
+
+    clearLotOccupantTypesCache();
+
+    return true;
+};
 export default moveLotOccupantTypeDown;

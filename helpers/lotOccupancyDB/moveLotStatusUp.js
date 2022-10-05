@@ -4,9 +4,7 @@ import { clearLotStatusesCache } from "../functions.cache.js";
 export const moveLotStatusUp = (lotStatusId) => {
     const database = sqlite(databasePath);
     const currentOrderNumber = database
-        .prepare("select orderNumber" +
-        " from LotStatuses" +
-        " where lotStatusId = ?")
+        .prepare("select orderNumber from LotStatuses where lotStatusId = ?")
         .get(lotStatusId).orderNumber;
     if (currentOrderNumber <= 0) {
         database.close();
@@ -19,12 +17,30 @@ export const moveLotStatusUp = (lotStatusId) => {
         " and orderNumber = ? - 1")
         .run(currentOrderNumber);
     const result = database
-        .prepare("update LotStatuses" +
-        " set orderNumber = ? - 1" +
-        " where lotStatusId = ?")
+        .prepare("update LotStatuses set orderNumber = ? - 1 where lotStatusId = ?")
         .run(currentOrderNumber, lotStatusId);
     database.close();
     clearLotStatusesCache();
     return result.changes > 0;
+};
+export const moveLotStatusUpToTop = (lotStatusId) => {
+    const database = sqlite(databasePath);
+    const currentOrderNumber = database
+        .prepare("select orderNumber from LotStatuses where lotStatusId = ?")
+        .get(lotStatusId).orderNumber;
+    if (currentOrderNumber > 0) {
+        database
+            .prepare("update LotStatuses set orderNumber = -1 where lotStatusId = ?")
+            .run(lotStatusId);
+        database
+            .prepare("update LotStatuses" +
+            " set orderNumber = orderNumber + 1" +
+            " where recordDelete_timeMillis is null" +
+            " and orderNumber < ?")
+            .run(currentOrderNumber);
+    }
+    database.close();
+    clearLotStatusesCache();
+    return true;
 };
 export default moveLotStatusUp;

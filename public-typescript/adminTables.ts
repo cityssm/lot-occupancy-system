@@ -49,9 +49,7 @@ declare const bulmaJS: BulmaJS;
     };
 
     const deleteWorkOrderType = (clickEvent: Event) => {
-        const tableRowElement = (
-            clickEvent.currentTarget as HTMLElement
-        ).closest("tr");
+        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
 
         const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
 
@@ -104,17 +102,16 @@ declare const bulmaJS: BulmaJS;
         });
     };
 
-    const moveWorkOrderTypeUp = (clickEvent: Event) => {
-        const tableRowElement = (
-            clickEvent.currentTarget as HTMLElement
-        ).closest("tr");
+    const moveWorkOrderTypeUp = (clickEvent: MouseEvent) => {
+        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
 
         const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
 
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveWorkOrderTypeUp",
             {
-                workOrderTypeId
+                workOrderTypeId,
+                moveToTop: clickEvent.shiftKey ? "1" : "0"
             },
             (responseJSON: {
                 success: boolean;
@@ -135,17 +132,16 @@ declare const bulmaJS: BulmaJS;
         );
     };
 
-    const moveWorkOrderTypeDown = (clickEvent: Event) => {
-        const tableRowElement = (
-            clickEvent.currentTarget as HTMLElement
-        ).closest("tr");
+    const moveWorkOrderTypeDown = (clickEvent: MouseEvent) => {
+        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
 
         const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
 
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveWorkOrderTypeDown",
             {
-                workOrderTypeId
+                workOrderTypeId,
+                moveToBottom: clickEvent.shiftKey ? "1" : "0"
             },
             (responseJSON: {
                 success: boolean;
@@ -189,8 +185,7 @@ declare const bulmaJS: BulmaJS;
         for (const workOrderType of workOrderTypes) {
             const tableRowElement = document.createElement("tr");
 
-            tableRowElement.dataset.workOrderTypeId =
-                workOrderType.workOrderTypeId.toString();
+            tableRowElement.dataset.workOrderTypeId = workOrderType.workOrderTypeId.toString();
 
             tableRowElement.innerHTML =
                 "<td>" +
@@ -230,9 +225,7 @@ declare const bulmaJS: BulmaJS;
                 "</div>" +
                 "</td>";
 
-            tableRowElement
-                .querySelector("form")
-                .addEventListener("submit", updateWorkOrderType);
+            tableRowElement.querySelector("form").addEventListener("submit", updateWorkOrderType);
             tableRowElement
                 .querySelector(".button--moveWorkOrderTypeUp")
                 .addEventListener("click", moveWorkOrderTypeUp);
@@ -284,7 +277,8 @@ declare const bulmaJS: BulmaJS;
      * Work Order Milestone Types
      */
 
-    let workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[] = exports.workOrderMilestoneTypes;
+    let workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[] =
+        exports.workOrderMilestoneTypes;
     delete exports.workOrderMilestoneTypes;
 
     const updateWorkOrderMilestoneType = (submitEvent: SubmitEvent) => {
@@ -317,9 +311,7 @@ declare const bulmaJS: BulmaJS;
     };
 
     const deleteWorkOrderMilestoneType = (clickEvent: Event) => {
-        const tableRowElement = (
-            clickEvent.currentTarget as HTMLElement
-        ).closest("tr");
+        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
 
         const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
 
@@ -372,17 +364,16 @@ declare const bulmaJS: BulmaJS;
         });
     };
 
-    const moveWorkOrderMilestoneTypeUp = (clickEvent: Event) => {
-        const tableRowElement = (
-            clickEvent.currentTarget as HTMLElement
-        ).closest("tr");
+    const moveWorkOrderMilestoneTypeUp = (clickEvent: MouseEvent) => {
+        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
 
         const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
 
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveWorkOrderMilestoneTypeUp",
             {
-                workOrderMilestoneTypeId
+                workOrderMilestoneTypeId,
+                moveToTop: clickEvent.shiftKey ? "1" : "0"
             },
             (responseJSON: {
                 success: boolean;
@@ -403,17 +394,16 @@ declare const bulmaJS: BulmaJS;
         );
     };
 
-    const moveWorkOrderMilestoneTypeDown = (clickEvent: Event) => {
-        const tableRowElement = (
-            clickEvent.currentTarget as HTMLElement
-        ).closest("tr");
+    const moveWorkOrderMilestoneTypeDown = (clickEvent: MouseEvent) => {
+        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
 
         const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
 
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveWorkOrderMilestoneTypeDown",
             {
-                workOrderMilestoneTypeId
+                workOrderMilestoneTypeId,
+                moveToBottom: clickEvent.shiftKey ? "1" : "0"
             },
             (responseJSON: {
                 success: boolean;
@@ -570,15 +560,12 @@ declare const bulmaJS: BulmaJS;
                     lotStatuses = responseJSON.lotStatuses;
 
                     bulmaJS.alert({
-                        message:
-                            exports.aliases.lot +
-                            " Status Updated Successfully",
+                        message: exports.aliases.lot + " Status Updated Successfully",
                         contextualColorName: "success"
                     });
                 } else {
                     bulmaJS.alert({
-                        title:
-                            "Error Updating " + exports.aliases.lot + " Status",
+                        title: "Error Updating " + exports.aliases.lot + " Status",
                         message: responseJSON.errorMessage,
                         contextualColorName: "danger"
                     });
@@ -588,9 +575,7 @@ declare const bulmaJS: BulmaJS;
     };
 
     const deleteLotStatus = (clickEvent: Event) => {
-        const tableRowElement = (
-            clickEvent.currentTarget as HTMLElement
-        ).closest("tr");
+        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
 
         const lotStatusId = tableRowElement.dataset.lotStatusId;
 
@@ -615,17 +600,12 @@ declare const bulmaJS: BulmaJS;
                         }
 
                         bulmaJS.alert({
-                            message:
-                                exports.aliases.lot +
-                                " Status Deleted Successfully",
+                            message: exports.aliases.lot + " Status Deleted Successfully",
                             contextualColorName: "success"
                         });
                     } else {
                         bulmaJS.alert({
-                            title:
-                                "Error Deleting " +
-                                exports.aliases.lot +
-                                " Status",
+                            title: "Error Deleting " + exports.aliases.lot + " Status",
                             message: responseJSON.errorMessage,
                             contextualColorName: "danger"
                         });
@@ -650,17 +630,16 @@ declare const bulmaJS: BulmaJS;
         });
     };
 
-    const moveLotStatusUp = (clickEvent: Event) => {
-        const tableRowElement = (
-            clickEvent.currentTarget as HTMLElement
-        ).closest("tr");
+    const moveLotStatusUp = (clickEvent: MouseEvent) => {
+        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
 
         const lotStatusId = tableRowElement.dataset.lotStatusId;
 
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveLotStatusUp",
             {
-                lotStatusId
+                lotStatusId,
+                moveToTop: clickEvent.shiftKey ? "1" : "0"
             },
             (responseJSON: {
                 success: boolean;
@@ -672,8 +651,7 @@ declare const bulmaJS: BulmaJS;
                     renderLotStatuses();
                 } else {
                     bulmaJS.alert({
-                        title:
-                            "Error Moving " + exports.aliases.lot + " Status",
+                        title: "Error Moving " + exports.aliases.lot + " Status",
                         message: responseJSON.errorMessage,
                         contextualColorName: "danger"
                     });
@@ -682,17 +660,16 @@ declare const bulmaJS: BulmaJS;
         );
     };
 
-    const moveLotStatusDown = (clickEvent: Event) => {
-        const tableRowElement = (
-            clickEvent.currentTarget as HTMLElement
-        ).closest("tr");
+    const moveLotStatusDown = (clickEvent: MouseEvent) => {
+        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
 
         const lotStatusId = tableRowElement.dataset.lotStatusId;
 
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveLotStatusDown",
             {
-                lotStatusId
+                lotStatusId,
+                moveToBottom: clickEvent.shiftKey ? "1" : "0"
             },
             (responseJSON: {
                 success: boolean;
@@ -704,8 +681,7 @@ declare const bulmaJS: BulmaJS;
                     renderLotStatuses();
                 } else {
                     bulmaJS.alert({
-                        title:
-                            "Error Moving " + exports.aliases.lot + " Status",
+                        title: "Error Moving " + exports.aliases.lot + " Status",
                         message: responseJSON.errorMessage,
                         contextualColorName: "danger"
                     });
@@ -739,8 +715,7 @@ declare const bulmaJS: BulmaJS;
         for (const lotStatus of lotStatuses) {
             const tableRowElement = document.createElement("tr");
 
-            tableRowElement.dataset.lotStatusId =
-                lotStatus.lotStatusId.toString();
+            tableRowElement.dataset.lotStatusId = lotStatus.lotStatusId.toString();
 
             tableRowElement.innerHTML =
                 "<td>" +
@@ -780,9 +755,7 @@ declare const bulmaJS: BulmaJS;
                 "</div>" +
                 "</td>";
 
-            tableRowElement
-                .querySelector("form")
-                .addEventListener("submit", updateLotStatus);
+            tableRowElement.querySelector("form").addEventListener("submit", updateLotStatus);
             tableRowElement
                 .querySelector(".button--moveLotStatusUp")
                 .addEventListener("click", moveLotStatusUp);
@@ -819,10 +792,7 @@ declare const bulmaJS: BulmaJS;
                         formElement.querySelector("input").focus();
                     } else {
                         bulmaJS.alert({
-                            title:
-                                "Error Adding " +
-                                exports.aliases.lot +
-                                " Status",
+                            title: "Error Adding " + exports.aliases.lot + " Status",
                             message: responseJSON.errorMessage,
                             contextualColorName: "danger"
                         });
@@ -837,8 +807,7 @@ declare const bulmaJS: BulmaJS;
      * Lot Occupant Types
      */
 
-    let lotOccupantTypes: recordTypes.LotOccupantType[] =
-        exports.lotOccupantTypes;
+    let lotOccupantTypes: recordTypes.LotOccupantType[] = exports.lotOccupantTypes;
     delete exports.lotOccupantTypes;
 
     const updateLotOccupantType = (submitEvent: SubmitEvent) => {
@@ -880,9 +849,7 @@ declare const bulmaJS: BulmaJS;
     };
 
     const deleteLotOccupantType = (clickEvent: Event) => {
-        const tableRowElement = (
-            clickEvent.currentTarget as HTMLElement
-        ).closest("tr");
+        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
 
         const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
 
@@ -931,12 +898,7 @@ declare const bulmaJS: BulmaJS;
         };
 
         bulmaJS.confirm({
-            title:
-                "Delete " +
-                exports.aliases.lot +
-                " " +
-                exports.aliases.occupant +
-                " Type",
+            title: "Delete " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
             message:
                 "Are you sure you want to delete this " +
                 exports.aliases.lot.toLowerCase() +
@@ -952,27 +914,22 @@ declare const bulmaJS: BulmaJS;
             contextualColorName: "warning",
             okButton: {
                 text:
-                    "Yes, Delete " +
-                    exports.aliases.lot +
-                    " " +
-                    exports.aliases.occupant +
-                    " Type",
+                    "Yes, Delete " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
                 callbackFunction: doDelete
             }
         });
     };
 
-    const moveLotOccupantTypeUp = (clickEvent: Event) => {
-        const tableRowElement = (
-            clickEvent.currentTarget as HTMLElement
-        ).closest("tr");
+    const moveLotOccupantTypeUp = (clickEvent: MouseEvent) => {
+        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
 
         const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
 
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveLotOccupantTypeUp",
             {
-                lotOccupantTypeId
+                lotOccupantTypeId,
+                moveToTop: clickEvent.shiftKey ? "1" : "0"
             },
             (responseJSON: {
                 success: boolean;
@@ -998,17 +955,16 @@ declare const bulmaJS: BulmaJS;
         );
     };
 
-    const moveLotOccupantTypeDown = (clickEvent: Event) => {
-        const tableRowElement = (
-            clickEvent.currentTarget as HTMLElement
-        ).closest("tr");
+    const moveLotOccupantTypeDown = (clickEvent: MouseEvent) => {
+        const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
 
         const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
 
         cityssm.postJSON(
             urlPrefix + "/admin/doMoveLotOccupantTypeDown",
             {
-                lotOccupantTypeId
+                lotOccupantTypeId,
+                moveToBottom: clickEvent.shiftKey ? "1" : "0"
             },
             (responseJSON: {
                 success: boolean;
@@ -1112,9 +1068,7 @@ declare const bulmaJS: BulmaJS;
                 "</div>" +
                 "</td>";
 
-            tableRowElement
-                .querySelector("form")
-                .addEventListener("submit", updateLotOccupantType);
+            tableRowElement.querySelector("form").addEventListener("submit", updateLotOccupantType);
             tableRowElement
                 .querySelector(".button--moveLotOccupantTypeUp")
                 .addEventListener("click", moveLotOccupantTypeUp);

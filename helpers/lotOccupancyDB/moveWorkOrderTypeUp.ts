@@ -4,17 +4,11 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearWorkOrderTypesCache } from "../functions.cache.js";
 
-export const moveWorkOrderTypeUp = (
-    workOrderTypeId: number | string
-): boolean => {
+export const moveWorkOrderTypeUp = (workOrderTypeId: number | string): boolean => {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
-        .prepare(
-            "select orderNumber" +
-                " from WorkOrderTypes" +
-                " where workOrderTypeId = ?"
-        )
+        .prepare("select orderNumber" + " from WorkOrderTypes" + " where workOrderTypeId = ?")
         .get(workOrderTypeId).orderNumber;
 
     if (currentOrderNumber <= 0) {
@@ -33,9 +27,7 @@ export const moveWorkOrderTypeUp = (
 
     const result = database
         .prepare(
-            "update WorkOrderTypes" +
-                " set orderNumber = ? - 1" +
-                " where workOrderTypeId = ?"
+            "update WorkOrderTypes" + " set orderNumber = ? - 1" + " where workOrderTypeId = ?"
         )
         .run(currentOrderNumber, workOrderTypeId);
 
@@ -44,6 +36,35 @@ export const moveWorkOrderTypeUp = (
     clearWorkOrderTypesCache();
 
     return result.changes > 0;
+};
+
+export const moveWorkOrderTypeUpToTop = (workOrderTypeId: number | string): boolean => {
+    const database = sqlite(databasePath);
+
+    const currentOrderNumber: number = database
+        .prepare("select orderNumber from WorkOrderTypes where workOrderTypeId = ?")
+        .get(workOrderTypeId).orderNumber;
+
+    if (currentOrderNumber > 0) {
+        database
+            .prepare("update WorkOrderTypes set orderNumber = -1 where workOrderTypeId = ?")
+            .run(workOrderTypeId);
+
+        database
+            .prepare(
+                "update WorkOrderTypes" +
+                    " set orderNumber = orderNumber + 1" +
+                    " where recordDelete_timeMillis is null" +
+                    " and orderNumber < ?"
+            )
+            .run(currentOrderNumber);
+    }
+
+    database.close();
+
+    clearWorkOrderTypesCache();
+
+    return true;
 };
 
 export default moveWorkOrderTypeUp;

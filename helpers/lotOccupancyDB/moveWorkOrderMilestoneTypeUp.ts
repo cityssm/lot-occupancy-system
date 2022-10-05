@@ -46,4 +46,33 @@ export const moveWorkOrderMilestoneTypeUp = (
     return result.changes > 0;
 };
 
+export const moveWorkOrderMilestoneTypeUpToTop = (workOrderMilestoneTypeId: number | string): boolean => {
+    const database = sqlite(databasePath);
+
+    const currentOrderNumber: number = database
+        .prepare("select orderNumber from WorkOrderMilestoneTypes where workOrderMilestoneTypeId = ?")
+        .get(workOrderMilestoneTypeId).orderNumber;
+
+    if (currentOrderNumber > 0) {
+        database
+            .prepare("update WorkOrderMilestoneTypes set orderNumber = -1 where workOrderMilestoneTypeId = ?")
+            .run(workOrderMilestoneTypeId);
+
+        database
+            .prepare(
+                "update WorkOrderMilestoneTypes" +
+                    " set orderNumber = orderNumber + 1" +
+                    " where recordDelete_timeMillis is null" +
+                    " and orderNumber < ?"
+            )
+            .run(currentOrderNumber);
+    }
+
+    database.close();
+
+    clearWorkOrderMilestoneTypesCache();
+
+    return true;
+};
+
 export default moveWorkOrderMilestoneTypeUp;

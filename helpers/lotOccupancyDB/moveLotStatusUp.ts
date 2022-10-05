@@ -8,11 +8,7 @@ export const moveLotStatusUp = (lotStatusId: number | string): boolean => {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
-        .prepare(
-            "select orderNumber" +
-                " from LotStatuses" +
-                " where lotStatusId = ?"
-        )
+        .prepare("select orderNumber from LotStatuses where lotStatusId = ?")
         .get(lotStatusId).orderNumber;
 
     if (currentOrderNumber <= 0) {
@@ -30,11 +26,7 @@ export const moveLotStatusUp = (lotStatusId: number | string): boolean => {
         .run(currentOrderNumber);
 
     const result = database
-        .prepare(
-            "update LotStatuses" +
-                " set orderNumber = ? - 1" +
-                " where lotStatusId = ?"
-        )
+        .prepare("update LotStatuses set orderNumber = ? - 1 where lotStatusId = ?")
         .run(currentOrderNumber, lotStatusId);
 
     database.close();
@@ -42,6 +34,35 @@ export const moveLotStatusUp = (lotStatusId: number | string): boolean => {
     clearLotStatusesCache();
 
     return result.changes > 0;
+};
+
+export const moveLotStatusUpToTop = (lotStatusId: number | string): boolean => {
+    const database = sqlite(databasePath);
+
+    const currentOrderNumber: number = database
+        .prepare("select orderNumber from LotStatuses where lotStatusId = ?")
+        .get(lotStatusId).orderNumber;
+
+    if (currentOrderNumber > 0) {
+        database
+            .prepare("update LotStatuses set orderNumber = -1 where lotStatusId = ?")
+            .run(lotStatusId);
+
+        database
+            .prepare(
+                "update LotStatuses" +
+                    " set orderNumber = orderNumber + 1" +
+                    " where recordDelete_timeMillis is null" +
+                    " and orderNumber < ?"
+            )
+            .run(currentOrderNumber);
+    }
+
+    database.close();
+
+    clearLotStatusesCache();
+
+    return true;
 };
 
 export default moveLotStatusUp;
