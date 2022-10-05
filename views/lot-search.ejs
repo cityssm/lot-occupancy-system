@@ -33,37 +33,46 @@
         <input id="searchFilter--limit" name="limit" type="hidden" value="100" />
         <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
         <div class="columns">
-        <div class="column">
-            <div class="field">
-            <label class="label" for="searchFilter--lotName"><%= configFunctions.getProperty("aliases.lot") %></label>
-            <div class="control has-icons-left">
-                <input class="input" id="searchFilter--lotName" name="lotName" accesskey="f" />
-                <span class="icon is-small is-left">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                </span>
-            </div>
-            </div>
-        </div>
-        <div class="column">
-            <div class="field">
-            <label class="label" for="searchFilter--lotTypeId"><%= configFunctions.getProperty("aliases.lot") %> Type</label>
-            <div class="control has-icons-left">
-                <div class="select is-fullwidth">
-                <select id="searchFilter--lotTypeId" name="lotTypeId">
-                    <option value="">(All <%= configFunctions.getProperty("aliases.lot") %> Types)</option>
-                    <% for (const lotType of lotTypes) { %>
-                    <option value="<%= lotType.lotTypeId %>" <%= (lotType.lotTypeId.toString() === lotTypeId) ? " selected" : "" %>>
-                        <%= lotType.lotType || "(No Name)" %>
-                    </option>
-                    <% } %>
-                </select>
+            <div class="column">
+                <label class="label" for="searchFilter--lotName"><%= configFunctions.getProperty("aliases.lot") %></label>
+                <div class="field has-addons">
+                    <div class="control has-icons-left">
+                        <div class="select">
+                            <select id="selectFilter--lotNameSearchType" name="lotNameSearchType">
+                                <option value="">contains</option>
+                                <option value="startsWith">starts with</option>
+                                <option value="endsWith">ends with</option>
+                            </select>
+                        </div>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="control is-expanded">
+                        <input class="input" id="searchFilter--lotName" name="lotName" />
+                    </div>
                 </div>
-                <span class="icon is-small is-left">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                </span>
             </div>
+            <div class="column">
+                <div class="field">
+                <label class="label" for="searchFilter--lotTypeId"><%= configFunctions.getProperty("aliases.lot") %> Type</label>
+                <div class="control has-icons-left">
+                    <div class="select is-fullwidth">
+                    <select id="searchFilter--lotTypeId" name="lotTypeId">
+                        <option value="">(All <%= configFunctions.getProperty("aliases.lot") %> Types)</option>
+                        <% for (const lotType of lotTypes) { %>
+                        <option value="<%= lotType.lotTypeId %>" <%= (lotType.lotTypeId.toString() === lotTypeId) ? " selected" : "" %>>
+                            <%= lotType.lotType || "(No Name)" %>
+                        </option>
+                        <% } %>
+                    </select>
+                    </div>
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </span>
+                </div>
+                </div>
             </div>
-        </div>
         </div>
         <div class="columns">
         <div class="column">

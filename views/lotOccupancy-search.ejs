@@ -18,7 +18,7 @@
 </nav>
 
 <h1 class="title is-1">
-  Find an <%= configFunctions.getProperty("aliases.occupancy") %> Record
+    Find an <%= configFunctions.getProperty("aliases.occupancy") %> Record
 </h1>
 
 <% if (user.userProperties.canUpdate) { %>
@@ -34,110 +34,117 @@
 <% } %>
 
 <div class="box">
-  <form id="form--searchFilters">
-    <input id="searchFilter--limit" name="limit" type="hidden" value="100" />
-    <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
-    <div class="columns">
-        <div class="column">
-            <div class="field">
-                <label class="label" for="searchFilter--occupantName"><%= configFunctions.getProperty("aliases.occupant") %> Name</label>
-                <div class="control has-icons-left">
-                    <input class="input" id="searchFilter--occupantName" name="occupantName" accesskey="f" />
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-search" aria-hidden="true"></i>
-                    </span>
+    <form id="form--searchFilters">
+        <input id="searchFilter--limit" name="limit" type="hidden" value="100" />
+        <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
+        <div class="columns">
+            <div class="column">
+                <div class="field">
+                    <label class="label" for="searchFilter--occupantName"><%= configFunctions.getProperty("aliases.occupant") %> Name</label>
+                    <div class="control has-icons-left">
+                        <input class="input" id="searchFilter--occupantName" name="occupantName" accesskey="f" />
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="field">
+                    <label class="label" for="searchFilter--occupancyTypeId"><%= configFunctions.getProperty("aliases.occupancy") %> Type</label>
+                    <div class="control has-icons-left">
+                        <div class="select is-fullwidth">
+                            <select id="searchFilter--occupancyTypeId" name="occupancyTypeId">
+                                <option value="">(All <%= configFunctions.getProperty("aliases.occupancy") %> Types)</option>
+                                <% for (const occupancyType of occupancyTypes) { %>
+                                    <option value="<%= occupancyType.occupancyTypeId %>"><%= occupancyType.occupancyType %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="field">
+                    <label class="label" for="searchFilter--occupancyTime"><%= configFunctions.getProperty("aliases.occupancy") %> Time</label>
+                    <div class="control has-icons-left">
+                        <div class="select is-fullwidth">
+                            <select id="searchFilter--occupancyTime" name="occupancyTime">
+                                <option value="">(All Times)</option>
+                                <option value="current" selected>Current</option>
+                                <option value="past">Past</option>
+                                <option value="future">Future</option>
+                            </select>
+                        </div>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="column">
-            <div class="field">
-                <label class="label" for="searchFilter--occupancyTypeId"><%= configFunctions.getProperty("aliases.occupancy") %> Type</label>
+        <div class="columns">
+            <div class="column">
+                <div class="field">
+                    <label class="label" for="searchFilter--mapId"><%= configFunctions.getProperty("aliases.map") %></label>
+                    <div class="control has-icons-left">
+                        <div class="select is-fullwidth">
+                            <select id="searchFilter--mapId" name="mapId">
+                                <option value="">(All <%= configFunctions.getProperty("aliases.maps") %>)</option>
+                                <% for (const map of maps) { %>
+                                <option value="<%= map.mapId %>" <%= (map.mapId.toString() === mapId) ? " selected" : "" %>>
+                                    <%= map.mapName || "(No Name)" %>
+                                </option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="field">
+                <label class="label" for="searchFilter--lotTypeId"><%= configFunctions.getProperty("aliases.lot") %> Type</label>
                 <div class="control has-icons-left">
                     <div class="select is-fullwidth">
-                        <select id="searchFilter--occupancyTypeId" name="occupancyTypeId">
-                            <option value="">(All <%= configFunctions.getProperty("aliases.occupancy") %> Types)</option>
-                            <% for (const occupancyType of occupancyTypes) { %>
-                                <option value="<%= occupancyType.occupancyTypeId %>"><%= occupancyType.occupancyType %></option>
-                            <% } %>
-                        </select>
+                    <select id="searchFilter--lotTypeId" name="lotTypeId">
+                        <option value="">(All <%= configFunctions.getProperty("aliases.lot") %> Types)</option>
+                        <% for (const lotType of lotTypes) { %>
+                        <option value="<%= lotType.lotTypeId %>"><%= lotType.lotType %></option>
+                        <% } %>
+                    </select>
                     </div>
                     <span class="icon is-small is-left">
                         <i class="fas fa-search" aria-hidden="true"></i>
                     </span>
                 </div>
-            </div>
-        </div>
-        <div class="column">
-            <div class="field">
-                <label class="label" for="searchFilter--occupancyTime"><%= configFunctions.getProperty("aliases.occupancy") %> Time</label>
-                <div class="control has-icons-left">
-                    <div class="select is-fullwidth">
-                        <select id="searchFilter--occupancyTime" name="occupancyTime">
-                            <option value="">(All Times)</option>
-                            <option value="current" selected>Current</option>
-                            <option value="past">Past</option>
-                            <option value="future">Future</option>
-                        </select>
-                    </div>
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-search" aria-hidden="true"></i>
-                    </span>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="columns">
-        <div class="column">
-            <div class="field">
-                <label class="label" for="searchFilter--mapId"><%= configFunctions.getProperty("aliases.map") %></label>
-                <div class="control has-icons-left">
-                    <div class="select is-fullwidth">
-                        <select id="searchFilter--mapId" name="mapId">
-                            <option value="">(All <%= configFunctions.getProperty("aliases.maps") %>)</option>
-                            <% for (const map of maps) { %>
-                            <option value="<%= map.mapId %>" <%= (map.mapId.toString() === mapId) ? " selected" : "" %>>
-                                <%= map.mapName || "(No Name)" %>
-                            </option>
-                            <% } %>
-                        </select>
-                    </div>
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-search" aria-hidden="true"></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="column">
-            <div class="field">
-            <label class="label" for="searchFilter--lotName"><%= configFunctions.getProperty("aliases.lot") %></label>
+        <label class="label" for="searchFilter--lotName"><%= configFunctions.getProperty("aliases.lot") %></label>
+        <div class="field has-addons">
             <div class="control has-icons-left">
+                <div class="select">
+                    <select id="selectFilter--lotNameSearchType" name="lotNameSearchType">
+                        <option value="">contains</option>
+                        <option value="startsWith">starts with</option>
+                        <option value="endsWith">ends with</option>
+                    </select>
+                </div>
+                <span class="icon is-small is-left">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+            </div>
+            <div class="control is-expanded">
                 <input class="input" id="searchFilter--lotName" name="lotName" />
-                <span class="icon is-small is-left">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                </span>
-            </div>
             </div>
         </div>
-        <div class="column">
-            <div class="field">
-            <label class="label" for="searchFilter--lotTypeId"><%= configFunctions.getProperty("aliases.lot") %> Type</label>
-            <div class="control has-icons-left">
-                <div class="select is-fullwidth">
-                <select id="searchFilter--lotTypeId" name="lotTypeId">
-                    <option value="">(All <%= configFunctions.getProperty("aliases.lot") %> Types)</option>
-                    <% for (const lotType of lotTypes) { %>
-                    <option value="<%= lotType.lotTypeId %>"><%= lotType.lotType %></option>
-                    <% } %>
-                </select>
-                </div>
-                <span class="icon is-small is-left">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                </span>
-            </div>
-            </div>
-        </div>
-    </div>
-  </form>
+    </form>
 </div>
 
 <div id="container--searchResults"></div>

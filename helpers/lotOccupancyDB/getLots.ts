@@ -9,6 +9,7 @@ import * as configFunctions from "../functions.config.js";
 import type * as recordTypes from "../../types/recordTypes";
 
 interface GetLotsFilters {
+    lotNameSearchType?: "" | "startsWith" | "endsWith";
     lotName?: string;
     mapId?: number | string;
     lotTypeId?: number | string;
@@ -40,12 +41,21 @@ export const getLots = (
     const sqlParameters = [];
 
     if (filters.lotName) {
-        const lotNamePieces = filters.lotName.toLowerCase().split(" ");
-        for (const lotNamePiece of lotNamePieces) {
-            sqlWhereClause += " and instr(lower(l.lotName), ?)";
-            sqlParameters.push(lotNamePiece);
+        if (filters.lotNameSearchType === "startsWith") {
+            sqlWhereClause += " and l.lotName like ? || '%'";
+            sqlParameters.push(filters.lotName);
+        } else if (filters.lotNameSearchType === "endsWith") {
+            sqlWhereClause += " and l.lotName like '%' || ?";
+            sqlParameters.push(filters.lotName);
+        } else {
+            const lotNamePieces = filters.lotName.toLowerCase().split(" ");
+            for (const lotNamePiece of lotNamePieces) {
+                sqlWhereClause += " and instr(lower(l.lotName), ?)";
+                sqlParameters.push(lotNamePiece);
+            }
         }
     }
+
 
     if (filters.mapId) {
         sqlWhereClause += " and l.mapId = ?";
@@ -66,8 +76,7 @@ export const getLots = (
         if (filters.occupancyStatus === "occupied") {
             sqlWhereClause += " and lotOccupancyCount > 0";
         } else if (filters.occupancyStatus === "unoccupied") {
-            sqlWhereClause +=
-                " and (lotOccupancyCount is null or lotOccupancyCount = 0)";
+            sqlWhereClause += " and (lotOccupancyCount is null or lotOccupancyCount = 0)";
         }
     }
 
@@ -82,25 +91,25 @@ export const getLots = (
     let count: number;
 
     if (options.limit !== -1) {
-    count = database
-        .prepare(
-            "select count(*) as recordCount" +
-                " from Lots l" +
-                (" left join (" +
-                    "select lotId, count(lotOccupancyId) as lotOccupancyCount" +
-                    " from LotOccupancies" +
-                    " where recordDelete_timeMillis is null" +
-                    " and occupancyStartDate <= " +
-                    currentDate +
-                    " and (occupancyEndDate is null or occupancyEndDate >= " +
-                    currentDate +
-                    ")" +
-                    " group by lotId" +
-                    ") o on l.lotId = o.lotId") +
-                sqlWhereClause
-        )
-        .get(sqlParameters).recordCount;
-        }
+        count = database
+            .prepare(
+                "select count(*) as recordCount" +
+                    " from Lots l" +
+                    (" left join (" +
+                        "select lotId, count(lotOccupancyId) as lotOccupancyCount" +
+                        " from LotOccupancies" +
+                        " where recordDelete_timeMillis is null" +
+                        " and occupancyStartDate <= " +
+                        currentDate +
+                        " and (occupancyEndDate is null or occupancyEndDate >= " +
+                        currentDate +
+                        ")" +
+                        " group by lotId" +
+                        ") o on l.lotId = o.lotId") +
+                    sqlWhereClause
+            )
+            .get(sqlParameters).recordCount;
+    }
 
     let lots: recordTypes.Lot[] = [];
 
@@ -134,12 +143,7 @@ export const getLots = (
                         ") o on l.lotId = o.lotId") +
                     sqlWhereClause +
                     " order by userFn_lotNameSortName(l.lotName), l.lotId" +
-                    (options
-                        ? " limit " +
-                          options.limit +
-                          " offset " +
-                          options.offset
-                        : "")
+                    (options ? " limit " + options.limit + " offset " + options.offset : "")
             )
             .all(sqlParameters);
 

@@ -10,10 +10,20 @@ export const getLots = (filters, options, connectedDatabase) => {
     let sqlWhereClause = " where l.recordDelete_timeMillis is null";
     const sqlParameters = [];
     if (filters.lotName) {
-        const lotNamePieces = filters.lotName.toLowerCase().split(" ");
-        for (const lotNamePiece of lotNamePieces) {
-            sqlWhereClause += " and instr(lower(l.lotName), ?)";
-            sqlParameters.push(lotNamePiece);
+        if (filters.lotNameSearchType === "startsWith") {
+            sqlWhereClause += " and l.lotName like ? || '%'";
+            sqlParameters.push(filters.lotName);
+        }
+        else if (filters.lotNameSearchType === "endsWith") {
+            sqlWhereClause += " and l.lotName like '%' || ?";
+            sqlParameters.push(filters.lotName);
+        }
+        else {
+            const lotNamePieces = filters.lotName.toLowerCase().split(" ");
+            for (const lotNamePiece of lotNamePieces) {
+                sqlWhereClause += " and instr(lower(l.lotName), ?)";
+                sqlParameters.push(lotNamePiece);
+            }
         }
     }
     if (filters.mapId) {
@@ -33,8 +43,7 @@ export const getLots = (filters, options, connectedDatabase) => {
             sqlWhereClause += " and lotOccupancyCount > 0";
         }
         else if (filters.occupancyStatus === "unoccupied") {
-            sqlWhereClause +=
-                " and (lotOccupancyCount is null or lotOccupancyCount = 0)";
+            sqlWhereClause += " and (lotOccupancyCount is null or lotOccupancyCount = 0)";
         }
     }
     if (filters.workOrderId) {
@@ -88,12 +97,7 @@ export const getLots = (filters, options, connectedDatabase) => {
                 ") o on l.lotId = o.lotId") +
             sqlWhereClause +
             " order by userFn_lotNameSortName(l.lotName), l.lotId" +
-            (options
-                ? " limit " +
-                    options.limit +
-                    " offset " +
-                    options.offset
-                : ""))
+            (options ? " limit " + options.limit + " offset " + options.offset : ""))
             .all(sqlParameters);
         if (options.limit === -1) {
             count = lots.length;

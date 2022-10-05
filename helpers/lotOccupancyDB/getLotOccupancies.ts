@@ -20,6 +20,7 @@ interface GetLotOccupanciesFilters {
     occupantName?: string;
     occupancyTypeId?: number | string;
     mapId?: number | string;
+    lotNameSearchType?: "" | "startsWith" | "endsWith";
     lotName?: string;
     lotTypeId?: number | string;
     workOrderId?: number | string;
@@ -57,10 +58,18 @@ export const getLotOccupancies = (
     }
 
     if (filters.lotName) {
-        const lotNamePieces = filters.lotName.toLowerCase().split(" ");
-        for (const lotNamePiece of lotNamePieces) {
-            sqlWhereClause += " and instr(lower(l.lotName), ?)";
-            sqlParameters.push(lotNamePiece);
+        if (filters.lotNameSearchType === "startsWith") {
+            sqlWhereClause += " and l.lotName like ? || '%'";
+            sqlParameters.push(filters.lotName);
+        } else if (filters.lotNameSearchType === "endsWith") {
+            sqlWhereClause += " and l.lotName like '%' || ?";
+            sqlParameters.push(filters.lotName);
+        } else {
+            const lotNamePieces = filters.lotName.toLowerCase().split(" ");
+            for (const lotNamePiece of lotNamePieces) {
+                sqlWhereClause += " and instr(lower(l.lotName), ?)";
+                sqlParameters.push(lotNamePiece);
+            }
         }
     }
 
@@ -82,21 +91,24 @@ export const getLotOccupancies = (
         const currentDateString = dateToInteger(new Date());
 
         switch (filters.occupancyTime) {
-            case "current":
+            case "current": {
                 sqlWhereClause +=
                     " and o.occupancyStartDate <= ? and (o.occupancyEndDate is null or o.occupancyEndDate >= ?)";
                 sqlParameters.push(currentDateString, currentDateString);
                 break;
+            }
 
-            case "past":
+            case "past": {
                 sqlWhereClause += " and o.occupancyEndDate < ?";
                 sqlParameters.push(currentDateString);
                 break;
+            }
 
-            case "future":
+            case "future": {
                 sqlWhereClause += " and o.occupancyStartDate > ?";
                 sqlParameters.push(currentDateString);
                 break;
+            }
         }
     }
 

@@ -8,6 +8,7 @@ interface GetLotOccupanciesFilters {
     occupantName?: string;
     occupancyTypeId?: number | string;
     mapId?: number | string;
+    lotNameSearchType?: "" | "startsWith" | "endsWith";
     lotName?: string;
     lotTypeId?: number | string;
     workOrderId?: number | string;

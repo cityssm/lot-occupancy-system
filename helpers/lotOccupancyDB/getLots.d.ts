@@ -1,6 +1,7 @@
 import sqlite from "better-sqlite3";
 import type * as recordTypes from "../../types/recordTypes";
 interface GetLotsFilters {
+    lotNameSearchType?: "" | "startsWith" | "endsWith";
     lotName?: string;
     mapId?: number | string;
     lotTypeId?: number | string;
