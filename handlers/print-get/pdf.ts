@@ -8,7 +8,7 @@ import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js"
 
 import { getReportData, getPdfPrintConfig } from "../../helpers/functions.print.js";
 
-import convertHTMLToPDF from "pdf-puppeteer";
+import { convertHTMLToPDF } from "@cityssm/pdf-puppeteer";
 import camelcase from "camelcase";
 
 export const handler: RequestHandler = async (request, response, next) => {

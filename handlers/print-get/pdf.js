@@ -3,7 +3,7 @@ import * as ejs from "ejs";
 import * as configFunctions from "../../helpers/functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { getReportData, getPdfPrintConfig } from "../../helpers/functions.print.js";
-import convertHTMLToPDF from "pdf-puppeteer";
+import { convertHTMLToPDF } from "@cityssm/pdf-puppeteer";
 import camelcase from "camelcase";
 export const handler = async (request, response, next) => {
     const printName = request.params.printName;
