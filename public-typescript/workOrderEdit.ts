@@ -1595,17 +1595,20 @@ declare const bulmaJS: BulmaJS;
 
         document.querySelector("#button--addMilestone").addEventListener("click", () => {
             let addModalElement: HTMLElement;
+            let addFormElement: HTMLFormElement;
             let addCloseModalFunction: () => void;
 
             const doAdd = (submitEvent: SubmitEvent) => {
-                submitEvent.preventDefault();
+                if (submitEvent) {
+                    submitEvent.preventDefault();
+                }
 
                 const currentDateString = cityssm.dateToString(new Date());
 
                 const _doAdd = () => {
                     cityssm.postJSON(
                         urlPrefix + "/workOrders/doAddWorkOrderMilestone",
-                        submitEvent.currentTarget,
+                        addFormElement,
                         (responseJSON: {
                             success: boolean;
                             errorMessage?: string;
@@ -1676,7 +1679,8 @@ declare const bulmaJS: BulmaJS;
 
                     bulmaJS.toggleHtmlClipped();
 
-                    modalElement.querySelector("form").addEventListener("submit", doAdd);
+                    addFormElement = modalElement.querySelector("form");
+                    addFormElement.addEventListener("submit", doAdd);
                 },
                 onremoved: () => {
                     bulmaJS.toggleHtmlClipped();

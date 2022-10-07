@@ -1110,12 +1110,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
         renderMilestones();
         document.querySelector("#button--addMilestone").addEventListener("click", () => {
             let addModalElement;
+            let addFormElement;
             let addCloseModalFunction;
             const doAdd = (submitEvent) => {
-                submitEvent.preventDefault();
+                if (submitEvent) {
+                    submitEvent.preventDefault();
+                }
                 const currentDateString = cityssm.dateToString(new Date());
                 const _doAdd = () => {
-                    cityssm.postJSON(urlPrefix + "/workOrders/doAddWorkOrderMilestone", submitEvent.currentTarget, (responseJSON) => {
+                    cityssm.postJSON(urlPrefix + "/workOrders/doAddWorkOrderMilestone", addFormElement, (responseJSON) => {
                         processMilestoneResponse(responseJSON);
                         if (responseJSON.success) {
                             addCloseModalFunction();
@@ -1155,7 +1158,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     los.initializeDatePickers(modalElement);
                     los.initializeTimePickers(modalElement);
                     bulmaJS.toggleHtmlClipped();
-                    modalElement.querySelector("form").addEventListener("submit", doAdd);
+                    addFormElement = modalElement.querySelector("form");
+                    addFormElement.addEventListener("submit", doAdd);
                 },
                 onremoved: () => {
                     bulmaJS.toggleHtmlClipped();
