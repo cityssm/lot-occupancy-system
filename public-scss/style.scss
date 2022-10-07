@@ -174,10 +174,12 @@ span.button.is-static {
         background-color: transparent !important;
     }
 
+    // fix left icon
     .datetimepicker-dummy-wrapper .datetimepicker-dummy-input:first-child {
         text-indent: 2rem;
     }
 
+    // center the button
     .datetimepicker-clear-button {
         transform: none;
         margin-right: 0.25rem;
