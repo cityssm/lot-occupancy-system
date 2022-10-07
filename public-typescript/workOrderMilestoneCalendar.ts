@@ -166,10 +166,12 @@ declare const cityssm: cityssmGlobal;
     };
 
     workOrderMilestoneDateFilterElement.addEventListener("change", () => {
-        workOrderMilestoneDateStringElement.disabled =
+        workOrderMilestoneDateStringElement.closest("fieldset").disabled =
             workOrderMilestoneDateFilterElement.value !== "date";
         getMilestones();
     });
+
+    los.initializeDatePickers(workOrderSearchFiltersFormElement);
 
     workOrderMilestoneDateStringElement.addEventListener("change", getMilestones);
     workOrderSearchFiltersFormElement.addEventListener("submit", getMilestones);
