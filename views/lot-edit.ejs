@@ -363,9 +363,11 @@
 
 <%- include('_footerA'); -%>
 
+<% if (!isCreate) { %>
 <script>
     exports.lotComments = <%- JSON.stringify(lot.lotComments) %>;
 </script>
+<% } %>
 <script src="<%= urlPrefix %>/javascripts/lotEdit.min.js"></script>
 
 <%- include('_footerB'); -%>
