@@ -71,7 +71,7 @@ declare const bulmaJS: BulmaJS;
                 },
                 (responseJSON: { success: boolean; errorMessage?: string }) => {
                     if (responseJSON.success) {
-                        window.location.href = urlPrefix + "/workOrders/" + workOrderId;
+                        window.location.href = urlPrefix + "/workOrders/" + encodeURIComponent(workOrderId);
                     } else {
                         bulmaJS.alert({
                             title: "Error Closing Work Order",

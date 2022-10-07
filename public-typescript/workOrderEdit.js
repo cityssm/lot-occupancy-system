@@ -42,7 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 workOrderId
             }, (responseJSON) => {
                 if (responseJSON.success) {
-                    window.location.href = urlPrefix + "/workOrders/" + workOrderId;
+                    window.location.href = urlPrefix + "/workOrders/" + encodeURIComponent(workOrderId);
                 }
                 else {
                     bulmaJS.alert({
