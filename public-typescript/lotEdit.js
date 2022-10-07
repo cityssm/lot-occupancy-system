@@ -97,7 +97,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     lotId;
                 modalElement.querySelector("#lotCommentEdit--lotCommentId").value = lotCommentId.toString();
                 modalElement.querySelector("#lotCommentEdit--lotComment").value = lotComment.lotComment;
-                modalElement.querySelector("#lotCommentEdit--lotCommentDateString").value = lotComment.lotCommentDateString;
+                const lotCommentDateStringElement = modalElement.querySelector("#lotCommentEdit--lotCommentDateString");
+                lotCommentDateStringElement.value = lotComment.lotCommentDateString;
+                const currentDateString = cityssm.dateToString(new Date());
+                lotCommentDateStringElement.max =
+                    lotComment.lotCommentDateString <= currentDateString
+                        ? currentDateString
+                        : lotComment.lotCommentDateString;
                 modalElement.querySelector("#lotCommentEdit--lotCommentTimeString").value = lotComment.lotCommentTimeString;
             },
             onshown: (modalElement, closeModalFunction) => {

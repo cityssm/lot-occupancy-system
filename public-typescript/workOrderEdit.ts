@@ -986,8 +986,6 @@ declare const bulmaJS: BulmaJS;
             return currentComment.workOrderCommentId === workOrderCommentId;
         });
 
-        console.log(workOrderComments);
-
         let editFormElement: HTMLFormElement;
         let editCloseModalFunction: () => void;
 
@@ -1035,11 +1033,21 @@ declare const bulmaJS: BulmaJS;
                         "#workOrderCommentEdit--workOrderComment"
                     ) as HTMLInputElement
                 ).value = workOrderComment.workOrderComment;
-                (
-                    modalElement.querySelector(
-                        "#workOrderCommentEdit--workOrderCommentDateString"
-                    ) as HTMLInputElement
-                ).value = workOrderComment.workOrderCommentDateString;
+
+                const workOrderCommentDateStringElement = modalElement.querySelector(
+                    "#workOrderCommentEdit--workOrderCommentDateString"
+                ) as HTMLInputElement;
+
+                workOrderCommentDateStringElement.value =
+                    workOrderComment.workOrderCommentDateString;
+
+                const currentDateString = cityssm.dateToString(new Date());
+
+                workOrderCommentDateStringElement.max =
+                    workOrderComment.workOrderCommentDateString <= currentDateString
+                        ? currentDateString
+                        : workOrderComment.workOrderCommentDateString;
+
                 (
                     modalElement.querySelector(
                         "#workOrderCommentEdit--workOrderCommentTimeString"

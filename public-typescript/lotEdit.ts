@@ -150,11 +150,20 @@ declare const bulmaJS: BulmaJS;
                 (
                     modalElement.querySelector("#lotCommentEdit--lotComment") as HTMLInputElement
                 ).value = lotComment.lotComment;
-                (
-                    modalElement.querySelector(
-                        "#lotCommentEdit--lotCommentDateString"
-                    ) as HTMLInputElement
-                ).value = lotComment.lotCommentDateString;
+
+                const lotCommentDateStringElement = modalElement.querySelector(
+                    "#lotCommentEdit--lotCommentDateString"
+                ) as HTMLInputElement;
+
+                lotCommentDateStringElement.value = lotComment.lotCommentDateString;
+
+                const currentDateString = cityssm.dateToString(new Date());
+
+                lotCommentDateStringElement.max =
+                    lotComment.lotCommentDateString <= currentDateString
+                        ? currentDateString
+                        : lotComment.lotCommentDateString;
+
                 (
                     modalElement.querySelector(
                         "#lotCommentEdit--lotCommentTimeString"

@@ -713,7 +713,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const workOrderComment = workOrderComments.find((currentComment) => {
             return currentComment.workOrderCommentId === workOrderCommentId;
         });
-        console.log(workOrderComments);
         let editFormElement;
         let editCloseModalFunction;
         const editComment = (submitEvent) => {
@@ -738,7 +737,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector("#workOrderCommentEdit--workOrderId").value = workOrderId;
                 modalElement.querySelector("#workOrderCommentEdit--workOrderCommentId").value = workOrderCommentId.toString();
                 modalElement.querySelector("#workOrderCommentEdit--workOrderComment").value = workOrderComment.workOrderComment;
-                modalElement.querySelector("#workOrderCommentEdit--workOrderCommentDateString").value = workOrderComment.workOrderCommentDateString;
+                const workOrderCommentDateStringElement = modalElement.querySelector("#workOrderCommentEdit--workOrderCommentDateString");
+                workOrderCommentDateStringElement.value =
+                    workOrderComment.workOrderCommentDateString;
+                const currentDateString = cityssm.dateToString(new Date());
+                workOrderCommentDateStringElement.max =
+                    workOrderComment.workOrderCommentDateString <= currentDateString
+                        ? currentDateString
+                        : workOrderComment.workOrderCommentDateString;
                 modalElement.querySelector("#workOrderCommentEdit--workOrderCommentTimeString").value = workOrderComment.workOrderCommentTimeString;
             },
             onshown: (modalElement, closeModalFunction) => {

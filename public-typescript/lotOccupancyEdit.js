@@ -368,8 +368,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     document
         .querySelector("#lotOccupancy--occupancyStartDateString")
         .addEventListener("change", () => {
-        const endDatePicker = document.querySelector("#lotOccupancy--occupancyEndDateString")
-            .bulmaCalendar.datePicker;
+        const endDatePicker = document.querySelector("#lotOccupancy--occupancyEndDateString").bulmaCalendar.datePicker;
         endDatePicker.min = document.querySelector("#lotOccupancy--occupancyStartDateString").value;
         endDatePicker.refresh();
     });
@@ -636,7 +635,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     modalElement.querySelector("#lotOccupancyCommentEdit--lotOccupancyId").value = lotOccupancyId;
                     modalElement.querySelector("#lotOccupancyCommentEdit--lotOccupancyCommentId").value = lotOccupancyCommentId.toString();
                     modalElement.querySelector("#lotOccupancyCommentEdit--lotOccupancyComment").value = lotOccupancyComment.lotOccupancyComment;
-                    modalElement.querySelector("#lotOccupancyCommentEdit--lotOccupancyCommentDateString").value = lotOccupancyComment.lotOccupancyCommentDateString;
+                    const lotOccupancyCommentDateStringElement = modalElement.querySelector("#lotOccupancyCommentEdit--lotOccupancyCommentDateString");
+                    lotOccupancyCommentDateStringElement.value =
+                        lotOccupancyComment.lotOccupancyCommentDateString;
+                    const currentDateString = cityssm.dateToString(new Date());
+                    lotOccupancyCommentDateStringElement.max =
+                        lotOccupancyComment.lotOccupancyCommentDateString <= currentDateString
+                            ? currentDateString
+                            : lotOccupancyComment.lotOccupancyCommentDateString;
                     modalElement.querySelector("#lotOccupancyCommentEdit--lotOccupancyCommentTimeString").value = lotOccupancyComment.lotOccupancyCommentTimeString;
                 },
                 onshown: (modalElement, closeModalFunction) => {

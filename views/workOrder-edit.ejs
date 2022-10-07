@@ -133,7 +133,13 @@
                             <div class="field">
                                 <label class="label" for="workOrderEdit--workOrderOpenDateString">Open Date</label>
                                 <div class="control has-icons-left">
-                                    <input class="input" id="workOrderEdit--workOrderOpenDateString" name="workOrderOpenDateString" type="date" value="<%= workOrder.workOrderOpenDateString %>" required />
+                                    <%
+                                        const currentDateString = dateTimeFunctions.dateToString(new Date());
+                                    %>
+                                    <input class="input" id="workOrderEdit--workOrderOpenDateString" name="workOrderOpenDateString" type="date" 
+                                        value="<%= workOrder.workOrderOpenDateString %>"
+                                        max="<%= workOrder.workOrderOpenDateString > currentDateString ? workOrder.workOrderOpenDateString : currentDateString %>"
+                                        required />
                                     <span class="icon is-left">
                                         <i class="fas fa-calendar" aria-hidden="true"></i>
                                     </span>

@@ -529,8 +529,9 @@ declare const bulmaJS: BulmaJS;
     document
         .querySelector("#lotOccupancy--occupancyStartDateString")
         .addEventListener("change", () => {
-            const endDatePicker = document.querySelector("#lotOccupancy--occupancyEndDateString")
-                .bulmaCalendar.datePicker;
+            const endDatePicker = (
+                document.querySelector("#lotOccupancy--occupancyEndDateString") as HTMLInputElement
+            ).bulmaCalendar.datePicker;
 
             endDatePicker.min = (
                 document.querySelector(
@@ -981,11 +982,21 @@ declare const bulmaJS: BulmaJS;
                             "#lotOccupancyCommentEdit--lotOccupancyComment"
                         ) as HTMLInputElement
                     ).value = lotOccupancyComment.lotOccupancyComment;
-                    (
-                        modalElement.querySelector(
-                            "#lotOccupancyCommentEdit--lotOccupancyCommentDateString"
-                        ) as HTMLInputElement
-                    ).value = lotOccupancyComment.lotOccupancyCommentDateString;
+
+                    const lotOccupancyCommentDateStringElement = modalElement.querySelector(
+                        "#lotOccupancyCommentEdit--lotOccupancyCommentDateString"
+                    ) as HTMLInputElement;
+
+                    lotOccupancyCommentDateStringElement.value =
+                        lotOccupancyComment.lotOccupancyCommentDateString;
+
+                    const currentDateString = cityssm.dateToString(new Date());
+
+                    lotOccupancyCommentDateStringElement.max =
+                        lotOccupancyComment.lotOccupancyCommentDateString <= currentDateString
+                            ? currentDateString
+                            : lotOccupancyComment.lotOccupancyCommentDateString;
+
                     (
                         modalElement.querySelector(
                             "#lotOccupancyCommentEdit--lotOccupancyCommentTimeString"
