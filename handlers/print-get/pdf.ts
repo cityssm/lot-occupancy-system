@@ -38,22 +38,33 @@ export const handler: RequestHandler = async (request, response, next) => {
         response.send(pdf);
     };
 
-    reportData.configFunctions = configFunctions;
-    reportData.dateTimeFunctions = dateTimeFunctions;
-
-    await ejs.renderFile(reportPath, reportData, {}, async (ejsError, ejsData) => {
+    const ejsCallbackFunction = async (ejsError: Error, ejsData: string) => {
         if (ejsError) {
             return next(ejsError);
         }
 
-        await convertHTMLToPDF(ejsData, pdfCallbackFunction, {
-            format: "letter",
-            printBackground: true,
-            preferCSSPageSize: true
-        });
+        await convertHTMLToPDF(
+            ejsData,
+            pdfCallbackFunction,
+            {
+                format: "letter",
+                printBackground: true,
+                preferCSSPageSize: true
+            },
+            undefined,
+            {
+                cacheBrowser: true,
+                remoteContent: false
+            }
+        );
 
         return;
-    });
+    };
+
+    reportData.configFunctions = configFunctions;
+    reportData.dateTimeFunctions = dateTimeFunctions;
+
+    await ejs.renderFile(reportPath, reportData, {}, ejsCallbackFunction);
 };
 
 export default handler;
