@@ -52,3 +52,7 @@ The date, and optional time, track when the milestone is scheduled to be complet
 
 Milestones appear on the main application dashboard,
 and can be linked to calendar applications like Microsoft Outlook.
+
+## Related Links
+
+-   [Config Table Management](adminConfigTables.md)
