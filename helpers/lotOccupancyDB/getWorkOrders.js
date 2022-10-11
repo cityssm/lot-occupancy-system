@@ -68,7 +68,7 @@ export const getWorkOrders = (filters, options) => {
                 " where recordDelete_timeMillis is null" +
                 " group by workOrderId) m on w.workOrderId = m.workOrderId") +
             sqlWhereClause +
-            " order by w.workOrderOpenDate desc, w.workOrderNumber" +
+            " order by w.workOrderOpenDate desc, w.workOrderNumber desc" +
             (options ? " limit " + options.limit + " offset " + options.offset : ""))
             .all(sqlParameters);
     }
