@@ -35,7 +35,7 @@ export function getLotOccupantTypeById(lotOccupantTypeId: number) {
     });
 }
 
-export function getLotOccupantTypesByLotOccupantType(lotOccupantType: string) {
+export function getLotOccupantTypeByLotOccupantType(lotOccupantType: string) {
     const cachedLotOccupantTypes = getLotOccupantTypes();
 
     const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase();

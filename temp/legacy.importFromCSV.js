@@ -180,14 +180,64 @@ const preneedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Pre
 const deceasedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Interment");
 const cremationOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Cremation");
 const allOccupancyTypeFields = cacheFunctions.getAllOccupancyTypeFields();
-const preneedOwnerLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
-const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Deceased");
-const purchaserLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Purchaser");
+const preneedOwnerLotOccupantType = cacheFunctions.getLotOccupantTypeByLotOccupantType("Preneed Owner");
+const funeralDirectorLotOccupantType = cacheFunctions.getLotOccupantTypeByLotOccupantType("Funeral Director");
+const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypeByLotOccupantType("Deceased");
+const purchaserLotOccupantType = cacheFunctions.getLotOccupantTypeByLotOccupantType("Purchaser");
 const acknowledgedWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Acknowledged");
 const deathWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Death");
 const funeralWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Funeral");
 const cremationWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Cremation");
 const intermentWorkOrderMilestoneType = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Interment");
+function getFuneralHome(funeralHomeKey) {
+    switch (funeralHomeKey) {
+        case "AR": {
+            return {
+                lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
+                occupantName: "Arthur Funeral Home",
+                occupantAddress1: "492 Wellington Street East",
+                occupantAddress2: "",
+                occupantCity: "Sault Ste. Marie",
+                occupantProvince: "ON",
+                occupantPostalCode: "P6A 2L9",
+                occupantPhoneNumber: "705-759-2522",
+                occupantEmailAddress: ""
+            };
+        }
+        case "NO": {
+            return {
+                lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
+                occupantName: "Northwood Funeral Home",
+                occupantAddress1: "942 Great Northern Road",
+                occupantAddress2: "",
+                occupantCity: "Sault Ste. Marie",
+                occupantProvince: "ON",
+                occupantPostalCode: "P6B 0B6",
+                occupantPhoneNumber: "705-945-7758",
+                occupantEmailAddress: ""
+            };
+        }
+        case "OS": {
+            return {
+                lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
+                occupantName: "O'Sullivan Funeral Home",
+                occupantAddress1: "215 St. James Street",
+                occupantAddress2: "",
+                occupantCity: "Sault Ste. Marie",
+                occupantProvince: "ON",
+                occupantPostalCode: "P6A 1P7",
+                occupantPhoneNumber: "705-759-8456",
+                occupantEmailAddress: ""
+            };
+        }
+    }
+    return {
+        lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
+        occupantName: funeralHomeKey,
+        occupantCity: "Sault Ste. Marie",
+        occupantProvince: "ON"
+    };
+}
 function importFromMasterCSV() {
     let masterRow;
     const rawData = fs.readFileSync("./temp/CMMASTER.csv").toString();
@@ -362,12 +412,18 @@ function importFromMasterCSV() {
                     }, user);
                 }
                 if (masterRow.CM_FUNERAL_HOME !== "") {
-                    addOrUpdateLotOccupancyField({
+                    const funeralHomeOccupant = getFuneralHome(masterRow.CM_FUNERAL_HOME);
+                    addLotOccupancyOccupant({
                         lotOccupancyId: deceasedLotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Funeral Home";
-                        }).occupancyTypeFieldId,
-                        lotOccupancyFieldValue: masterRow.CM_FUNERAL_HOME
+                        lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId,
+                        occupantName: funeralHomeOccupant.occupantName,
+                        occupantAddress1: funeralHomeOccupant.occupantAddress1,
+                        occupantAddress2: funeralHomeOccupant.occupantAddress2,
+                        occupantCity: funeralHomeOccupant.occupantCity,
+                        occupantProvince: funeralHomeOccupant.occupantProvince,
+                        occupantPostalCode: funeralHomeOccupant.occupantPostalCode,
+                        occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber,
+                        occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress
                     }, user);
                 }
                 if (masterRow.CM_FUNERAL_YR !== "") {
@@ -790,12 +846,18 @@ function importFromWorkOrderCSV() {
                 }, user);
             }
             if (workOrderRow.WO_FUNERAL_HOME !== "") {
-                addOrUpdateLotOccupancyField({
+                const funeralHomeOccupant = getFuneralHome(workOrderRow.WO_FUNERAL_HOME);
+                addLotOccupancyOccupant({
                     lotOccupancyId: lotOccupancyId,
-                    occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
-                        return occupancyTypeField.occupancyTypeField === "Funeral Home";
-                    }).occupancyTypeFieldId,
-                    lotOccupancyFieldValue: workOrderRow.WO_FUNERAL_HOME
+                    lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId,
+                    occupantName: funeralHomeOccupant.occupantName,
+                    occupantAddress1: funeralHomeOccupant.occupantAddress1,
+                    occupantAddress2: funeralHomeOccupant.occupantAddress2,
+                    occupantCity: funeralHomeOccupant.occupantCity,
+                    occupantProvince: funeralHomeOccupant.occupantProvince,
+                    occupantPostalCode: funeralHomeOccupant.occupantPostalCode,
+                    occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber,
+                    occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress
                 }, user);
             }
             if (workOrderRow.WO_FUNERAL_YR !== "") {

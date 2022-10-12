@@ -416,9 +416,11 @@ const cremationOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("C
 const allOccupancyTypeFields = cacheFunctions.getAllOccupancyTypeFields();
 
 const preneedOwnerLotOccupantType =
-    cacheFunctions.getLotOccupantTypesByLotOccupantType("Preneed Owner");
-const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Deceased");
-const purchaserLotOccupantType = cacheFunctions.getLotOccupantTypesByLotOccupantType("Purchaser");
+    cacheFunctions.getLotOccupantTypeByLotOccupantType("Preneed Owner");
+const funeralDirectorLotOccupantType =
+    cacheFunctions.getLotOccupantTypeByLotOccupantType("Funeral Director");
+const deceasedLotOccupantType = cacheFunctions.getLotOccupantTypeByLotOccupantType("Deceased");
+const purchaserLotOccupantType = cacheFunctions.getLotOccupantTypeByLotOccupantType("Purchaser");
 
 const acknowledgedWorkOrderMilestoneType =
     cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Acknowledged");
@@ -430,6 +432,58 @@ const cremationWorkOrderMilestoneType =
     cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Cremation");
 const intermentWorkOrderMilestoneType =
     cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType("Interment");
+
+function getFuneralHome(funeralHomeKey: string): recordTypes.LotOccupancyOccupant {
+    switch (funeralHomeKey) {
+
+        case "AR": {
+            return {
+                lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
+                occupantName: "Arthur Funeral Home",
+                occupantAddress1: "492 Wellington Street East",
+                occupantAddress2: "",
+                occupantCity: "Sault Ste. Marie",
+                occupantProvince: "ON",
+                occupantPostalCode: "P6A 2L9",
+                occupantPhoneNumber: "705-759-2522",
+                occupantEmailAddress: ""
+            }
+        }
+        case "NO": {
+            return {
+                lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
+                occupantName: "Northwood Funeral Home",
+                occupantAddress1: "942 Great Northern Road",
+                occupantAddress2: "",
+                occupantCity: "Sault Ste. Marie",
+                occupantProvince: "ON",
+                occupantPostalCode: "P6B 0B6",
+                occupantPhoneNumber: "705-945-7758",
+                occupantEmailAddress: ""
+            }
+        }
+        case "OS": {
+            return {
+                lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
+                occupantName: "O'Sullivan Funeral Home",
+                occupantAddress1: "215 St. James Street",
+                occupantAddress2: "",
+                occupantCity: "Sault Ste. Marie",
+                occupantProvince: "ON",
+                occupantPostalCode: "P6A 1P7",
+                occupantPhoneNumber: "705-759-8456",
+                occupantEmailAddress: ""
+            }
+        }
+    }
+
+    return {
+        lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
+        occupantName: funeralHomeKey,
+        occupantCity: "Sault Ste. Marie",
+        occupantProvince: "ON"
+    }
+}
 
 function importFromMasterCSV() {
     let masterRow: MasterRecord;
@@ -718,6 +772,23 @@ function importFromMasterCSV() {
                 }
 
                 if (masterRow.CM_FUNERAL_HOME !== "") {
+
+                    const funeralHomeOccupant = getFuneralHome(masterRow.CM_FUNERAL_HOME);
+
+                    addLotOccupancyOccupant({
+                        lotOccupancyId: deceasedLotOccupancyId,
+                        lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId,
+                        occupantName: funeralHomeOccupant.occupantName,
+                        occupantAddress1: funeralHomeOccupant.occupantAddress1,
+                        occupantAddress2: funeralHomeOccupant.occupantAddress2,
+                        occupantCity: funeralHomeOccupant.occupantCity,
+                        occupantProvince: funeralHomeOccupant.occupantProvince,
+                        occupantPostalCode: funeralHomeOccupant.occupantPostalCode,
+                        occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber,
+                        occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress
+                    }, user);
+
+                    /*
                     addOrUpdateLotOccupancyField(
                         {
                             lotOccupancyId: deceasedLotOccupancyId,
@@ -730,6 +801,7 @@ function importFromMasterCSV() {
                         },
                         user
                     );
+                    */
                 }
 
                 if (masterRow.CM_FUNERAL_YR !== "") {
@@ -1306,11 +1378,9 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find(
-                            (occupancyTypeField) => {
-                                return occupancyTypeField.occupancyTypeField === "Death Date";
-                            }
-                        ).occupancyTypeFieldId,
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Death Date";
+                        }).occupancyTypeFieldId,
                         lotOccupancyFieldValue
                     },
                     user
@@ -1321,11 +1391,9 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find(
-                            (occupancyTypeField) => {
-                                return occupancyTypeField.occupancyTypeField === "Death Age";
-                            }
-                        ).occupancyTypeFieldId,
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Death Age";
+                        }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: workOrderRow.WO_AGE
                     },
                     user
@@ -1336,11 +1404,9 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find(
-                            (occupancyTypeField) => {
-                                return occupancyTypeField.occupancyTypeField === "Death Age Period";
-                            }
-                        ).occupancyTypeFieldId,
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Death Age Period";
+                        }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: workOrderRow.WO_PERIOD
                     },
                     user
@@ -1348,18 +1414,34 @@ function importFromWorkOrderCSV() {
             }
 
             if (workOrderRow.WO_FUNERAL_HOME !== "") {
+
+                const funeralHomeOccupant = getFuneralHome(workOrderRow.WO_FUNERAL_HOME);
+
+                    addLotOccupancyOccupant({
+                        lotOccupancyId: lotOccupancyId,
+                        lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId,
+                        occupantName: funeralHomeOccupant.occupantName,
+                        occupantAddress1: funeralHomeOccupant.occupantAddress1,
+                        occupantAddress2: funeralHomeOccupant.occupantAddress2,
+                        occupantCity: funeralHomeOccupant.occupantCity,
+                        occupantProvince: funeralHomeOccupant.occupantProvince,
+                        occupantPostalCode: funeralHomeOccupant.occupantPostalCode,
+                        occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber,
+                        occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress
+                    }, user);
+
+                /*
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find(
-                            (occupancyTypeField) => {
-                                return occupancyTypeField.occupancyTypeField === "Funeral Home";
-                            }
-                        ).occupancyTypeFieldId,
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Funeral Home";
+                        }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: workOrderRow.WO_FUNERAL_HOME
                     },
                     user
                 );
+                */
             }
 
             if (workOrderRow.WO_FUNERAL_YR !== "") {
@@ -1372,11 +1454,9 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find(
-                            (occupancyTypeField) => {
-                                return occupancyTypeField.occupancyTypeField === "Funeral Date";
-                            }
-                        ).occupancyTypeFieldId,
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Funeral Date";
+                        }).occupancyTypeFieldId,
                         lotOccupancyFieldValue
                     },
                     user
@@ -1387,11 +1467,9 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find(
-                            (occupancyTypeField) => {
-                                return occupancyTypeField.occupancyTypeField === "Container Type";
-                            }
-                        ).occupancyTypeFieldId,
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Container Type";
+                        }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: workOrderRow.WO_CONTAINER_TYPE
                     },
                     user
@@ -1408,11 +1486,9 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find(
-                            (occupancyTypeField) => {
-                                return occupancyTypeField.occupancyTypeField === "Committal Type";
-                            }
-                        ).occupancyTypeFieldId,
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Committal Type";
+                        }).occupancyTypeFieldId,
                         lotOccupancyFieldValue: commitalType
                     },
                     user

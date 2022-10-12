@@ -18,7 +18,7 @@ export function getLotOccupantTypeById(lotOccupantTypeId) {
         return currentLotOccupantType.lotOccupantTypeId === lotOccupantTypeId;
     });
 }
-export function getLotOccupantTypesByLotOccupantType(lotOccupantType) {
+export function getLotOccupantTypeByLotOccupantType(lotOccupantType) {
     const cachedLotOccupantTypes = getLotOccupantTypes();
     const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase();
     return cachedLotOccupantTypes.find((currentLotOccupantType) => {

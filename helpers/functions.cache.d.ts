@@ -1,7 +1,7 @@
 import type * as recordTypes from "../types/recordTypes";
 export declare function getLotOccupantTypes(): recordTypes.LotOccupantType[];
 export declare function getLotOccupantTypeById(lotOccupantTypeId: number): recordTypes.LotOccupantType;
-export declare function getLotOccupantTypesByLotOccupantType(lotOccupantType: string): recordTypes.LotOccupantType;
+export declare function getLotOccupantTypeByLotOccupantType(lotOccupantType: string): recordTypes.LotOccupantType;
 export declare function clearLotOccupantTypesCache(): void;
 export declare function getLotStatuses(): recordTypes.LotStatus[];
 export declare function getLotStatusById(lotStatusId: number): recordTypes.LotStatus;
