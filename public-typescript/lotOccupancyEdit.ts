@@ -845,15 +845,19 @@ declare const bulmaJS: BulmaJS;
         };
 
         document.querySelector("#button--addOccupant").addEventListener("click", () => {
-            let addFormElement: HTMLFormElement;
             let addCloseModalFunction: () => void;
 
-            const addOccupant = (submitEvent: SubmitEvent) => {
-                submitEvent.preventDefault();
+            let addFormElement: HTMLFormElement;
 
+            let searchFormElement: HTMLFormElement;
+            let searchResultsElement: HTMLElement;
+
+            const addOccupant = (
+                formOrObject: HTMLFormElement | recordTypes.LotOccupancyOccupant
+            ) => {
                 cityssm.postJSON(
                     urlPrefix + "/lotOccupancies/doAddLotOccupancyOccupant",
-                    addFormElement,
+                    formOrObject,
                     (responseJSON: {
                         success: boolean;
                         errorMessage?: string;
@@ -874,6 +878,122 @@ declare const bulmaJS: BulmaJS;
                 );
             };
 
+            const addOccupantFromForm = (submitEvent: SubmitEvent) => {
+                submitEvent.preventDefault();
+                addOccupant(addFormElement);
+            };
+
+            let pastOccupantSearchResults: recordTypes.LotOccupancyOccupant[] = [];
+
+            const addOccupantFromCopy = (clickEvent: MouseEvent) => {
+                clickEvent.preventDefault();
+
+                const panelBlockElement = clickEvent.currentTarget as HTMLElement;
+
+                const occupant =
+                    pastOccupantSearchResults[Number.parseInt(panelBlockElement.dataset.index, 10)];
+
+                const lotOccupantTypeId = (
+                    panelBlockElement
+                        .closest(".modal")
+                        .querySelector(
+                            "#lotOccupancyOccupantCopy--lotOccupantTypeId"
+                        ) as HTMLSelectElement
+                ).value;
+
+                if (lotOccupantTypeId === "") {
+                    bulmaJS.alert({
+                        title: "No " + exports.aliases.occupant + " Type Selected",
+                        message:
+                            "Select a type to apply to the newly added " +
+                            exports.aliases.occupant.toLowerCase() +
+                            ".",
+                        contextualColorName: "warning"
+                    });
+                } else {
+                    occupant.lotOccupantTypeId = Number.parseInt(lotOccupantTypeId, 10);
+                    occupant.lotOccupancyId = Number.parseInt(lotOccupancyId, 10);
+                    addOccupant(occupant);
+                }
+            };
+
+            const searchOccupants = (event: Event) => {
+                event.preventDefault();
+
+                if (
+                    (
+                        searchFormElement.querySelector(
+                            "#lotOccupancyOccupantCopy--searchFilter"
+                        ) as HTMLInputElement
+                    ).value === ""
+                ) {
+                    searchResultsElement.innerHTML =
+                        '<div class="message is-info">' +
+                        '<p class="message-body">Enter a partial name or address in the search field above.</p>' +
+                        "</div>";
+
+                    return;
+                }
+
+                searchResultsElement.innerHTML =
+                    '<div class="has-text-grey has-text-centered">' +
+                    '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
+                    "Searching..." +
+                    "</div>";
+
+                cityssm.postJSON(
+                    urlPrefix + "/lotOccupancies/doSearchPastOccupants",
+                    searchFormElement,
+                    (responseJSON: { occupants: recordTypes.LotOccupancyOccupant[] }) => {
+                        pastOccupantSearchResults = responseJSON.occupants;
+
+                        const panelElement = document.createElement("div");
+                        panelElement.className = "panel";
+
+                        for (const [index, occupant] of pastOccupantSearchResults.entries()) {
+                            const panelBlockElement = document.createElement("a");
+                            panelBlockElement.className = "panel-block is-block";
+                            panelBlockElement.dataset.index = index.toString();
+
+                            panelBlockElement.innerHTML =
+                                "<strong>" +
+                                cityssm.escapeHTML(occupant.occupantName) +
+                                "</strong>" +
+                                "<br />" +
+                                '<div class="columns">' +
+                                ('<div class="column">' +
+                                    cityssm.escapeHTML(occupant.occupantAddress1) +
+                                    "<br />" +
+                                    (occupant.occupantAddress2
+                                        ? cityssm.escapeHTML(occupant.occupantAddress2) + "<br />"
+                                        : "") +
+                                    cityssm.escapeHTML(occupant.occupantCity) +
+                                    ", " +
+                                    cityssm.escapeHTML(occupant.occupantProvince) +
+                                    "<br />" +
+                                    cityssm.escapeHTML(occupant.occupantPostalCode) +
+                                    "</div>") +
+                                ('<div class="column">' +
+                                    (occupant.occupantPhoneNumber
+                                        ? cityssm.escapeHTML(occupant.occupantPhoneNumber) +
+                                          "<br />"
+                                        : "") +
+                                    cityssm.escapeHTML(occupant.occupantEmailAddress) +
+                                    "<br />" +
+                                    "</div>") +
+                                "</div>";
+
+                            panelBlockElement.addEventListener("click", addOccupantFromCopy);
+
+                            panelElement.append(panelBlockElement);
+                        }
+
+                        searchResultsElement.innerHTML = "";
+                        searchResultsElement.append(panelElement);
+                    }
+                );
+            };
+
             cityssm.openHtmlModal("lotOccupancy-addOccupant", {
                 onshow: (modalElement) => {
                     los.populateAliases(modalElement);
@@ -888,11 +1008,18 @@ declare const bulmaJS: BulmaJS;
                         "#lotOccupancyOccupantAdd--lotOccupantTypeId"
                     ) as HTMLSelectElement;
 
+                    const lotOccupantTypeCopySelectElement = modalElement.querySelector(
+                        "#lotOccupancyOccupantCopy--lotOccupantTypeId"
+                    ) as HTMLSelectElement;
+
                     for (const lotOccupantType of exports.lotOccupantTypes as recordTypes.LotOccupantType[]) {
                         const optionElement = document.createElement("option");
                         optionElement.value = lotOccupantType.lotOccupantTypeId.toString();
                         optionElement.textContent = lotOccupantType.lotOccupantType;
+
                         lotOccupantTypeSelectElement.append(optionElement);
+
+                        lotOccupantTypeCopySelectElement.append(optionElement.cloneNode(true));
                     }
 
                     (
@@ -900,6 +1027,7 @@ declare const bulmaJS: BulmaJS;
                             "#lotOccupancyOccupantAdd--occupantCity"
                         ) as HTMLInputElement
                     ).value = exports.occupantCityDefault;
+
                     (
                         modalElement.querySelector(
                             "#lotOccupancyOccupantAdd--occupantProvince"
@@ -908,6 +1036,7 @@ declare const bulmaJS: BulmaJS;
                 },
                 onshown: (modalElement, closeModalFunction) => {
                     bulmaJS.toggleHtmlClipped();
+                    bulmaJS.init(modalElement);
 
                     (
                         modalElement.querySelector(
@@ -915,8 +1044,23 @@ declare const bulmaJS: BulmaJS;
                         ) as HTMLInputElement
                     ).focus();
 
-                    addFormElement = modalElement.querySelector("form");
-                    addFormElement.addEventListener("submit", addOccupant);
+                    addFormElement = modalElement.querySelector("#form--lotOccupancyOccupantAdd");
+                    addFormElement.addEventListener("submit", addOccupantFromForm);
+
+                    searchResultsElement = modalElement.querySelector(
+                        "#lotOccupancyOccupantCopy--searchResults"
+                    );
+
+                    searchFormElement = modalElement.querySelector(
+                        "#form--lotOccupancyOccupantCopy"
+                    );
+                    searchFormElement.addEventListener("submit", (formEvent) => {
+                        formEvent.preventDefault();
+                    });
+
+                    modalElement
+                        .querySelector("#lotOccupancyOccupantCopy--searchFilter")
+                        .addEventListener("change", searchOccupants);
 
                     addCloseModalFunction = closeModalFunction;
                 },

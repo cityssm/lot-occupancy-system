@@ -154,6 +154,8 @@ export interface LotOccupancyOccupant extends Record {
     occupantPostalCode?: string;
     occupantPhoneNumber?: string;
     occupantEmailAddress?: string;
+    lotOccupancyIdCount?: number;
+    recordUpdate_timeMillisMax?: number;
 }
 export interface LotOccupancyComment extends Record {
     lotOccupancyCommentId?: number;

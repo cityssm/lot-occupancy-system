@@ -13,6 +13,7 @@ import handler_edit from "../handlers/lotOccupancies-get/edit.js";
 import handler_doUpdateLotOccupancy from "../handlers/lotOccupancies-post/doUpdateLotOccupancy.js";
 import handler_doDeleteLotOccupancy from "../handlers/lotOccupancies-post/doDeleteLotOccupancy.js";
 
+import handler_doSearchPastOccupants from "../handlers/lotOccupancies-post/doSearchPastOccupants.js";
 import handler_doAddLotOccupancyOccupant from "../handlers/lotOccupancies-post/doAddLotOccupancyOccupant.js";
 import handler_doUpdateLotOccupancyOccupant from "../handlers/lotOccupancies-post/doUpdateLotOccupancyOccupant.js";
 import handler_doDeleteLotOccupancyOccupant from "../handlers/lotOccupancies-post/doDeleteLotOccupancyOccupant.js";
@@ -79,6 +80,12 @@ router.post(
 );
 
 // Occupants
+
+router.post(
+    "/doSearchPastOccupants",
+    permissionHandlers.updatePostHandler,
+    handler_doSearchPastOccupants
+);
 
 router.post(
     "/doAddLotOccupancyOccupant",
