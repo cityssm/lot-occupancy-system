@@ -19,9 +19,7 @@ export const handler = async (request, response, next) => {
         response.setHeader("Content-Type", "application/pdf");
         response.send(pdf);
     };
-    reportData.configFunctions = configFunctions;
-    reportData.dateTimeFunctions = dateTimeFunctions;
-    await ejs.renderFile(reportPath, reportData, {}, async (ejsError, ejsData) => {
+    const ejsCallbackFunction = async (ejsError, ejsData) => {
         if (ejsError) {
             return next(ejsError);
         }
@@ -29,8 +27,14 @@ export const handler = async (request, response, next) => {
             format: "letter",
             printBackground: true,
             preferCSSPageSize: true
+        }, undefined, {
+            cacheBrowser: true,
+            remoteContent: false
         });
         return;
-    });
+    };
+    reportData.configFunctions = configFunctions;
+    reportData.dateTimeFunctions = dateTimeFunctions;
+    await ejs.renderFile(reportPath, reportData, {}, ejsCallbackFunction);
 };
 export default handler;
