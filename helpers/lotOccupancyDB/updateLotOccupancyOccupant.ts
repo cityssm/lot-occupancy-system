@@ -15,6 +15,7 @@ interface UpdateLotOccupancyOccupantForm {
     occupantProvince: string;
     occupantPostalCode: string;
     occupantPhoneNumber: string;
+    occupantEmailAddress: string;
 }
 
 export const updateLotOccupancyOccupant = (
@@ -35,6 +36,7 @@ export const updateLotOccupancyOccupant = (
                 " occupantProvince = ?," +
                 " occupantPostalCode = ?," +
                 " occupantPhoneNumber = ?," +
+                " occupantEmailAddress = ?," +
                 " lotOccupantTypeId = ?," +
                 " recordUpdate_userName = ?," +
                 " recordUpdate_timeMillis = ?" +
@@ -50,6 +52,7 @@ export const updateLotOccupancyOccupant = (
             lotOccupancyOccupantForm.occupantProvince,
             lotOccupancyOccupantForm.occupantPostalCode,
             lotOccupancyOccupantForm.occupantPhoneNumber,
+            lotOccupancyOccupantForm.occupantEmailAddress,
             lotOccupancyOccupantForm.lotOccupantTypeId,
             requestSession.user.userName,
             rightNowMillis,

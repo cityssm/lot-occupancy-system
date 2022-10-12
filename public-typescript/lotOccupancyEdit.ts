@@ -666,16 +666,24 @@ declare const bulmaJS: BulmaJS;
                             "#lotOccupancyOccupantEdit--occupantProvince"
                         ) as HTMLInputElement
                     ).value = lotOccupancyOccupant.occupantProvince;
+
                     (
                         modalElement.querySelector(
                             "#lotOccupancyOccupantEdit--occupantPostalCode"
                         ) as HTMLInputElement
                     ).value = lotOccupancyOccupant.occupantPostalCode;
+
                     (
                         modalElement.querySelector(
                             "#lotOccupancyOccupantEdit--occupantPhoneNumber"
                         ) as HTMLInputElement
                     ).value = lotOccupancyOccupant.occupantPhoneNumber;
+
+                    (
+                        modalElement.querySelector(
+                            "#lotOccupancyOccupantEdit--occupantEmailAddress"
+                        ) as HTMLInputElement
+                    ).value = lotOccupancyOccupant.occupantEmailAddress;
                 },
                 onshown: (modalElement, closeModalFunction) => {
                     bulmaJS.toggleHtmlClipped();
@@ -771,7 +779,7 @@ declare const bulmaJS: BulmaJS;
                 exports.aliases.occupant +
                 "</th>" +
                 "<th>Address</th>" +
-                "<th>Phone Number</th>" +
+                "<th>Other Contact</th>" +
                 '<th class="is-hidden-print"><span class="is-sr-only">Options</span></th>' +
                 "</tr></thead>" +
                 "<tbody></tbody>";
@@ -787,8 +795,9 @@ declare const bulmaJS: BulmaJS;
                     "</td>" +
                     ("<td>" + cityssm.escapeHTML(lotOccupancyOccupant.occupantName) + "</td>") +
                     ("<td>" +
-                        cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) +
-                        "<br />" +
+                        (lotOccupancyOccupant.occupantAddress1
+                            ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) + "<br />"
+                            : "") +
                         (lotOccupancyOccupant.occupantAddress2
                             ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2) + "<br />"
                             : "") +
@@ -800,7 +809,13 @@ declare const bulmaJS: BulmaJS;
                         cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode) +
                         "</td>") +
                     ("<td>" +
-                        cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber) +
+                        (lotOccupancyOccupant.occupantPhoneNumber
+                            ? cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber) +
+                              "<br />"
+                            : "") +
+                        (lotOccupancyOccupant.occupantEmailAddress
+                            ? cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress)
+                            : "") +
                         "</td>") +
                     ('<td class="is-hidden-print">' +
                         '<div class="buttons are-small is-justify-content-end">' +

@@ -9,6 +9,7 @@ interface AddLotOccupancyOccupantForm {
     occupantProvince: string;
     occupantPostalCode: string;
     occupantPhoneNumber: string;
+    occupantEmailAddress: string;
 }
 export declare const addLotOccupancyOccupant: (lotOccupancyOccupantForm: AddLotOccupancyOccupantForm, requestSession: recordTypes.PartialSession) => number;
 export default addLotOccupancyOccupant;

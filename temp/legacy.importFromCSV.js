@@ -270,7 +270,8 @@ function importFromMasterCSV() {
                     occupantCity: masterRow.CM_CITY,
                     occupantProvince: masterRow.CM_PROV,
                     occupantPostalCode,
-                    occupantPhoneNumber: ""
+                    occupantPhoneNumber: "",
+                    occupantEmailAddress: ""
                 }, user);
                 if (masterRow.CM_REMARK1 !== "") {
                     addLotOccupancyComment({
@@ -329,7 +330,8 @@ function importFromMasterCSV() {
                     occupantCity: masterRow.CM_CITY,
                     occupantProvince: masterRow.CM_PROV,
                     occupantPostalCode: deceasedPostalCode,
-                    occupantPhoneNumber: ""
+                    occupantPhoneNumber: "",
+                    occupantEmailAddress: ""
                 }, user);
                 if (masterRow.CM_DEATH_YR !== "") {
                     const lotOccupancyFieldValue = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
@@ -515,7 +517,8 @@ function importFromPrepaidCSV() {
                 occupantCity: prepaidRow.CMPP_CITY,
                 occupantProvince: prepaidRow.CMPP_PROV.slice(0, 2),
                 occupantPostalCode: prepaidRow.CMPP_POSTAL1 + " " + prepaidRow.CMPP_POSTAL2,
-                occupantPhoneNumber: ""
+                occupantPhoneNumber: "",
+                occupantEmailAddress: ""
             }, user);
             if (prepaidRow.CMPP_ARRANGED_BY_NAME) {
                 addLotOccupancyOccupant({
@@ -527,7 +530,8 @@ function importFromPrepaidCSV() {
                     occupantCity: "",
                     occupantProvince: "",
                     occupantPostalCode: "",
-                    occupantPhoneNumber: ""
+                    occupantPhoneNumber: "",
+                    occupantEmailAddress: ""
                 }, user);
             }
             if (prepaidRow.CMPP_FEE_GRAV_SD !== "0.0") {
@@ -754,7 +758,8 @@ function importFromWorkOrderCSV() {
                 occupantCity: workOrderRow.WO_CITY,
                 occupantProvince: workOrderRow.WO_PROV.slice(0, 2),
                 occupantPostalCode: workOrderRow.WO_POST1 + " " + workOrderRow.WO_POST2,
-                occupantPhoneNumber: ""
+                occupantPhoneNumber: "",
+                occupantEmailAddress: ""
             }, user);
             if (workOrderRow.WO_DEATH_YR !== "") {
                 const lotOccupancyFieldValue = formatDateString(workOrderRow.WO_DEATH_YR, workOrderRow.WO_DEATH_MON, workOrderRow.WO_DEATH_DAY);

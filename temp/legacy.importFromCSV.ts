@@ -560,7 +560,8 @@ function importFromMasterCSV() {
                         occupantCity: masterRow.CM_CITY,
                         occupantProvince: masterRow.CM_PROV,
                         occupantPostalCode,
-                        occupantPhoneNumber: ""
+                        occupantPhoneNumber: "",
+                        occupantEmailAddress: ""
                     },
                     user
                 );
@@ -657,7 +658,8 @@ function importFromMasterCSV() {
                         occupantCity: masterRow.CM_CITY,
                         occupantProvince: masterRow.CM_PROV,
                         occupantPostalCode: deceasedPostalCode,
-                        occupantPhoneNumber: ""
+                        occupantPhoneNumber: "",
+                        occupantEmailAddress: ""
                     },
                     user
                 );
@@ -948,7 +950,8 @@ function importFromPrepaidCSV() {
                     occupantCity: prepaidRow.CMPP_CITY,
                     occupantProvince: prepaidRow.CMPP_PROV.slice(0, 2),
                     occupantPostalCode: prepaidRow.CMPP_POSTAL1 + " " + prepaidRow.CMPP_POSTAL2,
-                    occupantPhoneNumber: ""
+                    occupantPhoneNumber: "",
+                    occupantEmailAddress: ""
                 },
                 user
             );
@@ -964,7 +967,8 @@ function importFromPrepaidCSV() {
                         occupantCity: "",
                         occupantProvince: "",
                         occupantPostalCode: "",
-                        occupantPhoneNumber: ""
+                        occupantPhoneNumber: "",
+                        occupantEmailAddress: ""
                     },
                     user
                 );
@@ -1286,7 +1290,8 @@ function importFromWorkOrderCSV() {
                     occupantCity: workOrderRow.WO_CITY,
                     occupantProvince: workOrderRow.WO_PROV.slice(0, 2),
                     occupantPostalCode: workOrderRow.WO_POST1 + " " + workOrderRow.WO_POST2,
-                    occupantPhoneNumber: ""
+                    occupantPhoneNumber: "",
+                    occupantEmailAddress: ""
                 },
                 user
             );

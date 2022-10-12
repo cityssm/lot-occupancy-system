@@ -20,12 +20,12 @@ export const addLotOccupancyOccupant = (lotOccupancyOccupantForm, requestSession
         " occupantName," +
         " occupantAddress1, occupantAddress2," +
         " occupantCity, occupantProvince, occupantPostalCode," +
-        " occupantPhoneNumber," +
+        " occupantPhoneNumber, occupantEmailAddress," +
         " lotOccupantTypeId," +
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-        .run(lotOccupancyOccupantForm.lotOccupancyId, lotOccupantIndex, lotOccupancyOccupantForm.occupantName, lotOccupancyOccupantForm.occupantAddress1, lotOccupancyOccupantForm.occupantAddress2, lotOccupancyOccupantForm.occupantCity, lotOccupancyOccupantForm.occupantProvince, lotOccupancyOccupantForm.occupantPostalCode, lotOccupancyOccupantForm.occupantPhoneNumber, lotOccupancyOccupantForm.lotOccupantTypeId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        .run(lotOccupancyOccupantForm.lotOccupancyId, lotOccupantIndex, lotOccupancyOccupantForm.occupantName, lotOccupancyOccupantForm.occupantAddress1, lotOccupancyOccupantForm.occupantAddress2, lotOccupancyOccupantForm.occupantCity, lotOccupancyOccupantForm.occupantProvince, lotOccupancyOccupantForm.occupantPostalCode, lotOccupancyOccupantForm.occupantPhoneNumber, lotOccupancyOccupantForm.occupantEmailAddress, lotOccupancyOccupantForm.lotOccupantTypeId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     database.close();
     return lotOccupantIndex;
 };

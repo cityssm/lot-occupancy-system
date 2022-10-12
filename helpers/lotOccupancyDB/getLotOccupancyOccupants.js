@@ -8,7 +8,8 @@ export const getLotOccupancyOccupants = (lotOccupancyId, connectedDatabase) => {
     const lotOccupancyOccupants = database
         .prepare("select o.lotOccupancyId, o.lotOccupantIndex," +
         " o.occupantName, o.occupantAddress1, o.occupantAddress2," +
-        " o.occupantCity, o.occupantProvince, o.occupantPostalCode, o.occupantPhoneNumber," +
+        " o.occupantCity, o.occupantProvince, o.occupantPostalCode," +
+        " o.occupantPhoneNumber, o.occupantEmailAddress," +
         " o.lotOccupantTypeId, t.lotOccupantType" +
         " from LotOccupancyOccupants o" +
         " left join LotOccupantTypes t on o.lotOccupantTypeId = t.lotOccupantTypeId" +

@@ -14,6 +14,7 @@ interface AddLotOccupancyOccupantForm {
     occupantProvince: string;
     occupantPostalCode: string;
     occupantPhoneNumber: string;
+    occupantEmailAddress: string;
 }
 
 export const addLotOccupancyOccupant = (
@@ -47,11 +48,11 @@ export const addLotOccupancyOccupant = (
                 " occupantName," +
                 " occupantAddress1, occupantAddress2," +
                 " occupantCity, occupantProvince, occupantPostalCode," +
-                " occupantPhoneNumber," +
+                " occupantPhoneNumber, occupantEmailAddress," +
                 " lotOccupantTypeId," +
                 " recordCreate_userName, recordCreate_timeMillis," +
                 " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         )
         .run(
             lotOccupancyOccupantForm.lotOccupancyId,
@@ -63,6 +64,7 @@ export const addLotOccupancyOccupant = (
             lotOccupancyOccupantForm.occupantProvince,
             lotOccupancyOccupantForm.occupantPostalCode,
             lotOccupancyOccupantForm.occupantPhoneNumber,
+            lotOccupancyOccupantForm.occupantEmailAddress,
             lotOccupancyOccupantForm.lotOccupantTypeId,
             requestSession.user.userName,
             rightNowMillis,

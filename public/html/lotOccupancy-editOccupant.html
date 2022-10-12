@@ -22,18 +22,18 @@
                 <div class="field">
                     <label class="label" for="lotOccupancyOccupantEdit--occupantName"><span class="alias" data-alias="Occupant"></span> Name</label>
                     <div class="control">
-                        <input class="input" id="lotOccupancyOccupantEdit--occupantName" name="occupantName" maxlength="200" autocomplete="off" required />
+                        <input class="input" id="lotOccupancyOccupantEdit--occupantName" name="occupantName" type="text" maxlength="200" autocomplete="off" required />
                     </div>
                 </div>
                 <div class="field">
                     <label class="label" for="lotOccupancyOccupantEdit--occupantAddress1">Address</label>
                     <div class="control">
-                        <input class="input" id="lotOccupancyOccupantEdit--occupantAddress1" name="occupantAddress1" maxlength="50" placeholder="Line 1" autocomplete="off" />
+                        <input class="input" id="lotOccupancyOccupantEdit--occupantAddress1" name="occupantAddress1" type="text" maxlength="50" placeholder="Line 1" autocomplete="off" />
                     </div>
                 </div>
                 <div class="field">
                     <div class="control">
-                        <input class="input" id="lotOccupancyOccupantEdit--occupantAddress2" name="occupantAddress2" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" autocomplete="off" />
+                        <input class="input" id="lotOccupancyOccupantEdit--occupantAddress2" name="occupantAddress2" type="text" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" autocomplete="off" />
                     </div>
                 </div>
                 <div class="columns">
@@ -41,7 +41,7 @@
                         <div class="field">
                             <label class="label" for="lotOccupancyOccupantEdit--occupantCity">City</label>
                             <div class="control">
-                                <input class="input" id="lotOccupancyOccupantEdit--occupantCity" name="occupantCity" maxlength="20" />
+                                <input class="input" id="lotOccupancyOccupantEdit--occupantCity" name="occupantCity" type="text" maxlength="20" />
                             </div>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                         <div class="field">
                             <label class="label" for="lotOccupancyOccupantEdit--occupantProvince">Province</label>
                             <div class="control">
-                                <input class="input" id="lotOccupancyOccupantEdit--occupantProvince" name="occupantProvince" maxlength="2" />
+                                <input class="input" id="lotOccupancyOccupantEdit--occupantProvince" name="occupantProvince" type="text" maxlength="2" />
                             </div>
                         </div>
                     </div>
@@ -57,17 +57,30 @@
                         <div class="field">
                             <label class="label" for="lotOccupancyOccupantEdit--occupantPostalCode">Postal Code</label>
                             <div class="control">
-                                <input class="input" id="lotOccupancyOccupantEdit--occupantPostalCode" name="occupantPostalCode" maxlength="7" autocomplete="off" />
+                                <input class="input" id="lotOccupancyOccupantEdit--occupantPostalCode" name="occupantPostalCode" type="text" maxlength="7" autocomplete="off" />
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="field">
-                    <label class="label" for="lotOccupancyOccupantEdit--occupantPhoneNumber">Phone Number</label>
-                    <div class="control">
-                        <input class="input" id="lotOccupancyOccupantEdit--occupantPhoneNumber" name="occupantPhoneNumber" maxlength="30" autocomplete="off" />
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="lotOccupancyOccupantEdit--occupantPhoneNumber">Phone Number</label>
+                            <div class="control">
+                                <input class="input" id="lotOccupancyOccupantEdit--occupantPhoneNumber" name="occupantPhoneNumber" type="text" maxlength="30" autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="lotOccupancyOccupantEdit--occupantEmailAddress">Phone Number</label>
+                            <div class="control">
+                                <input class="input" id="lotOccupancyOccupantEdit--occupantEmailAddress" name="occupantEmailAddress" type="email" maxlength="200" autocomplete="off" />
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
             </form>
         </section>
         <footer class="modal-card-foot justify-right">

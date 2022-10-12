@@ -432,6 +432,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     modalElement.querySelector("#lotOccupancyOccupantEdit--occupantProvince").value = lotOccupancyOccupant.occupantProvince;
                     modalElement.querySelector("#lotOccupancyOccupantEdit--occupantPostalCode").value = lotOccupancyOccupant.occupantPostalCode;
                     modalElement.querySelector("#lotOccupancyOccupantEdit--occupantPhoneNumber").value = lotOccupancyOccupant.occupantPhoneNumber;
+                    modalElement.querySelector("#lotOccupancyOccupantEdit--occupantEmailAddress").value = lotOccupancyOccupant.occupantEmailAddress;
                 },
                 onshown: (modalElement, closeModalFunction) => {
                     bulmaJS.toggleHtmlClipped();
@@ -501,7 +502,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     exports.aliases.occupant +
                     "</th>" +
                     "<th>Address</th>" +
-                    "<th>Phone Number</th>" +
+                    "<th>Other Contact</th>" +
                     '<th class="is-hidden-print"><span class="is-sr-only">Options</span></th>' +
                     "</tr></thead>" +
                     "<tbody></tbody>";
@@ -515,8 +516,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</td>" +
                         ("<td>" + cityssm.escapeHTML(lotOccupancyOccupant.occupantName) + "</td>") +
                         ("<td>" +
-                            cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) +
-                            "<br />" +
+                            (lotOccupancyOccupant.occupantAddress1
+                                ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) + "<br />"
+                                : "") +
                             (lotOccupancyOccupant.occupantAddress2
                                 ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2) + "<br />"
                                 : "") +
@@ -528,7 +530,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode) +
                             "</td>") +
                         ("<td>" +
-                            cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber) +
+                            (lotOccupancyOccupant.occupantPhoneNumber
+                                ? cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber) +
+                                    "<br />"
+                                : "") +
+                            (lotOccupancyOccupant.occupantEmailAddress
+                                ? cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress)
+                                : "") +
                             "</td>") +
                         ('<td class="is-hidden-print">' +
                             '<div class="buttons are-small is-justify-content-end">' +

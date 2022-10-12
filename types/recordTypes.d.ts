@@ -153,6 +153,7 @@ export interface LotOccupancyOccupant extends Record {
     occupantProvince?: string;
     occupantPostalCode?: string;
     occupantPhoneNumber?: string;
+    occupantEmailAddress?: string;
 }
 export interface LotOccupancyComment extends Record {
     lotOccupancyCommentId?: number;

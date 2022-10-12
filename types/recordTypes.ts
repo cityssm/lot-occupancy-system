@@ -200,7 +200,9 @@ export interface LotOccupancyOccupant extends Record {
     occupantCity?: string;
     occupantProvince?: string;
     occupantPostalCode?: string;
+
     occupantPhoneNumber?: string;
+    occupantEmailAddress?: string;
 }
 
 export interface LotOccupancyComment extends Record {

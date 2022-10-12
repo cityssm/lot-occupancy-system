@@ -12,13 +12,14 @@ export const updateLotOccupancyOccupant = (lotOccupancyOccupantForm, requestSess
         " occupantProvince = ?," +
         " occupantPostalCode = ?," +
         " occupantPhoneNumber = ?," +
+        " occupantEmailAddress = ?," +
         " lotOccupantTypeId = ?," +
         " recordUpdate_userName = ?," +
         " recordUpdate_timeMillis = ?" +
         " where recordDelete_timeMillis is null" +
         " and lotOccupancyId = ?" +
         " and lotOccupantIndex = ?")
-        .run(lotOccupancyOccupantForm.occupantName, lotOccupancyOccupantForm.occupantAddress1, lotOccupancyOccupantForm.occupantAddress2, lotOccupancyOccupantForm.occupantCity, lotOccupancyOccupantForm.occupantProvince, lotOccupancyOccupantForm.occupantPostalCode, lotOccupancyOccupantForm.occupantPhoneNumber, lotOccupancyOccupantForm.lotOccupantTypeId, requestSession.user.userName, rightNowMillis, lotOccupancyOccupantForm.lotOccupancyId, lotOccupancyOccupantForm.lotOccupantIndex);
+        .run(lotOccupancyOccupantForm.occupantName, lotOccupancyOccupantForm.occupantAddress1, lotOccupancyOccupantForm.occupantAddress2, lotOccupancyOccupantForm.occupantCity, lotOccupancyOccupantForm.occupantProvince, lotOccupancyOccupantForm.occupantPostalCode, lotOccupancyOccupantForm.occupantPhoneNumber, lotOccupancyOccupantForm.occupantEmailAddress, lotOccupancyOccupantForm.lotOccupantTypeId, requestSession.user.userName, rightNowMillis, lotOccupancyOccupantForm.lotOccupancyId, lotOccupancyOccupantForm.lotOccupantIndex);
     database.close();
     return results.changes > 0;
 };

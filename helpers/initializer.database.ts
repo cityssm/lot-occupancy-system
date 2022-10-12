@@ -254,6 +254,7 @@ export const initializeDatabase = (): boolean => {
                     " occupantProvince varchar(2)," +
                     " occupantPostalCode varchar(7)," +
                     " occupantPhoneNumber varchar(30)," +
+                    " occupantEmailAddress varchar(200)," +
                     " lotOccupantTypeId integer not null," +
                     recordColumns +
                     "," +
