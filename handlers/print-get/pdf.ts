@@ -5,11 +5,14 @@ import * as ejs from "ejs";
 
 import * as configFunctions from "../../helpers/functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import * as lotOccupancyFunctions from "../../helpers/functions.lotOccupancy.js";
 
 import { getReportData, getPdfPrintConfig } from "../../helpers/functions.print.js";
 
 import { convertHTMLToPDF } from "@cityssm/pdf-puppeteer";
 import camelcase from "camelcase";
+
+const attachmentOrInline: "attachment" | "inline" = "attachment";
 
 export const handler: RequestHandler = async (request, response, next) => {
     const printName = request.params.printName;
@@ -30,7 +33,7 @@ export const handler: RequestHandler = async (request, response, next) => {
     const pdfCallbackFunction = (pdf: Buffer) => {
         response.setHeader(
             "Content-Disposition",
-            "attachment;" + " filename=" + camelcase(printConfig.title) + ".pdf"
+            attachmentOrInline + ";" + " filename=" + camelcase(printConfig.title) + ".pdf"
         );
 
         response.setHeader("Content-Type", "application/pdf");
@@ -63,6 +66,7 @@ export const handler: RequestHandler = async (request, response, next) => {
 
     reportData.configFunctions = configFunctions;
     reportData.dateTimeFunctions = dateTimeFunctions;
+    reportData.lotOccupancyFunctions = lotOccupancyFunctions;
 
     await ejs.renderFile(reportPath, reportData, {}, ejsCallbackFunction);
 };

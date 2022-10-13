@@ -29,6 +29,13 @@ body {
     content: '\2714';
 }
 
+.field {
+    border-bottom: 1px solid black;
+    display: inline-block;
+    width: 100%;
+    padding: 10px 0;
+}
+
 /* Data Table */
 
 .data-table {
@@ -78,8 +85,28 @@ td.is-width-1 {
     margin-top: 10px;
 }
 
+.mt-4 {
+    margin-top: 40px;
+}
+
+.mt-6 {
+    margin-top: 60px;
+}
+
 .mb-0 {
     margin-bottom: 0;
+}
+
+.mb-1 {
+    margin-bottom: 10px;
+}
+
+.mb-2 {
+    margin-bottom: 20px;
+}
+
+.mb-4 {
+    margin-bottom: 40px;
 }
 
 .pl-1 {
@@ -96,7 +123,15 @@ td.is-width-1 {
     text-align: right;
 }
 
-.has-text-italicized {
+.has-text-centered {
+    text-align: center;
+}
+
+.is-capitalized {
+    text-transform: uppercase;
+}
+
+.is-italic {
     font-style: italic;
 }
 

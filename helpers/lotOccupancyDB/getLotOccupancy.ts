@@ -32,7 +32,8 @@ export const getLotOccupancy = (
                 " o.lotId, l.lotName, l.lotTypeId," +
                 " l.mapId, m.mapName," +
                 " o.occupancyStartDate, userFn_dateIntegerToString(o.occupancyStartDate) as occupancyStartDateString," +
-                " o.occupancyEndDate,  userFn_dateIntegerToString(o.occupancyEndDate) as occupancyEndDateString" +
+                " o.occupancyEndDate,  userFn_dateIntegerToString(o.occupancyEndDate) as occupancyEndDateString," +
+                " o.recordUpdate_timeMillis" +
                 " from LotOccupancies o" +
                 " left join OccupancyTypes t on o.occupancyTypeId = t.occupancyTypeId" +
                 " left join Lots l on o.lotId = l.lotId" +

@@ -68,12 +68,16 @@ const initializeCemeteryDatabase = () => {
         orderNumber: 1
     }, session);
     addLotOccupantType({
-        lotOccupantType: "Preneed Owner",
+        lotOccupantType: "Funeral Director",
         orderNumber: 2
     }, session);
     addLotOccupantType({
-        lotOccupantType: "Purchaser",
+        lotOccupantType: "Preneed Owner",
         orderNumber: 3
+    }, session);
+    addLotOccupantType({
+        lotOccupantType: "Purchaser",
+        orderNumber: 4
     }, session);
     addOccupancyType({
         occupancyType: "Preneed",
