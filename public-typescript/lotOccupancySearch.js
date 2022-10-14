@@ -34,21 +34,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     (lotOccupancy.occupancyEndDateString === "" ||
                         lotOccupancy.occupancyEndDateString >= nowDateString)) {
                     occupancyTimeHTML =
-                        '<i class="fas fa-play" title="Current ' +
+                        '<span class="has-tooltip-right" data-tooltip="Current ' +
                             exports.aliases.occupancy +
-                            '"></i>';
+                            '">' +
+                            ('<i class="fas fa-play" aria-label="Current ' +
+                                exports.aliases.occupancy +
+                                '"></i>') +
+                            "</span>";
                 }
                 else if (lotOccupancy.occupancyStartDateString > nowDateString) {
                     occupancyTimeHTML =
-                        '<i class="fas fa-fast-forward" title="Future ' +
+                        '<span class="has-tooltip-right" data-tooltip="Future ' +
                             exports.aliases.occupancy +
-                            '"></i>';
+                            '">' +
+                            ('<i class="fas fa-fast-forward" aria-label="Future ' +
+                                exports.aliases.occupancy +
+                                '"></i>') +
+                            "</span>";
                 }
                 else {
                     occupancyTimeHTML =
-                        '<i class="fas fa-stop" title="Previous ' +
+                        '<span class="has-tooltip-right" data-tooltip="Past ' +
                             exports.aliases.occupancy +
-                            '"></i>';
+                            '">' +
+                            ('<i class="fas fa-stop" aria-label="Past ' +
+                                exports.aliases.occupancy +
+                                '"></i>') +
+                            "</span>";
                 }
                 let occupantsHTML = "";
                 for (const occupant of lotOccupancy.lotOccupancyOccupants) {
@@ -72,7 +84,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</td>") +
                     ("<td>" +
                         (lotOccupancy.lotName
-                            ? cityssm.escapeHTML(lotOccupancy.lotName)
+                            ? '<span class="has-tooltip-right" data-tooltip="' +
+                                cityssm.escapeHTML(lotOccupancy.lotType) +
+                                '">' +
+                                cityssm.escapeHTML(lotOccupancy.lotName) +
+                                "</span>"
                             : '<span class="has-text-grey">(No ' +
                                 cityssm.escapeHTML(exports.aliases.lot) +
                                 ")</span>") +
@@ -111,7 +127,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '<th class="has-width-1"></th>' +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupancy) + " Type</th>") +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.lot) + "</th>") +
-                    "<th>" + cityssm.escapeHTML(exports.aliases.occupancyStartDate) + "</th>" +
+                    "<th>" +
+                    cityssm.escapeHTML(exports.aliases.occupancyStartDate) +
+                    "</th>" +
                     "<th>End Date</th>" +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupants) + "</th>") +
                     (lotOccupancyPrints.length > 0 ? '<th class="has-width-1"></th>' : "") +

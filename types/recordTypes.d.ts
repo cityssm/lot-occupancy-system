@@ -177,6 +177,7 @@ export interface LotOccupancy extends Record {
     occupancyType?: string;
     lotId?: number;
     lotTypeId?: number;
+    lotType?: string;
     lotName?: string;
     mapId?: number;
     mapName?: string;

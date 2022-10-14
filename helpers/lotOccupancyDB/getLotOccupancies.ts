@@ -168,13 +168,14 @@ export const getLotOccupancies = (
             .prepare(
                 "select o.lotOccupancyId," +
                     " o.occupancyTypeId, t.occupancyType," +
-                    " o.lotId, l.lotName," +
+                    " o.lotId, lt.lotType, l.lotName," +
                     " l.mapId, m.mapName," +
                     " o.occupancyStartDate, userFn_dateIntegerToString(o.occupancyStartDate) as occupancyStartDateString," +
                     " o.occupancyEndDate,  userFn_dateIntegerToString(o.occupancyEndDate) as occupancyEndDateString" +
                     " from LotOccupancies o" +
                     " left join OccupancyTypes t on o.occupancyTypeId = t.occupancyTypeId" +
                     " left join Lots l on o.lotId = l.lotId" +
+                    " left join LotTypes lt on l.lotTypeId = lt.lotTypeId" + 
                     " left join Maps m on l.mapId = m.mapId" +
                     sqlWhereClause +
                     " order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId" +
