@@ -827,6 +827,15 @@ function importFromWorkOrderCSV() {
                     lotOccupancyFieldValue
                 }, user);
             }
+            if (workOrderRow.WO_DEATH_PLACE !== "") {
+                addOrUpdateLotOccupancyField({
+                    lotOccupancyId: lotOccupancyId,
+                    occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                        return occupancyTypeField.occupancyTypeField === "Death Place";
+                    }).occupancyTypeFieldId,
+                    lotOccupancyFieldValue: workOrderRow.WO_DEATH_PLACE
+                }, user);
+            }
             if (workOrderRow.WO_AGE !== "") {
                 addOrUpdateLotOccupancyField({
                     lotOccupancyId: lotOccupancyId,

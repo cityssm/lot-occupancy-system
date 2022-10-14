@@ -114,12 +114,22 @@ const initializeCemeteryDatabase = () => {
     addOccupancyTypeField({
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Death Age Period",
-        occupancyTypeFieldValues: "Years,Months,Days,Stillborn",
+        occupancyTypeFieldValues: "Years\nMonths\nDays\nStillborn",
         pattern: "",
         isRequired: "",
         minimumLength: 1,
         maximumLength: 10,
         orderNumber: 3
+    }, session);
+    addOccupancyTypeField({
+        occupancyTypeId: intermentOccupancyTypeId,
+        occupancyTypeField: "Death Place",
+        occupancyTypeFieldValues: "",
+        pattern: "",
+        isRequired: "",
+        minimumLength: 1,
+        maximumLength: 100,
+        orderNumber: 4
     }, session);
     addOccupancyTypeField({
         occupancyTypeId: intermentOccupancyTypeId,

@@ -6,6 +6,7 @@
     const deceasedOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, deceasedLotOccupantType);
 
     const deathDateOccupantTypeField = "Death Date";
+    const deathPlaceOccupantTypeField = "Death Place";
 %>
 <html>
     <head>
@@ -49,10 +50,16 @@
 
         <p>
             who died at
-            <span class="field has-text-centered" style="width:300px">&nbsp;</span>
+            <span class="field has-text-centered" style="width:300px">
+                &nbsp;
+                <%= lotOccupancyFunctions.getFieldValueByOccupancyTypeField(lotOccupancy, deathPlaceOccupantTypeField); %>
+                &nbsp;
+            </span>
             in Ontario on
             <span class="field has-text-centered" style="width:150px">
+                &nbsp;
                 <%= lotOccupancyFunctions.getFieldValueByOccupancyTypeField(lotOccupancy, deathDateOccupantTypeField); %>
+                &nbsp;
             </span>
             .
         </p>
@@ -70,10 +77,9 @@
             5724
         </p>
 
-        <p class="has-text-right">
-            <span class="field" style="width:150px">
-                <%= dateTimeFunctions.dateToString(new Date(lotOccupancy.recordUpdate_timeMillis)) %>
-            </span>
+        <p class="has-text-right mt-4">
+            <span class="field mb-1" style="width:150px">&nbsp;</span><br />
+            <span class="is-8pt">(Year Month Day)</span>
         </p>
     </body>
 </html>
