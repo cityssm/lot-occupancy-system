@@ -15,3 +15,19 @@ export const getFieldValueByOccupancyTypeField = (lotOccupancy, occupancyTypeFie
     }
     return undefined;
 };
+export const getFeesByFeeCategory = (lotOccupancy, feeCategory, feeCategoryContains = false) => {
+    const feeCategoryLowerCase = feeCategory.toLowerCase();
+    const fees = lotOccupancy.lotOccupancyFees.filter((possibleFee) => {
+        return feeCategoryContains
+            ? possibleFee.feeCategory.toLowerCase().includes(feeCategoryLowerCase)
+            : possibleFee.feeCategory.toLowerCase() === feeCategoryLowerCase;
+    });
+    return fees;
+};
+export const getTransactionTotal = (lotOccupancy) => {
+    let transactionTotal = 0;
+    for (const transaction of lotOccupancy.lotOccupancyTransactions) {
+        transactionTotal += transaction.transactionAmount;
+    }
+    return transactionTotal;
+};

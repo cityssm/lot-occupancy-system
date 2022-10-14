@@ -40,6 +40,10 @@ const pdfPrintConfigs: { [printName: string]: PrintConfig } = {
     "ssm.cemetery.burialPermit": {
         title: "Burial Permit",
         params: ["lotOccupancyId"]
+    },
+    "ssm.cemetery.contract": {
+        title: "Contract for Purchase of Interment Rights",
+        params: ["lotOccupancyId"]
     }
 };
 

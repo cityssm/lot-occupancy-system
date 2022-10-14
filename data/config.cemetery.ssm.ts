@@ -38,7 +38,7 @@ config.settings.lot.lotNameSortNameFunction = (lotName) => {
     };
 
 config.settings.lotOccupancy.occupantCityDefault = "Sault Ste. Marie";
-config.settings.lotOccupancy.prints = ["screen/lotOccupancy", "pdf/ssm.cemetery.burialPermit"];
+config.settings.lotOccupancy.prints = ["pdf/ssm.cemetery.contract", "pdf/ssm.cemetery.burialPermit"];
 
 config.settings.map.mapCityDefault = "Sault Ste. Marie";
 
