@@ -27,6 +27,7 @@ jobs:
         run: c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_VERIFY_TIMEOUT: 100000
       - name: Code Climate
         if: ${{ github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' }}
         run: |
