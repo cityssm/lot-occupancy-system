@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import crypto from "node:crypto";
+import { v4 as uuidv4 } from "uuid";
 
 import Debug from "debug";
 
@@ -29,7 +29,7 @@ const saveApiKeys = async () => {
 };
 
 const generateApiKey = (apiKeyPrefix: string) => {
-    return apiKeyPrefix + "-" + crypto.randomUUID() + "-" + Date.now();
+    return apiKeyPrefix + "-" + uuidv4() + "-" + Date.now();
 };
 
 export const regenerateApiKey = async (userName: string) => {
@@ -49,9 +49,7 @@ export const getApiKey = async (userName: string) => {
     return apiKeys[userName];
 };
 
-export const getApiKeyFromSession = async (
-    session: recordTypes.PartialSession
-) => {
+export const getApiKeyFromSession = async (session: recordTypes.PartialSession) => {
     return await getApiKey(session.user.userName);
 };
 
