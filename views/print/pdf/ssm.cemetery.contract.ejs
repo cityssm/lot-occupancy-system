@@ -14,10 +14,49 @@
     <head>
         <style>
             <%- include('style.css'); %>
+
+            body {
+                margin: 0 50px;
+            }
+
+            @page {
+                margin: 50px 0;
+            }
+
+            .termsList {
+                counter-reset: list;
+            }
+
+            .termsList > li {
+                list-style: none;
+                position: relative;
+                padding-bottom: 10px;
+            }
+
+            .termsList > li::before {
+                content: "(" counter(list, lower-alpha) ")";
+                counter-increment: list;
+                position: absolute;
+                left: -1.8em;
+            }
+
+            .confirmList > li {
+                list-style: none;
+                position: relative;
+                padding-bottom: 10px;
+            }
+
+            .confirmList > li::before {
+                content: "▢";
+                position: absolute;
+                left: -1.4em;
+                top: -0.2em;
+                font-size: 15pt;
+            }
         </style>
     </head>
     <body class="is-10pt">
-        <h1 class="is-10pt has-text-centered is-capitalized">
+        <h1 class="is-12pt has-text-centered is-capitalized">
             Contract for the Purchase of Interment Rights or<br />
             Cemetery Services
         </h1>
@@ -66,13 +105,13 @@
                                     <th class="has-text-left">Province:</th>
                                     <td class="has-border-bottom"><%= purchaser ? purchaser.occupantProvince : "" %>&nbsp;</td>
                                 </tr><tr>
-                                    <th class="has-text-left">Postal Code:</th>
-                                    <td class="has-border-bottom"><%= purchaser ? purchaser.occupantPostalCode : "" %>&nbsp;</td>
+                                    <th class="has-text-left has-text-nowrap">Postal Code:</th>
+                                    <td class="has-border-bottom" style="width:100%"><%= purchaser ? purchaser.occupantPostalCode : "" %>&nbsp;</td>
                                 </tr><tr>
                                     <th class="has-text-left">Telephone:</th>
                                     <td class="has-border-bottom"><%= purchaser ? purchaser.occupantPhoneNumber : "" %>&nbsp;</td>
                                 </tr><tr>
-                                    <th class="has-text-left">E-mail</th>
+                                    <th class="has-text-left">E-mail:</th>
                                     <td class="has-border-bottom"><%= purchaser ? purchaser.occupantEmailAddress : "" %>&nbsp;</td>
                                 </tr>
                             </tbody>
@@ -103,14 +142,14 @@
                                     <th class="has-text-left">Telephone:</th>
                                     <td class="has-border-bottom"><%= recipient ? recipient.occupantPhoneNumber : "" %>&nbsp;</td>
                                 </tr><tr>
-                                    <th class="has-text-left">E-mail</th>
+                                    <th class="has-text-left">E-mail:</th>
                                     <td class="has-border-bottom"><%= recipient ? recipient.occupantEmailAddress : "" %>&nbsp;</td>
                                 </tr><tr>
-                                    <th class="has-text-left">Date of birth</th>
+                                    <th class="has-text-left">Date of birth:</th>
                                     <td class="has-border-bottom">&nbsp;</td>
                                 </tr><tr>
-                                    <th class="has-text-left">Place of birth</th>
-                                    <td class="has-border-bottom">&nbsp;</td>
+                                    <th class="has-text-left has-text-nowrap">Place of birth:</th>
+                                    <td class="has-border-bottom" style="width:100%">&nbsp;</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -141,6 +180,14 @@
                 <td>
                     <h2 class="is-10pt is-capitalized">Details</h2>
                     <table class="is-10pt data-table">
+                        <tr>
+                            <td><%= configFunctions.getProperty("aliases.map") %></td>
+                            <td><%= lotOccupancy.mapName %></td>
+                        </tr>
+                        <tr>
+                            <td><%= configFunctions.getProperty("aliases.lot") %></td>
+                            <td><%= lotOccupancy.lotName %></td>
+                        </tr>
                         <% 
                             for (const field of lotOccupancy.lotOccupancyFields) { 
                                 if (field.lotOccupancyFieldValue) {
@@ -215,13 +262,67 @@
 
         <!-- PAGE BREAK -->
 
-        <h2 class="is-10pt" style="page-break-before:always">Contribution Levels to the Care and Maintenance Fund</h2>
+        <h2 class="is-10pt" style="page-break-before:always">
+            Contribution Levels to the Care and Maintenance Fund<br />
+            (based on the price of Interment Rights and as prescribed by the <em>Funeral, Burial and Cremation Services Act</em>)
+        </h2>
+
+        <table class="layout-table is-10pt">
+            <tr>
+                <td>Niches</td>
+                <td>the greater of 15% and $100</td>
+            </tr>
+            <tr>
+                <td>Crypts</td>
+                <td>the greater of 20% and $500</td>
+            </tr>
+            <tr>
+                <td>
+                    In-ground grave (2.23 sq.m. or 24 sq.ft. or larger)
+                </td>
+                <td>
+                    the greater of 40% and $250
+                </td>
+            </tr>
+            <tr>
+                <td>In-ground grave (smaller than 2.23 sq.m. or 24 sq ft)</td>
+                <td>the greater of 40% and $150</td>
+            </tr>
+        </table>
         
-        <h2 class="is-10pt">Contribution Levels to the Care and Maintenance Fund - Markers</h2>
+        <h2 class="is-10pt">
+            Contribution Levels to the Care and Maintenance Fund - Markers<br />
+            (as prescribed by the <em>Funeral, Burial and Cremation Services Act</em>)
+        </h2>
+
+        <table class="layout-table is-10pt">
+            <tr>
+                <td>Flat marker measuring less than 1,116.3 sq.m. (173 sq.in.)</td>
+                <td>$0.00</td>
+            </tr>
+            <tr>
+                <td>Flat marker measuring over 1,116.3 sq.m. (173 sq.in.)</td>
+                <td>$50.00</td>
+            </tr>
+            <tr>
+                <td>
+                    Upright monument measuring more than 1.22 m. (4 ft.) or less in height or length,
+                    including the base
+                </td>
+                <td>$100.00</td>
+            </tr>
+            <tr>
+                <td>
+                    Upright monument measuring more than 1.22m. (4 ft.) either in height or length,
+                    including the base
+                </td>
+                <td>$200.00</td>
+            </tr>
+        </table>
         
         <h2 class="is-10pt">Contract Terms and Conditions</h2>
 
-        <ol type="a">
+        <ol class="termsList">
             <li>
                 The Purchaser may only cancel a contract for interment rights or cemetery services upon written notice of cancellation
                 to the City Clerk in accordance with the <em>Funeral, Burial and Cremation Services Act</em> and the terms and conditions set
@@ -318,7 +419,7 @@
             Guide (where made available by the Registrar) and the Cemetery Price List at the time of entering into this Contract.
         </p>
 
-        <ul style="padding-left:2em;list-style-type:'▢   '">
+        <ul class="confirmList">
             <li>
                 I hereby acknowledge that I have been offered and/or received a copy of the Ontario Government’s Consumer
                 Information Guide and the Cemetery Price List.
@@ -340,6 +441,28 @@
 
         <p>
             The Contract date set out below is the date on which this Contract is accepted by the Corporation.
+        </p>
+
+        <p>
+            Purchaser:
+            <span class="field" style="width:400px">&nbsp;</span>
+            Date:
+            <span class="field" style="width:200px">&nbsp;</span>
+        </p>
+        <p>
+            Purchaser:
+            <span class="field" style="width:400px">&nbsp;</span>
+            Date:
+            <span class="field" style="width:200px">&nbsp;</span>
+        </p>
+
+        <p class="has-text-right mt-4">
+            Accepted on behalf of The Corporation<br />
+            of the City of Sault Ste. Marie by:
+        </p>
+        <p class="has-text-right">
+            Name:
+            <span class="field" style="width:300px">&nbsp;</span>
         </p>
     </body>
 </html>

@@ -93,6 +93,10 @@ td.has-border-bottom {
     margin-top: 10px;
 }
 
+.mt-2 {
+    margin-top: 20px;
+}
+
 .mt-4 {
     margin-top: 40px;
 }
@@ -133,6 +137,10 @@ td.has-border-bottom {
 
 .is-10pt {
     font-size: 10pt !important;
+}
+
+.is-12pt {
+    font-size: 12pt !important;
 }
 
 .has-text-left {
