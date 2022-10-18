@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import crypto from "node:crypto";
+import { v4 as uuidv4 } from "uuid";
 import Debug from "debug";
 const debug = Debug("lot-occupancy-system:functions.api");
 const apiKeyPath = "data/apiKeys.json";
@@ -23,7 +23,7 @@ const saveApiKeys = async () => {
     }
 };
 const generateApiKey = (apiKeyPrefix) => {
-    return apiKeyPrefix + "-" + crypto.randomUUID() + "-" + Date.now();
+    return apiKeyPrefix + "-" + uuidv4() + "-" + Date.now();
 };
 export const regenerateApiKey = async (userName) => {
     apiKeys[userName] = generateApiKey(userName);
