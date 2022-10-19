@@ -27,6 +27,10 @@ export const handler: RequestHandler = (request, response) => {
             : ":" + configFunctions.getProperty("application.httpPort")) +
         configFunctions.getProperty("reverseProxy.urlPrefix");
 
+    /*
+     * Get work order milestones
+     */
+
     const workOrderMilestoneFilters: WorkOrderMilestoneFilters = {
         workOrderTypeIds: request.query.workOrderTypeIds as string,
         workOrderMilestoneTypeIds: request.query.workOrderMilestoneTypeIds as string
@@ -43,6 +47,10 @@ export const handler: RequestHandler = (request, response) => {
         orderBy: "date"
     });
 
+    /*
+     * Create calendar object
+     */
+
     const calendar = ical({
         name: "Work Order Milestone Calendar",
         url: urlRoot + "/workOrders"
@@ -57,6 +65,10 @@ export const handler: RequestHandler = (request, response) => {
         company: "cityssm.github.io",
         product: configFunctions.getProperty("application.applicationName")
     });
+
+    /*
+     * Loop through milestones
+     */
 
     for (const milestone of workOrderMilestones) {
         const milestoneTimePieces = (

@@ -84,18 +84,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</td>") +
                     ("<td>" +
                         (lotOccupancy.lotName
-                            ? '<span class="has-tooltip-right" data-tooltip="' +
+                            ? '<a class="has-tooltip-right" data-tooltip="' +
                                 cityssm.escapeHTML(lotOccupancy.lotType) +
+                                '" href="' +
+                                urlPrefix +
+                                "/lots/" +
+                                lotOccupancy.lotId +
                                 '">' +
                                 cityssm.escapeHTML(lotOccupancy.lotName) +
-                                "</span>"
+                                "</a>"
                             : '<span class="has-text-grey">(No ' +
                                 cityssm.escapeHTML(exports.aliases.lot) +
                                 ")</span>") +
                         "<br />" +
-                        '<span class="is-size-7">' +
-                        cityssm.escapeHTML(lotOccupancy.mapName || "") +
-                        "</span>" +
+                        ('<span class="is-size-7">' +
+                            cityssm.escapeHTML(lotOccupancy.mapName || "") +
+                            "</span>") +
                         "</td>") +
                     ("<td>" + lotOccupancy.occupancyStartDateString + "</td>") +
                     ("<td>" +
@@ -103,9 +107,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             ? lotOccupancy.occupancyEndDateString
                             : '<span class="has-text-grey">(No End Date)</span>') +
                         "</td>") +
-                    "<td>" +
-                    occupantsHTML +
-                    "</td>" +
+                    ("<td>" + occupantsHTML + "</td>") +
                     (lotOccupancyPrints.length > 0
                         ? "<td>" +
                             '<a class="button is-small" data-tooltip="Print" href="' +
@@ -127,12 +129,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '<th class="has-width-1"></th>' +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupancy) + " Type</th>") +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.lot) + "</th>") +
-                    "<th>" +
-                    cityssm.escapeHTML(exports.aliases.occupancyStartDate) +
-                    "</th>" +
+                    ("<th>" + cityssm.escapeHTML(exports.aliases.occupancyStartDate) + "</th>") +
                     "<th>End Date</th>" +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupants) + "</th>") +
-                    (lotOccupancyPrints.length > 0 ? '<th class="has-width-1"></th>' : "") +
+                    (lotOccupancyPrints.length > 0 ? '<th class="has-width-1"><span class="is-sr-only">Print</span></th>' : "") +
                     "</tr></thead>" +
                     "<table>" +
                     '<div class="level">' +
