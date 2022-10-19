@@ -57,9 +57,14 @@ configFallbackValues.set("settings.workOrders.workOrderNumberLength", 6);
 configFallbackValues.set("settings.workOrders.workOrderMilestoneDateRecentBeforeDays", 5);
 configFallbackValues.set("settings.workOrders.workOrderMilestoneDateRecentAfterDays", 60);
 configFallbackValues.set("settings.workOrders.calendarEmailAddress", "no-reply@127.0.0.1");
-configFallbackValues.set("settings.workOrders.prints", ["pdf/workOrder", "pdf/workOrder-commentLog"]);
+configFallbackValues.set("settings.workOrders.prints", [
+    "pdf/workOrder",
+    "pdf/workOrder-commentLog"
+]);
 
 configFallbackValues.set("settings.adminCleanup.recordDeleteAgeDays", 60);
+
+configFallbackValues.set("settings.printPdf.contentDisposition", "attachment");
 
 /*
  * Set up function overloads
@@ -135,6 +140,10 @@ export function getProperty(propertyName: "settings.workOrders.calendarEmailAddr
 export function getProperty(propertyName: "settings.workOrders.prints"): string[];
 
 export function getProperty(propertyName: "settings.adminCleanup.recordDeleteAgeDays"): number;
+
+export function getProperty(
+    propertyName: "settings.printPdf.contentDisposition"
+): "attachment" | "inline";
 
 export function getProperty(propertyName: string): unknown {
     const propertyNameSplit = propertyName.split(".");

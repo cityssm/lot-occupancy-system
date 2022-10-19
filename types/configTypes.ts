@@ -54,6 +54,9 @@ export interface Config {
         adminCleanup: {
             recordDeleteAgeDays?: number;
         };
+        printPdf: {
+            contentDisposition?: "attachment" | "inline";
+        }
     };
 }
 

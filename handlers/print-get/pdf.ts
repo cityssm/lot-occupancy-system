@@ -12,7 +12,7 @@ import { getReportData, getPdfPrintConfig } from "../../helpers/functions.print.
 import { convertHTMLToPDF } from "@cityssm/pdf-puppeteer";
 import camelcase from "camelcase";
 
-const attachmentOrInline: "attachment" | "inline" = "attachment";
+const attachmentOrInline = configFunctions.getProperty("settings.printPdf.contentDisposition");
 
 export const handler: RequestHandler = async (request, response, next) => {
     const printName = request.params.printName;

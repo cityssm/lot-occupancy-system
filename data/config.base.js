@@ -10,7 +10,8 @@ export const config = {
         lot: {},
         lotOccupancy: {},
         workOrders: {},
-        adminCleanup: {}
+        adminCleanup: {},
+        printPdf: {}
     }
 };
 export default config;

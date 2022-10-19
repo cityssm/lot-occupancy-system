@@ -38,8 +38,12 @@ configFallbackValues.set("settings.workOrders.workOrderNumberLength", 6);
 configFallbackValues.set("settings.workOrders.workOrderMilestoneDateRecentBeforeDays", 5);
 configFallbackValues.set("settings.workOrders.workOrderMilestoneDateRecentAfterDays", 60);
 configFallbackValues.set("settings.workOrders.calendarEmailAddress", "no-reply@127.0.0.1");
-configFallbackValues.set("settings.workOrders.prints", ["pdf/workOrder", "pdf/workOrder-commentLog"]);
+configFallbackValues.set("settings.workOrders.prints", [
+    "pdf/workOrder",
+    "pdf/workOrder-commentLog"
+]);
 configFallbackValues.set("settings.adminCleanup.recordDeleteAgeDays", 60);
+configFallbackValues.set("settings.printPdf.contentDisposition", "attachment");
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split(".");
     let currentObject = config;

@@ -41,4 +41,5 @@ export declare function getProperty(propertyName: "settings.workOrders.workOrder
 export declare function getProperty(propertyName: "settings.workOrders.calendarEmailAddress"): string;
 export declare function getProperty(propertyName: "settings.workOrders.prints"): string[];
 export declare function getProperty(propertyName: "settings.adminCleanup.recordDeleteAgeDays"): number;
+export declare function getProperty(propertyName: "settings.printPdf.contentDisposition"): "attachment" | "inline";
 export declare const keepAliveMillis: number;

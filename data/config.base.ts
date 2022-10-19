@@ -12,7 +12,8 @@ export const config: Config = {
         lot: {},
         lotOccupancy: {},
         workOrders: {},
-        adminCleanup: {}
+        adminCleanup: {},
+        printPdf: {}
     }
 };
 
