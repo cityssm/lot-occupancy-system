@@ -47,7 +47,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 workOrderId
             }, (responseJSON) => {
                 if (responseJSON.success) {
-                    window.location.href = urlPrefix + "/workOrders/" + encodeURIComponent(workOrderId);
+                    window.location.href =
+                        urlPrefix + "/workOrders/" + encodeURIComponent(workOrderId);
                 }
                 else {
                     bulmaJS.alert({
@@ -496,18 +497,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
             renderRelatedLots();
         };
         renderRelatedLotsAndOccupancies();
+        const doAddLotOccupancy = (clickEvent) => {
+            const rowElement = clickEvent.currentTarget.closest("tr");
+            const lotOccupancyId = rowElement.dataset.lotOccupancyId;
+            addLotOccupancy(lotOccupancyId, (success) => {
+                if (success) {
+                    rowElement.remove();
+                }
+            });
+        };
         document.querySelector("#button--addLotOccupancy").addEventListener("click", () => {
             let searchFormElement;
             let searchResultsContainerElement;
-            const doAddLotOccupancy = (clickEvent) => {
-                const rowElement = clickEvent.currentTarget.closest("tr");
-                const lotOccupancyId = rowElement.dataset.lotOccupancyId;
-                addLotOccupancy(lotOccupancyId, (success) => {
-                    if (success) {
-                        rowElement.remove();
-                    }
-                });
-            };
             const doSearch = (event) => {
                 if (event) {
                     event.preventDefault();
@@ -613,18 +614,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         });
+        const doAddLot = (clickEvent) => {
+            const rowElement = clickEvent.currentTarget.closest("tr");
+            const lotId = rowElement.dataset.lotId;
+            addLot(lotId, (success) => {
+                if (success) {
+                    rowElement.remove();
+                }
+            });
+        };
         document.querySelector("#button--addLot").addEventListener("click", () => {
             let searchFormElement;
             let searchResultsContainerElement;
-            const doAddLot = (clickEvent) => {
-                const rowElement = clickEvent.currentTarget.closest("tr");
-                const lotId = rowElement.dataset.lotId;
-                addLot(lotId, (success) => {
-                    if (success) {
-                        rowElement.remove();
-                    }
-                });
-            };
             const doSearch = (event) => {
                 if (event) {
                     event.preventDefault();

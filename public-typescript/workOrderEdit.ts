@@ -37,7 +37,7 @@ declare const bulmaJS: BulmaJS;
             (responseJSON: { success: boolean; workOrderId?: number; errorMessage?: string }) => {
                 if (responseJSON.success) {
                     cityssm.disableNavBlocker();
-                    
+
                     if (isCreate) {
                         window.location.href =
                             urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
@@ -58,7 +58,9 @@ declare const bulmaJS: BulmaJS;
         );
     });
 
-    const inputElements = workOrderFormElement.querySelectorAll("input, select") as NodeListOf<HTMLInputElement | HTMLSelectElement>;
+    const inputElements = workOrderFormElement.querySelectorAll("input, select") as NodeListOf<
+        HTMLInputElement | HTMLSelectElement
+    >;
 
     for (const inputElement of inputElements) {
         inputElement.addEventListener("change", cityssm.enableNavBlocker);
@@ -79,7 +81,8 @@ declare const bulmaJS: BulmaJS;
                 },
                 (responseJSON: { success: boolean; errorMessage?: string }) => {
                     if (responseJSON.success) {
-                        window.location.href = urlPrefix + "/workOrders/" + encodeURIComponent(workOrderId);
+                        window.location.href =
+                            urlPrefix + "/workOrders/" + encodeURIComponent(workOrderId);
                     } else {
                         bulmaJS.alert({
                             title: "Error Closing Work Order",
@@ -680,21 +683,21 @@ declare const bulmaJS: BulmaJS;
 
         renderRelatedLotsAndOccupancies();
 
+        const doAddLotOccupancy = (clickEvent: Event) => {
+            const rowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
+
+            const lotOccupancyId = rowElement.dataset.lotOccupancyId;
+
+            addLotOccupancy(lotOccupancyId, (success) => {
+                if (success) {
+                    rowElement.remove();
+                }
+            });
+        };
+
         document.querySelector("#button--addLotOccupancy").addEventListener("click", () => {
             let searchFormElement: HTMLFormElement;
             let searchResultsContainerElement: HTMLElement;
-
-            const doAddLotOccupancy = (clickEvent: Event) => {
-                const rowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
-
-                const lotOccupancyId = rowElement.dataset.lotOccupancyId;
-
-                addLotOccupancy(lotOccupancyId, (success) => {
-                    if (success) {
-                        rowElement.remove();
-                    }
-                });
-            };
 
             const doSearch = (event?: Event) => {
                 if (event) {
@@ -847,21 +850,21 @@ declare const bulmaJS: BulmaJS;
             });
         });
 
+        const doAddLot = (clickEvent: Event) => {
+            const rowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
+
+            const lotId = rowElement.dataset.lotId;
+
+            addLot(lotId, (success) => {
+                if (success) {
+                    rowElement.remove();
+                }
+            });
+        };
+
         document.querySelector("#button--addLot").addEventListener("click", () => {
             let searchFormElement: HTMLFormElement;
             let searchResultsContainerElement: HTMLElement;
-
-            const doAddLot = (clickEvent: Event) => {
-                const rowElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
-
-                const lotId = rowElement.dataset.lotId;
-
-                addLot(lotId, (success) => {
-                    if (success) {
-                        rowElement.remove();
-                    }
-                });
-            };
 
             const doSearch = (event?: Event) => {
                 if (event) {
