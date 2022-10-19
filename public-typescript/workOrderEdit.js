@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         submitEvent.preventDefault();
         cityssm.postJSON(urlPrefix + "/workOrders/" + (isCreate ? "doCreateWorkOrder" : "doUpdateWorkOrder"), submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
+                cityssm.disableNavBlocker();
                 if (isCreate) {
                     window.location.href =
                         urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
@@ -35,6 +36,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
+    const inputElements = workOrderFormElement.querySelectorAll("input, select");
+    for (const inputElement of inputElements) {
+        inputElement.addEventListener("change", cityssm.enableNavBlocker);
+    }
     let workOrderMilestones;
     if (!isCreate) {
         const doClose = () => {

@@ -36,6 +36,8 @@ declare const bulmaJS: BulmaJS;
             submitEvent.currentTarget,
             (responseJSON: { success: boolean; workOrderId?: number; errorMessage?: string }) => {
                 if (responseJSON.success) {
+                    cityssm.disableNavBlocker();
+                    
                     if (isCreate) {
                         window.location.href =
                             urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
@@ -55,6 +57,12 @@ declare const bulmaJS: BulmaJS;
             }
         );
     });
+
+    const inputElements = workOrderFormElement.querySelectorAll("input, select") as NodeListOf<HTMLInputElement | HTMLSelectElement>;
+
+    for (const inputElement of inputElements) {
+        inputElement.addEventListener("change", cityssm.enableNavBlocker);
+    }
 
     /*
      * Work Order Options

@@ -27,6 +27,8 @@ declare const bulmaJS: BulmaJS;
                 errorMessage?: string;
             }) => {
                 if (responseJSON.success) {
+                    cityssm.disableNavBlocker();
+                    
                     if (isCreate) {
                         window.location.href =
                             urlPrefix + "/maps/" + responseJSON.mapId + "/edit";
@@ -49,6 +51,12 @@ declare const bulmaJS: BulmaJS;
     };
 
     mapForm.addEventListener("submit", updateMap);
+
+    const inputElements = mapForm.querySelectorAll("input, select") as NodeListOf<HTMLInputElement | HTMLSelectElement>;
+
+    for (const inputElement of inputElements) {
+        inputElement.addEventListener("change", cityssm.enableNavBlocker);
+    }
 
     if (!isCreate) {
         document

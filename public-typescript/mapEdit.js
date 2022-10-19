@@ -10,6 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         formEvent.preventDefault();
         cityssm.postJSON(urlPrefix + "/maps/" + (isCreate ? "doCreateMap" : "doUpdateMap"), mapForm, (responseJSON) => {
             if (responseJSON.success) {
+                cityssm.disableNavBlocker();
                 if (isCreate) {
                     window.location.href =
                         urlPrefix + "/maps/" + responseJSON.mapId + "/edit";
@@ -31,6 +32,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     mapForm.addEventListener("submit", updateMap);
+    const inputElements = mapForm.querySelectorAll("input, select");
+    for (const inputElement of inputElements) {
+        inputElement.addEventListener("change", cityssm.enableNavBlocker);
+    }
     if (!isCreate) {
         document
             .querySelector("#button--deleteMap")
