@@ -26,10 +26,11 @@ export const getReportData = (reportName, reportParameters) => {
     let sql;
     const sqlParameters = [];
     switch (reportName) {
-        case "maps-all":
+        case "maps-all": {
             sql = "select * from Maps";
             break;
-        case "maps-formatted":
+        }
+        case "maps-formatted": {
             sql =
                 "select mapName as " +
                     mapNameAlias +
@@ -51,10 +52,12 @@ export const getReportData = (reportName, reportParameters) => {
                     " where recordDelete_timeMillis is null" +
                     " order by mapName";
             break;
-        case "lots-all":
+        }
+        case "lots-all": {
             sql = "select * from Lots";
             break;
-        case "lots-byLotTypeId":
+        }
+        case "lots-byLotTypeId": {
             sql =
                 "select l.lotId as " +
                     lotIdAlias +
@@ -74,7 +77,8 @@ export const getReportData = (reportName, reportParameters) => {
                     " and l.lotTypeId = ?";
             sqlParameters.push(reportParameters.lotTypeId);
             break;
-        case "lots-byLotStatusId":
+        }
+        case "lots-byLotStatusId": {
             sql =
                 "select l.lotId as " +
                     lotIdAlias +
@@ -94,7 +98,8 @@ export const getReportData = (reportName, reportParameters) => {
                     " and l.lotStatusId = ?";
             sqlParameters.push(reportParameters.lotStatusId);
             break;
-        case "lots-byMapId":
+        }
+        case "lots-byMapId": {
             sql =
                 "select l.lotId as " +
                     lotIdAlias +
@@ -114,16 +119,20 @@ export const getReportData = (reportName, reportParameters) => {
                     " and l.mapId = ?";
             sqlParameters.push(reportParameters.mapId);
             break;
-        case "lotComments-all":
+        }
+        case "lotComments-all": {
             sql = "select * from LotComments";
             break;
-        case "lotFields-all":
+        }
+        case "lotFields-all": {
             sql = "select * from LotFields";
             break;
-        case "lotOccupancies-all":
+        }
+        case "lotOccupancies-all": {
             sql = "select * from LotOccupancies";
             break;
-        case "lotOccupancies-current-byMapId":
+        }
+        case "lotOccupancies-current-byMapId": {
             sql =
                 "select o.lotOccupancyId as " +
                     lotOccupancyIdAlias +
@@ -146,25 +155,44 @@ export const getReportData = (reportName, reportParameters) => {
                     " and l.mapId = ?";
             sqlParameters.push(dateTimeFunctions.dateToInteger(new Date()), reportParameters.mapId);
             break;
-        case "lotOccupancyComments-all":
+        }
+        case "lotOccupancyComments-all": {
             sql = "select * from LotOccupancyComments";
             break;
-        case "lotOccupancyFees-all":
+        }
+        case "lotOccupancyFees-all": {
             sql = "select * from LotOccupancyFees";
             break;
-        case "lotOccupancyFields-all":
+        }
+        case "lotOccupancyFields-all": {
             sql = "select * from LotOccupancyFields";
             break;
-        case "lotOccupancyOccupants-all":
+        }
+        case "lotOccupancyOccupants-all": {
             sql = "select * from LotOccupancyOccupants";
             break;
-        case "lotOccupancyTransactions-all":
+        }
+        case "lotOccupancyTransactions-all": {
             sql = "select * from LotOccupancyTransactions";
             break;
-        case "workOrders-all":
+        }
+        case "lotOccupancyTransactions-byTransactionDateString": {
+            sql =
+                "select t.lotOccupancyId, t.transactionIndex," +
+                    " t.transactionDate, t.transactionTime," +
+                    " t.transactionAmount, t.externalReceiptNumber," +
+                    " t.transactionNote" +
+                    " from LotOccupancyTransactions t" +
+                    " where t.recordDelete_timeMillis is null" +
+                    " and t.transactionDate = ?";
+            sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.transactionDateString));
+            break;
+        }
+        case "workOrders-all": {
             sql = "select * from WorkOrders";
             break;
-        case "workOrders-open":
+        }
+        case "workOrders-open": {
             sql =
                 "select w.workOrderId, w.workOrderNumber," +
                     " t.workOrderType, w.workOrderDescription," +
@@ -183,47 +211,62 @@ export const getReportData = (reportName, reportParameters) => {
                     " where w.recordDelete_timeMillis is null" +
                     " and w.workOrderCloseDate is null";
             break;
-        case "workOrderComments-all":
+        }
+        case "workOrderComments-all": {
             sql = "select * from WorkOrderComments";
             break;
-        case "workOrderLots-all":
+        }
+        case "workOrderLots-all": {
             sql = "select * from WorkOrderLots";
             break;
-        case "workOrderMilestones-all":
+        }
+        case "workOrderMilestones-all": {
             sql = "select * from WorkOrderMilestones";
             break;
-        case "fees-all":
+        }
+        case "fees-all": {
             sql = "select * from Fees";
             break;
-        case "feeCategories-all":
+        }
+        case "feeCategories-all": {
             sql = "select * from FeeCategories";
             break;
-        case "lotTypes-all":
+        }
+        case "lotTypes-all": {
             sql = "select * from LotTypes";
             break;
-        case "lotTypeFields-all":
+        }
+        case "lotTypeFields-all": {
             sql = "select * from LotTypeFields";
             break;
-        case "lotStatuses-all":
+        }
+        case "lotStatuses-all": {
             sql = "select * from LotStatuses";
             break;
-        case "occupancyTypes-all":
+        }
+        case "occupancyTypes-all": {
             sql = "select * from OccupancyTypes";
             break;
-        case "occupancyTypeFields-all":
+        }
+        case "occupancyTypeFields-all": {
             sql = "select * from OccupancyTypeFields";
             break;
-        case "lotOccupantTypes-all":
+        }
+        case "lotOccupantTypes-all": {
             sql = "select * from LotOccupantTypes";
             break;
-        case "workOrderTypes-all":
+        }
+        case "workOrderTypes-all": {
             sql = "select * from WorkOrderTypes";
             break;
-        case "workOrderMilestoneTypes-all":
+        }
+        case "workOrderMilestoneTypes-all": {
             sql = "select * from WorkOrderMilestoneTypes";
             break;
-        default:
+        }
+        default: {
             return undefined;
+        }
     }
     const database = sqlite(databasePath, {
         readonly: true
