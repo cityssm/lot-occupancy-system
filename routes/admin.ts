@@ -1,7 +1,5 @@
 import { Router } from "express";
 
-import * as permissionHandlers from "../handlers/permissions.js";
-
 // Fee Management
 
 import handler_fees from "../handlers/admin-get/fees.js";
@@ -89,269 +87,145 @@ export const router = Router();
  * Fees
  */
 
-router.get("/fees", permissionHandlers.adminGetHandler, handler_fees);
+router.get("/fees", handler_fees);
 
-router.post("/doAddFeeCategory", permissionHandlers.adminPostHandler, handler_doAddFeeCategory);
+router.post("/doAddFeeCategory", handler_doAddFeeCategory);
 
-router.post(
-    "/doUpdateFeeCategory",
-    permissionHandlers.adminPostHandler,
-    handler_doUpdateFeeCategory
-);
+router.post("/doUpdateFeeCategory", handler_doUpdateFeeCategory);
 
-router.post(
-    "/doMoveFeeCategoryUp",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveFeeCategoryUp
-);
+router.post("/doMoveFeeCategoryUp", handler_doMoveFeeCategoryUp);
 
-router.post(
-    "/doMoveFeeCategoryDown",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveFeeCategoryDown
-);
+router.post("/doMoveFeeCategoryDown", handler_doMoveFeeCategoryDown);
 
-router.post(
-    "/doDeleteFeeCategory",
-    permissionHandlers.adminPostHandler,
-    handler_doDeleteFeeCategory
-);
+router.post("/doDeleteFeeCategory", handler_doDeleteFeeCategory);
 
-router.post("/doAddFee", permissionHandlers.adminPostHandler, handler_doAddFee);
+router.post("/doAddFee", handler_doAddFee);
 
-router.post("/doUpdateFee", permissionHandlers.adminPostHandler, handler_doUpdateFee);
+router.post("/doUpdateFee", handler_doUpdateFee);
 
-router.post("/doMoveFeeUp", permissionHandlers.adminPostHandler, handler_doMoveFeeUp);
+router.post("/doMoveFeeUp", handler_doMoveFeeUp);
 
-router.post("/doMoveFeeDown", permissionHandlers.adminPostHandler, handler_doMoveFeeDown);
+router.post("/doMoveFeeDown", handler_doMoveFeeDown);
 
-router.post("/doDeleteFee", permissionHandlers.adminPostHandler, handler_doDeleteFee);
+router.post("/doDeleteFee", handler_doDeleteFee);
 
 /*
  * Occupancy Type Management
  */
 
-router.get("/occupancyTypes", permissionHandlers.adminGetHandler, handler_occupancyTypes);
+router.get("/occupancyTypes", handler_occupancyTypes);
 
-router.post("/doAddOccupancyType", permissionHandlers.adminPostHandler, handler_doAddOccupancyType);
+router.post("/doAddOccupancyType", handler_doAddOccupancyType);
 
-router.post(
-    "/doUpdateOccupancyType",
-    permissionHandlers.adminPostHandler,
-    handler_doUpdateOccupancyType
-);
+router.post("/doUpdateOccupancyType", handler_doUpdateOccupancyType);
 
-router.post(
-    "/doMoveOccupancyTypeUp",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveOccupancyTypeUp
-);
+router.post("/doMoveOccupancyTypeUp", handler_doMoveOccupancyTypeUp);
 
-router.post(
-    "/doMoveOccupancyTypeDown",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveOccupancyTypeDown
-);
+router.post("/doMoveOccupancyTypeDown", handler_doMoveOccupancyTypeDown);
 
-router.post(
-    "/doDeleteOccupancyType",
-    permissionHandlers.adminPostHandler,
-    handler_doDeleteOccupancyType
-);
+router.post("/doDeleteOccupancyType", handler_doDeleteOccupancyType);
 
 // Occupancy Type Fields
 
-router.post(
-    "/doAddOccupancyTypeField",
-    permissionHandlers.adminPostHandler,
-    handler_doAddOccupancyTypeField
-);
+router.post("/doAddOccupancyTypeField", handler_doAddOccupancyTypeField);
 
-router.post(
-    "/doUpdateOccupancyTypeField",
-    permissionHandlers.adminPostHandler,
-    handler_doUpdateOccupancyTypeField
-);
+router.post("/doUpdateOccupancyTypeField", handler_doUpdateOccupancyTypeField);
 
-router.post(
-    "/doMoveOccupancyTypeFieldUp",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveOccupancyTypeFieldUp
-);
+router.post("/doMoveOccupancyTypeFieldUp", handler_doMoveOccupancyTypeFieldUp);
 
-router.post(
-    "/doMoveOccupancyTypeFieldDown",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveOccupancyTypeFieldDown
-);
+router.post("/doMoveOccupancyTypeFieldDown", handler_doMoveOccupancyTypeFieldDown);
 
-router.post(
-    "/doDeleteOccupancyTypeField",
-    permissionHandlers.adminPostHandler,
-    handler_doDeleteOccupancyTypeField
-);
+router.post("/doDeleteOccupancyTypeField", handler_doDeleteOccupancyTypeField);
 
 /*
  * Lot Type Management
  */
 
-router.get("/lotTypes", permissionHandlers.adminGetHandler, handler_lotTypes);
+router.get("/lotTypes", handler_lotTypes);
 
-router.post("/doAddLotType", permissionHandlers.adminPostHandler, handler_doAddLotType);
+router.post("/doAddLotType", handler_doAddLotType);
 
-router.post("/doUpdateLotType", permissionHandlers.adminPostHandler, handler_doUpdateLotType);
+router.post("/doUpdateLotType", handler_doUpdateLotType);
 
-router.post("/doMoveLotTypeUp", permissionHandlers.adminPostHandler, handler_doMoveLotTypeUp);
+router.post("/doMoveLotTypeUp", handler_doMoveLotTypeUp);
 
-router.post("/doMoveLotTypeDown", permissionHandlers.adminPostHandler, handler_doMoveLotTypeDown);
+router.post("/doMoveLotTypeDown", handler_doMoveLotTypeDown);
 
-router.post("/doDeleteLotType", permissionHandlers.adminPostHandler, handler_doDeleteLotType);
+router.post("/doDeleteLotType", handler_doDeleteLotType);
 
 // Lot Type Fields
 
-router.post("/doAddLotTypeField", permissionHandlers.adminPostHandler, handler_doAddLotTypeField);
+router.post("/doAddLotTypeField", handler_doAddLotTypeField);
 
-router.post(
-    "/doUpdateLotTypeField",
-    permissionHandlers.adminPostHandler,
-    handler_doUpdateLotTypeField
-);
+router.post("/doUpdateLotTypeField", handler_doUpdateLotTypeField);
 
-router.post(
-    "/doMoveLotTypeFieldUp",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveLotTypeFieldUp
-);
+router.post("/doMoveLotTypeFieldUp", handler_doMoveLotTypeFieldUp);
 
-router.post(
-    "/doMoveLotTypeFieldDown",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveLotTypeFieldDown
-);
+router.post("/doMoveLotTypeFieldDown", handler_doMoveLotTypeFieldDown);
 
-router.post(
-    "/doDeleteLotTypeField",
-    permissionHandlers.adminPostHandler,
-    handler_doDeleteLotTypeField
-);
+router.post("/doDeleteLotTypeField", handler_doDeleteLotTypeField);
 
 /*
  * Config Tables
  */
 
-router.get("/tables", permissionHandlers.adminGetHandler, handler_tables);
+router.get("/tables", handler_tables);
 
 // Config Tables - Work Order Types
 
-router.post("/doAddWorkOrderType", permissionHandlers.adminPostHandler, handler_doAddWorkOrderType);
+router.post("/doAddWorkOrderType", handler_doAddWorkOrderType);
 
-router.post(
-    "/doUpdateWorkOrderType",
-    permissionHandlers.adminPostHandler,
-    handler_doUpdateWorkOrderType
-);
+router.post("/doUpdateWorkOrderType", handler_doUpdateWorkOrderType);
 
-router.post(
-    "/doMoveWorkOrderTypeUp",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveWorkOrderTypeUp
-);
+router.post("/doMoveWorkOrderTypeUp", handler_doMoveWorkOrderTypeUp);
 
-router.post(
-    "/doMoveWorkOrderTypeDown",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveWorkOrderTypeDown
-);
+router.post("/doMoveWorkOrderTypeDown", handler_doMoveWorkOrderTypeDown);
 
-router.post(
-    "/doDeleteWorkOrderType",
-    permissionHandlers.adminPostHandler,
-    handler_doDeleteWorkOrderType
-);
+router.post("/doDeleteWorkOrderType", handler_doDeleteWorkOrderType);
 // Config Tables - Work Order Milestone Types
 
 router.post(
     "/doAddWorkOrderMilestoneType",
-    permissionHandlers.adminPostHandler,
+
     handler_doAddWorkOrderMilestoneType
 );
 
-router.post(
-    "/doUpdateWorkOrderMilestoneType",
-    permissionHandlers.adminPostHandler,
-    handler_doUpdateWorkOrderMilestoneType
-);
+router.post("/doUpdateWorkOrderMilestoneType", handler_doUpdateWorkOrderMilestoneType);
 
-router.post(
-    "/doMoveWorkOrderMilestoneTypeUp",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveWorkOrderMilestoneTypeUp
-);
+router.post("/doMoveWorkOrderMilestoneTypeUp", handler_doMoveWorkOrderMilestoneTypeUp);
 
-router.post(
-    "/doMoveWorkOrderMilestoneTypeDown",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveWorkOrderMilestoneTypeDown
-);
+router.post("/doMoveWorkOrderMilestoneTypeDown", handler_doMoveWorkOrderMilestoneTypeDown);
 
-router.post(
-    "/doDeleteWorkOrderMilestoneType",
-    permissionHandlers.adminPostHandler,
-    handler_doDeleteWorkOrderMilestoneType
-);
+router.post("/doDeleteWorkOrderMilestoneType", handler_doDeleteWorkOrderMilestoneType);
 
 // Config Tables - Lot Statuses
 
-router.post("/doAddLotStatus", permissionHandlers.adminPostHandler, handler_doAddLotStatus);
+router.post("/doAddLotStatus", handler_doAddLotStatus);
 
-router.post("/doUpdateLotStatus", permissionHandlers.adminPostHandler, handler_doUpdateLotStatus);
+router.post("/doUpdateLotStatus", handler_doUpdateLotStatus);
 
-router.post("/doMoveLotStatusUp", permissionHandlers.adminPostHandler, handler_doMoveLotStatusUp);
+router.post("/doMoveLotStatusUp", handler_doMoveLotStatusUp);
 
-router.post(
-    "/doMoveLotStatusDown",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveLotStatusDown
-);
+router.post("/doMoveLotStatusDown", handler_doMoveLotStatusDown);
 
-router.post("/doDeleteLotStatus", permissionHandlers.adminPostHandler, handler_doDeleteLotStatus);
+router.post("/doDeleteLotStatus", handler_doDeleteLotStatus);
 
 // Config Tables - Lot Occupant Types
 
-router.post(
-    "/doAddLotOccupantType",
-    permissionHandlers.adminPostHandler,
-    handler_doAddLotOccupantType
-);
+router.post("/doAddLotOccupantType", handler_doAddLotOccupantType);
 
-router.post(
-    "/doUpdateLotOccupantType",
-    permissionHandlers.adminPostHandler,
-    handler_doUpdateLotOccupantType
-);
+router.post("/doUpdateLotOccupantType", handler_doUpdateLotOccupantType);
 
-router.post(
-    "/doMoveLotOccupantTypeUp",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveLotOccupantTypeUp
-);
+router.post("/doMoveLotOccupantTypeUp", handler_doMoveLotOccupantTypeUp);
 
-router.post(
-    "/doMoveLotOccupantTypeDown",
-    permissionHandlers.adminPostHandler,
-    handler_doMoveLotOccupantTypeDown
-);
+router.post("/doMoveLotOccupantTypeDown", handler_doMoveLotOccupantTypeDown);
 
-router.post(
-    "/doDeleteLotOccupantType",
-    permissionHandlers.adminPostHandler,
-    handler_doDeleteLotOccupantType
-);
+router.post("/doDeleteLotOccupantType", handler_doDeleteLotOccupantType);
 
 // Cleanup
 
-router.get("/cleanup", permissionHandlers.adminGetHandler, handler_cleanup);
+router.get("/cleanup", handler_cleanup);
 
-router.post("/doCleanupDatabase", permissionHandlers.adminPostHandler, handler_doCleanupDatabase);
+router.post("/doCleanupDatabase", handler_doCleanupDatabase);
 
 export default router;

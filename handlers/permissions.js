@@ -11,7 +11,7 @@ export const adminGetHandler = (request, response, next) => {
     if (userFunctions.userIsAdmin(request)) {
         return next();
     }
-    return response.redirect(urlPrefix + "/dashboard");
+    return response.redirect(urlPrefix + "/dashboard/?error=accessDenied");
 };
 export const adminPostHandler = (request, response, next) => {
     if (userFunctions.userIsAdmin(request)) {
@@ -23,7 +23,7 @@ export const updateGetHandler = (request, response, next) => {
     if (userFunctions.userCanUpdate(request)) {
         return next();
     }
-    return response.redirect(urlPrefix + "/dashboard");
+    return response.redirect(urlPrefix + "/dashboard/?error=accessDenied");
 };
 export const updatePostHandler = (request, response, next) => {
     if (userFunctions.userCanUpdate(request)) {

@@ -1,12 +1,13 @@
 import createError from "http-errors";
 import express from "express";
 import compression from "compression";
-import path from "path";
+import path from "node:path";
 import cookieParser from "cookie-parser";
 import csurf from "csurf";
 import rateLimit from "express-rate-limit";
 import session from "express-session";
 import FileStore from "session-file-store";
+import * as permissionHandlers from "./handlers/permissions.js";
 import routerLogin from "./routes/login.js";
 import routerDashboard from "./routes/dashboard.js";
 import routerApi from "./routes/api.js";
@@ -24,9 +25,9 @@ import * as stringFns from "@cityssm/expressjs-server-js/stringFns.js";
 import * as htmlFns from "@cityssm/expressjs-server-js/htmlFns.js";
 import { version } from "./version.js";
 import * as databaseInitializer from "./helpers/initializer.database.js";
-import debug from "debug";
 import { apiGetHandler } from "./handlers/permissions.js";
 import { getSafeRedirectURL } from "./helpers/functions.authentication.js";
+import debug from "debug";
 const debugApp = debug("lot-occupancy-system:app");
 databaseInitializer.initializeDatabase();
 const __dirname = ".";
@@ -73,7 +74,7 @@ const FileStoreSession = FileStore(session);
 app.use(session({
     store: new FileStoreSession({
         path: "./data/sessions",
-        logFn: debug("general-licence-manager:session"),
+        logFn: debug("lot-occupancy-system:session"),
         retries: 20
     }),
     name: sessionCookieName,
@@ -122,7 +123,7 @@ app.use(urlPrefix + "/lots", sessionChecker, routerLots);
 app.use(urlPrefix + "/lotOccupancies", sessionChecker, routerLotOccupancies);
 app.use(urlPrefix + "/workOrders", sessionChecker, routerWorkOrders);
 app.use(urlPrefix + "/reports", sessionChecker, routerReports);
-app.use(urlPrefix + "/admin", sessionChecker, routerAdmin);
+app.use(urlPrefix + "/admin", sessionChecker, permissionHandlers.adminGetHandler, routerAdmin);
 app.all(urlPrefix + "/keepAlive", (_request, response) => {
     response.json(true);
 });

@@ -18,7 +18,7 @@ export const adminGetHandler: RequestHandler = (request, response, next) => {
         return next();
     }
 
-    return response.redirect(urlPrefix + "/dashboard");
+    return response.redirect(urlPrefix + "/dashboard/?error=accessDenied");
 };
 
 export const adminPostHandler: RequestHandler = (request, response, next) => {
@@ -34,7 +34,7 @@ export const updateGetHandler: RequestHandler = (request, response, next) => {
         return next();
     }
 
-    return response.redirect(urlPrefix + "/dashboard");
+    return response.redirect(urlPrefix + "/dashboard/?error=accessDenied");
 };
 
 export const updatePostHandler: RequestHandler = (request, response, next) => {
