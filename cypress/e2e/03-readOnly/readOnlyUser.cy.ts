@@ -53,7 +53,7 @@ describe("Read Only User", () => {
     it("Redirects to Dashboard when attempting to create a work order", () => {
         cy.visit("/workOrders/new");
         cy.wait(200);
-        cy.location("pathname").should("equal", "/dashboard");
+        cy.location("pathname").should("equal", "/dashboard/");
     });
 
     it("Redirects to Dashboard when attempting to alter fees", () => {
