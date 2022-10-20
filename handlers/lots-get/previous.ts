@@ -17,9 +17,7 @@ export const handler: RequestHandler = (request, response) => {
     }
 
     return response.redirect(
-        configFunctions.getProperty("reverseProxy.urlPrefix") +
-            "/lots/" +
-            previousLotId
+        configFunctions.getProperty("reverseProxy.urlPrefix") + "/lots/" + previousLotId
     );
 };
 

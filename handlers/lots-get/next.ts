@@ -11,15 +11,12 @@ export const handler: RequestHandler = (request, response) => {
 
     if (!nextLotId) {
         return response.redirect(
-            configFunctions.getProperty("reverseProxy.urlPrefix") +
-                "/lots/?error=noNextLotIdFound"
+            configFunctions.getProperty("reverseProxy.urlPrefix") + "/lots/?error=noNextLotIdFound"
         );
     }
 
     return response.redirect(
-        configFunctions.getProperty("reverseProxy.urlPrefix") +
-            "/lots/" +
-            nextLotId
+        configFunctions.getProperty("reverseProxy.urlPrefix") + "/lots/" + nextLotId
     );
 };
 

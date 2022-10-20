@@ -1,9 +1,6 @@
 import type { RequestHandler } from "express";
 
-import {
-    getLotTypes,
-    getOccupancyTypes
-} from "../../helpers/functions.cache.js";
+import { getLotTypes, getOccupancyTypes } from "../../helpers/functions.cache.js";
 
 import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.js";
 

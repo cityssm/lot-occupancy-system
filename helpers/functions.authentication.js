@@ -27,6 +27,7 @@ export const authenticate = async (userName, password) => {
 const safeRedirects = new Set([
     "/admin/cleanup",
     "/admin/fees",
+    "/admin/lottypes",
     "/admin/occupancytypes",
     "/admin/tables",
     "/lotoccupancies",
@@ -44,9 +45,9 @@ const safeRedirects = new Set([
 export const getSafeRedirectURL = (possibleRedirectURL = "") => {
     const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
     if (typeof possibleRedirectURL === "string") {
-        const urlToCheck = (possibleRedirectURL.startsWith(urlPrefix)
+        const urlToCheck = possibleRedirectURL.startsWith(urlPrefix)
             ? possibleRedirectURL.slice(urlPrefix.length)
-            : possibleRedirectURL);
+            : possibleRedirectURL;
         const urlToCheckLowerCase = urlToCheck.toLowerCase();
         if (safeRedirects.has(urlToCheckLowerCase) ||
             /^(\/maps\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||

@@ -2,7 +2,7 @@
 
 import { app } from "../app.js";
 
-import http from "http";
+import http from "node:http";
 
 import * as configFunctions from "../helpers/functions.config.js";
 
@@ -46,10 +46,7 @@ const onError = (error: ServerError) => {
 const onListening = (server: http.Server) => {
     const addr = server.address();
 
-    const bind =
-        typeof addr === "string"
-            ? "pipe " + addr
-            : "port " + addr.port.toString();
+    const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port.toString();
 
     debugWWW("Listening on " + bind);
 };

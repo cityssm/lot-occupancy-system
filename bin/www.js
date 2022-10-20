@@ -1,5 +1,5 @@
 import { app } from "../app.js";
-import http from "http";
+import http from "node:http";
 import * as configFunctions from "../helpers/functions.config.js";
 import exitHook from "exit-hook";
 import debug from "debug";
@@ -22,9 +22,7 @@ const onError = (error) => {
 };
 const onListening = (server) => {
     const addr = server.address();
-    const bind = typeof addr === "string"
-        ? "pipe " + addr
-        : "port " + addr.port.toString();
+    const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port.toString();
     debugWWW("Listening on " + bind);
 };
 const httpPort = configFunctions.getProperty("application.httpPort");

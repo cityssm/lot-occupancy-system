@@ -48,7 +48,7 @@ export const getFeesByFeeCategory = (
 
 export const getTransactionTotal = (lotOccupancy: recordTypes.LotOccupancy) => {
     let transactionTotal = 0;
-    
+
     for (const transaction of lotOccupancy.lotOccupancyTransactions) {
         transactionTotal += transaction.transactionAmount;
     }

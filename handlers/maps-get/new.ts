@@ -9,9 +9,7 @@ import * as recordTypes from "../../types/recordTypes";
 export const handler: RequestHandler = async (_request, response) => {
     const map: recordTypes.Map = {
         mapCity: configFunctions.getProperty("settings.map.mapCityDefault"),
-        mapProvince: configFunctions.getProperty(
-            "settings.map.mapProvinceDefault"
-        )
+        mapProvince: configFunctions.getProperty("settings.map.mapProvinceDefault")
     };
 
     const mapSVGs = await getMapSVGs();

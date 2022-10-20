@@ -4,10 +4,7 @@ import * as configFunctions from "../../helpers/functions.config.js";
 
 import { getMaps } from "../../helpers/lotOccupancyDB/getMaps.js";
 
-import {
-    getLotTypes,
-    getOccupancyTypes
-} from "../../helpers/functions.cache.js";
+import { getLotTypes, getOccupancyTypes } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = (request, response) => {
     const maps = getMaps();
@@ -15,8 +12,7 @@ export const handler: RequestHandler = (request, response) => {
     const occupancyTypes = getOccupancyTypes();
 
     response.render("lotOccupancy-search", {
-        headTitle:
-            configFunctions.getProperty("aliases.lot") + " Occupancy Search",
+        headTitle: configFunctions.getProperty("aliases.lot") + " Occupancy Search",
         maps,
         lotTypes,
         occupancyTypes,

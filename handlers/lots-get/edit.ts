@@ -11,8 +11,7 @@ export const handler: RequestHandler = (request, response) => {
 
     if (!lot) {
         return response.redirect(
-            configFunctions.getProperty("reverseProxy.urlPrefix") +
-                "/lots/?error=lotIdNotFound"
+            configFunctions.getProperty("reverseProxy.urlPrefix") + "/lots/?error=lotIdNotFound"
         );
     }
 

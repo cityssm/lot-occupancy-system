@@ -4,9 +4,10 @@ export const handler = (request, response) => {
     const reportName = request.params.reportName;
     let rows;
     switch (reportName) {
-        default:
+        default: {
             rows = getReportData(reportName, request.query);
             break;
+        }
     }
     if (!rows) {
         return response.status(404).json({
@@ -15,11 +16,7 @@ export const handler = (request, response) => {
         });
     }
     const csv = papaparse.unparse(rows);
-    response.setHeader("Content-Disposition", "attachment; filename=" +
-        reportName +
-        "-" +
-        Date.now().toString() +
-        ".csv");
+    response.setHeader("Content-Disposition", "attachment; filename=" + reportName + "-" + Date.now().toString() + ".csv");
     response.setHeader("Content-Type", "text/csv");
     response.send(csv);
 };

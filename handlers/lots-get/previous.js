@@ -7,8 +7,6 @@ export const handler = (request, response) => {
         return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") +
             "/lots/?error=noPreviousLotIdFound");
     }
-    return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") +
-        "/lots/" +
-        previousLotId);
+    return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") + "/lots/" + previousLotId);
 };
 export default handler;
