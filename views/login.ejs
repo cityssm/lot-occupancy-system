@@ -9,9 +9,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="icon" href="<%= urlPrefix %>/images/favicon.png" />
+    <link rel="icon" href="<%= urlPrefix + configFunctions.getProperty("application.logoURL") %>" />
+
     <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/style.css" />
-    <link rel="stylesheet" href="<%= urlPrefix %>/lib/fa/css/all.min.css" />
 </head>
 
 <body>
@@ -85,6 +85,7 @@
         </div>
     </div>
 
+    <script src="<%= urlPrefix %>/lib/fa/js/all.min.js" defer></script>
     <script>
         try {
             window.localStorage.clear();
