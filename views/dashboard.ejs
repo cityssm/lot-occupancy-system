@@ -42,8 +42,8 @@
                             <div class="column">
                                 <% if (workOrderPrints.length > 0) { %>
                                     <span class="is-pulled-right">
-                                        <a class="button is-small" data-tooltip="Print Work Order" href="<%=urlPrefix %>/print/<%= workOrderPrints[0] %>/?workOrderId=<%= milestone.workOrderId %>" target="_blank">
-                                            <i class="fas fa-print" aria-label="Print"></i>
+                                        <a class="button is-small" data-tooltip="Print Work Order" href="<%=urlPrefix %>/print/<%= workOrderPrints[0] %>/?workOrderId=<%= milestone.workOrderId %>" target="_blank" aria-label="Print">
+                                            <i class="fas fa-print" aria-hidden="true"></i>
                                         </a>
                                     </span>
                                 <% } %>
