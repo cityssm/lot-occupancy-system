@@ -45,7 +45,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</button>" +
                             "</div>") +
                         ('<div class="control">' +
-                            '<button class="button is-small is-success button--addFee" type="button">' +
+                            '<button class="button is-small is-success button--addFee" data-cy="addFee" type="button">' +
                             '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
                             "<span>Add Fee</span>" +
                             "</button>" +

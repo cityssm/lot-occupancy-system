@@ -1,0 +1,7 @@
+{
+    "feeCategory": "Cypress Test - Fee Category",
+    "feeName": "Cypress Test - Fee Name",
+    "feeDescription": "Test Description",
+    "feeAmount": 10.50,
+    "quantityUnit": "units"
+}

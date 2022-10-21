@@ -4,7 +4,7 @@ import { logout, login } from "../../support/index.js";
 
 import * as configFunctions from "../../../helpers/functions.config.js";
 
-import * as recordTypes from "../../../types/recordTypes";
+import type * as recordTypes from "../../../types/recordTypes";
 
 describe("Update - Maps", () => {
     before(() => {
