@@ -67,6 +67,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 dateElement.value = cal.value();
                 dateElement.dispatchEvent(new Event("change"));
             });
+            cal.on("show", () => {
+                document.querySelector("html").classList.add("is-clipped");
+            });
+            cal.on("hide", () => {
+                bulmaJS.toggleHtmlClipped();
+            });
             const datepickerElement = containerElement.querySelector("#" + cal._id);
             const datePickerNavButtonElements = datepickerElement.querySelectorAll(".datepicker-nav button.is-text");
             for (const datePickerNavButtonElement of datePickerNavButtonElements) {
@@ -105,6 +111,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cal.on("save", () => {
                 timeElement.value = cal.value();
                 timeElement.dispatchEvent(new Event("change"));
+            });
+            cal.on("show", () => {
+                document.querySelector("html").classList.add("is-clipped");
+            });
+            cal.on("hide", () => {
+                bulmaJS.toggleHtmlClipped();
             });
             const timePickerElement = containerElement.querySelector("#" + cal._id);
             const timePickerCancelButtonElement = timePickerElement.querySelector(".datetimepicker-footer-cancel");

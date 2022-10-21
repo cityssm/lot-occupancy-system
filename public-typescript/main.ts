@@ -3,8 +3,10 @@
 import type * as globalTypes from "../types/globalTypes";
 import type { Options as BulmaCalendarOptions } from "bulma-calendar";
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
+import type { BulmaJS } from "@cityssm/bulma-js/types";
 
 declare const cityssm: cityssmGlobal;
+declare const bulmaJS: BulmaJS;
 
 (() => {
     const highlightMap = (
@@ -111,6 +113,16 @@ declare const cityssm: cityssmGlobal;
                 dateElement.dispatchEvent(new Event("change"));
             });
 
+            // Disable html scrolling when calendar is open
+            cal.on("show", () => {
+                document.querySelector("html").classList.add("is-clipped");
+            });
+
+            // Reenable scrolling, if a modal window is not open
+            cal.on("hide", () => {
+                bulmaJS.toggleHtmlClipped();
+            });
+
             // Get the datepicker container element
 
             const datepickerElement = containerElement.querySelector("#" + cal._id) as HTMLElement;
@@ -171,6 +183,16 @@ declare const cityssm: cityssmGlobal;
             cal.on("save", () => {
                 timeElement.value = cal.value();
                 timeElement.dispatchEvent(new Event("change"));
+            });
+
+            // Disable html scrolling when calendar is open
+            cal.on("show", () => {
+                document.querySelector("html").classList.add("is-clipped");
+            });
+
+            // Reenable scrolling, if a modal window is not open
+            cal.on("hide", () => {
+                bulmaJS.toggleHtmlClipped();
             });
 
             // Get the datepicker container element
