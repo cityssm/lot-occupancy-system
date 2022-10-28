@@ -149,9 +149,18 @@ declare const bulmaJS: BulmaJS;
                     clearButtonElement.remove();
                 } else {
                     clearButtonElement.dataset.tooltip = "Clear";
+                    clearButtonElement.ariaLabel = "Clear";
                     clearButtonElement.innerHTML =
                         '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
                 }
+            }
+
+            // Apply a label
+
+            const labelElement = document.querySelector("label[for='" + dateElement.id + "']");
+            
+            if (labelElement) {
+                datepickerElement.querySelector(".datetimepicker-dummy-input").ariaLabel = labelElement.textContent;
             }
         }
     };
