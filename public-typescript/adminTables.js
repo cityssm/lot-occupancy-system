@@ -131,10 +131,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<div class="control">' +
                         '<input class="input" name="workOrderType" type="text" value="' +
                         cityssm.escapeHTML(workOrderType.workOrderType) +
-                        '" maxlength="100" required />' +
+                        '" maxlength="100" aria-label="Work Order Type" required />' +
                         "</div>" +
                         '<div class="control">' +
-                        '<button class="button is-success" type="submit"><i class="fas fa-save" aria-hidden="true"></i></button>' +
+                        '<button class="button is-success" type="submit" aria-label="Save"><i class="fas fa-save" aria-hidden="true"></i></button>' +
                         "</div>" +
                         "</div>") +
                     "</form>" +
@@ -323,10 +323,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<div class="control">' +
                         '<input class="input" name="workOrderMilestoneType" type="text" value="' +
                         cityssm.escapeHTML(workOrderMilestoneType.workOrderMilestoneType) +
-                        '" maxlength="100" required />' +
+                        '" maxlength="100" aria-label="Work Order Milestone Type" required />' +
                         "</div>" +
                         '<div class="control">' +
-                        '<button class="button is-success" type="submit"><i class="fas fa-save" aria-hidden="true"></i></button>' +
+                        '<button class="button is-success" type="submit" aria-label="Save"><i class="fas fa-save" aria-hidden="true"></i></button>' +
                         "</div>" +
                         "</div>") +
                     "</form>" +
@@ -518,12 +518,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '" />' +
                     ('<div class="field has-addons">' +
                         '<div class="control">' +
-                        '<input class="input" name="lotStatus" type="text" value="' +
-                        cityssm.escapeHTML(lotStatus.lotStatus) +
-                        '" maxlength="100" required />' +
+                        '<input class="input" name="lotStatus" type="text"' +
+                        (' value="' + cityssm.escapeHTML(lotStatus.lotStatus) + '"') +
+                        (' aria-label="' + cityssm.escapeHTML(exports.aliases.lot) + ' Status"') +
+                        ' maxlength="100" required />' +
                         "</div>" +
                         '<div class="control">' +
-                        '<button class="button is-success" type="submit"><i class="fas fa-save" aria-hidden="true"></i></button>' +
+                        '<button class="button is-success" type="submit" aria-label="Save"><i class="fas fa-save" aria-hidden="true"></i></button>' +
                         "</div>" +
                         "</div>") +
                     "</form>" +
@@ -744,12 +745,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '" />' +
                     ('<div class="field has-addons">' +
                         '<div class="control">' +
-                        '<input class="input" name="lotOccupantType" type="text" value="' +
-                        cityssm.escapeHTML(lotOccupantType.lotOccupantType) +
-                        '" maxlength="100" required />' +
+                        '<input class="input" name="lotOccupantType" type="text"' +
+                        (' value="' + cityssm.escapeHTML(lotOccupantType.lotOccupantType) + '"') +
+                        (' aria-label="' +
+                            cityssm.escapeHTML(exports.aliases.lot + " " + exports.aliases.occupant) +
+                            ' Type"') +
+                        ' maxlength="100" required />' +
                         "</div>" +
                         '<div class="control">' +
-                        '<button class="button is-success" type="submit"><i class="fas fa-save" aria-hidden="true"></i></button>' +
+                        '<button class="button is-success" type="submit" aria-label="Save"><i class="fas fa-save" aria-hidden="true"></i></button>' +
                         "</div>" +
                         "</div>") +
                     "</form>" +

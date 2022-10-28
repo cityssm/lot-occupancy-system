@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { portNumber } from "./_globals.js";
-import { exec } from "child_process";
-import * as http from "http";
+import { exec } from "node:child_process";
+import * as http from "node:http";
 import { app } from "../app.js";
 describe("lot-occupancy-system", () => {
     const httpServer = http.createServer(app);

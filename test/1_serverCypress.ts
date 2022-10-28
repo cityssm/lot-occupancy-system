@@ -4,9 +4,9 @@ import * as assert from "assert";
 
 import { portNumber } from "./_globals.js";
 
-import { exec } from "child_process";
+import { exec } from "node:child_process";
 
-import * as http from "http";
+import * as http from "node:http";
 import { app } from "../app.js";
 
 describe("lot-occupancy-system", () => {

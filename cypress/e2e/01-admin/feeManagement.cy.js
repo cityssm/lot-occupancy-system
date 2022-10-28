@@ -27,7 +27,7 @@ describe("Admin - Fee Management", () => {
             cy.get(".container--feeCategory .panel-heading .title").should("contain.text", fee.feeCategory);
         });
     });
-    it.only("Creates a new fee", () => {
+    it("Creates a new fee", () => {
         cy.get("[data-cy='addFee']").first().click();
         cy.get(".modal").should("be.visible");
         cy.injectAxe();

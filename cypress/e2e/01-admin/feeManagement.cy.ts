@@ -48,7 +48,7 @@ describe("Admin - Fee Management", () => {
         });
     });
 
-    it.only("Creates a new fee", () => {
+    it("Creates a new fee", () => {
         cy.get("[data-cy='addFee']").first().click();
 
         cy.get(".modal").should("be.visible");
