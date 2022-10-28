@@ -17,7 +17,8 @@ export const userCanUpdate = (request) => {
     return user.userProperties.canUpdate;
 };
 export const apiKeyIsValid = async (request) => {
-    const apiKey = request.params.apiKey;
+    var _a;
+    const apiKey = (_a = request.params) === null || _a === void 0 ? void 0 : _a.apiKey;
     if (!apiKey) {
         return false;
     }

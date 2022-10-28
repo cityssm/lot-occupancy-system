@@ -1,9 +1,21 @@
 import { getUserNameFromApiKey } from "./functions.api.js";
 import * as configFunctions from "./functions.config.js";
 
-import type { Request } from "express";
+import type { User } from "../types/recordTypes";
 
-export const userIsAdmin = (request: Request): boolean => {
+export interface UserRequest {
+    session?: {
+        user?: User;
+    }
+}
+
+export interface APIRequest {
+    params?: {
+        apiKey?: string;
+    }
+}
+
+export const userIsAdmin = (request: UserRequest): boolean => {
     const user = request.session?.user;
 
     if (!user) {
@@ -13,7 +25,7 @@ export const userIsAdmin = (request: Request): boolean => {
     return user.userProperties.isAdmin;
 };
 
-export const userCanUpdate = (request: Request): boolean => {
+export const userCanUpdate = (request: UserRequest): boolean => {
     const user = request.session?.user;
 
     if (!user) {
@@ -23,8 +35,8 @@ export const userCanUpdate = (request: Request): boolean => {
     return user.userProperties.canUpdate;
 };
 
-export const apiKeyIsValid = async (request: Request): Promise<boolean> => {
-    const apiKey = request.params.apiKey;
+export const apiKeyIsValid = async (request: APIRequest): Promise<boolean> => {
+    const apiKey = request.params?.apiKey;
 
     if (!apiKey) {
         return false;
