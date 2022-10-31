@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "isolatedModules": false,
+        "declaration": true,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "allowUnreachableCode": false
+    },
+    "files": [
+        "public-typescript/adminCleanup.ts",
+        "public-typescript/adminFees.ts",
+        "public-typescript/adminLotTypes.ts",
+        "public-typescript/adminOccupancyTypes.ts",
+        "public-typescript/adminTables.ts",
+        "public-typescript/dashboard.ts",
+        "public-typescript/lotEdit.ts",
+        "public-typescript/lotOccupancyEdit.ts",
+        "public-typescript/lotOccupancySearch.ts",
+        "public-typescript/lotSearch.ts",
+        "public-typescript/lotView.ts",
+        "public-typescript/main.ts",
+        "public-typescript/mapEdit.ts",
+        "public-typescript/mapSearch.ts",
+        "public-typescript/mapView.ts",
+        "public-typescript/reportSearch.ts",
+        "public-typescript/workOrderEdit.ts",
+        "public-typescript/workOrderMilestoneCalendar.ts",
+        "public-typescript/workOrderOutlook.ts",
+        "public-typescript/workOrderSearch.ts",
+        "public-typescript/workOrderView.ts"
+    ],
+    "compileOnSave": true,
+    "buildOnSave": true
+}

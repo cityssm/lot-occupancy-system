@@ -23,3 +23,5 @@ public/images-custom/*
 temp/wmf/
 temp/config.*
 temp/*.csv
+
+types/*.js
