@@ -105,7 +105,8 @@ export const cleanupDatabase = (requestSession) => {
         " and lotOccupancyId not in (select lotOccupancyId from LotOccupancyFees)" +
         " and lotOccupancyId not in (select lotOccupancyId from LotOccupancyFields)" +
         " and lotOccupancyId not in (select lotOccupancyId from LotOccupancyOccupants)" +
-        " and lotOccupancyId not in (select lotOccupancyId from LotOccupancyTransactions)")
+        " and lotOccupancyId not in (select lotOccupancyId from LotOccupancyTransactions)" +
+        " and lotOccupancyId not in (select lotOccupancyId from WorkOrderLotOccupancies)")
         .run(recordDelete_timeMillisMin).changes;
     inactivedRecordCount += database
         .prepare("update Fees" +
@@ -173,7 +174,8 @@ export const cleanupDatabase = (requestSession) => {
         .prepare("delete from Lots where recordDelete_timeMillis <= ?" +
         " and lotId not in (select lotId from LotComments)" +
         " and lotId not in (select lotId from LotFields)" +
-        " and lotId not in (select lotId from LotOccupancies)")
+        " and lotId not in (select lotId from LotOccupancies)" +
+        " and lotId not in (select lotId from WorkOrderLots)")
         .run(recordDelete_timeMillisMin).changes;
     purgedRecordCount += database
         .prepare("delete from LotStatuses where recordDelete_timeMillis <= ?" +
