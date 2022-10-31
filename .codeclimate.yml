@@ -14,3 +14,4 @@ exclude_patterns:
 - "**/node_modules/"
 - "temp/"
 - "test/"
+- "**/*.d.ts"
