@@ -26,29 +26,33 @@ const onError = (error: ServerError) => {
     // handle specific listen errors with friendly messages
     switch (error.code) {
         // eslint-disable-next-line no-fallthrough
-        case "EACCES":
+        case "EACCES": {
             debugWWW("Requires elevated privileges");
             process.exit(1);
-        // break;
+            // break;
+        }
 
         // eslint-disable-next-line no-fallthrough
-        case "EADDRINUSE":
+        case "EADDRINUSE": {
             debugWWW("Port is already in use.");
             process.exit(1);
-        // break;
+            // break;
+        }
 
         // eslint-disable-next-line no-fallthrough
-        default:
+        default: {
             throw error;
+        }
     }
 };
 
 const onListening = (server: http.Server) => {
     const addr = server.address();
 
-    const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port.toString();
-
-    debugWWW("Listening on " + bind);
+    if (addr) {
+        const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port.toString();
+        debugWWW("Listening on " + bind);
+    }
 };
 
 /**
@@ -74,6 +78,5 @@ exitHook(() => {
     if (httpServer) {
         debugWWW("Closing HTTP");
         httpServer.close();
-        httpServer = undefined;
     }
 });

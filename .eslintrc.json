@@ -21,6 +21,7 @@
     ],
     "rules": {
         "node/no-missing-import": "off",
+        "node/no-unpublished-import": "off",
         "unicorn/consistent-function-scoping": "warn",
         "unicorn/empty-brace-spaces": "off",
         "unicorn/filename-case": [

@@ -130,10 +130,10 @@ app.all(urlPrefix + "/keepAlive", (_request, response) => {
 app.use(urlPrefix + "/login", routerLogin);
 app.get(urlPrefix + "/logout", (request, response) => {
     if (request.session.user && request.cookies[sessionCookieName]) {
-        request.session.destroy(null);
-        request.session = undefined;
-        response.clearCookie(sessionCookieName);
-        response.redirect(urlPrefix + "/");
+        request.session.destroy(() => {
+            response.clearCookie(sessionCookieName);
+            response.redirect(urlPrefix + "/");
+        });
     }
     else {
         response.redirect(urlPrefix + "/login");

@@ -10,20 +10,25 @@ const onError = (error) => {
         throw error;
     }
     switch (error.code) {
-        case "EACCES":
+        case "EACCES": {
             debugWWW("Requires elevated privileges");
             process.exit(1);
-        case "EADDRINUSE":
+        }
+        case "EADDRINUSE": {
             debugWWW("Port is already in use.");
             process.exit(1);
-        default:
+        }
+        default: {
             throw error;
+        }
     }
 };
 const onListening = (server) => {
     const addr = server.address();
-    const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port.toString();
-    debugWWW("Listening on " + bind);
+    if (addr) {
+        const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port.toString();
+        debugWWW("Listening on " + bind);
+    }
 };
 const httpPort = configFunctions.getProperty("application.httpPort");
 if (httpPort) {
@@ -39,6 +44,5 @@ exitHook(() => {
     if (httpServer) {
         debugWWW("Closing HTTP");
         httpServer.close();
-        httpServer = undefined;
     }
 });

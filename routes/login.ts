@@ -65,7 +65,7 @@ router
             isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain);
         }
 
-        let userObject: recordTypes.User;
+        let userObject: recordTypes.User | undefined;
 
         if (isAuthenticated) {
             const userNameLowerCase = userName.toLowerCase();
