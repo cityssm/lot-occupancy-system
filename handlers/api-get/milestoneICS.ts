@@ -71,26 +71,16 @@ function buildEventSummary(milestone: recordTypes.WorkOrderMilestone): string {
     return summary;
 }
 
-function buildEventDescriptionHTML(
+function buildEventDescriptionHTML_occupancies(
     request: Request,
     milestone: recordTypes.WorkOrderMilestone
 ): string {
-    const urlRoot = getUrlRoot(request);
-    const workOrderUrl = getWorkOrderUrl(request, milestone);
-
-    let descriptionHTML =
-        "<h1>Milestone Description</h1>" +
-        "<p>" +
-        escapeHTML(milestone.workOrderMilestoneDescription) +
-        "</p>" +
-        "<h2>Work Order #" +
-        milestone.workOrderNumber +
-        "</h2>" +
-        ("<p>" + escapeHTML(milestone.workOrderDescription) + "</p>") +
-        ("<p>" + workOrderUrl + "</p>");
+    let descriptionHTML = "";
 
     if (milestone.workOrderLotOccupancies.length > 0) {
-        descriptionHTML +=
+        const urlRoot = getUrlRoot(request);
+
+        descriptionHTML =
             "<h2>Related " +
             escapeHTML(configFunctions.getProperty("aliases.occupancies")) +
             "</h2>" +
@@ -137,7 +127,18 @@ function buildEventDescriptionHTML(
         descriptionHTML += "</tbody></table>";
     }
 
+    return descriptionHTML;
+}
+
+function buildEventDescriptionHTML_lots(
+    request: Request,
+    milestone: recordTypes.WorkOrderMilestone
+): string {
+    let descriptionHTML = "";
+
     if (milestone.workOrderLots.length > 0) {
+        const urlRoot = getUrlRoot(request);
+
         descriptionHTML +=
             "<h2>Related " +
             escapeHTML(configFunctions.getProperty("aliases.lots")) +
@@ -170,9 +171,20 @@ function buildEventDescriptionHTML(
         descriptionHTML += "</tbody></table>";
     }
 
+    return descriptionHTML;
+}
+
+function buildEventDescriptionHTML_prints(
+    request: Request,
+    milestone: recordTypes.WorkOrderMilestone
+): string {
+    let descriptionHTML = "";
+
     const prints = configFunctions.getProperty("settings.workOrders.prints");
 
     if (prints.length > 0) {
+        const urlRoot = getUrlRoot(request);
+
         descriptionHTML += "<h2>Prints</h2>";
 
         for (const printName of prints) {
@@ -190,6 +202,55 @@ function buildEventDescriptionHTML(
     }
 
     return descriptionHTML;
+}
+
+function buildEventDescriptionHTML(
+    request: Request,
+    milestone: recordTypes.WorkOrderMilestone
+): string {
+    const workOrderUrl = getWorkOrderUrl(request, milestone);
+
+    let descriptionHTML =
+        "<h1>Milestone Description</h1>" +
+        "<p>" +
+        escapeHTML(milestone.workOrderMilestoneDescription) +
+        "</p>" +
+        "<h2>Work Order #" +
+        milestone.workOrderNumber +
+        "</h2>" +
+        ("<p>" + escapeHTML(milestone.workOrderDescription) + "</p>") +
+        ("<p>" + workOrderUrl + "</p>");
+
+    descriptionHTML += buildEventDescriptionHTML_occupancies(request, milestone);
+    descriptionHTML += buildEventDescriptionHTML_lots(request, milestone);
+    descriptionHTML += buildEventDescriptionHTML_prints(request, milestone);
+
+    return descriptionHTML;
+}
+
+function buildEventCategoryList(milestone: recordTypes.WorkOrderMilestone): string[] {
+    const categories: string[] = [];
+
+    if (milestone.workOrderMilestoneTypeId) {
+        categories.push(milestone.workOrderMilestoneType, milestone.workOrderType);
+    }
+
+    if (milestone.workOrderMilestoneCompletionDate) {
+        categories.push("Completed");
+    }
+
+    return categories;
+}
+
+function buildEventLocation(milestone: recordTypes.WorkOrderMilestone): string {
+    const lotNames = [];
+
+    if (milestone.workOrderLots.length > 0) {
+        for (const lot of milestone.workOrderLots) {
+            lotNames.push(lot.mapName + ": " + lot.lotName);
+        }
+    }
+    return lotNames.join(", ");
 }
 
 export const handler: RequestHandler = (request, response) => {
@@ -304,33 +365,17 @@ export const handler: RequestHandler = (request, response) => {
 
         // Add categories
 
-        if (milestone.workOrderMilestoneTypeId) {
+        const categories = buildEventCategoryList(milestone);
+        for (const category of categories) {
             calendarEvent.createCategory({
-                name: milestone.workOrderMilestoneType
-            });
-
-            calendarEvent.createCategory({
-                name: milestone.workOrderType
-            });
-        }
-
-        if (milestone.workOrderMilestoneCompletionDate) {
-            calendarEvent.createCategory({
-                name: "Completed"
+                name: category
             });
         }
 
         // Set location
 
-        if (milestone.workOrderLots.length > 0) {
-            const lotNames = [];
-
-            for (const lot of milestone.workOrderLots) {
-                lotNames.push(lot.mapName + ": " + lot.lotName);
-            }
-
-            calendarEvent.location(lotNames.join(", "));
-        }
+        const location = buildEventLocation(milestone);
+        calendarEvent.location(location);
 
         // Set organizer / attendees
 
