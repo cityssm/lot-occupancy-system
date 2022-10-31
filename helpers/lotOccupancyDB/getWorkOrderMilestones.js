@@ -5,13 +5,7 @@ import * as configFunctions from "../functions.config.js";
 import { getLots } from "./getLots.js";
 import { getLotOccupancies } from "./getLotOccupancies.js";
 const commaSeparatedNumbersRegex = /^\d+(,\d+)*$/;
-export const getWorkOrderMilestones = (filters, options, connectedDatabase) => {
-    const database = connectedDatabase ||
-        sqlite(databasePath, {
-            readonly: true
-        });
-    database.function("userFn_dateIntegerToString", dateIntegerToString);
-    database.function("userFn_timeIntegerToString", timeIntegerToString);
+const buildWhereClause = (filters) => {
     let sqlWhereClause = " where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null";
     const sqlParameters = [];
     if (filters.workOrderId) {
@@ -28,16 +22,18 @@ export const getWorkOrderMilestones = (filters, options, connectedDatabase) => {
         configFunctions.getProperty("settings.workOrders.workOrderMilestoneDateRecentAfterDays"));
     const recentAfterDateNumber = dateToInteger(date);
     switch (filters.workOrderMilestoneDateFilter) {
-        case "upcomingMissed":
+        case "upcomingMissed": {
             sqlWhereClause +=
                 " and (m.workOrderMilestoneCompletionDate is null or m.workOrderMilestoneDate >= ?)";
             sqlParameters.push(currentDateNumber);
             break;
-        case "recent":
+        }
+        case "recent": {
             sqlWhereClause +=
                 " and m.workOrderMilestoneDate >= ? and m.workOrderMilestoneDate <= ?";
             sqlParameters.push(recentBeforeDateNumber, recentAfterDateNumber);
             break;
+        }
     }
     if (filters.workOrderMilestoneDateString) {
         sqlWhereClause += " and m.workOrderMilestoneDate = ?";
@@ -51,19 +47,35 @@ export const getWorkOrderMilestones = (filters, options, connectedDatabase) => {
         sqlWhereClause +=
             " and m.workOrderMilestoneTypeId in (" + filters.workOrderMilestoneTypeIds + ")";
     }
+    return {
+        sqlWhereClause,
+        sqlParameters
+    };
+};
+export const getWorkOrderMilestones = (filters, options, connectedDatabase) => {
+    const database = connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
+    database.function("userFn_dateIntegerToString", dateIntegerToString);
+    database.function("userFn_timeIntegerToString", timeIntegerToString);
+    const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
     let orderByClause = "";
     switch (options.orderBy) {
-        case "completion":
+        case "completion": {
             orderByClause =
                 " order by" +
                     " m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime," +
                     " m.workOrderMilestoneDate, case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end," +
                     " t.orderNumber, m.workOrderMilestoneId";
             break;
-        case "date":
+        }
+        case "date": {
             orderByClause =
                 " order by m.workOrderMilestoneDate, case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end," +
                     " t.orderNumber, m.workOrderId, m.workOrderMilestoneId";
+            break;
+        }
     }
     const sql = "select m.workOrderMilestoneId," +
         " m.workOrderMilestoneTypeId, t.workOrderMilestoneType," +

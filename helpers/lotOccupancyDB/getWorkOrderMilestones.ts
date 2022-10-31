@@ -31,25 +31,12 @@ interface WorkOrderMilestoneOptions {
 
 const commaSeparatedNumbersRegex = /^\d+(,\d+)*$/;
 
-export const getWorkOrderMilestones = (
-    filters: WorkOrderMilestoneFilters,
-    options: WorkOrderMilestoneOptions,
-    connectedDatabase?: sqlite.Database
-): recordTypes.WorkOrderMilestone[] => {
-    const database =
-        connectedDatabase ||
-        sqlite(databasePath, {
-            readonly: true
-        });
-
-    database.function("userFn_dateIntegerToString", dateIntegerToString);
-    database.function("userFn_timeIntegerToString", timeIntegerToString);
-
-    // Filters
-
+const buildWhereClause = (
+    filters: WorkOrderMilestoneFilters
+): { sqlWhereClause: string; sqlParameters: unknown[] } => {
     let sqlWhereClause =
         " where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null";
-    const sqlParameters = [];
+    const sqlParameters: unknown[] = [];
 
     if (filters.workOrderId) {
         sqlWhereClause += " and m.workOrderId = ?";
@@ -79,17 +66,19 @@ export const getWorkOrderMilestones = (
     const recentAfterDateNumber = dateToInteger(date);
 
     switch (filters.workOrderMilestoneDateFilter) {
-        case "upcomingMissed":
+        case "upcomingMissed": {
             sqlWhereClause +=
                 " and (m.workOrderMilestoneCompletionDate is null or m.workOrderMilestoneDate >= ?)";
             sqlParameters.push(currentDateNumber);
             break;
+        }
 
-        case "recent":
+        case "recent": {
             sqlWhereClause +=
                 " and m.workOrderMilestoneDate >= ? and m.workOrderMilestoneDate <= ?";
             sqlParameters.push(recentBeforeDateNumber, recentAfterDateNumber);
             break;
+        }
     }
 
     if (filters.workOrderMilestoneDateString) {
@@ -109,23 +98,50 @@ export const getWorkOrderMilestones = (
             " and m.workOrderMilestoneTypeId in (" + filters.workOrderMilestoneTypeIds + ")";
     }
 
+    return {
+        sqlWhereClause,
+        sqlParameters
+    };
+};
+
+export const getWorkOrderMilestones = (
+    filters: WorkOrderMilestoneFilters,
+    options: WorkOrderMilestoneOptions,
+    connectedDatabase?: sqlite.Database
+): recordTypes.WorkOrderMilestone[] => {
+    const database =
+        connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
+
+    database.function("userFn_dateIntegerToString", dateIntegerToString);
+    database.function("userFn_timeIntegerToString", timeIntegerToString);
+
+    // Filters
+
+    const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
+
     // Order By
 
     let orderByClause = "";
 
     switch (options.orderBy) {
-        case "completion":
+        case "completion": {
             orderByClause =
                 " order by" +
                 " m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime," +
                 " m.workOrderMilestoneDate, case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end," +
                 " t.orderNumber, m.workOrderMilestoneId";
             break;
+        }
 
-        case "date":
+        case "date": {
             orderByClause =
                 " order by m.workOrderMilestoneDate, case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end," +
                 " t.orderNumber, m.workOrderId, m.workOrderMilestoneId";
+            break;
+        }
     }
 
     // Query

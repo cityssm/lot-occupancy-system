@@ -77,7 +77,7 @@ const _getWorkOrder = (
 
         if (options.includeComments) {
             workOrder.workOrderComments = getWorkOrderComments(
-                workOrder.workOrderId,
+                workOrder.workOrderId as number,
                 database
             );
         }
