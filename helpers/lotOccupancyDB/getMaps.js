@@ -1,6 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-export const getMaps = (filters) => {
+export const getMaps = () => {
     const database = sqlite(databasePath, {
         readonly: true
     });

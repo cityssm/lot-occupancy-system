@@ -10,7 +10,7 @@ export const getOccupancyTypeFields = (
 ): recordTypes.OccupancyTypeField[] => {
     const database = connectedDatabase || sqlite(databasePath);
 
-    const sqlParameters = [];
+    const sqlParameters: unknown[] = [];
 
     if (occupancyTypeId) {
         sqlParameters.push(occupancyTypeId);

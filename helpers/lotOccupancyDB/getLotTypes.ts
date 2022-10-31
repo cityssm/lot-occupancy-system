@@ -34,7 +34,7 @@ export const getLotTypes = (): recordTypes.LotType[] => {
             }
     
             lotType.lotTypeFields = getLotTypeFields(
-                lotType.lotTypeId,
+                lotType.lotTypeId as number,
                 database
             );
     

@@ -23,7 +23,7 @@ export const getPastLotOccupancyOccupants = (
     let sqlWhereClause =
         " where o.recordDelete_timeMillis is null and l.recordDelete_timeMillis is null";
 
-    const sqlParameters = [];
+    const sqlParameters: unknown[] = [];
 
     if (filters.searchFilter) {
         const searchFilterPieces = filters.searchFilter.split(" ");

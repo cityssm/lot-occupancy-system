@@ -59,7 +59,7 @@ export const getFeeCategories = (filters, options) => {
             expectedFeeCategoryOrderNumber += 1;
             if (updateOrderNumbers && feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
                 database
-                    .prepare("update FeeCategories" + " set orderNumber = ?" + " where feeCategoryId = ?")
+                    .prepare("update FeeCategories set orderNumber = ? where feeCategoryId = ?")
                     .run(expectedFeeCategoryOrderNumber, feeCategory.feeCategoryId);
                 feeCategory.orderNumber = expectedFeeCategoryOrderNumber;
             }
@@ -84,7 +84,7 @@ export const getFeeCategories = (filters, options) => {
                     expectedFeeOrderNumber += 1;
                     if (fee.orderNumber !== expectedFeeOrderNumber) {
                         database
-                            .prepare("update Fees" + " set orderNumber = ?" + " where feeId = ?")
+                            .prepare("update Fees set orderNumber = ? where feeId = ?")
                             .run(expectedFeeOrderNumber, fee.feeId);
                         fee.orderNumber = expectedFeeOrderNumber;
                     }

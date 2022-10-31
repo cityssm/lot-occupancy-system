@@ -103,9 +103,7 @@ export const getFeeCategories = (
 
             if (updateOrderNumbers && feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
                 database
-                    .prepare(
-                        "update FeeCategories" + " set orderNumber = ?" + " where feeCategoryId = ?"
-                    )
+                    .prepare("update FeeCategories set orderNumber = ? where feeCategoryId = ?")
                     .run(expectedFeeCategoryOrderNumber, feeCategory.feeCategoryId);
 
                 feeCategory.orderNumber = expectedFeeCategoryOrderNumber;
@@ -138,7 +136,7 @@ export const getFeeCategories = (
 
                     if (fee.orderNumber !== expectedFeeOrderNumber) {
                         database
-                            .prepare("update Fees" + " set orderNumber = ?" + " where feeId = ?")
+                            .prepare("update Fees set orderNumber = ? where feeId = ?")
                             .run(expectedFeeOrderNumber, fee.feeId);
 
                         fee.orderNumber = expectedFeeOrderNumber;

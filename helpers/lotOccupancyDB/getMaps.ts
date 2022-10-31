@@ -4,9 +4,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-interface GetMapsFilters {}
-
-export const getMaps = (filters?: GetMapsFilters): recordTypes.Map[] => {
+export const getMaps = (): recordTypes.Map[] => {
     const database = sqlite(databasePath, {
         readonly: true
     });

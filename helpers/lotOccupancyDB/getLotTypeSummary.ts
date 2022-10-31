@@ -18,7 +18,7 @@ export const getLotTypeSummary = (filters?: GetFilters): LotTypeSummary[] => {
     });
 
     let sqlWhereClause = " where l.recordDelete_timeMillis is null";
-    const sqlParameters = [];
+    const sqlParameters: unknown[] = [];
 
     if (filters && filters.mapId) {
         sqlWhereClause += " and l.mapId = ?";

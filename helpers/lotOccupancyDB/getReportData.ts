@@ -38,9 +38,9 @@ const occupancyEndDateAlias = occupancyCamelCase + "EndDate";
 export const getReportData = (
     reportName: string,
     reportParameters?: ReportParameters
-): unknown[] => {
+): unknown[] | undefined => {
     let sql: string;
-    const sqlParameters = [];
+    const sqlParameters: unknown[] = [];
 
     switch (reportName) {
         case "maps-all": {

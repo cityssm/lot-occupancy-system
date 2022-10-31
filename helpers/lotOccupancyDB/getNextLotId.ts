@@ -4,7 +4,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import * as configFunctions from "../functions.config.js";
 
-export const getNextLotId = (lotId: number | string): number => {
+export const getNextLotId = (lotId: number | string): number | undefined => {
     const database = sqlite(databasePath, {
         readonly: true
     });
