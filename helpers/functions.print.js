@@ -15,7 +15,7 @@ export const getScreenPrintConfig = (printName) => {
     return screenPrintConfigs[printName];
 };
 const pdfPrintConfigs = {
-    "workOrder": {
+    workOrder: {
         title: "Work Order Field Sheet",
         params: ["workOrderId"]
     },
@@ -38,11 +38,14 @@ export const getPdfPrintConfig = (printName) => {
 export const getPrintConfig = (screenOrPdf_printName) => {
     const printNameSplit = screenOrPdf_printName.split("/");
     switch (printNameSplit[0]) {
-        case "screen":
+        case "screen": {
             return getScreenPrintConfig(printNameSplit[1]);
-        case "pdf":
+        }
+        case "pdf": {
             return getPdfPrintConfig(printNameSplit[1]);
+        }
     }
+    return undefined;
 };
 export const getReportData = (printConfig, requestQuery) => {
     const reportData = {
@@ -50,11 +53,11 @@ export const getReportData = (printConfig, requestQuery) => {
     };
     if (printConfig.params.includes("lotOccupancyId") &&
         typeof requestQuery.lotOccupancyId === "string") {
-        reportData.lotOccupancy = getLotOccupancy(requestQuery.lotOccupancyId);
-        if (reportData.lotOccupancy &&
-            reportData.lotOccupancy.lotId) {
-            reportData.lot = getLot(reportData.lotOccupancy.lotId);
+        const lotOccupancy = getLotOccupancy(requestQuery.lotOccupancyId);
+        if (lotOccupancy && lotOccupancy.lotId) {
+            reportData.lot = getLot(lotOccupancy.lotId);
         }
+        reportData.lotOccupancy = lotOccupancy;
     }
     if (printConfig.params.includes("workOrderId") &&
         typeof requestQuery.workOrderId === "string") {

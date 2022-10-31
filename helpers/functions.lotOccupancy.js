@@ -1,13 +1,13 @@
 export const filterOccupantsByLotOccupantType = (lotOccupancy, lotOccupantType) => {
     const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase();
-    const occupants = lotOccupancy.lotOccupancyOccupants.filter((possibleOccupant) => {
-        return possibleOccupant.lotOccupantType.toLowerCase() === lotOccupantTypeLowerCase;
+    const occupants = (lotOccupancy.lotOccupancyOccupants || []).filter((possibleOccupant) => {
+        return (possibleOccupant.lotOccupantType.toLowerCase() === lotOccupantTypeLowerCase);
     });
     return occupants;
 };
 export const getFieldValueByOccupancyTypeField = (lotOccupancy, occupancyTypeField) => {
     const occupancyTypeFieldLowerCase = occupancyTypeField.toLowerCase();
-    const field = lotOccupancy.lotOccupancyFields.find((possibleField) => {
+    const field = (lotOccupancy.lotOccupancyFields || []).find((possibleField) => {
         return possibleField.occupancyTypeField.toLowerCase() === occupancyTypeFieldLowerCase;
     });
     if (field) {
@@ -17,7 +17,7 @@ export const getFieldValueByOccupancyTypeField = (lotOccupancy, occupancyTypeFie
 };
 export const getFeesByFeeCategory = (lotOccupancy, feeCategory, feeCategoryContains = false) => {
     const feeCategoryLowerCase = feeCategory.toLowerCase();
-    const fees = lotOccupancy.lotOccupancyFees.filter((possibleFee) => {
+    const fees = (lotOccupancy.lotOccupancyFees || []).filter((possibleFee) => {
         return feeCategoryContains
             ? possibleFee.feeCategory.toLowerCase().includes(feeCategoryLowerCase)
             : possibleFee.feeCategory.toLowerCase() === feeCategoryLowerCase;

@@ -17,7 +17,7 @@ import type * as recordTypes from "../types/recordTypes";
  * Lot Occupant Types
  */
 
-let lotOccupantTypes: recordTypes.LotOccupantType[];
+let lotOccupantTypes: recordTypes.LotOccupantType[] | undefined;
 
 export function getLotOccupantTypes() {
     if (!lotOccupantTypes) {
@@ -53,7 +53,7 @@ export function clearLotOccupantTypesCache() {
  * Lot Statuses
  */
 
-let lotStatuses: recordTypes.LotStatus[];
+let lotStatuses: recordTypes.LotStatus[] | undefined;
 
 export function getLotStatuses() {
     if (!lotStatuses) {
@@ -89,7 +89,7 @@ export function clearLotStatusesCache() {
  * Lot Types
  */
 
-let lotTypes: recordTypes.LotType[];
+let lotTypes: recordTypes.LotType[] | undefined;
 
 export function getLotTypes() {
     if (!lotTypes) {
@@ -125,8 +125,8 @@ export function clearLotTypesCache() {
  * Occupancy Types
  */
 
-let occupancyTypes: recordTypes.OccupancyType[];
-let allOccupancyTypeFields: recordTypes.OccupancyTypeField[];
+let occupancyTypes: recordTypes.OccupancyType[] | undefined;
+let allOccupancyTypeFields: recordTypes.OccupancyTypeField[] | undefined;
 
 export function getOccupancyTypes() {
     if (!occupancyTypes) {
@@ -170,7 +170,7 @@ export function clearOccupancyTypesCache() {
  * Work Order Types
  */
 
-let workOrderTypes: recordTypes.WorkOrderType[];
+let workOrderTypes: recordTypes.WorkOrderType[] | undefined;
 
 export function getWorkOrderTypes() {
     if (!workOrderTypes) {
@@ -188,7 +188,7 @@ export function clearWorkOrderTypesCache() {
  * Work Order Milestone Types
  */
 
-let workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[];
+let workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[] | undefined;
 
 export function getWorkOrderMilestoneTypes() {
     if (!workOrderMilestoneTypes) {

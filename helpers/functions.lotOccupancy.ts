@@ -6,8 +6,10 @@ export const filterOccupantsByLotOccupantType = (
 ): recordTypes.LotOccupancyOccupant[] => {
     const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase();
 
-    const occupants = lotOccupancy.lotOccupancyOccupants.filter((possibleOccupant) => {
-        return possibleOccupant.lotOccupantType.toLowerCase() === lotOccupantTypeLowerCase;
+    const occupants = (lotOccupancy.lotOccupancyOccupants || []).filter((possibleOccupant) => {
+        return (
+            (possibleOccupant.lotOccupantType as string).toLowerCase() === lotOccupantTypeLowerCase
+        );
     });
 
     return occupants;
@@ -16,11 +18,11 @@ export const filterOccupantsByLotOccupantType = (
 export const getFieldValueByOccupancyTypeField = (
     lotOccupancy: recordTypes.LotOccupancy,
     occupancyTypeField: string
-): string => {
+): string | undefined => {
     const occupancyTypeFieldLowerCase = occupancyTypeField.toLowerCase();
 
-    const field = lotOccupancy.lotOccupancyFields.find((possibleField) => {
-        return possibleField.occupancyTypeField.toLowerCase() === occupancyTypeFieldLowerCase;
+    const field = (lotOccupancy.lotOccupancyFields || []).find((possibleField) => {
+        return (possibleField.occupancyTypeField as string).toLowerCase() === occupancyTypeFieldLowerCase;
     });
 
     if (field) {
@@ -37,10 +39,10 @@ export const getFeesByFeeCategory = (
 ) => {
     const feeCategoryLowerCase = feeCategory.toLowerCase();
 
-    const fees = lotOccupancy.lotOccupancyFees.filter((possibleFee) => {
+    const fees = (lotOccupancy.lotOccupancyFees || []).filter((possibleFee) => {
         return feeCategoryContains
-            ? possibleFee.feeCategory.toLowerCase().includes(feeCategoryLowerCase)
-            : possibleFee.feeCategory.toLowerCase() === feeCategoryLowerCase;
+            ? (possibleFee.feeCategory as string).toLowerCase().includes(feeCategoryLowerCase)
+            : (possibleFee.feeCategory as string).toLowerCase() === feeCategoryLowerCase;
     });
 
     return fees;

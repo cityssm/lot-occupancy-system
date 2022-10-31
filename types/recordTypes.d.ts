@@ -26,8 +26,8 @@ export interface Map extends Record {
     lotCount?: number;
 }
 export interface LotType extends Record {
-    lotTypeId?: number;
-    lotType?: string;
+    lotTypeId: number;
+    lotType: string;
     orderNumber?: number;
     lotTypeFields?: LotTypeField[];
 }
@@ -44,8 +44,8 @@ export interface LotTypeField extends Record {
     orderNumber?: number;
 }
 export interface LotStatus extends Record {
-    lotStatusId?: number;
-    lotStatus?: string;
+    lotStatusId: number;
+    lotStatus: string;
     orderNumber?: number;
 }
 export interface Lot extends Record {
@@ -76,8 +76,8 @@ export interface LotComment extends Record {
     lotComment?: string;
 }
 export interface OccupancyType extends Record {
-    occupancyTypeId?: number;
-    occupancyType?: string;
+    occupancyTypeId: number;
+    occupancyType: string;
     orderNumber?: number;
     occupancyTypeFields?: OccupancyTypeField[];
 }
@@ -93,8 +93,8 @@ export interface OccupancyTypeField {
     orderNumber?: number;
 }
 export interface LotOccupantType extends Record {
-    lotOccupantTypeId?: number;
-    lotOccupantType?: string;
+    lotOccupantTypeId: number;
+    lotOccupantType: string;
     orderNumber?: number;
 }
 export interface FeeCategory extends Record {
@@ -137,7 +137,7 @@ export interface LotOccupancyTransaction extends Record {
     transactionDateString?: string;
     transactionTime?: number;
     transactionTimeString?: string;
-    transactionAmount?: number;
+    transactionAmount: number;
     externalReceiptNumber?: string;
     transactionNote?: string;
 }
@@ -197,8 +197,8 @@ export interface WorkOrderType extends Record {
     orderNumber?: number;
 }
 export interface WorkOrderMilestoneType extends Record {
-    workOrderMilestoneTypeId?: number;
-    workOrderMilestoneType?: string;
+    workOrderMilestoneTypeId: number;
+    workOrderMilestoneType: string;
     orderNumber?: number;
 }
 export interface WorkOrderComment extends Record {

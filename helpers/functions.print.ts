@@ -4,8 +4,6 @@ import { getLot } from "./lotOccupancyDB/getLot.js";
 import { getLotOccupancy } from "./lotOccupancyDB/getLotOccupancy.js";
 import { getWorkOrder } from "./lotOccupancyDB/getWorkOrder.js";
 
-import type * as recordTypes from "../types/recordTypes";
-
 interface PrintConfig {
     title: string;
     params: string[];
@@ -27,7 +25,7 @@ export const getScreenPrintConfig = (printName: string): PrintConfig => {
 };
 
 const pdfPrintConfigs: { [printName: string]: PrintConfig } = {
-    "workOrder": {
+    workOrder: {
         title: "Work Order Field Sheet",
         params: ["workOrderId"]
     },
@@ -51,16 +49,19 @@ export const getPdfPrintConfig = (printName: string): PrintConfig => {
     return pdfPrintConfigs[printName];
 };
 
-export const getPrintConfig = (screenOrPdf_printName: string): PrintConfig => {
+export const getPrintConfig = (screenOrPdf_printName: string): PrintConfig | undefined => {
     const printNameSplit = screenOrPdf_printName.split("/");
 
     switch (printNameSplit[0]) {
-        case "screen":
+        case "screen": {
             return getScreenPrintConfig(printNameSplit[1]);
-
-        case "pdf":
+        }
+        case "pdf": {
             return getPdfPrintConfig(printNameSplit[1]);
+        }
     }
+
+    return undefined;
 };
 
 export const getReportData = (
@@ -75,14 +76,13 @@ export const getReportData = (
         printConfig.params.includes("lotOccupancyId") &&
         typeof requestQuery.lotOccupancyId === "string"
     ) {
-        reportData.lotOccupancy = getLotOccupancy(requestQuery.lotOccupancyId);
+        const lotOccupancy = getLotOccupancy(requestQuery.lotOccupancyId);
 
-        if (
-            reportData.lotOccupancy &&
-            (reportData.lotOccupancy as recordTypes.LotOccupancy).lotId
-        ) {
-            reportData.lot = getLot((reportData.lotOccupancy as recordTypes.LotOccupancy).lotId);
+        if (lotOccupancy && lotOccupancy.lotId) {
+            reportData.lot = getLot(lotOccupancy.lotId);
         }
+
+        reportData.lotOccupancy = lotOccupancy;
     }
 
     if (

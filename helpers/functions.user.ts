@@ -18,7 +18,7 @@ export interface APIRequest {
 export const userIsAdmin = (request: UserRequest): boolean => {
     const user = request.session?.user;
 
-    if (!user) {
+    if (!user || !user.userProperties) {
         return false;
     }
 
@@ -28,7 +28,7 @@ export const userIsAdmin = (request: UserRequest): boolean => {
 export const userCanUpdate = (request: UserRequest): boolean => {
     const user = request.session?.user;
 
-    if (!user) {
+    if (!user || !user.userProperties) {
         return false;
     }
 
