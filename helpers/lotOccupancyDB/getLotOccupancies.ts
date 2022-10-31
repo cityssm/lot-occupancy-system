@@ -33,24 +33,11 @@ interface GetLotOccupanciesOptions {
     includeOccupants: boolean;
 }
 
-export const getLotOccupancies = (
-    filters: GetLotOccupanciesFilters,
-    options: GetLotOccupanciesOptions,
-    connectedDatabase?: sqlite.Database
-): {
-    count: number;
-    lotOccupancies: recordTypes.LotOccupancy[];
-} => {
-    const database =
-        connectedDatabase ||
-        sqlite(databasePath, {
-            readonly: true
-        });
-
-    database.function("userFn_dateIntegerToString", dateIntegerToString);
-
+const buildWhereClause = (
+    filters: GetLotOccupanciesFilters
+): { sqlWhereClause: string; sqlParameters: unknown[] } => {
     let sqlWhereClause = " where o.recordDelete_timeMillis is null";
-    const sqlParameters = [];
+    const sqlParameters: unknown[] = [];
 
     if (filters.lotId) {
         sqlWhereClause += " and o.lotId = ?";
@@ -148,7 +135,31 @@ export const getLotOccupancies = (
         sqlParameters.push(filters.notWorkOrderId);
     }
 
-    let count: number;
+    return {
+        sqlWhereClause,
+        sqlParameters
+    };
+};
+
+export const getLotOccupancies = (
+    filters: GetLotOccupanciesFilters,
+    options: GetLotOccupanciesOptions,
+    connectedDatabase?: sqlite.Database
+): {
+    count: number;
+    lotOccupancies: recordTypes.LotOccupancy[];
+} => {
+    const database =
+        connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
+
+    database.function("userFn_dateIntegerToString", dateIntegerToString);
+
+    const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
+
+    let count = 0;
 
     if (options.limit !== -1) {
         count = database
@@ -175,7 +186,7 @@ export const getLotOccupancies = (
                     " from LotOccupancies o" +
                     " left join OccupancyTypes t on o.occupancyTypeId = t.occupancyTypeId" +
                     " left join Lots l on o.lotId = l.lotId" +
-                    " left join LotTypes lt on l.lotTypeId = lt.lotTypeId" + 
+                    " left join LotTypes lt on l.lotTypeId = lt.lotTypeId" +
                     " left join Maps m on l.mapId = m.mapId" +
                     sqlWhereClause +
                     " order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId" +
@@ -192,7 +203,7 @@ export const getLotOccupancies = (
         if (options.includeOccupants) {
             for (const lotOccupancy of lotOccupancies) {
                 lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(
-                    lotOccupancy.lotOccupancyId,
+                    lotOccupancy.lotOccupancyId as number,
                     database
                 );
             }

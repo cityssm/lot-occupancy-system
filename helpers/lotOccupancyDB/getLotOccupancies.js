@@ -2,12 +2,7 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { dateIntegerToString, dateStringToInteger, dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { getLotOccupancyOccupants } from "./getLotOccupancyOccupants.js";
-export const getLotOccupancies = (filters, options, connectedDatabase) => {
-    const database = connectedDatabase ||
-        sqlite(databasePath, {
-            readonly: true
-        });
-    database.function("userFn_dateIntegerToString", dateIntegerToString);
+const buildWhereClause = (filters) => {
     let sqlWhereClause = " where o.recordDelete_timeMillis is null";
     const sqlParameters = [];
     if (filters.lotId) {
@@ -91,7 +86,19 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
             " and o.lotOccupancyId not in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)";
         sqlParameters.push(filters.notWorkOrderId);
     }
-    let count;
+    return {
+        sqlWhereClause,
+        sqlParameters
+    };
+};
+export const getLotOccupancies = (filters, options, connectedDatabase) => {
+    const database = connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
+    database.function("userFn_dateIntegerToString", dateIntegerToString);
+    const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
+    let count = 0;
     if (options.limit !== -1) {
         count = database
             .prepare("select count(*) as recordCount" +
