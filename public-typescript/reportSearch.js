@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
     const menuTabElements = document.querySelectorAll(".menu a");
     const tabContainerElements = document.querySelectorAll(".tabs-container > div");
     const selectTab = (clickEvent) => {

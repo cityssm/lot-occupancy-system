@@ -33,7 +33,7 @@ fieldset:enabled .is-hidden-enabled {
     pointer-events: none;
 }
 
-// to fix page titles inside level components, set on .level-left
+/* to fix page titles inside level components, set on .level-left */
 
 .has-flex-shrink-1 {
     flex-shrink: 1;
@@ -174,12 +174,12 @@ span.button.is-static {
         background-color: transparent !important;
     }
 
-    // fix left icon
+    /* fix left icon */
     .datetimepicker-dummy-wrapper .datetimepicker-dummy-input:first-child {
         text-indent: 2rem;
     }
 
-    // center the button
+    /* center the button */
     .datetimepicker-clear-button {
         transform: none;
         margin-right: 0.25rem;
