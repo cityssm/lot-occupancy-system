@@ -13,7 +13,7 @@ interface GetWorkOrdersOptions {
     includeComments?: boolean;
     includeMilestones?: boolean;
 }
-export declare const getWorkOrders: (filters?: GetWorkOrdersFilters, options?: GetWorkOrdersOptions) => {
+export declare const getWorkOrders: (filters: GetWorkOrdersFilters, options?: GetWorkOrdersOptions) => {
     count: number;
     workOrders: recordTypes.WorkOrder[];
 };

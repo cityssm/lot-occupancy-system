@@ -2,11 +2,7 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as configFunctions from "../functions.config.js";
-export const getLots = (filters, options, connectedDatabase) => {
-    const database = connectedDatabase ||
-        sqlite(databasePath, {
-            readonly: true
-        });
+const buildWhereClause = (filters) => {
     let sqlWhereClause = " where l.recordDelete_timeMillis is null";
     const sqlParameters = [];
     if (filters.lotName) {
@@ -51,8 +47,19 @@ export const getLots = (filters, options, connectedDatabase) => {
             " and l.lotId in (select lotId from WorkOrderLots where recordDelete_timeMillis is null and workOrderId = ?)";
         sqlParameters.push(filters.workOrderId);
     }
+    return {
+        sqlWhereClause,
+        sqlParameters
+    };
+};
+export const getLots = (filters, options, connectedDatabase) => {
+    const database = connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
+    const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
     const currentDate = dateToInteger(new Date());
-    let count;
+    let count = 0;
     if (options.limit !== -1) {
         count = database
             .prepare("select count(*) as recordCount" +

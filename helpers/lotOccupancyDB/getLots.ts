@@ -23,23 +23,10 @@ interface GetLotsOptions {
     offset: number;
 }
 
-export const getLots = (
-    filters: GetLotsFilters,
-    options: GetLotsOptions,
-    connectedDatabase?: sqlite.Database
-): {
-    count: number;
-    lots: recordTypes.Lot[];
-} => {
-    const database =
-        connectedDatabase ||
-        sqlite(databasePath, {
-            readonly: true
-        });
-
+const buildWhereClause = (filters: GetLotsFilters): { sqlWhereClause: string; sqlParameters: unknown[];} => {
     let sqlWhereClause = " where l.recordDelete_timeMillis is null";
-    const sqlParameters = [];
-
+    const sqlParameters: unknown[] = [];
+    
     if (filters.lotName) {
         if (filters.lotNameSearchType === "startsWith") {
             sqlWhereClause += " and l.lotName like ? || '%'";
@@ -86,9 +73,31 @@ export const getLots = (
         sqlParameters.push(filters.workOrderId);
     }
 
+    return {
+        sqlWhereClause,
+        sqlParameters
+    };
+};
+
+export const getLots = (
+    filters: GetLotsFilters,
+    options: GetLotsOptions,
+    connectedDatabase?: sqlite.Database
+): {
+    count: number;
+    lots: recordTypes.Lot[];
+} => {
+    const database =
+        connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
+
+    const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
+
     const currentDate = dateToInteger(new Date());
 
-    let count: number;
+    let count = 0;
 
     if (options.limit !== -1) {
         count = database

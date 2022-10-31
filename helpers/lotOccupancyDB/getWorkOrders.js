@@ -5,11 +5,7 @@ import { getWorkOrderComments } from "./getWorkOrderComments.js";
 import { getLots } from "./getLots.js";
 import { getLotOccupancies } from "./getLotOccupancies.js";
 import { getWorkOrderMilestones } from "./getWorkOrderMilestones.js";
-export const getWorkOrders = (filters, options) => {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
-    database.function("userFn_dateIntegerToString", dateIntegerToString);
+const buildWhereClause = (filters) => {
     let sqlWhereClause = " where w.recordDelete_timeMillis is null";
     const sqlParameters = [];
     if (filters.workOrderTypeId) {
@@ -46,8 +42,19 @@ export const getWorkOrders = (filters, options) => {
             sqlParameters.push(lotNamePiece);
         }
     }
+    return {
+        sqlWhereClause,
+        sqlParameters
+    };
+};
+export const getWorkOrders = (filters, options) => {
+    const database = sqlite(databasePath, {
+        readonly: true
+    });
+    database.function("userFn_dateIntegerToString", dateIntegerToString);
+    const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
     const count = database
-        .prepare("select count(*) as recordCount" + " from WorkOrders w" + sqlWhereClause)
+        .prepare("select count(*) as recordCount from WorkOrders w" + sqlWhereClause)
         .get(sqlParameters).recordCount;
     let workOrders = [];
     if (count > 0) {
@@ -72,9 +79,10 @@ export const getWorkOrders = (filters, options) => {
             (options ? " limit " + options.limit + " offset " + options.offset : ""))
             .all(sqlParameters);
     }
-    if (options.includeComments ||
-        options.includeLotsAndLotOccupancies ||
-        options.includeMilestones) {
+    if (options &&
+        (options.includeComments ||
+            options.includeLotsAndLotOccupancies ||
+            options.includeMilestones)) {
         for (const workOrder of workOrders) {
             if (options.includeComments) {
                 workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId, database);

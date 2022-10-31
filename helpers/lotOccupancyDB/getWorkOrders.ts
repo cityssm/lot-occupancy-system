@@ -30,21 +30,11 @@ interface GetWorkOrdersOptions {
     includeMilestones?: boolean;
 }
 
-export const getWorkOrders = (
-    filters?: GetWorkOrdersFilters,
-    options?: GetWorkOrdersOptions
-): {
-    count: number;
-    workOrders: recordTypes.WorkOrder[];
-} => {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
-
-    database.function("userFn_dateIntegerToString", dateIntegerToString);
-
+const buildWhereClause = (
+    filters: GetWorkOrdersFilters
+): { sqlWhereClause: string; sqlParameters: unknown[] } => {
     let sqlWhereClause = " where w.recordDelete_timeMillis is null";
-    const sqlParameters = [];
+    const sqlParameters: unknown[] = [];
 
     if (filters.workOrderTypeId) {
         sqlWhereClause += " and w.workOrderTypeId = ?";
@@ -84,8 +74,29 @@ export const getWorkOrders = (
         }
     }
 
+    return {
+        sqlWhereClause,
+        sqlParameters
+    };
+};
+
+export const getWorkOrders = (
+    filters: GetWorkOrdersFilters,
+    options?: GetWorkOrdersOptions
+): {
+    count: number;
+    workOrders: recordTypes.WorkOrder[];
+} => {
+    const database = sqlite(databasePath, {
+        readonly: true
+    });
+
+    database.function("userFn_dateIntegerToString", dateIntegerToString);
+
+    const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
+
     const count: number = database
-        .prepare("select count(*) as recordCount" + " from WorkOrders w" + sqlWhereClause)
+        .prepare("select count(*) as recordCount from WorkOrders w" + sqlWhereClause)
         .get(sqlParameters).recordCount;
 
     let workOrders: recordTypes.WorkOrder[] = [];
@@ -116,13 +127,14 @@ export const getWorkOrders = (
     }
 
     if (
-        options.includeComments ||
-        options.includeLotsAndLotOccupancies ||
-        options.includeMilestones
+        options &&
+        (options.includeComments ||
+            options.includeLotsAndLotOccupancies ||
+            options.includeMilestones)
     ) {
         for (const workOrder of workOrders) {
             if (options.includeComments) {
-                workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId, database);
+                workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId as number, database);
             }
 
             if (options.includeLotsAndLotOccupancies) {
