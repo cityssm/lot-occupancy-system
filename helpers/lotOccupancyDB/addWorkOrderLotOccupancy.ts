@@ -24,10 +24,7 @@ export const addWorkOrderLotOccupancy = (
                 " where workOrderId = ?" +
                 " and lotOccupancyId = ?"
         )
-        .get(
-            workOrderLotOccupancyForm.workOrderId,
-            workOrderLotOccupancyForm.lotOccupancyId
-        );
+        .get(workOrderLotOccupancyForm.workOrderId, workOrderLotOccupancyForm.lotOccupancyId);
 
     if (row) {
         if (row.recordDelete_timeMillis) {

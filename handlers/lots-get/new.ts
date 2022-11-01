@@ -9,6 +9,7 @@ import * as recordTypes from "../../types/recordTypes";
 
 export const handler: RequestHandler = (request, response) => {
     const lot: recordTypes.Lot = {
+        lotId: -1,
         lotOccupancies: []
     };
 

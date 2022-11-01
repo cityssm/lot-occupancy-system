@@ -3,6 +3,7 @@ import { getMaps } from "../../helpers/lotOccupancyDB/getMaps.js";
 import * as cacheFunctions from "../../helpers/functions.cache.js";
 export const handler = (request, response) => {
     const lot = {
+        lotId: -1,
         lotOccupancies: []
     };
     const maps = getMaps();

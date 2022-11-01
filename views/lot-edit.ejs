@@ -37,7 +37,7 @@
 </h1>
 
 <form id="form--lot">
-    <input id="lot--lotId" name="lotId" type="hidden" value="<%= lot.lotId %>" />
+    <input id="lot--lotId" name="lotId" type="hidden" value="<%= isCreate ? "" : lot.lotId %>" />
 
     <div class="panel">
         <div class="panel-block is-block">

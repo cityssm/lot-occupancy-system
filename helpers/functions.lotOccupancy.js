@@ -26,7 +26,7 @@ export const getFeesByFeeCategory = (lotOccupancy, feeCategory, feeCategoryConta
 };
 export const getTransactionTotal = (lotOccupancy) => {
     let transactionTotal = 0;
-    for (const transaction of lotOccupancy.lotOccupancyTransactions) {
+    for (const transaction of (lotOccupancy.lotOccupancyTransactions || [])) {
         transactionTotal += transaction.transactionAmount;
     }
     return transactionTotal;

@@ -66,7 +66,7 @@ export interface LotStatus extends Record {
 }
 
 export interface Lot extends Record {
-    lotId?: number;
+    lotId: number;
     lotName?: string;
 
     lotTypeId?: number;
