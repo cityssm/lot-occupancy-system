@@ -1,5 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { updateFeeOrderNumber } from "./updateFee.js";
+import { updateFeeCategoryOrderNumber } from "./updateFeeCategory.js";
 const buildFeeCategoryWhereClause = (filters) => {
     let sqlWhereClause = " where recordDelete_timeMillis is null";
     const sqlParameters = [];
@@ -58,9 +60,7 @@ export const getFeeCategories = (filters, options) => {
         for (const feeCategory of feeCategories) {
             expectedFeeCategoryOrderNumber += 1;
             if (updateOrderNumbers && feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
-                database
-                    .prepare("update FeeCategories set orderNumber = ? where feeCategoryId = ?")
-                    .run(expectedFeeCategoryOrderNumber, feeCategory.feeCategoryId);
+                updateFeeCategoryOrderNumber(feeCategory.feeCategoryId, expectedFeeCategoryOrderNumber, database);
                 feeCategory.orderNumber = expectedFeeCategoryOrderNumber;
             }
             const feeSqlFilter = buildFeeWhereClause(filters, feeCategory.feeCategoryId);
@@ -83,9 +83,7 @@ export const getFeeCategories = (filters, options) => {
                 for (const fee of feeCategory.fees) {
                     expectedFeeOrderNumber += 1;
                     if (fee.orderNumber !== expectedFeeOrderNumber) {
-                        database
-                            .prepare("update Fees set orderNumber = ? where feeId = ?")
-                            .run(expectedFeeOrderNumber, fee.feeId);
+                        updateFeeOrderNumber(fee.feeId, expectedFeeOrderNumber, database);
                         fee.orderNumber = expectedFeeOrderNumber;
                     }
                 }

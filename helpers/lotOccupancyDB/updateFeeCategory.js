@@ -14,4 +14,17 @@ export const updateFeeCategory = (feeCategoryForm, requestSession) => {
     database.close();
     return result.changes > 0;
 };
+export const updateFeeCategoryOrderNumber = (feeCategoryId, orderNumber, connectedDatabase) => {
+    const database = connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
+    const result = database
+        .prepare("update FeeCategories set orderNumber = ? where feeCategoryId = ?")
+        .run(orderNumber, feeCategoryId);
+    if (!connectedDatabase) {
+        database.close();
+    }
+    return result.changes > 0;
+};
 export default updateFeeCategory;

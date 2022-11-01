@@ -71,4 +71,26 @@ export const updateFee = (
     return result.changes > 0;
 };
 
+export const updateFeeOrderNumber = (
+    feeId: number,
+    orderNumber: number,
+    connectedDatabase?: sqlite.Database
+) => {
+    const database =
+        connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
+
+    const result = database
+        .prepare("update Fees set orderNumber = ? where feeId = ?")
+        .run(orderNumber, feeId);
+
+    if (!connectedDatabase) {
+        database.close();
+    }
+
+    return result.changes > 0;
+};
+
 export default updateFee;
