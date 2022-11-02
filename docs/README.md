@@ -13,8 +13,8 @@ Understanding the key terms used in the Lot Occupancy System.
 
 ## 👩 User Documentation
 
-[**Lot Occupancies**](workOrders.md)<br />
-What are work orders? How do they work?
+[**Lot Occupancies**](lotOccupancies.md)<br />
+What are occupancy records?
 
 [**Work Orders**](workOrders.md)<br />
 What are work orders? How do they work?
