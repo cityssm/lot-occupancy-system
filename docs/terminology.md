@@ -21,6 +21,6 @@ For example in the context of a cemetery system, John Doe has passed away and ha
 
 For example in the context of a marina, Jane Smith and her boat are renting a slip for a week.
 
--   Jane Doe, and possibly the others on her boat, would be considered **renters (occupants)**.
+-   Jane Smith, and possibly the others on her boat, would be considered **renters (occupants)**.
 -   A **reservation (occupancy)** record would be created for the duration of her stay, and associated with the **slip (lot)** of choice.
 -   The **slip (lot)** is associated with the **marina (map)** where the slip is located.

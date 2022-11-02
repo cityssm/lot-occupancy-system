@@ -19,7 +19,8 @@ Note that when creating a work order, if the work order number field is left bla
 a new work order number can be generated based on the format of your choice.
 
 **Work Order Type**<br />
-The work order types are completely customizable and can be used to categorize work orders.
+The work order types are [completely customizable](adminConfigTables.md)
+and can be used to categorize work orders.
 
 **Description**<br />
 The work order description can describe the overall theme of the work order,

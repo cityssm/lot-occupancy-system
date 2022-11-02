@@ -6,7 +6,7 @@
 
 ![Fee Management](images/adminFees.png)
 
-Fees can be applied to occupancy records.
+Fees can be applied to [occupancy records](lotOccupancies.md).
 Each fee includes the following properties.
 
 -   A category, name, and description.

@@ -8,3 +8,7 @@
 
 Each occupancy record is assigned a type.
 Those types can have custom data fields associated with them.
+
+## Related Links
+
+-   [Lot Occupancies](lotOccupancies.md)
