@@ -15,7 +15,7 @@ A system for managing the occupancy of lots.
 
 Built with **cemetery management** in mind, but flexible enough to handle marinas and campgrounds as well.
 
-[User Documentation (In The Works)](docs/)
+[**User Documentation**](docs/) (In The Works)
 
 ## Key Features
 
@@ -25,6 +25,11 @@ This can result in a huge amount of effort to get started.
 This system can run "out-of-the-box" without maps, with the option to add them when it makes sense.
 
 ## About this Project
+
+-   [Code of Conduct](CODE_OF_CONDUCT.md)
+-   [Contributing Guidelines](CONTRIBUTING.md)
+-   [Security Policy](SECURITY.md)
+-   [MIT Licence](LICENSE.md)
 
 Although the system is quite niche, it's being released in an open source environment in hopes to pool developer resources from other municipalities looking to move away from older, legacy systems.
 
