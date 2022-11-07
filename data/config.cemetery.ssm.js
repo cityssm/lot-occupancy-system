@@ -2,7 +2,11 @@ import { config as cemeteryConfig } from "./config.cemetery.ontario.js";
 export const config = Object.assign({}, cemeteryConfig);
 config.aliases.occupancyStartDate = "Interment Date";
 config.aliases.externalReceiptNumber = "GP Receipt Number";
-config.settings.lot.lotNamePattern = /^[A-Z]{2}(-\d*[A-Z]?){3,5}$/;
+config.settings.lot.lotNamePattern =
+    /^[\dA-Z]{2}-(B[\dA-Z]+-)?(R[\dA-Z]+-)?(L[\dA-Z]+-)?G[\dA-Z]+(, Interment \d+)?$/;
+config.settings.lot.lotNameHelpText =
+    "Two digit cemetery-Block-Range-Lot-Grave, Interment number\n" +
+        "ex. XX-BA-R41-L15-G3A, Interment 1";
 config.settings.lot.lotNameSortNameFunction = (lotName) => {
     const numericPadding = "00000";
     const lotNameSplit = lotName.toUpperCase().split("-");
@@ -23,7 +27,10 @@ config.settings.lot.lotNameSortNameFunction = (lotName) => {
     return cleanLotNamePieces.join("-");
 };
 config.settings.lotOccupancy.occupantCityDefault = "Sault Ste. Marie";
-config.settings.lotOccupancy.prints = ["pdf/ssm.cemetery.contract", "pdf/ssm.cemetery.burialPermit"];
+config.settings.lotOccupancy.prints = [
+    "pdf/ssm.cemetery.contract",
+    "pdf/ssm.cemetery.burialPermit"
+];
 config.settings.map.mapCityDefault = "Sault Ste. Marie";
 config.settings.workOrders.workOrderNumberLength = 6;
 config.settings.workOrders.workOrderMilestoneDateRecentBeforeDays = 7;

@@ -361,17 +361,16 @@ function buildLotName(lotNamePieces: {
     return (
         lotNamePieces.cemetery +
         "-" +
-        (lotNamePieces.block === "" ? "" : lotNamePieces.block + "-") +
+        (lotNamePieces.block === "" ? "" : "B" + lotNamePieces.block + "-") +
         (lotNamePieces.range1 === "0" && lotNamePieces.range2 === ""
             ? ""
-            : lotNamePieces.range1 + lotNamePieces.range2 + "-") +
+            : "R" + lotNamePieces.range1 + lotNamePieces.range2 + "-") +
         (lotNamePieces.lot1 === "0" && lotNamePieces.lot2 === ""
             ? ""
-            : lotNamePieces.lot1 + lotNamePieces.lot2 + "-") +
-        lotNamePieces.grave1 +
-        lotNamePieces.grave2 +
-        "-" +
-        lotNamePieces.interment
+            : "L" + lotNamePieces.lot1 + lotNamePieces.lot2 + "-") +
+        ("G" + lotNamePieces.grave1 + lotNamePieces.grave2) +
+        ", " +
+        ("Interment " + lotNamePieces.interment)
     );
 }
 
@@ -435,7 +434,6 @@ const intermentWorkOrderMilestoneType =
 
 function getFuneralHome(funeralHomeKey: string): recordTypes.LotOccupancyOccupant {
     switch (funeralHomeKey) {
-
         case "AR": {
             return {
                 lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
@@ -447,7 +445,7 @@ function getFuneralHome(funeralHomeKey: string): recordTypes.LotOccupancyOccupan
                 occupantPostalCode: "P6A 2L9",
                 occupantPhoneNumber: "705-759-2522",
                 occupantEmailAddress: ""
-            }
+            };
         }
         case "NO": {
             return {
@@ -460,7 +458,7 @@ function getFuneralHome(funeralHomeKey: string): recordTypes.LotOccupancyOccupan
                 occupantPostalCode: "P6B 0B6",
                 occupantPhoneNumber: "705-945-7758",
                 occupantEmailAddress: ""
-            }
+            };
         }
         case "OS": {
             return {
@@ -473,7 +471,7 @@ function getFuneralHome(funeralHomeKey: string): recordTypes.LotOccupancyOccupan
                 occupantPostalCode: "P6A 1P7",
                 occupantPhoneNumber: "705-759-8456",
                 occupantEmailAddress: ""
-            }
+            };
         }
     }
 
@@ -482,7 +480,7 @@ function getFuneralHome(funeralHomeKey: string): recordTypes.LotOccupancyOccupan
         occupantName: funeralHomeKey,
         occupantCity: "Sault Ste. Marie",
         occupantProvince: "ON"
-    }
+    };
 }
 
 function importFromMasterCSV() {
@@ -772,21 +770,23 @@ function importFromMasterCSV() {
                 }
 
                 if (masterRow.CM_FUNERAL_HOME !== "") {
-
                     const funeralHomeOccupant = getFuneralHome(masterRow.CM_FUNERAL_HOME);
 
-                    addLotOccupancyOccupant({
-                        lotOccupancyId: deceasedLotOccupancyId,
-                        lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId,
-                        occupantName: funeralHomeOccupant.occupantName,
-                        occupantAddress1: funeralHomeOccupant.occupantAddress1,
-                        occupantAddress2: funeralHomeOccupant.occupantAddress2,
-                        occupantCity: funeralHomeOccupant.occupantCity,
-                        occupantProvince: funeralHomeOccupant.occupantProvince,
-                        occupantPostalCode: funeralHomeOccupant.occupantPostalCode,
-                        occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber,
-                        occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress
-                    }, user);
+                    addLotOccupancyOccupant(
+                        {
+                            lotOccupancyId: deceasedLotOccupancyId,
+                            lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId,
+                            occupantName: funeralHomeOccupant.occupantName,
+                            occupantAddress1: funeralHomeOccupant.occupantAddress1,
+                            occupantAddress2: funeralHomeOccupant.occupantAddress2,
+                            occupantCity: funeralHomeOccupant.occupantCity,
+                            occupantProvince: funeralHomeOccupant.occupantProvince,
+                            occupantPostalCode: funeralHomeOccupant.occupantPostalCode,
+                            occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber,
+                            occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress
+                        },
+                        user
+                    );
 
                     /*
                     addOrUpdateLotOccupancyField(
@@ -1388,7 +1388,6 @@ function importFromWorkOrderCSV() {
             }
 
             if (workOrderRow.WO_DEATH_PLACE !== "") {
-
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
@@ -1400,7 +1399,6 @@ function importFromWorkOrderCSV() {
                     user
                 );
             }
-
 
             if (workOrderRow.WO_AGE !== "") {
                 addOrUpdateLotOccupancyField(
@@ -1429,10 +1427,10 @@ function importFromWorkOrderCSV() {
             }
 
             if (workOrderRow.WO_FUNERAL_HOME !== "") {
-
                 const funeralHomeOccupant = getFuneralHome(workOrderRow.WO_FUNERAL_HOME);
 
-                    addLotOccupancyOccupant({
+                addLotOccupancyOccupant(
+                    {
                         lotOccupancyId: lotOccupancyId,
                         lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId,
                         occupantName: funeralHomeOccupant.occupantName,
@@ -1443,7 +1441,9 @@ function importFromWorkOrderCSV() {
                         occupantPostalCode: funeralHomeOccupant.occupantPostalCode,
                         occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber,
                         occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress
-                    }, user);
+                    },
+                    user
+                );
 
                 /*
                 addOrUpdateLotOccupancyField(

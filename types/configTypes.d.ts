@@ -35,6 +35,7 @@ export interface Config {
         };
         lot: {
             lotNamePattern?: RegExp;
+            lotNameHelpText?: string;
             lotNameSortNameFunction?: (lotName: string) => string;
         };
         lotOccupancy: {

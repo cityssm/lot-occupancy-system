@@ -134,17 +134,16 @@ function getFeeIdByFeeDescription(feeDescription) {
 function buildLotName(lotNamePieces) {
     return (lotNamePieces.cemetery +
         "-" +
-        (lotNamePieces.block === "" ? "" : lotNamePieces.block + "-") +
+        (lotNamePieces.block === "" ? "" : "B" + lotNamePieces.block + "-") +
         (lotNamePieces.range1 === "0" && lotNamePieces.range2 === ""
             ? ""
-            : lotNamePieces.range1 + lotNamePieces.range2 + "-") +
+            : "R" + lotNamePieces.range1 + lotNamePieces.range2 + "-") +
         (lotNamePieces.lot1 === "0" && lotNamePieces.lot2 === ""
             ? ""
-            : lotNamePieces.lot1 + lotNamePieces.lot2 + "-") +
-        lotNamePieces.grave1 +
-        lotNamePieces.grave2 +
-        "-" +
-        lotNamePieces.interment);
+            : "L" + lotNamePieces.lot1 + lotNamePieces.lot2 + "-") +
+        ("G" + lotNamePieces.grave1 + lotNamePieces.grave2) +
+        ", " +
+        ("Interment " + lotNamePieces.interment));
 }
 const casketLotType = cacheFunctions.getLotTypesByLotType("Casket Grave");
 const columbariumLotType = cacheFunctions.getLotTypesByLotType("Columbarium");

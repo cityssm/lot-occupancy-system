@@ -57,6 +57,11 @@
                                 accesskey="f"
                                 <%= (isCreate ? " autofocus" : "") %> />
                         </div>
+                        <% if (configFunctions.getProperty("settings.lot.lotNameHelpText")) { %>
+                            <p class="help">
+                                <%- configFunctions.getProperty("settings.lot.lotNameHelpText").replace(/\n/g, "<br />") %>
+                            </p>
+                        <% } %>
                     </div>
                 </div>
                 <div class="column">

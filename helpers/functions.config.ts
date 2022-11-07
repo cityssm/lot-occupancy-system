@@ -111,6 +111,7 @@ export function getProperty(propertyName: "settings.map.mapCityDefault"): string
 export function getProperty(propertyName: "settings.map.mapProvinceDefault"): string;
 
 export function getProperty(propertyName: "settings.lot.lotNamePattern"): RegExp;
+export function getProperty(propertyName: "settings.lot.lotNameHelpText"): string;
 
 export function getProperty(
     propertyName: "settings.lot.lotNameSortNameFunction"
