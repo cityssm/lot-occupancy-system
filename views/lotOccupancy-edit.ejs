@@ -406,7 +406,12 @@
     
     <% if (configFunctions.getProperty("settings.lot.lotNamePattern")) { %>
         exports.lotNamePattern = /<%= configFunctions.getProperty("settings.lot.lotNamePattern").source %>/;
+    <% } %>    
+    
+    <% if (configFunctions.getProperty("settings.lot.lotNameHelpText")) { %>
+        exports.lotNameHelpText = "<%= configFunctions.getProperty("settings.lot.lotNameHelpText") %>";
     <% } %>
+
     exports.lotTypes = <%- JSON.stringify(lotTypes) %>;
     exports.lotStatuses = <%- JSON.stringify(lotStatuses) %>;
     exports.maps = <%- JSON.stringify(maps) %>;
