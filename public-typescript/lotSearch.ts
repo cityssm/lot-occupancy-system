@@ -1,5 +1,6 @@
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
+import type * as globalTypes from "../types/globalTypes";
 import type * as recordTypes from "../types/recordTypes";
 
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
@@ -7,7 +8,7 @@ import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 declare const cityssm: cityssmGlobal;
 
 (() => {
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const los = exports.los as globalTypes.LOS;
 
     const searchFilterFormElement = document.querySelector(
         "#form--searchFilters"
@@ -34,7 +35,7 @@ declare const cityssm: cityssmGlobal;
             "</div>";
 
         cityssm.postJSON(
-            urlPrefix + "/lots/doSearchLots",
+            los.urlPrefix + "/lots/doSearchLots",
             searchFilterFormElement,
             (responseJSON: { count: number; lots: recordTypes.Lot[] }) => {
                 if (responseJSON.lots.length === 0) {
@@ -56,16 +57,16 @@ declare const cityssm: cityssmGlobal;
                         "<tr>" +
                             ("<td>" +
                                 '<a class="has-text-weight-bold" href="' +
-                                urlPrefix +
+                                los.urlPrefix +
                                 "/lots/" +
                                 lot.lotId +
                                 '">' +
-                                cityssm.escapeHTML(lot.lotName) +
+                                cityssm.escapeHTML(lot.lotName || "") +
                                 "</a>" +
                                 "</td>") +
                             ("<td>" +
                                 '<a href="' +
-                                urlPrefix +
+                                los.urlPrefix +
                                 "/maps/" +
                                 lot.mapId +
                                 '">' +
@@ -74,13 +75,13 @@ declare const cityssm: cityssmGlobal;
                                     : '<span class="has-text-grey">(No Name)</span>') +
                                 "</a>" +
                                 "</td>") +
-                            ("<td>" + cityssm.escapeHTML(lot.lotType) + "</td>") +
+                            ("<td>" + cityssm.escapeHTML(lot.lotType || "") + "</td>") +
                             ("<td>" +
                                 (lot.lotStatusId
-                                    ? cityssm.escapeHTML(lot.lotStatus)
+                                    ? cityssm.escapeHTML(lot.lotStatus || "")
                                     : '<span class="has-text-grey">(No Status)</span>') +
                                 "<br />" +
-                                (lot.lotOccupancyCount > 0
+                                (lot.lotOccupancyCount! > 0
                                     ? '<span class="is-size-7">Currently Occupied</span>'
                                     : "") +
                                 "</td>") +
@@ -127,18 +128,22 @@ declare const cityssm: cityssmGlobal;
                         "</div>") +
                     "</div>";
 
-                searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
+                searchResultsContainerElement.querySelector("table")!.append(resultsTbodyElement);
 
                 if (offset > 0) {
-                    searchResultsContainerElement
-                        .querySelector("button[data-page='previous']")
-                        .addEventListener("click", previousAndGetLots);
+                    (
+                        searchResultsContainerElement.querySelector(
+                            "button[data-page='previous']"
+                        ) as HTMLButtonElement
+                    ).addEventListener("click", previousAndGetLots);
                 }
 
                 if (limit + offset < responseJSON.count) {
-                    searchResultsContainerElement
-                        .querySelector("button[data-page='next']")
-                        .addEventListener("click", nextAndGetLots);
+                    (
+                        searchResultsContainerElement.querySelector(
+                            "button[data-page='next']"
+                        ) as HTMLButtonElement
+                    ).addEventListener("click", nextAndGetLots);
                 }
             }
         );

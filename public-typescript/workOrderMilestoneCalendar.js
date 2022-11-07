@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const workOrderSearchFiltersFormElement = document.querySelector("#form--searchFilters");
     const workOrderMilestoneDateFilterElement = workOrderSearchFiltersFormElement.querySelector("#searchFilter--workOrderMilestoneDateFilter");
     const workOrderMilestoneDateStringElement = workOrderSearchFiltersFormElement.querySelector("#searchFilter--workOrderMilestoneDateString");
@@ -40,12 +39,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             for (const lot of milestone.workOrderLots) {
                 lotOccupancyHTML +=
                     '<span class="has-tooltip-left" data-tooltip="' +
-                        cityssm.escapeHTML(lot.mapName) +
+                        cityssm.escapeHTML(lot.mapName || "") +
                         '">' +
                         '<i class="fas fa-vector-square" aria-label="' +
                         cityssm.escapeHTML(exports.aliases.lot) +
                         '"></i> ' +
-                        cityssm.escapeHTML(lot.lotName) +
+                        cityssm.escapeHTML(lot.lotName || "") +
                         "</span>" +
                         "<br />";
             }
@@ -53,12 +52,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 for (const occupant of lotOccupancy.lotOccupancyOccupants) {
                     lotOccupancyHTML +=
                         '<span class="has-tooltip-left" data-tooltip="' +
-                            cityssm.escapeHTML(occupant.lotOccupantType) +
+                            cityssm.escapeHTML(occupant.lotOccupantType || "") +
                             '">' +
                             '<i class="fas fa-user" aria-label="' +
                             cityssm.escapeHTML(exports.aliases.lotOccupancy) +
                             '"></i> ' +
-                            cityssm.escapeHTML(occupant.occupantName) +
+                            cityssm.escapeHTML(occupant.occupantName || "") +
                             "</span>" +
                             "<br />";
                 }
@@ -87,17 +86,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</div>") +
                     ('<div class="column">' +
                         '<i class="fas fa-circle" style="color:' +
-                        los.getRandomColor(milestone.workOrderNumber) +
+                        los.getRandomColor(milestone.workOrderNumber || "") +
                         '" aria-hidden="true"></i>' +
                         ' <a class="has-text-weight-bold" href="' +
-                        urlPrefix +
+                        los.urlPrefix +
                         "/workOrders/" +
                         milestone.workOrderId +
                         '">' +
-                        cityssm.escapeHTML(milestone.workOrderNumber) +
+                        cityssm.escapeHTML(milestone.workOrderNumber || "") +
                         "</a><br />" +
                         '<span class="is-size-7">' +
-                        cityssm.escapeHTML(milestone.workOrderDescription) +
+                        cityssm.escapeHTML(milestone.workOrderDescription || "") +
                         "</span>" +
                         "</div>") +
                     ('<div class="column is-size-7">' + lotOccupancyHTML + "</div>") +
@@ -115,7 +114,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
                 "Loading Milestones..." +
                 "</div>";
-        cityssm.postJSON(urlPrefix + "/workOrders/doGetWorkOrderMilestones", workOrderSearchFiltersFormElement, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + "/workOrders/doGetWorkOrderMilestones", workOrderSearchFiltersFormElement, (responseJSON) => {
             renderMilestones(responseJSON.workOrderMilestones);
         });
     };

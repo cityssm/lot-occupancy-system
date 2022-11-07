@@ -1,14 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
-    const apiKey = document.querySelector("main").dataset.apiKey;
+    const los = exports.los;
     const workOrderTypeIdsElement = document.querySelector("#icsFilters--workOrderTypeIds");
     const workOrderMilestoneTypeIdsElement = document.querySelector("#icsFilters--workOrderMilestoneTypeIds");
     const calendarLinkElement = document.querySelector("#icsFilters--calendarURL");
     const updateCalendarURL = () => {
         let url = window.location.href.slice(0, Math.max(0, window.location.href.indexOf(window.location.pathname) + 1)) +
-            urlPrefix +
+            los.urlPrefix +
             "api/" +
-            apiKey +
+            los.apiKey +
             "/" +
             "milestoneICS/" +
             "?";
@@ -30,19 +31,13 @@
         }
         calendarLinkElement.value = url.slice(0, -1);
     };
-    document
-        .querySelector("#icsFilters--workOrderTypeIds-all")
-        .addEventListener("change", (changeEvent) => {
+    document.querySelector("#icsFilters--workOrderTypeIds-all").addEventListener("change", (changeEvent) => {
         workOrderTypeIdsElement.disabled = changeEvent.currentTarget.checked;
     });
-    document
-        .querySelector("#icsFilters--workOrderMilestoneTypeIds-all")
-        .addEventListener("change", (changeEvent) => {
+    document.querySelector("#icsFilters--workOrderMilestoneTypeIds-all").addEventListener("change", (changeEvent) => {
         workOrderMilestoneTypeIdsElement.disabled = changeEvent.currentTarget.checked;
     });
-    const inputSelectElements = document
-        .querySelector("#panel--icsFilters")
-        .querySelectorAll("input, select");
+    const inputSelectElements = document.querySelector("#panel--icsFilters").querySelectorAll("input, select");
     for (const element of inputSelectElements) {
         element.addEventListener("change", updateCalendarURL);
     }

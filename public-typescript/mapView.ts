@@ -1,9 +1,7 @@
-// import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
-// import type { BulmaJS } from "@cityssm/bulma-js/types";
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import type * as Leaflet from "leaflet";
 
-// declare const cityssm: cityssmGlobal;
-// declare const bulmaJS: BulmaJS;
 declare const L;
 
 (() => {
@@ -13,14 +11,15 @@ declare const L;
 
     if (mapContainerElement) {
         const mapLatitude = Number.parseFloat(
-            mapContainerElement.dataset.mapLatitude
+            mapContainerElement.dataset.mapLatitude!
         );
         const mapLongitude = Number.parseFloat(
-            mapContainerElement.dataset.mapLongitude
+            mapContainerElement.dataset.mapLongitude!
         );
 
         const mapCoordinates: Leaflet.LatLngTuple = [mapLatitude, mapLongitude];
 
+        // eslint-disable-next-line unicorn/no-array-callback-reference
         const map: Leaflet.Map = L.map(mapContainerElement);
         map.setView(mapCoordinates, 15);
 

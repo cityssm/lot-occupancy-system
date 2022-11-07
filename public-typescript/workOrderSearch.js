@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const workOrderPrints = exports.workOrderPrints;
     const searchFilterFormElement = document.querySelector("#form--searchFilters");
     los.initializeDatePickers(searchFilterFormElement);
@@ -16,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
                 "Loading Work Orders..." +
                 "</div>";
-        cityssm.postJSON(urlPrefix + "/workOrders/doSearchWorkOrders", searchFilterFormElement, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + "/workOrders/doSearchWorkOrders", searchFilterFormElement, (responseJSON) => {
             if (responseJSON.workOrders.length === 0) {
                 searchResultsContainerElement.innerHTML =
                     '<div class="message is-info">' +
@@ -30,7 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 for (const lot of workOrder.workOrderLots) {
                     relatedHTML +=
                         '<span class="has-tooltip-left" data-tooltip="' +
-                            cityssm.escapeHTML(lot.mapName) +
+                            cityssm.escapeHTML(lot.mapName || "") +
                             '">' +
                             '<i class="fas fa-vector-square" aria-label="' +
                             cityssm.escapeHTML(exports.aliases.lot) +
@@ -42,7 +41,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     for (const occupant of occupancy.lotOccupancyOccupants) {
                         relatedHTML +=
                             '<span class="has-tooltip-left" data-tooltip="' +
-                                cityssm.escapeHTML(occupant.lotOccupantType) +
+                                cityssm.escapeHTML(occupant.lotOccupantType || "") +
                                 '">' +
                                 '<i class="fas fa-user" aria-label="' +
                                 cityssm.escapeHTML(exports.aliases.occupant) +
@@ -54,20 +53,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 resultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
                     ("<td>" +
                         '<a class="has-text-weight-bold" href="' +
-                        urlPrefix +
+                        los.urlPrefix +
                         "/workOrders/" +
                         workOrder.workOrderId +
                         '">' +
                         (workOrder.workOrderNumber.trim()
-                            ? cityssm.escapeHTML(workOrder.workOrderNumber)
+                            ? cityssm.escapeHTML(workOrder.workOrderNumber || "")
                             : "(No Number)") +
                         "</a>" +
                         "</td>") +
                     ("<td>" +
-                        cityssm.escapeHTML(workOrder.workOrderType) +
+                        cityssm.escapeHTML(workOrder.workOrderType || "") +
                         "<br />" +
                         '<span class="is-size-7">' +
-                        cityssm.escapeHTML(workOrder.workOrderDescription) +
+                        cityssm.escapeHTML(workOrder.workOrderDescription || "") +
                         "</span>" +
                         "</td>") +
                     ('<td class="is-nowrap"><span class="is-size-7">' +
@@ -95,7 +94,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     (workOrderPrints.length > 0
                         ? "<td>" +
                             '<a class="button is-small" data-tooltip="Print" href="' +
-                            urlPrefix +
+                            los.urlPrefix +
                             "/print/" +
                             workOrderPrints[0] +
                             "/?workOrderId=" +

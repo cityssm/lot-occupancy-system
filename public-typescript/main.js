@@ -12,11 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             svgId = svgId.slice(0, Math.max(0, svgId.lastIndexOf("-")));
         }
         if (svgElementToHighlight) {
-            svgElementToHighlight.style.fill = null;
+            svgElementToHighlight.style.fill = "";
             svgElementToHighlight.classList.add("highlight", "is-" + contextualClass);
             const childPathElements = svgElementToHighlight.querySelectorAll("path");
             for (const pathElement of childPathElements) {
-                pathElement.style.fill = null;
+                pathElement.style.fill = "";
             }
         }
     };
@@ -194,6 +194,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     const los = {
+        urlPrefix: document.querySelector("main").dataset.urlPrefix,
+        apiKey: document.querySelector("main").dataset.apiKey,
         highlightMap,
         initializeUnlockFieldButtons,
         initializeDatePickers,

@@ -1,5 +1,6 @@
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
+import type * as globalTypes from "../types/globalTypes";
 import type * as recordTypes from "../types/recordTypes";
 
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
@@ -7,7 +8,7 @@ import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 declare const cityssm: cityssmGlobal;
 
 (() => {
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const los = exports.los as globalTypes.LOS;
 
     const maps: recordTypes.Map[] = exports.maps;
 
@@ -60,28 +61,28 @@ declare const cityssm: cityssmGlobal;
                 "<tr>" +
                     ("<td>" +
                         '<a class="has-text-weight-bold" href="' +
-                        urlPrefix +
+                        los.urlPrefix +
                         "/maps/" +
                         map.mapId +
                         '">' +
                         cityssm.escapeHTML(map.mapName || "(No Name)") +
                         "</a><br />" +
                         '<span class="is-size-7">' +
-                        cityssm.escapeHTML(map.mapDescription) +
+                        cityssm.escapeHTML(map.mapDescription || "") +
                         "</span>" +
                         "</td>") +
                     ("<td>" +
                         (map.mapAddress1 ? cityssm.escapeHTML(map.mapAddress1) + "<br />" : "") +
                         (map.mapAddress2 ? cityssm.escapeHTML(map.mapAddress2) + "<br />" : "") +
                         (map.mapCity || map.mapProvince
-                            ? cityssm.escapeHTML(map.mapCity) +
+                            ? cityssm.escapeHTML(map.mapCity || "") +
                               ", " +
-                              cityssm.escapeHTML(map.mapProvince) +
+                              cityssm.escapeHTML(map.mapProvince || "") +
                               "<br />"
                             : "") +
                         (map.mapPostalCode ? cityssm.escapeHTML(map.mapPostalCode) : "") +
                         "</td>") +
-                    ("<td>" + cityssm.escapeHTML(map.mapPhoneNumber) + "</td>") +
+                    ("<td>" + cityssm.escapeHTML(map.mapPhoneNumber || "") + "</td>") +
                     '<td class="has-text-centered">' +
                     (map.mapLatitude && map.mapLongitude
                         ? '<span data-tooltip="Has Geographic Coordinates"><i class="fas fa-map-marker-alt" aria-label="Has Geographic Coordinates"></i></span>'
@@ -94,7 +95,7 @@ declare const cityssm: cityssmGlobal;
                     "</td>" +
                     ('<td class="has-text-right">' +
                         '<a href="' +
-                        urlPrefix +
+                        los.urlPrefix +
                         "/lots?mapId=" +
                         map.mapId +
                         '">' +
@@ -138,10 +139,13 @@ declare const cityssm: cityssmGlobal;
 
     searchFilterElement.addEventListener("keyup", renderResults);
 
-    document.querySelector("#form--searchFilters").addEventListener("submit", (formEvent) => {
-        formEvent.preventDefault();
-        renderResults();
-    });
+    (document.querySelector("#form--searchFilters") as HTMLFormElement).addEventListener(
+        "submit",
+        (formEvent) => {
+            formEvent.preventDefault();
+            renderResults();
+        }
+    );
 
     renderResults();
 })();

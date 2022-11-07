@@ -1,4 +1,6 @@
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+
+import type * as globalTypes from "../types/globalTypes";
 
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 
@@ -8,11 +10,11 @@ declare const cityssm: cityssmGlobal;
 declare const bulmaJS: BulmaJS;
 
 (() => {
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const los = exports.los as globalTypes.LOS;
 
     const doCleanup = () => {
         cityssm.postJSON(
-            urlPrefix + "/admin/doCleanupDatabase",
+            los.urlPrefix + "/admin/doCleanupDatabase",
             {},
             (responseJSON: {
                 success: boolean;
@@ -23,13 +25,17 @@ declare const bulmaJS: BulmaJS;
                 if (responseJSON.success) {
                     bulmaJS.alert({
                         title: "Database Cleaned Up Successfully",
-                        message: responseJSON.inactivedRecordCount + " records inactivated, " + responseJSON.purgedRecordCount + " permanently deleted.",
+                        message:
+                            responseJSON.inactivedRecordCount +
+                            " records inactivated, " +
+                            responseJSON.purgedRecordCount +
+                            " permanently deleted.",
                         contextualColorName: "success"
                     });
                 } else {
                     bulmaJS.alert({
                         title: "Error Cleaning Database",
-                        message: responseJSON.errorMessage,
+                        message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });
                 }
@@ -37,14 +43,17 @@ declare const bulmaJS: BulmaJS;
         );
     };
 
-    document.querySelector("#button--cleanupDatabase").addEventListener("click", () => {
-        bulmaJS.confirm({
-            title: "Cleanup Database",
-            message: "Are you sure you want to cleanup up the database?",
-            okButton: {
-                text: "Yes, Cleanup Database",
-                callbackFunction: doCleanup
-            }
-        });
-    });
+    (document.querySelector("#button--cleanupDatabase") as HTMLButtonElement).addEventListener(
+        "click",
+        () => {
+            bulmaJS.confirm({
+                title: "Cleanup Database",
+                message: "Are you sure you want to cleanup up the database?",
+                okButton: {
+                    text: "Yes, Cleanup Database",
+                    callbackFunction: doCleanup
+                }
+            });
+        }
+    );
 })();

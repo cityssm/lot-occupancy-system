@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const containerElement = document.querySelector("#container--occupancyTypes");
     let occupancyTypes = exports.occupancyTypes;
     delete exports.occupancyTypes;
@@ -36,7 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         else {
             bulmaJS.alert({
                 title: "Error Updating " + exports.aliases.occupancy + " Type",
-                message: responseJSON.errorMessage,
+                message: responseJSON.errorMessage || "",
                 contextualColorName: "danger"
             });
         }
@@ -44,7 +43,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const deleteOccupancyType = (clickEvent) => {
         const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId, 10);
         const doDelete = () => {
-            cityssm.postJSON(urlPrefix + "/admin/doDeleteOccupancyType", {
+            cityssm.postJSON(los.urlPrefix + "/admin/doDeleteOccupancyType", {
                 occupancyTypeId
             }, occupancyTypeResponseHandler);
         };
@@ -68,7 +67,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         const doEdit = (submitEvent) => {
             submitEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + "/admin/doUpdateOccupancyType", submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + "/admin/doUpdateOccupancyType", submitEvent.currentTarget, (responseJSON) => {
                 occupancyTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -97,7 +96,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         const doAdd = (submitEvent) => {
             submitEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + "/admin/doAddOccupancyTypeField", submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + "/admin/doAddOccupancyTypeField", submitEvent.currentTarget, (responseJSON) => {
                 expandedOccupancyTypes.add(occupancyTypeId);
                 occupancyTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
@@ -127,7 +126,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const moveOccupancyTypeUp = (clickEvent) => {
         clickEvent.preventDefault();
         const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId;
-        cityssm.postJSON(urlPrefix + "/admin/doMoveOccupancyTypeUp", {
+        cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypeUp", {
             occupancyTypeId,
             moveToTop: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
@@ -135,7 +134,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const moveOccupancyTypeDown = (clickEvent) => {
         clickEvent.preventDefault();
         const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId;
-        cityssm.postJSON(urlPrefix + "/admin/doMoveOccupancyTypeDown", {
+        cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypeDown", {
             occupancyTypeId,
             moveToBottom: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
@@ -172,7 +171,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         const doUpdate = (submitEvent) => {
             submitEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + "/admin/doUpdateOccupancyTypeField", submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + "/admin/doUpdateOccupancyTypeField", submitEvent.currentTarget, (responseJSON) => {
                 occupancyTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -181,7 +180,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         const doDelete = () => {
             const _doDelete = () => {
-                cityssm.postJSON(urlPrefix + "/admin/doDeleteOccupancyTypeField", {
+                cityssm.postJSON(los.urlPrefix + "/admin/doDeleteOccupancyTypeField", {
                     occupancyTypeFieldId
                 }, (responseJSON) => {
                     occupancyTypeResponseHandler(responseJSON);
@@ -213,7 +212,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 patternElement = modalElement.querySelector("#occupancyTypeFieldEdit--pattern");
                 patternElement.value = occupancyTypeField.pattern;
                 occupancyTypeFieldValuesElement = modalElement.querySelector("#occupancyTypeFieldEdit--occupancyTypeFieldValues");
-                occupancyTypeFieldValuesElement.value = occupancyTypeField.occupancyTypeFieldValues;
+                occupancyTypeFieldValuesElement.value =
+                    occupancyTypeField.occupancyTypeFieldValues;
                 toggleInputFields();
             },
             onshown: (modalElement, closeModalFunction) => {
@@ -225,9 +225,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 minimumLengthElement.addEventListener("keyup", updateMaximumLengthMin);
                 updateMaximumLengthMin();
                 occupancyTypeFieldValuesElement.addEventListener("keyup", toggleInputFields);
-                modalElement
-                    .querySelector("#button--deleteOccupancyTypeField")
-                    .addEventListener("click", doDelete);
+                modalElement.querySelector("#button--deleteOccupancyTypeField").addEventListener("click", doDelete);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
@@ -244,7 +242,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const moveOccupancyTypeFieldUp = (clickEvent) => {
         clickEvent.preventDefault();
         const occupancyTypeFieldId = clickEvent.currentTarget.closest(".container--occupancyTypeField").dataset.occupancyTypeFieldId;
-        cityssm.postJSON(urlPrefix + "/admin/doMoveOccupancyTypeFieldUp", {
+        cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypeFieldUp", {
             occupancyTypeFieldId,
             moveToTop: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
@@ -252,7 +250,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const moveOccupancyTypeFieldDown = (clickEvent) => {
         clickEvent.preventDefault();
         const occupancyTypeFieldId = clickEvent.currentTarget.closest(".container--occupancyTypeField").dataset.occupancyTypeFieldId;
-        cityssm.postJSON(urlPrefix + "/admin/doMoveOccupancyTypeFieldDown", {
+        cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypeFieldDown", {
             occupancyTypeFieldId,
             moveToBottom: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
@@ -283,7 +281,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<div class="level-left">' +
                         ('<div class="level-item">' +
                             '<a class="has-text-weight-bold button--editOccupancyTypeField" href="#">' +
-                            cityssm.escapeHTML(occupancyTypeField.occupancyTypeField) +
+                            cityssm.escapeHTML(occupancyTypeField.occupancyTypeField || "") +
                             "</a>" +
                             "</div>") +
                         "</div>" +
@@ -304,15 +302,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</div>") +
                         "</div>" +
                         "</div>";
-                panelBlockElement
-                    .querySelector(".button--editOccupancyTypeField")
-                    .addEventListener("click", openEditOccupancyTypeFieldByClick);
-                panelBlockElement
-                    .querySelector(".button--moveOccupancyTypeFieldUp")
-                    .addEventListener("click", moveOccupancyTypeFieldUp);
-                panelBlockElement
-                    .querySelector(".button--moveOccupancyTypeFieldDown")
-                    .addEventListener("click", moveOccupancyTypeFieldDown);
+                panelBlockElement.querySelector(".button--editOccupancyTypeField").addEventListener("click", openEditOccupancyTypeFieldByClick);
+                panelBlockElement.querySelector(".button--moveOccupancyTypeFieldUp").addEventListener("click", moveOccupancyTypeFieldUp);
+                panelBlockElement.querySelector(".button--moveOccupancyTypeFieldDown").addEventListener("click", moveOccupancyTypeFieldDown);
                 panelElement.append(panelBlockElement);
             }
         }
@@ -337,9 +329,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "</div>" +
                 "</div>";
         renderOccupancyTypeFields(containerElement.querySelector("#container--allOccupancyTypeFields"), undefined, allOccupancyTypeFields);
-        containerElement
-            .querySelector(".button--addOccupancyTypeField")
-            .addEventListener("click", openAddOccupancyTypeField);
+        containerElement.querySelector(".button--addOccupancyTypeField").addEventListener("click", openAddOccupancyTypeField);
         if (occupancyTypes.length === 0) {
             containerElement.insertAdjacentHTML("afterbegin", '<div class="message is-warning>' +
                 '<p class="message-body">There are no active ' +
@@ -409,24 +399,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</div>" +
                     "</div>";
             renderOccupancyTypeFields(occupancyTypeContainer, occupancyType.occupancyTypeId, occupancyType.occupancyTypeFields);
-            occupancyTypeContainer
-                .querySelector(".button--toggleOccupancyTypeFields")
-                .addEventListener("click", toggleOccupancyTypeFields);
-            occupancyTypeContainer
-                .querySelector(".button--deleteOccupancyType")
-                .addEventListener("click", deleteOccupancyType);
-            occupancyTypeContainer
-                .querySelector(".button--editOccupancyType")
-                .addEventListener("click", openEditOccupancyType);
-            occupancyTypeContainer
-                .querySelector(".button--addOccupancyTypeField")
-                .addEventListener("click", openAddOccupancyTypeField);
-            occupancyTypeContainer
-                .querySelector(".button--moveOccupancyTypeUp")
-                .addEventListener("click", moveOccupancyTypeUp);
-            occupancyTypeContainer
-                .querySelector(".button--moveOccupancyTypeDown")
-                .addEventListener("click", moveOccupancyTypeDown);
+            occupancyTypeContainer.querySelector(".button--toggleOccupancyTypeFields").addEventListener("click", toggleOccupancyTypeFields);
+            occupancyTypeContainer.querySelector(".button--deleteOccupancyType").addEventListener("click", deleteOccupancyType);
+            occupancyTypeContainer.querySelector(".button--editOccupancyType").addEventListener("click", openEditOccupancyType);
+            occupancyTypeContainer.querySelector(".button--addOccupancyTypeField").addEventListener("click", openAddOccupancyTypeField);
+            occupancyTypeContainer.querySelector(".button--moveOccupancyTypeUp").addEventListener("click", moveOccupancyTypeUp);
+            occupancyTypeContainer.querySelector(".button--moveOccupancyTypeDown").addEventListener("click", moveOccupancyTypeDown);
             containerElement.append(occupancyTypeContainer);
         }
     };
@@ -434,7 +412,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         const doAdd = (submitEvent) => {
             submitEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + "/admin/doAddOccupancyType", submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + "/admin/doAddOccupancyType", submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     addCloseModalFunction();
                     occupancyTypes = responseJSON.occupancyTypes;
@@ -443,7 +421,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: "Error Adding " + exports.aliases.occupancy + " Type",
-                        message: responseJSON.errorMessage,
+                        message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });
                 }

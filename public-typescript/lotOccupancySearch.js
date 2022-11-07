@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const los = exports.los;
     const lotOccupancyPrints = exports.lotOccupancyPrints;
     const searchFilterFormElement = document.querySelector("#form--searchFilters");
     const searchResultsContainerElement = document.querySelector("#container--searchResults");
@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 exports.aliases.occupancies +
                 "..." +
                 "</div>";
-        cityssm.postJSON(urlPrefix + "/lotOccupancies/doSearchLotOccupancies", searchFilterFormElement, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + "/lotOccupancies/doSearchLotOccupancies", searchFilterFormElement, (responseJSON) => {
             if (responseJSON.lotOccupancies.length === 0) {
                 searchResultsContainerElement.innerHTML =
                     '<div class="message is-info">' +
@@ -66,16 +66,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 for (const occupant of lotOccupancy.lotOccupancyOccupants) {
                     occupantsHTML +=
                         '<span class="has-tooltip-left" data-tooltip="' +
-                            cityssm.escapeHTML(occupant.lotOccupantType) +
+                            cityssm.escapeHTML(occupant.lotOccupantType || "") +
                             '">' +
-                            cityssm.escapeHTML(occupant.occupantName) +
+                            cityssm.escapeHTML(occupant.occupantName || "") +
                             "</span><br />";
                 }
                 resultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
                     ('<td class="has-width-1">' + occupancyTimeHTML + "</td>") +
                     ("<td>" +
                         '<a class="has-text-weight-bold" href="' +
-                        urlPrefix +
+                        los.urlPrefix +
                         "/lotOccupancies/" +
                         lotOccupancy.lotOccupancyId +
                         '">' +
@@ -85,9 +85,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     ("<td>" +
                         (lotOccupancy.lotName
                             ? '<a class="has-tooltip-right" data-tooltip="' +
-                                cityssm.escapeHTML(lotOccupancy.lotType) +
+                                cityssm.escapeHTML(lotOccupancy.lotType || "") +
                                 '" href="' +
-                                urlPrefix +
+                                los.urlPrefix +
                                 "/lots/" +
                                 lotOccupancy.lotId +
                                 '">' +
@@ -111,7 +111,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     (lotOccupancyPrints.length > 0
                         ? "<td>" +
                             '<a class="button is-small" data-tooltip="Print" href="' +
-                            urlPrefix +
+                            los.urlPrefix +
                             "/print/" +
                             lotOccupancyPrints[0] +
                             "/?lotOccupancyId=" +
@@ -132,7 +132,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupancyStartDate) + "</th>") +
                     "<th>End Date</th>" +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupants) + "</th>") +
-                    (lotOccupancyPrints.length > 0 ? '<th class="has-width-1"><span class="is-sr-only">Print</span></th>' : "") +
+                    (lotOccupancyPrints.length > 0
+                        ? '<th class="has-width-1"><span class="is-sr-only">Print</span></th>'
+                        : "") +
                     "</tr></thead>" +
                     "<table>" +
                     '<div class="level">' +
@@ -166,14 +168,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</div>";
             searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
             if (offset > 0) {
-                searchResultsContainerElement
-                    .querySelector("button[data-page='previous']")
-                    .addEventListener("click", previousAndGetLotOccupancies);
+                searchResultsContainerElement.querySelector("button[data-page='previous']").addEventListener("click", previousAndGetLotOccupancies);
             }
             if (limit + offset < responseJSON.count) {
-                searchResultsContainerElement
-                    .querySelector("button[data-page='next']")
-                    .addEventListener("click", nextAndGetLotOccupancies);
+                searchResultsContainerElement.querySelector("button[data-page='next']").addEventListener("click", nextAndGetLotOccupancies);
             }
         });
     };

@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+
+import type * as globalTypes from "../types/globalTypes";
+
 (() => {
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
-    const apiKey = document.querySelector("main").dataset.apiKey;
+    const los = exports.los as globalTypes.LOS;
 
     const workOrderTypeIdsElement = document.querySelector(
         "#icsFilters--workOrderTypeIds"
@@ -18,14 +21,11 @@
         let url =
             window.location.href.slice(
                 0,
-                Math.max(
-                    0,
-                    window.location.href.indexOf(window.location.pathname) + 1
-                )
+                Math.max(0, window.location.href.indexOf(window.location.pathname) + 1)
             ) +
-            urlPrefix +
+            los.urlPrefix +
             "api/" +
-            apiKey +
+            los.apiKey +
             "/" +
             "milestoneICS/" +
             "?";
@@ -59,27 +59,23 @@
         calendarLinkElement.value = url.slice(0, -1);
     };
 
-    document
-        .querySelector("#icsFilters--workOrderTypeIds-all")
-        .addEventListener("change", (changeEvent) => {
-            workOrderTypeIdsElement.disabled = (
-                changeEvent.currentTarget as HTMLInputElement
-            ).checked;
-        });
+    (
+        document.querySelector("#icsFilters--workOrderTypeIds-all") as HTMLInputElement
+    ).addEventListener("change", (changeEvent) => {
+        workOrderTypeIdsElement.disabled = (changeEvent.currentTarget as HTMLInputElement).checked;
+    });
 
-    document
-        .querySelector("#icsFilters--workOrderMilestoneTypeIds-all")
-        .addEventListener("change", (changeEvent) => {
-            workOrderMilestoneTypeIdsElement.disabled = (
-                changeEvent.currentTarget as HTMLInputElement
-            ).checked;
-        });
+    (
+        document.querySelector("#icsFilters--workOrderMilestoneTypeIds-all") as HTMLInputElement
+    ).addEventListener("change", (changeEvent) => {
+        workOrderMilestoneTypeIdsElement.disabled = (
+            changeEvent.currentTarget as HTMLInputElement
+        ).checked;
+    });
 
-    const inputSelectElements = document
-        .querySelector("#panel--icsFilters")
-        .querySelectorAll("input, select") as NodeListOf<
-        HTMLInputElement | HTMLSelectElement
-    >;
+    const inputSelectElements = (
+        document.querySelector("#panel--icsFilters") as HTMLElement
+    ).querySelectorAll("input, select") as NodeListOf<HTMLInputElement | HTMLSelectElement>;
 
     for (const element of inputSelectElements) {
         element.addEventListener("change", updateCalendarURL);
@@ -90,5 +86,5 @@
     calendarLinkElement.addEventListener("click", () => {
         calendarLinkElement.focus();
         calendarLinkElement.select();
-    })
+    });
 })();

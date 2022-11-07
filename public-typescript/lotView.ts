@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import * as globalTypes from "../types/globalTypes";
 
@@ -9,7 +9,7 @@ import * as globalTypes from "../types/globalTypes";
     if (mapContainerElement) {
         (exports.los as globalTypes.LOS).highlightMap(
             mapContainerElement,
-            mapContainerElement.dataset.mapKey,
+            mapContainerElement.dataset.mapKey!,
             "success"
         );
     }

@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from "../types/globalTypes";
 import type { Options as BulmaCalendarOptions } from "bulma-calendar";
@@ -17,7 +17,7 @@ declare const bulmaJS: BulmaJS;
         // Search for ID
 
         let svgId = mapKey;
-        let svgElementToHighlight: SVGElement;
+        let svgElementToHighlight: SVGElement | null;
 
         // eslint-disable-next-line no-constant-condition
         while (true) {
@@ -32,20 +32,20 @@ declare const bulmaJS: BulmaJS;
 
         if (svgElementToHighlight) {
             // eslint-disable-next-line unicorn/no-null
-            svgElementToHighlight.style.fill = null;
+            svgElementToHighlight.style.fill = "";
 
             svgElementToHighlight.classList.add("highlight", "is-" + contextualClass);
 
             const childPathElements = svgElementToHighlight.querySelectorAll("path");
             for (const pathElement of childPathElements) {
                 // eslint-disable-next-line unicorn/no-null
-                pathElement.style.fill = null;
+                pathElement.style.fill = "";
             }
         }
     };
 
     const unlockField = (clickEvent: Event) => {
-        const fieldElement = (clickEvent.currentTarget as HTMLElement).closest(".field");
+        const fieldElement = (clickEvent.currentTarget as HTMLElement).closest(".field")!;
 
         const inputOrSelectElement = fieldElement.querySelector("input, select") as
             | HTMLInputElement
@@ -115,7 +115,7 @@ declare const bulmaJS: BulmaJS;
 
             // Disable html scrolling when calendar is open
             cal.on("show", () => {
-                document.querySelector("html").classList.add("is-clipped");
+                document.querySelector("html")!.classList.add("is-clipped");
             });
 
             // Reenable scrolling, if a modal window is not open
@@ -160,7 +160,7 @@ declare const bulmaJS: BulmaJS;
             const labelElement = document.querySelector("label[for='" + dateElement.id + "']");
             
             if (labelElement) {
-                datepickerElement.querySelector(".datetimepicker-dummy-input").ariaLabel = labelElement.textContent;
+                datepickerElement.querySelector(".datetimepicker-dummy-input")!.ariaLabel = labelElement.textContent;
             }
         }
     };
@@ -196,7 +196,7 @@ declare const bulmaJS: BulmaJS;
 
             // Disable html scrolling when calendar is open
             cal.on("show", () => {
-                document.querySelector("html").classList.add("is-clipped");
+                document.querySelector("html")!.classList.add("is-clipped");
             });
 
             // Reenable scrolling, if a modal window is not open
@@ -290,15 +290,17 @@ declare const bulmaJS: BulmaJS;
 
         return exports.randomColor({
             seed: actualSeedString + actualSeedString,
-            hue: hues[actualSeedString.codePointAt(actualSeedString.length - 1) % hues.length],
+            hue: hues[actualSeedString.codePointAt(actualSeedString.length - 1)! % hues.length],
             luminosity:
                 luminosity[
-                    actualSeedString.codePointAt(actualSeedString.length - 2) % luminosity.length
+                    actualSeedString.codePointAt(actualSeedString.length - 2)! % luminosity.length
                 ]
         });
     };
 
     const los: globalTypes.LOS = {
+        urlPrefix: document.querySelector("main")!.dataset.urlPrefix!,
+        apiKey: document.querySelector("main")!.dataset.apiKey!,
         highlightMap,
         initializeUnlockFieldButtons,
         initializeDatePickers,

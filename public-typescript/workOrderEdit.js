@@ -2,23 +2,20 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const workOrderId = document.querySelector("#workOrderEdit--workOrderId")
         .value;
     const isCreate = workOrderId === "";
     const workOrderFormElement = document.querySelector("#form--workOrderEdit");
-    los.initializeDatePickers(workOrderFormElement
-        .querySelector("#workOrderEdit--workOrderOpenDateString")
-        .closest(".field"));
+    los.initializeDatePickers(workOrderFormElement.querySelector("#workOrderEdit--workOrderOpenDateString").closest(".field"));
     los.initializeUnlockFieldButtons(workOrderFormElement);
     workOrderFormElement.addEventListener("submit", (submitEvent) => {
         submitEvent.preventDefault();
-        cityssm.postJSON(urlPrefix + "/workOrders/" + (isCreate ? "doCreateWorkOrder" : "doUpdateWorkOrder"), submitEvent.currentTarget, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + "/workOrders/" + (isCreate ? "doCreateWorkOrder" : "doUpdateWorkOrder"), submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 cityssm.disableNavBlocker();
                 if (isCreate) {
                     window.location.href =
-                        urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
+                        los.urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
                 }
                 else {
                     bulmaJS.alert({
@@ -30,7 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: "Error Updating Work Order",
-                    message: responseJSON.errorMessage,
+                    message: responseJSON.errorMessage || "",
                     contextualColorName: "danger"
                 });
             }
@@ -43,17 +40,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
     let workOrderMilestones;
     if (!isCreate) {
         const doClose = () => {
-            cityssm.postJSON(urlPrefix + "/workOrders/doCloseWorkOrder", {
+            cityssm.postJSON(los.urlPrefix + "/workOrders/doCloseWorkOrder", {
                 workOrderId
             }, (responseJSON) => {
                 if (responseJSON.success) {
                     window.location.href =
-                        urlPrefix + "/workOrders/" + encodeURIComponent(workOrderId);
+                        los.urlPrefix + "/workOrders/" + encodeURIComponent(workOrderId);
                 }
                 else {
                     bulmaJS.alert({
                         title: "Error Closing Work Order",
-                        message: responseJSON.errorMessage,
+                        message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });
                 }
@@ -87,24 +84,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
         const doDelete = () => {
-            cityssm.postJSON(urlPrefix + "/workOrders/doDeleteWorkOrder", {
+            cityssm.postJSON(los.urlPrefix + "/workOrders/doDeleteWorkOrder", {
                 workOrderId
             }, (responseJSON) => {
                 if (responseJSON.success) {
-                    window.location.href = urlPrefix + "/workOrders";
+                    window.location.href = los.urlPrefix + "/workOrders";
                 }
                 else {
                     bulmaJS.alert({
                         title: "Error Deleting Work Order",
-                        message: responseJSON.errorMessage,
+                        message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });
                 }
             });
         };
-        document
-            .querySelector("#button--deleteWorkOrder")
-            .addEventListener("click", (clickEvent) => {
+        document.querySelector("#button--deleteWorkOrder").addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
             bulmaJS.confirm({
                 title: "Delete Work Order",
@@ -125,7 +120,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const deleteLotOccupancy = (clickEvent) => {
             const lotOccupancyId = clickEvent.currentTarget.closest(".container--lotOccupancy").dataset.lotOccupancyId;
             const doDelete = () => {
-                cityssm.postJSON(urlPrefix + "/workOrders/doDeleteWorkOrderLotOccupancy", {
+                cityssm.postJSON(los.urlPrefix + "/workOrders/doDeleteWorkOrderLotOccupancy", {
                     workOrderId,
                     lotOccupancyId
                 }, (responseJSON) => {
@@ -136,7 +131,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: "Error Deleting Relationship",
-                            message: responseJSON.errorMessage,
+                            message: responseJSON.errorMessage || "",
                             contextualColorName: "danger"
                         });
                     }
@@ -161,7 +156,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         };
         const addLot = (lotId, callbackFunction) => {
-            cityssm.postJSON(urlPrefix + "/workOrders/doAddWorkOrderLot", {
+            cityssm.postJSON(los.urlPrefix + "/workOrders/doAddWorkOrderLot", {
                 workOrderId,
                 lotId
             }, (responseJSON) => {
@@ -172,7 +167,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: "Error Adding " + exports.aliases.lot,
-                        message: responseJSON.errorMessage,
+                        message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });
                 }
@@ -182,7 +177,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         };
         const addLotOccupancy = (lotOccupancyId, callbackFunction) => {
-            cityssm.postJSON(urlPrefix + "/workOrders/doAddWorkOrderLotOccupancy", {
+            cityssm.postJSON(los.urlPrefix + "/workOrders/doAddWorkOrderLotOccupancy", {
                 workOrderId,
                 lotOccupancyId
             }, (responseJSON) => {
@@ -193,7 +188,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: "Error Adding " + exports.aliases.occupancy,
-                        message: responseJSON.errorMessage,
+                        message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });
                 }
@@ -208,8 +203,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         const renderRelatedOccupancies = () => {
             const occupanciesContainerElement = document.querySelector("#container--lotOccupancies");
-            document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent =
-                workOrderLotOccupancies.length.toString();
+            document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent = workOrderLotOccupancies.length.toString();
             if (workOrderLotOccupancies.length === 0) {
                 occupanciesContainerElement.innerHTML =
                     '<div class="message is-info">' +
@@ -257,16 +251,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</td>" +
                         ("<td>" +
                             '<a class="has-text-weight-bold" href="' +
-                            cityssm.escapeHTML(urlPrefix) +
+                            cityssm.escapeHTML(los.urlPrefix) +
                             "/lotOccupancies/" +
                             lotOccupancy.lotOccupancyId +
                             '">' +
-                            cityssm.escapeHTML(lotOccupancy.occupancyType) +
+                            cityssm.escapeHTML(lotOccupancy.occupancyType || "") +
                             "</a>" +
                             "</td>");
                 if (lotOccupancy.lotId) {
                     rowElement.insertAdjacentHTML("beforeend", "<td>" +
-                        cityssm.escapeHTML(lotOccupancy.lotName) +
+                        cityssm.escapeHTML(lotOccupancy.lotName || "") +
                         (hasLotRecord
                             ? ""
                             : ' <button class="button is-small is-light is-success button--addLot"' +
@@ -318,13 +312,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</button>" +
                         "</td>"));
                 if (lotOccupancy.lotId && !hasLotRecord) {
-                    rowElement
-                        .querySelector(".button--addLot")
-                        .addEventListener("click", addLotFromLotOccupancy);
+                    rowElement.querySelector(".button--addLot").addEventListener("click", addLotFromLotOccupancy);
                 }
-                rowElement
-                    .querySelector(".button--deleteLotOccupancy")
-                    .addEventListener("click", deleteLotOccupancy);
+                rowElement.querySelector(".button--deleteLotOccupancy").addEventListener("click", deleteLotOccupancy);
                 occupanciesContainerElement.querySelector("tbody").append(rowElement);
             }
         };
@@ -336,7 +326,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             let editCloseModalFunction;
             const doUpdateLotStatus = (submitEvent) => {
                 submitEvent.preventDefault();
-                cityssm.postJSON(urlPrefix + "/workOrders/doUpdateLotStatus", submitEvent.currentTarget, (responseJSON) => {
+                cityssm.postJSON(los.urlPrefix + "/workOrders/doUpdateLotStatus", submitEvent.currentTarget, (responseJSON) => {
                     if (responseJSON.success) {
                         workOrderLots = responseJSON.workOrderLots;
                         renderRelatedLotsAndOccupancies();
@@ -345,7 +335,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: "Error Deleting Relationship",
-                            message: responseJSON.errorMessage,
+                            message: responseJSON.errorMessage || "",
                             contextualColorName: "danger"
                         });
                     }
@@ -395,7 +385,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const deleteLot = (clickEvent) => {
             const lotId = clickEvent.currentTarget.closest(".container--lot").dataset.lotId;
             const doDelete = () => {
-                cityssm.postJSON(urlPrefix + "/workOrders/doDeleteWorkOrderLot", {
+                cityssm.postJSON(los.urlPrefix + "/workOrders/doDeleteWorkOrderLot", {
                     workOrderId,
                     lotId
                 }, (responseJSON) => {
@@ -406,7 +396,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: "Error Deleting Relationship",
-                            message: responseJSON.errorMessage,
+                            message: responseJSON.errorMessage || "",
                             contextualColorName: "danger"
                         });
                     }
@@ -432,8 +422,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         const renderRelatedLots = () => {
             const lotsContainerElement = document.querySelector("#container--lots");
-            document.querySelector(".tabs a[href='#relatedTab--lots'] .tag").textContent =
-                workOrderLots.length.toString();
+            document.querySelector(".tabs a[href='#relatedTab--lots'] .tag").textContent = workOrderLots.length.toString();
             if (workOrderLots.length === 0) {
                 lotsContainerElement.innerHTML =
                     '<div class="message is-info">' +
@@ -463,18 +452,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 rowElement.innerHTML =
                     "<td>" +
                         '<a class="has-text-weight-bold" href="' +
-                        cityssm.escapeHTML(urlPrefix) +
+                        cityssm.escapeHTML(los.urlPrefix) +
                         "/lots/" +
                         lot.lotId +
                         '">' +
-                        cityssm.escapeHTML(lot.lotName) +
+                        cityssm.escapeHTML(lot.lotName || "") +
                         "</a>" +
                         "</td>" +
-                        ("<td>" + cityssm.escapeHTML(lot.mapName) + "</td>") +
-                        ("<td>" + cityssm.escapeHTML(lot.lotType) + "</td>") +
+                        ("<td>" + cityssm.escapeHTML(lot.mapName || "") + "</td>") +
+                        ("<td>" + cityssm.escapeHTML(lot.lotType || "") + "</td>") +
                         ("<td>" +
                             (lot.lotStatusId
-                                ? cityssm.escapeHTML(lot.lotStatus)
+                                ? cityssm.escapeHTML(lot.lotStatus || "")
                                 : '<span class="has-text-grey">(No Status)</span>') +
                             "</td>") +
                         ('<td class="is-nowrap">' +
@@ -485,9 +474,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             '<i class="fas fa-trash" aria-hidden="true"></i>' +
                             "</button>" +
                             "</td>");
-                rowElement
-                    .querySelector(".button--editLotStatus")
-                    .addEventListener("click", openEditLotStatus);
+                rowElement.querySelector(".button--editLotStatus").addEventListener("click", openEditLotStatus);
                 rowElement.querySelector(".button--deleteLot").addEventListener("click", deleteLot);
                 lotsContainerElement.querySelector("tbody").append(rowElement);
             }
@@ -518,7 +505,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
                         "Searching..." +
                         "</p>";
-                cityssm.postJSON(urlPrefix + "/lotOccupancies/doSearchLotOccupancies", searchFormElement, (responseJSON) => {
+                cityssm.postJSON(los.urlPrefix + "/lotOccupancies/doSearchLotOccupancies", searchFormElement, (responseJSON) => {
                     if (responseJSON.lotOccupancies.length === 0) {
                         searchResultsContainerElement.innerHTML =
                             '<div class="message is-info">' +
@@ -552,10 +539,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 "</button>" +
                                 "</td>" +
                                 ('<td class="has-text-weight-bold">' +
-                                    cityssm.escapeHTML(lotOccupancy.occupancyType) +
+                                    cityssm.escapeHTML(lotOccupancy.occupancyType || "") +
                                     "</td>");
                         if (lotOccupancy.lotId) {
-                            rowElement.insertAdjacentHTML("beforeend", "<td>" + cityssm.escapeHTML(lotOccupancy.lotName) + "</td>");
+                            rowElement.insertAdjacentHTML("beforeend", "<td>" +
+                                cityssm.escapeHTML(lotOccupancy.lotName || "") +
+                                "</td>");
                         }
                         else {
                             rowElement.insertAdjacentHTML("beforeend", "<td>" +
@@ -577,16 +566,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                     ? '<span class="has-text-grey">(No ' +
                                         cityssm.escapeHTML(exports.aliases.occupants) +
                                         ")</span>"
-                                    : cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0].occupantName) +
+                                    : cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0]
+                                        .occupantName) +
                                         (lotOccupancy.lotOccupancyOccupants.length > 1
                                             ? " plus " +
-                                                (lotOccupancy.lotOccupancyOccupants.length - 1)
+                                                (lotOccupancy.lotOccupancyOccupants
+                                                    .length -
+                                                    1)
                                             : "")) +
                                 "</td>"));
-                        rowElement
-                            .querySelector(".button--addLotOccupancy")
-                            .addEventListener("click", doAddLotOccupancy);
-                        searchResultsContainerElement.querySelector("tbody").append(rowElement);
+                        rowElement.querySelector(".button--addLotOccupancy").addEventListener("click", doAddLotOccupancy);
+                        searchResultsContainerElement
+                            .querySelector("tbody")
+                            .append(rowElement);
                     }
                 });
             };
@@ -601,12 +593,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onshown: (modalElement) => {
                     bulmaJS.toggleHtmlClipped();
-                    modalElement
-                        .querySelector("#lotOccupancySearch--occupantName")
-                        .addEventListener("change", doSearch);
-                    modalElement
-                        .querySelector("#lotOccupancySearch--lotName")
-                        .addEventListener("change", doSearch);
+                    modalElement.querySelector("#lotOccupancySearch--occupantName").addEventListener("change", doSearch);
+                    modalElement.querySelector("#lotOccupancySearch--lotName").addEventListener("change", doSearch);
                     searchFormElement.addEventListener("submit", doSearch);
                 },
                 onremoved: () => {
@@ -635,7 +623,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
                         "Searching..." +
                         "</p>";
-                cityssm.postJSON(urlPrefix + "/lots/doSearchLots", searchFormElement, (responseJSON) => {
+                cityssm.postJSON(los.urlPrefix + "/lots/doSearchLots", searchFormElement, (responseJSON) => {
                     if (responseJSON.lots.length === 0) {
                         searchResultsContainerElement.innerHTML =
                             '<div class="message is-info">' +
@@ -667,17 +655,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 "</button>" +
                                 "</td>" +
                                 ('<td class="has-text-weight-bold">' +
-                                    cityssm.escapeHTML(lot.lotName) +
+                                    cityssm.escapeHTML(lot.lotName || "") +
                                     "</td>") +
                                 "<td>" +
-                                cityssm.escapeHTML(lot.mapName) +
+                                cityssm.escapeHTML(lot.mapName || "") +
                                 "</td>" +
-                                ("<td>" + cityssm.escapeHTML(lot.lotType) + "</td>") +
-                                ("<td>" + cityssm.escapeHTML(lot.lotStatus) + "</td>");
-                        rowElement
-                            .querySelector(".button--addLot")
-                            .addEventListener("click", doAddLot);
-                        searchResultsContainerElement.querySelector("tbody").append(rowElement);
+                                ("<td>" + cityssm.escapeHTML(lot.lotType || "") + "</td>") +
+                                ("<td>" + cityssm.escapeHTML(lot.lotStatus || "") + "</td>");
+                        rowElement.querySelector(".button--addLot").addEventListener("click", doAddLot);
+                        searchResultsContainerElement
+                            .querySelector("tbody")
+                            .append(rowElement);
                     }
                 });
             };
@@ -698,12 +686,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onshown: (modalElement) => {
                     bulmaJS.toggleHtmlClipped();
-                    modalElement
-                        .querySelector("#lotSearch--lotName")
-                        .addEventListener("change", doSearch);
-                    modalElement
-                        .querySelector("#lotSearch--lotStatusId")
-                        .addEventListener("change", doSearch);
+                    modalElement.querySelector("#lotSearch--lotName").addEventListener("change", doSearch);
+                    modalElement.querySelector("#lotSearch--lotStatusId").addEventListener("change", doSearch);
                     searchFormElement.addEventListener("submit", doSearch);
                 },
                 onremoved: () => {
@@ -723,7 +707,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         const editComment = (submitEvent) => {
             submitEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + "/workOrders/doUpdateWorkOrderComment", editFormElement, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + "/workOrders/doUpdateWorkOrderComment", editFormElement, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderComments = responseJSON.workOrderComments;
                     editCloseModalFunction();
@@ -732,7 +716,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: "Error Updating Comment",
-                        message: responseJSON.errorMessage,
+                        message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });
                 }
@@ -770,7 +754,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const deleteWorkOrderComment = (clickEvent) => {
         const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest("tr").dataset.workOrderCommentId, 10);
         const doDelete = () => {
-            cityssm.postJSON(urlPrefix + "/workOrders/doDeleteWorkOrderComment", {
+            cityssm.postJSON(los.urlPrefix + "/workOrders/doDeleteWorkOrderComment", {
                 workOrderId,
                 workOrderCommentId
             }, (responseJSON) => {
@@ -781,7 +765,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: "Error Removing Comment",
-                        message: responseJSON.errorMessage,
+                        message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });
                 }
@@ -822,7 +806,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 workOrderComment.workOrderCommentId.toString();
             tableRowElement.innerHTML =
                 "<td>" +
-                    cityssm.escapeHTML(workOrderComment.recordCreate_userName) +
+                    cityssm.escapeHTML(workOrderComment.recordCreate_userName || "") +
                     "</td>" +
                     "<td>" +
                     workOrderComment.workOrderCommentDateString +
@@ -831,7 +815,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         : " " + workOrderComment.workOrderCommentTimeString) +
                     "</td>" +
                     "<td>" +
-                    cityssm.escapeHTML(workOrderComment.workOrderComment) +
+                    cityssm.escapeHTML(workOrderComment.workOrderComment || "") +
                     "</td>" +
                     ('<td class="is-hidden-print">' +
                         '<div class="buttons are-small is-justify-content-end">' +
@@ -844,12 +828,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</button>") +
                         "</div>" +
                         "</td>");
-            tableRowElement
-                .querySelector(".button--edit")
-                .addEventListener("click", openEditWorkOrderComment);
-            tableRowElement
-                .querySelector(".button--delete")
-                .addEventListener("click", deleteWorkOrderComment);
+            tableRowElement.querySelector(".button--edit").addEventListener("click", openEditWorkOrderComment);
+            tableRowElement.querySelector(".button--delete").addEventListener("click", deleteWorkOrderComment);
             tableElement.querySelector("tbody").append(tableRowElement);
         }
         containerElement.innerHTML = "";
@@ -859,7 +839,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCommentCloseModalFunction;
         const doAddComment = (formEvent) => {
             formEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + "/workOrders/doAddWorkOrderComment", formEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + "/workOrders/doAddWorkOrderComment", formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderComments = responseJSON.workOrderComments;
                     renderWorkOrderComments();
@@ -885,9 +865,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     if (!isCreate) {
-        document
-            .querySelector("#workOrderComments--add")
-            .addEventListener("click", openAddCommentModal);
+        document.querySelector("#workOrderComments--add").addEventListener("click", openAddCommentModal);
         renderWorkOrderComments();
     }
     if (!isCreate) {
@@ -901,7 +879,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: "Error Reopening Milestone",
-                    message: responseJSON.errorMessage,
+                    message: responseJSON.errorMessage || "",
                     contextualColorName: "danger"
                 });
             }
@@ -914,7 +892,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 return currentMilestone.workOrderMilestoneId === workOrderMilestoneId;
             });
             const doComplete = () => {
-                cityssm.postJSON(urlPrefix + "/workOrders/doCompleteWorkOrderMilestone", {
+                cityssm.postJSON(los.urlPrefix + "/workOrders/doCompleteWorkOrderMilestone", {
                     workOrderId,
                     workOrderMilestoneId
                 }, processMilestoneResponse);
@@ -937,7 +915,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             clickEvent.preventDefault();
             const workOrderMilestoneId = clickEvent.currentTarget.closest(".container--milestone").dataset.workOrderMilestoneId;
             const doReopen = () => {
-                cityssm.postJSON(urlPrefix + "/workOrders/doReopenWorkOrderMilestone", {
+                cityssm.postJSON(los.urlPrefix + "/workOrders/doReopenWorkOrderMilestone", {
                     workOrderId,
                     workOrderMilestoneId
                 }, processMilestoneResponse);
@@ -956,7 +934,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             clickEvent.preventDefault();
             const workOrderMilestoneId = clickEvent.currentTarget.closest(".container--milestone").dataset.workOrderMilestoneId;
             const doDelete = () => {
-                cityssm.postJSON(urlPrefix + "/workOrders/doDeleteWorkOrderMilestone", {
+                cityssm.postJSON(los.urlPrefix + "/workOrders/doDeleteWorkOrderMilestone", {
                     workOrderMilestoneId,
                     workOrderId
                 }, processMilestoneResponse);
@@ -980,7 +958,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             let editCloseModalFunction;
             const doEdit = (submitEvent) => {
                 submitEvent.preventDefault();
-                cityssm.postJSON(urlPrefix + "/workOrders/doUpdateWorkOrderMilestone", submitEvent.currentTarget, (responseJSON) => {
+                cityssm.postJSON(los.urlPrefix + "/workOrders/doUpdateWorkOrderMilestone", submitEvent.currentTarget, (responseJSON) => {
                     processMilestoneResponse(responseJSON);
                     if (responseJSON.success) {
                         editCloseModalFunction();
@@ -1059,7 +1037,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         ('<div class="column">' +
                             (milestone.workOrderMilestoneTypeId
                                 ? "<strong>" +
-                                    cityssm.escapeHTML(milestone.workOrderMilestoneType) +
+                                    cityssm.escapeHTML(milestone.workOrderMilestoneType || "") +
                                     "</strong><br />"
                                 : "") +
                             milestone.workOrderMilestoneDateString +
@@ -1068,7 +1046,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 : "") +
                             "<br />" +
                             '<span class="is-size-7">' +
-                            cityssm.escapeHTML(milestone.workOrderMilestoneDescription) +
+                            cityssm.escapeHTML(milestone.workOrderMilestoneDescription || "") +
                             "</span>" +
                             "</div>") +
                         ('<div class="column is-narrow">' +
@@ -1100,21 +1078,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</div>") +
                         "</div>";
                 if (milestone.workOrderMilestoneCompletionDate) {
-                    panelBlockElement
-                        .querySelector(".button--reopenMilestone")
-                        .addEventListener("click", reopenMilestone);
+                    panelBlockElement.querySelector(".button--reopenMilestone").addEventListener("click", reopenMilestone);
                 }
                 else {
-                    panelBlockElement
-                        .querySelector(".button--editMilestone")
-                        .addEventListener("click", editMilestone);
-                    panelBlockElement
-                        .querySelector(".button--completeMilestone")
-                        .addEventListener("click", completeMilestone);
+                    panelBlockElement.querySelector(".button--editMilestone").addEventListener("click", editMilestone);
+                    panelBlockElement.querySelector(".button--completeMilestone").addEventListener("click", completeMilestone);
                 }
-                panelBlockElement
-                    .querySelector(".button--deleteMilestone")
-                    .addEventListener("click", deleteMilestone);
+                panelBlockElement.querySelector(".button--deleteMilestone").addEventListener("click", deleteMilestone);
                 milestonesPanelElement.append(panelBlockElement);
             }
             bulmaJS.init(milestonesPanelElement);
@@ -1130,7 +1100,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 const currentDateString = cityssm.dateToString(new Date());
                 const _doAdd = () => {
-                    cityssm.postJSON(urlPrefix + "/workOrders/doAddWorkOrderMilestone", addFormElement, (responseJSON) => {
+                    cityssm.postJSON(los.urlPrefix + "/workOrders/doAddWorkOrderMilestone", addFormElement, (responseJSON) => {
                         processMilestoneResponse(responseJSON);
                         if (responseJSON.success) {
                             addCloseModalFunction();

@@ -2,16 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const lotId = document.querySelector("#lot--lotId").value;
     const isCreate = lotId === "";
     const formElement = document.querySelector("#form--lot");
     const updateLot = (formEvent) => {
         formEvent.preventDefault();
-        cityssm.postJSON(urlPrefix + "/lots/" + (isCreate ? "doCreateLot" : "doUpdateLot"), formElement, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + "/lots/" + (isCreate ? "doCreateLot" : "doUpdateLot"), formElement, (responseJSON) => {
             if (responseJSON.success) {
                 if (isCreate) {
-                    window.location.href = urlPrefix + "/lots/" + responseJSON.lotId + "/edit";
+                    window.location.href =
+                        los.urlPrefix + "/lots/" + responseJSON.lotId + "/edit";
                 }
                 else {
                     bulmaJS.alert({
@@ -23,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: "Error Updating " + exports.aliases.lot,
-                    message: responseJSON.errorMessage,
+                    message: responseJSON.errorMessage || "",
                     contextualColorName: "danger"
                 });
             }
@@ -35,17 +35,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
         document.querySelector("#button--deleteLot").addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
             const doDelete = () => {
-                cityssm.postJSON(urlPrefix + "/lots/doDeleteLot", {
+                cityssm.postJSON(los.urlPrefix + "/lots/doDeleteLot", {
                     lotId
                 }, (responseJSON) => {
                     if (responseJSON.success) {
                         cityssm.disableNavBlocker();
-                        window.location.href = urlPrefix + "/lots/?t=" + Date.now();
+                        window.location.href = los.urlPrefix + "/lots/?t=" + Date.now();
                     }
                     else {
                         bulmaJS.alert({
                             title: "Error Deleting " + exports.aliases.lot,
-                            message: responseJSON.errorMessage,
+                            message: responseJSON.errorMessage || "",
                             contextualColorName: "danger"
                         });
                     }
@@ -75,7 +75,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         const editComment = (submitEvent) => {
             submitEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + "/lots/doUpdateLotComment", editFormElement, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + "/lots/doUpdateLotComment", editFormElement, (responseJSON) => {
                 if (responseJSON.success) {
                     lotComments = responseJSON.lotComments;
                     editCloseModalFunction();
@@ -84,7 +84,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: "Error Updating Comment",
-                        message: responseJSON.errorMessage,
+                        message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });
                 }
@@ -123,7 +123,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const deleteLotComment = (clickEvent) => {
         const lotCommentId = Number.parseInt(clickEvent.currentTarget.closest("tr").dataset.lotCommentId, 10);
         const doDelete = () => {
-            cityssm.postJSON(urlPrefix + "/lots/doDeleteLotComment", {
+            cityssm.postJSON(los.urlPrefix + "/lots/doDeleteLotComment", {
                 lotId,
                 lotCommentId
             }, (responseJSON) => {
@@ -134,7 +134,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: "Error Removing Comment",
-                        message: responseJSON.errorMessage,
+                        message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });
                 }
@@ -174,14 +174,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             tableRowElement.dataset.lotCommentId = lotComment.lotCommentId.toString();
             tableRowElement.innerHTML =
                 "<td>" +
-                    cityssm.escapeHTML(lotComment.recordCreate_userName) +
+                    cityssm.escapeHTML(lotComment.recordCreate_userName || "") +
                     "</td>" +
                     "<td>" +
                     lotComment.lotCommentDateString +
                     (lotComment.lotCommentTime === 0 ? "" : " " + lotComment.lotCommentTimeString) +
                     "</td>" +
                     "<td>" +
-                    cityssm.escapeHTML(lotComment.lotComment) +
+                    cityssm.escapeHTML(lotComment.lotComment || "") +
                     "</td>" +
                     ('<td class="is-hidden-print">' +
                         '<div class="buttons are-small is-justify-content-end">' +
@@ -194,12 +194,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</button>") +
                         "</div>" +
                         "</td>");
-            tableRowElement
-                .querySelector(".button--edit")
-                .addEventListener("click", openEditLotComment);
-            tableRowElement
-                .querySelector(".button--delete")
-                .addEventListener("click", deleteLotComment);
+            tableRowElement.querySelector(".button--edit").addEventListener("click", openEditLotComment);
+            tableRowElement.querySelector(".button--delete").addEventListener("click", deleteLotComment);
             tableElement.querySelector("tbody").append(tableRowElement);
         }
         containerElement.innerHTML = "";
@@ -209,7 +205,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCommentCloseModalFunction;
         const doAddComment = (formEvent) => {
             formEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + "/lots/doAddLotComment", formEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + "/lots/doAddLotComment", formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     lotComments = responseJSON.lotComments;
                     renderLotComments();

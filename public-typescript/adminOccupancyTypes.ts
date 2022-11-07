@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from "../types/globalTypes";
 import type * as recordTypes from "../types/recordTypes";
@@ -12,8 +12,6 @@ declare const bulmaJS: BulmaJS;
 
 (() => {
     const los = exports.los as globalTypes.LOS;
-
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
     const containerElement = document.querySelector("#container--occupancyTypes") as HTMLElement;
 
@@ -32,7 +30,7 @@ declare const bulmaJS: BulmaJS;
             ".container--occupancyType"
         ) as HTMLElement;
 
-        const occupancyTypeId = Number.parseInt(occupancyTypeElement.dataset.occupancyTypeId, 10);
+        const occupancyTypeId = Number.parseInt(occupancyTypeElement.dataset.occupancyTypeId!, 10);
 
         if (expandedOccupancyTypes.has(occupancyTypeId)) {
             expandedOccupancyTypes.delete(occupancyTypeId);
@@ -58,13 +56,13 @@ declare const bulmaJS: BulmaJS;
         allOccupancyTypeFields?: recordTypes.OccupancyTypeField[];
     }) => {
         if (responseJSON.success) {
-            occupancyTypes = responseJSON.occupancyTypes;
-            allOccupancyTypeFields = responseJSON.allOccupancyTypeFields;
+            occupancyTypes = responseJSON.occupancyTypes!;
+            allOccupancyTypeFields = responseJSON.allOccupancyTypeFields!;
             renderOccupancyTypes();
         } else {
             bulmaJS.alert({
                 title: "Error Updating " + exports.aliases.occupancy + " Type",
-                message: responseJSON.errorMessage,
+                message: responseJSON.errorMessage || "",
                 contextualColorName: "danger"
             });
         }
@@ -76,13 +74,13 @@ declare const bulmaJS: BulmaJS;
                 (clickEvent.currentTarget as HTMLElement).closest(
                     ".container--occupancyType"
                 ) as HTMLElement
-            ).dataset.occupancyTypeId,
+            ).dataset.occupancyTypeId!,
             10
         );
 
         const doDelete = () => {
             cityssm.postJSON(
-                urlPrefix + "/admin/doDeleteOccupancyType",
+                los.urlPrefix + "/admin/doDeleteOccupancyType",
                 {
                     occupancyTypeId
                 },
@@ -110,13 +108,13 @@ declare const bulmaJS: BulmaJS;
                 (clickEvent.currentTarget as HTMLElement).closest(
                     ".container--occupancyType"
                 ) as HTMLElement
-            ).dataset.occupancyTypeId,
+            ).dataset.occupancyTypeId!,
             10
         );
 
         const occupancyType = occupancyTypes.find((currentOccupancyType) => {
             return occupancyTypeId === currentOccupancyType.occupancyTypeId;
-        });
+        })!;
 
         let editCloseModalFunction: () => void;
 
@@ -124,7 +122,7 @@ declare const bulmaJS: BulmaJS;
             submitEvent.preventDefault();
 
             cityssm.postJSON(
-                urlPrefix + "/admin/doUpdateOccupancyType",
+                los.urlPrefix + "/admin/doUpdateOccupancyType",
                 submitEvent.currentTarget,
                 (responseJSON: {
                     success: boolean;
@@ -165,7 +163,7 @@ declare const bulmaJS: BulmaJS;
                     ) as HTMLInputElement
                 ).focus();
 
-                modalElement.querySelector("form").addEventListener("submit", doEdit);
+                modalElement.querySelector("form")!.addEventListener("submit", doEdit);
 
                 bulmaJS.toggleHtmlClipped();
             },
@@ -181,7 +179,7 @@ declare const bulmaJS: BulmaJS;
                 (clickEvent.currentTarget as HTMLElement).closest(
                     ".container--occupancyType"
                 ) as HTMLElement
-            ).dataset.occupancyTypeId,
+            ).dataset.occupancyTypeId!,
             10
         );
 
@@ -191,7 +189,7 @@ declare const bulmaJS: BulmaJS;
             submitEvent.preventDefault();
 
             cityssm.postJSON(
-                urlPrefix + "/admin/doAddOccupancyTypeField",
+                los.urlPrefix + "/admin/doAddOccupancyTypeField",
                 submitEvent.currentTarget,
                 (responseJSON: {
                     success: boolean;
@@ -207,7 +205,7 @@ declare const bulmaJS: BulmaJS;
                         addCloseModalFunction();
                         openEditOccupancyTypeField(
                             occupancyTypeId,
-                            responseJSON.occupancyTypeFieldId
+                            responseJSON.occupancyTypeFieldId!
                         );
                     }
                 }
@@ -235,7 +233,7 @@ declare const bulmaJS: BulmaJS;
                     ) as HTMLInputElement
                 ).focus();
 
-                modalElement.querySelector("form").addEventListener("submit", doAdd);
+                modalElement.querySelector("form")!.addEventListener("submit", doAdd);
 
                 bulmaJS.toggleHtmlClipped();
             },
@@ -255,7 +253,7 @@ declare const bulmaJS: BulmaJS;
         ).dataset.occupancyTypeId;
 
         cityssm.postJSON(
-            urlPrefix + "/admin/doMoveOccupancyTypeUp",
+            los.urlPrefix + "/admin/doMoveOccupancyTypeUp",
             {
                 occupancyTypeId,
                 moveToTop: clickEvent.shiftKey ? "1" : "0"
@@ -274,7 +272,7 @@ declare const bulmaJS: BulmaJS;
         ).dataset.occupancyTypeId;
 
         cityssm.postJSON(
-            urlPrefix + "/admin/doMoveOccupancyTypeDown",
+            los.urlPrefix + "/admin/doMoveOccupancyTypeDown",
             {
                 occupancyTypeId,
                 moveToBottom: clickEvent.shiftKey ? "1" : "0"
@@ -284,7 +282,7 @@ declare const bulmaJS: BulmaJS;
     };
 
     const openEditOccupancyTypeField = (occupancyTypeId: number, occupancyTypeFieldId: number) => {
-        let occupancyType: recordTypes.OccupancyType;
+        let occupancyType: recordTypes.OccupancyType | undefined;
 
         if (occupancyTypeId) {
             occupancyType = occupancyTypes.find((currentOccupancyType) => {
@@ -293,10 +291,10 @@ declare const bulmaJS: BulmaJS;
         }
 
         const occupancyTypeField = (
-            occupancyType ? occupancyType.occupancyTypeFields : allOccupancyTypeFields
+            occupancyType ? occupancyType.occupancyTypeFields! : allOccupancyTypeFields
         ).find((currentOccupancyTypeField) => {
             return currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId;
-        });
+        })!;
 
         let minimumLengthElement: HTMLInputElement;
         let maximumLengthElement: HTMLInputElement;
@@ -325,7 +323,7 @@ declare const bulmaJS: BulmaJS;
             submitEvent.preventDefault();
 
             cityssm.postJSON(
-                urlPrefix + "/admin/doUpdateOccupancyTypeField",
+                los.urlPrefix + "/admin/doUpdateOccupancyTypeField",
                 submitEvent.currentTarget,
                 (responseJSON: {
                     success: boolean;
@@ -343,7 +341,7 @@ declare const bulmaJS: BulmaJS;
         const doDelete = () => {
             const _doDelete = () => {
                 cityssm.postJSON(
-                    urlPrefix + "/admin/doDeleteOccupancyTypeField",
+                    los.urlPrefix + "/admin/doDeleteOccupancyTypeField",
                     {
                         occupancyTypeFieldId
                     },
@@ -380,13 +378,13 @@ declare const bulmaJS: BulmaJS;
                     modalElement.querySelector(
                         "#occupancyTypeFieldEdit--occupancyTypeFieldId"
                     ) as HTMLInputElement
-                ).value = occupancyTypeField.occupancyTypeFieldId.toString();
+                ).value = occupancyTypeField.occupancyTypeFieldId!.toString();
 
                 (
                     modalElement.querySelector(
                         "#occupancyTypeFieldEdit--occupancyTypeField"
                     ) as HTMLInputElement
-                ).value = occupancyTypeField.occupancyTypeField;
+                ).value = occupancyTypeField.occupancyTypeField!;
 
                 (
                     modalElement.querySelector(
@@ -396,25 +394,28 @@ declare const bulmaJS: BulmaJS;
 
                 minimumLengthElement = modalElement.querySelector(
                     "#occupancyTypeFieldEdit--minimumLength"
-                );
+                ) as HTMLInputElement;
 
-                minimumLengthElement.value = occupancyTypeField.minimumLength.toString();
+                minimumLengthElement.value = occupancyTypeField.minimumLength!.toString();
 
                 maximumLengthElement = modalElement.querySelector(
                     "#occupancyTypeFieldEdit--maximumLength"
-                );
+                ) as HTMLInputElement;
 
-                maximumLengthElement.value = occupancyTypeField.maximumLength.toString();
+                maximumLengthElement.value = occupancyTypeField.maximumLength!.toString();
 
-                patternElement = modalElement.querySelector("#occupancyTypeFieldEdit--pattern");
+                patternElement = modalElement.querySelector(
+                    "#occupancyTypeFieldEdit--pattern"
+                ) as HTMLInputElement;
 
-                patternElement.value = occupancyTypeField.pattern;
+                patternElement.value = occupancyTypeField.pattern!;
 
                 occupancyTypeFieldValuesElement = modalElement.querySelector(
                     "#occupancyTypeFieldEdit--occupancyTypeFieldValues"
-                );
+                ) as HTMLTextAreaElement;
 
-                occupancyTypeFieldValuesElement.value = occupancyTypeField.occupancyTypeFieldValues;
+                occupancyTypeFieldValuesElement.value =
+                    occupancyTypeField.occupancyTypeFieldValues!;
 
                 toggleInputFields();
             },
@@ -425,16 +426,18 @@ declare const bulmaJS: BulmaJS;
                 bulmaJS.toggleHtmlClipped();
                 cityssm.enableNavBlocker();
 
-                modalElement.querySelector("form").addEventListener("submit", doUpdate);
+                modalElement.querySelector("form")!.addEventListener("submit", doUpdate);
 
                 minimumLengthElement.addEventListener("keyup", updateMaximumLengthMin);
                 updateMaximumLengthMin();
 
                 occupancyTypeFieldValuesElement.addEventListener("keyup", toggleInputFields);
 
-                modalElement
-                    .querySelector("#button--deleteOccupancyTypeField")
-                    .addEventListener("click", doDelete);
+                (
+                    modalElement.querySelector(
+                        "#button--deleteOccupancyTypeField"
+                    ) as HTMLButtonElement
+                ).addEventListener("click", doDelete);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
@@ -451,7 +454,7 @@ declare const bulmaJS: BulmaJS;
                 (clickEvent.currentTarget as HTMLElement).closest(
                     ".container--occupancyTypeField"
                 ) as HTMLElement
-            ).dataset.occupancyTypeFieldId,
+            ).dataset.occupancyTypeFieldId!,
             10
         );
 
@@ -460,7 +463,7 @@ declare const bulmaJS: BulmaJS;
                 (clickEvent.currentTarget as HTMLElement).closest(
                     ".container--occupancyType"
                 ) as HTMLElement
-            ).dataset.occupancyTypeId,
+            ).dataset.occupancyTypeId!,
             10
         );
 
@@ -477,7 +480,7 @@ declare const bulmaJS: BulmaJS;
         ).dataset.occupancyTypeFieldId;
 
         cityssm.postJSON(
-            urlPrefix + "/admin/doMoveOccupancyTypeFieldUp",
+            los.urlPrefix + "/admin/doMoveOccupancyTypeFieldUp",
             {
                 occupancyTypeFieldId,
                 moveToTop: clickEvent.shiftKey ? "1" : "0"
@@ -496,7 +499,7 @@ declare const bulmaJS: BulmaJS;
         ).dataset.occupancyTypeFieldId;
 
         cityssm.postJSON(
-            urlPrefix + "/admin/doMoveOccupancyTypeFieldDown",
+            los.urlPrefix + "/admin/doMoveOccupancyTypeFieldDown",
             {
                 occupancyTypeFieldId,
                 moveToBottom: clickEvent.shiftKey ? "1" : "0"
@@ -533,14 +536,14 @@ declare const bulmaJS: BulmaJS;
                 }
 
                 panelBlockElement.dataset.occupancyTypeFieldId =
-                    occupancyTypeField.occupancyTypeFieldId.toString();
+                    occupancyTypeField.occupancyTypeFieldId!.toString();
 
                 panelBlockElement.innerHTML =
                     '<div class="level is-mobile">' +
                     '<div class="level-left">' +
                     ('<div class="level-item">' +
                         '<a class="has-text-weight-bold button--editOccupancyTypeField" href="#">' +
-                        cityssm.escapeHTML(occupancyTypeField.occupancyTypeField) +
+                        cityssm.escapeHTML(occupancyTypeField.occupancyTypeField || "") +
                         "</a>" +
                         "</div>") +
                     "</div>" +
@@ -562,17 +565,23 @@ declare const bulmaJS: BulmaJS;
                     "</div>" +
                     "</div>";
 
-                panelBlockElement
-                    .querySelector(".button--editOccupancyTypeField")
-                    .addEventListener("click", openEditOccupancyTypeFieldByClick);
+                (
+                    panelBlockElement.querySelector(
+                        ".button--editOccupancyTypeField"
+                    ) as HTMLButtonElement
+                ).addEventListener("click", openEditOccupancyTypeFieldByClick);
 
-                panelBlockElement
-                    .querySelector(".button--moveOccupancyTypeFieldUp")
-                    .addEventListener("click", moveOccupancyTypeFieldUp);
+                (
+                    panelBlockElement.querySelector(
+                        ".button--moveOccupancyTypeFieldUp"
+                    ) as HTMLButtonElement
+                ).addEventListener("click", moveOccupancyTypeFieldUp);
 
-                panelBlockElement
-                    .querySelector(".button--moveOccupancyTypeFieldDown")
-                    .addEventListener("click", moveOccupancyTypeFieldDown);
+                (
+                    panelBlockElement.querySelector(
+                        ".button--moveOccupancyTypeFieldDown"
+                    ) as HTMLButtonElement
+                ).addEventListener("click", moveOccupancyTypeFieldDown);
 
                 panelElement.append(panelBlockElement);
             }
@@ -600,14 +609,14 @@ declare const bulmaJS: BulmaJS;
             "</div>";
 
         renderOccupancyTypeFields(
-            containerElement.querySelector("#container--allOccupancyTypeFields"),
+            containerElement.querySelector("#container--allOccupancyTypeFields") as HTMLElement,
             undefined,
             allOccupancyTypeFields
         );
 
-        containerElement
-            .querySelector(".button--addOccupancyTypeField")
-            .addEventListener("click", openAddOccupancyTypeField);
+        (
+            containerElement.querySelector(".button--addOccupancyTypeField") as HTMLButtonElement
+        ).addEventListener("click", openAddOccupancyTypeField);
 
         if (occupancyTypes.length === 0) {
             containerElement.insertAdjacentHTML(
@@ -689,88 +698,103 @@ declare const bulmaJS: BulmaJS;
             renderOccupancyTypeFields(
                 occupancyTypeContainer,
                 occupancyType.occupancyTypeId,
-                occupancyType.occupancyTypeFields
+                occupancyType.occupancyTypeFields!
             );
 
-            occupancyTypeContainer
-                .querySelector(".button--toggleOccupancyTypeFields")
-                .addEventListener("click", toggleOccupancyTypeFields);
+            (
+                occupancyTypeContainer.querySelector(
+                    ".button--toggleOccupancyTypeFields"
+                ) as HTMLButtonElement
+            ).addEventListener("click", toggleOccupancyTypeFields);
 
-            occupancyTypeContainer
-                .querySelector(".button--deleteOccupancyType")
-                .addEventListener("click", deleteOccupancyType);
+            (
+                occupancyTypeContainer.querySelector(
+                    ".button--deleteOccupancyType"
+                ) as HTMLButtonElement
+            ).addEventListener("click", deleteOccupancyType);
 
-            occupancyTypeContainer
-                .querySelector(".button--editOccupancyType")
-                .addEventListener("click", openEditOccupancyType);
+            (
+                occupancyTypeContainer.querySelector(
+                    ".button--editOccupancyType"
+                ) as HTMLButtonElement
+            ).addEventListener("click", openEditOccupancyType);
 
-            occupancyTypeContainer
-                .querySelector(".button--addOccupancyTypeField")
-                .addEventListener("click", openAddOccupancyTypeField);
+            (
+                occupancyTypeContainer.querySelector(
+                    ".button--addOccupancyTypeField"
+                ) as HTMLButtonElement
+            ).addEventListener("click", openAddOccupancyTypeField);
 
-            occupancyTypeContainer
-                .querySelector(".button--moveOccupancyTypeUp")
-                .addEventListener("click", moveOccupancyTypeUp);
+            (
+                occupancyTypeContainer.querySelector(
+                    ".button--moveOccupancyTypeUp"
+                ) as HTMLButtonElement
+            ).addEventListener("click", moveOccupancyTypeUp);
 
-            occupancyTypeContainer
-                .querySelector(".button--moveOccupancyTypeDown")
-                .addEventListener("click", moveOccupancyTypeDown);
+            (
+                occupancyTypeContainer.querySelector(
+                    ".button--moveOccupancyTypeDown"
+                ) as HTMLButtonElement
+            ).addEventListener("click", moveOccupancyTypeDown);
 
             containerElement.append(occupancyTypeContainer);
         }
     };
 
-    document.querySelector("#button--addOccupancyType").addEventListener("click", () => {
-        let addCloseModalFunction: () => void;
+    (document.querySelector("#button--addOccupancyType") as HTMLButtonElement).addEventListener(
+        "click",
+        () => {
+            let addCloseModalFunction: () => void;
 
-        const doAdd = (submitEvent: SubmitEvent) => {
-            submitEvent.preventDefault();
+            const doAdd = (submitEvent: SubmitEvent) => {
+                submitEvent.preventDefault();
 
-            cityssm.postJSON(
-                urlPrefix + "/admin/doAddOccupancyType",
-                submitEvent.currentTarget,
-                (responseJSON: {
-                    success: boolean;
-                    errorMessage?: string;
-                    occupancyTypes?: recordTypes.OccupancyType[];
-                }) => {
-                    if (responseJSON.success) {
-                        addCloseModalFunction();
-                        occupancyTypes = responseJSON.occupancyTypes;
-                        renderOccupancyTypes();
-                    } else {
-                        bulmaJS.alert({
-                            title: "Error Adding " + exports.aliases.occupancy + " Type",
-                            message: responseJSON.errorMessage,
-                            contextualColorName: "danger"
-                        });
+                cityssm.postJSON(
+                    los.urlPrefix + "/admin/doAddOccupancyType",
+                    submitEvent.currentTarget,
+                    (responseJSON: {
+                        success: boolean;
+                        errorMessage?: string;
+                        occupancyTypes?: recordTypes.OccupancyType[];
+                    }) => {
+                        if (responseJSON.success) {
+                            addCloseModalFunction();
+                            occupancyTypes = responseJSON.occupancyTypes!;
+                            renderOccupancyTypes();
+                        } else {
+                            bulmaJS.alert({
+                                title: "Error Adding " + exports.aliases.occupancy + " Type",
+                                message: responseJSON.errorMessage || "",
+                                contextualColorName: "danger"
+                            });
+                        }
                     }
+                );
+            };
+
+            cityssm.openHtmlModal("adminOccupancyTypes-addOccupancyType", {
+                onshow: (modalElement) => {
+                    los.populateAliases(modalElement);
+                },
+                onshown: (modalElement, closeModalFunction) => {
+                    addCloseModalFunction = closeModalFunction;
+
+                    (
+                        modalElement.querySelector(
+                            "#occupancyTypeAdd--occupancyType"
+                        ) as HTMLInputElement
+                    ).focus();
+
+                    modalElement.querySelector("form")!.addEventListener("submit", doAdd);
+
+                    bulmaJS.toggleHtmlClipped();
+                },
+                onremoved: () => {
+                    bulmaJS.toggleHtmlClipped();
                 }
-            );
-        };
-
-        cityssm.openHtmlModal("adminOccupancyTypes-addOccupancyType", {
-            onshow: (modalElement) => {
-                los.populateAliases(modalElement);
-            },
-            onshown: (modalElement, closeModalFunction) => {
-                addCloseModalFunction = closeModalFunction;
-
-                (
-                    modalElement.querySelector(
-                        "#occupancyTypeAdd--occupancyType"
-                    ) as HTMLInputElement
-                ).focus();
-
-                modalElement.querySelector("form").addEventListener("submit", doAdd);
-
-                bulmaJS.toggleHtmlClipped();
-            },
-            onremoved: () => {
-                bulmaJS.toggleHtmlClipped();
-            }
-        });
-    });
+            });
+        }
+    );
 
     renderOccupancyTypes();
 })();

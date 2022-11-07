@@ -1,5 +1,6 @@
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
+import type * as globalTypes from "../types/globalTypes";
 import type * as recordTypes from "../types/recordTypes";
 
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
@@ -7,7 +8,7 @@ import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 declare const cityssm: cityssmGlobal;
 
 (() => {
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const los = exports.los as globalTypes.LOS;
 
     const lotOccupancyPrints: string[] = exports.lotOccupancyPrints;
 
@@ -37,7 +38,7 @@ declare const cityssm: cityssmGlobal;
             "</div>";
 
         cityssm.postJSON(
-            urlPrefix + "/lotOccupancies/doSearchLotOccupancies",
+            los.urlPrefix + "/lotOccupancies/doSearchLotOccupancies",
             searchFilterFormElement,
             (responseJSON: { count: number; lotOccupancies: recordTypes.LotOccupancy[] }) => {
                 if (responseJSON.lotOccupancies.length === 0) {
@@ -59,9 +60,9 @@ declare const cityssm: cityssmGlobal;
                     let occupancyTimeHTML = "";
 
                     if (
-                        lotOccupancy.occupancyStartDateString <= nowDateString &&
+                        lotOccupancy.occupancyStartDateString! <= nowDateString &&
                         (lotOccupancy.occupancyEndDateString === "" ||
-                            lotOccupancy.occupancyEndDateString >= nowDateString)
+                            lotOccupancy.occupancyEndDateString! >= nowDateString)
                     ) {
                         occupancyTimeHTML =
                             '<span class="has-tooltip-right" data-tooltip="Current ' +
@@ -71,7 +72,7 @@ declare const cityssm: cityssmGlobal;
                                 exports.aliases.occupancy +
                                 '"></i>') +
                             "</span>";
-                    } else if (lotOccupancy.occupancyStartDateString > nowDateString) {
+                    } else if (lotOccupancy.occupancyStartDateString! > nowDateString) {
                         occupancyTimeHTML =
                             '<span class="has-tooltip-right" data-tooltip="Future ' +
                             exports.aliases.occupancy +
@@ -93,12 +94,12 @@ declare const cityssm: cityssmGlobal;
 
                     let occupantsHTML = "";
 
-                    for (const occupant of lotOccupancy.lotOccupancyOccupants) {
+                    for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
                         occupantsHTML +=
                             '<span class="has-tooltip-left" data-tooltip="' +
-                            cityssm.escapeHTML(occupant.lotOccupantType) +
+                            cityssm.escapeHTML(occupant.lotOccupantType || "") +
                             '">' +
-                            cityssm.escapeHTML(occupant.occupantName) +
+                            cityssm.escapeHTML(occupant.occupantName || "") +
                             "</span><br />";
                     }
 
@@ -108,7 +109,7 @@ declare const cityssm: cityssmGlobal;
                             ('<td class="has-width-1">' + occupancyTimeHTML + "</td>") +
                             ("<td>" +
                                 '<a class="has-text-weight-bold" href="' +
-                                urlPrefix +
+                                los.urlPrefix +
                                 "/lotOccupancies/" +
                                 lotOccupancy.lotOccupancyId +
                                 '">' +
@@ -118,9 +119,9 @@ declare const cityssm: cityssmGlobal;
                             ("<td>" +
                                 (lotOccupancy.lotName
                                     ? '<a class="has-tooltip-right" data-tooltip="' +
-                                      cityssm.escapeHTML(lotOccupancy.lotType) +
+                                      cityssm.escapeHTML(lotOccupancy.lotType || "") +
                                       '" href="' +
-                                      urlPrefix +
+                                      los.urlPrefix +
                                       "/lots/" +
                                       lotOccupancy.lotId +
                                       '">' +
@@ -144,7 +145,7 @@ declare const cityssm: cityssmGlobal;
                             (lotOccupancyPrints.length > 0
                                 ? "<td>" +
                                   '<a class="button is-small" data-tooltip="Print" href="' +
-                                  urlPrefix +
+                                  los.urlPrefix +
                                   "/print/" +
                                   lotOccupancyPrints[0] +
                                   "/?lotOccupancyId=" +
@@ -167,7 +168,9 @@ declare const cityssm: cityssmGlobal;
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupancyStartDate) + "</th>") +
                     "<th>End Date</th>" +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupants) + "</th>") +
-                    (lotOccupancyPrints.length > 0 ? '<th class="has-width-1"><span class="is-sr-only">Print</span></th>' : "") +
+                    (lotOccupancyPrints.length > 0
+                        ? '<th class="has-width-1"><span class="is-sr-only">Print</span></th>'
+                        : "") +
                     "</tr></thead>" +
                     "<table>" +
                     '<div class="level">' +
@@ -200,18 +203,22 @@ declare const cityssm: cityssmGlobal;
                         "</div>") +
                     "</div>";
 
-                searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
+                searchResultsContainerElement.querySelector("table")!.append(resultsTbodyElement);
 
                 if (offset > 0) {
-                    searchResultsContainerElement
-                        .querySelector("button[data-page='previous']")
-                        .addEventListener("click", previousAndGetLotOccupancies);
+                    (
+                        searchResultsContainerElement.querySelector(
+                            "button[data-page='previous']"
+                        ) as HTMLButtonElement
+                    ).addEventListener("click", previousAndGetLotOccupancies);
                 }
 
                 if (limit + offset < responseJSON.count) {
-                    searchResultsContainerElement
-                        .querySelector("button[data-page='next']")
-                        .addEventListener("click", nextAndGetLotOccupancies);
+                    (
+                        searchResultsContainerElement.querySelector(
+                            "button[data-page='next']"
+                        ) as HTMLButtonElement
+                    ).addEventListener("click", nextAndGetLotOccupancies);
                 }
             }
         );

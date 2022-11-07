@@ -1,13 +1,16 @@
 /* eslint-disable unicorn/prefer-module */
 
+import type * as globalTypes from "../types/globalTypes";
+
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
+
 import type { BulmaJS } from "@cityssm/bulma-js/types";
 
 declare const cityssm: cityssmGlobal;
 declare const bulmaJS: BulmaJS;
 
 (() => {
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const los = exports.los as globalTypes.LOS;
 
     const reopenWorkOrderButtonElement = document.querySelector(
         "#button--reopenWorkOrder"
@@ -15,30 +18,22 @@ declare const bulmaJS: BulmaJS;
 
     if (reopenWorkOrderButtonElement) {
         reopenWorkOrderButtonElement.addEventListener("click", () => {
-            const workOrderId =
-                reopenWorkOrderButtonElement.dataset.workOrderId;
+            const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId;
 
             const doReopen = () => {
                 cityssm.postJSON(
-                    urlPrefix + "/workOrders/doReopenWorkOrder",
+                    los.urlPrefix + "/workOrders/doReopenWorkOrder",
                     {
                         workOrderId
                     },
-                    (responseJSON: {
-                        success: boolean;
-                        errorMessage?: string;
-                    }) => {
+                    (responseJSON: { success: boolean; errorMessage?: string }) => {
                         if (responseJSON.success) {
                             window.location.href =
-                                urlPrefix +
-                                "/workOrders/" +
-                                workOrderId +
-                                "/edit/?t=" +
-                                Date.now();
+                                los.urlPrefix + "/workOrders/" + workOrderId + "/edit/?t=" + Date.now();
                         } else {
                             bulmaJS.alert({
                                 title: "Error Reopening Work Order",
-                                message: responseJSON.errorMessage,
+                                message: responseJSON.errorMessage || "",
                                 contextualColorName: "danger"
                             });
                         }

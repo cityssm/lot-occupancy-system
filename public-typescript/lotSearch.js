@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const los = exports.los;
     const searchFilterFormElement = document.querySelector("#form--searchFilters");
     const searchResultsContainerElement = document.querySelector("#container--searchResults");
     const limit = Number.parseInt(document.querySelector("#searchFilter--limit").value, 10);
@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 exports.aliases.lots +
                 "..." +
                 "</div>";
-        cityssm.postJSON(urlPrefix + "/lots/doSearchLots", searchFilterFormElement, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + "/lots/doSearchLots", searchFilterFormElement, (responseJSON) => {
             if (responseJSON.lots.length === 0) {
                 searchResultsContainerElement.innerHTML =
                     '<div class="message is-info">' +
@@ -30,16 +30,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 resultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
                     ("<td>" +
                         '<a class="has-text-weight-bold" href="' +
-                        urlPrefix +
+                        los.urlPrefix +
                         "/lots/" +
                         lot.lotId +
                         '">' +
-                        cityssm.escapeHTML(lot.lotName) +
+                        cityssm.escapeHTML(lot.lotName || "") +
                         "</a>" +
                         "</td>") +
                     ("<td>" +
                         '<a href="' +
-                        urlPrefix +
+                        los.urlPrefix +
                         "/maps/" +
                         lot.mapId +
                         '">' +
@@ -48,10 +48,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             : '<span class="has-text-grey">(No Name)</span>') +
                         "</a>" +
                         "</td>") +
-                    ("<td>" + cityssm.escapeHTML(lot.lotType) + "</td>") +
+                    ("<td>" + cityssm.escapeHTML(lot.lotType || "") + "</td>") +
                     ("<td>" +
                         (lot.lotStatusId
-                            ? cityssm.escapeHTML(lot.lotStatus)
+                            ? cityssm.escapeHTML(lot.lotStatus || "")
                             : '<span class="has-text-grey">(No Status)</span>') +
                         "<br />" +
                         (lot.lotOccupancyCount > 0
@@ -100,14 +100,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</div>";
             searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
             if (offset > 0) {
-                searchResultsContainerElement
-                    .querySelector("button[data-page='previous']")
-                    .addEventListener("click", previousAndGetLots);
+                searchResultsContainerElement.querySelector("button[data-page='previous']").addEventListener("click", previousAndGetLots);
             }
             if (limit + offset < responseJSON.count) {
-                searchResultsContainerElement
-                    .querySelector("button[data-page='next']")
-                    .addEventListener("click", nextAndGetLots);
+                searchResultsContainerElement.querySelector("button[data-page='next']").addEventListener("click", nextAndGetLots);
             }
         });
     };

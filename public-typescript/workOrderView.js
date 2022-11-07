@@ -1,27 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const los = exports.los;
     const reopenWorkOrderButtonElement = document.querySelector("#button--reopenWorkOrder");
     if (reopenWorkOrderButtonElement) {
         reopenWorkOrderButtonElement.addEventListener("click", () => {
             const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId;
             const doReopen = () => {
-                cityssm.postJSON(urlPrefix + "/workOrders/doReopenWorkOrder", {
+                cityssm.postJSON(los.urlPrefix + "/workOrders/doReopenWorkOrder", {
                     workOrderId
                 }, (responseJSON) => {
                     if (responseJSON.success) {
                         window.location.href =
-                            urlPrefix +
-                                "/workOrders/" +
-                                workOrderId +
-                                "/edit/?t=" +
-                                Date.now();
+                            los.urlPrefix + "/workOrders/" + workOrderId + "/edit/?t=" + Date.now();
                     }
                     else {
                         bulmaJS.alert({
                             title: "Error Reopening Work Order",
-                            message: responseJSON.errorMessage,
+                            message: responseJSON.errorMessage || "",
                             contextualColorName: "danger"
                         });
                     }

@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from "../types/globalTypes";
 import type * as recordTypes from "../types/recordTypes";
@@ -13,8 +13,6 @@ declare const bulmaJS: BulmaJS;
 (() => {
     const los = exports.los as globalTypes.LOS;
 
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
-
     const containerElement = document.querySelector("#container--lotTypes") as HTMLElement;
 
     let lotTypes: recordTypes.LotType[] = exports.lotTypes;
@@ -27,7 +25,7 @@ declare const bulmaJS: BulmaJS;
 
         const lotTypeElement = toggleButtonElement.closest(".container--lotType") as HTMLElement;
 
-        const lotTypeId = Number.parseInt(lotTypeElement.dataset.lotTypeId, 10);
+        const lotTypeId = Number.parseInt(lotTypeElement.dataset.lotTypeId!, 10);
 
         if (expandedLotTypes.has(lotTypeId)) {
             expandedLotTypes.delete(lotTypeId);
@@ -52,12 +50,12 @@ declare const bulmaJS: BulmaJS;
         lotTypes?: recordTypes.LotType[];
     }) => {
         if (responseJSON.success) {
-            lotTypes = responseJSON.lotTypes;
+            lotTypes = responseJSON.lotTypes!;
             renderLotTypes();
         } else {
             bulmaJS.alert({
                 title: "Error Updating " + exports.aliases.lot + " Type",
-                message: responseJSON.errorMessage,
+                message: responseJSON.errorMessage || "",
                 contextualColorName: "danger"
             });
         }
@@ -69,13 +67,13 @@ declare const bulmaJS: BulmaJS;
                 (clickEvent.currentTarget as HTMLElement).closest(
                     ".container--lotType"
                 ) as HTMLElement
-            ).dataset.lotTypeId,
+            ).dataset.lotTypeId!,
             10
         );
 
         const doDelete = () => {
             cityssm.postJSON(
-                urlPrefix + "/admin/doDeleteLotType",
+                los.urlPrefix + "/admin/doDeleteLotType",
                 {
                     lotTypeId
                 },
@@ -103,13 +101,13 @@ declare const bulmaJS: BulmaJS;
                 (clickEvent.currentTarget as HTMLElement).closest(
                     ".container--lotType"
                 ) as HTMLElement
-            ).dataset.lotTypeId,
+            ).dataset.lotTypeId!,
             10
         );
 
         const lotType = lotTypes.find((currentLotType) => {
             return lotTypeId === currentLotType.lotTypeId;
-        });
+        })!;
 
         let editCloseModalFunction: () => void;
 
@@ -117,7 +115,7 @@ declare const bulmaJS: BulmaJS;
             submitEvent.preventDefault();
 
             cityssm.postJSON(
-                urlPrefix + "/admin/doUpdateLotType",
+                los.urlPrefix + "/admin/doUpdateLotType",
                 submitEvent.currentTarget,
                 (responseJSON: {
                     success: boolean;
@@ -147,7 +145,7 @@ declare const bulmaJS: BulmaJS;
 
                 (modalElement.querySelector("#lotTypeEdit--lotType") as HTMLInputElement).focus();
 
-                modalElement.querySelector("form").addEventListener("submit", doEdit);
+                modalElement.querySelector("form")!.addEventListener("submit", doEdit);
 
                 bulmaJS.toggleHtmlClipped();
             },
@@ -163,7 +161,7 @@ declare const bulmaJS: BulmaJS;
                 (clickEvent.currentTarget as HTMLElement).closest(
                     ".container--lotType"
                 ) as HTMLElement
-            ).dataset.lotTypeId,
+            ).dataset.lotTypeId!,
             10
         );
 
@@ -173,7 +171,7 @@ declare const bulmaJS: BulmaJS;
             submitEvent.preventDefault();
 
             cityssm.postJSON(
-                urlPrefix + "/admin/doAddLotTypeField",
+                los.urlPrefix + "/admin/doAddLotTypeField",
                 submitEvent.currentTarget,
                 (responseJSON: {
                     success: boolean;
@@ -186,7 +184,7 @@ declare const bulmaJS: BulmaJS;
 
                     if (responseJSON.success) {
                         addCloseModalFunction();
-                        openEditLotTypeField(lotTypeId, responseJSON.lotTypeFieldId);
+                        openEditLotTypeField(lotTypeId, responseJSON.lotTypeFieldId!);
                     }
                 }
             );
@@ -211,7 +209,7 @@ declare const bulmaJS: BulmaJS;
                     modalElement.querySelector("#lotTypeFieldAdd--lotTypeField") as HTMLInputElement
                 ).focus();
 
-                modalElement.querySelector("form").addEventListener("submit", doAdd);
+                modalElement.querySelector("form")!.addEventListener("submit", doAdd);
 
                 bulmaJS.toggleHtmlClipped();
             },
@@ -229,7 +227,7 @@ declare const bulmaJS: BulmaJS;
         ).dataset.lotTypeId;
 
         cityssm.postJSON(
-            urlPrefix + "/admin/doMoveLotTypeUp",
+            los.urlPrefix + "/admin/doMoveLotTypeUp",
             {
                 lotTypeId,
                 moveToTop: clickEvent.shiftKey ? "1" : "0"
@@ -246,7 +244,7 @@ declare const bulmaJS: BulmaJS;
         ).dataset.lotTypeId;
 
         cityssm.postJSON(
-            urlPrefix + "/admin/doMoveLotTypeDown",
+            los.urlPrefix + "/admin/doMoveLotTypeDown",
             {
                 lotTypeId,
                 moveToBottom: clickEvent.shiftKey ? "1" : "0"
@@ -258,11 +256,11 @@ declare const bulmaJS: BulmaJS;
     const openEditLotTypeField = (lotTypeId: number, lotTypeFieldId: number) => {
         const lotType = lotTypes.find((currentLotType) => {
             return currentLotType.lotTypeId === lotTypeId;
-        });
+        })!;
 
-        const lotTypeField = lotType.lotTypeFields.find((currentLotTypeField) => {
+        const lotTypeField = lotType.lotTypeFields!.find((currentLotTypeField) => {
             return currentLotTypeField.lotTypeFieldId === lotTypeFieldId;
-        });
+        })!;
 
         let minimumLengthElement: HTMLInputElement;
         let maximumLengthElement: HTMLInputElement;
@@ -291,7 +289,7 @@ declare const bulmaJS: BulmaJS;
             submitEvent.preventDefault();
 
             cityssm.postJSON(
-                urlPrefix + "/admin/doUpdateLotTypeField",
+                los.urlPrefix + "/admin/doUpdateLotTypeField",
                 submitEvent.currentTarget,
                 (responseJSON: {
                     success: boolean;
@@ -309,7 +307,7 @@ declare const bulmaJS: BulmaJS;
         const doDelete = () => {
             const _doDelete = () => {
                 cityssm.postJSON(
-                    urlPrefix + "/admin/doDeleteLotTypeField",
+                    los.urlPrefix + "/admin/doDeleteLotTypeField",
                     {
                         lotTypeFieldId
                     },
@@ -346,13 +344,13 @@ declare const bulmaJS: BulmaJS;
                     modalElement.querySelector(
                         "#lotTypeFieldEdit--lotTypeFieldId"
                     ) as HTMLInputElement
-                ).value = lotTypeField.lotTypeFieldId.toString();
+                ).value = lotTypeField.lotTypeFieldId!.toString();
 
                 (
                     modalElement.querySelector(
                         "#lotTypeFieldEdit--lotTypeField"
                     ) as HTMLInputElement
-                ).value = lotTypeField.lotTypeField;
+                ).value = lotTypeField.lotTypeField!;
 
                 (
                     modalElement.querySelector("#lotTypeFieldEdit--isRequired") as HTMLSelectElement
@@ -360,25 +358,27 @@ declare const bulmaJS: BulmaJS;
 
                 minimumLengthElement = modalElement.querySelector(
                     "#lotTypeFieldEdit--minimumLength"
-                );
+                ) as HTMLInputElement;
 
-                minimumLengthElement.value = lotTypeField.minimumLength.toString();
+                minimumLengthElement.value = lotTypeField.minimumLength!.toString();
 
                 maximumLengthElement = modalElement.querySelector(
                     "#lotTypeFieldEdit--maximumLength"
-                );
+                ) as HTMLInputElement;
 
-                maximumLengthElement.value = lotTypeField.maximumLength.toString();
+                maximumLengthElement.value = lotTypeField.maximumLength!.toString();
 
-                patternElement = modalElement.querySelector("#lotTypeFieldEdit--pattern");
+                patternElement = modalElement.querySelector(
+                    "#lotTypeFieldEdit--pattern"
+                ) as HTMLInputElement;
 
-                patternElement.value = lotTypeField.pattern;
+                patternElement.value = lotTypeField.pattern!;
 
                 lotTypeFieldValuesElement = modalElement.querySelector(
                     "#lotTypeFieldEdit--lotTypeFieldValues"
-                );
+                ) as HTMLTextAreaElement;
 
-                lotTypeFieldValuesElement.value = lotTypeField.lotTypeFieldValues;
+                lotTypeFieldValuesElement.value = lotTypeField.lotTypeFieldValues!;
 
                 toggleInputFields();
             },
@@ -389,16 +389,16 @@ declare const bulmaJS: BulmaJS;
                 bulmaJS.toggleHtmlClipped();
                 cityssm.enableNavBlocker();
 
-                modalElement.querySelector("form").addEventListener("submit", doUpdate);
+                modalElement.querySelector("form")!.addEventListener("submit", doUpdate);
 
                 minimumLengthElement.addEventListener("keyup", updateMaximumLengthMin);
                 updateMaximumLengthMin();
 
                 lotTypeFieldValuesElement.addEventListener("keyup", toggleInputFields);
 
-                modalElement
-                    .querySelector("#button--deleteLotTypeField")
-                    .addEventListener("click", doDelete);
+                (
+                    modalElement.querySelector("#button--deleteLotTypeField") as HTMLButtonElement
+                ).addEventListener("click", doDelete);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
@@ -415,7 +415,7 @@ declare const bulmaJS: BulmaJS;
                 (clickEvent.currentTarget as HTMLElement).closest(
                     ".container--lotTypeField"
                 ) as HTMLElement
-            ).dataset.lotTypeFieldId,
+            ).dataset.lotTypeFieldId!,
             10
         );
 
@@ -424,7 +424,7 @@ declare const bulmaJS: BulmaJS;
                 (clickEvent.currentTarget as HTMLElement).closest(
                     ".container--lotType"
                 ) as HTMLElement
-            ).dataset.lotTypeId,
+            ).dataset.lotTypeId!,
             10
         );
 
@@ -441,7 +441,7 @@ declare const bulmaJS: BulmaJS;
         ).dataset.lotTypeFieldId;
 
         cityssm.postJSON(
-            urlPrefix + "/admin/doMoveLotTypeFieldUp",
+            los.urlPrefix + "/admin/doMoveLotTypeFieldUp",
             {
                 lotTypeFieldId,
                 moveToTop: clickEvent.shiftKey ? "1" : "0"
@@ -460,7 +460,7 @@ declare const bulmaJS: BulmaJS;
         ).dataset.lotTypeFieldId;
 
         cityssm.postJSON(
-            urlPrefix + "/admin/doMoveLotTypeFieldDown",
+            los.urlPrefix + "/admin/doMoveLotTypeFieldDown",
             {
                 lotTypeFieldId,
                 moveToBottom: clickEvent.shiftKey ? "1" : "0"
@@ -494,14 +494,14 @@ declare const bulmaJS: BulmaJS;
                     panelBlockElement.classList.add("is-hidden");
                 }
 
-                panelBlockElement.dataset.lotTypeFieldId = lotTypeField.lotTypeFieldId.toString();
+                panelBlockElement.dataset.lotTypeFieldId = lotTypeField.lotTypeFieldId!.toString();
 
                 panelBlockElement.innerHTML =
                     '<div class="level is-mobile">' +
                     '<div class="level-left">' +
                     ('<div class="level-item">' +
                         '<a class="has-text-weight-bold button--editLotTypeField" href="#">' +
-                        cityssm.escapeHTML(lotTypeField.lotTypeField) +
+                        cityssm.escapeHTML(lotTypeField.lotTypeField || "") +
                         "</a>" +
                         "</div>") +
                     "</div>" +
@@ -523,17 +523,23 @@ declare const bulmaJS: BulmaJS;
                     "</div>" +
                     "</div>";
 
-                panelBlockElement
-                    .querySelector(".button--editLotTypeField")
-                    .addEventListener("click", openEditLotTypeFieldByClick);
+                (
+                    panelBlockElement.querySelector(
+                        ".button--editLotTypeField"
+                    ) as HTMLButtonElement
+                ).addEventListener("click", openEditLotTypeFieldByClick);
 
-                panelBlockElement
-                    .querySelector(".button--moveLotTypeFieldUp")
-                    .addEventListener("click", moveLotTypeFieldUp);
+                (
+                    panelBlockElement.querySelector(
+                        ".button--moveLotTypeFieldUp"
+                    ) as HTMLButtonElement
+                ).addEventListener("click", moveLotTypeFieldUp);
 
-                panelBlockElement
-                    .querySelector(".button--moveLotTypeFieldDown")
-                    .addEventListener("click", moveLotTypeFieldDown);
+                (
+                    panelBlockElement.querySelector(
+                        ".button--moveLotTypeFieldDown"
+                    ) as HTMLButtonElement
+                ).addEventListener("click", moveLotTypeFieldDown);
 
                 panelElement.append(panelBlockElement);
             }
@@ -619,83 +625,88 @@ declare const bulmaJS: BulmaJS;
                 "</div>" +
                 "</div>";
 
-            renderLotTypeFields(lotTypeContainer, lotType.lotTypeId, lotType.lotTypeFields);
+            renderLotTypeFields(lotTypeContainer, lotType.lotTypeId, lotType.lotTypeFields!);
 
-            lotTypeContainer
-                .querySelector(".button--toggleLotTypeFields")
-                .addEventListener("click", toggleLotTypeFields);
+            (
+                lotTypeContainer.querySelector(".button--toggleLotTypeFields") as HTMLButtonElement
+            ).addEventListener("click", toggleLotTypeFields);
 
-            lotTypeContainer
-                .querySelector(".button--deleteLotType")
-                .addEventListener("click", deleteLotType);
+            (
+                lotTypeContainer.querySelector(".button--deleteLotType") as HTMLButtonElement
+            ).addEventListener("click", deleteLotType);
 
-            lotTypeContainer
-                .querySelector(".button--editLotType")
-                .addEventListener("click", openEditLotType);
+            (
+                lotTypeContainer.querySelector(".button--editLotType") as HTMLButtonElement
+            ).addEventListener("click", openEditLotType);
 
-            lotTypeContainer
-                .querySelector(".button--addLotTypeField")
-                .addEventListener("click", openAddLotTypeField);
+            (
+                lotTypeContainer.querySelector(".button--addLotTypeField") as HTMLButtonElement
+            ).addEventListener("click", openAddLotTypeField);
 
-            lotTypeContainer
-                .querySelector(".button--moveLotTypeUp")
-                .addEventListener("click", moveLotTypeUp);
+            (
+                lotTypeContainer.querySelector(".button--moveLotTypeUp") as HTMLButtonElement
+            ).addEventListener("click", moveLotTypeUp);
 
-            lotTypeContainer
-                .querySelector(".button--moveLotTypeDown")
-                .addEventListener("click", moveLotTypeDown);
+            (
+                lotTypeContainer.querySelector(".button--moveLotTypeDown") as HTMLButtonElement
+            ).addEventListener("click", moveLotTypeDown);
 
             containerElement.append(lotTypeContainer);
         }
     };
 
-    document.querySelector("#button--addLotType").addEventListener("click", () => {
-        let addCloseModalFunction: () => void;
+    (document.querySelector("#button--addLotType") as HTMLButtonElement).addEventListener(
+        "click",
+        () => {
+            let addCloseModalFunction: () => void;
 
-        const doAdd = (submitEvent: SubmitEvent) => {
-            submitEvent.preventDefault();
+            const doAdd = (submitEvent: SubmitEvent) => {
+                submitEvent.preventDefault();
 
-            cityssm.postJSON(
-                urlPrefix + "/admin/doAddLotType",
-                submitEvent.currentTarget,
-                (responseJSON: {
-                    success: boolean;
-                    errorMessage?: string;
-                    lotTypes?: recordTypes.LotType[];
-                }) => {
-                    if (responseJSON.success) {
-                        addCloseModalFunction();
-                        lotTypes = responseJSON.lotTypes;
-                        renderLotTypes();
-                    } else {
-                        bulmaJS.alert({
-                            title: "Error Adding " + exports.aliases.lot + " Type",
-                            message: responseJSON.errorMessage,
-                            contextualColorName: "danger"
-                        });
+                cityssm.postJSON(
+                    los.urlPrefix + "/admin/doAddLotType",
+                    submitEvent.currentTarget,
+                    (responseJSON: {
+                        success: boolean;
+                        errorMessage?: string;
+                        lotTypes?: recordTypes.LotType[];
+                    }) => {
+                        if (responseJSON.success) {
+                            addCloseModalFunction();
+                            lotTypes = responseJSON.lotTypes!;
+                            renderLotTypes();
+                        } else {
+                            bulmaJS.alert({
+                                title: "Error Adding " + exports.aliases.lot + " Type",
+                                message: responseJSON.errorMessage || "",
+                                contextualColorName: "danger"
+                            });
+                        }
                     }
+                );
+            };
+
+            cityssm.openHtmlModal("adminLotTypes-addLotType", {
+                onshow: (modalElement) => {
+                    los.populateAliases(modalElement);
+                },
+                onshown: (modalElement, closeModalFunction) => {
+                    addCloseModalFunction = closeModalFunction;
+
+                    (
+                        modalElement.querySelector("#lotTypeAdd--lotType") as HTMLInputElement
+                    ).focus();
+
+                    modalElement.querySelector("form")!.addEventListener("submit", doAdd);
+
+                    bulmaJS.toggleHtmlClipped();
+                },
+                onremoved: () => {
+                    bulmaJS.toggleHtmlClipped();
                 }
-            );
-        };
-
-        cityssm.openHtmlModal("adminLotTypes-addLotType", {
-            onshow: (modalElement) => {
-                los.populateAliases(modalElement);
-            },
-            onshown: (modalElement, closeModalFunction) => {
-                addCloseModalFunction = closeModalFunction;
-
-                (modalElement.querySelector("#lotTypeAdd--lotType") as HTMLInputElement).focus();
-
-                modalElement.querySelector("form").addEventListener("submit", doAdd);
-
-                bulmaJS.toggleHtmlClipped();
-            },
-            onremoved: () => {
-                bulmaJS.toggleHtmlClipped();
-            }
-        });
-    });
+            });
+        }
+    );
 
     renderLotTypes();
 })();

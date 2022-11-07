@@ -1,4 +1,7 @@
 export interface LOS {
+    urlPrefix: string;
+    apiKey: string;
+
     highlightMap: (
         mapContainerElement: HTMLElement,
         mapKey: string,

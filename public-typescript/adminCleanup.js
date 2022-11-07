@@ -1,20 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const los = exports.los;
     const doCleanup = () => {
-        cityssm.postJSON(urlPrefix + "/admin/doCleanupDatabase", {}, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + "/admin/doCleanupDatabase", {}, (responseJSON) => {
             if (responseJSON.success) {
                 bulmaJS.alert({
                     title: "Database Cleaned Up Successfully",
-                    message: responseJSON.inactivedRecordCount + " records inactivated, " + responseJSON.purgedRecordCount + " permanently deleted.",
+                    message: responseJSON.inactivedRecordCount +
+                        " records inactivated, " +
+                        responseJSON.purgedRecordCount +
+                        " permanently deleted.",
                     contextualColorName: "success"
                 });
             }
             else {
                 bulmaJS.alert({
                     title: "Error Cleaning Database",
-                    message: responseJSON.errorMessage,
+                    message: responseJSON.errorMessage || "",
                     contextualColorName: "danger"
                 });
             }

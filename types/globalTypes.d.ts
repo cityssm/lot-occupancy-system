@@ -1,4 +1,6 @@
 export interface LOS {
+    urlPrefix: string;
+    apiKey: string;
     highlightMap: (mapContainerElement: HTMLElement, mapKey: string, contextualClass: "success" | "danger") => void;
     initializeDatePickers: (containerElement: HTMLElement) => void;
     initializeTimePickers: (containerElement: HTMLElement) => void;

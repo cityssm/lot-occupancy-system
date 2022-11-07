@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as recordTypes from "../types/recordTypes";
 import type * as globalTypes from "../types/globalTypes";
@@ -8,8 +8,6 @@ declare const cityssm: cityssmGlobal;
 
 (() => {
     const los = exports.los as globalTypes.LOS;
-
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
     const workOrderPrints: string[] = exports.workOrderPrints;
 
@@ -40,7 +38,7 @@ declare const cityssm: cityssmGlobal;
             "</div>";
 
         cityssm.postJSON(
-            urlPrefix + "/workOrders/doSearchWorkOrders",
+            los.urlPrefix + "/workOrders/doSearchWorkOrders",
             searchFilterFormElement,
             (responseJSON: { count: number; workOrders: recordTypes.WorkOrder[] }) => {
                 if (responseJSON.workOrders.length === 0) {
@@ -57,10 +55,10 @@ declare const cityssm: cityssmGlobal;
                 for (const workOrder of responseJSON.workOrders) {
                     let relatedHTML = "";
 
-                    for (const lot of workOrder.workOrderLots) {
+                    for (const lot of workOrder.workOrderLots!) {
                         relatedHTML +=
                             '<span class="has-tooltip-left" data-tooltip="' +
-                            cityssm.escapeHTML(lot.mapName) +
+                            cityssm.escapeHTML(lot.mapName || "") +
                             '">' +
                             '<i class="fas fa-vector-square" aria-label="' +
                             cityssm.escapeHTML(exports.aliases.lot) +
@@ -69,11 +67,11 @@ declare const cityssm: cityssmGlobal;
                             "</span><br />";
                     }
 
-                    for (const occupancy of workOrder.workOrderLotOccupancies) {
-                        for (const occupant of occupancy.lotOccupancyOccupants) {
+                    for (const occupancy of workOrder.workOrderLotOccupancies!) {
+                        for (const occupant of occupancy.lotOccupancyOccupants!) {
                             relatedHTML +=
                                 '<span class="has-tooltip-left" data-tooltip="' +
-                                cityssm.escapeHTML(occupant.lotOccupantType) +
+                                cityssm.escapeHTML(occupant.lotOccupantType || "") +
                                 '">' +
                                 '<i class="fas fa-user" aria-label="' +
                                 cityssm.escapeHTML(exports.aliases.occupant) +
@@ -88,20 +86,20 @@ declare const cityssm: cityssmGlobal;
                         "<tr>" +
                             ("<td>" +
                                 '<a class="has-text-weight-bold" href="' +
-                                urlPrefix +
+                                los.urlPrefix +
                                 "/workOrders/" +
                                 workOrder.workOrderId +
                                 '">' +
-                                (workOrder.workOrderNumber.trim()
-                                    ? cityssm.escapeHTML(workOrder.workOrderNumber)
+                                (workOrder.workOrderNumber!.trim()
+                                    ? cityssm.escapeHTML(workOrder.workOrderNumber || "")
                                     : "(No Number)") +
                                 "</a>" +
                                 "</td>") +
                             ("<td>" +
-                                cityssm.escapeHTML(workOrder.workOrderType) +
+                                cityssm.escapeHTML(workOrder.workOrderType || "") +
                                 "<br />" +
                                 '<span class="is-size-7">' +
-                                cityssm.escapeHTML(workOrder.workOrderDescription) +
+                                cityssm.escapeHTML(workOrder.workOrderDescription || "") +
                                 "</span>" +
                                 "</td>") +
                             ('<td class="is-nowrap"><span class="is-size-7">' +
@@ -129,7 +127,7 @@ declare const cityssm: cityssmGlobal;
                             (workOrderPrints.length > 0
                                 ? "<td>" +
                                   '<a class="button is-small" data-tooltip="Print" href="' +
-                                  urlPrefix +
+                                  los.urlPrefix +
                                   "/print/" +
                                   workOrderPrints[0] +
                                   "/?workOrderId=" +

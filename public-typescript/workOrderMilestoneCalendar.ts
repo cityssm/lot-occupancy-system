@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as recordTypes from "../types/recordTypes";
 import type * as globalTypes from "../types/globalTypes";
@@ -8,8 +8,6 @@ declare const cityssm: cityssmGlobal;
 
 (() => {
     const los = exports.los as globalTypes.LOS;
-
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
     const workOrderSearchFiltersFormElement = document.querySelector(
         "#form--searchFilters"
@@ -40,7 +38,7 @@ declare const cityssm: cityssmGlobal;
 
         const currentDate = cityssm.dateToString(new Date());
 
-        let currentPanelElement: HTMLElement;
+        let currentPanelElement: HTMLElement | undefined;
         let currentPanelDateString = "";
 
         for (const milestone of workOrderMilestones) {
@@ -55,7 +53,7 @@ declare const cityssm: cityssmGlobal;
                 currentPanelElement.innerHTML =
                     '<h2 class="panel-heading">' + milestone.workOrderMilestoneDateString + "</h2>";
 
-                currentPanelDateString = milestone.workOrderMilestoneDateString;
+                currentPanelDateString = milestone.workOrderMilestoneDateString!;
             }
 
             const panelBlockElement = document.createElement("div");
@@ -64,36 +62,36 @@ declare const cityssm: cityssmGlobal;
 
             if (
                 !milestone.workOrderMilestoneCompletionDate &&
-                milestone.workOrderMilestoneDateString < currentDate
+                milestone.workOrderMilestoneDateString! < currentDate
             ) {
                 panelBlockElement.classList.add("has-background-warning-light");
             }
 
             let lotOccupancyHTML = "";
 
-            for (const lot of milestone.workOrderLots) {
+            for (const lot of milestone.workOrderLots!) {
                 lotOccupancyHTML +=
                     '<span class="has-tooltip-left" data-tooltip="' +
-                    cityssm.escapeHTML(lot.mapName) +
+                    cityssm.escapeHTML(lot.mapName || "") +
                     '">' +
                     '<i class="fas fa-vector-square" aria-label="' +
                     cityssm.escapeHTML(exports.aliases.lot) +
                     '"></i> ' +
-                    cityssm.escapeHTML(lot.lotName) +
+                    cityssm.escapeHTML(lot.lotName || "") +
                     "</span>" +
                     "<br />";
             }
 
-            for (const lotOccupancy of milestone.workOrderLotOccupancies) {
-                for (const occupant of lotOccupancy.lotOccupancyOccupants) {
+            for (const lotOccupancy of milestone.workOrderLotOccupancies!) {
+                for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
                     lotOccupancyHTML +=
                         '<span class="has-tooltip-left" data-tooltip="' +
-                        cityssm.escapeHTML(occupant.lotOccupantType) +
+                        cityssm.escapeHTML(occupant.lotOccupantType || "") +
                         '">' +
                         '<i class="fas fa-user" aria-label="' +
                         cityssm.escapeHTML(exports.aliases.lotOccupancy) +
                         '"></i> ' +
-                        cityssm.escapeHTML(occupant.occupantName) +
+                        cityssm.escapeHTML(occupant.occupantName || "") +
                         "</span>" +
                         "<br />";
                 }
@@ -114,35 +112,35 @@ declare const cityssm: cityssmGlobal;
                         : milestone.workOrderMilestoneTimeString + "<br />") +
                     (milestone.workOrderMilestoneTypeId
                         ? "<strong>" +
-                          cityssm.escapeHTML(milestone.workOrderMilestoneType) +
+                          cityssm.escapeHTML(milestone.workOrderMilestoneType!) +
                           "</strong><br />"
                         : "") +
                     '<span class="is-size-7">' +
-                    cityssm.escapeHTML(milestone.workOrderMilestoneDescription) +
+                    cityssm.escapeHTML(milestone.workOrderMilestoneDescription!) +
                     "</span>" +
                     "</div>") +
                 ('<div class="column">' +
                     '<i class="fas fa-circle" style="color:' +
-                    los.getRandomColor(milestone.workOrderNumber) +
+                    los.getRandomColor(milestone.workOrderNumber || "") +
                     '" aria-hidden="true"></i>' +
                     ' <a class="has-text-weight-bold" href="' +
-                    urlPrefix +
+                    los.urlPrefix +
                     "/workOrders/" +
                     milestone.workOrderId +
                     '">' +
-                    cityssm.escapeHTML(milestone.workOrderNumber) +
+                    cityssm.escapeHTML(milestone.workOrderNumber || "") +
                     "</a><br />" +
                     '<span class="is-size-7">' +
-                    cityssm.escapeHTML(milestone.workOrderDescription) +
+                    cityssm.escapeHTML(milestone.workOrderDescription || "") +
                     "</span>" +
                     "</div>") +
                 ('<div class="column is-size-7">' + lotOccupancyHTML + "</div>") +
                 "</div>";
 
-            currentPanelElement.append(panelBlockElement);
+            (currentPanelElement as HTMLElement).append(panelBlockElement);
         }
 
-        milestoneCalendarContainerElement.append(currentPanelElement);
+        milestoneCalendarContainerElement.append(currentPanelElement!);
     };
 
     const getMilestones = (event?: Event) => {
@@ -157,7 +155,7 @@ declare const cityssm: cityssmGlobal;
             "</div>";
 
         cityssm.postJSON(
-            urlPrefix + "/workOrders/doGetWorkOrderMilestones",
+            los.urlPrefix + "/workOrders/doGetWorkOrderMilestones",
             workOrderSearchFiltersFormElement,
             (responseJSON: { workOrderMilestones: recordTypes.WorkOrderMilestone[] }) => {
                 renderMilestones(responseJSON.workOrderMilestones);
@@ -166,7 +164,7 @@ declare const cityssm: cityssmGlobal;
     };
 
     workOrderMilestoneDateFilterElement.addEventListener("change", () => {
-        workOrderMilestoneDateStringElement.closest("fieldset").disabled =
+        workOrderMilestoneDateStringElement.closest("fieldset")!.disabled =
             workOrderMilestoneDateFilterElement.value !== "date";
         getMilestones();
     });
