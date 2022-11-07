@@ -409,7 +409,7 @@
     <% } %>    
     
     <% if (configFunctions.getProperty("settings.lot.lotNameHelpText")) { %>
-        exports.lotNameHelpText = "<%= configFunctions.getProperty("settings.lot.lotNameHelpText") %>";
+        exports.lotNameHelpText = `<%= configFunctions.getProperty("settings.lot.lotNameHelpText") %>`;
     <% } %>
 
     exports.lotTypes = <%- JSON.stringify(lotTypes) %>;
