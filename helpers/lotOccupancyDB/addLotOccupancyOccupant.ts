@@ -19,9 +19,10 @@ interface AddLotOccupancyOccupantForm {
 
 export const addLotOccupancyOccupant = (
     lotOccupancyOccupantForm: AddLotOccupancyOccupantForm,
-    requestSession: recordTypes.PartialSession
+    requestSession: recordTypes.PartialSession,
+    connectedDatabase?: sqlite.Database
 ): number => {
-    const database = sqlite(databasePath);
+    const database = connectedDatabase || sqlite(databasePath);
 
     let lotOccupantIndex = 0;
 
@@ -72,7 +73,9 @@ export const addLotOccupancyOccupant = (
             rightNowMillis
         );
 
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
 
     return lotOccupantIndex;
 };

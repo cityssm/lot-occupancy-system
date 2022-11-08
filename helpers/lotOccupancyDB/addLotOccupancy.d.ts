@@ -1,3 +1,4 @@
+import sqlite from "better-sqlite3";
 import type * as recordTypes from "../../types/recordTypes";
 interface AddLotOccupancyForm {
     occupancyTypeId: string | number;
@@ -7,5 +8,5 @@ interface AddLotOccupancyForm {
     occupancyTypeFieldIds?: string;
     [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown;
 }
-export declare const addLotOccupancy: (lotOccupancyForm: AddLotOccupancyForm, requestSession: recordTypes.PartialSession) => number;
+export declare const addLotOccupancy: (lotOccupancyForm: AddLotOccupancyForm, requestSession: recordTypes.PartialSession, connectedDatabase?: sqlite.Database) => number;
 export default addLotOccupancy;

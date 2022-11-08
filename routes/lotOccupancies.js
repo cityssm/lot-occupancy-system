@@ -7,6 +7,7 @@ import handler_doGetOccupancyTypeFields from "../handlers/lotOccupancies-post/do
 import handler_doCreateLotOccupancy from "../handlers/lotOccupancies-post/doCreateLotOccupancy.js";
 import handler_edit from "../handlers/lotOccupancies-get/edit.js";
 import handler_doUpdateLotOccupancy from "../handlers/lotOccupancies-post/doUpdateLotOccupancy.js";
+import handler_doCopyLotOccupancy from "../handlers/lotOccupancies-post/doCopyLotOccupancy.js";
 import handler_doDeleteLotOccupancy from "../handlers/lotOccupancies-post/doDeleteLotOccupancy.js";
 import handler_doSearchPastOccupants from "../handlers/lotOccupancies-post/doSearchPastOccupants.js";
 import handler_doAddLotOccupancyOccupant from "../handlers/lotOccupancies-post/doAddLotOccupancyOccupant.js";
@@ -30,6 +31,7 @@ router.post("/doCreateLotOccupancy", permissionHandlers.updatePostHandler, handl
 router.get("/:lotOccupancyId", handler_view);
 router.get("/:lotOccupancyId/edit", permissionHandlers.updateGetHandler, handler_edit);
 router.post("/doUpdateLotOccupancy", permissionHandlers.updatePostHandler, handler_doUpdateLotOccupancy);
+router.post("/doCopyLotOccupancy", permissionHandlers.updatePostHandler, handler_doCopyLotOccupancy);
 router.post("/doDeleteLotOccupancy", permissionHandlers.updatePostHandler, handler_doDeleteLotOccupancy);
 router.post("/doSearchPastOccupants", permissionHandlers.updatePostHandler, handler_doSearchPastOccupants);
 router.post("/doAddLotOccupancyOccupant", permissionHandlers.updatePostHandler, handler_doAddLotOccupancyOccupant);

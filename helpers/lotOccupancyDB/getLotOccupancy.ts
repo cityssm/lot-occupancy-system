@@ -17,11 +17,14 @@ import { getLotOccupancyTransactions } from "./getLotOccupancyTransactions.js";
 import type * as recordTypes from "../../types/recordTypes";
 
 export const getLotOccupancy = (
-    lotOccupancyId: number | string
+    lotOccupancyId: number | string,
+    connectedDatabase?: sqlite.Database
 ): recordTypes.LotOccupancy => {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+    const database =
+        connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
 
     database.function("userFn_dateIntegerToString", dateIntegerToString);
 
@@ -44,29 +47,19 @@ export const getLotOccupancy = (
         .get(lotOccupancyId);
 
     if (lotOccupancy) {
-        lotOccupancy.lotOccupancyFields = getLotOccupancyFields(
-            lotOccupancyId,
-            database
-        );
-        lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(
-            lotOccupancyId,
-            database
-        );
-        lotOccupancy.lotOccupancyComments = getLotOccupancyComments(
-            lotOccupancyId,
-            database
-        );
-        lotOccupancy.lotOccupancyFees = getLotOccupancyFees(
-            lotOccupancyId,
-            database
-        );
+        lotOccupancy.lotOccupancyFields = getLotOccupancyFields(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyComments = getLotOccupancyComments(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyFees = getLotOccupancyFees(lotOccupancyId, database);
         lotOccupancy.lotOccupancyTransactions = getLotOccupancyTransactions(
             lotOccupancyId,
             database
         );
     }
 
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
 
     return lotOccupancy;
 };

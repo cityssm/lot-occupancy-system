@@ -6,10 +6,11 @@ import { getLotOccupancyComments } from "./getLotOccupancyComments.js";
 import { getLotOccupancyFields } from "./getLotOccupancyFields.js";
 import { getLotOccupancyFees } from "./getLotOccupancyFees.js";
 import { getLotOccupancyTransactions } from "./getLotOccupancyTransactions.js";
-export const getLotOccupancy = (lotOccupancyId) => {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+export const getLotOccupancy = (lotOccupancyId, connectedDatabase) => {
+    const database = connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
     database.function("userFn_dateIntegerToString", dateIntegerToString);
     const lotOccupancy = database
         .prepare("select o.lotOccupancyId," +
@@ -33,7 +34,9 @@ export const getLotOccupancy = (lotOccupancyId) => {
         lotOccupancy.lotOccupancyFees = getLotOccupancyFees(lotOccupancyId, database);
         lotOccupancy.lotOccupancyTransactions = getLotOccupancyTransactions(lotOccupancyId, database);
     }
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
     return lotOccupancy;
 };
 export default getLotOccupancy;

@@ -53,6 +53,49 @@ Object.defineProperty(exports, "__esModule", { value: true });
         formInputElement.addEventListener("change", setUnsavedChanges);
     }
     if (!isCreate) {
+        const doCopy = () => {
+            cityssm.postJSON(los.urlPrefix + "/lotOccupancies/doCopyLotOccupancy", {
+                lotOccupancyId
+            }, (responseJSON) => {
+                var _a;
+                if (responseJSON.success) {
+                    cityssm.disableNavBlocker();
+                    window.location.href =
+                        los.urlPrefix +
+                            "/lotOccupancies/" +
+                            ((_a = responseJSON.lotOccupancyId) === null || _a === void 0 ? void 0 : _a.toString()) +
+                            "/edit";
+                }
+                else {
+                    bulmaJS.alert({
+                        title: "Error Copying Record",
+                        message: responseJSON.errorMessage || "",
+                        contextualColorName: "danger"
+                    });
+                }
+            });
+        };
+        document.querySelector("#button--copyLotOccupancy").addEventListener("click", (clickEvent) => {
+            clickEvent.preventDefault();
+            if (hasUnsavedChanges) {
+                bulmaJS.alert({
+                    title: "Unsaved Changes",
+                    message: "Please save all unsaved changes before continuing.",
+                    contextualColorName: "warning"
+                });
+            }
+            else {
+                bulmaJS.confirm({
+                    title: "Copy " + exports.aliases.occupancy + " Record as New",
+                    message: "Are you sure you want to copy this record to a new record?",
+                    contextualColorName: "info",
+                    okButton: {
+                        text: "Yes, Copy",
+                        callbackFunction: doCopy
+                    }
+                });
+            }
+        });
         document.querySelector("#button--deleteLotOccupancy").addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
             const doDelete = () => {
@@ -1104,7 +1147,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 cityssm.escapeHTML(fee.feeName || "") +
                                 "</strong><br />" +
                                 "<small>" +
-                                cityssm.escapeHTML(fee.feeDescription || "").replace(/\n/g, "<br />") +
+                                cityssm
+                                    .escapeHTML(fee.feeDescription || "")
+                                    .replace(/\n/g, "<br />") +
                                 "</small>";
                         panelBlockElement.addEventListener("click", tryAddFee);
                         categoryContainerElement.querySelector(".panel").append(panelBlockElement);

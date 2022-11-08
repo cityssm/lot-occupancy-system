@@ -86,8 +86,64 @@ declare const bulmaJS: BulmaJS;
     }
 
     if (!isCreate) {
+        
+        const doCopy = () => {
+            cityssm.postJSON(
+                los.urlPrefix + "/lotOccupancies/doCopyLotOccupancy",
+                {
+                    lotOccupancyId
+                },
+                (responseJSON: {
+                    success: boolean;
+                    errorMessage?: string;
+                    lotOccupancyId?: number;
+                }) => {
+                    if (responseJSON.success) {
+                        cityssm.disableNavBlocker();
+                        window.location.href =
+                            los.urlPrefix +
+                            "/lotOccupancies/" +
+                            responseJSON.lotOccupancyId?.toString() +
+                            "/edit";
+                    } else {
+                        bulmaJS.alert({
+                            title: "Error Copying Record",
+                            message: responseJSON.errorMessage || "",
+                            contextualColorName: "danger"
+                        });
+                    }
+                }
+            );
+        };
+
+        (document.querySelector("#button--copyLotOccupancy") as HTMLAnchorElement).addEventListener(
+            "click",
+            (clickEvent) => {
+                clickEvent.preventDefault();
+
+
+                if (hasUnsavedChanges) {
+                    bulmaJS.alert({
+                        title: "Unsaved Changes",
+                        message: "Please save all unsaved changes before continuing.",
+                        contextualColorName: "warning"
+                    });
+                } else {
+                    bulmaJS.confirm({
+                        title: "Copy " + exports.aliases.occupancy + " Record as New",
+                        message: "Are you sure you want to copy this record to a new record?",
+                        contextualColorName: "info",
+                        okButton: {
+                            text: "Yes, Copy",
+                            callbackFunction: doCopy
+                        }
+                    });
+                }
+            }
+        );
+
         (
-            document.querySelector("#button--deleteLotOccupancy") as HTMLButtonElement
+            document.querySelector("#button--deleteLotOccupancy") as HTMLAnchorElement
         ).addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
 
@@ -1717,7 +1773,9 @@ declare const bulmaJS: BulmaJS;
                                 cityssm.escapeHTML(fee.feeName || "") +
                                 "</strong><br />" +
                                 "<small>" +
-                                cityssm.escapeHTML(fee.feeDescription || "").replace(/\n/g, "<br />") +
+                                cityssm
+                                    .escapeHTML(fee.feeDescription || "")
+                                    .replace(/\n/g, "<br />") +
                                 "</small>";
 
                             panelBlockElement.addEventListener("click", tryAddFee);

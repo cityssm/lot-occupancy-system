@@ -21,9 +21,10 @@ interface AddLotOccupancyForm {
 
 export const addLotOccupancy = (
     lotOccupancyForm: AddLotOccupancyForm,
-    requestSession: recordTypes.PartialSession
+    requestSession: recordTypes.PartialSession,
+    connectedDatabase?: sqlite.Database
 ): number => {
-    const database = sqlite(databasePath);
+    const database = connectedDatabase || sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
@@ -50,9 +51,7 @@ export const addLotOccupancy = (
             occupancyStartDate,
             lotOccupancyForm.occupancyEndDateString === ""
                 ? undefined
-                : dateTimeFunctions.dateStringToInteger(
-                      lotOccupancyForm.occupancyEndDateString
-                  ),
+                : dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyEndDateString),
             requestSession.user.userName,
             rightNowMillis,
             requestSession.user.userName,
@@ -61,9 +60,7 @@ export const addLotOccupancy = (
 
     const lotOccupancyId = result.lastInsertRowid as number;
 
-    const occupancyTypeFieldIds = (
-        lotOccupancyForm.occupancyTypeFieldIds || ""
-    ).split(",");
+    const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds || "").split(",");
 
     for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
         const lotOccupancyFieldValue = lotOccupancyForm[
@@ -83,7 +80,9 @@ export const addLotOccupancy = (
         }
     }
 
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
 
     return lotOccupancyId;
 };

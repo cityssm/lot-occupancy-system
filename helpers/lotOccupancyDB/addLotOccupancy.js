@@ -2,8 +2,8 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { addOrUpdateLotOccupancyField } from "./addOrUpdateLotOccupancyField.js";
-export const addLotOccupancy = (lotOccupancyForm, requestSession) => {
-    const database = sqlite(databasePath);
+export const addLotOccupancy = (lotOccupancyForm, requestSession, connectedDatabase) => {
+    const database = connectedDatabase || sqlite(databasePath);
     const rightNowMillis = Date.now();
     const occupancyStartDate = dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyStartDateString);
     if (occupancyStartDate <= 0) {
@@ -31,7 +31,9 @@ export const addLotOccupancy = (lotOccupancyForm, requestSession) => {
             }, requestSession, database);
         }
     }
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
     return lotOccupancyId;
 };
 export default addLotOccupancy;
