@@ -182,17 +182,17 @@ declare const cityssm: cityssmGlobal;
                         "</div>") +
                     "</div>";
 
-                searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
+                searchResultsContainerElement.querySelector("table")!.append(resultsTbodyElement);
 
                 if (offset > 0) {
-                    searchResultsContainerElement
-                        .querySelector("button[data-page='previous']")
+                    (searchResultsContainerElement
+                        .querySelector("button[data-page='previous']") as HTMLButtonElement)
                         .addEventListener("click", previousAndGetWorkOrders);
                 }
 
                 if (limit + offset < responseJSON.count) {
-                    searchResultsContainerElement
-                        .querySelector("button[data-page='next']")
+                    (searchResultsContainerElement
+                        .querySelector("button[data-page='next']") as HTMLButtonElement)
                         .addEventListener("click", nextAndGetWorkOrders);
                 }
             }
