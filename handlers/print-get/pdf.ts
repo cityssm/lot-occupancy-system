@@ -17,6 +17,16 @@ const attachmentOrInline = configFunctions.getProperty("settings.printPdf.conten
 export const handler: RequestHandler = async (request, response, next) => {
     const printName = request.params.printName;
 
+    if (
+        !configFunctions.getProperty("settings.lotOccupancy.prints").includes("pdf/" + printName) &&
+        !configFunctions.getProperty("settings.workOrders.prints").includes("pdf/" + printName)
+    ) {
+        return response.redirect(
+            configFunctions.getProperty("reverseProxy.urlPrefix") +
+                "/dashboard/?error=printConfigNotAllowed"
+        );
+    }
+
     const printConfig = getPdfPrintConfig(printName);
 
     if (!printConfig) {

@@ -7,8 +7,8 @@ export const handler: RequestHandler = (request, response) => {
     const printName = request.params.printName;
 
     if (
-        !configFunctions.getProperty("settings.lotOccupancy.prints").includes(printName) &&
-        !configFunctions.getProperty("settings.workOrders.prints").includes(printName)
+        !configFunctions.getProperty("settings.lotOccupancy.prints").includes("screen/" + printName) &&
+        !configFunctions.getProperty("settings.workOrders.prints").includes("screen/" + printName)
     ) {
         return response.redirect(
             configFunctions.getProperty("reverseProxy.urlPrefix") +

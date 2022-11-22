@@ -2,8 +2,8 @@ import * as configFunctions from "../../helpers/functions.config.js";
 import { getReportData, getScreenPrintConfig } from "../../helpers/functions.print.js";
 export const handler = (request, response) => {
     const printName = request.params.printName;
-    if (!configFunctions.getProperty("settings.lotOccupancy.prints").includes(printName) &&
-        !configFunctions.getProperty("settings.workOrders.prints").includes(printName)) {
+    if (!configFunctions.getProperty("settings.lotOccupancy.prints").includes("screen/" + printName) &&
+        !configFunctions.getProperty("settings.workOrders.prints").includes("screen/" + printName)) {
         return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") +
             "/dashboard/?error=printConfigNotAllowed");
     }
