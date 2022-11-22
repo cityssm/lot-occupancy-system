@@ -281,7 +281,7 @@ function importFromMasterCSV() {
             }
             let preneedOccupancyStartDateString;
             let preneedLotOccupancyId;
-            if (masterRow.CM_PRENEED_ORDER || masterRow.CM_STATUS === "P") {
+            if (masterRow.CM_PRENEED_OWNER || masterRow.CM_STATUS === "P") {
                 preneedOccupancyStartDateString = formatDateString(masterRow.CM_PURCHASE_YR, masterRow.CM_PURCHASE_MON, masterRow.CM_PURCHASE_DAY);
                 let occupancyEndDateString = "";
                 if (masterRow.CM_INTERMENT_YR !== "" && masterRow.CM_INTERMENT_YR !== "0") {
@@ -474,20 +474,20 @@ function importFromMasterCSV() {
                     }, user);
                 }
                 updateLotStatus(lotId, takenLotStatus.lotStatusId, user);
-            }
-            if (masterRow.CM_PRENEED_OWNER) {
-                addLotOccupancyOccupant({
-                    lotOccupancyId: deceasedLotOccupancyId,
-                    lotOccupantTypeId: preneedOwnerLotOccupantType.lotOccupantTypeId,
-                    occupantName: masterRow.CM_PRENEED_OWNER,
-                    occupantAddress1: "",
-                    occupantAddress2: "",
-                    occupantCity: "",
-                    occupantProvince: "",
-                    occupantPostalCode: "",
-                    occupantPhoneNumber: "",
-                    occupantEmailAddress: ""
-                }, user);
+                if (masterRow.CM_PRENEED_OWNER) {
+                    addLotOccupancyOccupant({
+                        lotOccupancyId: deceasedLotOccupancyId,
+                        lotOccupantTypeId: preneedOwnerLotOccupantType.lotOccupantTypeId,
+                        occupantName: masterRow.CM_PRENEED_OWNER,
+                        occupantAddress1: "",
+                        occupantAddress2: "",
+                        occupantCity: "",
+                        occupantProvince: "",
+                        occupantPostalCode: "",
+                        occupantPhoneNumber: "",
+                        occupantEmailAddress: ""
+                    }, user);
+                }
             }
         }
     }

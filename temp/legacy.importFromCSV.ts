@@ -540,7 +540,7 @@ function importFromMasterCSV() {
             let preneedOccupancyStartDateString: string;
             let preneedLotOccupancyId: number;
 
-            if (masterRow.CM_PRENEED_ORDER || masterRow.CM_STATUS === "P") {
+            if (masterRow.CM_PRENEED_OWNER || masterRow.CM_STATUS === "P") {
                 preneedOccupancyStartDateString = formatDateString(
                     masterRow.CM_PURCHASE_YR,
                     masterRow.CM_PURCHASE_MON,
@@ -890,24 +890,24 @@ function importFromMasterCSV() {
                 }
 
                 updateLotStatus(lotId, takenLotStatus.lotStatusId, user);
-            }
 
-            if (masterRow.CM_PRENEED_OWNER) {
-                addLotOccupancyOccupant(
-                    {
-                        lotOccupancyId: deceasedLotOccupancyId,
-                        lotOccupantTypeId: preneedOwnerLotOccupantType.lotOccupantTypeId,
-                        occupantName: masterRow.CM_PRENEED_OWNER,
-                        occupantAddress1: "",
-                        occupantAddress2: "",
-                        occupantCity: "",
-                        occupantProvince: "",
-                        occupantPostalCode: "",
-                        occupantPhoneNumber: "",
-                        occupantEmailAddress: ""
-                    },
-                    user
-                );
+                if (masterRow.CM_PRENEED_OWNER) {
+                    addLotOccupancyOccupant(
+                        {
+                            lotOccupancyId: deceasedLotOccupancyId,
+                            lotOccupantTypeId: preneedOwnerLotOccupantType.lotOccupantTypeId,
+                            occupantName: masterRow.CM_PRENEED_OWNER,
+                            occupantAddress1: "",
+                            occupantAddress2: "",
+                            occupantCity: "",
+                            occupantProvince: "",
+                            occupantPostalCode: "",
+                            occupantPhoneNumber: "",
+                            occupantEmailAddress: ""
+                        },
+                        user
+                    );
+                }
             }
         }
     } catch (error) {
