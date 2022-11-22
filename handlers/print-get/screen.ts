@@ -6,6 +6,16 @@ import { getReportData, getScreenPrintConfig } from "../../helpers/functions.pri
 export const handler: RequestHandler = (request, response) => {
     const printName = request.params.printName;
 
+    if (
+        !configFunctions.getProperty("settings.lotOccupancy.prints").includes(printName) &&
+        !configFunctions.getProperty("settings.workOrders.prints").includes(printName)
+    ) {
+        return response.redirect(
+            configFunctions.getProperty("reverseProxy.urlPrefix") +
+                "/dashboard/?error=printConfigNotAllowed"
+        );
+    }
+
     const printConfig = getScreenPrintConfig(printName);
 
     if (!printConfig) {
