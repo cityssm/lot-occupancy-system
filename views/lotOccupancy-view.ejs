@@ -70,7 +70,7 @@
 
 <% if (user.userProperties.canUpdate) { %>
 <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-    <a class="button is-circle is-primary has-tooltip-left"
+    <a class="button is-circle has-tooltip-left <%= (lotOccupancy.occupancyEndDate ? "is-warning" : "is-primary") %>"
         data-tooltip="Update <%= configFunctions.getProperty("aliases.occupancy") %>"
         href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>/edit"
         accesskey="e">
