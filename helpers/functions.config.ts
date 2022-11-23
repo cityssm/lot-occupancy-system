@@ -76,6 +76,7 @@ export function getProperty(propertyName: "application.logoURL"): string;
 export function getProperty(propertyName: "application.httpPort"): number;
 export function getProperty(propertyName: "application.userDomain"): string;
 export function getProperty(propertyName: "application.useTestDatabases"): boolean;
+export function getProperty(propertyName: "application.ntfyStartup"): configTypes.ConfigNtfyStartup;
 
 export function getProperty(propertyName: "activeDirectory"): configTypes.ConfigActiveDirectory;
 

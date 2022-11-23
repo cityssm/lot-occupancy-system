@@ -55,6 +55,7 @@ import handler_doMoveLotOccupantTypeDown from "../handlers/admin-post/doMoveLotO
 import handler_doDeleteLotOccupantType from "../handlers/admin-post/doDeleteLotOccupantType.js";
 import handler_cleanup from "../handlers/admin-get/cleanup.js";
 import handler_doCleanupDatabase from "../handlers/admin-post/doCleanupDatabase.js";
+import handler_ntfyStartup from "../handlers/admin-get/ntfyStartup.js";
 export const router = Router();
 router.get("/fees", handler_fees);
 router.post("/doAddFeeCategory", handler_doAddFeeCategory);
@@ -112,4 +113,5 @@ router.post("/doMoveLotOccupantTypeDown", handler_doMoveLotOccupantTypeDown);
 router.post("/doDeleteLotOccupantType", handler_doDeleteLotOccupantType);
 router.get("/cleanup", handler_cleanup);
 router.post("/doCleanupDatabase", handler_doCleanupDatabase);
+router.get("/ntfyStartup", handler_ntfyStartup);
 export default router;

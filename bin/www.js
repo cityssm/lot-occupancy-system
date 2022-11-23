@@ -2,6 +2,7 @@ import { app } from "../app.js";
 import http from "node:http";
 import * as configFunctions from "../helpers/functions.config.js";
 import exitHook from "exit-hook";
+import ntfyPublish from "@cityssm/ntfy-publish";
 import debug from "debug";
 const debugWWW = debug("lot-occupancy-system:www");
 let httpServer;
@@ -39,6 +40,21 @@ if (httpPort) {
         onListening(httpServer);
     });
     debugWWW("HTTP listening on " + httpPort.toString());
+    const ntfyStartupConfig = configFunctions.getProperty("application.ntfyStartup");
+    if (ntfyStartupConfig) {
+        const topic = ntfyStartupConfig.topic;
+        const server = ntfyStartupConfig.server;
+        const ntfyMessage = {
+            topic,
+            title: configFunctions.getProperty("application.applicationName"),
+            message: "Application Started",
+            tags: ["arrow_up"]
+        };
+        if (server) {
+            ntfyMessage.server = server;
+        }
+        await ntfyPublish(ntfyMessage);
+    }
 }
 exitHook(() => {
     if (httpServer) {

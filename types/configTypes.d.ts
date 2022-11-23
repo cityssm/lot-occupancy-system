@@ -67,6 +67,11 @@ interface ConfigApplication {
     httpPort?: number;
     userDomain?: string;
     useTestDatabases?: boolean;
+    ntfyStartup?: ConfigNtfyStartup;
+}
+export interface ConfigNtfyStartup {
+    topic: string;
+    server?: string;
 }
 interface ConfigSession {
     cookieName?: string;

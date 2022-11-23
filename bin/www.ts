@@ -7,6 +7,8 @@ import http from "node:http";
 import * as configFunctions from "../helpers/functions.config.js";
 
 import exitHook from "exit-hook";
+import ntfyPublish from "@cityssm/ntfy-publish";
+import type * as ntfyTypes from "@cityssm/ntfy-publish/types";
 
 import debug from "debug";
 const debugWWW = debug("lot-occupancy-system:www");
@@ -72,6 +74,26 @@ if (httpPort) {
     });
 
     debugWWW("HTTP listening on " + httpPort.toString());
+
+    const ntfyStartupConfig = configFunctions.getProperty("application.ntfyStartup");
+
+    if (ntfyStartupConfig) {
+        const topic = ntfyStartupConfig.topic;
+        const server = ntfyStartupConfig.server;
+
+        const ntfyMessage: ntfyTypes.NtfyMessageOptions = {
+            topic,
+            title: configFunctions.getProperty("application.applicationName"),
+            message: "Application Started",
+            tags: ["arrow_up"]
+        };
+
+        if (server) {
+            ntfyMessage.server = server;
+        }
+
+        await ntfyPublish(ntfyMessage);
+    }
 }
 
 exitHook(() => {

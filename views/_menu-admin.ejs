@@ -33,5 +33,13 @@
                 <span>Database Cleanup</span>
             </a>
         </li>
+        <% if (configFunctions.getProperty("application.ntfyStartup")) { %>
+            <li>
+                <a class="<%= (headTitle === "Ntfy Startup Notification" ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/ntfyStartup">
+                    <span class="icon"><i class="fas fa-fw fa-comment-alt" aria-hidden="true"></i></span>
+                    <span>Ntfy Startup Notification</span>
+                </a>
+            </li>
+        <% } %>
     </ul>
 </aside>

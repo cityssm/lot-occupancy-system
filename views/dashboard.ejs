@@ -378,6 +378,23 @@
                     </div>
                 </div>
             </div>
+            <% if (configFunctions.getProperty("application.ntfyStartup")) { %>
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            <i class="fas fa-3x fa-fw fa-comment-alt" aria-hidden="true"></i>
+                        </div>
+                        <div class="media-content has-text-black">
+                            <h2 class="title is-4 is-marginless">
+                                <a href="<%= urlPrefix %>/admin/ntfyStartup">Ntfy Startup Notification</a>
+                            </h2>
+                            <p>
+                                Subscribe to application startup notifications on a phone or a desktop computer.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
         </div>
         <% } %>
     </div>

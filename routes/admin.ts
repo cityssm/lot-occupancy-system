@@ -81,6 +81,10 @@ import handler_doDeleteLotOccupantType from "../handlers/admin-post/doDeleteLotO
 import handler_cleanup from "../handlers/admin-get/cleanup.js";
 import handler_doCleanupDatabase from "../handlers/admin-post/doCleanupDatabase.js";
 
+// Ntfy Startup
+
+import handler_ntfyStartup from "../handlers/admin-get/ntfyStartup.js";
+
 export const router = Router();
 
 /*
@@ -227,5 +231,9 @@ router.post("/doDeleteLotOccupantType", handler_doDeleteLotOccupantType);
 router.get("/cleanup", handler_cleanup);
 
 router.post("/doCleanupDatabase", handler_doCleanupDatabase);
+
+// Ntfy Startup
+
+router.get("/ntfyStartup", handler_ntfyStartup);
 
 export default router;
