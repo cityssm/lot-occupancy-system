@@ -4,12 +4,10 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { getNextWorkOrderNumber } from "./getNextWorkOrderNumber.js";
 
-import {
-    dateStringToInteger,
-    dateToInteger
-} from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { dateStringToInteger, dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import type * as recordTypes from "../../types/recordTypes";
+import addWorkOrderLotOccupancy from "./addWorkOrderLotOccupancy.js";
 
 interface AddWorkOrderForm {
     workOrderTypeId: number | string;
@@ -17,6 +15,7 @@ interface AddWorkOrderForm {
     workOrderDescription: string;
     workOrderOpenDateString?: string;
     workOrderCloseDateString?: string;
+    lotOccupancyId?: string;
 }
 
 export const addWorkOrder = (
@@ -58,9 +57,22 @@ export const addWorkOrder = (
             rightNow.getTime()
         );
 
+    const workOrderId = result.lastInsertRowid as number;
+
+    if (workOrderForm.lotOccupancyId) {
+        addWorkOrderLotOccupancy(
+            {
+                workOrderId,
+                lotOccupancyId: workOrderForm.lotOccupancyId
+            },
+            requestSession,
+            database
+        );
+    }
+
     database.close();
 
-    return result.lastInsertRowid as number;
+    return workOrderId;
 };
 
 export default addWorkOrder;

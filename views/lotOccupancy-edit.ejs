@@ -282,6 +282,11 @@
                     </div>
                     <div class="dropdown-menu">
                         <div class="dropdown-content">
+                            <a class="dropdown-item" id="button--createWorkOrder" href="#">
+                                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                                <span>Create a Work Order</span>
+                            </a>
+                            <hr class="dropdown-divider" />
                             <a class="dropdown-item" id="button--copyLotOccupancy" href="#">
                                 <span class="icon is-small"><i class="far fa-copy" aria-hidden="true"></i></span>
                                 <span>Copy <%= configFunctions.getProperty("aliases.occupancy") %> Record as New</span>
@@ -406,6 +411,8 @@
         exports.lotOccupancyComments = <%- JSON.stringify(lotOccupancy.lotOccupancyComments) %>;
         exports.lotOccupancyFees = <%- JSON.stringify(lotOccupancy.lotOccupancyFees) %>;
         exports.lotOccupancyTransactions = <%- JSON.stringify(lotOccupancy.lotOccupancyTransactions) %>;
+
+        exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
     <% } %>
     
     <% if (configFunctions.getProperty("settings.lot.lotNamePattern")) { %>

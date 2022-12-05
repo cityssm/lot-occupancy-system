@@ -2,6 +2,7 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { getNextWorkOrderNumber } from "./getNextWorkOrderNumber.js";
 import { dateStringToInteger, dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import addWorkOrderLotOccupancy from "./addWorkOrderLotOccupancy.js";
 export const addWorkOrder = (workOrderForm, requestSession) => {
     const database = sqlite(databasePath);
     const rightNow = new Date();
@@ -21,7 +22,14 @@ export const addWorkOrder = (workOrderForm, requestSession) => {
         : dateToInteger(rightNow), workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
         : undefined, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
+    const workOrderId = result.lastInsertRowid;
+    if (workOrderForm.lotOccupancyId) {
+        addWorkOrderLotOccupancy({
+            workOrderId,
+            lotOccupancyId: workOrderForm.lotOccupancyId
+        }, requestSession, database);
+    }
     database.close();
-    return result.lastInsertRowid;
+    return workOrderId;
 };
 export default addWorkOrder;

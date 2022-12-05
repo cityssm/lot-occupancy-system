@@ -4,7 +4,8 @@ import {
     getLotOccupantTypes,
     getLotStatuses,
     getLotTypes,
-    getOccupancyTypes
+    getOccupancyTypes,
+    getWorkOrderTypes
 } from "../../helpers/functions.cache.js";
 
 import * as configFunctions from "../../helpers/functions.config.js";
@@ -27,6 +28,7 @@ export const handler: RequestHandler = (request, response) => {
     const lotTypes = getLotTypes();
     const lotStatuses = getLotStatuses();
     const maps = getMaps();
+    const workOrderTypes = getWorkOrderTypes();
 
     return response.render("lotOccupancy-edit", {
         headTitle:
@@ -41,6 +43,7 @@ export const handler: RequestHandler = (request, response) => {
         lotTypes,
         lotStatuses,
         maps,
+        workOrderTypes,
 
         isCreate: false
     });

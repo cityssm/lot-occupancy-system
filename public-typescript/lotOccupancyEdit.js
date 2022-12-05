@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    var _a, _b, _c;
     const los = exports.los;
     const lotOccupancyId = document.querySelector("#lotOccupancy--lotOccupancyId").value;
     const isCreate = lotOccupancyId === "";
@@ -75,7 +76,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         };
-        document.querySelector("#button--copyLotOccupancy").addEventListener("click", (clickEvent) => {
+        (_a = document
+            .querySelector("#button--copyLotOccupancy")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
             if (hasUnsavedChanges) {
                 bulmaJS.alert({
@@ -96,7 +98,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
         });
-        document.querySelector("#button--deleteLotOccupancy").addEventListener("click", (clickEvent) => {
+        (_b = document
+            .querySelector("#button--deleteLotOccupancy")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
             const doDelete = () => {
                 cityssm.postJSON(los.urlPrefix + "/lotOccupancies/doDeleteLotOccupancy", {
@@ -123,6 +126,55 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 okButton: {
                     text: "Yes, Delete",
                     callbackFunction: doDelete
+                }
+            });
+        });
+        (_c = document
+            .querySelector("#button--createWorkOrder")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", (clickEvent) => {
+            clickEvent.preventDefault();
+            let createCloseModalFunction;
+            const doCreate = (formEvent) => {
+                formEvent.preventDefault();
+                cityssm.postJSON(los.urlPrefix + "/workOrders/doCreateWorkOrder", formEvent.currentTarget, (responseJSON) => {
+                    if (responseJSON.success) {
+                        createCloseModalFunction();
+                        bulmaJS.confirm({
+                            title: "Work Order Created Successfully",
+                            message: "Would you like to open the work order now?",
+                            contextualColorName: "success",
+                            okButton: {
+                                text: "Yes, Open the Work Order",
+                                callbackFunction: () => {
+                                    window.location.href = los.urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: "Error Creating Work Order",
+                            message: responseJSON.errorMessage,
+                            contextualColorName: "danger"
+                        });
+                    }
+                });
+            };
+            cityssm.openHtmlModal("lotOccupancy-createWorkOrder", {
+                onshow: (modalElement) => {
+                    modalElement.querySelector("#workOrderCreate--lotOccupancyId").value = lotOccupancyId;
+                    modalElement.querySelector("#workOrderCreate--workOrderOpenDateString").value = cityssm.dateToString(new Date());
+                    const workOrderTypeSelectElement = modalElement.querySelector("#workOrderCreate--workOrderTypeId");
+                    for (const workOrderType of exports.workOrderTypes) {
+                        const optionElement = document.createElement("option");
+                        optionElement.value = workOrderType.workOrderTypeId.toString();
+                        optionElement.textContent = workOrderType.workOrderType;
+                        workOrderTypeSelectElement.append(optionElement);
+                    }
+                },
+                onshown: (modalElement, closeModalFunction) => {
+                    var _a;
+                    createCloseModalFunction = closeModalFunction;
+                    (_a = modalElement.querySelector("form")) === null || _a === void 0 ? void 0 : _a.addEventListener("submit", doCreate);
                 }
             });
         });

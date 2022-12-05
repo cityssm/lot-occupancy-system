@@ -86,7 +86,6 @@ declare const bulmaJS: BulmaJS;
     }
 
     if (!isCreate) {
-        
         const doCopy = () => {
             cityssm.postJSON(
                 los.urlPrefix + "/lotOccupancies/doCopyLotOccupancy",
@@ -116,11 +115,10 @@ declare const bulmaJS: BulmaJS;
             );
         };
 
-        (document.querySelector("#button--copyLotOccupancy") as HTMLAnchorElement).addEventListener(
-            "click",
-            (clickEvent) => {
+        document
+            .querySelector("#button--copyLotOccupancy")
+            ?.addEventListener("click", (clickEvent) => {
                 clickEvent.preventDefault();
-
 
                 if (hasUnsavedChanges) {
                     bulmaJS.alert({
@@ -139,46 +137,115 @@ declare const bulmaJS: BulmaJS;
                         }
                     });
                 }
-            }
-        );
+            });
 
-        (
-            document.querySelector("#button--deleteLotOccupancy") as HTMLAnchorElement
-        ).addEventListener("click", (clickEvent) => {
-            clickEvent.preventDefault();
+        document
+            .querySelector("#button--deleteLotOccupancy")
+            ?.addEventListener("click", (clickEvent) => {
+                clickEvent.preventDefault();
 
-            const doDelete = () => {
-                cityssm.postJSON(
-                    los.urlPrefix + "/lotOccupancies/doDeleteLotOccupancy",
-                    {
-                        lotOccupancyId
-                    },
-                    (responseJSON: { success: boolean; errorMessage?: string }) => {
+                const doDelete = () => {
+                    cityssm.postJSON(
+                        los.urlPrefix + "/lotOccupancies/doDeleteLotOccupancy",
+                        {
+                            lotOccupancyId
+                        },
+                        (responseJSON: { success: boolean; errorMessage?: string }) => {
+                            if (responseJSON.success) {
+                                cityssm.disableNavBlocker();
+                                window.location.href =
+                                    los.urlPrefix + "/lotOccupancies?t=" + Date.now();
+                            } else {
+                                bulmaJS.alert({
+                                    title: "Error Deleting Record",
+                                    message: responseJSON.errorMessage || "",
+                                    contextualColorName: "danger"
+                                });
+                            }
+                        }
+                    );
+                };
+
+                bulmaJS.confirm({
+                    title: "Delete " + exports.aliases.occupancy + " Record",
+                    message: "Are you sure you want to delete this record?",
+                    contextualColorName: "warning",
+                    okButton: {
+                        text: "Yes, Delete",
+                        callbackFunction: doDelete
+                    }
+                });
+            });
+
+        document
+            .querySelector("#button--createWorkOrder")
+            ?.addEventListener("click", (clickEvent) => {
+                clickEvent.preventDefault();
+
+                let createCloseModalFunction: () => void;
+
+                const doCreate = (formEvent: SubmitEvent) => {
+
+                    formEvent.preventDefault();
+
+                    cityssm.postJSON(los.urlPrefix + "/workOrders/doCreateWorkOrder",
+                    formEvent.currentTarget,
+                    (responseJSON: {success: boolean; errorMessage?: string; workOrderId?: number}) => {
+
                         if (responseJSON.success) {
-                            cityssm.disableNavBlocker();
-                            window.location.href =
-                                los.urlPrefix + "/lotOccupancies?t=" + Date.now();
+                            createCloseModalFunction();
+
+                            bulmaJS.confirm({
+                                title: "Work Order Created Successfully",
+                                message: "Would you like to open the work order now?",
+                                contextualColorName: "success",
+                                okButton: {
+                                    text: "Yes, Open the Work Order",
+                                    callbackFunction: () => {
+                                        window.location.href = los.urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
+                                    }
+                                }
+                            })
                         } else {
                             bulmaJS.alert({
-                                title: "Error Deleting Record",
-                                message: responseJSON.errorMessage || "",
+                                title: "Error Creating Work Order",
+                                message: responseJSON.errorMessage as string,
                                 contextualColorName: "danger"
                             });
                         }
-                    }
-                );
-            };
+                    });
+                };
 
-            bulmaJS.confirm({
-                title: "Delete " + exports.aliases.occupancy + " Record",
-                message: "Are you sure you want to delete this record?",
-                contextualColorName: "warning",
-                okButton: {
-                    text: "Yes, Delete",
-                    callbackFunction: doDelete
-                }
+                cityssm.openHtmlModal("lotOccupancy-createWorkOrder", {
+                    onshow: (modalElement) => {
+                        (
+                            modalElement.querySelector(
+                                "#workOrderCreate--lotOccupancyId"
+                            ) as HTMLInputElement
+                        ).value = lotOccupancyId;
+                        
+                        (
+                            modalElement.querySelector(
+                                "#workOrderCreate--workOrderOpenDateString"
+                            ) as HTMLInputElement
+                        ).value = cityssm.dateToString(new Date());
+
+                        const workOrderTypeSelectElement = modalElement.querySelector("#workOrderCreate--workOrderTypeId") as HTMLSelectElement;
+
+                        for (const workOrderType of (exports.workOrderTypes as recordTypes.WorkOrderType[])) {
+                            const optionElement = document.createElement("option");
+                            optionElement.value = (workOrderType.workOrderTypeId as number).toString();
+                            optionElement.textContent = workOrderType.workOrderType as string;
+                            workOrderTypeSelectElement.append(optionElement);
+                        }
+                    },
+                    onshown: (modalElement, closeModalFunction) => {
+                        createCloseModalFunction = closeModalFunction;
+
+                        modalElement.querySelector("form")?.addEventListener("submit", doCreate);
+                    }
+                });
             });
-        });
     }
 
     // Occupancy Type

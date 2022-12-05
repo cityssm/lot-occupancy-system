@@ -1,7 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-export const addWorkOrderLotOccupancy = (workOrderLotOccupancyForm, requestSession) => {
-    const database = sqlite(databasePath);
+export const addWorkOrderLotOccupancy = (workOrderLotOccupancyForm, requestSession, connectedDatabase) => {
+    const database = connectedDatabase || sqlite(databasePath);
     const rightNowMillis = Date.now();
     const row = database
         .prepare("select recordDelete_timeMillis" +
@@ -33,7 +33,9 @@ export const addWorkOrderLotOccupancy = (workOrderLotOccupancyForm, requestSessi
             " values (?, ?, ?, ?, ?, ?)")
             .run(workOrderLotOccupancyForm.workOrderId, workOrderLotOccupancyForm.lotOccupancyId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     }
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
     return true;
 };
 export default addWorkOrderLotOccupancy;

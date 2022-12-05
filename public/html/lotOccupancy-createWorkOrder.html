@@ -1,0 +1,52 @@
+<div class="modal" role="dialog">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <h3 class="modal-card-title">
+                Create a New Work Order
+            </h3>
+            <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+        </header>
+        <section class="modal-card-body">
+            <form id="form--workOrderCreate">
+                <input id="workOrderCreate--lotOccupancyId" name="lotOccupancyId" type="hidden" value="" />
+                <input id="workOrderCreate--workOrderOpenDateString" name="workOrderOpenDateString" type="hidden" value="" />
+                <label class="label" for="workOrderCreate--workOrderNumber">Work Order Number</label>
+                <div class="field has-addons">
+                    <div class="control is-expanded">
+                        <input class="input" id="workOrderCreate--workOrderNumber" name="workOrderNumber" maxlength="50" readonly />
+                    </div>
+                    <div class="control">
+                        <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
+                            <i class="fas fa-unlock" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="help mb-2">Leave work order number blank to autopopulate.</p>
+                <div class="field">
+                    <label class="label" for="workOrderCreate--workOrderTypeId">Work Order Type</label>
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select id="workOrderCreate--workOrderTypeId" name="workOrderTypeId" required>
+                                <option value="">(Select Type)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="workOrderCreate--workOrderDescription">Description</label>
+                    <div class="control">
+                        <textarea class="textarea" id="workOrderCreate--workOrderDescription" name="workOrderDescription" required></textarea>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <footer class="modal-card-foot justify-right">
+            <button class="button is-success" type="submit" form="form--workOrderCreate">
+                <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Create Work Order</span>
+            </button>
+            <button class="button is-close-modal-button" type="button">Cancel</button>
+        </footer>
+    </div>
+</div>

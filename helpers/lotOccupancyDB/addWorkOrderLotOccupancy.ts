@@ -11,9 +11,10 @@ interface AddWorkOrderLotOccupancyForm {
 
 export const addWorkOrderLotOccupancy = (
     workOrderLotOccupancyForm: AddWorkOrderLotOccupancyForm,
-    requestSession: recordTypes.PartialSession
+    requestSession: recordTypes.PartialSession,
+    connectedDatabase?: sqlite.Database
 ): boolean => {
-    const database = sqlite(databasePath);
+    const database = connectedDatabase || sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
@@ -68,7 +69,9 @@ export const addWorkOrderLotOccupancy = (
             );
     }
 
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
 
     return true;
 };

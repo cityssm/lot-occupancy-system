@@ -5,6 +5,7 @@ interface AddWorkOrderForm {
     workOrderDescription: string;
     workOrderOpenDateString?: string;
     workOrderCloseDateString?: string;
+    lotOccupancyId?: string;
 }
 export declare const addWorkOrder: (workOrderForm: AddWorkOrderForm, requestSession: recordTypes.PartialSession) => number;
 export default addWorkOrder;
