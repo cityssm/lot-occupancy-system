@@ -274,7 +274,7 @@ function importFromMasterCSV() {
                     lotTypeId: lotType.lotTypeId,
                     lotStatusId: availableLotStatus.lotStatusId,
                     mapId: map.mapId,
-                    mapKey: lotName,
+                    mapKey: lotName.includes(",") ? lotName.split(",")[0] : lotName,
                     lotLatitude: "",
                     lotLongitude: ""
                 }, user);
@@ -542,7 +542,7 @@ function importFromPrepaidCSV() {
                         lotTypeId: lotType.lotTypeId,
                         lotStatusId: reservedLotStatus.lotStatusId,
                         mapId: map.mapId,
-                        mapKey: lotName,
+                        mapKey: lotName.includes(",") ? lotName.split(",")[0] : lotName,
                         lotLatitude: "",
                         lotLongitude: ""
                     }, user);
@@ -786,7 +786,7 @@ function importFromWorkOrderCSV() {
                     const lotId = addLot({
                         mapId: map.mapId,
                         lotName,
-                        mapKey: lotName,
+                        mapKey: lotName.includes(",") ? lotName.split(",")[0] : lotName,
                         lotStatusId: takenLotStatus.lotStatusId,
                         lotTypeId: lotType.lotTypeId,
                         lotLatitude: "",

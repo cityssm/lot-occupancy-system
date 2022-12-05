@@ -51,6 +51,7 @@ import { closeWorkOrder } from "../helpers/lotOccupancyDB/closeWorkOrder.js";
 import { dateIntegerToString, dateToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import type * as recordTypes from "../types/recordTypes";
+import { mapKeys } from "cypress/types/lodash/index.js";
 
 interface MasterRecord {
     CM_SYSREC: string;
@@ -529,7 +530,7 @@ function importFromMasterCSV() {
                         lotTypeId: lotType.lotTypeId,
                         lotStatusId: availableLotStatus.lotStatusId,
                         mapId: map.mapId,
-                        mapKey: lotName,
+                        mapKey: lotName.includes(",") ? lotName.split(",")[0] : lotName,
                         lotLatitude: "",
                         lotLongitude: ""
                     },
@@ -975,7 +976,7 @@ function importFromPrepaidCSV() {
                             lotTypeId: lotType.lotTypeId,
                             lotStatusId: reservedLotStatus.lotStatusId,
                             mapId: map.mapId,
-                            mapKey: lotName,
+                            mapKey: lotName.includes(",") ? lotName.split(",")[0] : lotName,
                             lotLatitude: "",
                             lotLongitude: ""
                         },
@@ -1319,7 +1320,7 @@ function importFromWorkOrderCSV() {
                         {
                             mapId: map.mapId,
                             lotName,
-                            mapKey: lotName,
+                            mapKey: lotName.includes(",") ? lotName.split(",")[0] : lotName,
                             lotStatusId: takenLotStatus.lotStatusId,
                             lotTypeId: lotType.lotTypeId,
                             lotLatitude: "",

@@ -211,7 +211,7 @@
                             <%= configFunctions.getProperty("aliases.map") %> SVG ID
                         </label>
                         <div class="control">
-                            <input class="input" id="lot--mapKey" name="mapKey" value="<%= lot.mapKey %>" maxlength="100" />
+                            <input class="input" id="lot--mapKey" name="mapKey" value="<%= lot.mapKey %>" maxlength="100" pattern="^[\d\w-]*$" />
                         </div>
                         <p class="help">
                             <a href="https://cityssm.github.io/lot-occupancy-system/docs/mapImages.html" target="_blank" rel="noreferrer">
