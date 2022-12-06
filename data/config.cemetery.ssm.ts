@@ -2,7 +2,7 @@ import { config as cemeteryConfig } from "./config.cemetery.ontario.js";
 
 export const config = Object.assign({}, cemeteryConfig);
 
-config.aliases.occupancyStartDate = "Interment Date";
+config.aliases.occupancyStartDate = "Purchase Date";
 config.aliases.externalReceiptNumber = "GP Receipt Number";
 
 config.settings.lot.lotNamePattern =

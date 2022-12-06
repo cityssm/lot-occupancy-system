@@ -12,6 +12,10 @@ config.aliases.lot = "Burial Site";
 config.aliases.lots = "Burial Sites";
 config.aliases.map = "Cemetery";
 config.aliases.maps = "Cemeteries";
+config.aliases.occupancy = "Contract";
+config.aliases.occupancies = "Contracts";
+config.aliases.occupant = "Related Party";
+config.aliases.occupants = "Related Parties";
 
 config.settings.lotOccupancy.occupancyEndDateIsRequired = false;
 
