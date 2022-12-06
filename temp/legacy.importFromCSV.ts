@@ -447,6 +447,32 @@ function getFuneralHome(funeralHomeKey: string): recordTypes.LotOccupancyOccupan
                 occupantEmailAddress: ""
             };
         }
+        case "BK": {
+            return {
+                lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
+                occupantName: "Barton and Kiteley",
+                occupantAddress1: "",
+                occupantAddress2: "",
+                occupantCity: "Sault Ste. Marie",
+                occupantProvince: "ON",
+                occupantPostalCode: "",
+                occupantPhoneNumber: "",
+                occupantEmailAddress: ""
+            };
+        }
+        case "DA": {
+            return {
+                lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
+                occupantName: "Damignani Burial, Cremation and Transfer Service",
+                occupantAddress1: "215 St. James Street",
+                occupantAddress2: "",
+                occupantCity: "Sault Ste. Marie",
+                occupantProvince: "ON",
+                occupantPostalCode: "P6A 1P7",
+                occupantPhoneNumber: "705-759-8456",
+                occupantEmailAddress: ""
+            };
+        }
         case "NO": {
             return {
                 lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
