@@ -602,6 +602,11 @@ function importFromMasterCSV() {
                         masterRow.CM_DEATH_MON,
                         masterRow.CM_DEATH_DAY
                     );
+
+                    // if death took place, and there's no preneed end date
+                    if (occupancyEndDateString === "0000-00-00" || occupancyEndDateString === "") {
+                        occupancyEndDateString = preneedOccupancyStartDateString;
+                    }
                 }
 
                 if (

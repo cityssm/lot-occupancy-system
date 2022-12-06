@@ -321,6 +321,9 @@ function importFromMasterCSV() {
                     masterRow.CM_DEATH_YR !== "" &&
                     masterRow.CM_DEATH_YR !== "0") {
                     preneedOccupancyStartDateString = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
+                    if (occupancyEndDateString === "0000-00-00" || occupancyEndDateString === "") {
+                        occupancyEndDateString = preneedOccupancyStartDateString;
+                    }
                 }
                 if (preneedOccupancyStartDateString === "" ||
                     preneedOccupancyStartDateString === "0000-00-00") {
