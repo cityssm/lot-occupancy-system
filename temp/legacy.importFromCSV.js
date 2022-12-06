@@ -738,7 +738,8 @@ function importFromWorkOrderCSV() {
     const currentDateString = dateToString(new Date());
     try {
         for (workOrderRow of cmwkordr.data) {
-            let workOrder = getWorkOrderByWorkOrderNumber(workOrderRow.WO_WORK_ORDER);
+            const workOrderNumber = ("000000" + workOrderRow.WO_WORK_ORDER).slice(-6);
+            let workOrder = getWorkOrderByWorkOrderNumber(workOrderNumber);
             const workOrderOpenDateString = dateIntegerToString(Number.parseInt(workOrderRow.WO_INITIATION_DATE, 10));
             if (workOrder) {
                 if (workOrder.workOrderCloseDate) {
@@ -749,7 +750,7 @@ function importFromWorkOrderCSV() {
             }
             else {
                 const workOrderId = addWorkOrder({
-                    workOrderNumber: workOrderRow.WO_WORK_ORDER,
+                    workOrderNumber,
                     workOrderTypeId: 1,
                     workOrderDescription: (workOrderRow.WO_REMARK1 +
                         " " +

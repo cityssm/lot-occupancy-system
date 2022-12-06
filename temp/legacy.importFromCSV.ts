@@ -51,7 +51,6 @@ import { closeWorkOrder } from "../helpers/lotOccupancyDB/closeWorkOrder.js";
 import { dateIntegerToString, dateToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import type * as recordTypes from "../types/recordTypes";
-import { mapKeys } from "cypress/types/lodash/index.js";
 
 interface MasterRecord {
     CM_SYSREC: string;
@@ -1256,7 +1255,10 @@ function importFromWorkOrderCSV() {
 
     try {
         for (workOrderRow of cmwkordr.data) {
-            let workOrder = getWorkOrderByWorkOrderNumber(workOrderRow.WO_WORK_ORDER);
+
+            const workOrderNumber = ("000000" + workOrderRow.WO_WORK_ORDER).slice(-6);
+
+            let workOrder = getWorkOrderByWorkOrderNumber(workOrderNumber);
 
             const workOrderOpenDateString = dateIntegerToString(
                 Number.parseInt(workOrderRow.WO_INITIATION_DATE, 10)
@@ -1271,7 +1273,7 @@ function importFromWorkOrderCSV() {
             } else {
                 const workOrderId = addWorkOrder(
                     {
-                        workOrderNumber: workOrderRow.WO_WORK_ORDER,
+                        workOrderNumber,
                         workOrderTypeId: 1,
                         workOrderDescription: (
                             workOrderRow.WO_REMARK1 +
