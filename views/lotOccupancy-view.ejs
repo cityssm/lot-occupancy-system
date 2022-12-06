@@ -17,7 +17,7 @@
         </li>
         <li class="is-active">
             <a href="#" aria-current="page">
-                <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
+                <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
             </a>
         </li>
     </ul>
@@ -27,7 +27,7 @@
     <div class="level-left">
         <div class="level-item is-justify-content-left">
             <h1 class="title is-1">
-                <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
+                <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
             </h1>
         </div>
     </div>

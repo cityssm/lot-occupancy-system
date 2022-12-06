@@ -17,7 +17,7 @@
         <% if (!isCreate) { %>
         <li>
             <a href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>" accesskey="v">
-                <%= configFunctions.getProperty("aliases.occupancy") %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
+                <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
             </a>
         </li>
         <% } %>
@@ -42,7 +42,7 @@
         <div class="level-left">
             <div class="level-item is-justify-content-left">
                 <h1 class="title is-1">
-                    Update <%= configFunctions.getProperty("aliases.occupancy") %>
+                    Update <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>
                 </h1>
             </div>
         </div>
