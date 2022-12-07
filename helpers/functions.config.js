@@ -26,6 +26,8 @@ configFallbackValues.set("aliases.occupancyStartDate", "Start Date");
 configFallbackValues.set("aliases.occupant", "Occupant");
 configFallbackValues.set("aliases.occupants", "Occupants");
 configFallbackValues.set("aliases.externalReceiptNumber", "External Receipt Number");
+configFallbackValues.set("aliases.workOrderOpenDate", "Open Date");
+configFallbackValues.set("aliases.workOrderCloseDate", "Close Date");
 configFallbackValues.set("settings.map.mapCityDefault", "");
 configFallbackValues.set("settings.map.mapProvinceDefault", "");
 configFallbackValues.set("settings.lot.lotNameSortNameFunction", (lotName) => lotName);

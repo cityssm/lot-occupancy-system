@@ -95,15 +95,15 @@
                     </div>
                     <div class="column">
                         <p class="mb-2">
-                            <strong>Open Date</strong><br />
+                            <strong><%= configFunctions.getProperty("aliases.workOrderOpenDate") %></strong><br />
                             <%= workOrder.workOrderOpenDateString %>
                         </p>
                         <p>
-                            <strong>Close Date</strong><br />
+                            <strong><%= configFunctions.getProperty("aliases.workOrderCloseDate") %></strong><br />
                             <% if (workOrder.workOrderCloseDate) { %>
                                 <%= workOrder.workOrderCloseDateString %>
                             <% } else { %>
-                                <span class="has-text-grey">(No Close Date)</span>
+                                <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.workOrderCloseDate") %>)</span>
                             <% } %>
                         </p>
                     </div>

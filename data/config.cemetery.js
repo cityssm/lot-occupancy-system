@@ -13,5 +13,7 @@ config.aliases.occupancy = "Contract";
 config.aliases.occupancies = "Contracts";
 config.aliases.occupant = "Related Party";
 config.aliases.occupants = "Related Parties";
+config.aliases.workOrderOpenDate = "Order Date";
+config.aliases.workOrderCloseDate = "Completion Date";
 config.settings.lotOccupancy.occupancyEndDateIsRequired = false;
 export default config;

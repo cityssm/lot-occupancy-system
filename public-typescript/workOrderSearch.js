@@ -73,15 +73,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         relatedHTML +
                         "</span></td>") +
                     ('<td class="is-nowrap">' +
-                        ('<span class="has-tooltip-left" data-tooltip="Open Date">' +
-                            '<i class="fas fa-fw fa-play" aria-label="Open Date"></i> ' +
+                        ('<span class="has-tooltip-left" data-tooltip="' +
+                            cityssm.escapeHTML(exports.aliases.workOrderOpenDate) +
+                            '">' +
+                            '<i class="fas fa-fw fa-play" aria-label="' +
+                            cityssm.escapeHTML(exports.aliases.workOrderOpenDate) +
+                            '"></i> ' +
                             workOrder.workOrderOpenDateString +
                             "</span><br />") +
-                        ('<span class="has-tooltip-left" data-tooltip="Close Date">' +
-                            '<i class="fas fa-fw fa-stop" aria-label="Close Date"></i> ' +
+                        ('<span class="has-tooltip-left" data-tooltip="' +
+                            cityssm.escapeHTML(exports.aliases.workOrderCloseDate) +
+                            '">' +
+                            '<i class="fas fa-fw fa-stop" aria-label="' +
+                            cityssm.escapeHTML(exports.aliases.workOrderCloseDate) +
+                            '"></i> ' +
                             (workOrder.workOrderCloseDate
                                 ? workOrder.workOrderCloseDateString
-                                : '<span class="has-text-grey">(No Close Date)</span>') +
+                                : '<span class="has-text-grey">(No ' +
+                                    cityssm.escapeHTML(exports.aliases.workOrderCloseDate) +
+                                    ")</span>") +
                             "</span>") +
                         "</td>") +
                     ("<td>" +
@@ -148,14 +158,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</div>";
             searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
             if (offset > 0) {
-                searchResultsContainerElement
-                    .querySelector("button[data-page='previous']")
-                    .addEventListener("click", previousAndGetWorkOrders);
+                searchResultsContainerElement.querySelector("button[data-page='previous']").addEventListener("click", previousAndGetWorkOrders);
             }
             if (limit + offset < responseJSON.count) {
-                searchResultsContainerElement
-                    .querySelector("button[data-page='next']")
-                    .addEventListener("click", nextAndGetWorkOrders);
+                searchResultsContainerElement.querySelector("button[data-page='next']").addEventListener("click", nextAndGetWorkOrders);
             }
         });
     };

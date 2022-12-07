@@ -40,6 +40,8 @@ configFallbackValues.set("aliases.occupancyStartDate", "Start Date");
 configFallbackValues.set("aliases.occupant", "Occupant");
 configFallbackValues.set("aliases.occupants", "Occupants");
 configFallbackValues.set("aliases.externalReceiptNumber", "External Receipt Number");
+configFallbackValues.set("aliases.workOrderOpenDate", "Open Date");
+configFallbackValues.set("aliases.workOrderCloseDate", "Close Date");
 
 configFallbackValues.set("settings.map.mapCityDefault", "");
 configFallbackValues.set("settings.map.mapProvinceDefault", "");
@@ -104,6 +106,8 @@ export function getProperty(propertyName: "aliases.occupancies"): string;
 export function getProperty(propertyName: "aliases.occupancyStartDate"): string;
 export function getProperty(propertyName: "aliases.occupant"): string;
 export function getProperty(propertyName: "aliases.occupants"): string;
+export function getProperty(propertyName: "aliases.workOrderOpenDate"): string;
+export function getProperty(propertyName: "aliases.workOrderCloseDate"): string;
 
 export function getProperty(propertyName: "aliases.externalReceiptNumber"): string;
 

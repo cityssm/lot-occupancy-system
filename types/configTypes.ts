@@ -24,6 +24,8 @@ export interface Config {
         occupant?: string;
         occupants?: string;
         externalReceiptNumber?: string;
+        workOrderOpenDate?: string;
+        workOrderCloseDate?: string;
     };
     settings: {
         fees: {

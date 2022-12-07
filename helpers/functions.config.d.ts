@@ -26,6 +26,8 @@ export declare function getProperty(propertyName: "aliases.occupancies"): string
 export declare function getProperty(propertyName: "aliases.occupancyStartDate"): string;
 export declare function getProperty(propertyName: "aliases.occupant"): string;
 export declare function getProperty(propertyName: "aliases.occupants"): string;
+export declare function getProperty(propertyName: "aliases.workOrderOpenDate"): string;
+export declare function getProperty(propertyName: "aliases.workOrderCloseDate"): string;
 export declare function getProperty(propertyName: "aliases.externalReceiptNumber"): string;
 export declare function getProperty(propertyName: "settings.map.mapCityDefault"): string;
 export declare function getProperty(propertyName: "settings.map.mapProvinceDefault"): string;
