@@ -7,6 +7,7 @@ import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js"
 import { addOrUpdateLotOccupancyField } from "./addOrUpdateLotOccupancyField.js";
 
 import type * as recordTypes from "../../types/recordTypes";
+import addLotOccupancyOccupant from "./addLotOccupancyOccupant.js";
 
 interface AddLotOccupancyForm {
     occupancyTypeId: string | number;
@@ -17,6 +18,17 @@ interface AddLotOccupancyForm {
 
     occupancyTypeFieldIds?: string;
     [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown;
+
+    lotOccupantTypeId: string;
+    occupantName?: string;
+    occupantAddress1?: string;
+    occupantAddress2?: string;
+    occupantCity?: string;
+    occupantProvince?: string;
+    occupantPostalCode?: string;
+    occupantPhoneNumber?: string;
+    occupantEmailAddress?: string;
+    occupantComment?: string;
 }
 
 export const addLotOccupancy = (
@@ -78,6 +90,26 @@ export const addLotOccupancy = (
                 database
             );
         }
+    }
+
+    if (lotOccupancyForm.lotOccupantTypeId) {
+        addLotOccupancyOccupant(
+            {
+                lotOccupancyId,
+                lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId,
+                occupantName: lotOccupancyForm.occupantName,
+                occupantAddress1: lotOccupancyForm.occupantAddress1,
+                occupantAddress2: lotOccupancyForm.occupantAddress2,
+                occupantCity: lotOccupancyForm.occupantCity,
+                occupantProvince: lotOccupancyForm.occupantProvince,
+                occupantPostalCode: lotOccupancyForm.occupantPostalCode,
+                occupantPhoneNumber: lotOccupancyForm.occupantPhoneNumber,
+                occupantEmailAddress: lotOccupancyForm.occupantEmailAddress,
+                occupantComment: lotOccupancyForm.occupantComment
+            },
+            requestSession,
+            database
+        );
     }
 
     if (!connectedDatabase) {

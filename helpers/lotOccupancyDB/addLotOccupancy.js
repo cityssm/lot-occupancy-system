@@ -2,6 +2,7 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { addOrUpdateLotOccupancyField } from "./addOrUpdateLotOccupancyField.js";
+import addLotOccupancyOccupant from "./addLotOccupancyOccupant.js";
 export const addLotOccupancy = (lotOccupancyForm, requestSession, connectedDatabase) => {
     const database = connectedDatabase || sqlite(databasePath);
     const rightNowMillis = Date.now();
@@ -30,6 +31,21 @@ export const addLotOccupancy = (lotOccupancyForm, requestSession, connectedDatab
                 lotOccupancyFieldValue
             }, requestSession, database);
         }
+    }
+    if (lotOccupancyForm.lotOccupantTypeId) {
+        addLotOccupancyOccupant({
+            lotOccupancyId,
+            lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId,
+            occupantName: lotOccupancyForm.occupantName,
+            occupantAddress1: lotOccupancyForm.occupantAddress1,
+            occupantAddress2: lotOccupancyForm.occupantAddress2,
+            occupantCity: lotOccupancyForm.occupantCity,
+            occupantProvince: lotOccupancyForm.occupantProvince,
+            occupantPostalCode: lotOccupancyForm.occupantPostalCode,
+            occupantPhoneNumber: lotOccupancyForm.occupantPhoneNumber,
+            occupantEmailAddress: lotOccupancyForm.occupantEmailAddress,
+            occupantComment: lotOccupancyForm.occupantComment
+        }, requestSession, database);
     }
     if (!connectedDatabase) {
         database.close();

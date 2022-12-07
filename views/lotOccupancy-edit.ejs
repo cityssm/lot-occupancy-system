@@ -261,6 +261,105 @@
                 </div>
             </div>
         </div>
+        <% if (isCreate) { %>
+            <div class="panel-block is-block">
+                <h3 class="title is-4"><%= configFunctions.getProperty("aliases.occupant") %></h3>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="lotOccupancy--lotOccupantTypeId">
+                                <%= configFunctions.getProperty("aliases.occupant") %> Type
+                            </label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select id="lotOccupancy--lotOccupantTypeId" name="lotOccupantTypeId">
+                                        <option value="">(Select a Type to Create a <%= configFunctions.getProperty("aliases.occupant") %>)</option>
+                                        <% for (const lotOccupantType of lotOccupantTypes) { %>
+                                            <option value="<%= lotOccupantType.lotOccupantTypeId %>"><%= lotOccupantType.lotOccupantType %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="lotOccupancy--occupantName">
+                                <%= configFunctions.getProperty("aliases.occupant") %> Name
+                            </label>
+                            <div class="control">
+                                <input class="input" id="lotOccupancy--occupantName" data-table="LotOccupancyOccupant" name="occupantName" type="text" maxlength="200" autocomplete="off" required disabled />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="lotOccupancy--occupantAddress1">Address</label>
+                            <div class="control">
+                                <input class="input" id="lotOccupancy--occupantAddress1" data-table="LotOccupancyOccupant" name="occupantAddress1" type="text" maxlength="50" placeholder="Line 1" autocomplete="off" disabled />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <input class="input" id="lotOccupancy--occupantAddress2" data-table="LotOccupancyOccupant" name="occupantAddress2" type="text" maxlength="50" placeholder="Line 2" autocomplete="off" aria-label="Address Line 2" disabled />
+                            </div>
+                        </div>
+                        <div class="columns">
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label" for="lotOccupancy--occupantCity">City</label>
+                                    <div class="control">
+                                        <input class="input" id="lotOccupancy--occupantCity" data-table="LotOccupancyOccupant" name="occupantCity" type="text" maxlength="20" value="<%= configFunctions.getProperty("settings.lotOccupancy.occupantCityDefault") %>" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label" for="lotOccupancy--occupantProvince">Province</label>
+                                    <div class="control">
+                                        <input class="input" id="lotOccupancy--occupantProvince" data-table="LotOccupancyOccupant" name="occupantProvince" type="text" maxlength="2" value="<%= configFunctions.getProperty("settings.lotOccupancy.occupantProvinceDefault") %>" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label" for="lotOccupancy--occupantPostalCode">Postal Code</label>
+                                    <div class="control">
+                                        <input class="input" id="lotOccupancy--occupantPostalCode" data-table="LotOccupancyOccupant" name="occupantPostalCode" type="text" maxlength="7" autocomplete="off" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="columns">
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label" for="lotOccupancy--occupantPhoneNumber">Phone Number</label>
+                                    <div class="control">
+                                        <input class="input" id="lotOccupancy--occupantPhoneNumber" data-table="LotOccupancyOccupant" name="occupantPhoneNumber" type="text" maxlength="30" autocomplete="off" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label" for="lotOccupancy--occupantEmailAddress">Email Address</label>
+                                    <div class="control">
+                                        <input class="input" id="lotOccupancy--occupantEmailAddress" data-table="LotOccupancyOccupant" name="occupantEmailAddress" type="email" maxlength="200" autocomplete="off" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="lotOccupancy--occupantComment">Comment</label>
+                            <div class="control">
+                                <textarea class="textarea" id="lotOccupancy--occupantComment" data-table="LotOccupancyOccupant" name="occupantComment" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="message is-info">
+                            <p class="message-body">Additional <%= configFunctions.getProperty("aliases.occupants").toLowerCase() %> can be added after the record has been created.</p>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        <% } %>
         <div class="panel-block is-justify-content-right is-hidden-print">
             <button class="button is-primary" type="submit">
                 <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>

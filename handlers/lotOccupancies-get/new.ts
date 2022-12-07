@@ -2,7 +2,7 @@ import type { RequestHandler } from "express";
 
 import { dateToInteger, dateToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
-import { getLotStatuses, getLotTypes, getOccupancyTypes } from "../../helpers/functions.cache.js";
+import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypes } from "../../helpers/functions.cache.js";
 
 import { getLot } from "../../helpers/lotOccupancyDB/getLot.js";
 import { getMaps } from "../../helpers/lotOccupancyDB/getMaps.js";
@@ -28,6 +28,7 @@ export const handler: RequestHandler = (request, response) => {
     }
 
     const occupancyTypes = getOccupancyTypes();
+    const lotOccupantTypes = getLotOccupantTypes();
     const lotTypes = getLotTypes();
     const lotStatuses = getLotStatuses();
     const maps = getMaps();
@@ -42,6 +43,7 @@ export const handler: RequestHandler = (request, response) => {
         lotOccupancy,
 
         occupancyTypes,
+        lotOccupantTypes,
         lotTypes,
         lotStatuses,
         maps,

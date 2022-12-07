@@ -466,7 +466,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
         endDatePicker.refresh();
     });
     los.initializeUnlockFieldButtons(formElement);
-    if (!isCreate) {
+    if (isCreate) {
+        const lotOccupantTypeIdElement = document.querySelector("#lotOccupancy--lotOccupantTypeId");
+        lotOccupantTypeIdElement.addEventListener("change", () => {
+            const occupantFields = formElement.querySelectorAll("[data-table='LotOccupancyOccupant']");
+            for (const occupantField of occupantFields) {
+                occupantField.disabled = (lotOccupantTypeIdElement.value === "");
+            }
+        });
+    }
+    else {
         let lotOccupancyOccupants = exports.lotOccupancyOccupants;
         delete exports.lotOccupancyOccupants;
         const openEditLotOccupancyOccupant = (clickEvent) => {

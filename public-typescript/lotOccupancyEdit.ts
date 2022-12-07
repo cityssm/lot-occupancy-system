@@ -694,7 +694,20 @@ declare const bulmaJS: BulmaJS;
      * Occupants
      */
 
-    if (!isCreate) {
+    if (isCreate) {
+
+        const lotOccupantTypeIdElement = document.querySelector("#lotOccupancy--lotOccupantTypeId") as HTMLSelectElement;
+
+        lotOccupantTypeIdElement.addEventListener("change", () => {
+
+            const occupantFields = formElement.querySelectorAll("[data-table='LotOccupancyOccupant']") as NodeListOf<HTMLInputElement | HTMLTextAreaElement>;
+
+            for (const occupantField of occupantFields) {
+                occupantField.disabled = (lotOccupantTypeIdElement.value === "");
+            }
+        });
+
+    } else {
         let lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[] =
             exports.lotOccupancyOccupants;
 
