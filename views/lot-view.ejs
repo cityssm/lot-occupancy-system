@@ -174,9 +174,9 @@
                             <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
                                 <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.occupants") %>)</span>
                             <% } else { %>
-                                <% const occupant = lotOccupancy.lotOccupancyOccupants[0]; %>
-                                <span class="has-tooltip-left" data-tooltip="<%= occupant.lotOccupantType %>"><%= occupant.occupantName %></span>
-                                <%= (lotOccupancy.lotOccupancyOccupants.length > 1 ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1) : "") %>
+                                <% for (const occupant of lotOccupancy.lotOccupancyOccupants) { %>
+                                    <span class="has-tooltip-left" data-tooltip="<%= occupant.lotOccupantType %>"><%= occupant.occupantName %></span><br />
+                                <% } %>
                             <% } %>
                         </td>
                     </tr>
