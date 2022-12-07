@@ -185,35 +185,43 @@ declare const bulmaJS: BulmaJS;
                 let createCloseModalFunction: () => void;
 
                 const doCreate = (formEvent: SubmitEvent) => {
-
                     formEvent.preventDefault();
 
-                    cityssm.postJSON(los.urlPrefix + "/workOrders/doCreateWorkOrder",
-                    formEvent.currentTarget,
-                    (responseJSON: {success: boolean; errorMessage?: string; workOrderId?: number}) => {
+                    cityssm.postJSON(
+                        los.urlPrefix + "/workOrders/doCreateWorkOrder",
+                        formEvent.currentTarget,
+                        (responseJSON: {
+                            success: boolean;
+                            errorMessage?: string;
+                            workOrderId?: number;
+                        }) => {
+                            if (responseJSON.success) {
+                                createCloseModalFunction();
 
-                        if (responseJSON.success) {
-                            createCloseModalFunction();
-
-                            bulmaJS.confirm({
-                                title: "Work Order Created Successfully",
-                                message: "Would you like to open the work order now?",
-                                contextualColorName: "success",
-                                okButton: {
-                                    text: "Yes, Open the Work Order",
-                                    callbackFunction: () => {
-                                        window.location.href = los.urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
+                                bulmaJS.confirm({
+                                    title: "Work Order Created Successfully",
+                                    message: "Would you like to open the work order now?",
+                                    contextualColorName: "success",
+                                    okButton: {
+                                        text: "Yes, Open the Work Order",
+                                        callbackFunction: () => {
+                                            window.location.href =
+                                                los.urlPrefix +
+                                                "/workOrders/" +
+                                                responseJSON.workOrderId +
+                                                "/edit";
+                                        }
                                     }
-                                }
-                            })
-                        } else {
-                            bulmaJS.alert({
-                                title: "Error Creating Work Order",
-                                message: responseJSON.errorMessage as string,
-                                contextualColorName: "danger"
-                            });
+                                });
+                            } else {
+                                bulmaJS.alert({
+                                    title: "Error Creating Work Order",
+                                    message: responseJSON.errorMessage as string,
+                                    contextualColorName: "danger"
+                                });
+                            }
                         }
-                    });
+                    );
                 };
 
                 cityssm.openHtmlModal("lotOccupancy-createWorkOrder", {
@@ -223,18 +231,22 @@ declare const bulmaJS: BulmaJS;
                                 "#workOrderCreate--lotOccupancyId"
                             ) as HTMLInputElement
                         ).value = lotOccupancyId;
-                        
+
                         (
                             modalElement.querySelector(
                                 "#workOrderCreate--workOrderOpenDateString"
                             ) as HTMLInputElement
                         ).value = cityssm.dateToString(new Date());
 
-                        const workOrderTypeSelectElement = modalElement.querySelector("#workOrderCreate--workOrderTypeId") as HTMLSelectElement;
+                        const workOrderTypeSelectElement = modalElement.querySelector(
+                            "#workOrderCreate--workOrderTypeId"
+                        ) as HTMLSelectElement;
 
-                        for (const workOrderType of (exports.workOrderTypes as recordTypes.WorkOrderType[])) {
+                        for (const workOrderType of exports.workOrderTypes as recordTypes.WorkOrderType[]) {
                             const optionElement = document.createElement("option");
-                            optionElement.value = (workOrderType.workOrderTypeId as number).toString();
+                            optionElement.value = (
+                                workOrderType.workOrderTypeId as number
+                            ).toString();
                             optionElement.textContent = workOrderType.workOrderType as string;
                             workOrderTypeSelectElement.append(optionElement);
                         }
@@ -819,6 +831,12 @@ declare const bulmaJS: BulmaJS;
                             "#lotOccupancyOccupantEdit--occupantEmailAddress"
                         ) as HTMLInputElement
                     ).value = lotOccupancyOccupant.occupantEmailAddress!;
+
+                    (
+                        modalElement.querySelector(
+                            "#lotOccupancyOccupantEdit--occupantComment"
+                        ) as HTMLTextAreaElement
+                    ).value = lotOccupancyOccupant.occupantComment!;
                 },
                 onshown: (modalElement, closeModalFunction) => {
                     bulmaJS.toggleHtmlClipped();
@@ -907,14 +925,10 @@ declare const bulmaJS: BulmaJS;
 
             tableElement.innerHTML =
                 "<thead><tr>" +
-                "<th>" +
-                exports.aliases.occupant +
-                " Type</th>" +
-                "<th>" +
-                exports.aliases.occupant +
-                "</th>" +
+                ("<th>" + exports.aliases.occupant + "</th>") +
                 "<th>Address</th>" +
                 "<th>Other Contact</th>" +
+                "<th>Comment</th>" +
                 '<th class="is-hidden-print"><span class="is-sr-only">Options</span></th>' +
                 "</tr></thead>" +
                 "<tbody></tbody>";
@@ -926,11 +940,12 @@ declare const bulmaJS: BulmaJS;
 
                 tableRowElement.innerHTML =
                     "<td>" +
-                    cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType as string) +
+                    cityssm.escapeHTML(lotOccupancyOccupant.occupantName || "(No Name)") +
+                    "<br />" +
+                    '<span class="tag">' +
+                    cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType!) +
+                    "</span>" +
                     "</td>" +
-                    ("<td>" +
-                        cityssm.escapeHTML(lotOccupancyOccupant.occupantName || "") +
-                        "</td>") +
                     ("<td>" +
                         (lotOccupancyOccupant.occupantAddress1
                             ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) + "<br />"
@@ -954,6 +969,7 @@ declare const bulmaJS: BulmaJS;
                             ? cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress)
                             : "") +
                         "</td>") +
+                    ("<td>" + cityssm.escapeHTML(lotOccupancyOccupant.occupantComment!) + "</td>") +
                     ('<td class="is-hidden-print">' +
                         '<div class="buttons are-small is-justify-content-end">' +
                         ('<button class="button is-primary button--edit" type="button">' +

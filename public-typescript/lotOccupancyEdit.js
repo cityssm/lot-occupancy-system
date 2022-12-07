@@ -145,7 +145,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             okButton: {
                                 text: "Yes, Open the Work Order",
                                 callbackFunction: () => {
-                                    window.location.href = los.urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
+                                    window.location.href =
+                                        los.urlPrefix +
+                                            "/workOrders/" +
+                                            responseJSON.workOrderId +
+                                            "/edit";
                                 }
                             }
                         });
@@ -522,6 +526,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     modalElement.querySelector("#lotOccupancyOccupantEdit--occupantPostalCode").value = lotOccupancyOccupant.occupantPostalCode;
                     modalElement.querySelector("#lotOccupancyOccupantEdit--occupantPhoneNumber").value = lotOccupancyOccupant.occupantPhoneNumber;
                     modalElement.querySelector("#lotOccupancyOccupantEdit--occupantEmailAddress").value = lotOccupancyOccupant.occupantEmailAddress;
+                    modalElement.querySelector("#lotOccupancyOccupantEdit--occupantComment").value = lotOccupancyOccupant.occupantComment;
                 },
                 onshown: (modalElement, closeModalFunction) => {
                     bulmaJS.toggleHtmlClipped();
@@ -584,14 +589,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             tableElement.className = "table is-fullwidth is-striped is-hoverable";
             tableElement.innerHTML =
                 "<thead><tr>" +
-                    "<th>" +
-                    exports.aliases.occupant +
-                    " Type</th>" +
-                    "<th>" +
-                    exports.aliases.occupant +
-                    "</th>" +
+                    ("<th>" + exports.aliases.occupant + "</th>") +
                     "<th>Address</th>" +
                     "<th>Other Contact</th>" +
+                    "<th>Comment</th>" +
                     '<th class="is-hidden-print"><span class="is-sr-only">Options</span></th>' +
                     "</tr></thead>" +
                     "<tbody></tbody>";
@@ -601,11 +602,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     lotOccupancyOccupant.lotOccupantIndex.toString();
                 tableRowElement.innerHTML =
                     "<td>" +
+                        cityssm.escapeHTML(lotOccupancyOccupant.occupantName || "(No Name)") +
+                        "<br />" +
+                        '<span class="tag">' +
                         cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType) +
+                        "</span>" +
                         "</td>" +
-                        ("<td>" +
-                            cityssm.escapeHTML(lotOccupancyOccupant.occupantName || "") +
-                            "</td>") +
                         ("<td>" +
                             (lotOccupancyOccupant.occupantAddress1
                                 ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) + "<br />"
@@ -629,6 +631,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 ? cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress)
                                 : "") +
                             "</td>") +
+                        ("<td>" + cityssm.escapeHTML(lotOccupancyOccupant.occupantComment) + "</td>") +
                         ('<td class="is-hidden-print">' +
                             '<div class="buttons are-small is-justify-content-end">' +
                             ('<button class="button is-primary button--edit" type="button">' +

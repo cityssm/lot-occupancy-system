@@ -203,6 +203,8 @@ export interface LotOccupancyOccupant extends Record {
 
     occupantPhoneNumber?: string;
     occupantEmailAddress?: string;
+
+    occupantComment?: string;
     
     lotOccupancyIdCount?: number;
     recordUpdate_timeMillisMax?: number;

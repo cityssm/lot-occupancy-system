@@ -155,17 +155,19 @@
         <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
                 <tr>
-                    <th><%= configFunctions.getProperty("aliases.occupant") %> Type</th>
                     <th><%= configFunctions.getProperty("aliases.occupant") %></th>
                     <th>Address</th>
                     <th>Other Contact</th>
+                    <th>Comment</th>
                 </tr>
             </thead>
             <tbody>
                 <% for (const lotOccupancyOccupant of lotOccupancy.lotOccupancyOccupants) { %>
                 <tr>
-                    <td><%= lotOccupancyOccupant.lotOccupantType %></td>
-                    <td><%= lotOccupancyOccupant.occupantName %></td>
+                    <td>
+                        <%= lotOccupancyOccupant.occupantName %><br />
+                        <span class="tag"><%= lotOccupancyOccupant.lotOccupantType %></span>
+                    </td>
                     <td>
                         <% if (lotOccupancyOccupant.occupantAddress1) { %>
                             <%= lotOccupancyOccupant.occupantAddress1 %><br />
@@ -184,6 +186,9 @@
                             <%= lotOccupancyOccupant.occupantPhoneNumber %><br />
                         <% } %>
                         <%= lotOccupancyOccupant.occupantEmailAddress %>
+                    </td>
+                    <td>
+                        <%= lotOccupancyOccupant.occupantComment %>
                     </td>
                 </tr>
                 <% } %>
