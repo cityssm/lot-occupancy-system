@@ -202,6 +202,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             addLot(lotId);
         };
         const renderRelatedOccupancies = () => {
+            var _a;
             const occupanciesContainerElement = document.querySelector("#container--lotOccupancies");
             document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent = workOrderLotOccupancies.length.toString();
             if (workOrderLotOccupancies.length === 0) {
@@ -297,14 +298,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             ? '<span class="has-text-grey">(No ' +
                                 cityssm.escapeHTML(exports.aliases.occupants) +
                                 ")</span>"
-                            : '<span class="has-tooltip-left" data-tooltip="' +
-                                cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0].lotOccupantType) +
-                                '">' +
-                                cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0].occupantName) +
-                                "</span>") +
-                        (lotOccupancy.lotOccupancyOccupants.length > 1
-                            ? " plus " + (lotOccupancy.lotOccupancyOccupants.length - 1)
-                            : "") +
+                            : (_a = lotOccupancy.lotOccupancyOccupants) === null || _a === void 0 ? void 0 : _a.reduce((soFar, occupant) => {
+                                return (soFar +
+                                    '<span class="has-tooltip-left" data-tooltip="' +
+                                    cityssm.escapeHTML(occupant.lotOccupantType) +
+                                    '">' +
+                                    cityssm.escapeHTML(occupant.occupantName) +
+                                    "</span><br />");
+                            }, "")) +
                         "</td>") +
                     ("<td>" +
                         '<button class="button is-small is-light is-danger button--deleteLotOccupancy" data-tooltip="Delete Relationship" type="button">' +

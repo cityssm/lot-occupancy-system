@@ -420,18 +420,16 @@ declare const bulmaJS: BulmaJS;
                                 ? '<span class="has-text-grey">(No ' +
                                   cityssm.escapeHTML(exports.aliases.occupants) +
                                   ")</span>"
-                                : '<span class="has-tooltip-left" data-tooltip="' +
-                                  cityssm.escapeHTML(
-                                      lotOccupancy.lotOccupancyOccupants![0].lotOccupantType!
-                                  ) +
-                                  '">' +
-                                  cityssm.escapeHTML(
-                                      lotOccupancy.lotOccupancyOccupants![0].occupantName!
-                                  ) +
-                                  "</span>") +
-                            (lotOccupancy.lotOccupancyOccupants!.length > 1
-                                ? " plus " + (lotOccupancy.lotOccupancyOccupants!.length - 1)
-                                : "") +
+                                : lotOccupancy.lotOccupancyOccupants?.reduce((soFar, occupant) => {
+                                      return (
+                                          soFar +
+                                          '<span class="has-tooltip-left" data-tooltip="' +
+                                          cityssm.escapeHTML(occupant.lotOccupantType!) +
+                                          '">' +
+                                          cityssm.escapeHTML(occupant.occupantName!) +
+                                          "</span><br />"
+                                      );
+                                  }, "")) +
                             "</td>") +
                         ("<td>" +
                             '<button class="button is-small is-light is-danger button--deleteLotOccupancy" data-tooltip="Delete Relationship" type="button">' +
