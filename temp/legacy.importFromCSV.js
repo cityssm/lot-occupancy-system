@@ -137,7 +137,10 @@ function buildLotName(lotNamePieces) {
         (lotNamePieces.block === "" ? "" : "B" + lotNamePieces.block + "-") +
         (lotNamePieces.range1 === "0" && lotNamePieces.range2 === ""
             ? ""
-            : "R" + lotNamePieces.range1 + lotNamePieces.range2 + "-") +
+            : "R" +
+                (lotNamePieces.range1 === "0" ? "" : lotNamePieces.range1) +
+                lotNamePieces.range2 +
+                "-") +
         (lotNamePieces.lot1 === "0" && lotNamePieces.lot2 === ""
             ? ""
             : "L" + lotNamePieces.lot1 + lotNamePieces.lot2 + "-") +
