@@ -730,10 +730,10 @@ function importFromPrepaidCSV() {
                     : prepaidRow.CMPP_GST_DISINTERMENT);
             addLotOccupancyTransaction({
                 lotOccupancyId,
-                externalReceiptNumber: prepaidRow.CMPP_ORDER_NO,
+                externalReceiptNumber: "",
                 transactionAmount,
                 transactionDateString: occupancyStartDateString,
-                transactionNote: ""
+                transactionNote: "Order Number: " + prepaidRow.CMPP_ORDER_NO
             }, user);
             if (prepaidRow.CMPP_REMARK1) {
                 addLotOccupancyComment({

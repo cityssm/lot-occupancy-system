@@ -1234,10 +1234,10 @@ function importFromPrepaidCSV() {
             addLotOccupancyTransaction(
                 {
                     lotOccupancyId,
-                    externalReceiptNumber: prepaidRow.CMPP_ORDER_NO,
+                    externalReceiptNumber: "",
                     transactionAmount,
                     transactionDateString: occupancyStartDateString,
-                    transactionNote: ""
+                    transactionNote: "Order Number: " + prepaidRow.CMPP_ORDER_NO
                 },
                 user
             );
