@@ -5,9 +5,9 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import { addOrUpdateLotOccupancyField } from "./addOrUpdateLotOccupancyField.js";
+import { addLotOccupancyOccupant } from "./addLotOccupancyOccupant.js";
 
 import type * as recordTypes from "../../types/recordTypes";
-import addLotOccupancyOccupant from "./addLotOccupancyOccupant.js";
 
 interface AddLotOccupancyForm {
     occupancyTypeId: string | number;
@@ -19,7 +19,7 @@ interface AddLotOccupancyForm {
     occupancyTypeFieldIds?: string;
     [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown;
 
-    lotOccupantTypeId: string;
+    lotOccupantTypeId?: string;
     occupantName?: string;
     occupantAddress1?: string;
     occupantAddress2?: string;
