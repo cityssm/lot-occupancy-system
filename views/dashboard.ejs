@@ -62,7 +62,7 @@
                                             for (const lot of milestone.workOrderLots) {
                                     %>
                                     <span class="has-tooltip-right" data-tooltip="<%= lot.mapName %>">
-                                        <i class="fas fa-vector-square" aria-label="<%= configFunctions.getProperty("aliases.lot") %>"></i>
+                                        <i class="fas fa-fw fa-vector-square" aria-label="<%= configFunctions.getProperty("aliases.lot") %>"></i>
                                         <%= lot.lotName %>
                                     </span><br />
                                     <%
@@ -74,7 +74,7 @@
                                                 for (const occupant of occupancy.lotOccupancyOccupants) {
                                     %>
                                     <span class="has-tooltip-right" data-tooltip="<%= occupant.lotOccupantType %>">
-                                        <i class="fas fa-user" aria-label="<%= configFunctions.getProperty("aliases.occupancy") %>"></i>
+                                        <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-label="<%= configFunctions.getProperty("aliases.occupancy") %>"></i>
                                         <%= occupant.occupantName %>
                                     </span><br />
                                     <%

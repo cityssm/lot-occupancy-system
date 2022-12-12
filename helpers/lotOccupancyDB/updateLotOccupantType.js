@@ -7,11 +7,12 @@ export const updateLotOccupantType = (lotOccupantTypeForm, requestSession) => {
     const result = database
         .prepare("update LotOccupantTypes" +
         " set lotOccupantType = ?," +
+        " fontAwesomeIconClass = ?," +
         " recordUpdate_userName = ?," +
         " recordUpdate_timeMillis = ?" +
         " where lotOccupantTypeId = ?" +
         " and recordDelete_timeMillis is null")
-        .run(lotOccupantTypeForm.lotOccupantType, requestSession.user.userName, rightNowMillis, lotOccupantTypeForm.lotOccupantTypeId);
+        .run(lotOccupantTypeForm.lotOccupantType, lotOccupantTypeForm.fontAwesomeIconClass || "", requestSession.user.userName, rightNowMillis, lotOccupantTypeForm.lotOccupantTypeId);
     database.close();
     clearLotOccupantTypesCache();
     return result.changes > 0;

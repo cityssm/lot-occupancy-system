@@ -7,6 +7,7 @@ import { clearLotOccupantTypesCache } from "../functions.cache.js";
 
 interface AddLotOccupantTypeForm {
     lotOccupantType: string;
+    fontAwesomeIconClass?: string;
     orderNumber?: number;
 }
 
@@ -21,13 +22,14 @@ export const addLotOccupantType = (
     const result = database
         .prepare(
             "insert into LotOccupantTypes (" +
-                "lotOccupantType, orderNumber," +
+                "lotOccupantType, fontAwesomeIconClass, orderNumber," +
                 " recordCreate_userName, recordCreate_timeMillis," +
                 " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?)"
+                " values (?, ?, ?, ?, ?, ?, ?)"
         )
         .run(
             lotOccupantTypeForm.lotOccupantType,
+            lotOccupantTypeForm.fontAwesomeIconClass || "",
             lotOccupantTypeForm.orderNumber || -1,
             requestSession.user.userName,
             rightNowMillis,

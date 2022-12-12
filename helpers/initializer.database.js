@@ -155,6 +155,7 @@ export const initializeDatabase = () => {
             .prepare("create table if not exists LotOccupantTypes (" +
             "lotOccupantTypeId integer not null primary key autoincrement," +
             " lotOccupantType varchar(100) not null," +
+            " fontAwesomeIconClass varchar(50) not null default ''," +
             " orderNumber smallint not null default 0," +
             recordColumns +
             ")")

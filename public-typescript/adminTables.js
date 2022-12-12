@@ -2,6 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
+    const refreshFontAwesomeIcon = (changeEvent) => {
+        const inputElement = changeEvent.currentTarget;
+        const fontAwesomeIconClass = inputElement.value;
+        inputElement.closest(".field").querySelectorAll(".button.is-static")[1].innerHTML =
+            "<i class=\"fas fa-fw fa-" + fontAwesomeIconClass + "\" aria-hidden=\"true\"></i>";
+    };
     let workOrderTypes = exports.workOrderTypes;
     delete exports.workOrderTypes;
     const updateWorkOrderType = (submitEvent) => {
@@ -694,7 +700,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         if (workOrderTypes.length === 0) {
             containerElement.innerHTML =
                 "<tr>" +
-                    '<td colspan="2">' +
+                    '<td colspan="3">' +
                     '<div class="message is-warning">' +
                     '<p class="message-body">There are no active ' +
                     cityssm.escapeHTML(exports.aliases.lot.toLowerCase()) +
@@ -711,27 +717,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const tableRowElement = document.createElement("tr");
             tableRowElement.dataset.lotOccupantTypeId =
                 lotOccupantType.lotOccupantTypeId.toString();
+            const formId = "form--lotOccupantType-" + lotOccupantType.lotOccupantTypeId;
             tableRowElement.innerHTML =
                 "<td>" +
-                    "<form>" +
-                    '<input name="lotOccupantTypeId" type="hidden" value="' +
-                    lotOccupantType.lotOccupantTypeId.toString() +
-                    '" />' +
-                    ('<div class="field has-addons">' +
+                    ('<div class="field">' +
                         '<div class="control">' +
                         '<input class="input" name="lotOccupantType" type="text"' +
                         (' value="' + cityssm.escapeHTML(lotOccupantType.lotOccupantType) + '"') +
+                        (' form="' + formId + '"') +
                         (' aria-label="' +
                             cityssm.escapeHTML(exports.aliases.lot + " " + exports.aliases.occupant) +
                             ' Type"') +
                         ' maxlength="100" required />' +
                         "</div>" +
-                        '<div class="control">' +
-                        '<button class="button is-success" type="submit" aria-label="Save"><i class="fas fa-save" aria-hidden="true"></i></button>' +
-                        "</div>" +
                         "</div>") +
-                    "</form>" +
                     "</td>" +
+                    "<td>" +
+                    ('<div class="field has-addons">' +
+                        '<div class="control"><span class="button is-static">fa-</span></div>' +
+                        '<div class="control">' +
+                        '<input class="input" name="fontAwesomeIconClass" type="text"' +
+                        (' value="' + cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass) + '"') +
+                        (' form="' + formId + '"') +
+                        ' list="datalist--fontAwesomeIconClass"' +
+                        ' aria-label="Icon Name"' +
+                        ' maxlength="50" />' +
+                        "</div>" +
+                        '<div class="control"><span class="button is-static">' +
+                        '<i class="fas fa-fw fa-' +
+                        cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass) +
+                        '"></i></span></div>' +
+                        "</div>") +
+                    "</td>" +
+                    ("<td>" +
+                        ('<form id="' + formId + '">') +
+                        '<input name="lotOccupantTypeId" type="hidden"' +
+                        (' value="' + lotOccupantType.lotOccupantTypeId.toString() + '"') +
+                        " />" +
+                        '<button class="button is-success" type="submit" aria-label="Save"><i class="fas fa-save" aria-hidden="true"></i></button>' +
+                        "</form>" +
+                        "</td>") +
                     '<td class="is-nowrap">' +
                     '<div class="field is-grouped">' +
                     '<div class="control">' +
@@ -761,6 +786,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</div>" +
                     "</div>" +
                     "</td>";
+            tableRowElement
+                .querySelector("input[name='fontAwesomeIconClass']")
+                .addEventListener("keyup", refreshFontAwesomeIcon);
             tableRowElement
                 .querySelector("form")
                 .addEventListener("submit", updateLotOccupantType);

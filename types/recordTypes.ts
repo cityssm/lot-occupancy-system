@@ -125,6 +125,7 @@ export interface OccupancyTypeField {
 export interface LotOccupantType extends Record {
     lotOccupantTypeId: number;
     lotOccupantType: string;
+    fontAwesomeIconClass: string;
     orderNumber?: number;
 }
 
@@ -193,7 +194,8 @@ export interface LotOccupancyOccupant extends Record {
 
     lotOccupantTypeId?: number;
     lotOccupantType?: string;
-
+    fontAwesomeIconClass?: string;
+    
     occupantName?: string;
     occupantAddress1?: string;
     occupantAddress2?: string;

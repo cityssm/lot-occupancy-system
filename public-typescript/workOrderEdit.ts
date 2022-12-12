@@ -426,6 +426,13 @@ declare const bulmaJS: BulmaJS;
                                           '<span class="has-tooltip-left" data-tooltip="' +
                                           cityssm.escapeHTML(occupant.lotOccupantType!) +
                                           '">' +
+                                          '<i class="fas fa-fw fa-' +
+                                          cityssm.escapeHTML(
+                                              occupant.fontAwesomeIconClass || "user"
+                                          ) +
+                                          '" aria-label="' +
+                                          cityssm.escapeHTML(exports.aliases.occupant) +
+                                          '"></i> ' +
                                           cityssm.escapeHTML(occupant.occupantName!) +
                                           "</span><br />"
                                       );

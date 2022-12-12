@@ -175,7 +175,10 @@
                                 <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.occupants") %>)</span>
                             <% } else { %>
                                 <% for (const occupant of lotOccupancy.lotOccupancyOccupants) { %>
-                                    <span class="has-tooltip-left" data-tooltip="<%= occupant.lotOccupantType %>"><%= occupant.occupantName %></span><br />
+                                    <span class="has-tooltip-left" data-tooltip="<%= occupant.lotOccupantType %>">
+                                        <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-hidden="true"></i>
+                                        <%= occupant.occupantName %>
+                                    </span><br />
                                 <% } %>
                             <% } %>
                         </td>

@@ -7,18 +7,23 @@ import {
     getWorkOrderTypes
 } from "../../helpers/functions.cache.js";
 
-export const handler: RequestHandler = (_request, response) => {
+import { getSolidIconClasses } from "../../helpers/functions.icons.js";
+
+export const handler: RequestHandler = async (_request, response) => {
     const workOrderTypes = getWorkOrderTypes();
     const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
     const lotStatuses = getLotStatuses();
     const lotOccupantTypes = getLotOccupantTypes();
+
+    const fontAwesomeIconClasses = await getSolidIconClasses();
 
     response.render("admin-tables", {
         headTitle: "Config Table Management",
         workOrderTypes,
         workOrderMilestoneTypes,
         lotStatuses,
-        lotOccupantTypes
+        lotOccupantTypes,
+        fontAwesomeIconClasses
     });
 };
 

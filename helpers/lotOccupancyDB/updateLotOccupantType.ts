@@ -9,6 +9,7 @@ import type * as recordTypes from "../../types/recordTypes";
 interface UpdateLotOccupantTypeForm {
     lotOccupantTypeId: number | string;
     lotOccupantType: string;
+    fontAwesomeIconClass?: string;
 }
 
 export const updateLotOccupantType = (
@@ -23,6 +24,7 @@ export const updateLotOccupantType = (
         .prepare(
             "update LotOccupantTypes" +
                 " set lotOccupantType = ?," +
+                " fontAwesomeIconClass = ?," +
                 " recordUpdate_userName = ?," +
                 " recordUpdate_timeMillis = ?" +
                 " where lotOccupantTypeId = ?" +
@@ -30,6 +32,7 @@ export const updateLotOccupantType = (
         )
         .run(
             lotOccupantTypeForm.lotOccupantType,
+            lotOccupantTypeForm.fontAwesomeIconClass || "",
             requestSession.user.userName,
             rightNowMillis,
             lotOccupantTypeForm.lotOccupantTypeId

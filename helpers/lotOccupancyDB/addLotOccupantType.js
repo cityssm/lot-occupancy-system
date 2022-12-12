@@ -6,11 +6,11 @@ export const addLotOccupantType = (lotOccupantTypeForm, requestSession) => {
     const rightNowMillis = Date.now();
     const result = database
         .prepare("insert into LotOccupantTypes (" +
-        "lotOccupantType, orderNumber," +
+        "lotOccupantType, fontAwesomeIconClass, orderNumber," +
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?)")
-        .run(lotOccupantTypeForm.lotOccupantType, lotOccupantTypeForm.orderNumber || -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        " values (?, ?, ?, ?, ?, ?, ?)")
+        .run(lotOccupantTypeForm.lotOccupantType, lotOccupantTypeForm.fontAwesomeIconClass || "", lotOccupantTypeForm.orderNumber || -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     database.close();
     clearLotOccupantTypesCache();
     return result.lastInsertRowid;

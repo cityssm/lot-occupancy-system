@@ -152,13 +152,16 @@
                     <thead>
                         <tr>
                             <th><%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupant") %> Type</th>
+                            <th>Icon Class</th>
+                            <th>&nbsp;</th>
                             <th class="has-text-centered has-width-1">Options</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="2">
+                            <td colspan="4">
                                 <form id="form--addLotOccupantType">
+                                    <input name="fontAwesomeIconClass" type="hidden" value="user" />
                                     <div class="field has-addons">
                                         <div class="control is-expanded">
                                             <input class="input" name="lotOccupantType" type="text" maxlength="100" placeholder="New <%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupant") %> Type" required />
@@ -177,6 +180,11 @@
                 </table>
             </div>
         </div>
+        <datalist id="datalist--fontAwesomeIconClass">
+            <% for (const iconClass of fontAwesomeIconClasses) { %>
+                <option value="<%= iconClass %>"></option>
+            <% } %>
+        </datalist>
     </div>
 </div>
 
