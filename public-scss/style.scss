@@ -102,10 +102,12 @@ fieldset:enabled .is-hidden-enabled {
     .highlight,
     .highlight path {
         &.is-danger {
+            stroke: $danger-dark !important;
             fill: rgba($danger-light, 0.6);
         }
-
+        
         &.is-success {
+            stroke: $success-dark !important;
             fill: rgba($success, 0.6);
         }
     }
