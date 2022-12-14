@@ -1,10 +1,26 @@
 <%
-    const purchaserLotOccupantType = "Purchaser";
-    const purchaserOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, purchaserLotOccupantType);
+    const purchaserLotOccupantTypes = ["Purchaser", "Preneed Owner"];
+
+    let purchaserOccupants = [];
+    for (const purchaserLotOccupantType of purchaserLotOccupantTypes) {
+        purchaserOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, purchaserLotOccupantType);
+        if (purchaserOccupants.length > 0) {
+            break;
+        }
+    }
+
     const purchaser = purchaserOccupants.length > 0 ? purchaserOccupants[0] : undefined;
 
-    const recipientLotOccupantType = "Preneed Owner";
-    const recipientOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, recipientLotOccupantType);
+    const recipientLotOccupantTypes = ["Deceased", "Preneed Owner"];
+
+    let recipientOccupants = [];
+    for (const recipientLotOccupantType of recipientLotOccupantTypes) {
+        recipientOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, recipientLotOccupantType);
+        if (recipientOccupants.length > 0) {
+            break;
+        }
+    }
+    
     const recipient = recipientOccupants.length > 0 ? recipientOccupants[0] : undefined;
 
     const deathDateOccupantTypeField = "Death Date";
