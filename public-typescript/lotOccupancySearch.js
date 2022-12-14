@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
-    const lotOccupancyPrints = exports.lotOccupancyPrints;
     const searchFilterFormElement = document.querySelector("#form--searchFilters");
     const searchResultsContainerElement = document.querySelector("#container--searchResults");
     const limit = Number.parseInt(document.querySelector("#searchFilter--limit").value, 10);
@@ -111,19 +110,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             : '<span class="has-text-grey">(No End Date)</span>') +
                         "</td>") +
                     ("<td>" + occupantsHTML + "</td>") +
-                    (lotOccupancyPrints.length > 0
-                        ? "<td>" +
-                            '<a class="button is-small" data-tooltip="Print" href="' +
+                    "<td>" +
+                    (lotOccupancy.printEJS
+                        ? '<a class="button is-small" data-tooltip="Print" href="' +
                             los.urlPrefix +
                             "/print/" +
-                            lotOccupancyPrints[0] +
+                            lotOccupancy.printEJS +
                             "/?lotOccupancyId=" +
                             lotOccupancy.lotOccupancyId +
                             '" target="_blank">' +
                             '<i class="fas fa-print" aria-label="Print"></i>' +
-                            "</a>" +
-                            "</td>"
+                            "</a>"
                         : "") +
+                    "</td>" +
                     "</tr>");
             }
             searchResultsContainerElement.innerHTML =
@@ -135,9 +134,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupancyStartDate) + "</th>") +
                     "<th>End Date</th>" +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupants) + "</th>") +
-                    (lotOccupancyPrints.length > 0
-                        ? '<th class="has-width-1"><span class="is-sr-only">Print</span></th>'
-                        : "") +
+                    '<th class="has-width-1"><span class="is-sr-only">Print</span></th>' +
                     "</tr></thead>" +
                     "<table>" +
                     '<div class="level">' +

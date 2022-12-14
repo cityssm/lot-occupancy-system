@@ -80,6 +80,7 @@ export interface OccupancyType extends Record {
     occupancyType: string;
     orderNumber?: number;
     occupancyTypeFields?: OccupancyTypeField[];
+    occupancyTypePrints?: string[];
 }
 export interface OccupancyTypeField {
     occupancyTypeFieldId?: number;
@@ -178,6 +179,7 @@ export interface LotOccupancy extends Record {
     lotOccupancyId?: number;
     occupancyTypeId?: number;
     occupancyType?: string;
+    printEJS?: string;
     lotId?: number;
     lotTypeId?: number;
     lotType?: string;

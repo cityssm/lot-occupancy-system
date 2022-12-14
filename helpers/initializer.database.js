@@ -24,7 +24,8 @@ export const initializeDatabase = () => {
             ")")
             .run();
         lotOccupancyDB
-            .prepare("create index if not exists idx_lottypes_ordernumber" + " on LotTypes (orderNumber, lotType)")
+            .prepare("create index if not exists idx_lottypes_ordernumber" +
+            " on LotTypes (orderNumber, lotType)")
             .run();
         lotOccupancyDB
             .prepare("create table if not exists LotTypeFields (" +
@@ -55,7 +56,8 @@ export const initializeDatabase = () => {
             ")")
             .run();
         lotOccupancyDB
-            .prepare("create index if not exists idx_lotstatuses_ordernumber" + " on LotStatuses (orderNumber, lotStatus)")
+            .prepare("create index if not exists idx_lotstatuses_ordernumber" +
+            " on LotStatuses (orderNumber, lotStatus)")
             .run();
         lotOccupancyDB
             .prepare("create table if not exists Maps (" +
@@ -150,6 +152,21 @@ export const initializeDatabase = () => {
         lotOccupancyDB
             .prepare("create index if not exists idx_occupancytypefields_ordernumber" +
             " on OccupancyTypeFields (occupancyTypeId, orderNumber, occupancyTypeField)")
+            .run();
+        lotOccupancyDB
+            .prepare("create table if not exists OccupancyTypePrints (" +
+            "occupancyTypeId integer not null," +
+            " printEJS varchar(100) not null," +
+            " orderNumber smallint not null default 0," +
+            recordColumns +
+            "," +
+            " primary key (occupancyTypeId, printEJS)," +
+            " foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId)" +
+            ")")
+            .run();
+        lotOccupancyDB
+            .prepare("create index if not exists idx_occupancytypeprints_ordernumber" +
+            " on OccupancyTypePrints (occupancyTypeId, orderNumber, printEJS)")
             .run();
         lotOccupancyDB
             .prepare("create table if not exists LotOccupantTypes (" +
@@ -258,7 +275,8 @@ export const initializeDatabase = () => {
             ")")
             .run();
         lotOccupancyDB
-            .prepare("create index if not exists idx_fees_ordernumber" + " on Fees (orderNumber, feeName)")
+            .prepare("create index if not exists idx_fees_ordernumber" +
+            " on Fees (orderNumber, feeName)")
             .run();
         lotOccupancyDB
             .prepare("create table if not exists LotOccupancyFees (" +

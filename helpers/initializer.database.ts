@@ -17,7 +17,9 @@ export const initializeDatabase = (): boolean => {
     const lotOccupancyDB = sqlite(databasePath);
 
     const row = lotOccupancyDB
-        .prepare("select name from sqlite_master where type = 'table' and name = 'WorkOrderMilestones'")
+        .prepare(
+            "select name from sqlite_master where type = 'table' and name = 'WorkOrderMilestones'"
+        )
         .get();
 
     if (!row) {
@@ -37,7 +39,10 @@ export const initializeDatabase = (): boolean => {
             .run();
 
         lotOccupancyDB
-            .prepare("create index if not exists idx_lottypes_ordernumber" + " on LotTypes (orderNumber, lotType)")
+            .prepare(
+                "create index if not exists idx_lottypes_ordernumber" +
+                    " on LotTypes (orderNumber, lotType)"
+            )
             .run();
 
         lotOccupancyDB
@@ -79,7 +84,8 @@ export const initializeDatabase = (): boolean => {
 
         lotOccupancyDB
             .prepare(
-                "create index if not exists idx_lotstatuses_ordernumber" + " on LotStatuses (orderNumber, lotStatus)"
+                "create index if not exists idx_lotstatuses_ordernumber" +
+                    " on LotStatuses (orderNumber, lotStatus)"
             )
             .run();
 
@@ -205,6 +211,27 @@ export const initializeDatabase = (): boolean => {
             .prepare(
                 "create index if not exists idx_occupancytypefields_ordernumber" +
                     " on OccupancyTypeFields (occupancyTypeId, orderNumber, occupancyTypeField)"
+            )
+            .run();
+
+        lotOccupancyDB
+            .prepare(
+                "create table if not exists OccupancyTypePrints (" +
+                    "occupancyTypeId integer not null," +
+                    " printEJS varchar(100) not null," +
+                    " orderNumber smallint not null default 0," +
+                    recordColumns +
+                    "," +
+                    " primary key (occupancyTypeId, printEJS)," +
+                    " foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId)" +
+                    ")"
+            )
+            .run();
+
+        lotOccupancyDB
+            .prepare(
+                "create index if not exists idx_occupancytypeprints_ordernumber" +
+                    " on OccupancyTypePrints (occupancyTypeId, orderNumber, printEJS)"
             )
             .run();
 
@@ -344,7 +371,10 @@ export const initializeDatabase = (): boolean => {
             .run();
 
         lotOccupancyDB
-            .prepare("create index if not exists idx_fees_ordernumber" + " on Fees (orderNumber, feeName)")
+            .prepare(
+                "create index if not exists idx_fees_ordernumber" +
+                    " on Fees (orderNumber, feeName)"
+            )
             .run();
 
         lotOccupancyDB

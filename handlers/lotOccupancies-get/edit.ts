@@ -4,6 +4,7 @@ import {
     getLotOccupantTypes,
     getLotStatuses,
     getLotTypes,
+    getOccupancyTypePrintsById,
     getOccupancyTypes,
     getWorkOrderTypes
 } from "../../helpers/functions.cache.js";
@@ -23,6 +24,8 @@ export const handler: RequestHandler = (request, response) => {
         );
     }
 
+    const occupancyTypePrints = getOccupancyTypePrintsById(lotOccupancy.occupancyTypeId);
+
     const occupancyTypes = getOccupancyTypes();
     const lotOccupantTypes = getLotOccupantTypes();
     const lotTypes = getLotTypes();
@@ -37,6 +40,7 @@ export const handler: RequestHandler = (request, response) => {
             configFunctions.getProperty("aliases.occupancy") +
             "  Update",
         lotOccupancy,
+        occupancyTypePrints,
 
         occupancyTypes,
         lotOccupantTypes,

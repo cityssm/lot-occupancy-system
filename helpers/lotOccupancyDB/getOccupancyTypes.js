@@ -1,6 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { getOccupancyTypeFields } from "./getOccupancyTypeFields.js";
+import { getOccupancyTypePrints } from "./getOccupancyTypePrints.js";
 export const getOccupancyTypes = () => {
     const database = sqlite(databasePath);
     const occupancyTypes = database
@@ -19,6 +20,7 @@ export const getOccupancyTypes = () => {
             occupancyType.orderNumber = expectedTypeOrderNumber;
         }
         occupancyType.occupancyTypeFields = getOccupancyTypeFields(occupancyType.occupancyTypeId, database);
+        occupancyType.occupancyTypePrints = getOccupancyTypePrints(occupancyType.occupancyTypeId, database);
         let expectedFieldOrderNumber = -1;
         for (const occupancyTypeField of occupancyType.occupancyTypeFields) {
             expectedFieldOrderNumber += 1;

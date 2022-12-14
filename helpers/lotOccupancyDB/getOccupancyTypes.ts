@@ -3,6 +3,7 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { getOccupancyTypeFields } from "./getOccupancyTypeFields.js";
+import { getOccupancyTypePrints } from "./getOccupancyTypePrints.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -34,6 +35,11 @@ export const getOccupancyTypes = (): recordTypes.OccupancyType[] => {
         }
 
         occupancyType.occupancyTypeFields = getOccupancyTypeFields(
+            occupancyType.occupancyTypeId,
+            database
+        );
+        
+        occupancyType.occupancyTypePrints = getOccupancyTypePrints(
             occupancyType.occupancyTypeId,
             database
         );

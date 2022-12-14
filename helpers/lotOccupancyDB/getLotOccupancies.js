@@ -1,6 +1,8 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { dateIntegerToString, dateStringToInteger, dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import * as configFunctions from "../functions.config.js";
+import { getOccupancyTypeById } from "../functions.cache.js";
 import { getLotOccupancyOccupants } from "./getLotOccupancyOccupants.js";
 const buildWhereClause = (filters) => {
     let sqlWhereClause = " where o.recordDelete_timeMillis is null";
@@ -123,15 +125,21 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
             " left join Maps m on l.mapId = m.mapId" +
             sqlWhereClause +
             " order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId" +
-            (options.limit !== -1
-                ? " limit " + options.limit + " offset " + options.offset
-                : ""))
+            (options.limit === -1
+                ? ""
+                : " limit " + options.limit + " offset " + options.offset))
             .all(sqlParameters);
         if (options.limit === -1) {
             count = lotOccupancies.length;
         }
-        if (options.includeOccupants) {
-            for (const lotOccupancy of lotOccupancies) {
+        for (const lotOccupancy of lotOccupancies) {
+            const occupancyType = getOccupancyTypeById(lotOccupancy.occupancyTypeId);
+            if (occupancyType) {
+                lotOccupancy.printEJS = occupancyType.occupancyTypePrints.includes("*")
+                    ? configFunctions.getProperty("settings.lotOccupancy.prints")[0]
+                    : occupancyType.occupancyTypePrints[0];
+            }
+            if (options.includeOccupants) {
                 lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(lotOccupancy.lotOccupancyId, database);
             }
         }

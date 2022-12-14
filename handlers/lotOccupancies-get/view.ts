@@ -1,4 +1,5 @@
 import type { RequestHandler } from "express";
+import { getOccupancyTypePrintsById } from "../../helpers/functions.cache.js";
 
 import * as configFunctions from "../../helpers/functions.config.js";
 
@@ -14,13 +15,16 @@ export const handler: RequestHandler = (request, response) => {
         );
     }
 
+    const occupancyTypePrints = getOccupancyTypePrintsById(lotOccupancy.occupancyTypeId);
+
     return response.render("lotOccupancy-view", {
         headTitle:
             configFunctions.getProperty("aliases.lot") +
             " " +
             configFunctions.getProperty("aliases.occupancy") +
             " View",
-        lotOccupancy
+        lotOccupancy,
+        occupancyTypePrints
     });
 };
 

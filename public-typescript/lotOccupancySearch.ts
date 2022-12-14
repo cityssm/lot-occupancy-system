@@ -10,8 +10,6 @@ declare const cityssm: cityssmGlobal;
 (() => {
     const los = exports.los as globalTypes.LOS;
 
-    const lotOccupancyPrints: string[] = exports.lotOccupancyPrints;
-
     const searchFilterFormElement = document.querySelector(
         "#form--searchFilters"
     ) as HTMLFormElement;
@@ -145,19 +143,19 @@ declare const cityssm: cityssmGlobal;
                                     : '<span class="has-text-grey">(No End Date)</span>') +
                                 "</td>") +
                             ("<td>" + occupantsHTML + "</td>") +
-                            (lotOccupancyPrints.length > 0
-                                ? "<td>" +
-                                  '<a class="button is-small" data-tooltip="Print" href="' +
+                            "<td>" +
+                            (lotOccupancy.printEJS
+                                ? '<a class="button is-small" data-tooltip="Print" href="' +
                                   los.urlPrefix +
                                   "/print/" +
-                                  lotOccupancyPrints[0] +
+                                  lotOccupancy.printEJS +
                                   "/?lotOccupancyId=" +
                                   lotOccupancy.lotOccupancyId +
                                   '" target="_blank">' +
                                   '<i class="fas fa-print" aria-label="Print"></i>' +
-                                  "</a>" +
-                                  "</td>"
+                                  "</a>"
                                 : "") +
+                            "</td>" +
                             "</tr>"
                     );
                 }
@@ -171,9 +169,7 @@ declare const cityssm: cityssmGlobal;
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupancyStartDate) + "</th>") +
                     "<th>End Date</th>" +
                     ("<th>" + cityssm.escapeHTML(exports.aliases.occupants) + "</th>") +
-                    (lotOccupancyPrints.length > 0
-                        ? '<th class="has-width-1"><span class="is-sr-only">Print</span></th>'
-                        : "") +
+                    '<th class="has-width-1"><span class="is-sr-only">Print</span></th>' +
                     "</tr></thead>" +
                     "<table>" +
                     '<div class="level">' +

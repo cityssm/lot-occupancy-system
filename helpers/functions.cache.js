@@ -1,3 +1,4 @@
+import * as configFunctions from "./functions.config.js";
 import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from "./lotOccupancyDB/getLotOccupantTypes.js";
 import { getLotStatuses as getLotStatusesFromDatabase } from "./lotOccupancyDB/getLotStatuses.js";
 import { getLotTypes as getLotTypesFromDatabase } from "./lotOccupancyDB/getLotTypes.js";
@@ -100,6 +101,16 @@ export function getOccupancyTypeByOccupancyType(occupancyTypeString) {
     return cachedOccupancyTypes.find((currentOccupancyType) => {
         return currentOccupancyType.occupancyType.toLowerCase() === occupancyTypeLowerCase;
     });
+}
+export function getOccupancyTypePrintsById(occupancyTypeId) {
+    const occupancyType = getOccupancyTypeById(occupancyTypeId);
+    if (!occupancyType || occupancyType.occupancyTypePrints.length === 0) {
+        return [];
+    }
+    if (occupancyType.occupancyTypePrints.includes("*")) {
+        return configFunctions.getProperty("settings.lotOccupancy.prints");
+    }
+    return occupancyType.occupancyTypePrints;
 }
 export function clearOccupancyTypesCache() {
     occupancyTypes = undefined;

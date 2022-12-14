@@ -46,10 +46,10 @@
                 </h1>
             </div>
         </div>
-        <% if (configFunctions.getProperty("settings.lotOccupancy.prints").length > 0) { %>
+        <% if (occupancyTypePrints.length > 0) { %>
             <div class="level-right is-hidden-print">
                 <div class="level-item is-justify-content-right">
-                    <% if (configFunctions.getProperty("settings.lotOccupancy.prints").length === 1) { %>
+                    <% if (occupancyTypePrints.length === 1) { %>
                     <a class="button is-link" href="<%= urlPrefix %>/print/<%= configFunctions.getProperty("settings.lotOccupancy.prints")[0] %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
                         <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
                         <span>Print</span>
@@ -65,7 +65,7 @@
                         </div>
                         <div class="dropdown-menu">
                             <div class="dropdown-content">
-                                <% for (const printName of configFunctions.getProperty("settings.lotOccupancy.prints")) { %>
+                                <% for (const printName of occupancyTypePrints) { %>
                                     <% const printConfig = printFunctions.getPrintConfig(printName); %>
                                     <% if (printConfig) { %>
                                         <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
