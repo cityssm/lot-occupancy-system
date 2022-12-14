@@ -415,8 +415,6 @@ const preneedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Pre
 const deceasedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Interment");
 const cremationOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType("Cremation");
 
-const allOccupancyTypeFields = cacheFunctions.getAllOccupancyTypeFields();
-
 const preneedOwnerLotOccupantType =
     cacheFunctions.getLotOccupantTypeByLotOccupantType("Preneed Owner");
 const funeralDirectorLotOccupantType =
@@ -760,11 +758,12 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField(
                         {
                             lotOccupancyId: deceasedLotOccupancyId,
-                            occupancyTypeFieldId: allOccupancyTypeFields.find(
-                                (occupancyTypeField) => {
-                                    return occupancyTypeField.occupancyTypeField === "Death Date";
-                                }
-                            ).occupancyTypeFieldId,
+                            occupancyTypeFieldId: (lotId
+                                ? deceasedOccupancyType
+                                : cremationOccupancyType
+                            ).occupancyTypeFields.find((occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Death Date";
+                            }).occupancyTypeFieldId,
                             lotOccupancyFieldValue
                         },
                         user
@@ -775,11 +774,12 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField(
                         {
                             lotOccupancyId: deceasedLotOccupancyId,
-                            occupancyTypeFieldId: allOccupancyTypeFields.find(
-                                (occupancyTypeField) => {
-                                    return occupancyTypeField.occupancyTypeField === "Death Age";
-                                }
-                            ).occupancyTypeFieldId,
+                            occupancyTypeFieldId: (lotId
+                                ? deceasedOccupancyType
+                                : cremationOccupancyType
+                            ).occupancyTypeFields.find((occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Death Age";
+                            }).occupancyTypeFieldId,
                             lotOccupancyFieldValue: masterRow.CM_AGE
                         },
                         user
@@ -790,13 +790,12 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField(
                         {
                             lotOccupancyId: deceasedLotOccupancyId,
-                            occupancyTypeFieldId: allOccupancyTypeFields.find(
-                                (occupancyTypeField) => {
-                                    return (
-                                        occupancyTypeField.occupancyTypeField === "Death Age Period"
-                                    );
-                                }
-                            ).occupancyTypeFieldId,
+                            occupancyTypeFieldId: (lotId
+                                ? deceasedOccupancyType
+                                : cremationOccupancyType
+                            ).occupancyTypeFields.find((occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Death Age Period";
+                            }).occupancyTypeFieldId,
                             lotOccupancyFieldValue: masterRow.CM_PERIOD
                         },
                         user
@@ -848,11 +847,12 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField(
                         {
                             lotOccupancyId: deceasedLotOccupancyId,
-                            occupancyTypeFieldId: allOccupancyTypeFields.find(
-                                (occupancyTypeField) => {
-                                    return occupancyTypeField.occupancyTypeField === "Funeral Date";
-                                }
-                            ).occupancyTypeFieldId,
+                            occupancyTypeFieldId: (lotId
+                                ? deceasedOccupancyType
+                                : cremationOccupancyType
+                            ).occupancyTypeFields.find((occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Funeral Date";
+                            }).occupancyTypeFieldId,
                             lotOccupancyFieldValue
                         },
                         user
@@ -863,13 +863,12 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField(
                         {
                             lotOccupancyId: deceasedLotOccupancyId,
-                            occupancyTypeFieldId: allOccupancyTypeFields.find(
-                                (occupancyTypeField) => {
-                                    return (
-                                        occupancyTypeField.occupancyTypeField === "Container Type"
-                                    );
-                                }
-                            ).occupancyTypeFieldId,
+                            occupancyTypeFieldId: (lotId
+                                ? deceasedOccupancyType
+                                : cremationOccupancyType
+                            ).occupancyTypeFields.find((occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Container Type";
+                            }).occupancyTypeFieldId,
                             lotOccupancyFieldValue: masterRow.CM_CONTAINER_TYPE
                         },
                         user
@@ -886,13 +885,12 @@ function importFromMasterCSV() {
                     addOrUpdateLotOccupancyField(
                         {
                             lotOccupancyId: deceasedLotOccupancyId,
-                            occupancyTypeFieldId: allOccupancyTypeFields.find(
-                                (occupancyTypeField) => {
-                                    return (
-                                        occupancyTypeField.occupancyTypeField === "Committal Type"
-                                    );
-                                }
-                            ).occupancyTypeFieldId,
+                            occupancyTypeFieldId: (lotId
+                                ? deceasedOccupancyType
+                                : cremationOccupancyType
+                            ).occupancyTypeFields.find((occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Committal Type";
+                            }).occupancyTypeFieldId,
                             lotOccupancyFieldValue: commitalType
                         },
                         user
@@ -1432,9 +1430,11 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Death Date";
-                        }).occupancyTypeFieldId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find(
+                            (occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Death Date";
+                            }
+                        ).occupancyTypeFieldId,
                         lotOccupancyFieldValue
                     },
                     user
@@ -1445,9 +1445,11 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Death Place";
-                        }).occupancyTypeFieldId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find(
+                            (occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Death Place";
+                            }
+                        ).occupancyTypeFieldId,
                         lotOccupancyFieldValue: workOrderRow.WO_DEATH_PLACE
                     },
                     user
@@ -1458,9 +1460,11 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Death Age";
-                        }).occupancyTypeFieldId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find(
+                            (occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Death Age";
+                            }
+                        ).occupancyTypeFieldId,
                         lotOccupancyFieldValue: workOrderRow.WO_AGE
                     },
                     user
@@ -1471,9 +1475,11 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Death Age Period";
-                        }).occupancyTypeFieldId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find(
+                            (occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Death Age Period";
+                            }
+                        ).occupancyTypeFieldId,
                         lotOccupancyFieldValue: workOrderRow.WO_PERIOD
                     },
                     user
@@ -1523,9 +1529,11 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Funeral Date";
-                        }).occupancyTypeFieldId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find(
+                            (occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Funeral Date";
+                            }
+                        ).occupancyTypeFieldId,
                         lotOccupancyFieldValue
                     },
                     user
@@ -1536,9 +1544,11 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Container Type";
-                        }).occupancyTypeFieldId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find(
+                            (occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Container Type";
+                            }
+                        ).occupancyTypeFieldId,
                         lotOccupancyFieldValue: workOrderRow.WO_CONTAINER_TYPE
                     },
                     user
@@ -1555,9 +1565,11 @@ function importFromWorkOrderCSV() {
                 addOrUpdateLotOccupancyField(
                     {
                         lotOccupancyId: lotOccupancyId,
-                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Committal Type";
-                        }).occupancyTypeFieldId,
+                        occupancyTypeFieldId: deceasedOccupancyType.occupancyTypeFields.find(
+                            (occupancyTypeField) => {
+                                return occupancyTypeField.occupancyTypeField === "Committal Type";
+                            }
+                        ).occupancyTypeFieldId,
                         lotOccupancyFieldValue: commitalType
                     },
                     user

@@ -87,11 +87,11 @@ const initializeCemeteryDatabase = () => {
         occupancyType: "Interment",
         orderNumber: 2
     }, session);
-    addOccupancyType({
+    const cremationOccupancyTypeId = addOccupancyType({
         occupancyType: "Cremation",
         orderNumber: 3
     }, session);
-    addOccupancyTypeField({
+    const deathDateField = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Death Date",
         occupancyTypeFieldValues: "",
@@ -100,8 +100,10 @@ const initializeCemeteryDatabase = () => {
         minimumLength: 10,
         maximumLength: 10,
         orderNumber: 1
-    }, session);
-    addOccupancyTypeField({
+    };
+    addOccupancyTypeField(deathDateField, session);
+    addOccupancyTypeField(Object.assign(deathDateField, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    const deathAgeField = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Death Age",
         occupancyTypeFieldValues: "",
@@ -110,8 +112,10 @@ const initializeCemeteryDatabase = () => {
         minimumLength: 1,
         maximumLength: 3,
         orderNumber: 2
-    }, session);
-    addOccupancyTypeField({
+    };
+    addOccupancyTypeField(deathAgeField, session);
+    addOccupancyTypeField(Object.assign(deathAgeField, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    const deathAgePeriod = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Death Age Period",
         occupancyTypeFieldValues: "Years\nMonths\nDays\nStillborn",
@@ -120,8 +124,10 @@ const initializeCemeteryDatabase = () => {
         minimumLength: 1,
         maximumLength: 10,
         orderNumber: 3
-    }, session);
-    addOccupancyTypeField({
+    };
+    addOccupancyTypeField(deathAgePeriod, session);
+    addOccupancyTypeField(Object.assign(deathAgePeriod, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    const deathPlace = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Death Place",
         occupancyTypeFieldValues: "",
@@ -130,8 +136,10 @@ const initializeCemeteryDatabase = () => {
         minimumLength: 1,
         maximumLength: 100,
         orderNumber: 4
-    }, session);
-    addOccupancyTypeField({
+    };
+    addOccupancyTypeField(deathPlace, session);
+    addOccupancyTypeField(Object.assign(deathPlace, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    const funeralHome = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Funeral Home",
         occupancyTypeFieldValues: "",
@@ -140,8 +148,10 @@ const initializeCemeteryDatabase = () => {
         minimumLength: 1,
         maximumLength: 100,
         orderNumber: 10
-    }, session);
-    addOccupancyTypeField({
+    };
+    addOccupancyTypeField(funeralHome, session);
+    addOccupancyTypeField(Object.assign(funeralHome, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    const funeralDate = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Funeral Date",
         occupancyTypeFieldValues: "",
@@ -150,8 +160,10 @@ const initializeCemeteryDatabase = () => {
         minimumLength: 10,
         maximumLength: 10,
         orderNumber: 11
-    }, session);
-    addOccupancyTypeField({
+    };
+    addOccupancyTypeField(funeralDate, session);
+    addOccupancyTypeField(Object.assign(funeralDate, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    const containerType = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Container Type",
         occupancyTypeFieldValues: "",
@@ -160,8 +172,10 @@ const initializeCemeteryDatabase = () => {
         minimumLength: 1,
         maximumLength: 100,
         orderNumber: 20
-    }, session);
-    addOccupancyTypeField({
+    };
+    addOccupancyTypeField(containerType, session);
+    addOccupancyTypeField(Object.assign(containerType, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    const committalType = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Committal Type",
         occupancyTypeFieldValues: "",
@@ -170,7 +184,9 @@ const initializeCemeteryDatabase = () => {
         minimumLength: 1,
         maximumLength: 100,
         orderNumber: 21
-    }, session);
+    };
+    addOccupancyTypeField(committalType, session);
+    addOccupancyTypeField(Object.assign(committalType, { occupancyTypeId: cremationOccupancyTypeId }), session);
     addFeeCategory({
         feeCategory: "Interment Rights",
         orderNumber: 1
