@@ -1589,22 +1589,24 @@ function importFromWorkOrderCSV() {
             let hasIncompleteMilestones = !workOrderRow.WO_CONFIRMATION_IN;
             let maxMilestoneCompletionDateString = workOrderOpenDateString;
 
-            addWorkOrderMilestone(
-                {
-                    workOrderId: workOrder.workOrderId,
-                    workOrderMilestoneTypeId:
-                        acknowledgedWorkOrderMilestoneType.workOrderMilestoneTypeId,
-                    workOrderMilestoneDateString: workOrderOpenDateString,
-                    workOrderMilestoneDescription: "",
-                    workOrderMilestoneCompletionDateString: workOrderRow.WO_CONFIRMATION_IN
-                        ? workOrderOpenDateString
-                        : undefined,
-                    workOrderMilestoneCompletionTimeString: workOrderRow.WO_CONFIRMATION_IN
-                        ? "00:00"
-                        : undefined
-                },
-                user
-            );
+            if (acknowledgedWorkOrderMilestoneType) {
+                addWorkOrderMilestone(
+                    {
+                        workOrderId: workOrder.workOrderId,
+                        workOrderMilestoneTypeId:
+                            acknowledgedWorkOrderMilestoneType.workOrderMilestoneTypeId,
+                        workOrderMilestoneDateString: workOrderOpenDateString,
+                        workOrderMilestoneDescription: "",
+                        workOrderMilestoneCompletionDateString: workOrderRow.WO_CONFIRMATION_IN
+                            ? workOrderOpenDateString
+                            : undefined,
+                        workOrderMilestoneCompletionTimeString: workOrderRow.WO_CONFIRMATION_IN
+                            ? "00:00"
+                            : undefined
+                    },
+                    user
+                );
+            }
 
             if (workOrderRow.WO_DEATH_YR) {
                 const workOrderMilestoneDateString = formatDateString(
@@ -1613,23 +1615,27 @@ function importFromWorkOrderCSV() {
                     workOrderRow.WO_DEATH_DAY
                 );
 
-                addWorkOrderMilestone(
-                    {
-                        workOrderId: workOrder.workOrderId,
-                        workOrderMilestoneTypeId:
-                            deathWorkOrderMilestoneType.workOrderMilestoneTypeId,
-                        workOrderMilestoneDateString,
-                        workOrderMilestoneDescription:
-                            "Death Place: " + workOrderRow.WO_DEATH_PLACE,
-                        workOrderMilestoneCompletionDateString:
-                            workOrderMilestoneDateString < currentDateString
-                                ? workOrderMilestoneDateString
-                                : undefined,
-                        workOrderMilestoneCompletionTimeString:
-                            workOrderMilestoneDateString < currentDateString ? "00:00" : undefined
-                    },
-                    user
-                );
+                if (deathWorkOrderMilestoneType) {
+                    addWorkOrderMilestone(
+                        {
+                            workOrderId: workOrder.workOrderId,
+                            workOrderMilestoneTypeId:
+                                deathWorkOrderMilestoneType.workOrderMilestoneTypeId,
+                            workOrderMilestoneDateString,
+                            workOrderMilestoneDescription:
+                                "Death Place: " + workOrderRow.WO_DEATH_PLACE,
+                            workOrderMilestoneCompletionDateString:
+                                workOrderMilestoneDateString < currentDateString
+                                    ? workOrderMilestoneDateString
+                                    : undefined,
+                            workOrderMilestoneCompletionTimeString:
+                                workOrderMilestoneDateString < currentDateString
+                                    ? "00:00"
+                                    : undefined
+                        },
+                        user
+                    );
+                }
 
                 if (workOrderMilestoneDateString > maxMilestoneCompletionDateString) {
                     maxMilestoneCompletionDateString = workOrderMilestoneDateString;
@@ -1657,26 +1663,28 @@ function importFromWorkOrderCSV() {
                     workOrderRow.WO_FUNERAL_MIN
                 );
 
-                addWorkOrderMilestone(
-                    {
-                        workOrderId: workOrder.workOrderId,
-                        workOrderMilestoneTypeId:
-                            funeralWorkOrderMilestoneType.workOrderMilestoneTypeId,
-                        workOrderMilestoneDateString,
-                        workOrderMilestoneTimeString,
-                        workOrderMilestoneDescription:
-                            "Funeral Home: " + workOrderRow.WO_FUNERAL_HOME,
-                        workOrderMilestoneCompletionDateString:
-                            workOrderMilestoneDateString < currentDateString
-                                ? workOrderMilestoneDateString
-                                : undefined,
-                        workOrderMilestoneCompletionTimeString:
-                            workOrderMilestoneDateString < currentDateString
-                                ? workOrderMilestoneTimeString
-                                : undefined
-                    },
-                    user
-                );
+                if (funeralWorkOrderMilestoneType) {
+                    addWorkOrderMilestone(
+                        {
+                            workOrderId: workOrder.workOrderId,
+                            workOrderMilestoneTypeId:
+                                funeralWorkOrderMilestoneType.workOrderMilestoneTypeId,
+                            workOrderMilestoneDateString,
+                            workOrderMilestoneTimeString,
+                            workOrderMilestoneDescription:
+                                "Funeral Home: " + workOrderRow.WO_FUNERAL_HOME,
+                            workOrderMilestoneCompletionDateString:
+                                workOrderMilestoneDateString < currentDateString
+                                    ? workOrderMilestoneDateString
+                                    : undefined,
+                            workOrderMilestoneCompletionTimeString:
+                                workOrderMilestoneDateString < currentDateString
+                                    ? workOrderMilestoneTimeString
+                                    : undefined
+                        },
+                        user
+                    );
+                }
 
                 if (workOrderMilestoneDateString > maxMilestoneCompletionDateString) {
                     maxMilestoneCompletionDateString = workOrderMilestoneDateString;
@@ -1687,7 +1695,7 @@ function importFromWorkOrderCSV() {
                 }
             }
 
-            if (workOrderRow.WO_CREMATION === "Y") {
+            if (workOrderRow.WO_CREMATION === "Y" && cremationWorkOrderMilestoneType) {
                 addWorkOrderMilestone(
                     {
                         workOrderId: workOrder.workOrderId,
@@ -1715,22 +1723,26 @@ function importFromWorkOrderCSV() {
                     workOrderRow.WO_INTERMENT_DAY
                 );
 
-                addWorkOrderMilestone(
-                    {
-                        workOrderId: workOrder.workOrderId,
-                        workOrderMilestoneTypeId:
-                            intermentWorkOrderMilestoneType.workOrderMilestoneTypeId,
-                        workOrderMilestoneDateString,
-                        workOrderMilestoneDescription: "Depth: " + workOrderRow.WO_DEPTH,
-                        workOrderMilestoneCompletionDateString:
-                            workOrderMilestoneDateString < currentDateString
-                                ? workOrderMilestoneDateString
-                                : undefined,
-                        workOrderMilestoneCompletionTimeString:
-                            workOrderMilestoneDateString < currentDateString ? "23:59" : undefined
-                    },
-                    user
-                );
+                if (intermentWorkOrderMilestoneType) {
+                    addWorkOrderMilestone(
+                        {
+                            workOrderId: workOrder.workOrderId,
+                            workOrderMilestoneTypeId:
+                                intermentWorkOrderMilestoneType.workOrderMilestoneTypeId,
+                            workOrderMilestoneDateString,
+                            workOrderMilestoneDescription: "Depth: " + workOrderRow.WO_DEPTH,
+                            workOrderMilestoneCompletionDateString:
+                                workOrderMilestoneDateString < currentDateString
+                                    ? workOrderMilestoneDateString
+                                    : undefined,
+                            workOrderMilestoneCompletionTimeString:
+                                workOrderMilestoneDateString < currentDateString
+                                    ? "23:59"
+                                    : undefined
+                        },
+                        user
+                    );
+                }
 
                 if (workOrderMilestoneDateString > maxMilestoneCompletionDateString) {
                     maxMilestoneCompletionDateString = workOrderMilestoneDateString;
