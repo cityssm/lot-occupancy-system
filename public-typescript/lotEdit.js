@@ -109,7 +109,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             onshown: (modalElement, closeModalFunction) => {
                 bulmaJS.toggleHtmlClipped();
                 los.initializeDatePickers(modalElement);
-                los.initializeTimePickers(modalElement);
                 modalElement.querySelector("#lotCommentEdit--lotComment").focus();
                 editFormElement = modalElement.querySelector("form");
                 editFormElement.addEventListener("submit", editComment);

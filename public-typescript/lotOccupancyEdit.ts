@@ -1343,7 +1343,7 @@ declare const bulmaJS: BulmaJS;
                     bulmaJS.toggleHtmlClipped();
 
                     los.initializeDatePickers(modalElement);
-                    los.initializeTimePickers(modalElement);
+                    // los.initializeTimePickers(modalElement);
 
                     (
                         modalElement.querySelector(

@@ -1113,7 +1113,7 @@ declare const bulmaJS: BulmaJS;
                 bulmaJS.toggleHtmlClipped();
 
                 los.initializeDatePickers(modalElement);
-                los.initializeTimePickers(modalElement);
+                // los.initializeTimePickers(modalElement);
 
                 (
                     modalElement.querySelector(
@@ -1543,7 +1543,7 @@ declare const bulmaJS: BulmaJS;
                     bulmaJS.toggleHtmlClipped();
 
                     los.initializeDatePickers(modalElement);
-                    los.initializeTimePickers(modalElement);
+                    // los.initializeTimePickers(modalElement);
 
                     modalElement.querySelector("form")!.addEventListener("submit", doEdit);
                 },
@@ -1751,7 +1751,7 @@ declare const bulmaJS: BulmaJS;
                         addCloseModalFunction = closeModalFunction;
 
                         los.initializeDatePickers(modalElement);
-                        los.initializeTimePickers(modalElement);
+                        // los.initializeTimePickers(modalElement);
 
                         bulmaJS.toggleHtmlClipped();
 

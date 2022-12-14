@@ -165,6 +165,7 @@ declare const bulmaJS: BulmaJS;
         }
     };
 
+    /*
     const timePickerBaseOptions: BulmaCalendarOptions = {
         type: "time",
         timeFormat: "hh:mm",
@@ -175,6 +176,7 @@ declare const bulmaJS: BulmaJS;
     };
 
     const initializeTimePickers = (containerElement: HTMLElement) => {
+
         const timeElements = containerElement.querySelectorAll(
             "input[type='time']"
         ) as NodeListOf<HTMLInputElement>;
@@ -234,6 +236,7 @@ declare const bulmaJS: BulmaJS;
             }
         }
     };
+    */
 
     const populateAliases = (containerElement: HTMLElement) => {
         const aliasElements = containerElement.querySelectorAll(
@@ -304,7 +307,7 @@ declare const bulmaJS: BulmaJS;
         highlightMap,
         initializeUnlockFieldButtons,
         initializeDatePickers,
-        initializeTimePickers,
+        // initializeTimePickers,
         populateAliases,
         getRandomColor
     };

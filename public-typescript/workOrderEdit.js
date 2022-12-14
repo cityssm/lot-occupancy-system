@@ -746,7 +746,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             onshown: (modalElement, closeModalFunction) => {
                 bulmaJS.toggleHtmlClipped();
                 los.initializeDatePickers(modalElement);
-                los.initializeTimePickers(modalElement);
                 modalElement.querySelector("#workOrderCommentEdit--workOrderComment").focus();
                 editFormElement = modalElement.querySelector("form");
                 editFormElement.addEventListener("submit", editComment);
@@ -1006,7 +1005,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     editCloseModalFunction = closeModalFunction;
                     bulmaJS.toggleHtmlClipped();
                     los.initializeDatePickers(modalElement);
-                    los.initializeTimePickers(modalElement);
                     modalElement.querySelector("form").addEventListener("submit", doEdit);
                 },
                 onremoved: () => {
@@ -1144,7 +1142,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     addModalElement = modalElement;
                     addCloseModalFunction = closeModalFunction;
                     los.initializeDatePickers(modalElement);
-                    los.initializeTimePickers(modalElement);
                     bulmaJS.toggleHtmlClipped();
                     addFormElement = modalElement.querySelector("form");
                     addFormElement.addEventListener("submit", doAdd);

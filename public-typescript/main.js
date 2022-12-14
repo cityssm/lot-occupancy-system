@@ -97,50 +97,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         }
     };
-    const timePickerBaseOptions = {
-        type: "time",
-        timeFormat: "hh:mm",
-        color: "info",
-        displayMode: "dialog",
-        validateLabel: "Set Time",
-        minuteSteps: 1
-    };
-    const initializeTimePickers = (containerElement) => {
-        const timeElements = containerElement.querySelectorAll("input[type='time']");
-        for (const timeElement of timeElements) {
-            const timePickerOptions = Object.assign({}, timePickerBaseOptions);
-            if (timeElement.required) {
-                timePickerOptions.showClearButton = false;
-            }
-            const cal = exports.bulmaCalendar.attach(timeElement, timePickerOptions)[0];
-            cal.on("save", () => {
-                timeElement.value = cal.value();
-                timeElement.dispatchEvent(new Event("change"));
-            });
-            cal.on("show", () => {
-                document.querySelector("html").classList.add("is-clipped");
-            });
-            cal.on("hide", () => {
-                bulmaJS.toggleHtmlClipped();
-            });
-            const timePickerElement = containerElement.querySelector("#" + cal._id);
-            const timePickerCancelButtonElement = timePickerElement.querySelector(".datetimepicker-footer-cancel");
-            if (timePickerCancelButtonElement) {
-                timePickerCancelButtonElement.remove();
-            }
-            const clearButtonElement = timePickerElement.querySelector(".datetimepicker-clear-button");
-            if (clearButtonElement) {
-                if (timeElement.required) {
-                    clearButtonElement.remove();
-                }
-                else {
-                    clearButtonElement.dataset.tooltip = "Clear";
-                    clearButtonElement.innerHTML =
-                        '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
-                }
-            }
-        }
-    };
     const populateAliases = (containerElement) => {
         const aliasElements = containerElement.querySelectorAll(".alias");
         for (const aliasElement of aliasElements) {
@@ -199,7 +155,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         highlightMap,
         initializeUnlockFieldButtons,
         initializeDatePickers,
-        initializeTimePickers,
         populateAliases,
         getRandomColor
     };
