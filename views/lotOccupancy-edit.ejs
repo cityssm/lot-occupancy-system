@@ -210,7 +210,7 @@
                                         <%= lotOccupancyField.occupancyTypeField %>
                                     </label>
                                     <div class="control">
-                                        <% if (lotOccupancyField.occupancyTypeFieldValues === "") { %>
+                                        <% if (!lotOccupancyField.occupancyTypeFieldValues || lotOccupancyField.occupancyTypeFieldValues === "") { %>
                                             <input class="input"
                                                 id="lotOccupancy--lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
                                                 name="lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
