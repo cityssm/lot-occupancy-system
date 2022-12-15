@@ -231,11 +231,29 @@ export const cleanupDatabase = (requestSession: recordTypes.PartialSession) => {
         )
         .run(recordDelete_timeMillisMin).changes;
 
+    // Occupancy Type Prints
+
+    inactivedRecordCount += database
+        .prepare(
+            "update OccupancyTypePrints" +
+                " set recordDelete_userName = ?," +
+                " recordDelete_timeMillis = ?" +
+                " where recordDelete_timeMillis is null" +
+                " and occupancyTypeId in (select occupancyTypeId from OccupancyTypes where recordDelete_timeMillis is not null)"
+        )
+        .run(requestSession.user.userName, rightNowMillis).changes;
+
+    purgedRecordCount += database
+        .prepare("delete from OccupancyTypePrints where recordDelete_timeMillis <= ?")
+        .run(recordDelete_timeMillisMin).changes;
+
     // Occupancy Types
 
     purgedRecordCount += database
         .prepare(
             "delete from OccupancyTypes where recordDelete_timeMillis <= ?" +
+                " and occupancyTypeId not in (select occupancyTypeId from OccupancyTypeFields)" +
+                " and occupancyTypeId not in (select occupancyTypeId from OccupancyTypePrints)" +
                 " and occupancyTypeId not in (select occupancyTypeId from LotOccupancies)" +
                 " and occupancyTypeId not in (select occupancyTypeId from Fees)"
         )
