@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const inputElement = changeEvent.currentTarget;
         const fontAwesomeIconClass = inputElement.value;
         inputElement.closest(".field").querySelectorAll(".button.is-static")[1].innerHTML =
-            "<i class=\"fas fa-fw fa-" + fontAwesomeIconClass + "\" aria-hidden=\"true\"></i>";
+            '<i class="fas fa-fw fa-' + fontAwesomeIconClass + '" aria-hidden="true"></i>';
     };
     let workOrderTypes = exports.workOrderTypes;
     delete exports.workOrderTypes;
@@ -786,9 +786,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</div>" +
                     "</div>" +
                     "</td>";
-            tableRowElement
-                .querySelector("input[name='fontAwesomeIconClass']")
-                .addEventListener("keyup", refreshFontAwesomeIcon);
+            const fontAwesomeInputElement = tableRowElement.querySelector("input[name='fontAwesomeIconClass']");
+            fontAwesomeInputElement.addEventListener("keyup", refreshFontAwesomeIcon);
+            fontAwesomeInputElement.addEventListener("change", refreshFontAwesomeIcon);
             tableRowElement
                 .querySelector("form")
                 .addEventListener("submit", updateLotOccupantType);

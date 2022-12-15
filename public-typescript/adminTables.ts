@@ -19,7 +19,7 @@ declare const bulmaJS: BulmaJS;
         const fontAwesomeIconClass = inputElement.value;
 
         inputElement.closest(".field")!.querySelectorAll(".button.is-static")[1].innerHTML =
-            "<i class=\"fas fa-fw fa-" + fontAwesomeIconClass + "\" aria-hidden=\"true\"></i>";
+            '<i class="fas fa-fw fa-' + fontAwesomeIconClass + '" aria-hidden="true"></i>';
     };
 
     /*
@@ -1120,9 +1120,12 @@ declare const bulmaJS: BulmaJS;
                 "</div>" +
                 "</td>";
 
-            tableRowElement
-                .querySelector("input[name='fontAwesomeIconClass']")!
-                .addEventListener("keyup", refreshFontAwesomeIcon);
+            const fontAwesomeInputElement = tableRowElement.querySelector(
+                "input[name='fontAwesomeIconClass']"
+            )!;
+
+            fontAwesomeInputElement.addEventListener("keyup", refreshFontAwesomeIcon);
+            fontAwesomeInputElement.addEventListener("change", refreshFontAwesomeIcon);
 
             tableRowElement
                 .querySelector("form")!
