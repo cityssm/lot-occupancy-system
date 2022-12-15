@@ -166,6 +166,7 @@ function getLotType(dataRow) {
         case "MA": {
             return mausoleumLotType;
         }
+        case "MN":
         case "NW": {
             return nicheWallLotType;
         }
@@ -205,6 +206,19 @@ function getFuneralHome(funeralHomeKey) {
                 occupantEmailAddress: ""
             };
         }
+        case "BG": {
+            return {
+                lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
+                occupantName: "Beggs Funeral Home",
+                occupantAddress1: "175 Main Street",
+                occupantAddress2: "P.O. Box 280",
+                occupantCity: "Thessalon",
+                occupantProvince: "ON",
+                occupantPostalCode: "P0R 1L0",
+                occupantPhoneNumber: "705-842-2520",
+                occupantEmailAddress: "bfh@beggsfh.ca"
+            };
+        }
         case "BK": {
             return {
                 lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
@@ -228,6 +242,19 @@ function getFuneralHome(funeralHomeKey) {
                 occupantProvince: "ON",
                 occupantPostalCode: "P6A 1P7",
                 occupantPhoneNumber: "705-759-8456",
+                occupantEmailAddress: ""
+            };
+        }
+        case "GL": {
+            return {
+                lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
+                occupantName: "Gilmartin P.M. Funeral Home",
+                occupantAddress1: "140 Churchill Avenue",
+                occupantAddress2: "",
+                occupantCity: "Wawa",
+                occupantProvince: "ON",
+                occupantPostalCode: "P0S 1K0",
+                occupantPhoneNumber: "705-856-7340",
                 occupantEmailAddress: ""
             };
         }
