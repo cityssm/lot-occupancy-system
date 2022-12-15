@@ -102,6 +102,16 @@ declare const bulmaJS: BulmaJS;
                 });
 
                 if (hasOpenMilestones) {
+                    bulmaJS.alert({
+                        title: "Outstanding Milestones",
+                        message:
+                            "You cannot close a work order with outstanding milestones." +
+                            " Either complete the outstanding milestones, or remove them from the work order.",
+                        contextualColorName: "warning"
+                    });
+
+                    /*
+                    // Disable closing work orders with open milestones
                     bulmaJS.confirm({
                         title: "Close Work Order with Outstanding Milestones",
                         message:
@@ -112,6 +122,7 @@ declare const bulmaJS: BulmaJS;
                             callbackFunction: doClose
                         }
                     });
+                    */
                 } else {
                     bulmaJS.confirm({
                         title: "Close Work Order",

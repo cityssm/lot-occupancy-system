@@ -61,14 +61,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 return !milestone.workOrderMilestoneCompletionDate;
             });
             if (hasOpenMilestones) {
-                bulmaJS.confirm({
-                    title: "Close Work Order with Outstanding Milestones",
-                    message: "Are you sure you want to close this work order with outstanding milestones?",
-                    contextualColorName: "danger",
-                    okButton: {
-                        text: "Yes, Close Work Order",
-                        callbackFunction: doClose
-                    }
+                bulmaJS.alert({
+                    title: "Outstanding Milestones",
+                    message: "You cannot close a work order with outstanding milestones." +
+                        " Either complete the outstanding milestones, or remove them from the work order.",
+                    contextualColorName: "warning"
                 });
             }
             else {
