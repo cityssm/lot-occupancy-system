@@ -955,9 +955,10 @@ declare const bulmaJS: BulmaJS;
                     "<td>" +
                     cityssm.escapeHTML(lotOccupancyOccupant.occupantName || "(No Name)") +
                     "<br />" +
-                    '<span class="tag">' +
-                    cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType!) +
-                    "</span>" +
+                    ('<span class="tag">' +
+                    "<i class=\"fas fa-fw fa-" + cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass!) + "\" aria-hidden=\"true\"></i>" +
+                    " <span class=\"ml-1\">" + cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType!) + "</span>" +
+                    "</span>") +
                     "</td>" +
                     ("<td>" +
                         (lotOccupancyOccupant.occupantAddress1
