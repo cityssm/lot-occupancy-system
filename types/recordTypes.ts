@@ -258,6 +258,7 @@ export interface LotOccupancy extends Record {
     lotOccupancyOccupants?: LotOccupancyOccupant[];
     lotOccupancyFees?: LotOccupancyFee[];
     lotOccupancyTransactions?: LotOccupancyTransaction[];
+    workOrders?: WorkOrder[];
 }
 
 /*

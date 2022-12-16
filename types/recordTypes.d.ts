@@ -195,6 +195,7 @@ export interface LotOccupancy extends Record {
     lotOccupancyOccupants?: LotOccupancyOccupant[];
     lotOccupancyFees?: LotOccupancyFee[];
     lotOccupancyTransactions?: LotOccupancyTransaction[];
+    workOrders?: WorkOrder[];
 }
 export interface WorkOrderType extends Record {
     workOrderTypeId?: number;

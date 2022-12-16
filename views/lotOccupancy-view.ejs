@@ -230,6 +230,56 @@
     </div>
 <% } %>
 
+<% if (lotOccupancy.workOrders.length > 0) { %>
+    <%
+        const workOrderOpenDateAlias = configFunctions.getProperty("aliases.workOrderOpenDate");
+        const workOrderCloseDateAlias = configFunctions.getProperty("aliases.workOrderCloseDate");
+    %>
+    <div class="panel">
+        <h2 class="panel-heading">Work Orders</h2>
+        <div class="panel-block is-block">
+            <table class="table is-fullwidth is-striped is-hoverable">
+                <thead>
+                    <tr>
+                        <th>Work Order Number</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (const workOrder of lotOccupancy.workOrders) { %>
+                        <tr>
+                            <td>
+                                <a class="has-text-weight-bold" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
+                                    <%= workOrder.workOrderNumber %>
+                                </a>
+                            </td>
+                            <td>
+                                <%= workOrder.workOrderType %><br />
+                                <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
+                            </td>
+                            <td class="is-nowrap">
+                                <span class="has-tooltip-left" data-tooltip="<%= workOrderOpenDateAlias %>">
+                                    <i class="fas fa-fw fa-play" aria-label="<%= workOrderOpenDateAlias %>"></i>
+                                    <%= workOrder.workOrderOpenDateString %>
+                                </span><br />
+                                <span class="has-tooltip-left" data-tooltip="<%= workOrderCloseDateAlias %>">
+                                    <i class="fas fa-fw fa-stop" aria-label="<%= workOrderCloseDateAlias %>"></i>
+                                    <% if (workOrder.workOrderCloseDate) { %>
+                                        <%= workOrder.workOrderCloseDateString %>
+                                    <% } else { %>
+                                        <span class="has-text-grey">(No <%= workOrderCloseDateAlias %>)</span>
+                                    <% } %>
+                                </span>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<% } %>
+
 <div class="columns">
     <div class="column">
         <div class="panel">

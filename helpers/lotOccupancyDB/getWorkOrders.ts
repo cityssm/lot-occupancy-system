@@ -20,6 +20,7 @@ interface GetWorkOrdersFilters {
     workOrderOpenDateString?: string;
     occupantName?: string;
     lotName?: string;
+    lotOccupancyId?: number | string;
 }
 
 interface GetWorkOrdersOptions {
@@ -74,6 +75,12 @@ const buildWhereClause = (
         }
     }
 
+    if (filters.lotOccupancyId) {
+        sqlWhereClause +=
+            " and w.workOrderId in (select workOrderId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and lotOccupancyId = ?)";
+        sqlParameters.push(filters.lotOccupancyId);
+    }
+
     return {
         sqlWhereClause,
         sqlParameters
@@ -82,14 +89,17 @@ const buildWhereClause = (
 
 export const getWorkOrders = (
     filters: GetWorkOrdersFilters,
-    options?: GetWorkOrdersOptions
+    options?: GetWorkOrdersOptions,
+    connectedDatabase?: sqlite.Database
 ): {
     count: number;
     workOrders: recordTypes.WorkOrder[];
 } => {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+    const database =
+        connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
 
     database.function("userFn_dateIntegerToString", dateIntegerToString);
 
@@ -134,7 +144,10 @@ export const getWorkOrders = (
     ) {
         for (const workOrder of workOrders) {
             if (options.includeComments) {
-                workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId as number, database);
+                workOrder.workOrderComments = getWorkOrderComments(
+                    workOrder.workOrderId as number,
+                    database
+                );
             }
 
             if (options.includeLotsAndLotOccupancies) {
@@ -176,7 +189,9 @@ export const getWorkOrders = (
         }
     }
 
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
 
     return {
         count,

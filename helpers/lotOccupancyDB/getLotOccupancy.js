@@ -6,6 +6,7 @@ import { getLotOccupancyComments } from "./getLotOccupancyComments.js";
 import { getLotOccupancyFields } from "./getLotOccupancyFields.js";
 import { getLotOccupancyFees } from "./getLotOccupancyFees.js";
 import { getLotOccupancyTransactions } from "./getLotOccupancyTransactions.js";
+import { getWorkOrders } from "./getWorkOrders.js";
 export const getLotOccupancy = (lotOccupancyId, connectedDatabase) => {
     const database = connectedDatabase ||
         sqlite(databasePath, {
@@ -33,6 +34,12 @@ export const getLotOccupancy = (lotOccupancyId, connectedDatabase) => {
         lotOccupancy.lotOccupancyComments = getLotOccupancyComments(lotOccupancyId, database);
         lotOccupancy.lotOccupancyFees = getLotOccupancyFees(lotOccupancyId, database);
         lotOccupancy.lotOccupancyTransactions = getLotOccupancyTransactions(lotOccupancyId, database);
+        lotOccupancy.workOrders = getWorkOrders({
+            lotOccupancyId
+        }, {
+            limit: -1,
+            offset: 0
+        }, database).workOrders;
     }
     if (!connectedDatabase) {
         database.close();

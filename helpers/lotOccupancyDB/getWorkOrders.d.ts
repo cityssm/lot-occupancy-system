@@ -1,3 +1,4 @@
+import sqlite from "better-sqlite3";
 import type * as recordTypes from "../../types/recordTypes";
 interface GetWorkOrdersFilters {
     workOrderTypeId?: number | string;
@@ -5,6 +6,7 @@ interface GetWorkOrdersFilters {
     workOrderOpenDateString?: string;
     occupantName?: string;
     lotName?: string;
+    lotOccupancyId?: number | string;
 }
 interface GetWorkOrdersOptions {
     limit: number;
@@ -13,7 +15,7 @@ interface GetWorkOrdersOptions {
     includeComments?: boolean;
     includeMilestones?: boolean;
 }
-export declare const getWorkOrders: (filters: GetWorkOrdersFilters, options?: GetWorkOrdersOptions) => {
+export declare const getWorkOrders: (filters: GetWorkOrdersFilters, options?: GetWorkOrdersOptions, connectedDatabase?: sqlite.Database) => {
     count: number;
     workOrders: recordTypes.WorkOrder[];
 };

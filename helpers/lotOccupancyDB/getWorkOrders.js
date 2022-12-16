@@ -42,15 +42,21 @@ const buildWhereClause = (filters) => {
             sqlParameters.push(lotNamePiece);
         }
     }
+    if (filters.lotOccupancyId) {
+        sqlWhereClause +=
+            " and w.workOrderId in (select workOrderId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and lotOccupancyId = ?)";
+        sqlParameters.push(filters.lotOccupancyId);
+    }
     return {
         sqlWhereClause,
         sqlParameters
     };
 };
-export const getWorkOrders = (filters, options) => {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+export const getWorkOrders = (filters, options, connectedDatabase) => {
+    const database = connectedDatabase ||
+        sqlite(databasePath, {
+            readonly: true
+        });
     database.function("userFn_dateIntegerToString", dateIntegerToString);
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
     const count = database
@@ -111,7 +117,9 @@ export const getWorkOrders = (filters, options) => {
             }
         }
     }
-    database.close();
+    if (!connectedDatabase) {
+        database.close();
+    }
     return {
         count,
         workOrders

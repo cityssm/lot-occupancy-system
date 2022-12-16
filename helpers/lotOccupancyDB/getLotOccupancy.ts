@@ -14,6 +14,8 @@ import { getLotOccupancyFees } from "./getLotOccupancyFees.js";
 
 import { getLotOccupancyTransactions } from "./getLotOccupancyTransactions.js";
 
+import { getWorkOrders } from "./getWorkOrders.js";
+
 import type * as recordTypes from "../../types/recordTypes";
 
 export const getLotOccupancy = (
@@ -55,6 +57,17 @@ export const getLotOccupancy = (
             lotOccupancyId,
             database
         );
+
+        lotOccupancy.workOrders = getWorkOrders(
+            {
+                lotOccupancyId
+            },
+            {
+                limit: -1,
+                offset: 0
+            },
+            database
+        ).workOrders;
     }
 
     if (!connectedDatabase) {
