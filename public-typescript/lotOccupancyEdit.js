@@ -168,7 +168,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     modalElement.querySelector("#workOrderCreate--lotOccupancyId").value = lotOccupancyId;
                     modalElement.querySelector("#workOrderCreate--workOrderOpenDateString").value = cityssm.dateToString(new Date());
                     const workOrderTypeSelectElement = modalElement.querySelector("#workOrderCreate--workOrderTypeId");
-                    for (const workOrderType of exports.workOrderTypes) {
+                    const workOrderTypes = exports.workOrderTypes;
+                    if (workOrderTypes.length === 1) {
+                        workOrderTypeSelectElement.innerHTML = "";
+                    }
+                    for (const workOrderType of workOrderTypes) {
                         const optionElement = document.createElement("option");
                         optionElement.value = workOrderType.workOrderTypeId.toString();
                         optionElement.textContent = workOrderType.workOrderType;

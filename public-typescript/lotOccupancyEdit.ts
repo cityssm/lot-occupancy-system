@@ -242,7 +242,13 @@ declare const bulmaJS: BulmaJS;
                             "#workOrderCreate--workOrderTypeId"
                         ) as HTMLSelectElement;
 
-                        for (const workOrderType of exports.workOrderTypes as recordTypes.WorkOrderType[]) {
+                        const workOrderTypes = exports.workOrderTypes as recordTypes.WorkOrderType[];
+
+                        if (workOrderTypes.length === 1) {
+                            workOrderTypeSelectElement.innerHTML = "";
+                        }
+
+                        for (const workOrderType of workOrderTypes) {
                             const optionElement = document.createElement("option");
                             optionElement.value = (
                                 workOrderType.workOrderTypeId as number
