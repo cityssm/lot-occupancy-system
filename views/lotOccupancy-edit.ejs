@@ -50,7 +50,7 @@
             <div class="level-right is-hidden-print">
                 <div class="level-item is-justify-content-right">
                     <% if (occupancyTypePrints.length === 1) { %>
-                    <a class="button is-link" href="<%= urlPrefix %>/print/<%= configFunctions.getProperty("settings.lotOccupancy.prints")[0] %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
+                    <a class="button is-link" href="<%= urlPrefix %>/print/<%= occupancyTypePrints[0] %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
                         <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
                         <span>Print</span>
                     </a>
