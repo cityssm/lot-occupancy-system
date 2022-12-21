@@ -8,6 +8,8 @@ interface UpdateLotForm {
     mapKey: string;
     lotLatitude: string;
     lotLongitude: string;
+    lotTypeFieldIds?: string;
+    [lotFieldValue_lotTypeFieldId: string]: unknown;
 }
 export declare function updateLot(lotForm: UpdateLotForm, requestSession: recordTypes.PartialSession): boolean;
 export declare function updateLotStatus(lotId: number | string, lotStatusId: number | string, requestSession: recordTypes.PartialSession): boolean;

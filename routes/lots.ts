@@ -12,6 +12,8 @@ import handler_previous from "../handlers/lots-get/previous.js";
 import handler_new from "../handlers/lots-get/new.js";
 import handler_edit from "../handlers/lots-get/edit.js";
 
+import handler_doGetLotTypeFields from "../handlers/lots-post/doGetLotTypeFields.js";
+
 import handler_doCreateLot from "../handlers/lots-post/doCreateLot.js";
 import handler_doUpdateLot from "../handlers/lots-post/doUpdateLot.js";
 import handler_doDeleteLot from "../handlers/lots-post/doDeleteLot.js";
@@ -43,6 +45,8 @@ router.get("/:lotId/next", handler_next);
 router.get("/:lotId/previous", handler_previous);
 
 router.get("/:lotId/edit", permissionHandlers.updateGetHandler, handler_edit);
+
+router.post("/doGetLotTypeFields", permissionHandlers.updatePostHandler, handler_doGetLotTypeFields);
 
 router.post("/doCreateLot", permissionHandlers.updatePostHandler, handler_doCreateLot);
 

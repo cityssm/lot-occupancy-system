@@ -2,6 +2,8 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
+import { getLotFields } from "./getLotFields.js";
+
 import { getLotComments } from "./getLotComments.js";
 
 import { getLotOccupancies } from "./getLotOccupancies.js";
@@ -41,7 +43,9 @@ const _getLot = (sql: string, lotId_or_lotName: number | string): recordTypes.Lo
             database
         ).lotOccupancies;
 
-        lot.lotComments = getLotComments(lot.lotId);
+        lot.lotFields = getLotFields(lot.lotId, database);
+
+        lot.lotComments = getLotComments(lot.lotId, database);
     }
 
     database.close();

@@ -18,6 +18,21 @@ declare const bulmaJS: BulmaJS;
 
     // Main form
 
+    let hasUnsavedChanges = false;
+    let refreshAfterSave = isCreate;
+
+    const setUnsavedChanges = () => {
+        if (!hasUnsavedChanges) {
+            hasUnsavedChanges = true;
+            cityssm.enableNavBlocker();
+        }
+    };
+
+    const clearUnsavedChanges = () => {
+        hasUnsavedChanges = false;
+        cityssm.disableNavBlocker();
+    };
+
     const formElement = document.querySelector("#form--lot") as HTMLFormElement;
 
     const updateLot = (formEvent: SubmitEvent) => {
@@ -28,9 +43,11 @@ declare const bulmaJS: BulmaJS;
             formElement,
             (responseJSON: { success: boolean; lotId?: number; errorMessage?: string }) => {
                 if (responseJSON.success) {
-                    if (isCreate) {
+                    clearUnsavedChanges();
+
+                    if (isCreate || refreshAfterSave) {
                         window.location.href =
-                            los.urlPrefix + "/lots/" + responseJSON.lotId + "/edit";
+                            los.urlPrefix + "/lots/" + responseJSON.lotId + "/edit?t=" + Date.now();
                     } else {
                         bulmaJS.alert({
                             message: exports.aliases.lot + " Updated Successfully",
@@ -49,6 +66,12 @@ declare const bulmaJS: BulmaJS;
     };
 
     formElement.addEventListener("submit", updateLot);
+
+    const formInputElements = formElement.querySelectorAll("input, select");
+
+    for (const formInputElement of formInputElements) {
+        formInputElement.addEventListener("change", setUnsavedChanges);
+    }
 
     los.initializeUnlockFieldButtons(formElement);
 
@@ -93,6 +116,158 @@ declare const bulmaJS: BulmaJS;
                 });
             }
         );
+    }
+
+    // Lot Type
+
+    const lotTypeIdElement = document.querySelector("#lot--lotTypeId") as HTMLSelectElement;
+
+    if (isCreate) {
+        const lotFieldsContainerElement = document.querySelector(
+            "#container--lotFields"
+        ) as HTMLElement;
+
+        lotTypeIdElement.addEventListener("change", () => {
+            if (lotTypeIdElement.value === "") {
+                lotFieldsContainerElement.innerHTML =
+                    '<div class="message is-info">' +
+                    '<p class="message-body">Select the ' +
+                    exports.aliases.lot.toLowerCase() +
+                    " type to load the available fields.</p>" +
+                    "</div>";
+
+                return;
+            }
+
+            cityssm.postJSON(
+                los.urlPrefix + "/lots/doGetLotTypeFields",
+                {
+                    lotTypeId: lotTypeIdElement.value
+                },
+                (responseJSON: { lotTypeFields: recordTypes.LotTypeField[] }) => {
+                    if (responseJSON.lotTypeFields.length === 0) {
+                        lotFieldsContainerElement.innerHTML =
+                            '<div class="message is-info">' +
+                            '<p class="message-body">There are no additional fields for this ' +
+                            exports.aliases.lot.toLowerCase() +
+                            " type.</p>" +
+                            "</div>";
+
+                        return;
+                    }
+
+                    lotFieldsContainerElement.innerHTML = "";
+
+                    let lotTypeFieldIds = "";
+
+                    for (const lotTypeField of responseJSON.lotTypeFields) {
+                        lotTypeFieldIds += "," + lotTypeField.lotTypeFieldId;
+
+                        const fieldName = "lotFieldValue_" + lotTypeField.lotTypeFieldId;
+
+                        const fieldId = "lot--" + fieldName;
+
+                        const fieldElement = document.createElement("div");
+                        fieldElement.className = "field";
+                        fieldElement.innerHTML =
+                            '<label class="label" for="' +
+                            fieldId +
+                            '"></label>' +
+                            '<div class="control"></div>';
+
+                        (fieldElement.querySelector("label") as HTMLLabelElement).textContent =
+                            lotTypeField.lotTypeField as string;
+
+                        if (lotTypeField.lotTypeFieldValues === "") {
+                            const inputElement = document.createElement("input");
+
+                            inputElement.className = "input";
+
+                            inputElement.id = fieldId;
+
+                            inputElement.name = fieldName;
+
+                            inputElement.type = "text";
+
+                            inputElement.required = lotTypeField.isRequired as boolean;
+                            inputElement.minLength = lotTypeField.minimumLength as number;
+                            inputElement.maxLength = lotTypeField.maximumLength as number;
+
+                            if (lotTypeField.pattern && lotTypeField.pattern !== "") {
+                                inputElement.pattern = lotTypeField.pattern;
+                            }
+
+                            (fieldElement.querySelector(".control") as HTMLElement).append(
+                                inputElement
+                            );
+                        } else {
+                            (fieldElement.querySelector(".control") as HTMLElement).innerHTML =
+                                '<div class="select is-fullwidth"><select id="' +
+                                fieldId +
+                                '" name="' +
+                                fieldName +
+                                '">' +
+                                '<option value="">(Not Set)</option>' +
+                                "</select></div>";
+
+                            const selectElement = fieldElement.querySelector(
+                                "select"
+                            ) as HTMLSelectElement;
+
+                            selectElement.required = lotTypeField.isRequired as boolean;
+
+                            const optionValues = (lotTypeField.lotTypeFieldValues as string).split(
+                                "\n"
+                            );
+
+                            for (const optionValue of optionValues) {
+                                const optionElement = document.createElement("option");
+                                optionElement.value = optionValue;
+                                optionElement.textContent = optionValue;
+                                selectElement.append(optionElement);
+                            }
+                        }
+
+                        lotFieldsContainerElement.append(fieldElement);
+                    }
+
+                    lotFieldsContainerElement.insertAdjacentHTML(
+                        "beforeend",
+                        '<input name="lotTypeFieldIds" type="hidden" value="' +
+                            lotTypeFieldIds.slice(1) +
+                            '" />'
+                    );
+                }
+            );
+        });
+    } else {
+        const originalLotTypeId = lotTypeIdElement.value;
+
+        lotTypeIdElement.addEventListener("change", () => {
+            if (lotTypeIdElement.value !== originalLotTypeId) {
+                bulmaJS.confirm({
+                    title: "Confirm Change",
+                    message:
+                        "Are you sure you want to change the " +
+                        exports.aliases.lot.toLowerCase() +
+                        " type?\n" +
+                        "This change affects the additional fields associated with this record.",
+                    contextualColorName: "warning",
+                    okButton: {
+                        text: "Yes, Keep the Change",
+                        callbackFunction: () => {
+                            refreshAfterSave = true;
+                        }
+                    },
+                    cancelButton: {
+                        text: "Revert the Change",
+                        callbackFunction: () => {
+                            lotTypeIdElement.value = originalLotTypeId;
+                        }
+                    }
+                });
+            }
+        });
     }
 
     // Comments

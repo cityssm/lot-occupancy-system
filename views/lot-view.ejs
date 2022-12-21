@@ -46,52 +46,56 @@
     <% } %>
 </div>
 
-<div class="columns">
-    <div class="column">
-        <div class="panel">
-            <div class="panel-block is-block">
+<div class="panel">
+    <div class="panel-block is-block">
+        <p>
+            <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
+            <a href="<%= urlPrefix %>/maps/<%= lot.mapId %>">
+                <%= lot.mapName || "(No Name)" %>
+            </a>
+        </p>
+        <div class="columns mt-2">
+            <div class="column">
                 <p>
-                    <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
-                    <a href="<%= urlPrefix %>/maps/<%= lot.mapId %>">
-                        <%= lot.mapName || "(No Name)" %>
-                    </a>
+                    <strong><%= configFunctions.getProperty("aliases.lot") %> Type</strong><br />
+                    <%= lot.lotType %>
                 </p>
-                <div class="columns mt-2">
-                    <div class="column">
-                        <p>
-                            <strong><%= configFunctions.getProperty("aliases.lot") %> Type</strong><br />
-                            <%= lot.lotType %>
-                        </p>
-                    </div>
-                    <div class="column">
-                        <p>
-                            <strong>Status</strong><br />
-                            <%= lot.lotStatus %>
-                        </p>
-                    </div>
-                </div>
             </div>
-        </div>
-    </div>
-    <div class="column">
-        <div class="panel">
-            <h2 class="panel-heading">Image</h2>
-            <div class="panel-block is-block">
-                <% if (lot.mapSVG) { %>
-                    <% const imageURL = urlPrefix + "/images/maps/" + lot.mapSVG %>
-                    <div class="image" id="lot--map" data-map-key="<%= lot.mapKey %>">
-                        <%- include('../public/images/maps/' + lot.mapSVG); -%>
-                    </div>
-                <% } else { %>
-                    <div class="message is-info">
-                        <p class="message-body">There are no image associated with this
-                            <%= configFunctions.getProperty("aliases.lot").toLowerCase() %>.</p>
-                    </div>
+            <div class="column">
+                <p>
+                    <strong>Status</strong><br />
+                    <%= lot.lotStatus %>
+                </p>
+            </div>
+            <div class="column">
+                <% if (lot.lotFields.length > 0) { %>
+                    <% for (const lotField of lot.lotFields) { %>
+                        <p class="mb-2">
+                            <strong><%= lotField.lotTypeField %></strong><br />
+                            <% if (lotField.lotFieldValue) { %>
+                                <%= lotField.lotFieldValue %>
+                            <% } else { %>
+                                <span class="has-text-grey">(No Value)</span>
+                            <% } %>
+                        </p>
+                    <% } %>
                 <% } %>
             </div>
         </div>
     </div>
 </div>
+
+<% if (lot.mapSVG) { %>
+    <div class="panel">
+        <h2 class="panel-heading">Image</h2>
+        <div class="panel-block is-block">
+            <% const imageURL = urlPrefix + "/images/maps/" + lot.mapSVG %>
+            <div class="image" id="lot--map" data-map-key="<%= lot.mapKey %>">
+                <%- include('../public/images/maps/' + lot.mapSVG); -%>
+            </div>
+        </div>
+    </div>
+<% } %>
 
 <% if (lot.lotComments.length > 0) { %>
     <div class="panel">

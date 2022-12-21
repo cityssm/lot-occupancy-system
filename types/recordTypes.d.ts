@@ -62,6 +62,7 @@ export interface Lot extends Record {
     lotLongitude?: number;
     lotStatusId?: number;
     lotStatus?: string;
+    lotFields?: LotField[];
     lotOccupancyCount?: number;
     lotOccupancies?: LotOccupancy[];
     lotComments?: LotComment[];
@@ -74,6 +75,11 @@ export interface LotComment extends Record {
     lotCommentTime?: number;
     lotCommentTimeString?: string;
     lotComment?: string;
+}
+export interface LotField extends LotTypeField, Record {
+    lotId?: number;
+    lotTypeFieldId?: number;
+    lotFieldValue?: string;
 }
 export interface OccupancyType extends Record {
     occupancyTypeId: number;

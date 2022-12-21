@@ -1,5 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { addOrUpdateLotField } from "./addOrUpdateLotField.js";
+import { deleteLotField } from "./deleteLotField.js";
 export function updateLot(lotForm, requestSession) {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
@@ -17,6 +19,22 @@ export function updateLot(lotForm, requestSession) {
         " where lotId = ?" +
         " and recordDelete_timeMillis is null")
         .run(lotForm.lotName, lotForm.lotTypeId, lotForm.lotStatusId === "" ? undefined : lotForm.lotStatusId, lotForm.mapId === "" ? undefined : lotForm.mapId, lotForm.mapKey, lotForm.lotLatitude === "" ? undefined : lotForm.lotLatitude, lotForm.lotLongitude === "" ? undefined : lotForm.lotLongitude, requestSession.user.userName, rightNowMillis, lotForm.lotId);
+    if (result.changes > 0) {
+        const lotTypeFieldIds = (lotForm.lotTypeFieldIds || "").split(",");
+        for (const lotTypeFieldId of lotTypeFieldIds) {
+            const lotFieldValue = lotForm["lotFieldValue_" + lotTypeFieldId];
+            if (lotFieldValue && lotFieldValue !== "") {
+                addOrUpdateLotField({
+                    lotId: lotForm.lotId,
+                    lotTypeFieldId,
+                    lotFieldValue
+                }, requestSession, database);
+            }
+            else {
+                deleteLotField(lotForm.lotId, lotTypeFieldId, requestSession, database);
+            }
+        }
+    }
     database.close();
     return result.changes > 0;
 }

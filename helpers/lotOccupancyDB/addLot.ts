@@ -2,6 +2,8 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
+import { addOrUpdateLotField } from "./addOrUpdateLotField.js";
+
 import type * as recordTypes from "../../types/recordTypes";
 
 interface AddLotForm {
@@ -14,12 +16,12 @@ interface AddLotForm {
 
     lotLatitude: string;
     lotLongitude: string;
+
+    lotTypeFieldIds?: string;
+    [lotFieldValue_lotTypeFieldId: string]: unknown;
 }
 
-export const addLot = (
-    lotForm: AddLotForm,
-    requestSession: recordTypes.PartialSession
-): number => {
+export const addLot = (lotForm: AddLotForm, requestSession: recordTypes.PartialSession): number => {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
@@ -48,9 +50,29 @@ export const addLot = (
             rightNowMillis
         );
 
+    const lotId = result.lastInsertRowid as number;
+
+    const lotTypeFieldIds = (lotForm.lotTypeFieldIds || "").split(",");
+
+    for (const lotTypeFieldId of lotTypeFieldIds) {
+        const lotFieldValue = lotForm["lotFieldValue_" + lotTypeFieldId] as string;
+
+        if (lotFieldValue && lotFieldValue !== "") {
+            addOrUpdateLotField(
+                {
+                    lotId,
+                    lotTypeFieldId,
+                    lotFieldValue
+                },
+                requestSession,
+                database
+            );
+        }
+    }
+
     database.close();
 
-    return result.lastInsertRowid as number;
+    return lotId;
 };
 
 export default addLot;

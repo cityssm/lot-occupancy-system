@@ -84,6 +84,8 @@ export interface Lot extends Record {
     lotStatusId?: number;
     lotStatus?: string;
 
+    lotFields?: LotField[];
+
     lotOccupancyCount?: number;
     lotOccupancies?: LotOccupancy[];
 
@@ -101,6 +103,12 @@ export interface LotComment extends Record {
     lotCommentTimeString?: string;
 
     lotComment?: string;
+}
+
+export interface LotField extends LotTypeField, Record {
+    lotId?: number;
+    lotTypeFieldId?: number;
+    lotFieldValue?: string;
 }
 
 export interface OccupancyType extends Record {
