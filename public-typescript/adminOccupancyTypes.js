@@ -315,7 +315,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '<div class="panel-heading">' +
                 ('<div class="level is-mobile">' +
                     ('<div class="level-left">' +
-                        '<div class="level-item"><h2 class="title is-4">(All Occupancy Types)</h2></div>' +
+                        '<div class="level-item"><h2 class="title is-4">(All ' + cityssm.escapeHTML(exports.aliases.occupancy) + ' Types)</h2></div>' +
                         "</div>") +
                     ('<div class="level-right">' +
                         ('<div class="level-item">' +
