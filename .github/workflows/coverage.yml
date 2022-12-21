@@ -19,7 +19,7 @@ jobs:
       - name: Install Application
         run: |
           npm ci
-          npm install -g mocha c8 cypress@11
+          npm install -g mocha c8 cypress@12
       - name: Copy Test Config
         run: cp ./data/config.testing.js ./data/config.js
       - name: Initialize Database
