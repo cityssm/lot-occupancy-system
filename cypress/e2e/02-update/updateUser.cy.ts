@@ -3,27 +3,24 @@ import { testUpdate } from "../../../test/_globals.js";
 import { logout, login } from "../../support/index.js";
 
 describe("Update User", () => {
-    before(logout);
-
-    after(logout);
-
-    it("Logs In Successfully", () => {
+    beforeEach("Loads page", () => {
+        logout();
         login(testUpdate);
     });
 
-    describe("Dashboard", () => {
-        before(() => {
-            cy.visit("/dashboard");
-        });
+    afterEach(logout);
 
-        it("Has no detectable accessibility issues", () => {
-            cy.injectAxe();
-            cy.checkA11y();
-        });
+    it("Has an Update User dashboard", () => {
+        cy.visit("/dashboard");
 
-        it("Has no links to admin areas", () => {
-            cy.get("a[href*='/admin']").should("not.exist");
-        });
+        cy.log("Has no detectable accessibility issues");
+
+        cy.injectAxe();
+        cy.checkA11y();
+
+        cy.log("Has no links to admin areas");
+
+        cy.get("a[href*='/admin']").should("not.exist");
     });
 
     it("Redirects to Dashboard when attempting to access admin area", () => {

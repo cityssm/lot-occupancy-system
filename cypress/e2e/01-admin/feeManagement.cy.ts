@@ -9,17 +9,15 @@ import * as configFunctions from "../../../helpers/functions.config.js";
 import type * as recordTypes from "../../../types/recordTypes";
 
 describe("Admin - Fee Management", () => {
-    before(() => {
+    
+    beforeEach("Loads page", () => {
         logout();
         login(testAdmin);
-    });
-
-    after(logout);
-
-    beforeEach("Loads page", () => {
         cy.visit("/admin/fees");
         cy.location("pathname").should("equal", "/admin/fees");
     });
+    
+    afterEach(logout);
 
     it("Has no detectable accessibility issues", () => {
         cy.injectAxe();

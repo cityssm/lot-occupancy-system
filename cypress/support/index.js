@@ -1,14 +1,10 @@
 import "cypress-axe";
-Cypress.Cookies.defaults({
-    preserve: ["_csrf", "lot-occupancy-system-user-sid"]
-});
 export const logout = () => {
     cy.visit("/logout");
 };
 export const login = (userName) => {
     cy.visit("/login");
-    cy.get(".message")
-        .contains("Testing", {
+    cy.get(".message").contains("Testing", {
         matchCase: false
     });
     cy.get("form [name='userName']").type(userName);

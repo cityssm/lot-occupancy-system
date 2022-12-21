@@ -2,24 +2,16 @@
 
 import "cypress-axe";
 
-
-Cypress.Cookies.defaults({
-    preserve: ["_csrf", "lot-occupancy-system-user-sid"]
-});
-
-
 export const logout = (): void => {
     cy.visit("/logout");
 };
 
-
 export const login = (userName: string): void => {
     cy.visit("/login");
 
-    cy.get(".message")
-        .contains("Testing", {
-            matchCase: false
-        });
+    cy.get(".message").contains("Testing", {
+        matchCase: false
+    });
 
     cy.get("form [name='userName']").type(userName);
     cy.get("form [name='password']").type(userName);
@@ -31,6 +23,5 @@ export const login = (userName: string): void => {
     // Logged in pages have a navbar
     cy.get(".navbar").should("have.length", 1);
 };
-
 
 export const ajaxDelayMillis = 800;
