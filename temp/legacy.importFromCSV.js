@@ -34,6 +34,7 @@ const user = {
     }
 };
 function purgeTables() {
+    console.time("purgeTables");
     const database = sqlite(databasePath);
     database.prepare("delete from WorkOrderMilestones").run();
     database.prepare("delete from WorkOrderComments").run();
@@ -52,12 +53,15 @@ function purgeTables() {
         .prepare("delete from sqlite_sequence where name in ('Lots', 'LotComments', 'LotOccupancies', 'LotOccupancyComments', 'WorkOrders', 'WorkOrderComments', 'WorkOrderMilestones')")
         .run();
     database.close();
+    console.timeEnd("purgeTables");
 }
 function purgeConfigTables() {
+    console.time("purgeConfigTables");
     const database = sqlite(databasePath);
     database.prepare("delete from Maps").run();
     database.prepare("delete from sqlite_sequence where name in ('Maps')").run();
     database.close();
+    console.timeEnd("purgeConfigTables");
 }
 function getMapByMapDescription(mapDescription) {
     const database = sqlite(databasePath, {
@@ -293,6 +297,7 @@ function getFuneralHome(funeralHomeKey) {
     };
 }
 function importFromMasterCSV() {
+    console.time("importFromMasterCSV");
     let masterRow;
     const rawData = fs.readFileSync("./temp/CMMASTER.csv").toString();
     const cmmaster = papa.parse(rawData, {
@@ -565,8 +570,10 @@ function importFromMasterCSV() {
         console.error(error);
         console.log(masterRow);
     }
+    console.timeEnd("importFromMasterCSV");
 }
 function importFromPrepaidCSV() {
+    console.time("importFromPrepaidCSV");
     let prepaidRow;
     const rawData = fs.readFileSync("./temp/CMPRPAID.csv").toString();
     const cmprpaid = papa.parse(rawData, {
@@ -793,8 +800,10 @@ function importFromPrepaidCSV() {
         console.error(error);
         console.log(prepaidRow);
     }
+    console.timeEnd("importFromPrepaidCSV");
 }
 function importFromWorkOrderCSV() {
+    console.time("importFromWorkOrderCSV");
     let workOrderRow;
     const rawData = fs.readFileSync("./temp/CMWKORDR.csv").toString();
     const cmwkordr = papa.parse(rawData, {
@@ -1106,8 +1115,11 @@ function importFromWorkOrderCSV() {
         console.error(error);
         console.log(workOrderRow);
     }
+    console.time("importFromWorkOrderCSV");
 }
+console.time("importFromCsv");
 purgeTables();
 importFromMasterCSV();
 importFromPrepaidCSV();
 importFromWorkOrderCSV();
+console.timeEnd("importFromCsv");

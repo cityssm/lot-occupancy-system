@@ -207,6 +207,8 @@ const user: recordTypes.PartialSession = {
 };
 
 function purgeTables() {
+    console.time("purgeTables");
+
     const database = sqlite(databasePath);
     database.prepare("delete from WorkOrderMilestones").run();
     database.prepare("delete from WorkOrderComments").run();
@@ -227,13 +229,19 @@ function purgeTables() {
         )
         .run();
     database.close();
+
+    console.timeEnd("purgeTables");
 }
 
 function purgeConfigTables() {
+    console.time("purgeConfigTables");
+
     const database = sqlite(databasePath);
     database.prepare("delete from Maps").run();
     database.prepare("delete from sqlite_sequence where name in ('Maps')").run();
     database.close();
+
+    console.timeEnd("purgeConfigTables");
 }
 
 function getMapByMapDescription(mapDescription: string) {
@@ -461,7 +469,7 @@ function getFuneralHome(funeralHomeKey: string): recordTypes.LotOccupancyOccupan
                 occupantPhoneNumber: "705-842-2520",
                 occupantEmailAddress: "bfh@beggsfh.ca"
             };
-        }       
+        }
         case "BK": {
             return {
                 lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
@@ -487,7 +495,7 @@ function getFuneralHome(funeralHomeKey: string): recordTypes.LotOccupancyOccupan
                 occupantPhoneNumber: "705-759-8456",
                 occupantEmailAddress: ""
             };
-        }        
+        }
         case "GL": {
             return {
                 lotOccupantTypeId: funeralDirectorLotOccupantType.lotOccupantTypeId,
@@ -538,6 +546,8 @@ function getFuneralHome(funeralHomeKey: string): recordTypes.LotOccupancyOccupan
 }
 
 function importFromMasterCSV() {
+    console.time("importFromMasterCSV");
+
     let masterRow: MasterRecord;
 
     const rawData = fs.readFileSync("./temp/CMMASTER.csv").toString();
@@ -973,9 +983,13 @@ function importFromMasterCSV() {
         console.error(error);
         console.log(masterRow);
     }
+
+    console.timeEnd("importFromMasterCSV");
 }
 
 function importFromPrepaidCSV() {
+    console.time("importFromPrepaidCSV");
+
     let prepaidRow: PrepaidRecord;
 
     const rawData = fs.readFileSync("./temp/CMPRPAID.csv").toString();
@@ -1293,9 +1307,13 @@ function importFromPrepaidCSV() {
         console.error(error);
         console.log(prepaidRow);
     }
+
+    console.timeEnd("importFromPrepaidCSV");
 }
 
 function importFromWorkOrderCSV() {
+    console.time("importFromWorkOrderCSV");
+
     let workOrderRow: WorkOrderRecord;
 
     const rawData = fs.readFileSync("./temp/CMWKORDR.csv").toString();
@@ -1794,10 +1812,16 @@ function importFromWorkOrderCSV() {
         console.error(error);
         console.log(workOrderRow);
     }
+
+    console.time("importFromWorkOrderCSV");
 }
+
+console.time("importFromCsv");
 
 purgeTables();
 // purgeConfigTables();
 importFromMasterCSV();
 importFromPrepaidCSV();
 importFromWorkOrderCSV();
+
+console.timeEnd("importFromCsv");
