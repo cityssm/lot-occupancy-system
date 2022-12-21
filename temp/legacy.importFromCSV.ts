@@ -1813,7 +1813,7 @@ function importFromWorkOrderCSV() {
         console.log(workOrderRow);
     }
 
-    console.time("importFromWorkOrderCSV");
+    console.timeEnd("importFromWorkOrderCSV");
 }
 
 console.time("importFromCsv");
