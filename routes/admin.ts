@@ -32,6 +32,11 @@ import handler_doMoveOccupancyTypeFieldUp from "../handlers/admin-post/doMoveOcc
 import handler_doMoveOccupancyTypeFieldDown from "../handlers/admin-post/doMoveOccupancyTypeFieldDown.js";
 import handler_doDeleteOccupancyTypeField from "../handlers/admin-post/doDeleteOccupancyTypeField.js";
 
+import handler_doAddOccupancyTypePrint from "../handlers/admin-post/doAddOccupancyTypePrint.js";
+import handler_doMoveOccupancyTypePrintUp from "../handlers/admin-post/doMoveOccupancyTypePrintUp.js";
+import handler_doMoveOccupancyTypePrintDown from "../handlers/admin-post/doMoveOccupancyTypePrintDown.js";
+import handler_doDeleteOccupancyTypePrint from "../handlers/admin-post/doDeleteOccupancyTypePrint.js";
+
 // Lot Type Management
 
 import handler_lotTypes from "../handlers/admin-get/lotTypes.js";
@@ -140,6 +145,16 @@ router.post("/doMoveOccupancyTypeFieldUp", handler_doMoveOccupancyTypeFieldUp);
 router.post("/doMoveOccupancyTypeFieldDown", handler_doMoveOccupancyTypeFieldDown);
 
 router.post("/doDeleteOccupancyTypeField", handler_doDeleteOccupancyTypeField);
+
+// Occupancy Type Prints
+
+router.post("/doAddOccupancyTypePrint", handler_doAddOccupancyTypePrint);
+
+router.post("/doMoveOccupancyTypePrintUp", handler_doMoveOccupancyTypePrintUp);
+
+router.post("/doMoveOccupancyTypePrintDown", handler_doMoveOccupancyTypePrintDown);
+
+router.post("/doDeleteOccupancyTypePrint", handler_doDeleteOccupancyTypePrint);
 
 /*
  * Lot Type Management

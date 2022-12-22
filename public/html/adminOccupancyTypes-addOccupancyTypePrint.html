@@ -1,0 +1,34 @@
+<div class="modal" role="dialog">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <h3 class="modal-card-title">
+                Add <span class="alias" data-alias="Occupancy"></span> Type Print
+            </h3>
+            <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+        </header>
+        <section class="modal-card-body">
+            <form id="form--occupancyTypePrintAdd">
+                <input class="input" id="occupancyTypePrintAdd--occupancyTypeId" name="occupancyTypeId" type="hidden" />
+                <div class="field">
+                    <label class="label" for="occupancyTypePrintAdd--printEJS">Print</label>
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select id="occupancyTypePrintAdd--printEJS" name="printEJS" required>
+                                <option value="">(Select a Print)</option>
+                                <option value="*">(All Available Prints)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <footer class="modal-card-foot justify-right">
+            <button class="button is-success" type="submit" form="form--occupancyTypePrintAdd">
+                <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add Print</span>
+            </button>
+            <button class="button is-close-modal-button" type="button">Cancel</button>
+        </footer>
+    </div>
+</div>

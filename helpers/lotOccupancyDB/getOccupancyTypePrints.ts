@@ -42,7 +42,7 @@ export const getOccupancyTypePrints = (
         if (result.orderNumber !== expectedOrderNumber) {
             database
                 .prepare(
-                    "update OccupancyTypeFields" +
+                    "update OccupancyTypePrints" +
                         " set orderNumber = ?" +
                         " where occupancyTypeId = ?" +
                         " and printEJS = ?"

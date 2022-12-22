@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
-    const containerElement = document.querySelector("#container--occupancyTypes");
+    const occupancyTypesContainerElement = document.querySelector("#container--occupancyTypes");
+    const occupancyTypePrintsContainerElement = document.querySelector("#container--occupancyTypePrints");
     let occupancyTypes = exports.occupancyTypes;
     delete exports.occupancyTypes;
     let allOccupancyTypeFields = exports.allOccupancyTypeFields;
@@ -309,13 +310,153 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         }
     };
+    const openAddOccupancyTypePrint = (clickEvent) => {
+        const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyTypePrintList").dataset.occupancyTypeId;
+        let closeAddModalFunction;
+        const doAdd = (formEvent) => {
+            formEvent.preventDefault();
+            cityssm.postJSON(los.urlPrefix + "/admin/doAddOccupancyTypePrint", formEvent.currentTarget, (responseJSON) => {
+                if (responseJSON.success) {
+                    closeAddModalFunction();
+                }
+                occupancyTypeResponseHandler(responseJSON);
+            });
+        };
+        cityssm.openHtmlModal("adminOccupancyTypes-addOccupancyTypePrint", {
+            onshow: (modalElement) => {
+                los.populateAliases(modalElement);
+                modalElement.querySelector("#occupancyTypePrintAdd--occupancyTypeId").value = occupancyTypeId;
+                const printSelectElement = modalElement.querySelector("#occupancyTypePrintAdd--printEJS");
+                for (const [printEJS, printTitle] of Object.entries(exports.occupancyTypePrintTitles)) {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = printEJS;
+                    optionElement.textContent = printTitle;
+                    printSelectElement.append(optionElement);
+                }
+            },
+            onshown: (modalElement, closeModalFunction) => {
+                var _a;
+                closeAddModalFunction = closeModalFunction;
+                (_a = modalElement.querySelector("form")) === null || _a === void 0 ? void 0 : _a.addEventListener("submit", doAdd);
+            }
+        });
+    };
+    const moveOccupancyTypePrintUp = (clickEvent) => {
+        clickEvent.preventDefault();
+        const printEJS = clickEvent.currentTarget.closest(".container--occupancyTypePrint").dataset.printEJS;
+        const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyTypePrintList").dataset.occupancyTypeId;
+        cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypePrintUp", {
+            occupancyTypeId,
+            printEJS,
+            moveToTop: clickEvent.shiftKey ? "1" : "0"
+        }, occupancyTypeResponseHandler);
+    };
+    const moveOccupancyTypePrintDown = (clickEvent) => {
+        clickEvent.preventDefault();
+        const printEJS = clickEvent.currentTarget.closest(".container--occupancyTypePrint").dataset.printEJS;
+        const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyTypePrintList").dataset.occupancyTypeId;
+        cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypePrintDown", {
+            occupancyTypeId,
+            printEJS,
+            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+        }, occupancyTypeResponseHandler);
+    };
+    const deleteOccupancyTypePrint = (clickEvent) => {
+        clickEvent.preventDefault();
+        const printEJS = clickEvent.currentTarget.closest(".container--occupancyTypePrint").dataset.printEJS;
+        const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyTypePrintList").dataset.occupancyTypeId;
+        const doDelete = () => {
+            cityssm.postJSON(los.urlPrefix + "/admin/doDeleteOccupancyTypePrint", {
+                occupancyTypeId,
+                printEJS
+            }, occupancyTypeResponseHandler);
+        };
+        bulmaJS.confirm({
+            title: "Delete Print",
+            message: "Are you sure you want to remove this print option?",
+            contextualColorName: "warning",
+            okButton: {
+                text: "Yes, Remove Print",
+                callbackFunction: doDelete
+            }
+        });
+    };
+    const renderOccupancyTypePrints = (panelElement, occupancyTypeId, occupancyTypePrints) => {
+        if (occupancyTypePrints.length === 0) {
+            panelElement.insertAdjacentHTML("beforeend", '<div class="panel-block is-block">' +
+                '<div class="message is-info">' +
+                '<p class="message-body">There are no prints associated with this record.</p>' +
+                "</div>" +
+                "</div>");
+        }
+        else {
+            for (const printEJS of occupancyTypePrints) {
+                const panelBlockElement = document.createElement("div");
+                panelBlockElement.className = "panel-block is-block container--occupancyTypePrint";
+                panelBlockElement.dataset.printEJS = printEJS;
+                const printTitle = printEJS === "*"
+                    ? "(All Available Prints)"
+                    : exports.occupancyTypePrintTitles[printEJS];
+                let printIconClass = "fa-star";
+                if (printEJS.startsWith("pdf/")) {
+                    printIconClass = "fa-file-pdf";
+                }
+                else if (printEJS.startsWith("screen/")) {
+                    printIconClass = "fa-file";
+                }
+                panelBlockElement.innerHTML =
+                    '<div class="level is-mobile">' +
+                        '<div class="level-left">' +
+                        ('<div class="level-item">' +
+                            '<i class="fas fa-fw ' +
+                            printIconClass +
+                            '" aria-hidden="true"></i>' +
+                            "</div>") +
+                        ('<div class="level-item">' +
+                            cityssm.escapeHTML(printTitle || printEJS) +
+                            "</div>") +
+                        "</div>" +
+                        '<div class="level-right">' +
+                        ('<div class="level-item">' +
+                            '<div class="field has-addons">' +
+                            '<div class="control">' +
+                            '<button class="button is-small button--moveOccupancyTypePrintUp" data-tooltip="Move Up" type="button" aria-label="Move Up">' +
+                            '<i class="fas fa-arrow-up" aria-hidden="true"></i>' +
+                            "</button>" +
+                            "</div>" +
+                            '<div class="control">' +
+                            '<button class="button is-small button--moveOccupancyTypePrintDown" data-tooltip="Move Down" type="button" aria-label="Move Down">' +
+                            '<i class="fas fa-arrow-down" aria-hidden="true"></i>' +
+                            "</button>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>") +
+                        ('<div class="level-item">' +
+                            '<button class="button is-small is-danger button--deleteOccupancyTypePrint" data-tooltip="Delete" type="button" aria-label="Delete Print">' +
+                            '<i class="fas fa-trash" aria-hidden="true"></i>' +
+                            "</button>" +
+                            "</div>" +
+                            "</div>") +
+                        "</div>" +
+                        "</div>";
+                panelBlockElement.querySelector(".button--moveOccupancyTypePrintUp").addEventListener("click", moveOccupancyTypePrintUp);
+                panelBlockElement.querySelector(".button--moveOccupancyTypePrintDown").addEventListener("click", moveOccupancyTypePrintDown);
+                panelBlockElement.querySelector(".button--deleteOccupancyTypePrint").addEventListener("click", deleteOccupancyTypePrint);
+                panelElement.append(panelBlockElement);
+            }
+        }
+    };
     const renderOccupancyTypes = () => {
-        containerElement.innerHTML =
+        occupancyTypesContainerElement.innerHTML =
             '<div class="panel container--occupancyType" id="container--allOccupancyTypeFields" data-occupancy-type-id="">' +
                 '<div class="panel-heading">' +
                 ('<div class="level is-mobile">' +
                     ('<div class="level-left">' +
-                        '<div class="level-item"><h2 class="title is-4">(All ' + cityssm.escapeHTML(exports.aliases.occupancy) + ' Types)</h2></div>' +
+                        '<div class="level-item">' +
+                        ('<h2 class="title is-4">(All ' +
+                            cityssm.escapeHTML(exports.aliases.occupancy) +
+                            " Types)</h2>") +
+                        "</div>" +
                         "</div>") +
                     ('<div class="level-right">' +
                         ('<div class="level-item">' +
@@ -328,10 +469,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</div>") +
                 "</div>" +
                 "</div>";
-        renderOccupancyTypeFields(containerElement.querySelector("#container--allOccupancyTypeFields"), undefined, allOccupancyTypeFields);
-        containerElement.querySelector(".button--addOccupancyTypeField").addEventListener("click", openAddOccupancyTypeField);
+        occupancyTypePrintsContainerElement.innerHTML = "";
+        renderOccupancyTypeFields(occupancyTypesContainerElement.querySelector("#container--allOccupancyTypeFields"), undefined, allOccupancyTypeFields);
+        occupancyTypesContainerElement.querySelector(".button--addOccupancyTypeField").addEventListener("click", openAddOccupancyTypeField);
         if (occupancyTypes.length === 0) {
-            containerElement.insertAdjacentHTML("afterbegin", '<div class="message is-warning>' +
+            occupancyTypesContainerElement.insertAdjacentHTML("afterbegin", '<div class="message is-warning>' +
+                '<p class="message-body">There are no active ' +
+                exports.aliases.occupancy.toLowerCase() +
+                " types.</p>" +
+                "</div>");
+            occupancyTypePrintsContainerElement.insertAdjacentHTML("afterbegin", '<div class="message is-warning>' +
                 '<p class="message-body">There are no active ' +
                 exports.aliases.occupancy.toLowerCase() +
                 " types.</p>" +
@@ -339,73 +486,104 @@ Object.defineProperty(exports, "__esModule", { value: true });
             return;
         }
         for (const occupancyType of occupancyTypes) {
-            const occupancyTypeContainer = document.createElement("div");
-            occupancyTypeContainer.className = "panel container--occupancyType";
-            occupancyTypeContainer.dataset.occupancyTypeId =
-                occupancyType.occupancyTypeId.toString();
-            occupancyTypeContainer.innerHTML =
-                '<div class="panel-heading">' +
-                    '<div class="level is-mobile">' +
-                    ('<div class="level-left">' +
-                        '<div class="level-item">' +
-                        '<button class="button is-small button--toggleOccupancyTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">' +
-                        (expandedOccupancyTypes.has(occupancyType.occupancyTypeId)
-                            ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
-                            : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>') +
-                        "</button>" +
+            {
+                const occupancyTypeContainer = document.createElement("div");
+                occupancyTypeContainer.className = "panel container--occupancyType";
+                occupancyTypeContainer.dataset.occupancyTypeId =
+                    occupancyType.occupancyTypeId.toString();
+                occupancyTypeContainer.innerHTML =
+                    '<div class="panel-heading">' +
+                        '<div class="level is-mobile">' +
+                        ('<div class="level-left">' +
+                            '<div class="level-item">' +
+                            '<button class="button is-small button--toggleOccupancyTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">' +
+                            (expandedOccupancyTypes.has(occupancyType.occupancyTypeId)
+                                ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
+                                : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>') +
+                            "</button>" +
+                            "</div>" +
+                            '<div class="level-item">' +
+                            '<h2 class="title is-4">' +
+                            cityssm.escapeHTML(occupancyType.occupancyType) +
+                            "</h2>" +
+                            "</div>" +
+                            "</div>") +
+                        ('<div class="level-right">' +
+                            ('<div class="level-item">' +
+                                '<button class="button is-danger is-small button--deleteOccupancyType" type="button">' +
+                                '<span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>' +
+                                "<span>Delete</span>" +
+                                "</button>" +
+                                "</div>") +
+                            ('<div class="level-item">' +
+                                '<button class="button is-primary is-small button--editOccupancyType" type="button">' +
+                                '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
+                                "<span>Edit " +
+                                exports.aliases.occupancy +
+                                " Type</span>" +
+                                "</button>" +
+                                "</div>") +
+                            ('<div class="level-item">' +
+                                '<button class="button is-success is-small button--addOccupancyTypeField" type="button">' +
+                                '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
+                                "<span>Add Field</span>" +
+                                "</button>" +
+                                "</div>") +
+                            ('<div class="level-item">' +
+                                '<div class="field has-addons">' +
+                                '<div class="control">' +
+                                '<button class="button is-small button--moveOccupancyTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up">' +
+                                '<i class="fas fa-arrow-up" aria-hidden="true"></i>' +
+                                "</button>" +
+                                "</div>" +
+                                '<div class="control">' +
+                                '<button class="button is-small button--moveOccupancyTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down">' +
+                                '<i class="fas fa-arrow-down" aria-hidden="true"></i>' +
+                                "</button>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>") +
+                            "</div>") +
                         "</div>" +
-                        '<div class="level-item">' +
-                        '<h2 class="title is-4">' +
-                        cityssm.escapeHTML(occupancyType.occupancyType) +
-                        "</h2>" +
+                        "</div>";
+                renderOccupancyTypeFields(occupancyTypeContainer, occupancyType.occupancyTypeId, occupancyType.occupancyTypeFields);
+                occupancyTypeContainer.querySelector(".button--toggleOccupancyTypeFields").addEventListener("click", toggleOccupancyTypeFields);
+                occupancyTypeContainer.querySelector(".button--deleteOccupancyType").addEventListener("click", deleteOccupancyType);
+                occupancyTypeContainer.querySelector(".button--editOccupancyType").addEventListener("click", openEditOccupancyType);
+                occupancyTypeContainer.querySelector(".button--addOccupancyTypeField").addEventListener("click", openAddOccupancyTypeField);
+                occupancyTypeContainer.querySelector(".button--moveOccupancyTypeUp").addEventListener("click", moveOccupancyTypeUp);
+                occupancyTypeContainer.querySelector(".button--moveOccupancyTypeDown").addEventListener("click", moveOccupancyTypeDown);
+                occupancyTypesContainerElement.append(occupancyTypeContainer);
+            }
+            {
+                const occupancyTypePrintContainer = document.createElement("div");
+                occupancyTypePrintContainer.className = "panel container--occupancyTypePrintList";
+                occupancyTypePrintContainer.dataset.occupancyTypeId =
+                    occupancyType.occupancyTypeId.toString();
+                occupancyTypePrintContainer.innerHTML =
+                    '<div class="panel-heading">' +
+                        '<div class="level is-mobile">' +
+                        ('<div class="level-left">' +
+                            '<div class="level-item">' +
+                            '<h2 class="title is-4">' +
+                            cityssm.escapeHTML(occupancyType.occupancyType) +
+                            "</h2>" +
+                            "</div>" +
+                            "</div>") +
+                        ('<div class="level-right">' +
+                            ('<div class="level-item">' +
+                                '<button class="button is-success is-small button--addOccupancyTypePrint" type="button">' +
+                                '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
+                                "<span>Add Print</span>" +
+                                "</button>" +
+                                "</div>") +
+                            "</div>") +
                         "</div>" +
-                        "</div>") +
-                    ('<div class="level-right">' +
-                        ('<div class="level-item">' +
-                            '<button class="button is-danger is-small button--deleteOccupancyType" type="button">' +
-                            '<span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>' +
-                            "<span>Delete</span>" +
-                            "</button>" +
-                            "</div>") +
-                        ('<div class="level-item">' +
-                            '<button class="button is-primary is-small button--editOccupancyType" type="button">' +
-                            '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
-                            "<span>Edit " +
-                            exports.aliases.occupancy +
-                            " Type</span>" +
-                            "</button>" +
-                            "</div>") +
-                        ('<div class="level-item">' +
-                            '<button class="button is-success is-small button--addOccupancyTypeField" type="button">' +
-                            '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
-                            "<span>Add Field</span>" +
-                            "</button>" +
-                            "</div>") +
-                        ('<div class="level-item">' +
-                            '<div class="field has-addons">' +
-                            '<div class="control">' +
-                            '<button class="button is-small button--moveOccupancyTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up">' +
-                            '<i class="fas fa-arrow-up" aria-hidden="true"></i>' +
-                            "</button>" +
-                            "</div>" +
-                            '<div class="control">' +
-                            '<button class="button is-small button--moveOccupancyTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down">' +
-                            '<i class="fas fa-arrow-down" aria-hidden="true"></i>' +
-                            "</button>" +
-                            "</div>" +
-                            "</div>" +
-                            "</div>") +
-                        "</div>") +
-                    "</div>" +
-                    "</div>";
-            renderOccupancyTypeFields(occupancyTypeContainer, occupancyType.occupancyTypeId, occupancyType.occupancyTypeFields);
-            occupancyTypeContainer.querySelector(".button--toggleOccupancyTypeFields").addEventListener("click", toggleOccupancyTypeFields);
-            occupancyTypeContainer.querySelector(".button--deleteOccupancyType").addEventListener("click", deleteOccupancyType);
-            occupancyTypeContainer.querySelector(".button--editOccupancyType").addEventListener("click", openEditOccupancyType);
-            occupancyTypeContainer.querySelector(".button--addOccupancyTypeField").addEventListener("click", openAddOccupancyTypeField);
-            occupancyTypeContainer.querySelector(".button--moveOccupancyTypeUp").addEventListener("click", moveOccupancyTypeUp);
-            occupancyTypeContainer.querySelector(".button--moveOccupancyTypeDown").addEventListener("click", moveOccupancyTypeDown);
-            containerElement.append(occupancyTypeContainer);
+                        "</div>";
+                renderOccupancyTypePrints(occupancyTypePrintContainer, occupancyType.occupancyTypeId, occupancyType.occupancyTypePrints);
+                occupancyTypePrintContainer.querySelector(".button--addOccupancyTypePrint").addEventListener("click", openAddOccupancyTypePrint);
+                occupancyTypePrintsContainerElement.append(occupancyTypePrintContainer);
+            }
         }
     };
     document.querySelector("#button--addOccupancyType").addEventListener("click", () => {
