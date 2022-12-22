@@ -47,6 +47,7 @@ function purgeTables() {
     database.prepare("delete from LotOccupancyComments").run();
     database.prepare("delete from LotOccupancyOccupants").run();
     database.prepare("delete from LotOccupancies").run();
+    database.prepare("delete from LotFields").run();
     database.prepare("delete from LotComments").run();
     database.prepare("delete from Lots").run();
     database
