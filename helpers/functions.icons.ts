@@ -4,12 +4,12 @@ let solidIcons: string[] = [];
 
 export const getSolidIconClasses = async () => {
     if (solidIcons.length === 0) {
-        const allIcons = await faIcons.getList();
+        const allIcons = await faIcons.getListByKeys(["name", "styles"]);
 
         const list: string[] = [];
 
         for (const icon of allIcons) {
-            if ((icon.styles as string[]).includes("solid")) {
+            if (icon.styles.includes("solid")) {
                 list.push(icon.name);
             }
         }
