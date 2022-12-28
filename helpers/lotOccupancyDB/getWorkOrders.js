@@ -5,6 +5,7 @@ import { getWorkOrderComments } from "./getWorkOrderComments.js";
 import { getLots } from "./getLots.js";
 import { getLotOccupancies } from "./getLotOccupancies.js";
 import { getWorkOrderMilestones } from "./getWorkOrderMilestones.js";
+import { getLotNameWhereClause, getOccupantNameWhereClause } from "../functions.sqlFilters.js";
 const buildWhereClause = (filters) => {
     let sqlWhereClause = " where w.recordDelete_timeMillis is null";
     const sqlParameters = [];
@@ -24,23 +25,24 @@ const buildWhereClause = (filters) => {
         sqlWhereClause += " and w.workOrderOpenDate = ?";
         sqlParameters.push(dateStringToInteger(filters.workOrderOpenDateString));
     }
-    if (filters.occupantName) {
-        const occupantNamePieces = filters.occupantName.toLowerCase().split(" ");
-        for (const occupantNamePiece of occupantNamePieces) {
-            sqlWhereClause +=
-                " and w.workOrderId in (" +
-                    "select workOrderId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and lotOccupancyId in (select lotOccupancyId from LotOccupancyOccupants where recordDelete_timeMillis is null and instr(lower(occupantName), ?)))";
-            sqlParameters.push(occupantNamePiece);
-        }
+    const occupantNameFilters = getOccupantNameWhereClause(filters.occupantName, "o");
+    if (occupantNameFilters.sqlParameters.length > 0) {
+        sqlWhereClause +=
+            " and w.workOrderId in (" +
+                "select workOrderId from WorkOrderLotOccupancies o" +
+                " where recordDelete_timeMillis is null" +
+                occupantNameFilters.sqlWhereClause +
+                ")";
+        sqlParameters.push(...occupantNameFilters.sqlParameters);
     }
-    if (filters.lotName) {
-        const lotNamePieces = filters.lotName.toLowerCase().split(" ");
-        for (const lotNamePiece of lotNamePieces) {
-            sqlWhereClause +=
-                " and w.workOrderId in (" +
-                    "select workOrderId from WorkOrderLots where recordDelete_timeMillis is null and lotId in (select lotId from Lots where recordDelete_timeMillis is null and instr(lower(lotName), ?)))";
-            sqlParameters.push(lotNamePiece);
-        }
+    const lotNameFilters = getLotNameWhereClause(filters.lotName, "", "l");
+    if (lotNameFilters.sqlParameters.length > 0) {
+        sqlWhereClause +=
+            " and w.workOrderId in (" +
+                "select workOrderId from WorkOrderLots where recordDelete_timeMillis is null and lotId in (select lotId from Lots l where recordDelete_timeMillis is null" +
+                lotNameFilters.sqlWhereClause +
+                "))";
+        sqlParameters.push(...lotNameFilters.sqlParameters);
     }
     if (filters.lotOccupancyId) {
         sqlWhereClause +=
