@@ -124,7 +124,7 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
             " left join LotTypes lt on l.lotTypeId = lt.lotTypeId" +
             " left join Maps m on l.mapId = m.mapId" +
             sqlWhereClause +
-            " order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId" +
+            " order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId, o.lotOccupancyId desc" +
             (options.limit === -1
                 ? ""
                 : " limit " + options.limit + " offset " + options.offset))
