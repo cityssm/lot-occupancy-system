@@ -60,7 +60,7 @@ declare const cityssm: cityssmGlobal;
                             '<span class="has-tooltip-left" data-tooltip="' +
                             cityssm.escapeHTML(lot.mapName || "") +
                             '">' +
-                            '<i class="fas fa-vector-square" aria-label="' +
+                            '<i class="fas fa-fw fa-vector-square" aria-label="' +
                             cityssm.escapeHTML(exports.aliases.lot) +
                             '"></i> ' +
                             cityssm.escapeHTML(lot.lotName || "(No Lot Name)") +
