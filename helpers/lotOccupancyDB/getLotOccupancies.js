@@ -16,8 +16,10 @@ const buildWhereClause = (filters) => {
     sqlWhereClause += lotNameFilters.sqlWhereClause;
     sqlParameters.push(...lotNameFilters.sqlParameters);
     const occupantNameFilters = getOccupantNameWhereClause(filters.occupantName, "o");
-    sqlWhereClause += occupantNameFilters.sqlWhereClause;
-    sqlParameters.push(...occupantNameFilters.sqlParameters);
+    if (occupantNameFilters.sqlParameters.length > 0) {
+        sqlWhereClause += " and o.lotOccupancyId in (select lotOccupancyId from LotOccupancyOccupants o where recordDelete_timeMillis is null" + occupantNameFilters.sqlWhereClause + ")";
+        sqlParameters.push(...occupantNameFilters.sqlParameters);
+    }
     if (filters.occupancyTypeId) {
         sqlWhereClause += " and o.occupancyTypeId = ?";
         sqlParameters.push(filters.occupancyTypeId);

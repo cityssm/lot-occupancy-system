@@ -4,8 +4,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import {
     dateIntegerToString,
-    dateStringToInteger,
-    dateToInteger
+    dateStringToInteger
 } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import * as configFunctions from "../functions.config.js";
@@ -53,8 +52,10 @@ const buildWhereClause = (
     sqlParameters.push(...lotNameFilters.sqlParameters);
 
     const occupantNameFilters = getOccupantNameWhereClause(filters.occupantName, "o");
-    sqlWhereClause += occupantNameFilters.sqlWhereClause;
-    sqlParameters.push(...occupantNameFilters.sqlParameters);
+    if (occupantNameFilters.sqlParameters.length > 0) {
+        sqlWhereClause += " and o.lotOccupancyId in (select lotOccupancyId from LotOccupancyOccupants o where recordDelete_timeMillis is null" + occupantNameFilters.sqlWhereClause + ")";
+        sqlParameters.push(...occupantNameFilters.sqlParameters);
+    }
 
     if (filters.occupancyTypeId) {
         sqlWhereClause += " and o.occupancyTypeId = ?";

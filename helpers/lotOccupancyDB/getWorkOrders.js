@@ -31,7 +31,9 @@ const buildWhereClause = (filters) => {
             " and w.workOrderId in (" +
                 "select workOrderId from WorkOrderLotOccupancies o" +
                 " where recordDelete_timeMillis is null" +
+                " and o.lotOccupancyId in (select lotOccupancyId from LotOccupancyOccupants o where recordDelete_timeMillis is null" +
                 occupantNameFilters.sqlWhereClause +
+                ")" +
                 ")";
         sqlParameters.push(...occupantNameFilters.sqlParameters);
     }

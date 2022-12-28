@@ -91,10 +91,7 @@ export const getOccupantNameWhereClause = (occupantName: string, tableAlias = "o
     if (occupantName) {
         const occupantNamePieces = occupantName.toLowerCase().split(" ");
         for (const occupantNamePiece of occupantNamePieces) {
-            sqlWhereClause +=
-                " and " +
-                tableAlias +
-                ".lotOccupancyId in (select lotOccupancyId from LotOccupancyOccupants where recordDelete_timeMillis is null and instr(lower(occupantName), ?))";
+            sqlWhereClause += " and instr(lower(" + tableAlias + ".occupantName), ?)";
             sqlParameters.push(occupantNamePiece);
         }
     }
