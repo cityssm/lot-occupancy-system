@@ -1,9 +1,10 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { dateIntegerToString, dateStringToInteger, dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { dateIntegerToString, dateStringToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as configFunctions from "../functions.config.js";
 import { getOccupancyTypeById } from "../functions.cache.js";
 import { getLotOccupancyOccupants } from "./getLotOccupancyOccupants.js";
+import { getLotNameWhereClause, getOccupancyTimeWhereClause, getOccupantNameWhereClause } from "../functions.sqlFilters.js";
 const buildWhereClause = (filters) => {
     let sqlWhereClause = " where o.recordDelete_timeMillis is null";
     const sqlParameters = [];
@@ -11,56 +12,19 @@ const buildWhereClause = (filters) => {
         sqlWhereClause += " and o.lotId = ?";
         sqlParameters.push(filters.lotId);
     }
-    if (filters.lotName) {
-        if (filters.lotNameSearchType === "startsWith") {
-            sqlWhereClause += " and l.lotName like ? || '%'";
-            sqlParameters.push(filters.lotName);
-        }
-        else if (filters.lotNameSearchType === "endsWith") {
-            sqlWhereClause += " and l.lotName like '%' || ?";
-            sqlParameters.push(filters.lotName);
-        }
-        else {
-            const lotNamePieces = filters.lotName.toLowerCase().split(" ");
-            for (const lotNamePiece of lotNamePieces) {
-                sqlWhereClause += " and instr(lower(l.lotName), ?)";
-                sqlParameters.push(lotNamePiece);
-            }
-        }
-    }
-    if (filters.occupantName) {
-        const occupantNamePieces = filters.occupantName.toLowerCase().split(" ");
-        for (const occupantNamePiece of occupantNamePieces) {
-            sqlWhereClause +=
-                " and o.lotOccupancyId in (select oo.lotOccupancyId from LotOccupancyOccupants oo where oo.recordDelete_timeMillis is null and instr(lower(oo.occupantName), ?))";
-            sqlParameters.push(occupantNamePiece);
-        }
-    }
+    const lotNameFilters = getLotNameWhereClause(filters.lotName, filters.lotNameSearchType, "l");
+    sqlWhereClause += lotNameFilters.sqlWhereClause;
+    sqlParameters.push(...lotNameFilters.sqlParameters);
+    const occupantNameFilters = getOccupantNameWhereClause(filters.occupantName, "o");
+    sqlWhereClause += occupantNameFilters.sqlWhereClause;
+    sqlParameters.push(...occupantNameFilters.sqlParameters);
     if (filters.occupancyTypeId) {
         sqlWhereClause += " and o.occupancyTypeId = ?";
         sqlParameters.push(filters.occupancyTypeId);
     }
-    if (filters.occupancyTime) {
-        const currentDateString = dateToInteger(new Date());
-        switch (filters.occupancyTime) {
-            case "current": {
-                sqlWhereClause +=
-                    " and o.occupancyStartDate <= ? and (o.occupancyEndDate is null or o.occupancyEndDate >= ?)";
-                sqlParameters.push(currentDateString, currentDateString);
-                break;
-            }
-            case "past": {
-                sqlWhereClause += " and o.occupancyEndDate < ?";
-                sqlParameters.push(currentDateString);
-                break;
-            }
-            case "future": {
-                sqlWhereClause += " and o.occupancyStartDate > ?";
-                sqlParameters.push(currentDateString);
-                break;
-            }
-        }
-    }
+    const occupancyTimeFilters = getOccupancyTimeWhereClause(filters.occupancyTime, "o");
+    sqlWhereClause += occupancyTimeFilters.sqlWhereClause;
+    sqlParameters.push(...occupancyTimeFilters.sqlParameters);
     if (filters.occupancyStartDateString) {
         sqlWhereClause += " and o.occupancyStartDate = ?";
         sqlParameters.push(dateStringToInteger(filters.occupancyStartDateString));

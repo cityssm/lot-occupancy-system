@@ -2,26 +2,13 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as configFunctions from "../functions.config.js";
+import { getLotNameWhereClause } from "../functions.sqlFilters.js";
 const buildWhereClause = (filters) => {
     let sqlWhereClause = " where l.recordDelete_timeMillis is null";
     const sqlParameters = [];
-    if (filters.lotName) {
-        if (filters.lotNameSearchType === "startsWith") {
-            sqlWhereClause += " and l.lotName like ? || '%'";
-            sqlParameters.push(filters.lotName);
-        }
-        else if (filters.lotNameSearchType === "endsWith") {
-            sqlWhereClause += " and l.lotName like '%' || ?";
-            sqlParameters.push(filters.lotName);
-        }
-        else {
-            const lotNamePieces = filters.lotName.toLowerCase().split(" ");
-            for (const lotNamePiece of lotNamePieces) {
-                sqlWhereClause += " and instr(lower(l.lotName), ?)";
-                sqlParameters.push(lotNamePiece);
-            }
-        }
-    }
+    const lotNameFilters = getLotNameWhereClause(filters.lotName, filters.lotNameSearchType, "l");
+    sqlWhereClause += lotNameFilters.sqlWhereClause;
+    sqlParameters.push(...lotNameFilters.sqlParameters);
     if (filters.mapId) {
         sqlWhereClause += " and l.mapId = ?";
         sqlParameters.push(filters.mapId);

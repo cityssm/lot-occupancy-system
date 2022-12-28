@@ -7,6 +7,7 @@ import { dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as configFunctions from "../functions.config.js";
 
 import type * as recordTypes from "../../types/recordTypes";
+import { getLotNameWhereClause } from "../functions.sqlFilters.js";
 
 interface GetLotsFilters {
     lotNameSearchType?: "" | "startsWith" | "endsWith";
@@ -26,24 +27,11 @@ interface GetLotsOptions {
 const buildWhereClause = (filters: GetLotsFilters): { sqlWhereClause: string; sqlParameters: unknown[];} => {
     let sqlWhereClause = " where l.recordDelete_timeMillis is null";
     const sqlParameters: unknown[] = [];
+
+    const lotNameFilters = getLotNameWhereClause(filters.lotName, filters.lotNameSearchType, "l");
+    sqlWhereClause += lotNameFilters.sqlWhereClause;
+    sqlParameters.push(...lotNameFilters.sqlParameters);
     
-    if (filters.lotName) {
-        if (filters.lotNameSearchType === "startsWith") {
-            sqlWhereClause += " and l.lotName like ? || '%'";
-            sqlParameters.push(filters.lotName);
-        } else if (filters.lotNameSearchType === "endsWith") {
-            sqlWhereClause += " and l.lotName like '%' || ?";
-            sqlParameters.push(filters.lotName);
-        } else {
-            const lotNamePieces = filters.lotName.toLowerCase().split(" ");
-            for (const lotNamePiece of lotNamePieces) {
-                sqlWhereClause += " and instr(lower(l.lotName), ?)";
-                sqlParameters.push(lotNamePiece);
-            }
-        }
-    }
-
-
     if (filters.mapId) {
         sqlWhereClause += " and l.mapId = ?";
         sqlParameters.push(filters.mapId);
