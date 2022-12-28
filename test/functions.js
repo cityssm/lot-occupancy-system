@@ -1,6 +1,7 @@
 import * as assert from "assert";
 import fs from "node:fs";
 import * as userFunctions from "../helpers/functions.user.js";
+import * as sqlFilterFunctions from "../helpers/functions.sqlFilters.js";
 describe("functions.user", () => {
     describe("unauthenticated, no user in session", () => {
         const noUserRequest = {
@@ -117,6 +118,79 @@ describe("functions.user", () => {
                 params: {}
             };
             assert.strictEqual(await userFunctions.apiKeyIsValid(apiRequest), false);
+        });
+    });
+});
+describe("functions.sqlFilters", () => {
+    describe("LotName filter", () => {
+        it("returns startsWith filter", () => {
+            const filter = sqlFilterFunctions.getLotNameWhereClause("TEST1 TEST2", "startsWith", "l");
+            assert.strictEqual(filter.sqlWhereClause, " and l.lotName like ? || '%'");
+            assert.strictEqual(filter.sqlParameters.length, 1);
+            assert.ok(filter.sqlParameters.includes("TEST1 TEST2"));
+        });
+        it("returns endsWith filter", () => {
+            const filter = sqlFilterFunctions.getLotNameWhereClause("TEST1 TEST2", "endsWith", "l");
+            assert.strictEqual(filter.sqlWhereClause, " and l.lotName like '%' || ?");
+            assert.strictEqual(filter.sqlParameters.length, 1);
+            assert.strictEqual(filter.sqlParameters[0], "TEST1 TEST2");
+        });
+        it("returns contains filter", () => {
+            const filter = sqlFilterFunctions.getLotNameWhereClause("TEST1 TEST2", "", "l");
+            assert.strictEqual(filter.sqlWhereClause, " and instr(lower(l.lotName), ?) and instr(lower(l.lotName), ?)");
+            assert.ok(filter.sqlParameters.includes("test1"));
+            assert.ok(filter.sqlParameters.includes("test2"));
+        });
+        it("handles empty filter", () => {
+            const filter = sqlFilterFunctions.getLotNameWhereClause("", "");
+            assert.strictEqual(filter.sqlWhereClause, "");
+            assert.strictEqual(filter.sqlParameters.length, 0);
+        });
+        it("handles undefined filter", () => {
+            const filter = sqlFilterFunctions.getLotNameWhereClause(undefined, undefined, "l");
+            assert.strictEqual(filter.sqlWhereClause, "");
+            assert.strictEqual(filter.sqlParameters.length, 0);
+        });
+    });
+    describe("OccupancyTime filter", () => {
+        it("creates three different filters", () => {
+            const currentFilter = sqlFilterFunctions.getOccupancyTimeWhereClause("current");
+            assert.notStrictEqual(currentFilter.sqlWhereClause, "");
+            const pastFilter = sqlFilterFunctions.getOccupancyTimeWhereClause("past");
+            assert.notStrictEqual(pastFilter.sqlWhereClause, "");
+            const futureFilter = sqlFilterFunctions.getOccupancyTimeWhereClause("future");
+            assert.notStrictEqual(futureFilter, "");
+            assert.notStrictEqual(currentFilter.sqlWhereClause, pastFilter.sqlWhereClause);
+            assert.notStrictEqual(currentFilter.sqlWhereClause, futureFilter.sqlWhereClause);
+            assert.notStrictEqual(pastFilter.sqlWhereClause, futureFilter.sqlWhereClause);
+        });
+        it("handles empty filter", () => {
+            const filter = sqlFilterFunctions.getOccupancyTimeWhereClause("");
+            assert.strictEqual(filter.sqlWhereClause, "");
+            assert.strictEqual(filter.sqlParameters.length, 0);
+        });
+        it("handles undefined filter", () => {
+            const filter = sqlFilterFunctions.getOccupancyTimeWhereClause(undefined, "o");
+            assert.strictEqual(filter.sqlWhereClause, "");
+            assert.strictEqual(filter.sqlParameters.length, 0);
+        });
+    });
+    describe("OccupantName filter", () => {
+        it("returns filter", () => {
+            const filter = sqlFilterFunctions.getOccupantNameWhereClause("TEST1 TEST2", "o");
+            assert.strictEqual(filter.sqlWhereClause, " and instr(lower(o.occupantName), ?) and instr(lower(o.occupantName), ?)");
+            assert.ok(filter.sqlParameters.includes("test1"));
+            assert.ok(filter.sqlParameters.includes("test2"));
+        });
+        it("handles empty filter", () => {
+            const filter = sqlFilterFunctions.getOccupantNameWhereClause("");
+            assert.strictEqual(filter.sqlWhereClause, "");
+            assert.strictEqual(filter.sqlParameters.length, 0);
+        });
+        it("handles undefined filter", () => {
+            const filter = sqlFilterFunctions.getOccupantNameWhereClause(undefined, "o");
+            assert.strictEqual(filter.sqlWhereClause, "");
+            assert.strictEqual(filter.sqlParameters.length, 0);
         });
     });
 });
