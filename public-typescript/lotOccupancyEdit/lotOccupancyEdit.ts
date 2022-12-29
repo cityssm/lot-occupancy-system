@@ -242,7 +242,8 @@ declare const bulmaJS: BulmaJS;
                             "#workOrderCreate--workOrderTypeId"
                         ) as HTMLSelectElement;
 
-                        const workOrderTypes = exports.workOrderTypes as recordTypes.WorkOrderType[];
+                        const workOrderTypes =
+                            exports.workOrderTypes as recordTypes.WorkOrderType[];
 
                         if (workOrderTypes.length === 1) {
                             workOrderTypeSelectElement.innerHTML = "";
@@ -701,18 +702,19 @@ declare const bulmaJS: BulmaJS;
      */
 
     if (isCreate) {
-
-        const lotOccupantTypeIdElement = document.querySelector("#lotOccupancy--lotOccupantTypeId") as HTMLSelectElement;
+        const lotOccupantTypeIdElement = document.querySelector(
+            "#lotOccupancy--lotOccupantTypeId"
+        ) as HTMLSelectElement;
 
         lotOccupantTypeIdElement.addEventListener("change", () => {
-
-            const occupantFields = formElement.querySelectorAll("[data-table='LotOccupancyOccupant']") as NodeListOf<HTMLInputElement | HTMLTextAreaElement>;
+            const occupantFields = formElement.querySelectorAll(
+                "[data-table='LotOccupancyOccupant']"
+            ) as NodeListOf<HTMLInputElement | HTMLTextAreaElement>;
 
             for (const occupantField of occupantFields) {
-                occupantField.disabled = (lotOccupantTypeIdElement.value === "");
+                occupantField.disabled = lotOccupantTypeIdElement.value === "";
             }
         });
-
     } else {
         let lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[] =
             exports.lotOccupancyOccupants;
@@ -962,9 +964,13 @@ declare const bulmaJS: BulmaJS;
                     cityssm.escapeHTML(lotOccupancyOccupant.occupantName || "(No Name)") +
                     "<br />" +
                     ('<span class="tag">' +
-                    "<i class=\"fas fa-fw fa-" + cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass!) + "\" aria-hidden=\"true\"></i>" +
-                    " <span class=\"ml-1\">" + cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType!) + "</span>" +
-                    "</span>") +
+                        '<i class="fas fa-fw fa-' +
+                        cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass!) +
+                        '" aria-hidden="true"></i>' +
+                        ' <span class="ml-1">' +
+                        cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType!) +
+                        "</span>" +
+                        "</span>") +
                     "</td>" +
                     ("<td>" +
                         (lotOccupancyOccupant.occupantAddress1
@@ -1257,19 +1263,8 @@ declare const bulmaJS: BulmaJS;
         renderLotOccupancyOccupants();
     }
 
-    /*
-     * Comments
-     */
-
     if (!isCreate) {
         //=include lotOccupancyEditComments.js
-    }
-    
-    /*
-    * Fees / Transactions
-    */
-   
-   if (!isCreate) {
         //=include lotOccupancyEditFees.js
     }
 })();

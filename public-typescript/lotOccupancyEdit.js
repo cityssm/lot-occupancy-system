@@ -487,7 +487,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         lotOccupantTypeIdElement.addEventListener("change", () => {
             const occupantFields = formElement.querySelectorAll("[data-table='LotOccupancyOccupant']");
             for (const occupantField of occupantFields) {
-                occupantField.disabled = (lotOccupantTypeIdElement.value === "");
+                occupantField.disabled = lotOccupantTypeIdElement.value === "";
             }
         });
     }
@@ -630,8 +630,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         cityssm.escapeHTML(lotOccupancyOccupant.occupantName || "(No Name)") +
                         "<br />" +
                         ('<span class="tag">' +
-                            "<i class=\"fas fa-fw fa-" + cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass) + "\" aria-hidden=\"true\"></i>" +
-                            " <span class=\"ml-1\">" + cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType) + "</span>" +
+                            '<i class="fas fa-fw fa-' +
+                            cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass) +
+                            '" aria-hidden="true"></i>' +
+                            ' <span class="ml-1">' +
+                            cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType) +
+                            "</span>" +
                             "</span>") +
                         "</td>" +
                         ("<td>" +
@@ -819,9 +823,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
         renderLotOccupancyOccupants();
     }
-    /*
-     * Comments
-     */
     if (!isCreate) {
         "use strict";
         /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
@@ -1005,11 +1006,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
         renderLotOccupancyComments();
         
-    }
-    /*
-    * Fees / Transactions
-    */
-    if (!isCreate) {
         "use strict";
         /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
         Object.defineProperty(exports, "__esModule", { value: true });

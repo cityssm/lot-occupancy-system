@@ -24,20 +24,30 @@ const publicJavascriptsMinFunction = () => {
         .pipe(gulp.dest(publicJavascriptsDestination));
 };
 const publicJavascriptsLotOccupancyEditFunction = () => {
-    return gulp.src("public-typescript/lotOccupancyEdit/lotOccupancyEdit.js")
+    return gulp
+        .src("public-typescript/lotOccupancyEdit/lotOccupancyEdit.js")
+        .pipe(include())
+        .pipe(gulp.dest("public-typescript"));
+};
+const publicJavascriptsWorkOrderEditFunction = () => {
+    return gulp
+        .src("public-typescript/workOrderEdit/workOrderEdit.js")
         .pipe(include())
         .pipe(gulp.dest("public-typescript"));
 };
 gulp.task("public-javascript-lotOccupancyEdit", publicJavascriptsLotOccupancyEditFunction);
+gulp.task("public-javascript-workOrderEdit", publicJavascriptsWorkOrderEditFunction);
 gulp.task("public-javascript-min", publicJavascriptsMinFunction);
 const watchFunction = () => {
     gulp.watch("public-scss/*.scss", publicSCSSFunction);
     gulp.watch("public-typescript/lotOccupancyEdit/*.js", publicJavascriptsLotOccupancyEditFunction);
+    gulp.watch("public-typescript/workOrderEdit/*.js", publicJavascriptsWorkOrderEditFunction);
     gulp.watch("public-typescript/*.js", publicJavascriptsMinFunction);
 };
 gulp.task("watch", watchFunction);
 gulp.task("default", () => {
     publicJavascriptsLotOccupancyEditFunction();
+    publicJavascriptsWorkOrderEditFunction();
     publicJavascriptsMinFunction();
     publicSCSSFunction();
     watchFunction();

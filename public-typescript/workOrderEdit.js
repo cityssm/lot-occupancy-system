@@ -130,6 +130,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * Related Lots
      */
     if (!isCreate) {
+        "use strict";
+        /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+        Object.defineProperty(exports, "__esModule", { value: true });
         let workOrderLots = exports.workOrderLots;
         delete exports.workOrderLots;
         let workOrderLotOccupancies = exports.workOrderLotOccupancies;
@@ -155,11 +158,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             };
             bulmaJS.confirm({
-                title: "Delete " +
-                    exports.aliases.lot +
-                    " " +
-                    exports.aliases.occupancy +
-                    " Relationship",
+                title: "Delete " + exports.aliases.lot + " " + exports.aliases.occupancy + " Relationship",
                 message: "Are you sure you want to remove the relationship to this " +
                     exports.aliases.lot.toLowerCase() +
                     " " +
@@ -342,7 +341,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         };
         const openEditLotStatus = (clickEvent) => {
-            const lotId = Number.parseInt(clickEvent.currentTarget.closest(".container--lot").dataset.lotId, 10);
+            const lotId = Number.parseInt(clickEvent.currentTarget.closest(".container--lot")
+                .dataset.lotId, 10);
             const lot = workOrderLots.find((possibleLot) => {
                 return possibleLot.lotId === lotId;
             });
@@ -367,8 +367,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.openHtmlModal("lot-editLotStatus", {
                 onshow: (modalElement) => {
                     los.populateAliases(modalElement);
-                    modalElement.querySelector("#lotStatusEdit--lotId").value = lotId.toString();
-                    modalElement.querySelector("#lotStatusEdit--lotName").value = lot.lotName;
+                    modalElement.querySelector("#lotStatusEdit--lotId").value =
+                        lotId.toString();
+                    modalElement.querySelector("#lotStatusEdit--lotName").value =
+                        lot.lotName;
                     const lotStatusElement = modalElement.querySelector("#lotStatusEdit--lotStatusId");
                     let lotStatusFound = false;
                     for (const lotStatus of exports.lotStatuses) {
@@ -396,9 +398,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 onshown: (modalElement, closeModalFunction) => {
                     editCloseModalFunction = closeModalFunction;
                     bulmaJS.toggleHtmlClipped();
-                    modalElement
-                        .querySelector("form")
-                        .addEventListener("submit", doUpdateLotStatus);
+                    modalElement.querySelector("form").addEventListener("submit", doUpdateLotStatus);
                 },
                 onremoved: () => {
                     bulmaJS.toggleHtmlClipped();
@@ -426,11 +426,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             };
             bulmaJS.confirm({
-                title: "Delete " +
-                    exports.aliases.lot +
-                    " " +
-                    exports.aliases.occupancy +
-                    " Relationship",
+                title: "Delete " + exports.aliases.lot + " " + exports.aliases.occupancy + " Relationship",
                 message: "Are you sure you want to remove the relationship to this " +
                     exports.aliases.lot.toLowerCase() +
                     " " +
@@ -445,7 +441,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         const renderRelatedLots = () => {
             const lotsContainerElement = document.querySelector("#container--lots");
-            document.querySelector(".tabs a[href='#relatedTab--lots'] .tag").textContent = workOrderLots.length.toString();
+            document.querySelector(".tabs a[href='#relatedTab--lots'] .tag").textContent =
+                workOrderLots.length.toString();
             if (workOrderLots.length === 0) {
                 lotsContainerElement.innerHTML =
                     '<div class="message is-info">' +
@@ -553,8 +550,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     for (const lotOccupancy of responseJSON.lotOccupancies) {
                         const rowElement = document.createElement("tr");
                         rowElement.className = "container--lotOccupancy";
-                        rowElement.dataset.lotOccupancyId =
-                            lotOccupancy.lotOccupancyId.toString();
+                        rowElement.dataset.lotOccupancyId = lotOccupancy.lotOccupancyId.toString();
                         rowElement.innerHTML =
                             '<td class="has-text-centered">' +
                                 '<button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">' +
@@ -565,9 +561,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                     cityssm.escapeHTML(lotOccupancy.occupancyType || "") +
                                     "</td>");
                         if (lotOccupancy.lotId) {
-                            rowElement.insertAdjacentHTML("beforeend", "<td>" +
-                                cityssm.escapeHTML(lotOccupancy.lotName || "") +
-                                "</td>");
+                            rowElement.insertAdjacentHTML("beforeend", "<td>" + cityssm.escapeHTML(lotOccupancy.lotName || "") + "</td>");
                         }
                         else {
                             rowElement.insertAdjacentHTML("beforeend", "<td>" +
@@ -589,19 +583,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                     ? '<span class="has-text-grey">(No ' +
                                         cityssm.escapeHTML(exports.aliases.occupants) +
                                         ")</span>"
-                                    : cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0]
-                                        .occupantName) +
+                                    : cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0].occupantName) +
                                         (lotOccupancy.lotOccupancyOccupants.length > 1
                                             ? " plus " +
-                                                (lotOccupancy.lotOccupancyOccupants
-                                                    .length -
-                                                    1)
+                                                (lotOccupancy.lotOccupancyOccupants.length - 1)
                                             : "")) +
                                 "</td>"));
                         rowElement.querySelector(".button--addLotOccupancy").addEventListener("click", doAddLotOccupancy);
-                        searchResultsContainerElement
-                            .querySelector("tbody")
-                            .append(rowElement);
+                        searchResultsContainerElement.querySelector("tbody").append(rowElement);
                     }
                 });
             };
@@ -686,9 +675,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 ("<td>" + cityssm.escapeHTML(lot.lotType || "") + "</td>") +
                                 ("<td>" + cityssm.escapeHTML(lot.lotStatus || "") + "</td>");
                         rowElement.querySelector(".button--addLot").addEventListener("click", doAddLot);
-                        searchResultsContainerElement
-                            .querySelector("tbody")
-                            .append(rowElement);
+                        searchResultsContainerElement.querySelector("tbody").append(rowElement);
                     }
                 });
             };
@@ -697,7 +684,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     los.populateAliases(modalElement);
                     searchFormElement = modalElement.querySelector("form");
                     searchResultsContainerElement = modalElement.querySelector("#resultsContainer--lotAdd");
-                    modalElement.querySelector("#lotSearch--notWorkOrderId").value = workOrderId;
+                    modalElement.querySelector("#lotSearch--notWorkOrderId").value =
+                        workOrderId;
                     const lotStatusElement = modalElement.querySelector("#lotSearch--lotStatusId");
                     for (const lotStatus of exports.lotStatuses) {
                         const optionElement = document.createElement("option");
@@ -718,10 +706,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         });
+        
     }
     /*
      * Comments
      */
+    "use strict";
+    /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+    Object.defineProperty(exports, "__esModule", { value: true });
     let workOrderComments = exports.workOrderComments;
     delete exports.workOrderComments;
     const openEditWorkOrderComment = (clickEvent) => {
@@ -894,6 +886,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         document.querySelector("#workOrderComments--add").addEventListener("click", openAddCommentModal);
         renderWorkOrderComments();
     }
+    
     /*
      * Milestones
      */
