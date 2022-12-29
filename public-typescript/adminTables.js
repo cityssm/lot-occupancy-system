@@ -2,16 +2,18 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const los = exports.los;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const refreshFontAwesomeIcon = (changeEvent) => {
         const inputElement = changeEvent.currentTarget;
         const fontAwesomeIconClass = inputElement.value;
         inputElement.closest(".field").querySelectorAll(".button.is-static")[1].innerHTML =
             '<i class="fas fa-fw fa-' + fontAwesomeIconClass + '" aria-hidden="true"></i>';
     };
-    /*
-     * Work Order Types
-     */
+    "use strict";
+    /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+    Object.defineProperty(exports, "__esModule", { value: true });
     let workOrderTypes = exports.workOrderTypes;
     delete exports.workOrderTypes;
     const updateWorkOrderType = (submitEvent) => {
@@ -195,9 +197,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     renderWorkOrderTypes();
-    /*
-     * Work Order Milestone Types
-     */
+    
+    "use strict";
+    /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+    Object.defineProperty(exports, "__esModule", { value: true });
     let workOrderMilestoneTypes = exports.workOrderMilestoneTypes;
     delete exports.workOrderMilestoneTypes;
     const updateWorkOrderMilestoneType = (submitEvent) => {
@@ -382,9 +385,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     renderWorkOrderMilestoneTypes();
-    /*
-     * Lot Statuses
-     */
+    
+    "use strict";
+    /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+    Object.defineProperty(exports, "__esModule", { value: true });
     let lotStatuses = exports.lotStatuses;
     delete exports.lotStatuses;
     const updateLotStatus = (submitEvent) => {
@@ -491,7 +495,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     const renderLotStatuses = () => {
         const containerElement = document.querySelector("#container--lotStatuses");
-        if (workOrderTypes.length === 0) {
+        if (lotStatuses.length === 0) {
             containerElement.innerHTML =
                 "<tr>" +
                     '<td colspan="2">' +
@@ -573,9 +577,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     renderLotStatuses();
-    /*
-     * Lot Occupant Types
-     */
+    
+    "use strict";
+    /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+    Object.defineProperty(exports, "__esModule", { value: true });
     let lotOccupantTypes = exports.lotOccupantTypes;
     delete exports.lotOccupantTypes;
     const updateLotOccupantType = (submitEvent) => {
@@ -710,7 +715,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     const renderLotOccupantTypes = () => {
         const containerElement = document.querySelector("#container--lotOccupantTypes");
-        if (workOrderTypes.length === 0) {
+        if (lotOccupantTypes.length === 0) {
             containerElement.innerHTML =
                 "<tr>" +
                     '<td colspan="3">' +
@@ -835,4 +840,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     renderLotOccupantTypes();
+    
 })();
