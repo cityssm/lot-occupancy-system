@@ -26,9 +26,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         cityssm.escapeHTML(lot.mapName || "") +
                         '">' +
                         '<i class="fas fa-fw fa-vector-square" aria-label="' +
-                        cityssm.escapeHTML(exports.aliases.lot) +
+                        los.escapedAliases.Lot +
                         '"></i> ' +
-                        cityssm.escapeHTML(lot.lotName || "(No Lot Name)") +
+                        cityssm.escapeHTML(lot.lotName || "(No " + exports.aliases.Lot + " Name)") +
                         "</span><br />";
             }
             for (const occupancy of workOrder.workOrderLotOccupancies) {
@@ -37,8 +37,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<span class="has-tooltip-left" data-tooltip="' +
                             cityssm.escapeHTML(occupant.lotOccupantType || "") +
                             '">' +
-                            '<i class="fas fa-fw fa-' + cityssm.escapeHTML(occupant.fontAwesomeIconClass || "user") + '" aria-label="' +
-                            cityssm.escapeHTML(exports.aliases.occupant) +
+                            '<i class="fas fa-fw fa-' +
+                            cityssm.escapeHTML(occupant.fontAwesomeIconClass || "user") +
+                            '" aria-label="' +
+                            los.escapedAliases.occupant +
                             '"></i> ' +
                             cityssm.escapeHTML(occupant.occupantName || "(No Name)") +
                             "</span><br />";
@@ -68,23 +70,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</span></td>") +
                 ('<td class="is-nowrap">' +
                     ('<span class="has-tooltip-left" data-tooltip="' +
-                        cityssm.escapeHTML(exports.aliases.workOrderOpenDate) +
+                        los.escapedAliases.WorkOrderOpenDate +
                         '">' +
                         '<i class="fas fa-fw fa-play" aria-label="' +
-                        cityssm.escapeHTML(exports.aliases.workOrderOpenDate) +
+                        los.escapedAliases.WorkOrderOpenDate +
                         '"></i> ' +
                         workOrder.workOrderOpenDateString +
                         "</span><br />") +
                     ('<span class="has-tooltip-left" data-tooltip="' +
-                        cityssm.escapeHTML(exports.aliases.workOrderCloseDate) +
+                        los.escapedAliases.WorkOrderCloseDate +
                         '">' +
                         '<i class="fas fa-fw fa-stop" aria-label="' +
-                        cityssm.escapeHTML(exports.aliases.workOrderCloseDate) +
+                        los.escapedAliases.WorkOrderCloseDate +
                         '"></i> ' +
                         (workOrder.workOrderCloseDate
                             ? workOrder.workOrderCloseDateString
                             : '<span class="has-text-grey">(No ' +
-                                cityssm.escapeHTML(exports.aliases.workOrderCloseDate) +
+                                los.escapedAliases.WorkOrderCloseDate +
                                 ")</span>") +
                         "</span>") +
                     "</td>") +

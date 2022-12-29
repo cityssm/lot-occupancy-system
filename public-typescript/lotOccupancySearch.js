@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             searchResultsContainerElement.innerHTML =
                 '<div class="message is-info">' +
                     '<p class="message-body">There are no ' +
-                    cityssm.escapeHTML(exports.aliases.occupancy.toLowerCase()) +
+                    los.escapedAliases.occupancy +
                     " records that meet the search criteria.</p>" +
                     "</div>";
             return;
@@ -26,30 +26,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     lotOccupancy.occupancyEndDateString >= nowDateString)) {
                 occupancyTimeHTML =
                     '<span class="has-tooltip-right" data-tooltip="Current ' +
-                        exports.aliases.occupancy +
+                        los.escapedAliases.Occupancy +
                         '">' +
                         ('<i class="fas fa-play" aria-label="Current ' +
-                            exports.aliases.occupancy +
+                            los.escapedAliases.Occupancy +
                             '"></i>') +
                         "</span>";
             }
             else if (lotOccupancy.occupancyStartDateString > nowDateString) {
                 occupancyTimeHTML =
                     '<span class="has-tooltip-right" data-tooltip="Future ' +
-                        exports.aliases.occupancy +
+                        los.escapedAliases.Occupancy +
                         '">' +
                         ('<i class="fas fa-fast-forward" aria-label="Future ' +
-                            exports.aliases.occupancy +
+                            los.escapedAliases.Occupancy +
                             '"></i>') +
                         "</span>";
             }
             else {
                 occupancyTimeHTML =
                     '<span class="has-tooltip-right" data-tooltip="Past ' +
-                        exports.aliases.occupancy +
+                        los.escapedAliases.Occupancy +
                         '">' +
                         ('<i class="fas fa-stop" aria-label="Past ' +
-                            exports.aliases.occupancy +
+                            los.escapedAliases.Occupancy +
                             '"></i>') +
                         "</span>";
             }
@@ -88,7 +88,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             cityssm.escapeHTML(lotOccupancy.lotName) +
                             "</a>"
                         : '<span class="has-text-grey">(No ' +
-                            cityssm.escapeHTML(exports.aliases.lot) +
+                            los.escapedAliases.Lot +
                             ")</span>") +
                     "<br />" +
                     ('<span class="is-size-7">' +
@@ -121,11 +121,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             '<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">' +
                 "<thead><tr>" +
                 '<th class="has-width-1"></th>' +
-                ("<th>" + cityssm.escapeHTML(exports.aliases.occupancy) + " Type</th>") +
-                ("<th>" + cityssm.escapeHTML(exports.aliases.lot) + "</th>") +
-                ("<th>" + cityssm.escapeHTML(exports.aliases.occupancyStartDate) + "</th>") +
+                ("<th>" + los.escapedAliases.Occupancy + " Type</th>") +
+                ("<th>" + los.escapedAliases.Lot + "</th>") +
+                ("<th>" + los.escapedAliases.OccupancyStartDate + "</th>") +
                 "<th>End Date</th>" +
-                ("<th>" + cityssm.escapeHTML(exports.aliases.occupants) + "</th>") +
+                ("<th>" + los.escapedAliases.Occupants + "</th>") +
                 '<th class="has-width-1"><span class="is-sr-only">Print</span></th>' +
                 "</tr></thead>" +
                 "<table>" +

@@ -158,9 +158,10 @@ declare const bulmaJS: BulmaJS;
             // Apply a label
 
             const labelElement = document.querySelector("label[for='" + dateElement.id + "']");
-            
+
             if (labelElement) {
-                datepickerElement.querySelector(".datetimepicker-dummy-input")!.ariaLabel = labelElement.textContent;
+                datepickerElement.querySelector(".datetimepicker-dummy-input")!.ariaLabel =
+                    labelElement.textContent;
             }
         }
     };
@@ -281,6 +282,40 @@ declare const bulmaJS: BulmaJS;
         }
     };
 
+    const escapedAliases = Object.freeze({
+        Map: cityssm.escapeHTML(exports.aliases.map),
+        map: cityssm.escapeHTML(exports.aliases.map.toLowerCase()),
+
+        Lot: cityssm.escapeHTML(exports.aliases.lot),
+        lot: cityssm.escapeHTML(exports.aliases.lot.toLowerCase()),
+        Lots: cityssm.escapeHTML(exports.aliases.lots),
+        lots: cityssm.escapeHTML(exports.aliases.lots.toLowerCase()),
+
+        Occupancy: cityssm.escapeHTML(exports.aliases.occupancy),
+        occupancy: cityssm.escapeHTML(exports.aliases.occupancy.toLowerCase()),
+        Occupancies: cityssm.escapeHTML(exports.aliases.occupancies),
+        occupancies: cityssm.escapeHTML(exports.aliases.occupancies.toLowerCase()),
+
+        Occupant: cityssm.escapeHTML(exports.aliases.occupant),
+        occupant: cityssm.escapeHTML(exports.aliases.occupant.toLowerCase()),
+        Occupants: cityssm.escapeHTML(exports.aliases.occupants),
+        occupants: cityssm.escapeHTML(exports.aliases.occupants.toLowerCase()),
+
+        ExternalReceiptNumber: cityssm.escapeHTML(exports.aliases.externalReceiptNumber),
+        externalReceiptNumber: cityssm.escapeHTML(
+            exports.aliases.externalReceiptNumber.toLowerCase()
+        ),
+
+        OccupancyStartDate: cityssm.escapeHTML(exports.aliases.occupancyStartDate),
+        occupancyStartDate: cityssm.escapeHTML(exports.aliases.occupancyStartDate.toLowerCase()),
+
+        WorkOrderOpenDate: cityssm.escapeHTML(exports.aliases.workOrderOpenDate),
+        workOrderOpenDate: cityssm.escapeHTML(exports.aliases.workOrderOpenDate.toLowerCase()),
+
+        WorkOrderCloseDate: cityssm.escapeHTML(exports.aliases.workOrderCloseDate),
+        workOrderCloseDate: cityssm.escapeHTML(exports.aliases.workOrderCloseDate.toLowerCase())
+    });
+
     const hues = ["red", "green", "orange", "blue", "pink", "yellow", "purple"];
     const luminosity = ["bright", "light", "dark"];
 
@@ -309,6 +344,7 @@ declare const bulmaJS: BulmaJS;
         initializeDatePickers,
         // initializeTimePickers,
         populateAliases,
+        escapedAliases,
         getRandomColor
     };
 

@@ -28,7 +28,11 @@ declare const cityssm: cityssmGlobal;
 
     const offsetElement = document.querySelector("#searchFilter--offset") as HTMLInputElement;
 
-    function renderWorkOrders(responseJSON: { count: number; offset: number; workOrders: recordTypes.WorkOrder[]; }) {
+    function renderWorkOrders(responseJSON: {
+        count: number;
+        offset: number;
+        workOrders: recordTypes.WorkOrder[];
+    }) {
         if (responseJSON.workOrders.length === 0) {
             searchResultsContainerElement.innerHTML =
                 '<div class="message is-info">' +
@@ -49,9 +53,9 @@ declare const cityssm: cityssmGlobal;
                     cityssm.escapeHTML(lot.mapName || "") +
                     '">' +
                     '<i class="fas fa-fw fa-vector-square" aria-label="' +
-                    cityssm.escapeHTML(exports.aliases.lot) +
+                    los.escapedAliases.Lot +
                     '"></i> ' +
-                    cityssm.escapeHTML(lot.lotName || "(No Lot Name)") +
+                    cityssm.escapeHTML(lot.lotName || "(No " + exports.aliases.Lot + " Name)") +
                     "</span><br />";
             }
 
@@ -61,8 +65,10 @@ declare const cityssm: cityssmGlobal;
                         '<span class="has-tooltip-left" data-tooltip="' +
                         cityssm.escapeHTML(occupant.lotOccupantType || "") +
                         '">' +
-                        '<i class="fas fa-fw fa-' + cityssm.escapeHTML(occupant.fontAwesomeIconClass || "user") + '" aria-label="' +
-                        cityssm.escapeHTML(exports.aliases.occupant) +
+                        '<i class="fas fa-fw fa-' +
+                        cityssm.escapeHTML(occupant.fontAwesomeIconClass || "user") +
+                        '" aria-label="' +
+                        los.escapedAliases.occupant +
                         '"></i> ' +
                         cityssm.escapeHTML(occupant.occupantName || "(No Name)") +
                         "</span><br />";
@@ -72,70 +78,70 @@ declare const cityssm: cityssmGlobal;
             resultsTbodyElement.insertAdjacentHTML(
                 "beforeend",
                 "<tr>" +
-                ("<td>" +
-                    '<a class="has-text-weight-bold" href="' +
-                    los.urlPrefix +
-                    "/workOrders/" +
-                    workOrder.workOrderId +
-                    '">' +
-                    (workOrder.workOrderNumber!.trim()
-                        ? cityssm.escapeHTML(workOrder.workOrderNumber || "")
-                        : "(No Number)") +
-                    "</a>" +
-                    "</td>") +
-                ("<td>" +
-                    cityssm.escapeHTML(workOrder.workOrderType || "") +
-                    "<br />" +
-                    '<span class="is-size-7">' +
-                    cityssm.escapeHTML(workOrder.workOrderDescription || "") +
-                    "</span>" +
-                    "</td>") +
-                ('<td class="is-nowrap"><span class="is-size-7">' +
-                    relatedHTML +
-                    "</span></td>") +
-                ('<td class="is-nowrap">' +
-                    ('<span class="has-tooltip-left" data-tooltip="' +
-                        cityssm.escapeHTML(exports.aliases.workOrderOpenDate) +
+                    ("<td>" +
+                        '<a class="has-text-weight-bold" href="' +
+                        los.urlPrefix +
+                        "/workOrders/" +
+                        workOrder.workOrderId +
                         '">' +
-                        '<i class="fas fa-fw fa-play" aria-label="' +
-                        cityssm.escapeHTML(exports.aliases.workOrderOpenDate) +
-                        '"></i> ' +
-                        workOrder.workOrderOpenDateString +
-                        "</span><br />") +
-                    ('<span class="has-tooltip-left" data-tooltip="' +
-                        cityssm.escapeHTML(exports.aliases.workOrderCloseDate) +
-                        '">' +
-                        '<i class="fas fa-fw fa-stop" aria-label="' +
-                        cityssm.escapeHTML(exports.aliases.workOrderCloseDate) +
-                        '"></i> ' +
-                        (workOrder.workOrderCloseDate
-                            ? workOrder.workOrderCloseDateString
-                            : '<span class="has-text-grey">(No ' +
-                            cityssm.escapeHTML(exports.aliases.workOrderCloseDate) +
-                            ")</span>") +
-                        "</span>") +
-                    "</td>") +
-                ("<td>" +
-                    (workOrder.workOrderMilestoneCount === 0
-                        ? "-"
-                        : workOrder.workOrderMilestoneCompletionCount +
-                        " / " +
-                        workOrder.workOrderMilestoneCount) +
-                    "</td>") +
-                (workOrderPrints.length > 0
-                    ? "<td>" +
-                    '<a class="button is-small" data-tooltip="Print" href="' +
-                    los.urlPrefix +
-                    "/print/" +
-                    workOrderPrints[0] +
-                    "/?workOrderId=" +
-                    workOrder.workOrderId +
-                    '" target="_blank">' +
-                    '<i class="fas fa-print" aria-label="Print"></i>' +
-                    "</a>" +
-                    "</td>"
-                    : "") +
-                "</tr>"
+                        (workOrder.workOrderNumber!.trim()
+                            ? cityssm.escapeHTML(workOrder.workOrderNumber || "")
+                            : "(No Number)") +
+                        "</a>" +
+                        "</td>") +
+                    ("<td>" +
+                        cityssm.escapeHTML(workOrder.workOrderType || "") +
+                        "<br />" +
+                        '<span class="is-size-7">' +
+                        cityssm.escapeHTML(workOrder.workOrderDescription || "") +
+                        "</span>" +
+                        "</td>") +
+                    ('<td class="is-nowrap"><span class="is-size-7">' +
+                        relatedHTML +
+                        "</span></td>") +
+                    ('<td class="is-nowrap">' +
+                        ('<span class="has-tooltip-left" data-tooltip="' +
+                            los.escapedAliases.WorkOrderOpenDate +
+                            '">' +
+                            '<i class="fas fa-fw fa-play" aria-label="' +
+                            los.escapedAliases.WorkOrderOpenDate +
+                            '"></i> ' +
+                            workOrder.workOrderOpenDateString +
+                            "</span><br />") +
+                        ('<span class="has-tooltip-left" data-tooltip="' +
+                            los.escapedAliases.WorkOrderCloseDate +
+                            '">' +
+                            '<i class="fas fa-fw fa-stop" aria-label="' +
+                            los.escapedAliases.WorkOrderCloseDate +
+                            '"></i> ' +
+                            (workOrder.workOrderCloseDate
+                                ? workOrder.workOrderCloseDateString
+                                : '<span class="has-text-grey">(No ' +
+                                  los.escapedAliases.WorkOrderCloseDate +
+                                  ")</span>") +
+                            "</span>") +
+                        "</td>") +
+                    ("<td>" +
+                        (workOrder.workOrderMilestoneCount === 0
+                            ? "-"
+                            : workOrder.workOrderMilestoneCompletionCount +
+                              " / " +
+                              workOrder.workOrderMilestoneCount) +
+                        "</td>") +
+                    (workOrderPrints.length > 0
+                        ? "<td>" +
+                          '<a class="button is-small" data-tooltip="Print" href="' +
+                          los.urlPrefix +
+                          "/print/" +
+                          workOrderPrints[0] +
+                          "/?workOrderId=" +
+                          workOrder.workOrderId +
+                          '" target="_blank">' +
+                          '<i class="fas fa-print" aria-label="Print"></i>' +
+                          "</a>" +
+                          "</td>"
+                        : "") +
+                    "</tr>"
             );
         }
 
@@ -164,18 +170,18 @@ declare const cityssm: cityssmGlobal;
             ('<div class="level-right">' +
                 (responseJSON.offset > 0
                     ? '<div class="level-item">' +
-                    '<button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">' +
-                    '<i class="fas fa-arrow-left" aria-hidden="true"></i>' +
-                    "</button>" +
-                    "</div>"
+                      '<button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">' +
+                      '<i class="fas fa-arrow-left" aria-hidden="true"></i>' +
+                      "</button>" +
+                      "</div>"
                     : "") +
                 (limit + responseJSON.offset < responseJSON.count
                     ? '<div class="level-item">' +
-                    '<button class="button is-rounded is-link" data-page="next" type="button" title="Next">' +
-                    "<span>Next</span>" +
-                    '<span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>' +
-                    "</button>" +
-                    "</div>"
+                      '<button class="button is-rounded is-link" data-page="next" type="button" title="Next">' +
+                      "<span>Next</span>" +
+                      '<span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>' +
+                      "</button>" +
+                      "</div>"
                     : "") +
                 "</div>") +
             "</div>";

@@ -75,7 +75,7 @@ declare const cityssm: cityssmGlobal;
                     cityssm.escapeHTML(lot.mapName || "") +
                     '">' +
                     '<i class="fas fa-vector-square" aria-label="' +
-                    cityssm.escapeHTML(exports.aliases.lot) +
+                    los.escapedAliases.Lot +
                     '"></i> ' +
                     cityssm.escapeHTML(lot.lotName || "") +
                     "</span>" +
@@ -89,7 +89,7 @@ declare const cityssm: cityssmGlobal;
                         cityssm.escapeHTML(occupant.lotOccupantType || "") +
                         '">' +
                         '<i class="fas fa-user" aria-label="' +
-                        cityssm.escapeHTML(exports.aliases.lotOccupancy) +
+                        los.escapedAliases.Occupancy +
                         '"></i> ' +
                         cityssm.escapeHTML(occupant.occupantName || "") +
                         "</span>" +

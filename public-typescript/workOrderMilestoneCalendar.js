@@ -43,7 +43,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         cityssm.escapeHTML(lot.mapName || "") +
                         '">' +
                         '<i class="fas fa-vector-square" aria-label="' +
-                        cityssm.escapeHTML(exports.aliases.lot) +
+                        los.escapedAliases.Lot +
                         '"></i> ' +
                         cityssm.escapeHTML(lot.lotName || "") +
                         "</span>" +
@@ -56,7 +56,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             cityssm.escapeHTML(occupant.lotOccupantType || "") +
                             '">' +
                             '<i class="fas fa-user" aria-label="' +
-                            cityssm.escapeHTML(exports.aliases.lotOccupancy) +
+                            los.escapedAliases.Occupancy +
                             '"></i> ' +
                             cityssm.escapeHTML(occupant.occupantName || "") +
                             "</span>" +

@@ -6,6 +6,7 @@ export const handler = async (request, response) => {
     });
     response.json({
         count: result.count,
+        offset: Number.parseInt(request.body.offset, 10),
         lots: result.lots
     });
 };
