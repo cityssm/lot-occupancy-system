@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -185,5 +186,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
         formEvent.preventDefault();
         resetOffsetAndGetWorkOrders();
     });
+    /*
+    const workOrderOpenDateStringElement = document.querySelector("#searchFilter--workOrderOpenDateString") as HTMLInputElement;
+
+    document.querySelector("#button--workOrderOpenDateString-previous").addEventListener("click", () => {
+
+        if (workOrderOpenDateStringElement.value === "") {
+            workOrderOpenDateStringElement.valueAsDate = new Date();
+        } else {
+            const openDate = workOrderOpenDateStringElement.valueAsDate;
+            openDate.setDate(openDate.getDate() - 1);
+            workOrderOpenDateStringElement.valueAsDate = openDate;
+        }
+
+        resetOffsetAndGetWorkOrders();
+    });
+
+    document.querySelector("#button--workOrderOpenDateString-next").addEventListener("click", () => {
+
+        if (workOrderOpenDateStringElement.value === "") {
+            workOrderOpenDateStringElement.valueAsDate = new Date();
+        } else {
+            const openDate = workOrderOpenDateStringElement.valueAsDate;
+            openDate.setDate(openDate.getDate() + 1);
+            workOrderOpenDateStringElement.valueAsDate = openDate;
+        }
+
+        resetOffsetAndGetWorkOrders();
+    });
+    */
     getWorkOrders();
 })();

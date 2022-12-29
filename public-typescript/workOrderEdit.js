@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -37,6 +38,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     for (const inputElement of inputElements) {
         inputElement.addEventListener("change", cityssm.enableNavBlocker);
     }
+    /*
+     * Work Order Options
+     */
     let workOrderMilestones;
     if (!isCreate) {
         const doClose = () => {
@@ -67,6 +71,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         " Either complete the outstanding milestones, or remove them from the work order.",
                     contextualColorName: "warning"
                 });
+                /*
+                // Disable closing work orders with open milestones
+                bulmaJS.confirm({
+                    title: "Close Work Order with Outstanding Milestones",
+                    message:
+                        "Are you sure you want to close this work order with outstanding milestones?",
+                    contextualColorName: "danger",
+                    okButton: {
+                        text: "Yes, Close Work Order",
+                        callbackFunction: doClose
+                    }
+                });
+                */
             }
             else {
                 bulmaJS.confirm({
@@ -109,6 +126,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         });
     }
+    /*
+     * Related Lots
+     */
     if (!isCreate) {
         let workOrderLots = exports.workOrderLots;
         delete exports.workOrderLots;
@@ -699,6 +719,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         });
     }
+    /*
+     * Comments
+     */
     let workOrderComments = exports.workOrderComments;
     delete exports.workOrderComments;
     const openEditWorkOrderComment = (clickEvent) => {
@@ -743,6 +766,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             onshown: (modalElement, closeModalFunction) => {
                 bulmaJS.toggleHtmlClipped();
                 los.initializeDatePickers(modalElement);
+                // los.initializeTimePickers(modalElement);
                 modalElement.querySelector("#workOrderCommentEdit--workOrderComment").focus();
                 editFormElement = modalElement.querySelector("form");
                 editFormElement.addEventListener("submit", editComment);
@@ -870,6 +894,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         document.querySelector("#workOrderComments--add").addEventListener("click", openAddCommentModal);
         renderWorkOrderComments();
     }
+    /*
+     * Milestones
+     */
     if (!isCreate) {
         workOrderMilestones = exports.workOrderMilestones;
         delete exports.workOrderMilestones;
@@ -1002,6 +1029,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     editCloseModalFunction = closeModalFunction;
                     bulmaJS.toggleHtmlClipped();
                     los.initializeDatePickers(modalElement);
+                    // los.initializeTimePickers(modalElement);
                     modalElement.querySelector("form").addEventListener("submit", doEdit);
                 },
                 onremoved: () => {
@@ -1010,6 +1038,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         };
         const renderMilestones = () => {
+            // Clear milestones panel
             const milestonesPanelElement = document.querySelector("#panel--milestones");
             const panelBlockElementsToDelete = milestonesPanelElement.querySelectorAll(".panel-block");
             for (const panelBlockToDelete of panelBlockElementsToDelete) {
@@ -1139,6 +1168,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     addModalElement = modalElement;
                     addCloseModalFunction = closeModalFunction;
                     los.initializeDatePickers(modalElement);
+                    // los.initializeTimePickers(modalElement);
                     bulmaJS.toggleHtmlClipped();
                     addFormElement = modalElement.querySelector("form");
                     addFormElement.addEventListener("submit", doAdd);

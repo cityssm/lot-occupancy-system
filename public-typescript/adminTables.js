@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -8,6 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         inputElement.closest(".field").querySelectorAll(".button.is-static")[1].innerHTML =
             '<i class="fas fa-fw fa-' + fontAwesomeIconClass + '" aria-hidden="true"></i>';
     };
+    /*
+     * Work Order Types
+     */
     let workOrderTypes = exports.workOrderTypes;
     delete exports.workOrderTypes;
     const updateWorkOrderType = (submitEvent) => {
@@ -191,6 +195,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     renderWorkOrderTypes();
+    /*
+     * Work Order Milestone Types
+     */
     let workOrderMilestoneTypes = exports.workOrderMilestoneTypes;
     delete exports.workOrderMilestoneTypes;
     const updateWorkOrderMilestoneType = (submitEvent) => {
@@ -375,6 +382,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     renderWorkOrderMilestoneTypes();
+    /*
+     * Lot Statuses
+     */
     let lotStatuses = exports.lotStatuses;
     delete exports.lotStatuses;
     const updateLotStatus = (submitEvent) => {
@@ -563,6 +573,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     renderLotStatuses();
+    /*
+     * Lot Occupant Types
+     */
     let lotOccupantTypes = exports.lotOccupantTypes;
     delete exports.lotOccupantTypes;
     const updateLotOccupantType = (submitEvent) => {

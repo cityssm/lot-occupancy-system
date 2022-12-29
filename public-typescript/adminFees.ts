@@ -102,8 +102,11 @@ declare const bulmaJS: BulmaJS;
             } else {
                 for (const fee of feeCategory.fees!) {
                     const panelBlockElement = document.createElement("div");
+
                     panelBlockElement.className = "panel-block is-block container--fee";
                     panelBlockElement.dataset.feeId = fee.feeId!.toString();
+
+                    const hasTagsBlock = fee.isRequired || fee.occupancyTypeId || fee.lotTypeId;
 
                     panelBlockElement.innerHTML =
                         '<div class="columns">' +
@@ -116,23 +119,27 @@ declare const bulmaJS: BulmaJS;
                             cityssm.escapeHTML(fee.feeDescription || "").replace(/\n/g, "<br />") +
                             "</small>" +
                             "</p>" +
-                            '<p class="tags">' +
-                            (fee.isRequired ? '<span class="tag is-warning">Required</span>' : "") +
-                            (fee.occupancyTypeId
-                                ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
-                                  cityssm.escapeHTML(exports.aliases.occupancy) +
-                                  ' Type Filter">' +
-                                  cityssm.escapeHTML(fee.occupancyType || "") +
-                                  "</span>"
+                            (hasTagsBlock
+                                ? '<p class="tags">' +
+                                  (fee.isRequired
+                                      ? '<span class="tag is-warning">Required</span>'
+                                      : "") +
+                                  (fee.occupancyTypeId
+                                      ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
+                                        cityssm.escapeHTML(exports.aliases.occupancy) +
+                                        ' Type Filter">' +
+                                        cityssm.escapeHTML(fee.occupancyType || "") +
+                                        "</span>"
+                                      : "") +
+                                  (fee.lotTypeId
+                                      ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
+                                        cityssm.escapeHTML(exports.aliases.lot) +
+                                        ' Type Filter">' +
+                                        cityssm.escapeHTML(fee.lotType || "") +
+                                        "</span>"
+                                      : "") +
+                                  "</p>"
                                 : "") +
-                            (fee.lotTypeId
-                                ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
-                                  cityssm.escapeHTML(exports.aliases.lot) +
-                                  ' Type Filter">' +
-                                  cityssm.escapeHTML(fee.lotType || "") +
-                                  "</span>"
-                                : "") +
-                            "</p>" +
                             "</div>") +
                         ('<div class="column">' +
                             '<div class="columns is-mobile">' +

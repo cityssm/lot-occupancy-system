@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -486,6 +487,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             return;
         }
         for (const occupancyType of occupancyTypes) {
+            // Types and Fields
             {
                 const occupancyTypeContainer = document.createElement("div");
                 occupancyTypeContainer.className = "panel container--occupancyType";
@@ -555,6 +557,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 occupancyTypeContainer.querySelector(".button--moveOccupancyTypeDown").addEventListener("click", moveOccupancyTypeDown);
                 occupancyTypesContainerElement.append(occupancyTypeContainer);
             }
+            // Prints
             {
                 const occupancyTypePrintContainer = document.createElement("div");
                 occupancyTypePrintContainer.className = "panel container--occupancyTypePrintList";

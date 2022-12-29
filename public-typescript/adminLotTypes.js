@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;

@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -80,6 +81,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const panelBlockElement = document.createElement("div");
                     panelBlockElement.className = "panel-block is-block container--fee";
                     panelBlockElement.dataset.feeId = fee.feeId.toString();
+                    const hasTagsBlock = fee.isRequired || fee.occupancyTypeId || fee.lotTypeId;
                     panelBlockElement.innerHTML =
                         '<div class="columns">' +
                             ('<div class="column is-half">' +
@@ -91,23 +93,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 cityssm.escapeHTML(fee.feeDescription || "").replace(/\n/g, "<br />") +
                                 "</small>" +
                                 "</p>" +
-                                '<p class="tags">' +
-                                (fee.isRequired ? '<span class="tag is-warning">Required</span>' : "") +
-                                (fee.occupancyTypeId
-                                    ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
-                                        cityssm.escapeHTML(exports.aliases.occupancy) +
-                                        ' Type Filter">' +
-                                        cityssm.escapeHTML(fee.occupancyType || "") +
-                                        "</span>"
+                                (hasTagsBlock
+                                    ? '<p class="tags">' +
+                                        (fee.isRequired
+                                            ? '<span class="tag is-warning">Required</span>'
+                                            : "") +
+                                        (fee.occupancyTypeId
+                                            ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
+                                                cityssm.escapeHTML(exports.aliases.occupancy) +
+                                                ' Type Filter">' +
+                                                cityssm.escapeHTML(fee.occupancyType || "") +
+                                                "</span>"
+                                            : "") +
+                                        (fee.lotTypeId
+                                            ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
+                                                cityssm.escapeHTML(exports.aliases.lot) +
+                                                ' Type Filter">' +
+                                                cityssm.escapeHTML(fee.lotType || "") +
+                                                "</span>"
+                                            : "") +
+                                        "</p>"
                                     : "") +
-                                (fee.lotTypeId
-                                    ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
-                                        cityssm.escapeHTML(exports.aliases.lot) +
-                                        ' Type Filter">' +
-                                        cityssm.escapeHTML(fee.lotType || "") +
-                                        "</span>"
-                                    : "") +
-                                "</p>" +
                                 "</div>") +
                             ('<div class="column">' +
                                 '<div class="columns is-mobile">' +
@@ -167,6 +173,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             feeCategoriesContainerElement.append(feeCategoryContainerElement);
         }
     };
+    /*
+     * Fee Categories
+     */
     document.querySelector("#button--addFeeCategory").addEventListener("click", () => {
         let addCloseModalFunction;
         const doAddFeeCategory = (submitEvent) => {
@@ -306,6 +315,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     };
+    /*
+     * Fees
+     */
     const openAddFee = (clickEvent) => {
         const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
         let addCloseModalFunction;
@@ -605,5 +617,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     };
+    /*
+     * Initialize
+     */
     renderFeeCategories();
 })();

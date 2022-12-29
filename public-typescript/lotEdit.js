@@ -1,9 +1,11 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
     const lotId = document.querySelector("#lot--lotId").value;
     const isCreate = lotId === "";
+    // Main form
     let hasUnsavedChanges = false;
     let refreshAfterSave = isCreate;
     const setUnsavedChanges = () => {
@@ -81,6 +83,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         });
     }
+    // Lot Type
     const lotTypeIdElement = document.querySelector("#lot--lotTypeId");
     if (isCreate) {
         const lotFieldsContainerElement = document.querySelector("#container--lotFields");
@@ -189,6 +192,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
+    // Comments
     let lotComments = exports.lotComments;
     delete exports.lotComments;
     const openEditLotComment = (clickEvent) => {
@@ -234,6 +238,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             onshown: (modalElement, closeModalFunction) => {
                 bulmaJS.toggleHtmlClipped();
                 los.initializeDatePickers(modalElement);
+                // los.initializeTimePickers(modalElement);
                 modalElement.querySelector("#lotCommentEdit--lotComment").focus();
                 editFormElement = modalElement.querySelector("form");
                 editFormElement.addEventListener("submit", editComment);

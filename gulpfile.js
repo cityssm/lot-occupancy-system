@@ -1,6 +1,7 @@
 import gulp from "gulp";
 import changed from "gulp-changed";
 import minify from "gulp-minify";
+import include from "gulp-include";
 import dartSass from "sass";
 import gulpSass from "gulp-sass";
 const sass = gulpSass(dartSass);
@@ -22,13 +23,21 @@ const publicJavascriptsMinFunction = () => {
         .pipe(minify({ noSource: true, ext: { min: ".min.js" } }))
         .pipe(gulp.dest(publicJavascriptsDestination));
 };
+const publicJavascriptsLotOccupancyEditFunction = () => {
+    return gulp.src("public-typescript/lotOccupancyEdit/lotOccupancyEdit.js")
+        .pipe(include())
+        .pipe(gulp.dest("public-typescript"));
+};
+gulp.task("public-javascript-lotOccupancyEdit", publicJavascriptsLotOccupancyEditFunction);
 gulp.task("public-javascript-min", publicJavascriptsMinFunction);
 const watchFunction = () => {
     gulp.watch("public-scss/*.scss", publicSCSSFunction);
+    gulp.watch("public-typescript/lotOccupancyEdit/*.js", publicJavascriptsLotOccupancyEditFunction);
     gulp.watch("public-typescript/*.js", publicJavascriptsMinFunction);
 };
 gulp.task("watch", watchFunction);
 gulp.task("default", () => {
+    publicJavascriptsLotOccupancyEditFunction();
     publicJavascriptsMinFunction();
     publicSCSSFunction();
     watchFunction();

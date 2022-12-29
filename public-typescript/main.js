@@ -1,9 +1,12 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const highlightMap = (mapContainerElement, mapKey, contextualClass) => {
+        // Search for ID
         let svgId = mapKey;
         let svgElementToHighlight;
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             svgElementToHighlight = mapContainerElement.querySelector("#" + svgId);
             if (svgElementToHighlight || !svgId.includes("-")) {
@@ -12,10 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             svgId = svgId.slice(0, Math.max(0, svgId.lastIndexOf("-")));
         }
         if (svgElementToHighlight) {
+            // eslint-disable-next-line unicorn/no-null
             svgElementToHighlight.style.fill = "";
             svgElementToHighlight.classList.add("highlight", "is-" + contextualClass);
             const childPathElements = svgElementToHighlight.querySelectorAll("path");
             for (const pathElement of childPathElements) {
+                // eslint-disable-next-line unicorn/no-null
                 pathElement.style.fill = "";
             }
         }
@@ -56,29 +61,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (dateElement.required) {
                 datePickerOptions.showClearButton = false;
             }
+            // apply min date if set
             if (dateElement.min) {
                 datePickerOptions.minDate = cityssm.dateStringToDate(dateElement.min);
             }
+            // apply max date if set
             if (dateElement.max) {
                 datePickerOptions.maxDate = cityssm.dateStringToDate(dateElement.max);
             }
             const cal = exports.bulmaCalendar.attach(dateElement, datePickerOptions)[0];
+            // trigger change event on original element
             cal.on("save", () => {
                 dateElement.value = cal.value();
                 dateElement.dispatchEvent(new Event("change"));
             });
+            // Disable html scrolling when calendar is open
             cal.on("show", () => {
                 document.querySelector("html").classList.add("is-clipped");
             });
+            // Reenable scrolling, if a modal window is not open
             cal.on("hide", () => {
                 bulmaJS.toggleHtmlClipped();
             });
+            // Get the datepicker container element
             const datepickerElement = containerElement.querySelector("#" + cal._id);
+            // Override the previous and next month button styles
             const datePickerNavButtonElements = datepickerElement.querySelectorAll(".datepicker-nav button.is-text");
             for (const datePickerNavButtonElement of datePickerNavButtonElements) {
                 datePickerNavButtonElement.classList.add("is-" + datePickerBaseOptions.color);
                 datePickerNavButtonElement.classList.remove("is-text");
             }
+            // Override the clear button style
             const clearButtonElement = datepickerElement.querySelector(".datetimepicker-clear-button");
             if (clearButtonElement) {
                 if (dateElement.required) {
@@ -91,12 +104,85 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
                 }
             }
+            // Apply a label
             const labelElement = document.querySelector("label[for='" + dateElement.id + "']");
             if (labelElement) {
                 datepickerElement.querySelector(".datetimepicker-dummy-input").ariaLabel = labelElement.textContent;
             }
         }
     };
+    /*
+    const timePickerBaseOptions: BulmaCalendarOptions = {
+        type: "time",
+        timeFormat: "hh:mm",
+        color: "info",
+        displayMode: "dialog",
+        validateLabel: "Set Time",
+        minuteSteps: 1
+    };
+
+    const initializeTimePickers = (containerElement: HTMLElement) => {
+
+        const timeElements = containerElement.querySelectorAll(
+            "input[type='time']"
+        ) as NodeListOf<HTMLInputElement>;
+
+        for (const timeElement of timeElements) {
+            const timePickerOptions = Object.assign({}, timePickerBaseOptions);
+
+            if (timeElement.required) {
+                timePickerOptions.showClearButton = false;
+            }
+
+            const cal = exports.bulmaCalendar.attach(timeElement, timePickerOptions)[0];
+
+            // trigger change event on original element
+            cal.on("save", () => {
+                timeElement.value = cal.value();
+                timeElement.dispatchEvent(new Event("change"));
+            });
+
+            // Disable html scrolling when calendar is open
+            cal.on("show", () => {
+                document.querySelector("html")!.classList.add("is-clipped");
+            });
+
+            // Reenable scrolling, if a modal window is not open
+            cal.on("hide", () => {
+                bulmaJS.toggleHtmlClipped();
+            });
+
+            // Get the datepicker container element
+            const timePickerElement = containerElement.querySelector("#" + cal._id) as HTMLElement;
+
+            // Remove "cancel" button
+
+            const timePickerCancelButtonElement = timePickerElement.querySelector(
+                ".datetimepicker-footer-cancel"
+            );
+
+            if (timePickerCancelButtonElement) {
+                timePickerCancelButtonElement.remove();
+            }
+
+            // Override the clear button style
+
+            const clearButtonElement = timePickerElement.querySelector(
+                ".datetimepicker-clear-button"
+            ) as HTMLElement;
+
+            if (clearButtonElement) {
+                if (timeElement.required) {
+                    clearButtonElement.remove();
+                } else {
+                    clearButtonElement.dataset.tooltip = "Clear";
+                    clearButtonElement.innerHTML =
+                        '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
+                }
+            }
+        }
+    };
+    */
     const populateAliases = (containerElement) => {
         const aliasElements = containerElement.querySelectorAll(".alias");
         for (const aliasElement of aliasElements) {
@@ -155,6 +241,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         highlightMap,
         initializeUnlockFieldButtons,
         initializeDatePickers,
+        // initializeTimePickers,
         populateAliases,
         getRandomColor
     };
