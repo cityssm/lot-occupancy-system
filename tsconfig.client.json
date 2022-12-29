@@ -20,6 +20,7 @@
         "public-typescript/lotOccupancyEdit/lotOccupancyEdit.ts",
         "public-typescript/lotOccupancyEdit/lotOccupancyEditComments.ts",
         "public-typescript/lotOccupancyEdit/lotOccupancyEditFees.ts",
+        "public-typescript/lotOccupancyEdit/lotOccupancyEditOccupants.ts",
         "public-typescript/lotOccupancySearch.ts",
         "public-typescript/lotSearch.ts",
         "public-typescript/lotView.ts",

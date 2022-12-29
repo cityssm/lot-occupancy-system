@@ -482,6 +482,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * Occupants
      */
+    "use strict";
+    /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+    Object.defineProperty(exports, "__esModule", { value: true });
     if (isCreate) {
         const lotOccupantTypeIdElement = document.querySelector("#lotOccupancy--lotOccupantTypeId");
         lotOccupantTypeIdElement.addEventListener("change", () => {
@@ -823,6 +826,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
         renderLotOccupancyOccupants();
     }
+    
     if (!isCreate) {
         "use strict";
         /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
