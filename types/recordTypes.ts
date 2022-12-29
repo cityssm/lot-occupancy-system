@@ -44,7 +44,7 @@ export interface LotType extends Record {
 }
 
 export interface LotTypeField extends Record {
-    lotTypeFieldId?: number;
+    lotTypeFieldId: number;
     lotTypeField?: string;
 
     lotTypeId?: number;
@@ -107,7 +107,6 @@ export interface LotComment extends Record {
 
 export interface LotField extends LotTypeField, Record {
     lotId?: number;
-    lotTypeFieldId?: number;
     lotFieldValue?: string;
 }
 
@@ -139,14 +138,14 @@ export interface LotOccupantType extends Record {
 }
 
 export interface FeeCategory extends Record {
-    feeCategoryId?: number;
-    feeCategory?: string;
-    fees?: Fee[];
+    feeCategoryId: number;
+    feeCategory: string;
+    fees: Fee[];
     orderNumber?: number;
 }
 
 export interface Fee extends Record {
-    feeId?: number;
+    feeId: number;
 
     feeCategoryId?: number;
     feeCategory?: string;
@@ -176,13 +175,7 @@ export interface Fee extends Record {
 
 export interface LotOccupancyFee extends Fee, Record {
     lotOccupancyId?: number;
-
-    feeId?: number;
-    feeName?: string;
-
     quantity?: number;
-    feeAmount?: number;
-    taxAmount?: number;
 }
 
 export interface LotOccupancyTransaction extends Record {

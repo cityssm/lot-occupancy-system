@@ -344,7 +344,7 @@ declare const bulmaJS: BulmaJS;
                     modalElement.querySelector(
                         "#lotTypeFieldEdit--lotTypeFieldId"
                     ) as HTMLInputElement
-                ).value = lotTypeField.lotTypeFieldId!.toString();
+                ).value = lotTypeField.lotTypeFieldId.toString();
 
                 (
                     modalElement.querySelector(
@@ -494,7 +494,7 @@ declare const bulmaJS: BulmaJS;
                     panelBlockElement.classList.add("is-hidden");
                 }
 
-                panelBlockElement.dataset.lotTypeFieldId = lotTypeField.lotTypeFieldId!.toString();
+                panelBlockElement.dataset.lotTypeFieldId = lotTypeField.lotTypeFieldId.toString();
 
                 panelBlockElement.innerHTML =
                     '<div class="level is-mobile">' +

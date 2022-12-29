@@ -88,7 +88,7 @@ declare const bulmaJS: BulmaJS;
                 "</div>" +
                 "</div>";
 
-            if (feeCategory.fees!.length === 0) {
+            if (feeCategory.fees.length === 0) {
                 feeCategoryContainerElement.insertAdjacentHTML(
                     "beforeend",
                     '<div class="panel-block is-block">' +
@@ -100,7 +100,7 @@ declare const bulmaJS: BulmaJS;
                         "</div>"
                 );
             } else {
-                for (const fee of feeCategory.fees!) {
+                for (const fee of feeCategory.fees) {
                     const panelBlockElement = document.createElement("div");
 
                     panelBlockElement.className = "panel-block is-block container--fee";
@@ -524,7 +524,7 @@ declare const bulmaJS: BulmaJS;
 
                 for (const feeCategory of feeCategories) {
                     const optionElement = document.createElement("option");
-                    optionElement.value = feeCategory.feeCategoryId!.toString();
+                    optionElement.value = feeCategory.feeCategoryId.toString();
                     optionElement.textContent = feeCategory.feeCategory!;
 
                     if (feeCategory.feeCategoryId === feeCategoryId) {
@@ -653,7 +653,7 @@ declare const bulmaJS: BulmaJS;
             return currentFeeCategory.feeCategoryId === feeCategoryId;
         })!;
 
-        const fee = feeCategory.fees!.find((currentFee) => {
+        const fee = feeCategory.fees.find((currentFee) => {
             return currentFee.feeId === feeId;
         })!;
 
@@ -781,7 +781,7 @@ declare const bulmaJS: BulmaJS;
                 editModalElement = modalElement;
 
                 (modalElement.querySelector("#feeEdit--feeId") as HTMLInputElement).value =
-                    fee.feeId!.toString();
+                    fee.feeId.toString();
 
                 const feeCategoryElement = modalElement.querySelector(
                     "#feeEdit--feeCategoryId"
@@ -789,7 +789,7 @@ declare const bulmaJS: BulmaJS;
 
                 for (const feeCategory of feeCategories) {
                     const optionElement = document.createElement("option");
-                    optionElement.value = feeCategory.feeCategoryId!.toString();
+                    optionElement.value = feeCategory.feeCategoryId.toString();
                     optionElement.textContent = feeCategory.feeCategory!;
 
                     if (feeCategory.feeCategoryId === feeCategoryId) {
