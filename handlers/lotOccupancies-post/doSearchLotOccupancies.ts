@@ -11,6 +11,7 @@ export const handler: RequestHandler = async (request, response) => {
 
     response.json({
         count: result.count,
+        offset: Number.parseInt(request.body.offset, 10),
         lotOccupancies: result.lotOccupancies
     });
 };
