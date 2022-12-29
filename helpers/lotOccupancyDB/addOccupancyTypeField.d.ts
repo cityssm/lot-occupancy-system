@@ -9,5 +9,5 @@ interface AddOccupancyTypeFieldForm {
     maximumLength: string | number;
     orderNumber?: number;
 }
-export declare const addOccupancyTypeField: (occupancyTypeFieldForm: AddOccupancyTypeFieldForm, requestSession: recordTypes.PartialSession) => number;
+export declare function addOccupancyTypeField(occupancyTypeFieldForm: AddOccupancyTypeFieldForm, requestSession: recordTypes.PartialSession): number;
 export default addOccupancyTypeField;

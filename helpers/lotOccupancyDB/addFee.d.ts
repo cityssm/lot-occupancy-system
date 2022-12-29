@@ -14,5 +14,5 @@ interface AddFeeForm {
     isRequired: "" | "1";
     orderNumber?: number;
 }
-export declare const addFee: (feeForm: AddFeeForm, requestSession: recordTypes.PartialSession) => number;
+export declare function addFee(feeForm: AddFeeForm, requestSession: recordTypes.PartialSession): number;
 export default addFee;

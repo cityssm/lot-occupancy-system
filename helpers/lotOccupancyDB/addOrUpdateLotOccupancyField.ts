@@ -10,25 +10,25 @@ interface LotOccupancyFieldForm {
     lotOccupancyFieldValue: string;
 }
 
-export const addOrUpdateLotOccupancyField = (
+export function addOrUpdateLotOccupancyField(
     lotOccupancyFieldForm: LotOccupancyFieldForm,
     requestSession: recordTypes.PartialSession,
     connectedDatabase?: sqlite.Database
-): boolean => {
+): boolean {
     const database = connectedDatabase || sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     let result = database
         .prepare(
-            "update LotOccupancyFields" +
-                " set lotOccupancyFieldValue = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?," +
-                " recordDelete_userName = null," +
-                " recordDelete_timeMillis = null" +
-                " where lotOccupancyId = ?" +
-                " and occupancyTypeFieldId = ?"
+            `update LotOccupancyFields
+                set lotOccupancyFieldValue = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?,
+                recordDelete_userName = null,
+                recordDelete_timeMillis = null
+                where lotOccupancyId = ?
+                and occupancyTypeFieldId = ?`
         )
         .run(
             lotOccupancyFieldForm.lotOccupancyFieldValue,
@@ -41,12 +41,11 @@ export const addOrUpdateLotOccupancyField = (
     if (result.changes === 0) {
         result = database
             .prepare(
-                "insert into LotOccupancyFields (" +
-                    "lotOccupancyId, occupancyTypeFieldId," +
-                    " lotOccupancyFieldValue," +
-                    " recordCreate_userName, recordCreate_timeMillis," +
-                    " recordUpdate_userName, recordUpdate_timeMillis)" +
-                    " values (?, ?, ?, ?, ?, ?, ?)"
+                `insert into LotOccupancyFields (
+                    lotOccupancyId, occupancyTypeFieldId, lotOccupancyFieldValue,
+                    recordCreate_userName, recordCreate_timeMillis,
+                    recordUpdate_userName, recordUpdate_timeMillis)
+                    values (?, ?, ?, ?, ?, ?, ?)`
             )
             .run(
                 lotOccupancyFieldForm.lotOccupancyId,
@@ -64,6 +63,6 @@ export const addOrUpdateLotOccupancyField = (
     }
 
     return result.changes > 0;
-};
+}
 
 export default addOrUpdateLotOccupancyField;

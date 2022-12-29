@@ -10,5 +10,5 @@ interface AddLotForm {
     lotTypeFieldIds?: string;
     [lotFieldValue_lotTypeFieldId: string]: unknown;
 }
-export declare const addLot: (lotForm: AddLotForm, requestSession: recordTypes.PartialSession) => number;
+export declare function addLot(lotForm: AddLotForm, requestSession: recordTypes.PartialSession): number;
 export default addLot;

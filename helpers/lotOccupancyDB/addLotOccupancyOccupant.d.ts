@@ -13,5 +13,5 @@ interface AddLotOccupancyOccupantForm {
     occupantEmailAddress: string;
     occupantComment?: string;
 }
-export declare const addLotOccupancyOccupant: (lotOccupancyOccupantForm: AddLotOccupancyOccupantForm, requestSession: recordTypes.PartialSession, connectedDatabase?: sqlite.Database) => number;
+export declare function addLotOccupancyOccupant(lotOccupancyOccupantForm: AddLotOccupancyOccupantForm, requestSession: recordTypes.PartialSession, connectedDatabase?: sqlite.Database): number;
 export default addLotOccupancyOccupant;

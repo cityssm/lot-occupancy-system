@@ -10,21 +10,21 @@ interface AddLotStatusForm {
     orderNumber?: number;
 }
 
-export const addLotStatus = (
+export function addLotStatus(
     lotStatusForm: AddLotStatusForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into LotStatuses (" +
-                "lotStatus, orderNumber," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?)"
+            `insert into LotStatuses (
+                lotStatus, orderNumber,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?)`
         )
         .run(
             lotStatusForm.lotStatus,
@@ -40,6 +40,6 @@ export const addLotStatus = (
     clearLotStatusesCache();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addLotStatus;

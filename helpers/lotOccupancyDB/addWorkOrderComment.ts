@@ -11,21 +11,23 @@ interface AddWorkOrderCommentForm {
     workOrderComment: string;
 }
 
-export const addWorkOrderComment = (
+export function addWorkOrderComment(
     workOrderCommentForm: AddWorkOrderCommentForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const rightNow = new Date();
 
     const result = database
         .prepare(
-            "insert into WorkOrderComments (" +
-                "workOrderId, workOrderCommentDate, workOrderCommentTime, workOrderComment," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?)"
+            `insert into WorkOrderComments (
+                workOrderId,
+                workOrderCommentDate, workOrderCommentTime,
+                workOrderComment,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             workOrderCommentForm.workOrderId,
@@ -41,6 +43,6 @@ export const addWorkOrderComment = (
     database.close();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addWorkOrderComment;

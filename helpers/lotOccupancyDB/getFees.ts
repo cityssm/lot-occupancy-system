@@ -11,11 +11,11 @@ interface GetFeesFilters {
     lotTypeId?: number | string;
 }
 
-export const getFees = (
+export function getFees(
     feeCategoryId: number,
     additionalFilters: GetFeesFilters,
     connectedDatabase?: sqlite.Database
-): recordTypes.Fee[] => {
+): recordTypes.Fee[] {
     const updateOrderNumbers = !(additionalFilters.lotTypeId || additionalFilters.occupancyTypeId);
 
     const database =
@@ -76,6 +76,6 @@ export const getFees = (
     }
 
     return fees;
-};
+}
 
 export default getFees;

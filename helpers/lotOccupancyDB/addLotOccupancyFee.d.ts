@@ -6,5 +6,5 @@ interface AddLotOccupancyFeeForm {
     feeAmount?: number | string;
     taxAmount?: number | string;
 }
-export declare const addLotOccupancyFee: (lotOccupancyFeeForm: AddLotOccupancyFeeForm, requestSession: recordTypes.PartialSession) => boolean;
+export declare function addLotOccupancyFee(lotOccupancyFeeForm: AddLotOccupancyFeeForm, requestSession: recordTypes.PartialSession): boolean;
 export default addLotOccupancyFee;

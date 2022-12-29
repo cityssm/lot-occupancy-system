@@ -4,5 +4,5 @@ interface AddWorkOrderLotOccupancyForm {
     workOrderId: number | string;
     lotOccupancyId: number | string;
 }
-export declare const addWorkOrderLotOccupancy: (workOrderLotOccupancyForm: AddWorkOrderLotOccupancyForm, requestSession: recordTypes.PartialSession, connectedDatabase?: sqlite.Database) => boolean;
+export declare function addWorkOrderLotOccupancy(workOrderLotOccupancyForm: AddWorkOrderLotOccupancyForm, requestSession: recordTypes.PartialSession, connectedDatabase?: sqlite.Database): boolean;
 export default addWorkOrderLotOccupancy;

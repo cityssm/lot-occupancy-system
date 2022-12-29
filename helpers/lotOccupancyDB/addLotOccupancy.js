@@ -3,7 +3,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { addOrUpdateLotOccupancyField } from "./addOrUpdateLotOccupancyField.js";
 import { addLotOccupancyOccupant } from "./addLotOccupancyOccupant.js";
-export const addLotOccupancy = (lotOccupancyForm, requestSession, connectedDatabase) => {
+export function addLotOccupancy(lotOccupancyForm, requestSession, connectedDatabase) {
     const database = connectedDatabase || sqlite(databasePath);
     const rightNowMillis = Date.now();
     const occupancyStartDate = dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyStartDateString);
@@ -11,12 +11,12 @@ export const addLotOccupancy = (lotOccupancyForm, requestSession, connectedDatab
         console.error(lotOccupancyForm);
     }
     const result = database
-        .prepare("insert into LotOccupancies (" +
-        "occupancyTypeId, lotId," +
-        " occupancyStartDate, occupancyEndDate," +
-        " recordCreate_userName, recordCreate_timeMillis," +
-        " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?, ?, ?)")
+        .prepare(`insert into LotOccupancies (
+                occupancyTypeId, lotId,
+                occupancyStartDate, occupancyEndDate,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(lotOccupancyForm.occupancyTypeId, lotOccupancyForm.lotId === "" ? undefined : lotOccupancyForm.lotId, occupancyStartDate, lotOccupancyForm.occupancyEndDateString === ""
         ? undefined
         : dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyEndDateString), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
@@ -51,5 +51,5 @@ export const addLotOccupancy = (lotOccupancyForm, requestSession, connectedDatab
         database.close();
     }
     return lotOccupancyId;
-};
+}
 export default addLotOccupancy;

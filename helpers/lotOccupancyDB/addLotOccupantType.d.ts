@@ -4,5 +4,5 @@ interface AddLotOccupantTypeForm {
     fontAwesomeIconClass?: string;
     orderNumber?: number;
 }
-export declare const addLotOccupantType: (lotOccupantTypeForm: AddLotOccupantTypeForm, requestSession: recordTypes.PartialSession) => number;
+export declare function addLotOccupantType(lotOccupantTypeForm: AddLotOccupantTypeForm, requestSession: recordTypes.PartialSession): number;
 export default addLotOccupantType;

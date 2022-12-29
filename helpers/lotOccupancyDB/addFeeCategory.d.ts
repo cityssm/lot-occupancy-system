@@ -3,5 +3,5 @@ interface AddFeeCategoryForm {
     feeCategory: string;
     orderNumber?: number;
 }
-export declare const addFeeCategory: (feeCategoryForm: AddFeeCategoryForm, requestSession: recordTypes.PartialSession) => number;
+export declare function addFeeCategory(feeCategoryForm: AddFeeCategoryForm, requestSession: recordTypes.PartialSession): number;
 export default addFeeCategory;

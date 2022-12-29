@@ -12,23 +12,23 @@ interface OccupancyTypePrintForm {
     orderNumber?: number;
 }
 
-export const addOccupancyTypePrint = (
+export function addOccupancyTypePrint(
     occupancyTypePrintForm: OccupancyTypePrintForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     let result = database
         .prepare(
-            "update OccupancyTypePrints" +
-                " set recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?," +
-                " recordDelete_userName = null," +
-                " recordDelete_timeMillis = null" +
-                " where occupancyTypeId = ?" +
-                " and printEJS = ?"
+            `update OccupancyTypePrints
+                set recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?,
+                recordDelete_userName = null,
+                recordDelete_timeMillis = null
+                where occupancyTypeId = ?
+                and printEJS = ?`
         )
         .run(
             requestSession.user.userName,
@@ -40,12 +40,11 @@ export const addOccupancyTypePrint = (
     if (result.changes === 0) {
         result = database
             .prepare(
-                "insert into OccupancyTypePrints (" +
-                    "occupancyTypeId, printEJS," +
-                    " orderNumber," +
-                    " recordCreate_userName, recordCreate_timeMillis," +
-                    " recordUpdate_userName, recordUpdate_timeMillis)" +
-                    " values (?, ?, ?, ?, ?, ?, ?)"
+                `insert into OccupancyTypePrints (
+                    occupancyTypeId, printEJS, orderNumber,
+                    recordCreate_userName, recordCreate_timeMillis,
+                    recordUpdate_userName, recordUpdate_timeMillis)
+                    values (?, ?, ?, ?, ?, ?, ?)`
             )
             .run(
                 occupancyTypePrintForm.occupancyTypeId,
@@ -63,6 +62,6 @@ export const addOccupancyTypePrint = (
     clearOccupancyTypesCache();
 
     return result.changes > 0;
-};
+}
 
 export default addOccupancyTypePrint;

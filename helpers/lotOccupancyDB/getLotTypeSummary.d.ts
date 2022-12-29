@@ -5,5 +5,5 @@ interface GetFilters {
 interface LotTypeSummary extends recordTypes.LotType {
     lotCount: number;
 }
-export declare const getLotTypeSummary: (filters?: GetFilters) => LotTypeSummary[];
+export declare function getLotTypeSummary(filters?: GetFilters): LotTypeSummary[];
 export default getLotTypeSummary;

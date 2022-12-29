@@ -1,16 +1,15 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-export const getLotTypeFields = (lotTypeId, connectedDatabase) => {
+export function getLotTypeFields(lotTypeId, connectedDatabase) {
     const database = connectedDatabase || sqlite(databasePath);
     const lotTypeFields = database
-        .prepare("select lotTypeFieldId," +
-        " lotTypeField, lotTypeFieldValues, isRequired, pattern," +
-        " minimumLength, maximumLength," +
-        " orderNumber" +
-        " from LotTypeFields" +
-        " where recordDelete_timeMillis is null" +
-        " and lotTypeId = ?" +
-        " order by orderNumber, lotTypeField")
+        .prepare(`select lotTypeFieldId,
+                lotTypeField, lotTypeFieldValues,
+                isRequired, pattern, minimumLength, maximumLength, orderNumber
+                from LotTypeFields
+                where recordDelete_timeMillis is null
+                and lotTypeId = ?
+                order by orderNumber, lotTypeField`)
         .all(lotTypeId);
     let expectedFieldOrderNumber = -1;
     for (const lotTypeField of lotTypeFields) {
@@ -26,5 +25,5 @@ export const getLotTypeFields = (lotTypeId, connectedDatabase) => {
         database.close();
     }
     return lotTypeFields;
-};
+}
 export default getLotTypeFields;

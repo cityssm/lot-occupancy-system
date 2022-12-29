@@ -23,7 +23,7 @@ const baseSQL =
     " left join Maps m on l.mapId = m.mapId" +
     " where  l.recordDelete_timeMillis is null";
 
-const _getLot = (sql: string, lotId_or_lotName: number | string): recordTypes.Lot | undefined => {
+function _getLot(sql: string, lotId_or_lotName: number | string): recordTypes.Lot | undefined {
     const database = sqlite(databasePath, {
         readonly: true
     });
@@ -51,14 +51,14 @@ const _getLot = (sql: string, lotId_or_lotName: number | string): recordTypes.Lo
     database.close();
 
     return lot;
-};
+}
 
-export const getLotByLotName = (lotName: string): recordTypes.Lot | undefined => {
+export function getLotByLotName(lotName: string): recordTypes.Lot | undefined {
     return _getLot(baseSQL + " and l.lotName = ?", lotName);
-};
+}
 
-export const getLot = (lotId: number | string): recordTypes.Lot => {
+export function getLot(lotId: number | string): recordTypes.Lot {
     return _getLot(baseSQL + " and l.lotId = ?", lotId);
-};
+}
 
 export default getLot;

@@ -1,7 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import * as configFunctions from "../functions.config.js";
-export const getNextWorkOrderNumber = (connectedDatabase) => {
+export function getNextWorkOrderNumber(connectedDatabase) {
     const database = connectedDatabase ||
         sqlite(databasePath, {
             readonly: true
@@ -26,5 +26,5 @@ export const getNextWorkOrderNumber = (connectedDatabase) => {
     }
     workOrderNumberIndex += 1;
     return currentYearString + "-" + workOrderNumberIndex.toString().padStart(paddingLength, "0");
-};
+}
 export default getNextWorkOrderNumber;

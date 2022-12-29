@@ -1,6 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-export const getLotStatusSummary = (filters) => {
+export function getLotStatusSummary(filters) {
     const database = sqlite(databasePath, {
         readonly: true
     });
@@ -20,5 +20,5 @@ export const getLotStatusSummary = (filters) => {
         .all(sqlParameters);
     database.close();
     return lotStatuses;
-};
+}
 export default getLotStatusSummary;

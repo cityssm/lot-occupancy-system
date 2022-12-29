@@ -14,11 +14,12 @@ export interface LOS {
     initializeUnlockFieldButtons: (containerElement: HTMLElement) => void;
 
     populateAliases: (containerElement: HTMLElement) => void;
+
     escapedAliases: {
         Map: string;
         map: string;
         Lot: string;
-        lot: string;        
+        lot: string;
         Lots: string;
         lots: string;
         Occupancy: string;

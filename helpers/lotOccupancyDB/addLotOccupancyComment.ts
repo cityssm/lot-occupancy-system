@@ -18,22 +18,18 @@ interface AddLotOccupancyCommentForm {
     lotOccupancyComment: string;
 }
 
-export const addLotOccupancyComment = (
+export function addLotOccupancyComment(
     commentForm: AddLotOccupancyCommentForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const rightNow = new Date();
 
     let lotOccupancyCommentDate: number;
     let lotOccupancyCommentTime: number;
 
     if (commentForm.lotOccupancyCommentDateString) {
-        lotOccupancyCommentDate = dateStringToInteger(
-            commentForm.lotOccupancyCommentDateString
-        );
-        lotOccupancyCommentTime = timeStringToInteger(
-            commentForm.lotOccupancyCommentTimeString
-        );
+        lotOccupancyCommentDate = dateStringToInteger(commentForm.lotOccupancyCommentDateString);
+        lotOccupancyCommentTime = timeStringToInteger(commentForm.lotOccupancyCommentTimeString);
     } else {
         lotOccupancyCommentDate = dateToInteger(rightNow);
         lotOccupancyCommentTime = dateToTimeInteger(rightNow);
@@ -43,11 +39,13 @@ export const addLotOccupancyComment = (
 
     const result = database
         .prepare(
-            "insert into LotOccupancyComments (" +
-                "lotOccupancyId, lotOccupancyCommentDate, lotOccupancyCommentTime, lotOccupancyComment," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?)"
+            `insert into LotOccupancyComments (
+                lotOccupancyId,
+                lotOccupancyCommentDate, lotOccupancyCommentTime,
+                lotOccupancyComment,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             commentForm.lotOccupancyId,
@@ -63,6 +61,6 @@ export const addLotOccupancyComment = (
     database.close();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addLotOccupancyComment;

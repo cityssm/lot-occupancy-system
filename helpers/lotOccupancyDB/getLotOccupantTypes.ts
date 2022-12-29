@@ -4,15 +4,15 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const getLotOccupantTypes = (): recordTypes.LotOccupantType[] => {
+export function getLotOccupantTypes(): recordTypes.LotOccupantType[] {
     const database = sqlite(databasePath);
 
     const lotOccupantTypes: recordTypes.LotOccupantType[] = database
         .prepare(
-            "select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass" +
-                " from LotOccupantTypes" +
-                " where recordDelete_timeMillis is null" +
-                " order by orderNumber, lotOccupantType"
+            `select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass
+                from LotOccupantTypes
+                where recordDelete_timeMillis is null
+                order by orderNumber, lotOccupantType`
         )
         .all();
 
@@ -22,9 +22,9 @@ export const getLotOccupantTypes = (): recordTypes.LotOccupantType[] => {
         if (lotOccupantType.orderNumber !== expectedOrderNumber) {
             database
                 .prepare(
-                    "update LotOccupantTypes" +
-                        " set orderNumber = ?" +
-                        " where lotOccupantTypeId = ?"
+                    `update LotOccupantTypes
+                        set orderNumber = ?
+                        where lotOccupantTypeId = ?`
                 )
                 .run(expectedOrderNumber, lotOccupantType.lotOccupantTypeId);
 
@@ -37,6 +37,6 @@ export const getLotOccupantTypes = (): recordTypes.LotOccupantType[] => {
     database.close();
 
     return lotOccupantTypes;
-};
+}
 
 export default getLotOccupantTypes;

@@ -1,6 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-export const getOccupancyTypeFields = (occupancyTypeId, connectedDatabase) => {
+export function getOccupancyTypeFields(occupancyTypeId, connectedDatabase) {
     const database = connectedDatabase || sqlite(databasePath);
     const sqlParameters = [];
     if (occupancyTypeId) {
@@ -21,9 +21,7 @@ export const getOccupancyTypeFields = (occupancyTypeId, connectedDatabase) => {
         expectedFieldOrderNumber += 1;
         if (occupancyTypeField.orderNumber !== expectedFieldOrderNumber) {
             database
-                .prepare("update OccupancyTypeFields" +
-                " set orderNumber = ?" +
-                " where occupancyTypeFieldId = ?")
+                .prepare(`update OccupancyTypeFields set orderNumber = ? where occupancyTypeFieldId = ?`)
                 .run(expectedFieldOrderNumber, occupancyTypeField.occupancyTypeFieldId);
             occupancyTypeField.orderNumber = expectedFieldOrderNumber;
         }
@@ -32,5 +30,5 @@ export const getOccupancyTypeFields = (occupancyTypeId, connectedDatabase) => {
         database.close();
     }
     return occupancyTypeFields;
-};
+}
 export default getOccupancyTypeFields;

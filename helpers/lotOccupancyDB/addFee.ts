@@ -19,26 +19,24 @@ interface AddFeeForm {
     orderNumber?: number;
 }
 
-export const addFee = (
-    feeForm: AddFeeForm,
-    requestSession: recordTypes.PartialSession
-): number => {
+export function addFee(feeForm: AddFeeForm, requestSession: recordTypes.PartialSession): number {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into Fees (" +
-                "feeCategoryId, feeName, feeDescription," +
-                " occupancyTypeId, lotTypeId," +
-                " feeAmount, feeFunction," +
-                " taxAmount, taxPercentage," +
-                " includeQuantity, quantityUnit," +
-                " isRequired, orderNumber," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            `insert into Fees (
+                feeCategoryId,
+                feeName, feeDescription,
+                occupancyTypeId, lotTypeId,
+                feeAmount, feeFunction,
+                taxAmount, taxPercentage,
+                includeQuantity, quantityUnit,
+                isRequired, orderNumber,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             feeForm.feeCategoryId,
@@ -63,6 +61,6 @@ export const addFee = (
     database.close();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addFee;

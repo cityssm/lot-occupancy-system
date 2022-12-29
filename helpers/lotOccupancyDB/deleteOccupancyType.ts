@@ -6,37 +6,32 @@ import { clearOccupancyTypesCache } from "../functions.cache.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const deleteOccupancyType = (
+export function deleteOccupancyType(
     occupancyTypeId: number | string,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
-    const result = database
-        .prepare(
-            "update OccupancyTypes" +
-                " set recordDelete_userName = ?," +
-                " recordDelete_timeMillis = ?" +
-                " where occupancyTypeId = ?"
-        )
-        .run(requestSession.user.userName, rightNowMillis, occupancyTypeId);
+    let result: sqlite.RunResult;
 
-    database
-        .prepare(
-            "update OccupancyTypeFields" +
-                " set recordDelete_userName = ?," +
-                " recordDelete_timeMillis = ?" +
-                " where occupancyTypeId = ?"
-        )
-        .run(requestSession.user.userName, rightNowMillis, occupancyTypeId)
+    for (const tableName of ["OccupancyTypePrints", "OccupancyTypeFields", "OccupancyTypes"]) {
+        result = database
+            .prepare(
+                `update ${tableName}
+                    set recordDelete_userName = ?,
+                    recordDelete_timeMillis = ?
+                    where occupancyTypeId = ?`
+            )
+            .run(requestSession.user.userName, rightNowMillis, occupancyTypeId);
+    }
 
     database.close();
 
     clearOccupancyTypesCache();
 
     return result.changes > 0;
-};
+}
 
 export default deleteOccupancyType;

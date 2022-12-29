@@ -13,7 +13,7 @@ interface GetLotsOptions {
     limit: -1 | number;
     offset: number;
 }
-export declare const getLots: (filters: GetLotsFilters, options: GetLotsOptions, connectedDatabase?: sqlite.Database) => {
+export declare function getLots(filters: GetLotsFilters, options: GetLotsOptions, connectedDatabase?: sqlite.Database): {
     count: number;
     lots: recordTypes.Lot[];
 };

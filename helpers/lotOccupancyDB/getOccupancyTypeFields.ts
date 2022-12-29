@@ -4,10 +4,10 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const getOccupancyTypeFields = (
+export function getOccupancyTypeFields(
     occupancyTypeId?: number,
     connectedDatabase?: sqlite.Database
-): recordTypes.OccupancyTypeField[] => {
+): recordTypes.OccupancyTypeField[] {
     const database = connectedDatabase || sqlite(databasePath);
 
     const sqlParameters: unknown[] = [];
@@ -37,9 +37,7 @@ export const getOccupancyTypeFields = (
         if (occupancyTypeField.orderNumber !== expectedFieldOrderNumber) {
             database
                 .prepare(
-                    "update OccupancyTypeFields" +
-                        " set orderNumber = ?" +
-                        " where occupancyTypeFieldId = ?"
+                    `update OccupancyTypeFields set orderNumber = ? where occupancyTypeFieldId = ?`
                 )
                 .run(expectedFieldOrderNumber, occupancyTypeField.occupancyTypeFieldId);
 
@@ -52,6 +50,6 @@ export const getOccupancyTypeFields = (
     }
 
     return occupancyTypeFields;
-};
+}
 
 export default getOccupancyTypeFields;

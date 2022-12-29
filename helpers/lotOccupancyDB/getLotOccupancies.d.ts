@@ -19,7 +19,7 @@ interface GetLotOccupanciesOptions {
     offset: number;
     includeOccupants: boolean;
 }
-export declare const getLotOccupancies: (filters: GetLotOccupanciesFilters, options: GetLotOccupanciesOptions, connectedDatabase?: sqlite.Database) => {
+export declare function getLotOccupancies(filters: GetLotOccupanciesFilters, options: GetLotOccupanciesOptions, connectedDatabase?: sqlite.Database): {
     count: number;
     lotOccupancies: recordTypes.LotOccupancy[];
 };

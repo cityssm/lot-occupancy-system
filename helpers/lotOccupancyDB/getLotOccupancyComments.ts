@@ -9,10 +9,10 @@ import {
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const getLotOccupancyComments = (
+export function getLotOccupancyComments(
     lotOccupancyId: number | string,
     connectedDatabase?: sqlite.Database
-): recordTypes.LotOccupancyComment[] => {
+): recordTypes.LotOccupancyComment[] {
     const database =
         connectedDatabase ||
         sqlite(databasePath, {
@@ -24,15 +24,15 @@ export const getLotOccupancyComments = (
 
     const lotComments = database
         .prepare(
-            "select lotOccupancyCommentId," +
-                " lotOccupancyCommentDate, userFn_dateIntegerToString(lotOccupancyCommentDate) as lotOccupancyCommentDateString," +
-                " lotOccupancyCommentTime, userFn_timeIntegerToString(lotOccupancyCommentTime) as lotOccupancyCommentTimeString," +
-                " lotOccupancyComment," +
-                " recordCreate_userName, recordUpdate_userName" +
-                " from LotOccupancyComments" +
-                " where recordDelete_timeMillis is null" +
-                " and lotOccupancyId = ?" +
-                " order by lotOccupancyCommentDate desc, lotOccupancyCommentTime desc, lotOccupancyCommentId desc"
+            `select lotOccupancyCommentId,
+                lotOccupancyCommentDate, userFn_dateIntegerToString(lotOccupancyCommentDate) as lotOccupancyCommentDateString,
+                lotOccupancyCommentTime, userFn_timeIntegerToString(lotOccupancyCommentTime) as lotOccupancyCommentTimeString,
+                lotOccupancyComment,
+                recordCreate_userName, recordUpdate_userName
+                from LotOccupancyComments
+                where recordDelete_timeMillis is null
+                and lotOccupancyId = ?
+                order by lotOccupancyCommentDate desc, lotOccupancyCommentTime desc, lotOccupancyCommentId desc`
         )
         .all(lotOccupancyId);
 
@@ -41,6 +41,6 @@ export const getLotOccupancyComments = (
     }
 
     return lotComments;
-};
+}
 
 export default getLotOccupancyComments;

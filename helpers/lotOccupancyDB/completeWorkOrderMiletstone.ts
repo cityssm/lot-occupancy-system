@@ -17,33 +17,29 @@ interface CompleteWorkOrderMilestoneForm {
     workOrderMilestoneCompletionTimeString?: string;
 }
 
-export const completeWorkOrderMilestone = (
+export function completeWorkOrderMilestone(
     milestoneForm: CompleteWorkOrderMilestoneForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const rightNow = new Date();
 
     const database = sqlite(databasePath);
 
     const result = database
         .prepare(
-            "update WorkOrderMilestones" +
-                " set workOrderMilestoneCompletionDate = ?," +
-                " workOrderMilestoneCompletionTime = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where workOrderMilestoneId = ?"
+            `update WorkOrderMilestones
+                set workOrderMilestoneCompletionDate = ?,
+                workOrderMilestoneCompletionTime = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where workOrderMilestoneId = ?`
         )
         .run(
             milestoneForm.workOrderMilestoneCompletionDateString
-                ? dateStringToInteger(
-                      milestoneForm.workOrderMilestoneCompletionDateString
-                  )
+                ? dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString)
                 : dateToInteger(rightNow),
             milestoneForm.workOrderMilestoneCompletionTimeString
-                ? timeStringToInteger(
-                      milestoneForm.workOrderMilestoneCompletionTimeString
-                  )
+                ? timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString)
                 : dateToTimeInteger(rightNow),
             requestSession.user.userName,
             rightNow.getTime(),
@@ -53,6 +49,6 @@ export const completeWorkOrderMilestone = (
     database.close();
 
     return result.changes > 0;
-};
+}
 
 export default completeWorkOrderMilestone;

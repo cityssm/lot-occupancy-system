@@ -4,22 +4,21 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const getLotTypeFields = (
+export function getLotTypeFields(
     lotTypeId: number,
     connectedDatabase?: sqlite.Database
-): recordTypes.LotTypeField[] => {
+): recordTypes.LotTypeField[] {
     const database = connectedDatabase || sqlite(databasePath);
 
     const lotTypeFields: recordTypes.LotTypeField[] = database
         .prepare(
-            "select lotTypeFieldId," +
-                " lotTypeField, lotTypeFieldValues, isRequired, pattern," +
-                " minimumLength, maximumLength," +
-                " orderNumber" +
-                " from LotTypeFields" +
-                " where recordDelete_timeMillis is null" +
-                " and lotTypeId = ?" +
-                " order by orderNumber, lotTypeField"
+            `select lotTypeFieldId,
+                lotTypeField, lotTypeFieldValues,
+                isRequired, pattern, minimumLength, maximumLength, orderNumber
+                from LotTypeFields
+                where recordDelete_timeMillis is null
+                and lotTypeId = ?
+                order by orderNumber, lotTypeField`
         )
         .all(lotTypeId);
 
@@ -30,9 +29,7 @@ export const getLotTypeFields = (
 
         if (lotTypeField.orderNumber !== expectedFieldOrderNumber) {
             database
-                .prepare(
-                    "update LotTypeFields set orderNumber = ? where lotTypeFieldId = ?"
-                )
+                .prepare("update LotTypeFields set orderNumber = ? where lotTypeFieldId = ?")
                 .run(expectedFieldOrderNumber, lotTypeField.lotTypeFieldId);
 
             lotTypeField.orderNumber = expectedFieldOrderNumber;
@@ -44,6 +41,6 @@ export const getLotTypeFields = (
     }
 
     return lotTypeFields;
-};
+}
 
 export default getLotTypeFields;

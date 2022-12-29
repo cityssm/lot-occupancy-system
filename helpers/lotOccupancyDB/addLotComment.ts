@@ -11,21 +11,22 @@ interface AddLotCommentForm {
     lotComment: string;
 }
 
-export const addLotComment = (
+export function addLotComment(
     lotCommentForm: AddLotCommentForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const rightNow = new Date();
 
     const result = database
         .prepare(
-            "insert into LotComments (" +
-                "lotId, lotCommentDate, lotCommentTime, lotComment," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?)"
+            `insert into LotComments (
+                lotId,
+                lotCommentDate, lotCommentTime, lotComment,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis) 
+                values (?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             lotCommentForm.lotId,
@@ -41,6 +42,6 @@ export const addLotComment = (
     database.close();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addLotComment;

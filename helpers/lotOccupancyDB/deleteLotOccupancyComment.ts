@@ -4,30 +4,26 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const deleteLotOccupancyComment = (
+export function deleteLotOccupancyComment(
     lotOccupancyCommentId: number | string,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update LotOccupancyComments" +
-                " set recordDelete_userName = ?," +
-                " recordDelete_timeMillis = ?" +
-                " where lotOccupancyCommentId = ?"
+            `update LotOccupancyComments
+                set recordDelete_userName = ?,
+                recordDelete_timeMillis = ?
+                where lotOccupancyCommentId = ?`
         )
-        .run(
-            requestSession.user.userName,
-            rightNowMillis,
-            lotOccupancyCommentId
-        );
+        .run(requestSession.user.userName, rightNowMillis, lotOccupancyCommentId);
 
     database.close();
 
     return result.changes > 0;
-};
+}
 
 export default deleteLotOccupancyComment;

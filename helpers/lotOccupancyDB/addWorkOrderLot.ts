@@ -9,20 +9,20 @@ interface AddWorkOrderLotForm {
     lotId: number | string;
 }
 
-export const addWorkOrderLot = (
+export function addWorkOrderLot(
     workOrderLotForm: AddWorkOrderLotForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const row: { recordDelete_timeMillis?: number } = database
         .prepare(
-            "select recordDelete_timeMillis" +
-                " from WorkOrderLots" +
-                " where workOrderId = ?" +
-                " and lotId = ?"
+            `select recordDelete_timeMillis
+                from WorkOrderLots
+                where workOrderId = ?
+                and lotId = ?`
         )
         .get(workOrderLotForm.workOrderId, workOrderLotForm.lotId);
 
@@ -30,15 +30,15 @@ export const addWorkOrderLot = (
         if (row.recordDelete_timeMillis) {
             database
                 .prepare(
-                    "update WorkOrderLots" +
-                        " set recordCreate_userName = ?," +
-                        " recordCreate_timeMillis = ?," +
-                        " recordUpdate_userName = ?," +
-                        " recordUpdate_timeMillis = ?," +
-                        " recordDelete_userName = null," +
-                        " recordDelete_timeMillis = null" +
-                        " where workOrderId = ?" +
-                        " and lotId = ?"
+                    `update WorkOrderLots
+                        set recordCreate_userName = ?,
+                        recordCreate_timeMillis = ?,
+                        recordUpdate_userName = ?,
+                        recordUpdate_timeMillis = ?,
+                        recordDelete_userName = null,
+                        recordDelete_timeMillis = null
+                        where workOrderId = ?
+                        and lotId = ?`
                 )
                 .run(
                     requestSession.user.userName,
@@ -52,11 +52,11 @@ export const addWorkOrderLot = (
     } else {
         database
             .prepare(
-                "insert into WorkOrderLots (" +
-                    "workOrderId, lotId," +
-                    " recordCreate_userName, recordCreate_timeMillis," +
-                    " recordUpdate_userName, recordUpdate_timeMillis)" +
-                    " values (?, ?, ?, ?, ?, ?)"
+                `insert into WorkOrderLots (
+                    workOrderId, lotId,
+                    recordCreate_userName, recordCreate_timeMillis,
+                    recordUpdate_userName, recordUpdate_timeMillis)
+                    values (?, ?, ?, ?, ?, ?)`
             )
             .run(
                 workOrderLotForm.workOrderId,
@@ -71,6 +71,6 @@ export const addWorkOrderLot = (
     database.close();
 
     return true;
-};
+}
 
 export default addWorkOrderLot;

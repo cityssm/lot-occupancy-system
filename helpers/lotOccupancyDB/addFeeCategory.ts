@@ -8,21 +8,21 @@ interface AddFeeCategoryForm {
     orderNumber?: number;
 }
 
-export const addFeeCategory = (
+export function addFeeCategory(
     feeCategoryForm: AddFeeCategoryForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into FeeCategories (" +
-                "feeCategory, orderNumber," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?)"
+            `insert into FeeCategories (
+                feeCategory, orderNumber,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?)`
         )
         .run(
             feeCategoryForm.feeCategory,
@@ -36,6 +36,6 @@ export const addFeeCategory = (
     database.close();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addFeeCategory;

@@ -1,7 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { updateFeeOrderNumber } from "./updateFee.js";
-export const getFees = (feeCategoryId, additionalFilters, connectedDatabase) => {
+export function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
     const updateOrderNumbers = !(additionalFilters.lotTypeId || additionalFilters.occupancyTypeId);
     const database = connectedDatabase ||
         sqlite(databasePath, {
@@ -45,5 +45,5 @@ export const getFees = (feeCategoryId, additionalFilters, connectedDatabase) => 
         database.close();
     }
     return fees;
-};
+}
 export default getFees;

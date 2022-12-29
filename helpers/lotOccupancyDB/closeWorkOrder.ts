@@ -2,10 +2,7 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import {
-    dateStringToInteger,
-    dateToInteger
-} from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { dateStringToInteger, dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -14,21 +11,21 @@ interface AddWorkOrderForm {
     workOrderCloseDateString?: string;
 }
 
-export const closeWorkOrder = (
+export function closeWorkOrder(
     workOrderForm: AddWorkOrderForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNow = new Date();
 
     const result = database
         .prepare(
-            "update WorkOrders" +
-            " set workOrderCloseDate = ?," +
-            " recordUpdate_userName = ?," +
-            " recordUpdate_timeMillis = ?" +
-            " where workOrderId = ?"
+            `update WorkOrders
+                set workOrderCloseDate = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where workOrderId = ?`
         )
         .run(
             workOrderForm.workOrderCloseDateString
@@ -42,6 +39,6 @@ export const closeWorkOrder = (
     database.close();
 
     return result.changes > 0;
-};
+}
 
 export default closeWorkOrder;

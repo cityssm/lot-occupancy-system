@@ -3,5 +3,5 @@ interface AddWorkOrderMilestoneTypeForm {
     workOrderMilestoneType: string;
     orderNumber?: number;
 }
-export declare const addWorkOrderMilestoneType: (workOrderMilestoneTypeForm: AddWorkOrderMilestoneTypeForm, requestSession: recordTypes.PartialSession) => number;
+export declare function addWorkOrderMilestoneType(workOrderMilestoneTypeForm: AddWorkOrderMilestoneTypeForm, requestSession: recordTypes.PartialSession): number;
 export default addWorkOrderMilestoneType;

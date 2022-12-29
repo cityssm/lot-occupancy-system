@@ -16,24 +16,24 @@ interface AddOccupancyTypeFieldForm {
     orderNumber?: number;
 }
 
-export const addOccupancyTypeField = (
+export function addOccupancyTypeField(
     occupancyTypeFieldForm: AddOccupancyTypeFieldForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into OccupancyTypeFields (" +
-                "occupancyTypeId, occupancyTypeField," +
-                " occupancyTypeFieldValues, isRequired, pattern," +
-                " minimumLength, maximumLength," +
-                " orderNumber," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            `insert into OccupancyTypeFields (
+                occupancyTypeId, occupancyTypeField,
+                occupancyTypeFieldValues, isRequired, pattern,
+                minimumLength, maximumLength,
+                orderNumber,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             occupancyTypeFieldForm.occupancyTypeId || undefined,
@@ -55,6 +55,6 @@ export const addOccupancyTypeField = (
     clearOccupancyTypesCache();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addOccupancyTypeField;

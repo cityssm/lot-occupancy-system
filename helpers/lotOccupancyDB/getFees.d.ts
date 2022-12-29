@@ -4,5 +4,5 @@ interface GetFeesFilters {
     occupancyTypeId?: number | string;
     lotTypeId?: number | string;
 }
-export declare const getFees: (feeCategoryId: number, additionalFilters: GetFeesFilters, connectedDatabase?: sqlite.Database) => recordTypes.Fee[];
+export declare function getFees(feeCategoryId: number, additionalFilters: GetFeesFilters, connectedDatabase?: sqlite.Database): recordTypes.Fee[];
 export default getFees;

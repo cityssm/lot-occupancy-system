@@ -5,7 +5,7 @@ import * as configFunctions from "../functions.config.js";
 import { getOccupancyTypeById } from "../functions.cache.js";
 import { getLotOccupancyOccupants } from "./getLotOccupancyOccupants.js";
 import { getLotNameWhereClause, getOccupancyTimeWhereClause, getOccupantNameWhereClause } from "../functions.sqlFilters.js";
-const buildWhereClause = (filters) => {
+function buildWhereClause(filters) {
     let sqlWhereClause = " where o.recordDelete_timeMillis is null";
     const sqlParameters = [];
     if (filters.lotId) {
@@ -17,7 +17,10 @@ const buildWhereClause = (filters) => {
     sqlParameters.push(...lotNameFilters.sqlParameters);
     const occupantNameFilters = getOccupantNameWhereClause(filters.occupantName, "o");
     if (occupantNameFilters.sqlParameters.length > 0) {
-        sqlWhereClause += " and o.lotOccupancyId in (select lotOccupancyId from LotOccupancyOccupants o where recordDelete_timeMillis is null" + occupantNameFilters.sqlWhereClause + ")";
+        sqlWhereClause +=
+            " and o.lotOccupancyId in (select lotOccupancyId from LotOccupancyOccupants o where recordDelete_timeMillis is null" +
+                occupantNameFilters.sqlWhereClause +
+                ")";
         sqlParameters.push(...occupantNameFilters.sqlParameters);
     }
     if (filters.occupancyTypeId) {
@@ -58,8 +61,8 @@ const buildWhereClause = (filters) => {
         sqlWhereClause,
         sqlParameters
     };
-};
-export const getLotOccupancies = (filters, options, connectedDatabase) => {
+}
+export function getLotOccupancies(filters, options, connectedDatabase) {
     const database = connectedDatabase ||
         sqlite(databasePath, {
             readonly: true
@@ -117,5 +120,5 @@ export const getLotOccupancies = (filters, options, connectedDatabase) => {
         count,
         lotOccupancies
     };
-};
+}
 export default getLotOccupancies;

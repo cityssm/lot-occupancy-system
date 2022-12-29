@@ -1,21 +1,18 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-export const deleteMap = (mapId, requestSession) => {
+export function deleteMap(mapId, requestSession) {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
-    const result = database
-        .prepare("update Maps" +
-        " set recordDelete_userName = ?," +
-        " recordDelete_timeMillis = ?" +
-        " where mapId = ?")
-        .run(requestSession.user.userName, rightNowMillis, mapId);
-    database
-        .prepare("update Lots" +
-        " set recordDelete_userName = ?," +
-        " recordDelete_timeMillis = ?" +
-        " where mapId = ?")
-        .run(requestSession.user.userName, rightNowMillis, mapId);
+    let result;
+    for (const tableName of ["Lots", "Maps"]) {
+        result = database
+            .prepare(`update ${tableName}
+                    set recordDelete_userName = ?,
+                    recordDelete_timeMillis = ?
+                    where mapId = ?`)
+            .run(requestSession.user.userName, rightNowMillis, mapId);
+    }
     database.close();
     return result.changes > 0;
-};
+}
 export default deleteMap;

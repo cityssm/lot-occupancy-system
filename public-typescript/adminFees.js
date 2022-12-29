@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const feeCategoriesContainerElement = document.querySelector("#container--feeCategories");
     let feeCategories = exports.feeCategories;
     delete exports.feeCategories;
-    const renderFeeCategories = () => {
+    function renderFeeCategories() {
         if (feeCategories.length === 0) {
             feeCategoriesContainerElement.innerHTML =
                 '<div class="message is-warning">' +
@@ -172,7 +172,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             feeCategoryContainerElement.querySelector(".button--moveFeeCategoryDown").addEventListener("click", moveFeeCategoryDown);
             feeCategoriesContainerElement.append(feeCategoryContainerElement);
         }
-    };
+    }
     /*
      * Fee Categories
      */
@@ -209,7 +209,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    const openEditFeeCategory = (clickEvent) => {
+    function openEditFeeCategory(clickEvent) {
         const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
         const feeCategory = feeCategories.find((currentFeeCategory) => {
             return currentFeeCategory.feeCategoryId === feeCategoryId;
@@ -247,8 +247,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
-    const confirmDeleteFeeCategory = (clickEvent) => {
+    }
+    function confirmDeleteFeeCategory(clickEvent) {
         const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
         const doDelete = () => {
             cityssm.postJSON(los.urlPrefix + "/admin/doDeleteFeeCategory", {
@@ -276,8 +276,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 callbackFunction: doDelete
             }
         });
-    };
-    const moveFeeCategoryUp = (clickEvent) => {
+    }
+    function moveFeeCategoryUp(clickEvent) {
         const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
         cityssm.postJSON(los.urlPrefix + "/admin/doMoveFeeCategoryUp", {
             feeCategoryId,
@@ -295,8 +295,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
         });
-    };
-    const moveFeeCategoryDown = (clickEvent) => {
+    }
+    function moveFeeCategoryDown(clickEvent) {
         const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
         cityssm.postJSON(los.urlPrefix + "/admin/doMoveFeeCategoryDown", {
             feeCategoryId,
@@ -314,11 +314,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
         });
-    };
+    }
     /*
      * Fees
      */
-    const openAddFee = (clickEvent) => {
+    function openAddFee(clickEvent) {
         const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
         let addCloseModalFunction;
         const doAddFee = (submitEvent) => {
@@ -409,8 +409,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
-    const openEditFee = (clickEvent) => {
+    }
+    function openEditFee(clickEvent) {
         clickEvent.preventDefault();
         const feeContainerElement = clickEvent.currentTarget.closest(".container--fee");
         const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
@@ -576,8 +576,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
-    const moveFeeUp = (clickEvent) => {
+    }
+    function moveFeeUp(clickEvent) {
         const feeContainerElement = clickEvent.currentTarget.closest(".container--fee");
         const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
         cityssm.postJSON(los.urlPrefix + "/admin/doMoveFeeUp", {
@@ -596,8 +596,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
         });
-    };
-    const moveFeeDown = (clickEvent) => {
+    }
+    function moveFeeDown(clickEvent) {
         const feeContainerElement = clickEvent.currentTarget.closest(".container--fee");
         const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
         cityssm.postJSON(los.urlPrefix + "/admin/doMoveFeeDown", {
@@ -616,7 +616,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
         });
-    };
+    }
     /*
      * Initialize
      */

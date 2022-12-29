@@ -8,5 +8,5 @@ interface AddWorkOrderMilestoneForm {
     workOrderMilestoneCompletionDateString?: string;
     workOrderMilestoneCompletionTimeString?: string;
 }
-export declare const addWorkOrderMilestone: (milestoneForm: AddWorkOrderMilestoneForm, requestSession: recordTypes.PartialSession) => number;
+export declare function addWorkOrderMilestone(milestoneForm: AddWorkOrderMilestoneForm, requestSession: recordTypes.PartialSession): number;
 export default addWorkOrderMilestone;

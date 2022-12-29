@@ -20,21 +20,21 @@ interface AddLotOccupancyTransactionForm {
     transactionNote: string;
 }
 
-export const addLotOccupancyTransaction = (
+export function addLotOccupancyTransaction(
     lotOccupancyTransactionForm: AddLotOccupancyTransactionForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     let transactionIndex = 0;
 
     const maxIndexResult = database
         .prepare(
-            "select transactionIndex" +
-                " from LotOccupancyTransactions" +
-                " where lotOccupancyId = ?" +
-                " order by transactionIndex desc" +
-                " limit 1"
+            `select transactionIndex
+                from LotOccupancyTransactions
+                where lotOccupancyId = ?
+                order by transactionIndex desc
+                limit 1`
         )
         .get(lotOccupancyTransactionForm.lotOccupancyId);
 
@@ -54,14 +54,13 @@ export const addLotOccupancyTransaction = (
 
     database
         .prepare(
-            "insert into LotOccupancyTransactions (" +
-                "lotOccupancyId, transactionIndex," +
-                " transactionDate, transactionTime," +
-                " transactionAmount, externalReceiptNumber," +
-                " transactionNote," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            `insert into LotOccupancyTransactions (
+                lotOccupancyId, transactionIndex,
+                transactionDate, transactionTime,
+                transactionAmount, externalReceiptNumber, transactionNote,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             lotOccupancyTransactionForm.lotOccupancyId,
@@ -80,6 +79,6 @@ export const addLotOccupancyTransaction = (
     database.close();
 
     return transactionIndex;
-};
+}
 
 export default addLotOccupancyTransaction;

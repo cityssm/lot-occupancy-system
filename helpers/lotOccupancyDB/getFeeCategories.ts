@@ -16,10 +16,10 @@ interface GetFeeCategoriesOptions {
     includeFees?: boolean;
 }
 
-export const getFeeCategories = (
+export function getFeeCategories(
     filters: GetFeeCategoriesFilters,
     options: GetFeeCategoriesOptions
-): recordTypes.FeeCategory[] => {
+): recordTypes.FeeCategory[] {
     const updateOrderNumbers =
         !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees;
 
@@ -83,6 +83,6 @@ export const getFeeCategories = (
     database.close();
 
     return feeCategories;
-};
+}
 
 export default getFeeCategories;

@@ -10,10 +10,10 @@ import { dateToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const copyLotOccupancy = (
+export function copyLotOccupancy(
     oldLotOccupancyId: number | string,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const oldLotOccupancy = getLotOccupancy(oldLotOccupancyId, database);
@@ -29,17 +29,20 @@ export const copyLotOccupancy = (
         database
     );
 
-    // Copy Fields
+    /*
+     * Copy Fields
+     */
 
     const rightNowMillis = Date.now();
 
     for (const occupancyField of oldLotOccupancy.lotOccupancyFields) {
         database
             .prepare(
-                "insert into LotOccupancyFields" +
-                    " (lotOccupancyId, occupancyTypeFieldId, lotOccupancyFieldValue," +
-                    " recordCreate_userName, recordCreate_timeMillis, recordUpdate_userName, recordUpdate_timeMillis)" +
-                    " values (?, ?, ?, ?, ?, ?, ?)"
+                `insert into LotOccupancyFields (
+                    lotOccupancyId, occupancyTypeFieldId, lotOccupancyFieldValue,
+                    recordCreate_userName, recordCreate_timeMillis,
+                    recordUpdate_userName, recordUpdate_timeMillis)
+                    values (?, ?, ?, ?, ?, ?, ?)`
             )
             .run(
                 newLotOccupancyId,
@@ -52,7 +55,9 @@ export const copyLotOccupancy = (
             );
     }
 
-    // Copy Occupants
+    /*
+     * Copy Occupants
+     */
 
     for (const occupant of oldLotOccupancy.lotOccupancyOccupants) {
         addLotOccupancyOccupant(
@@ -76,6 +81,6 @@ export const copyLotOccupancy = (
     database.close();
 
     return newLotOccupancyId;
-};
+}
 
 export default copyLotOccupancy;

@@ -11,21 +11,21 @@ interface AddLotTypeForm {
     orderNumber?: number;
 }
 
-export const addLotType = (
+export function addLotType(
     lotTypeForm: AddLotTypeForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into LotTypes (" +
-                "lotType, orderNumber," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?)"
+            `insert into LotTypes (
+                lotType, orderNumber,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?)`
         )
         .run(
             lotTypeForm.lotType,
@@ -41,6 +41,6 @@ export const addLotType = (
     clearLotTypesCache();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addLotType;

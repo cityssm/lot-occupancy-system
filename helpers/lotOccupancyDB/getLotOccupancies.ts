@@ -13,7 +13,11 @@ import { getOccupancyTypeById } from "../functions.cache.js";
 import { getLotOccupancyOccupants } from "./getLotOccupancyOccupants.js";
 
 import type * as recordTypes from "../../types/recordTypes";
-import { getLotNameWhereClause, getOccupancyTimeWhereClause, getOccupantNameWhereClause } from "../functions.sqlFilters.js";
+import {
+    getLotNameWhereClause,
+    getOccupancyTimeWhereClause,
+    getOccupantNameWhereClause
+} from "../functions.sqlFilters.js";
 
 interface GetLotOccupanciesFilters {
     lotId?: number | string;
@@ -36,9 +40,10 @@ interface GetLotOccupanciesOptions {
     includeOccupants: boolean;
 }
 
-const buildWhereClause = (
-    filters: GetLotOccupanciesFilters
-): { sqlWhereClause: string; sqlParameters: unknown[] } => {
+function buildWhereClause(filters: GetLotOccupanciesFilters): {
+    sqlWhereClause: string;
+    sqlParameters: unknown[];
+} {
     let sqlWhereClause = " where o.recordDelete_timeMillis is null";
     const sqlParameters: unknown[] = [];
 
@@ -53,7 +58,10 @@ const buildWhereClause = (
 
     const occupantNameFilters = getOccupantNameWhereClause(filters.occupantName, "o");
     if (occupantNameFilters.sqlParameters.length > 0) {
-        sqlWhereClause += " and o.lotOccupancyId in (select lotOccupancyId from LotOccupancyOccupants o where recordDelete_timeMillis is null" + occupantNameFilters.sqlWhereClause + ")";
+        sqlWhereClause +=
+            " and o.lotOccupancyId in (select lotOccupancyId from LotOccupancyOccupants o where recordDelete_timeMillis is null" +
+            occupantNameFilters.sqlWhereClause +
+            ")";
         sqlParameters.push(...occupantNameFilters.sqlParameters);
     }
 
@@ -106,16 +114,16 @@ const buildWhereClause = (
         sqlWhereClause,
         sqlParameters
     };
-};
+}
 
-export const getLotOccupancies = (
+export function getLotOccupancies(
     filters: GetLotOccupanciesFilters,
     options: GetLotOccupanciesOptions,
     connectedDatabase?: sqlite.Database
 ): {
     count: number;
     lotOccupancies: recordTypes.LotOccupancy[];
-} => {
+} {
     const database =
         connectedDatabase ||
         sqlite(databasePath, {
@@ -193,6 +201,6 @@ export const getLotOccupancies = (
         count,
         lotOccupancies
     };
-};
+}
 
 export default getLotOccupancies;

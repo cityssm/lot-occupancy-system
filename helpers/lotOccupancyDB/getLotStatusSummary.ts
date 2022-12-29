@@ -12,7 +12,7 @@ interface LotStatusSummary extends recordTypes.LotStatus {
     lotCount: number;
 }
 
-export const getLotStatusSummary = (filters?: GetFilters): LotStatusSummary[] => {
+export function getLotStatusSummary(filters?: GetFilters): LotStatusSummary[] {
     const database = sqlite(databasePath, {
         readonly: true
     });
@@ -39,6 +39,6 @@ export const getLotStatusSummary = (filters?: GetFilters): LotStatusSummary[] =>
     database.close();
 
     return lotStatuses;
-};
+}
 
 export default getLotStatusSummary;

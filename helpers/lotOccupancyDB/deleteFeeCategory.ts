@@ -4,35 +4,35 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const deleteFeeCategory = (
+export function deleteFeeCategory(
     feeCategoryId: number | string,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update FeeCategories" +
-                " set recordDelete_userName = ?," +
-                " recordDelete_timeMillis = ?" +
-                " where feeCategoryId = ?"
+            `update FeeCategories
+                set recordDelete_userName = ?,
+                recordDelete_timeMillis = ?
+                where feeCategoryId = ?`
         )
         .run(requestSession.user.userName, rightNowMillis, feeCategoryId);
 
     database
         .prepare(
-            "update Fees" +
-                " set recordDelete_userName = ?," +
-                " recordDelete_timeMillis = ?" +
-                " where feeCategoryId = ?"
+            `update Fees
+                set recordDelete_userName = ?,
+                recordDelete_timeMillis = ?
+                where feeCategoryId = ?`
         )
         .run(requestSession.user.userName, rightNowMillis, feeCategoryId);
 
     database.close();
 
     return result.changes > 0;
-};
+}
 
 export default deleteFeeCategory;

@@ -1,9 +1,9 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { getNextWorkOrderNumber } from "./getNextWorkOrderNumber.js";
+import { addWorkOrderLotOccupancy } from "./addWorkOrderLotOccupancy.js";
 import { dateStringToInteger, dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
-import addWorkOrderLotOccupancy from "./addWorkOrderLotOccupancy.js";
-export const addWorkOrder = (workOrderForm, requestSession) => {
+export function addWorkOrder(workOrderForm, requestSession) {
     const database = sqlite(databasePath);
     const rightNow = new Date();
     let workOrderNumber = workOrderForm.workOrderNumber;
@@ -11,12 +11,12 @@ export const addWorkOrder = (workOrderForm, requestSession) => {
         workOrderNumber = getNextWorkOrderNumber(database);
     }
     const result = database
-        .prepare("insert into WorkOrders (" +
-        "workOrderTypeId, workOrderNumber, workOrderDescription," +
-        " workOrderOpenDate, workOrderCloseDate," +
-        " recordCreate_userName, recordCreate_timeMillis," +
-        " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        .prepare(`insert into WorkOrders (
+                workOrderTypeId, workOrderNumber, workOrderDescription,
+                workOrderOpenDate, workOrderCloseDate,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(workOrderForm.workOrderTypeId, workOrderNumber, workOrderForm.workOrderDescription, workOrderForm.workOrderOpenDateString
         ? dateStringToInteger(workOrderForm.workOrderOpenDateString)
         : dateToInteger(rightNow), workOrderForm.workOrderCloseDateString
@@ -31,5 +31,5 @@ export const addWorkOrder = (workOrderForm, requestSession) => {
     }
     database.close();
     return workOrderId;
-};
+}
 export default addWorkOrder;

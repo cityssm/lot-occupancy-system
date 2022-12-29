@@ -24,14 +24,17 @@ interface GetLotsOptions {
     offset: number;
 }
 
-const buildWhereClause = (filters: GetLotsFilters): { sqlWhereClause: string; sqlParameters: unknown[];} => {
+function buildWhereClause(filters: GetLotsFilters): {
+    sqlWhereClause: string;
+    sqlParameters: unknown[];
+} {
     let sqlWhereClause = " where l.recordDelete_timeMillis is null";
     const sqlParameters: unknown[] = [];
 
     const lotNameFilters = getLotNameWhereClause(filters.lotName, filters.lotNameSearchType, "l");
     sqlWhereClause += lotNameFilters.sqlWhereClause;
     sqlParameters.push(...lotNameFilters.sqlParameters);
-    
+
     if (filters.mapId) {
         sqlWhereClause += " and l.mapId = ?";
         sqlParameters.push(filters.mapId);
@@ -65,16 +68,16 @@ const buildWhereClause = (filters: GetLotsFilters): { sqlWhereClause: string; sq
         sqlWhereClause,
         sqlParameters
     };
-};
+}
 
-export const getLots = (
+export function getLots(
     filters: GetLotsFilters,
     options: GetLotsOptions,
     connectedDatabase?: sqlite.Database
 ): {
     count: number;
     lots: recordTypes.Lot[];
-} => {
+} {
     const database =
         connectedDatabase ||
         sqlite(databasePath, {
@@ -157,6 +160,6 @@ export const getLots = (
         count,
         lots
     };
-};
+}
 
 export default getLots;

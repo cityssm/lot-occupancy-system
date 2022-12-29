@@ -9,10 +9,10 @@ import {
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const getLotComments = (
+export function getLotComments(
     lotId: number | string,
     connectedDatabase?: sqlite.Database
-): recordTypes.LotComment[] => {
+): recordTypes.LotComment[] {
     const database =
         connectedDatabase ||
         sqlite(databasePath, {
@@ -24,15 +24,15 @@ export const getLotComments = (
 
     const lotComments = database
         .prepare(
-            "select lotCommentId," +
-                " lotCommentDate, userFn_dateIntegerToString(lotCommentDate) as lotCommentDateString," +
-                " lotCommentTime, userFn_timeIntegerToString(lotCommentTime) as lotCommentTimeString," +
-                " lotComment," +
-                " recordCreate_userName, recordUpdate_userName" +
-                " from LotComments" +
-                " where recordDelete_timeMillis is null" +
-                " and lotId = ?" +
-                " order by lotCommentDate desc, lotCommentTime desc, lotCommentId desc"
+            `select lotCommentId,
+                lotCommentDate, userFn_dateIntegerToString(lotCommentDate) as lotCommentDateString,
+                lotCommentTime, userFn_timeIntegerToString(lotCommentTime) as lotCommentTimeString,
+                lotComment,
+                recordCreate_userName, recordUpdate_userName
+                from LotComments
+                where recordDelete_timeMillis is null
+                and lotId = ?
+                order by lotCommentDate desc, lotCommentTime desc, lotCommentId desc`
         )
         .all(lotId);
 
@@ -41,6 +41,6 @@ export const getLotComments = (
     }
 
     return lotComments;
-};
+}
 
 export default getLotComments;

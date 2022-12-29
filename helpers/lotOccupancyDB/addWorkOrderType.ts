@@ -11,21 +11,21 @@ interface AddWorkOrderTypeForm {
     orderNumber?: number;
 }
 
-export const addWorkOrderType = (
+export function addWorkOrderType(
     workOrderTypeForm: AddWorkOrderTypeForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into WorkOrderTypes (" +
-                "workOrderType, orderNumber," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?)"
+            `insert into WorkOrderTypes (
+                workOrderType, orderNumber,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?)`
         )
         .run(
             workOrderTypeForm.workOrderType,
@@ -41,6 +41,6 @@ export const addWorkOrderType = (
     clearWorkOrderTypesCache();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addWorkOrderType;

@@ -4,28 +4,21 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import * as configFunctions from "../functions.config.js";
 
-export const getNextWorkOrderNumber = (
-    connectedDatabase?: sqlite.Database
-): string => {
+export function getNextWorkOrderNumber(connectedDatabase?: sqlite.Database): string {
     const database =
         connectedDatabase ||
         sqlite(databasePath, {
             readonly: true
         });
 
-    const paddingLength = configFunctions.getProperty(
-        "settings.workOrders.workOrderNumberLength"
-    );
+    const paddingLength = configFunctions.getProperty("settings.workOrders.workOrderNumberLength");
     const currentYearString = new Date().getFullYear().toString();
 
     const regex = new RegExp("^" + currentYearString + "-\\d+$");
 
-    database.function(
-        "userFn_matchesWorkOrderNumberSyntax",
-        (workOrderNumber: string) => {
-            return regex.test(workOrderNumber) ? 1 : 0;
-        }
-    );
+    database.function("userFn_matchesWorkOrderNumberSyntax", (workOrderNumber: string) => {
+        return regex.test(workOrderNumber) ? 1 : 0;
+    });
 
     const workOrderNumberRecord = database
         .prepare(
@@ -51,6 +44,6 @@ export const getNextWorkOrderNumber = (
     workOrderNumberIndex += 1;
 
     return currentYearString + "-" + workOrderNumberIndex.toString().padStart(paddingLength, "0");
-};
+}
 
 export default getNextWorkOrderNumber;

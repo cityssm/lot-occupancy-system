@@ -11,21 +11,21 @@ interface AddOccupancyTypeForm {
     orderNumber?: number;
 }
 
-export const addOccupancyType = (
+export function addOccupancyType(
     occupancyTypeForm: AddOccupancyTypeForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into OccupancyTypes (" +
-                "occupancyType, orderNumber," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?)"
+            `insert into OccupancyTypes (
+                occupancyType, orderNumber,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?)`
         )
         .run(
             occupancyTypeForm.occupancyType,
@@ -41,6 +41,6 @@ export const addOccupancyType = (
     clearOccupancyTypesCache();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addOccupancyType;

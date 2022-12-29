@@ -4,10 +4,10 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const getFee = (
+export function getFee(
     feeId: number | string,
     connectedDatabase?: sqlite.Database
-): recordTypes.Fee => {
+): recordTypes.Fee {
     const database =
         connectedDatabase ||
         sqlite(databasePath, {
@@ -16,21 +16,21 @@ export const getFee = (
 
     const fee = database
         .prepare(
-            "select f.feeId," +
-                " f.feeCategoryId, c.feeCategory," +
-                " f.feeName, f.feeDescription," +
-                " f.occupancyTypeId, o.occupancyType," +
-                " f.lotTypeId, l.lotType," +
-                " ifnull(f.feeAmount, 0) as feeAmount, f.feeFunction," +
-                " f.taxAmount, f.taxPercentage," +
-                " f.includeQuantity, f.quantityUnit," +
-                " f.isRequired, f.orderNumber" +
-                " from Fees f" +
-                " left join FeeCategories c on f.feeCategoryId = c.feeCategoryId" +
-                " left join OccupancyTypes o on f.occupancyTypeId = o.occupancyTypeId" +
-                " left join LotTypes l on f.lotTypeId = l.lotTypeId" +
-                " where f.recordDelete_timeMillis is null" +
-                " and f.feeId = ?"
+            `select f.feeId,
+                f.feeCategoryId, c.feeCategory,
+                f.feeName, f.feeDescription,
+                f.occupancyTypeId, o.occupancyType,
+                f.lotTypeId, l.lotType,
+                ifnull(f.feeAmount, 0) as feeAmount, f.feeFunction,
+                f.taxAmount, f.taxPercentage,
+                f.includeQuantity, f.quantityUnit,
+                f.isRequired, f.orderNumber
+                from Fees f
+                left join FeeCategories c on f.feeCategoryId = c.feeCategoryId
+                left join OccupancyTypes o on f.occupancyTypeId = o.occupancyTypeId
+                left join LotTypes l on f.lotTypeId = l.lotTypeId
+                where f.recordDelete_timeMillis is null
+                and f.feeId = ?`
         )
         .get(feeId);
 
@@ -39,6 +39,6 @@ export const getFee = (
     }
 
     return fee;
-};
+}
 
 export default getFee;

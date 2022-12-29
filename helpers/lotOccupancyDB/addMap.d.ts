@@ -12,5 +12,5 @@ interface AddMapForm {
     mapPostalCode: string;
     mapPhoneNumber: string;
 }
-export declare const addMap: (mapForm: AddMapForm, requestSession: recordTypes.PartialSession) => number;
+export declare function addMap(mapForm: AddMapForm, requestSession: recordTypes.PartialSession): number;
 export default addMap;

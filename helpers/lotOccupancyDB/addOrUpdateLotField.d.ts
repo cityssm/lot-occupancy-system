@@ -5,5 +5,5 @@ interface LotFieldForm {
     lotTypeFieldId: string | number;
     lotFieldValue: string;
 }
-export declare const addOrUpdateLotField: (lotFieldForm: LotFieldForm, requestSession: recordTypes.PartialSession, connectedDatabase?: sqlite.Database) => boolean;
+export declare function addOrUpdateLotField(lotFieldForm: LotFieldForm, requestSession: recordTypes.PartialSession, connectedDatabase?: sqlite.Database): boolean;
 export default addOrUpdateLotField;

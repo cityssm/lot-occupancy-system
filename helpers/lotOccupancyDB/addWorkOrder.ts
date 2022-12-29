@@ -3,11 +3,11 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { getNextWorkOrderNumber } from "./getNextWorkOrderNumber.js";
+import { addWorkOrderLotOccupancy } from "./addWorkOrderLotOccupancy.js";
 
 import { dateStringToInteger, dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import type * as recordTypes from "../../types/recordTypes";
-import addWorkOrderLotOccupancy from "./addWorkOrderLotOccupancy.js";
 
 interface AddWorkOrderForm {
     workOrderTypeId: number | string;
@@ -18,10 +18,10 @@ interface AddWorkOrderForm {
     lotOccupancyId?: string;
 }
 
-export const addWorkOrder = (
+export function addWorkOrder(
     workOrderForm: AddWorkOrderForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const rightNow = new Date();
@@ -34,12 +34,12 @@ export const addWorkOrder = (
 
     const result = database
         .prepare(
-            "insert into WorkOrders (" +
-                "workOrderTypeId, workOrderNumber, workOrderDescription," +
-                " workOrderOpenDate, workOrderCloseDate," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            `insert into WorkOrders (
+                workOrderTypeId, workOrderNumber, workOrderDescription,
+                workOrderOpenDate, workOrderCloseDate,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             workOrderForm.workOrderTypeId,
@@ -73,6 +73,6 @@ export const addWorkOrder = (
     database.close();
 
     return workOrderId;
-};
+}
 
 export default addWorkOrder;

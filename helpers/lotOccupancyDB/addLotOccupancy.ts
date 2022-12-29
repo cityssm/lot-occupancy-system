@@ -31,11 +31,11 @@ interface AddLotOccupancyForm {
     occupantComment?: string;
 }
 
-export const addLotOccupancy = (
+export function addLotOccupancy(
     lotOccupancyForm: AddLotOccupancyForm,
     requestSession: recordTypes.PartialSession,
     connectedDatabase?: sqlite.Database
-): number => {
+): number {
     const database = connectedDatabase || sqlite(databasePath);
 
     const rightNowMillis = Date.now();
@@ -50,12 +50,12 @@ export const addLotOccupancy = (
 
     const result = database
         .prepare(
-            "insert into LotOccupancies (" +
-                "occupancyTypeId, lotId," +
-                " occupancyStartDate, occupancyEndDate," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?)"
+            `insert into LotOccupancies (
+                occupancyTypeId, lotId,
+                occupancyStartDate, occupancyEndDate,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             lotOccupancyForm.occupancyTypeId,
@@ -117,6 +117,6 @@ export const addLotOccupancy = (
     }
 
     return lotOccupancyId;
-};
+}
 
 export default addLotOccupancy;

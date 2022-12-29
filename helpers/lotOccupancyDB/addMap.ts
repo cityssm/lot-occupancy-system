@@ -18,23 +18,22 @@ interface AddMapForm {
     mapPhoneNumber: string;
 }
 
-export const addMap = (
-    mapForm: AddMapForm,
-    requestSession: recordTypes.PartialSession
-): number => {
+export function addMap(mapForm: AddMapForm, requestSession: recordTypes.PartialSession): number {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into Maps (" +
-                "mapName, mapDescription," +
-                " mapSVG, mapLatitude, mapLongitude," +
-                " mapAddress1, mapAddress2, mapCity, mapProvince, mapPostalCode, mapPhoneNumber," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            `insert into Maps (
+                mapName, mapDescription,
+                mapSVG, mapLatitude, mapLongitude,
+                mapAddress1, mapAddress2,
+                mapCity, mapProvince, mapPostalCode,
+                mapPhoneNumber,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             mapForm.mapName,
@@ -57,6 +56,6 @@ export const addMap = (
     database.close();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addMap;

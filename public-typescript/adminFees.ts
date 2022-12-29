@@ -20,7 +20,7 @@ declare const bulmaJS: BulmaJS;
     let feeCategories: recordTypes.FeeCategory[] = exports.feeCategories;
     delete exports.feeCategories;
 
-    const renderFeeCategories = () => {
+    function renderFeeCategories(): void {
         if (feeCategories.length === 0) {
             feeCategoriesContainerElement.innerHTML =
                 '<div class="message is-warning">' +
@@ -52,11 +52,11 @@ declare const bulmaJS: BulmaJS;
                     '<div class="field is-grouped is-justify-content-end">' +
                     (feeCategory.fees!.length === 0
                         ? '<div class="control">' +
-                          '<button class="button is-small is-danger button--deleteFeeCategory" type="button">' +
-                          '<span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>' +
-                          "<span>Delete Category</span>" +
-                          "</button>" +
-                          "</div>"
+                        '<button class="button is-small is-danger button--deleteFeeCategory" type="button">' +
+                        '<span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>' +
+                        "<span>Delete Category</span>" +
+                        "</button>" +
+                        "</div>"
                         : "") +
                     ('<div class="control">' +
                         '<button class="button is-small is-primary button--editFeeCategory" type="button">' +
@@ -92,12 +92,12 @@ declare const bulmaJS: BulmaJS;
                 feeCategoryContainerElement.insertAdjacentHTML(
                     "beforeend",
                     '<div class="panel-block is-block">' +
-                        '<div class="message is-info">' +
-                        '<p class="message-body">There are no fees in the "' +
-                        cityssm.escapeHTML(feeCategory.feeCategory || "") +
-                        '" category.</p>' +
-                        "</div>" +
-                        "</div>"
+                    '<div class="message is-info">' +
+                    '<p class="message-body">There are no fees in the "' +
+                    cityssm.escapeHTML(feeCategory.feeCategory || "") +
+                    '" category.</p>' +
+                    "</div>" +
+                    "</div>"
                 );
             } else {
                 for (const fee of feeCategory.fees) {
@@ -121,24 +121,24 @@ declare const bulmaJS: BulmaJS;
                             "</p>" +
                             (hasTagsBlock
                                 ? '<p class="tags">' +
-                                  (fee.isRequired
-                                      ? '<span class="tag is-warning">Required</span>'
-                                      : "") +
-                                  (fee.occupancyTypeId
-                                      ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
-                                        cityssm.escapeHTML(exports.aliases.occupancy) +
-                                        ' Type Filter">' +
-                                        cityssm.escapeHTML(fee.occupancyType || "") +
-                                        "</span>"
-                                      : "") +
-                                  (fee.lotTypeId
-                                      ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
-                                        cityssm.escapeHTML(exports.aliases.lot) +
-                                        ' Type Filter">' +
-                                        cityssm.escapeHTML(fee.lotType || "") +
-                                        "</span>"
-                                      : "") +
-                                  "</p>"
+                                (fee.isRequired
+                                    ? '<span class="tag is-warning">Required</span>'
+                                    : "") +
+                                (fee.occupancyTypeId
+                                    ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
+                                    cityssm.escapeHTML(exports.aliases.occupancy) +
+                                    ' Type Filter">' +
+                                    cityssm.escapeHTML(fee.occupancyType || "") +
+                                    "</span>"
+                                    : "") +
+                                (fee.lotTypeId
+                                    ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
+                                    cityssm.escapeHTML(exports.aliases.lot) +
+                                    ' Type Filter">' +
+                                    cityssm.escapeHTML(fee.lotType || "") +
+                                    "</span>"
+                                    : "") +
+                                "</p>"
                                 : "") +
                             "</div>") +
                         ('<div class="column">' +
@@ -146,12 +146,12 @@ declare const bulmaJS: BulmaJS;
                             ('<div class="column has-text-centered">' +
                                 (fee.feeFunction
                                     ? cityssm.escapeHTML(fee.feeFunction) +
-                                      "<br />" +
-                                      "<small>Fee Function</small>"
+                                    "<br />" +
+                                    "<small>Fee Function</small>"
                                     : "$" +
-                                      fee.feeAmount!.toFixed(2) +
-                                      "<br />" +
-                                      "<small>Fee</small>") +
+                                    fee.feeAmount!.toFixed(2) +
+                                    "<br />" +
+                                    "<small>Fee</small>") +
                                 "</div>") +
                             ('<div class="column has-text-centered">' +
                                 (fee.taxPercentage
@@ -162,8 +162,8 @@ declare const bulmaJS: BulmaJS;
                             ('<div class="column has-text-centered">' +
                                 (fee.includeQuantity
                                     ? cityssm.escapeHTML(fee.quantityUnit || "") +
-                                      "<br />" +
-                                      "<small>Quantity</small>"
+                                    "<br />" +
+                                    "<small>Quantity</small>"
                                     : "") +
                                 "</div>") +
                             "</div>" +
@@ -230,7 +230,7 @@ declare const bulmaJS: BulmaJS;
 
             feeCategoriesContainerElement.append(feeCategoryContainerElement);
         }
-    };
+    }
 
     /*
      * Fee Categories
@@ -288,7 +288,7 @@ declare const bulmaJS: BulmaJS;
         }
     );
 
-    const openEditFeeCategory = (clickEvent: Event) => {
+    function openEditFeeCategory(clickEvent: Event): void {
         const feeCategoryId = Number.parseInt(
             (
                 (clickEvent.currentTarget as HTMLElement).closest(
@@ -356,9 +356,9 @@ declare const bulmaJS: BulmaJS;
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
+    }
 
-    const confirmDeleteFeeCategory = (clickEvent: Event) => {
+    function confirmDeleteFeeCategory(clickEvent: Event): void {
         const feeCategoryId = Number.parseInt(
             (
                 (clickEvent.currentTarget as HTMLElement).closest(
@@ -402,9 +402,9 @@ declare const bulmaJS: BulmaJS;
                 callbackFunction: doDelete
             }
         });
-    };
+    }
 
-    const moveFeeCategoryUp = (clickEvent: MouseEvent) => {
+    function moveFeeCategoryUp(clickEvent: MouseEvent): void {
         const feeCategoryId = Number.parseInt(
             (
                 (clickEvent.currentTarget as HTMLElement).closest(
@@ -437,9 +437,9 @@ declare const bulmaJS: BulmaJS;
                 }
             }
         );
-    };
+    }
 
-    const moveFeeCategoryDown = (clickEvent: MouseEvent) => {
+    function moveFeeCategoryDown(clickEvent: MouseEvent): void {
         const feeCategoryId = Number.parseInt(
             (
                 (clickEvent.currentTarget as HTMLElement).closest(
@@ -472,13 +472,13 @@ declare const bulmaJS: BulmaJS;
                 }
             }
         );
-    };
+    }
 
     /*
      * Fees
      */
 
-    const openAddFee = (clickEvent: Event) => {
+    function openAddFee(clickEvent: Event): void {
         const feeCategoryId = Number.parseInt(
             (
                 (clickEvent.currentTarget as HTMLElement).closest(
@@ -634,9 +634,9 @@ declare const bulmaJS: BulmaJS;
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
+    }
 
-    const openEditFee = (clickEvent: Event) => {
+    function openEditFee(clickEvent: Event): void {
         clickEvent.preventDefault();
 
         const feeContainerElement = (clickEvent.currentTarget as HTMLElement).closest(
@@ -896,9 +896,9 @@ declare const bulmaJS: BulmaJS;
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
+    }
 
-    const moveFeeUp = (clickEvent: MouseEvent) => {
+    function moveFeeUp(clickEvent: MouseEvent): void {
         const feeContainerElement = (clickEvent.currentTarget as HTMLElement).closest(
             ".container--fee"
         ) as HTMLElement;
@@ -928,9 +928,9 @@ declare const bulmaJS: BulmaJS;
                 }
             }
         );
-    };
+    }
 
-    const moveFeeDown = (clickEvent: MouseEvent) => {
+    function moveFeeDown(clickEvent: MouseEvent): void {
         const feeContainerElement = (clickEvent.currentTarget as HTMLElement).closest(
             ".container--fee"
         ) as HTMLElement;
@@ -960,7 +960,7 @@ declare const bulmaJS: BulmaJS;
                 }
             }
         );
-    };
+    }
 
     /*
      * Initialize

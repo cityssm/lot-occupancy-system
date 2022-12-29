@@ -11,21 +11,21 @@ interface AddWorkOrderMilestoneTypeForm {
     orderNumber?: number;
 }
 
-export const addWorkOrderMilestoneType = (
+export function addWorkOrderMilestoneType(
     workOrderMilestoneTypeForm: AddWorkOrderMilestoneTypeForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into WorkOrderMilestoneTypes (" +
-                "workOrderMilestoneType, orderNumber," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?)"
+            `insert into WorkOrderMilestoneTypes (
+                workOrderMilestoneType, orderNumber,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?)`
         )
         .run(
             workOrderMilestoneTypeForm.workOrderMilestoneType,
@@ -41,6 +41,6 @@ export const addWorkOrderMilestoneType = (
     clearWorkOrderMilestoneTypesCache();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addWorkOrderMilestoneType;

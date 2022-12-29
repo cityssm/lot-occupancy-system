@@ -11,21 +11,21 @@ interface AddLotOccupantTypeForm {
     orderNumber?: number;
 }
 
-export const addLotOccupantType = (
+export function addLotOccupantType(
     lotOccupantTypeForm: AddLotOccupantTypeForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into LotOccupantTypes (" +
-                "lotOccupantType, fontAwesomeIconClass, orderNumber," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?)"
+            `insert into LotOccupantTypes (
+                lotOccupantType, fontAwesomeIconClass, orderNumber,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             lotOccupantTypeForm.lotOccupantType,
@@ -42,6 +42,6 @@ export const addLotOccupantType = (
     clearLotOccupantTypesCache();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addLotOccupantType;

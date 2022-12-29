@@ -12,7 +12,7 @@ interface LotTypeSummary extends recordTypes.LotType {
     lotCount: number;
 }
 
-export const getLotTypeSummary = (filters?: GetFilters): LotTypeSummary[] => {
+export function getLotTypeSummary(filters?: GetFilters): LotTypeSummary[] {
     const database = sqlite(databasePath, {
         readonly: true
     });
@@ -39,6 +39,6 @@ export const getLotTypeSummary = (filters?: GetFilters): LotTypeSummary[] => {
     database.close();
 
     return lotTypes;
-};
+}
 
 export default getLotTypeSummary;

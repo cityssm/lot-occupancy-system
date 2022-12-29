@@ -6,20 +6,20 @@ import { clearLotTypesCache } from "../functions.cache.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const deleteLotTypeField = (
+export function deleteLotTypeField(
     lotTypeFieldId: number | string,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update LotTypeFields" +
-                " set recordDelete_userName = ?," +
-                " recordDelete_timeMillis = ?" +
-                " where lotTypeFieldId = ?"
+            `update LotTypeFields
+                set recordDelete_userName = ?,
+                recordDelete_timeMillis = ?
+                where lotTypeFieldId = ?`
         )
         .run(requestSession.user.userName, rightNowMillis, lotTypeFieldId);
 
@@ -28,6 +28,6 @@ export const deleteLotTypeField = (
     clearLotTypesCache();
 
     return result.changes > 0;
-};
+}
 
 export default deleteLotTypeField;

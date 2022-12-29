@@ -10,25 +10,25 @@ interface LotFieldForm {
     lotFieldValue: string;
 }
 
-export const addOrUpdateLotField = (
+export function addOrUpdateLotField(
     lotFieldForm: LotFieldForm,
     requestSession: recordTypes.PartialSession,
     connectedDatabase?: sqlite.Database
-): boolean => {
+): boolean {
     const database = connectedDatabase || sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     let result = database
         .prepare(
-            "update LotFields" +
-                " set lotFieldValue = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?," +
-                " recordDelete_userName = null," +
-                " recordDelete_timeMillis = null" +
-                " where lotId = ?" +
-                " and lotTypeFieldId = ?"
+            `update LotFields
+                set lotFieldValue = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?,
+                recordDelete_userName = null,
+                recordDelete_timeMillis = null
+                where lotId = ?
+                and lotTypeFieldId = ?`
         )
         .run(
             lotFieldForm.lotFieldValue,
@@ -41,12 +41,11 @@ export const addOrUpdateLotField = (
     if (result.changes === 0) {
         result = database
             .prepare(
-                "insert into LotFields (" +
-                    "lotId, lotTypeFieldId," +
-                    " lotFieldValue," +
-                    " recordCreate_userName, recordCreate_timeMillis," +
-                    " recordUpdate_userName, recordUpdate_timeMillis)" +
-                    " values (?, ?, ?, ?, ?, ?, ?)"
+                `insert into LotFields (
+                    lotId, lotTypeFieldId, lotFieldValue,
+                    recordCreate_userName, recordCreate_timeMillis,
+                    recordUpdate_userName, recordUpdate_timeMillis)
+                    values (?, ?, ?, ?, ?, ?, ?)`
             )
             .run(
                 lotFieldForm.lotId,
@@ -64,6 +63,6 @@ export const addOrUpdateLotField = (
     }
 
     return result.changes > 0;
-};
+}
 
 export default addOrUpdateLotField;

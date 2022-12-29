@@ -3,5 +3,5 @@ interface AddLotCommentForm {
     lotId: string;
     lotComment: string;
 }
-export declare const addLotComment: (lotCommentForm: AddLotCommentForm, requestSession: recordTypes.PartialSession) => number;
+export declare function addLotComment(lotCommentForm: AddLotCommentForm, requestSession: recordTypes.PartialSession): number;
 export default addLotComment;

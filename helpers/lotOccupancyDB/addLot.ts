@@ -21,20 +21,20 @@ interface AddLotForm {
     [lotFieldValue_lotTypeFieldId: string]: unknown;
 }
 
-export const addLot = (lotForm: AddLotForm, requestSession: recordTypes.PartialSession): number => {
+export function addLot(lotForm: AddLotForm, requestSession: recordTypes.PartialSession): number {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into Lots (" +
-                "lotName, lotTypeId, lotStatusId," +
-                " mapId, mapKey," +
-                " lotLatitude, lotLongitude," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            `insert into Lots (
+                lotName, lotTypeId, lotStatusId,
+                mapId, mapKey,
+                lotLatitude, lotLongitude,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis) 
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             lotForm.lotName,
@@ -73,6 +73,6 @@ export const addLot = (lotForm: AddLotForm, requestSession: recordTypes.PartialS
     database.close();
 
     return lotId;
-};
+}
 
 export default addLot;

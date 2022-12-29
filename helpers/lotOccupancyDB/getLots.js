@@ -3,7 +3,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as configFunctions from "../functions.config.js";
 import { getLotNameWhereClause } from "../functions.sqlFilters.js";
-const buildWhereClause = (filters) => {
+function buildWhereClause(filters) {
     let sqlWhereClause = " where l.recordDelete_timeMillis is null";
     const sqlParameters = [];
     const lotNameFilters = getLotNameWhereClause(filters.lotName, filters.lotNameSearchType, "l");
@@ -38,8 +38,8 @@ const buildWhereClause = (filters) => {
         sqlWhereClause,
         sqlParameters
     };
-};
-export const getLots = (filters, options, connectedDatabase) => {
+}
+export function getLots(filters, options, connectedDatabase) {
     const database = connectedDatabase ||
         sqlite(databasePath, {
             readonly: true
@@ -104,5 +104,5 @@ export const getLots = (filters, options, connectedDatabase) => {
         count,
         lots
     };
-};
+}
 export default getLots;

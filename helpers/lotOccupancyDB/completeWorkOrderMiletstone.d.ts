@@ -4,5 +4,5 @@ interface CompleteWorkOrderMilestoneForm {
     workOrderMilestoneCompletionDateString?: string;
     workOrderMilestoneCompletionTimeString?: string;
 }
-export declare const completeWorkOrderMilestone: (milestoneForm: CompleteWorkOrderMilestoneForm, requestSession: recordTypes.PartialSession) => boolean;
+export declare function completeWorkOrderMilestone(milestoneForm: CompleteWorkOrderMilestoneForm, requestSession: recordTypes.PartialSession): boolean;
 export default completeWorkOrderMilestone;

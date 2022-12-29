@@ -16,24 +16,24 @@ interface AddLotTypeFieldForm {
     orderNumber?: number;
 }
 
-export const addLotTypeField = (
+export function addLotTypeField(
     lotTypeFieldForm: AddLotTypeFieldForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "insert into LotTypeFields (" +
-                "lotTypeId, lotTypeField," +
-                " lotTypeFieldValues, isRequired, pattern," +
-                " minimumLength, maximumLength," +
-                " orderNumber," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            `insert into LotTypeFields (
+                lotTypeId, lotTypeField, lotTypeFieldValues,
+                isRequired, pattern,
+                minimumLength, maximumLength,
+                orderNumber,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             lotTypeFieldForm.lotTypeId,
@@ -55,6 +55,6 @@ export const addLotTypeField = (
     clearLotTypesCache();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addLotTypeField;

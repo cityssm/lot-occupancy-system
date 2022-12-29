@@ -4,35 +4,30 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const deleteMap = (
+export function deleteMap(
     mapId: number | string,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
-    const result = database
-        .prepare(
-            "update Maps" +
-                " set recordDelete_userName = ?," +
-                " recordDelete_timeMillis = ?" +
-                " where mapId = ?"
-        )
-        .run(requestSession.user.userName, rightNowMillis, mapId);
+    let result: sqlite.RunResult;
 
-    database
-        .prepare(
-            "update Lots" +
-                " set recordDelete_userName = ?," +
-                " recordDelete_timeMillis = ?" +
-                " where mapId = ?"
-        )
-        .run(requestSession.user.userName, rightNowMillis, mapId);
+    for (const tableName of ["Lots", "Maps"]) {
+        result = database
+            .prepare(
+                `update ${tableName}
+                    set recordDelete_userName = ?,
+                    recordDelete_timeMillis = ?
+                    where mapId = ?`
+            )
+            .run(requestSession.user.userName, rightNowMillis, mapId);
+    }
 
     database.close();
 
     return result.changes > 0;
-};
+}
 
 export default deleteMap;

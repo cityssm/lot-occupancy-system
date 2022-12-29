@@ -19,43 +19,38 @@ interface AddWorkOrderMilestoneForm {
     workOrderMilestoneCompletionTimeString?: string;
 }
 
-export const addWorkOrderMilestone = (
+export function addWorkOrderMilestone(
     milestoneForm: AddWorkOrderMilestoneForm,
     requestSession: recordTypes.PartialSession
-): number => {
+): number {
     const rightNow = new Date();
 
     const database = sqlite(databasePath);
 
     const result = database
         .prepare(
-            "insert into WorkOrderMilestones (" +
-                "workOrderId, workOrderMilestoneTypeId," +
-                " workOrderMilestoneDate, workOrderMilestoneTime, workOrderMilestoneDescription," +
-                " workOrderMilestoneCompletionDate, workOrderMilestoneCompletionTime," +
-                " recordCreate_userName, recordCreate_timeMillis," +
-                " recordUpdate_userName, recordUpdate_timeMillis)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            `insert into WorkOrderMilestones (
+                workOrderId, workOrderMilestoneTypeId,
+                workOrderMilestoneDate, workOrderMilestoneTime,
+                workOrderMilestoneDescription,
+                workOrderMilestoneCompletionDate, workOrderMilestoneCompletionTime,
+                recordCreate_userName, recordCreate_timeMillis,
+                recordUpdate_userName, recordUpdate_timeMillis)
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
             milestoneForm.workOrderId,
             milestoneForm.workOrderMilestoneTypeId || undefined,
             dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
             milestoneForm.workOrderMilestoneTimeString
-                ? timeStringToInteger(
-                      milestoneForm.workOrderMilestoneTimeString
-                  )
+                ? timeStringToInteger(milestoneForm.workOrderMilestoneTimeString)
                 : 0,
             milestoneForm.workOrderMilestoneDescription,
             milestoneForm.workOrderMilestoneCompletionDateString
-                ? dateStringToInteger(
-                      milestoneForm.workOrderMilestoneCompletionDateString
-                  )
+                ? dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString)
                 : undefined,
             milestoneForm.workOrderMilestoneCompletionTimeString
-                ? timeStringToInteger(
-                      milestoneForm.workOrderMilestoneCompletionTimeString
-                  )
+                ? timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString)
                 : undefined,
             requestSession.user.userName,
             rightNow.getTime(),
@@ -66,6 +61,6 @@ export const addWorkOrderMilestone = (
     database.close();
 
     return result.lastInsertRowid as number;
-};
+}
 
 export default addWorkOrderMilestone;

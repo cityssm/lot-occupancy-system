@@ -6,20 +6,20 @@ import { clearWorkOrderMilestoneTypesCache } from "../functions.cache.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const deleteWorkOrderMilestoneType = (
+export function deleteWorkOrderMilestoneType(
     workOrderMilestoneTypeId: number | string,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update WorkOrderMilestoneTypes" +
-                " set recordDelete_userName = ?," +
-                " recordDelete_timeMillis = ?" +
-                " where workOrderMilestoneTypeId = ?"
+            `update WorkOrderMilestoneTypes
+                set recordDelete_userName = ?,
+                recordDelete_timeMillis = ?
+                where workOrderMilestoneTypeId = ?`
         )
         .run(requestSession.user.userName, rightNowMillis, workOrderMilestoneTypeId);
 
@@ -28,6 +28,6 @@ export const deleteWorkOrderMilestoneType = (
     clearWorkOrderMilestoneTypesCache();
 
     return result.changes > 0;
-};
+}
 
 export default deleteWorkOrderMilestoneType;
