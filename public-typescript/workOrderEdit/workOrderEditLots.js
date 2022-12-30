@@ -367,11 +367,7 @@ document.querySelector("#button--addLotOccupancy").addEventListener("click", () 
         if (event) {
             event.preventDefault();
         }
-        searchResultsContainerElement.innerHTML =
-            '<p class="has-text-centered has-text-grey-dark">' +
-                '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-                "Searching..." +
-                "</p>";
+        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML("Searching...");
         cityssm.postJSON(los.urlPrefix + "/lotOccupancies/doSearchLotOccupancies", searchFormElement, (responseJSON) => {
             if (responseJSON.lotOccupancies.length === 0) {
                 searchResultsContainerElement.innerHTML =
@@ -472,11 +468,7 @@ document.querySelector("#button--addLot").addEventListener("click", () => {
         if (event) {
             event.preventDefault();
         }
-        searchResultsContainerElement.innerHTML =
-            '<p class="has-text-centered has-text-grey-dark">' +
-                '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-                "Searching..." +
-                "</p>";
+        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML("Searching...");
         cityssm.postJSON(los.urlPrefix + "/lots/doSearchLots", searchFormElement, (responseJSON) => {
             if (responseJSON.lots.length === 0) {
                 searchResultsContainerElement.innerHTML =

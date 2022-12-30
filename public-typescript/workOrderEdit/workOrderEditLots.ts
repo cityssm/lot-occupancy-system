@@ -414,7 +414,7 @@ function deleteLot(clickEvent: Event): void {
     });
 }
 
-function renderRelatedLots() {
+function renderRelatedLots(): void {
     const lotsContainerElement = document.querySelector("#container--lots") as HTMLElement;
 
     (document.querySelector(".tabs a[href='#relatedTab--lots'] .tag") as HTMLElement).textContent =
@@ -509,11 +509,7 @@ document.querySelector("#button--addLotOccupancy")!.addEventListener("click", ()
             event.preventDefault();
         }
 
-        searchResultsContainerElement.innerHTML =
-            '<p class="has-text-centered has-text-grey-dark">' +
-            '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-            "Searching..." +
-            "</p>";
+        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML("Searching...");
 
         cityssm.postJSON(
             los.urlPrefix + "/lotOccupancies/doSearchLotOccupancies",
@@ -670,11 +666,7 @@ document.querySelector("#button--addLot")!.addEventListener("click", () => {
             event.preventDefault();
         }
 
-        searchResultsContainerElement.innerHTML =
-            '<p class="has-text-centered has-text-grey-dark">' +
-            '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-            "Searching..." +
-            "</p>";
+        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML("Searching...");
 
         cityssm.postJSON(
             los.urlPrefix + "/lots/doSearchLots",

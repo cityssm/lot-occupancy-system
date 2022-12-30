@@ -19,11 +19,9 @@ declare const cityssm: cityssmGlobal;
     ) as HTMLElement;
 
     const renderResults = () => {
-        searchResultsContainerElement.innerHTML =
-            '<div class="has-text-grey has-text-centered">' +
-            '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-            ("Loading " + exports.aliases.maps + "...") +
-            "</div>";
+        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
+            `Loading ${exports.aliases.maps}...`
+        );
 
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement("tbody");
@@ -109,12 +107,9 @@ declare const cityssm: cityssmGlobal;
         searchResultsContainerElement.innerHTML = "";
 
         if (searchResultCount === 0) {
-            searchResultsContainerElement.innerHTML =
-                '<div class="message is-info">' +
-                '<p class="message-body">There are no ' +
-                exports.aliases.maps.toLowerCase() +
-                " that meet the search criteria.</p>" +
-                "</div>";
+            searchResultsContainerElement.innerHTML = `<div class="message is-info">
+                <p class="message-body">There are no ${los.escapedAliases.maps} that meet the search criteria.</p>
+                </div>`;
         } else {
             const searchResultsTableElement = document.createElement("table");
 

@@ -9,12 +9,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const offsetElement = document.querySelector("#searchFilter--offset");
     function renderLotOccupancies(responseJSON) {
         if (responseJSON.lotOccupancies.length === 0) {
-            searchResultsContainerElement.innerHTML =
-                '<div class="message is-info">' +
-                    '<p class="message-body">There are no ' +
-                    los.escapedAliases.occupancy +
-                    " records that meet the search criteria.</p>" +
-                    "</div>";
+            searchResultsContainerElement.innerHTML = `<div class="message is-info">
+                <p class="message-body">
+                There are no ${los.escapedAliases.occupancy} records that meet the search criteria.
+                </p>
+                </div>`;
             return;
         }
         const resultsTbodyElement = document.createElement("tbody");
@@ -167,13 +166,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     }
     function getLotOccupancies() {
-        searchResultsContainerElement.innerHTML =
-            '<div class="has-text-grey has-text-centered">' +
-                '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-                "Loading " +
-                exports.aliases.occupancies +
-                "..." +
-                "</div>";
+        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${exports.aliases.occupancies}...`);
         cityssm.postJSON(los.urlPrefix + "/lotOccupancies/doSearchLotOccupancies", searchFilterFormElement, renderLotOccupancies);
     }
     function resetOffsetAndGetLotOccupancies() {

@@ -727,11 +727,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</div>";
                     return;
                 }
-                searchResultsElement.innerHTML =
-                    '<div class="has-text-grey has-text-centered">' +
-                        '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-                        "Searching..." +
-                        "</div>";
+                searchResultsElement.innerHTML = los.getLoadingParagraphHTML("Searching...");
                 cityssm.postJSON(los.urlPrefix + "/lotOccupancies/doSearchPastOccupants", searchFormElement, (responseJSON) => {
                     pastOccupantSearchResults = responseJSON.occupants;
                     const panelElement = document.createElement("div");

@@ -99,13 +99,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     }
     function getLots() {
-        searchResultsContainerElement.innerHTML =
-            '<div class="has-text-grey has-text-centered">' +
-                '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-                "Loading " +
-                los.escapedAliases.Lots +
-                "..." +
-                "</div>";
+        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Lots}...`);
         cityssm.postJSON(los.urlPrefix + "/lots/doSearchLots", searchFilterFormElement, renderLots);
     }
     function resetOffsetAndGetLots() {

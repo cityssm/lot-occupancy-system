@@ -249,6 +249,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const escapedAliases = Object.freeze({
         Map: cityssm.escapeHTML(exports.aliases.map),
         map: cityssm.escapeHTML(exports.aliases.map.toLowerCase()),
+        Maps: cityssm.escapeHTML(exports.aliases.maps),
+        maps: cityssm.escapeHTML(exports.aliases.maps.toLowerCase()),
         Lot: cityssm.escapeHTML(exports.aliases.lot),
         lot: cityssm.escapeHTML(exports.aliases.lot.toLowerCase()),
         Lots: cityssm.escapeHTML(exports.aliases.lots),
@@ -304,6 +306,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </div>
             </div>`;
     }
+    function getLoadingParagraphHTML(captionText = "Loading...") {
+        return `<p class="has-text-centered has-text-grey">
+            <i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />
+            ${cityssm.escapeHTML(captionText)}
+            </p>`;
+    }
     /*
      * Declare LOS
      */
@@ -319,7 +327,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         setUnsavedChanges,
         clearUnsavedChanges,
         hasUnsavedChanges,
-        getMoveUpDownButtonFieldHTML
+        getMoveUpDownButtonFieldHTML,
+        getLoadingParagraphHTML
     };
     exports.los = los;
 })();

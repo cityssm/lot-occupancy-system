@@ -23,7 +23,11 @@ declare const cityssm: cityssmGlobal;
     );
     const offsetElement = document.querySelector("#searchFilter--offset") as HTMLInputElement;
 
-    function renderLots(responseJSON: { count: number; offset: number; lots: recordTypes.Lot[] }): void {
+    function renderLots(responseJSON: {
+        count: number;
+        offset: number;
+        lots: recordTypes.Lot[];
+    }): void {
         if (responseJSON.lots.length === 0) {
             searchResultsContainerElement.innerHTML =
                 '<div class="message is-info">' +
@@ -134,13 +138,9 @@ declare const cityssm: cityssmGlobal;
     }
 
     function getLots(): void {
-        searchResultsContainerElement.innerHTML =
-            '<div class="has-text-grey has-text-centered">' +
-            '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-            "Loading " +
-            los.escapedAliases.Lots +
-            "..." +
-            "</div>";
+        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
+            `Loading ${los.escapedAliases.Lots}...`
+        );
 
         cityssm.postJSON(los.urlPrefix + "/lots/doSearchLots", searchFilterFormElement, renderLots);
     }

@@ -18,6 +18,8 @@ export interface LOS {
     escapedAliases: {
         Map: string;
         map: string;
+        Maps: string;
+        maps: string;
         Lot: string;
         lot: string;
         Lots: string;
@@ -47,4 +49,5 @@ export interface LOS {
     hasUnsavedChanges: () => boolean;
 
     getMoveUpDownButtonFieldHTML: (upButtonClassNames: string, downButtonClassNames: string, isSmall?: boolean) => string;
+    getLoadingParagraphHTML: (captionText?: string) => string;
 }
