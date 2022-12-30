@@ -46,26 +46,24 @@ function buildEventSummary(milestone: recordTypes.WorkOrderMilestone): string {
             : milestone.workOrderMilestoneDescription
         ).trim();
 
-    if (milestone.workOrderLotOccupancies.length > 0) {
-        let occupantCount = 0;
+    let occupantCount = 0;
 
-        for (const lotOccupancy of milestone.workOrderLotOccupancies) {
-            for (const occupant of lotOccupancy.lotOccupancyOccupants) {
-                occupantCount += 1;
+    for (const lotOccupancy of milestone.workOrderLotOccupancies) {
+        for (const occupant of lotOccupancy.lotOccupancyOccupants) {
+            occupantCount += 1;
 
-                if (occupantCount === 1) {
-                    if (summary !== "") {
-                        summary += ": ";
-                    }
-
-                    summary += occupant.occupantName;
+            if (occupantCount === 1) {
+                if (summary !== "") {
+                    summary += ": ";
                 }
+
+                summary += occupant.occupantName;
             }
         }
+    }
 
-        if (occupantCount > 1) {
-            summary += " plus " + (occupantCount - 1);
-        }
+    if (occupantCount > 1) {
+        summary += " plus " + (occupantCount - 1);
     }
 
     return summary;
@@ -80,34 +78,33 @@ function buildEventDescriptionHTML_occupancies(
     if (milestone.workOrderLotOccupancies.length > 0) {
         const urlRoot = getUrlRoot(request);
 
-        descriptionHTML =
-            "<h2>Related " +
-            escapeHTML(configFunctions.getProperty("aliases.occupancies")) +
-            "</h2>" +
-            '<table border="1"><thead><tr>' +
-            ("<th>" + escapeHTML(configFunctions.getProperty("aliases.occupancy")) + " Type</th>") +
-            ("<th>" + escapeHTML(configFunctions.getProperty("aliases.lot")) + "</th>") +
-            "<th>Start Date</th>" +
-            "<th>End Date</th>" +
-            ("<th>" + escapeHTML(configFunctions.getProperty("aliases.occupants")) + "</th>") +
-            "</tr></thead>" +
-            "<tbody>";
+        descriptionHTML = `<h2>
+            Related ${escapeHTML(configFunctions.getProperty("aliases.occupancies"))}
+            </h2>
+            <table border="1">
+            <thead><tr>
+            <th>${escapeHTML(configFunctions.getProperty("aliases.occupancy"))} Type</th>
+            <th>${escapeHTML(configFunctions.getProperty("aliases.lot"))}</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>${escapeHTML(configFunctions.getProperty("aliases.occupants"))}</th>
+            </tr></thead>
+            <tbody>`;
 
         for (const occupancy of milestone.workOrderLotOccupancies) {
             descriptionHTML +=
-                "<tr>" +
-                ("<td>" +
-                    '<a href="' +
-                    urlRoot +
-                    "/lotOccupancies/" +
-                    occupancy.lotOccupancyId +
-                    '">' +
-                    escapeHTML(occupancy.occupancyType) +
-                    "</a></td>") +
-                ("<td>" +
-                    (occupancy.lotName ? escapeHTML(occupancy.lotName) : "(Not Set)") +
-                    "</td>") +
-                ("<td>" + occupancy.occupancyStartDateString + "</td>") +
+                `<tr>
+                <td>
+                    <a href="${urlRoot}/lotOccupancies/${occupancy.lotOccupancyId}">
+                    ${escapeHTML(occupancy.occupancyType)}
+                    </a>
+                </td>
+                <td>
+                    ${occupancy.lotName ? escapeHTML(occupancy.lotName) : "(Not Set)"}
+                </td>
+                <td>
+                    ${occupancy.occupancyStartDateString}
+                </td>` +
                 "<td>" +
                 (occupancy.occupancyEndDate ? occupancy.occupancyEndDateString : "(No End Date)") +
                 "</td>" +
@@ -121,7 +118,7 @@ function buildEventDescriptionHTML_occupancies(
                     "<br />";
             }
 
-            descriptionHTML += "</td>" + "</tr>";
+            descriptionHTML += "</td></tr>";
         }
 
         descriptionHTML += "</tbody></table>";
@@ -144,9 +141,15 @@ function buildEventDescriptionHTML_lots(
             escapeHTML(configFunctions.getProperty("aliases.lots")) +
             "</h2>" +
             '<table border="1"><thead><tr>' +
-            ("<th>" + escapeHTML(configFunctions.getProperty("aliases.lot")) + " Type</th>") +
-            ("<th>" + escapeHTML(configFunctions.getProperty("aliases.map")) + "</th>") +
-            ("<th>" + escapeHTML(configFunctions.getProperty("aliases.lot")) + " Type" + "</th>") +
+            `<th>
+                ${escapeHTML(configFunctions.getProperty("aliases.lot"))} Type
+            </th>
+            <th>
+                ${escapeHTML(configFunctions.getProperty("aliases.map"))}
+            </th>
+            <th>
+                ${escapeHTML(configFunctions.getProperty("aliases.lot"))} Type
+            </th>` +
             "<th>Status</th>" +
             "</tr></thead>" +
             "<tbody>";
@@ -162,9 +165,9 @@ function buildEventDescriptionHTML_lots(
                     '">' +
                     escapeHTML(lot.lotName) +
                     "</a></td>") +
-                ("<td>" + escapeHTML(lot.mapName) + "</td>") +
-                ("<td>" + escapeHTML(lot.lotType) + "</td>") +
-                ("<td>" + escapeHTML(lot.lotStatus) + "</td>") +
+                `<td>${escapeHTML(lot.mapName)}</td>` +
+                `<td>${escapeHTML(lot.lotType)}</td>` +
+                `<td>${escapeHTML(lot.lotStatus)}</td>` +
                 "</tr>";
         }
 
@@ -210,16 +213,11 @@ function buildEventDescriptionHTML(
 ): string {
     const workOrderUrl = getWorkOrderUrl(request, milestone);
 
-    let descriptionHTML =
-        "<h1>Milestone Description</h1>" +
-        "<p>" +
-        escapeHTML(milestone.workOrderMilestoneDescription) +
-        "</p>" +
-        "<h2>Work Order #" +
-        milestone.workOrderNumber +
-        "</h2>" +
-        ("<p>" + escapeHTML(milestone.workOrderDescription) + "</p>") +
-        ("<p>" + workOrderUrl + "</p>");
+    let descriptionHTML = `<h1>Milestone Description</h1>
+        <p>${escapeHTML(milestone.workOrderMilestoneDescription)}</p>
+        <h2>Work Order #${milestone.workOrderNumber}</h2>
+        <p>${escapeHTML(milestone.workOrderDescription)}</p>
+        <p>${workOrderUrl}</p>`;
 
     descriptionHTML += buildEventDescriptionHTML_occupancies(request, milestone);
     descriptionHTML += buildEventDescriptionHTML_lots(request, milestone);
@@ -286,7 +284,7 @@ export const handler: RequestHandler = (request, response) => {
     });
 
     if (request.query.workOrderId && workOrderMilestones.length > 0) {
-        calendar.name("Work Order #" + workOrderMilestones[0].workOrderNumber);
+        calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber}`);
         calendar.url(urlRoot + "/workOrders/" + workOrderMilestones[0].workOrderId);
     }
 
