@@ -3,5 +3,5 @@ interface UpdateLotTypeForm {
     lotTypeId: number | string;
     lotType: string;
 }
-export declare const updateLotType: (lotTypeForm: UpdateLotTypeForm, requestSession: recordTypes.PartialSession) => boolean;
+export declare function updateLotType(lotTypeForm: UpdateLotTypeForm, requestSession: recordTypes.PartialSession): boolean;
 export default updateLotType;

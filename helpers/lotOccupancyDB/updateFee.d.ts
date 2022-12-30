@@ -15,6 +15,6 @@ interface UpdateFeeForm {
     quantityUnit?: string;
     isRequired: "" | "1";
 }
-export declare const updateFee: (feeForm: UpdateFeeForm, requestSession: recordTypes.PartialSession) => boolean;
-export declare const updateFeeOrderNumber: (feeId: number, orderNumber: number, connectedDatabase?: sqlite.Database) => boolean;
+export declare function updateFee(feeForm: UpdateFeeForm, requestSession: recordTypes.PartialSession): boolean;
+export declare function updateFeeOrderNumber(feeId: number, orderNumber: number, connectedDatabase?: sqlite.Database): boolean;
 export default updateFee;

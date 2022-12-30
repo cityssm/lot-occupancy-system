@@ -30,11 +30,10 @@ const session: PartialSession = {
     }
 };
 
-const initializeCemeteryDatabase = () => {
+function initializeCemeteryDatabase() {
     /*
      * Ensure database does not already exist
      */
-
     debug("Checking for " + databasePath + "...");
 
     const databaseInitialized = initializeDatabase();
@@ -52,7 +51,6 @@ const initializeCemeteryDatabase = () => {
     /*
      * Lot Types
      */
-
     addLotType(
         {
             lotType: "Casket Grave",
@@ -104,7 +102,6 @@ const initializeCemeteryDatabase = () => {
     /*
      * Lot Statuses
      */
-
     addLotStatus(
         {
             lotStatus: "Available",
@@ -132,7 +129,6 @@ const initializeCemeteryDatabase = () => {
     /*
      * Lot Occupant Types
      */
-
     addLotOccupantType(
         {
             lotOccupantType: "Deceased",
@@ -168,7 +164,6 @@ const initializeCemeteryDatabase = () => {
     /*
      * Occupancy Types
      */
-
     addOccupancyType(
         {
             occupancyType: "Preneed",
@@ -194,7 +189,6 @@ const initializeCemeteryDatabase = () => {
     );
 
     // Death Date
-
     const deathDateField = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Death Date",
@@ -214,7 +208,6 @@ const initializeCemeteryDatabase = () => {
     );
 
     // Death Age
-
     const deathAgeField = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Death Age",
@@ -234,7 +227,6 @@ const initializeCemeteryDatabase = () => {
     );
 
     // Death Age Period
-
     const deathAgePeriod = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Death Age Period",
@@ -254,7 +246,6 @@ const initializeCemeteryDatabase = () => {
     );
 
     // Death Place
-
     const deathPlace = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Death Place",
@@ -274,7 +265,6 @@ const initializeCemeteryDatabase = () => {
     );
 
     // Funeral Home
-
     const funeralHome = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Funeral Home",
@@ -294,7 +284,6 @@ const initializeCemeteryDatabase = () => {
     );
 
     // Funeral Date
-
     const funeralDate = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Funeral Date",
@@ -314,7 +303,6 @@ const initializeCemeteryDatabase = () => {
     );
 
     // Container Type
-
     const containerType = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Container Type",
@@ -334,7 +322,6 @@ const initializeCemeteryDatabase = () => {
     );
 
     // Committal Type
-
     const committalType = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Committal Type",
@@ -356,7 +343,6 @@ const initializeCemeteryDatabase = () => {
     /*
      * Fee Categories
      */
-
     addFeeCategory(
         {
             feeCategory: "Interment Rights",
@@ -396,6 +382,6 @@ const initializeCemeteryDatabase = () => {
         },
         session
     );
-};
+}
 
 initializeCemeteryDatabase();

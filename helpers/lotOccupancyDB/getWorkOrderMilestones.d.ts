@@ -11,5 +11,5 @@ interface WorkOrderMilestoneOptions {
     includeWorkOrders?: boolean;
     orderBy: "completion" | "date";
 }
-export declare const getWorkOrderMilestones: (filters: WorkOrderMilestoneFilters, options: WorkOrderMilestoneOptions, connectedDatabase?: sqlite.Database) => recordTypes.WorkOrderMilestone[];
+export declare function getWorkOrderMilestones(filters: WorkOrderMilestoneFilters, options: WorkOrderMilestoneOptions, connectedDatabase?: sqlite.Database): recordTypes.WorkOrderMilestone[];
 export default getWorkOrderMilestones;

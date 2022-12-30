@@ -12,10 +12,10 @@ interface GetPastLotOccupancyOccupantsOptions {
     limit: number;
 }
 
-export const getPastLotOccupancyOccupants = (
+export function getPastLotOccupancyOccupants(
     filters: GetPastLotOccupancyOccupantsFilters,
     options: GetPastLotOccupancyOccupantsOptions
-): recordTypes.LotOccupancyOccupant[] => {
+): recordTypes.LotOccupancyOccupant[] {
     const database = sqlite(databasePath, {
         readonly: true
     });
@@ -67,6 +67,6 @@ export const getPastLotOccupancyOccupants = (
     database.close();
 
     return lotOccupancyOccupants;
-};
+}
 
 export default getPastLotOccupancyOccupants;

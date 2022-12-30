@@ -1,20 +1,20 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-export const getWorkOrderMilestoneTypes = () => {
+export function getWorkOrderMilestoneTypes() {
     const database = sqlite(databasePath);
     const workOrderMilestoneTypes = database
-        .prepare("select workOrderMilestoneTypeId, workOrderMilestoneType, orderNumber" +
-        " from WorkOrderMilestoneTypes" +
-        " where recordDelete_timeMillis is null" +
-        " order by orderNumber, workOrderMilestoneType")
+        .prepare(`select workOrderMilestoneTypeId, workOrderMilestoneType, orderNumber
+                from WorkOrderMilestoneTypes
+                where recordDelete_timeMillis is null
+                order by orderNumber, workOrderMilestoneType`)
         .all();
     let expectedOrderNumber = 0;
     for (const workOrderMilestoneType of workOrderMilestoneTypes) {
         if (workOrderMilestoneType.orderNumber !== expectedOrderNumber) {
             database
-                .prepare("update WorkOrderMilestoneTypes" +
-                " set orderNumber = ?" +
-                " where workOrderMilestoneTypeId = ?")
+                .prepare(`update WorkOrderMilestoneTypes
+                        set orderNumber = ?
+                        where workOrderMilestoneTypeId = ?`)
                 .run(expectedOrderNumber, workOrderMilestoneType.workOrderMilestoneTypeId);
             workOrderMilestoneType.orderNumber = expectedOrderNumber;
         }
@@ -22,5 +22,5 @@ export const getWorkOrderMilestoneTypes = () => {
     }
     database.close();
     return workOrderMilestoneTypes;
-};
+}
 export default getWorkOrderMilestoneTypes;

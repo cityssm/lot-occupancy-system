@@ -4,7 +4,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { getFee } from "./getFee.js";
 
-export const moveFeeUp = (feeId: number | string): boolean => {
+export function moveFeeUp(feeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentFee = getFee(feeId, database);
@@ -16,11 +16,11 @@ export const moveFeeUp = (feeId: number | string): boolean => {
 
     database
         .prepare(
-            "update Fees" +
-                " set orderNumber = orderNumber + 1" +
-                " where recordDelete_timeMillis is null" +
-                " and feeCategoryId = ?" +
-                " and orderNumber = ? - 1"
+            `update Fees
+                set orderNumber = orderNumber + 1
+                where recordDelete_timeMillis is null
+                and feeCategoryId = ?
+                and orderNumber = ? - 1`
         )
         .run(currentFee.feeCategoryId, currentFee.orderNumber);
 
@@ -31,9 +31,9 @@ export const moveFeeUp = (feeId: number | string): boolean => {
     database.close();
 
     return result.changes > 0;
-};
+}
 
-export const moveFeeUpToTop = (feeId: number | string): boolean => {
+export function moveFeeUpToTop(feeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentFee = getFee(feeId, database);
@@ -43,11 +43,11 @@ export const moveFeeUpToTop = (feeId: number | string): boolean => {
 
         database
             .prepare(
-                "update Fees" +
-                    " set orderNumber = orderNumber + 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and feeCategoryId = ?" +
-                    " and orderNumber < ?"
+                `update Fees
+                    set orderNumber = orderNumber + 1
+                    where recordDelete_timeMillis is null
+                    and feeCategoryId = ?
+                    and orderNumber < ?`
             )
             .run(currentFee.feeCategoryId, currentFee.orderNumber);
     }
@@ -55,6 +55,6 @@ export const moveFeeUpToTop = (feeId: number | string): boolean => {
     database.close();
 
     return true;
-};
+}
 
 export default moveFeeUp;

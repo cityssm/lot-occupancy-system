@@ -11,22 +11,22 @@ interface UpdateLotTypeForm {
     lotType: string;
 }
 
-export const updateLotType = (
+export function updateLotType(
     lotTypeForm: UpdateLotTypeForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update LotTypes" +
-                " set lotType = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where lotTypeId = ?" +
-                " and recordDelete_timeMillis is null"
+            `update LotTypes
+                set lotType = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where lotTypeId = ?
+                and recordDelete_timeMillis is null`
         )
         .run(
             lotTypeForm.lotType,
@@ -40,6 +40,6 @@ export const updateLotType = (
     clearLotTypesCache();
 
     return result.changes > 0;
-};
+}
 
 export default updateLotType;

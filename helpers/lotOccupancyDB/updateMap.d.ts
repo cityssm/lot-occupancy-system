@@ -13,5 +13,5 @@ interface UpdateMapForm {
     mapPostalCode: string;
     mapPhoneNumber: string;
 }
-export declare const updateMap: (mapForm: UpdateMapForm, requestSession: recordTypes.PartialSession) => boolean;
+export declare function updateMap(mapForm: UpdateMapForm, requestSession: recordTypes.PartialSession): boolean;
 export default updateMap;

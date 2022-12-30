@@ -1,3 +1,3 @@
 import type * as recordTypes from "../../types/recordTypes";
-export declare const getWorkOrderTypes: () => recordTypes.WorkOrderType[];
+export declare function getWorkOrderTypes(): recordTypes.WorkOrderType[];
 export default getWorkOrderTypes;

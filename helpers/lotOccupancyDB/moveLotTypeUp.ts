@@ -4,7 +4,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearLotTypesCache } from "../functions.cache.js";
 
-export const moveLotTypeUp = (lotTypeId: number | string): boolean => {
+export function moveLotTypeUp(lotTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -18,10 +18,10 @@ export const moveLotTypeUp = (lotTypeId: number | string): boolean => {
 
     database
         .prepare(
-            "update LotTypes" +
-                " set orderNumber = orderNumber + 1" +
-                " where recordDelete_timeMillis is null" +
-                " and orderNumber = ? - 1"
+            `update LotTypes
+                set orderNumber = orderNumber + 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? - 1`
         )
         .run(currentOrderNumber);
 
@@ -34,9 +34,9 @@ export const moveLotTypeUp = (lotTypeId: number | string): boolean => {
     clearLotTypesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveLotTypeUpToTop = (lotTypeId: number | string): boolean => {
+export function moveLotTypeUpToTop(lotTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -48,10 +48,10 @@ export const moveLotTypeUpToTop = (lotTypeId: number | string): boolean => {
 
         database
             .prepare(
-                "update LotTypes" +
-                    " set orderNumber = orderNumber + 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and orderNumber < ?"
+                `update LotTypes
+                    set orderNumber = orderNumber + 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber < ?`
             )
             .run(currentOrderNumber);
     }
@@ -61,6 +61,6 @@ export const moveLotTypeUpToTop = (lotTypeId: number | string): boolean => {
     clearLotTypesCache();
 
     return true;
-};
+}
 
 export default moveLotTypeUp;

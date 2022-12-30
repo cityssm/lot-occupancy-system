@@ -164,7 +164,6 @@ export function getOccupancyTypeByOccupancyType(occupancyTypeString: string) {
 }
 
 export function getOccupancyTypePrintsById(occupancyTypeId: number): string[] {
-
     const occupancyType = getOccupancyTypeById(occupancyTypeId);
 
     if (!occupancyType || occupancyType.occupancyTypePrints.length === 0) {

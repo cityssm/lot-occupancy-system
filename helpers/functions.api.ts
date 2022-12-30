@@ -10,7 +10,7 @@ const debug = Debug("lot-occupancy-system:functions.api");
 const apiKeyPath = "data/apiKeys.json";
 let apiKeys: { [userName: string]: string };
 
-const loadApiKeys = async () => {
+async function loadApiKeys() {
     try {
         const fileData = await fs.readFile(apiKeyPath, "utf8");
         apiKeys = JSON.parse(fileData);
@@ -18,26 +18,26 @@ const loadApiKeys = async () => {
         debug(error);
         apiKeys = {};
     }
-};
+}
 
-const saveApiKeys = async () => {
+async function saveApiKeys() {
     try {
         await fs.writeFile(apiKeyPath, JSON.stringify(apiKeys), "utf8");
     } catch (error) {
         debug(error);
     }
-};
+}
 
-const generateApiKey = (apiKeyPrefix: string) => {
+function generateApiKey(apiKeyPrefix: string) {
     return apiKeyPrefix + "-" + uuidv4() + "-" + Date.now();
-};
+}
 
-export const regenerateApiKey = async (userName: string) => {
+export async function regenerateApiKey(userName: string) {
     apiKeys[userName] = generateApiKey(userName);
     await saveApiKeys();
-};
+}
 
-export const getApiKey = async (userName: string) => {
+export async function getApiKey(userName: string) {
     if (!apiKeys) {
         await loadApiKeys();
     }
@@ -47,13 +47,13 @@ export const getApiKey = async (userName: string) => {
     }
 
     return apiKeys[userName];
-};
+}
 
-export const getApiKeyFromSession = async (session: recordTypes.PartialSession) => {
+export async function getApiKeyFromSession(session: recordTypes.PartialSession) {
     return await getApiKey(session.user.userName);
-};
+}
 
-export const getUserNameFromApiKey = async (apiKey: string) => {
+export async function getUserNameFromApiKey(apiKey: string) {
     if (!apiKeys) {
         await loadApiKeys();
     }
@@ -63,4 +63,4 @@ export const getUserNameFromApiKey = async (apiKey: string) => {
             return userName;
         }
     }
-};
+}

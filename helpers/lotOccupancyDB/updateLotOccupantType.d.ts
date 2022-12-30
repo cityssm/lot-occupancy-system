@@ -4,5 +4,5 @@ interface UpdateLotOccupantTypeForm {
     lotOccupantType: string;
     fontAwesomeIconClass?: string;
 }
-export declare const updateLotOccupantType: (lotOccupantTypeForm: UpdateLotOccupantTypeForm, requestSession: recordTypes.PartialSession) => boolean;
+export declare function updateLotOccupantType(lotOccupantTypeForm: UpdateLotOccupantTypeForm, requestSession: recordTypes.PartialSession): boolean;
 export default updateLotOccupantType;

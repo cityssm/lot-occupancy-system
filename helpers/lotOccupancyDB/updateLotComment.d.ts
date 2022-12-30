@@ -5,5 +5,5 @@ interface UpdateLotCommentForm {
     lotCommentTimeString: string;
     lotComment: string;
 }
-export declare const updateLotComment: (commentForm: UpdateLotCommentForm, requestSession: recordTypes.PartialSession) => boolean;
+export declare function updateLotComment(commentForm: UpdateLotCommentForm, requestSession: recordTypes.PartialSession): boolean;
 export default updateLotComment;

@@ -19,32 +19,32 @@ interface UpdateMapForm {
     mapPhoneNumber: string;
 }
 
-export const updateMap = (
+export function updateMap(
     mapForm: UpdateMapForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update Maps" +
-                " set mapName = ?," +
-                " mapDescription = ?," +
-                " mapSVG = ?," +
-                " mapLatitude = ?," +
-                " mapLongitude = ?," +
-                " mapAddress1 = ?," +
-                " mapAddress2 = ?," +
-                " mapCity = ?," +
-                " mapProvince = ?," +
-                " mapPostalCode = ?," +
-                " mapPhoneNumber = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where mapId = ?" +
-                " and recordDelete_timeMillis is null"
+            `update Maps
+                set mapName = ?,
+                mapDescription = ?,
+                mapSVG = ?,
+                mapLatitude = ?,
+                mapLongitude = ?,
+                mapAddress1 = ?,
+                mapAddress2 = ?,
+                mapCity = ?,
+                mapProvince = ?,
+                mapPostalCode = ?,
+                mapPhoneNumber = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where mapId = ?
+                and recordDelete_timeMillis is null`
         )
         .run(
             mapForm.mapName,
@@ -66,6 +66,6 @@ export const updateMap = (
     database.close();
 
     return result.changes > 0;
-};
+}
 
 export default updateMap;

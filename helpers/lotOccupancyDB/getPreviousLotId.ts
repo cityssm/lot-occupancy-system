@@ -4,7 +4,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import * as configFunctions from "../functions.config.js";
 
-export const getPreviousLotId = (lotId: number | string): number | undefined => {
+export function getPreviousLotId(lotId: number | string): number | undefined {
     const database = sqlite(databasePath, {
         readonly: true
     });
@@ -18,11 +18,11 @@ export const getPreviousLotId = (lotId: number | string): number | undefined => 
         lotId: number;
     } = database
         .prepare(
-            "select lotId from Lots" +
-                " where recordDelete_timeMillis is null" +
-                " and userFn_lotNameSortName(lotName) < (select userFn_lotNameSortName(lotName) from Lots where lotId = ?)" +
-                " order by userFn_lotNameSortName(lotName) desc" +
-                " limit 1"
+            `select lotId from Lots
+                where recordDelete_timeMillis is null
+                and userFn_lotNameSortName(lotName) < (select userFn_lotNameSortName(lotName) from Lots where lotId = ?)
+                order by userFn_lotNameSortName(lotName) desc
+                limit 1`
         )
         .get(lotId);
 
@@ -33,6 +33,6 @@ export const getPreviousLotId = (lotId: number | string): number | undefined => 
     }
 
     return undefined;
-};
+}
 
 export default getPreviousLotId;

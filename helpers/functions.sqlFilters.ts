@@ -2,11 +2,11 @@ import { dateToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 type LotNameSearchType = "startsWith" | "endsWith" | "";
 
-export const getLotNameWhereClause = (
+export function getLotNameWhereClause(
     lotName: string,
     lotNameSearchType: LotNameSearchType,
     lotsTableAlias = "l"
-) => {
+) {
     let sqlWhereClause = "";
     const sqlParameters = [];
 
@@ -36,14 +36,14 @@ export const getLotNameWhereClause = (
         sqlWhereClause,
         sqlParameters
     };
-};
+}
 
 type OccupancyTime = "" | "current" | "past" | "future";
 
-export const getOccupancyTimeWhereClause = (
+export function getOccupancyTimeWhereClause(
     occupancyTime: OccupancyTime,
     lotOccupanciesTableAlias = "o"
-) => {
+) {
     let sqlWhereClause = "";
     const sqlParameters = [];
 
@@ -82,9 +82,9 @@ export const getOccupancyTimeWhereClause = (
         sqlWhereClause,
         sqlParameters
     };
-};
+}
 
-export const getOccupantNameWhereClause = (occupantName: string, tableAlias = "o") => {
+export function getOccupantNameWhereClause(occupantName: string, tableAlias = "o") {
     let sqlWhereClause = "";
     const sqlParameters = [];
 
@@ -100,4 +100,4 @@ export const getOccupantNameWhereClause = (occupantName: string, tableAlias = "o
         sqlWhereClause,
         sqlParameters
     };
-};
+}

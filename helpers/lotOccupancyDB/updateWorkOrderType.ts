@@ -11,22 +11,22 @@ interface UpdateWorkOrderTypeForm {
     workOrderType: string;
 }
 
-export const updateWorkOrderType = (
+export function updateWorkOrderType(
     workOrderTypeForm: UpdateWorkOrderTypeForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update WorkOrderTypes" +
-                " set workOrderType = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where workOrderTypeId = ?" +
-                " and recordDelete_timeMillis is null"
+            `update WorkOrderTypes
+                set workOrderType = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where workOrderTypeId = ?
+                and recordDelete_timeMillis is null`
         )
         .run(
             workOrderTypeForm.workOrderType,
@@ -40,6 +40,6 @@ export const updateWorkOrderType = (
     clearWorkOrderTypesCache();
 
     return result.changes > 0;
-};
+}
 
 export default updateWorkOrderType;

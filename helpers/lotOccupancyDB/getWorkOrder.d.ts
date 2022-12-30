@@ -5,6 +5,6 @@ interface WorkOrderOptions {
     includeComments: boolean;
     includeMilestones: boolean;
 }
-export declare const getWorkOrderByWorkOrderNumber: (workOrderNumber: string) => recordTypes.WorkOrder;
-export declare const getWorkOrder: (workOrderId: number | string, options: WorkOrderOptions, connectedDatabase?: sqlite.Database) => recordTypes.WorkOrder;
+export declare function getWorkOrderByWorkOrderNumber(workOrderNumber: string): recordTypes.WorkOrder;
+export declare function getWorkOrder(workOrderId: number | string, options: WorkOrderOptions, connectedDatabase?: sqlite.Database): recordTypes.WorkOrder;
 export default getWorkOrder;

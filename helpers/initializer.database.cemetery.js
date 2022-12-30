@@ -18,7 +18,7 @@ const session = {
         }
     }
 };
-const initializeCemeteryDatabase = () => {
+function initializeCemeteryDatabase() {
     debug("Checking for " + databasePath + "...");
     const databaseInitialized = initializeDatabase();
     if (!databaseInitialized) {
@@ -207,5 +207,5 @@ const initializeCemeteryDatabase = () => {
         feeCategory: "Additional Services",
         orderNumber: 5
     }, session);
-};
+}
 initializeCemeteryDatabase();

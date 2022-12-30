@@ -4,34 +4,24 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearLotOccupantTypesCache } from "../functions.cache.js";
 
-export const moveLotOccupantTypeDown = (
-    lotOccupantTypeId: number | string
-): boolean => {
+export function moveLotOccupantTypeDown(lotOccupantTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
-        .prepare(
-            "select orderNumber" +
-                " from LotOccupantTypes" +
-                " where lotOccupantTypeId = ?"
-        )
+        .prepare(`select orderNumber from LotOccupantTypes where lotOccupantTypeId = ?`)
         .get(lotOccupantTypeId).orderNumber;
 
     database
         .prepare(
-            "update LotOccupantTypes" +
-                " set orderNumber = orderNumber - 1" +
-                " where recordDelete_timeMillis is null" +
-                " and orderNumber = ? + 1"
+            `update LotOccupantTypes
+                set orderNumber = orderNumber - 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? + 1`
         )
         .run(currentOrderNumber);
 
     const result = database
-        .prepare(
-            "update LotOccupantTypes" +
-                " set orderNumber = ? + 1" +
-                " where lotOccupantTypeId = ?"
-        )
+        .prepare(`update LotOccupantTypes set orderNumber = ? + 1 where lotOccupantTypeId = ?`)
         .run(currentOrderNumber, lotOccupantTypeId);
 
     database.close();
@@ -39,10 +29,9 @@ export const moveLotOccupantTypeDown = (
     clearLotOccupantTypesCache();
 
     return result.changes > 0;
-};
+}
 
-
-export const moveLotOccupantTypeDownToBottom = (lotOccupantTypeId: number | string): boolean => {
+export function moveLotOccupantTypeDownToBottom(lotOccupantTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -51,9 +40,9 @@ export const moveLotOccupantTypeDownToBottom = (lotOccupantTypeId: number | stri
 
     const maxOrderNumber: number = database
         .prepare(
-            "select max(orderNumber) as maxOrderNumber" +
-                " from LotOccupantTypes" +
-                " where recordDelete_timeMillis is null"
+            `select max(orderNumber) as maxOrderNumber
+                from LotOccupantTypes
+                where recordDelete_timeMillis is null`
         )
         .get().maxOrderNumber;
 
@@ -64,10 +53,10 @@ export const moveLotOccupantTypeDownToBottom = (lotOccupantTypeId: number | stri
 
         database
             .prepare(
-                "update LotOccupantTypes" +
-                    " set orderNumber = orderNumber - 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and orderNumber > ?"
+                `update LotOccupantTypes
+                    set orderNumber = orderNumber - 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber > ?`
             )
             .run(currentOrderNumber);
     }
@@ -77,5 +66,6 @@ export const moveLotOccupantTypeDownToBottom = (lotOccupantTypeId: number | stri
     clearLotOccupantTypesCache();
 
     return true;
-};
+}
+
 export default moveLotOccupantTypeDown;

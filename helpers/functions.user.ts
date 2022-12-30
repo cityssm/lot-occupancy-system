@@ -6,16 +6,16 @@ import type { User } from "../types/recordTypes";
 export interface UserRequest {
     session?: {
         user?: User;
-    }
+    };
 }
 
 export interface APIRequest {
     params?: {
         apiKey?: string;
-    }
+    };
 }
 
-export const userIsAdmin = (request: UserRequest): boolean => {
+export function userIsAdmin(request: UserRequest): boolean {
     const user = request.session?.user;
 
     if (!user || !user.userProperties) {
@@ -23,9 +23,9 @@ export const userIsAdmin = (request: UserRequest): boolean => {
     }
 
     return user.userProperties.isAdmin;
-};
+}
 
-export const userCanUpdate = (request: UserRequest): boolean => {
+export function userCanUpdate(request: UserRequest): boolean {
     const user = request.session?.user;
 
     if (!user || !user.userProperties) {
@@ -33,9 +33,9 @@ export const userCanUpdate = (request: UserRequest): boolean => {
     }
 
     return user.userProperties.canUpdate;
-};
+}
 
-export const apiKeyIsValid = async (request: APIRequest): Promise<boolean> => {
+export async function apiKeyIsValid(request: APIRequest): Promise<boolean> {
     const apiKey = request.params?.apiKey;
 
     if (!apiKey) {
@@ -48,11 +48,9 @@ export const apiKeyIsValid = async (request: APIRequest): Promise<boolean> => {
         return false;
     }
 
-    const canLogin = configFunctions
-        .getProperty("users.canLogin")
-        .some((currentUserName) => {
-            return userName === currentUserName.toLowerCase();
-        });
+    const canLogin = configFunctions.getProperty("users.canLogin").some((currentUserName) => {
+        return userName === currentUserName.toLowerCase();
+    });
 
     return canLogin;
-};
+}

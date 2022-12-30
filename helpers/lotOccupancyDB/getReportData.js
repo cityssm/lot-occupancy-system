@@ -22,7 +22,7 @@ const lotOccupancyIdAlias = occupancyCamelCase + "Id";
 const occupancyTypeAlias = occupancyCamelCase + "Type";
 const occupancyStartDateAlias = occupancyCamelCase + "StartDate";
 const occupancyEndDateAlias = occupancyCamelCase + "EndDate";
-export const getReportData = (reportName, reportParameters) => {
+export function getReportData(reportName, reportParameters) {
     let sql;
     const sqlParameters = [];
     switch (reportName) {
@@ -276,5 +276,5 @@ export const getReportData = (reportName, reportParameters) => {
     const rows = database.prepare(sql).all(sqlParameters);
     database.close();
     return rows;
-};
+}
 export default getReportData;

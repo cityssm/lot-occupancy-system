@@ -19,7 +19,7 @@ interface ServerError extends Error {
     code: string;
 }
 
-const onError = (error: ServerError) => {
+function onError(error: ServerError) {
     if (error.syscall !== "listen") {
         throw error;
     }
@@ -45,16 +45,16 @@ const onError = (error: ServerError) => {
             throw error;
         }
     }
-};
+}
 
-const onListening = (server: http.Server) => {
+function onListening(server: http.Server) {
     const addr = server.address();
 
     if (addr) {
         const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port.toString();
         debug("Listening on " + bind);
     }
-};
+}
 
 /*
  * Initialize HTTP

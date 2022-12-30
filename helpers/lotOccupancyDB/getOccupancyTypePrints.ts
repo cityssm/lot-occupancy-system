@@ -13,22 +13,22 @@ const userFunction_configContainsPrintEJS = (printEJS: string): number => {
     return 0;
 };
 
-export const getOccupancyTypePrints = (
+export function getOccupancyTypePrints(
     occupancyTypeId: number,
     connectedDatabase?: sqlite.Database
-): string[] => {
+): string[] {
     const database = connectedDatabase || sqlite(databasePath);
 
     database.function("userFn_configContainsPrintEJS", userFunction_configContainsPrintEJS);
 
     const results: { printEJS: string; orderNumber: number }[] = database
         .prepare(
-            "select printEJS, orderNumber" +
-                " from OccupancyTypePrints" +
-                " where recordDelete_timeMillis is null" +
-                " and occupancyTypeId = ?" +
-                " and userFn_configContainsPrintEJS(printEJS) = 1" +
-                " order by orderNumber, printEJS"
+            `select printEJS, orderNumber
+                from OccupancyTypePrints
+                where recordDelete_timeMillis is null
+                and occupancyTypeId = ?
+                and userFn_configContainsPrintEJS(printEJS) = 1
+                order by orderNumber, printEJS`
         )
         .all(occupancyTypeId);
 
@@ -42,10 +42,10 @@ export const getOccupancyTypePrints = (
         if (result.orderNumber !== expectedOrderNumber) {
             database
                 .prepare(
-                    "update OccupancyTypePrints" +
-                        " set orderNumber = ?" +
-                        " where occupancyTypeId = ?" +
-                        " and printEJS = ?"
+                    `update OccupancyTypePrints
+                        set orderNumber = ?
+                        where occupancyTypeId = ?
+                        and printEJS = ?`
                 )
                 .run(expectedOrderNumber, occupancyTypeId, result.printEJS);
         }
@@ -58,6 +58,6 @@ export const getOccupancyTypePrints = (
     }
 
     return prints;
-};
+}
 
 export default getOccupancyTypePrints;

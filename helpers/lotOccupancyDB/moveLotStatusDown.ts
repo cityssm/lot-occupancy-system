@@ -4,32 +4,24 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearLotStatusesCache } from "../functions.cache.js";
 
-export const moveLotStatusDown = (lotStatusId: number | string): boolean => {
+export function moveLotStatusDown(lotStatusId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
-        .prepare(
-            "select orderNumber" +
-                " from LotStatuses" +
-                " where lotStatusId = ?"
-        )
+        .prepare(`select orderNumber from LotStatuses where lotStatusId = ?`)
         .get(lotStatusId).orderNumber;
 
     database
         .prepare(
-            "update LotStatuses" +
-                " set orderNumber = orderNumber - 1" +
-                " where recordDelete_timeMillis is null" +
-                " and orderNumber = ? + 1"
+            `update LotStatuses
+                set orderNumber = orderNumber - 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? + 1`
         )
         .run(currentOrderNumber);
 
     const result = database
-        .prepare(
-            "update LotStatuses" +
-                " set orderNumber = ? + 1" +
-                " where lotStatusId = ?"
-        )
+        .prepare(`update LotStatuses set orderNumber = ? + 1 where lotStatusId = ?`)
         .run(currentOrderNumber, lotStatusId);
 
     database.close();
@@ -37,9 +29,9 @@ export const moveLotStatusDown = (lotStatusId: number | string): boolean => {
     clearLotStatusesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveLotStatusDownToBottom = (lotStatusId: number | string): boolean => {
+export function moveLotStatusDownToBottom(lotStatusId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -48,9 +40,9 @@ export const moveLotStatusDownToBottom = (lotStatusId: number | string): boolean
 
     const maxOrderNumber: number = database
         .prepare(
-            "select max(orderNumber) as maxOrderNumber" +
-                " from LotStatuses" +
-                " where recordDelete_timeMillis is null"
+            `select max(orderNumber) as maxOrderNumber
+                from LotStatuses
+                where recordDelete_timeMillis is null`
         )
         .get().maxOrderNumber;
 
@@ -61,10 +53,10 @@ export const moveLotStatusDownToBottom = (lotStatusId: number | string): boolean
 
         database
             .prepare(
-                "update LotStatuses" +
-                    " set orderNumber = orderNumber - 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and orderNumber > ?"
+                `update LotStatuses
+                    set orderNumber = orderNumber - 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber > ?`
             )
             .run(currentOrderNumber);
     }
@@ -74,6 +66,6 @@ export const moveLotStatusDownToBottom = (lotStatusId: number | string): boolean
     clearLotStatusesCache();
 
     return true;
-};
+}
 
 export default moveLotStatusDown;

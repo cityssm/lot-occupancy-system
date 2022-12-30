@@ -20,9 +20,9 @@ const screenPrintConfigs: { [printName: string]: PrintConfig } = {
     }
 };
 
-export const getScreenPrintConfig = (printName: string): PrintConfig => {
+export function getScreenPrintConfig(printName: string): PrintConfig {
     return screenPrintConfigs[printName];
-};
+}
 
 const pdfPrintConfigs: { [printName: string]: PrintConfig } = {
     workOrder: {
@@ -45,11 +45,11 @@ const pdfPrintConfigs: { [printName: string]: PrintConfig } = {
     }
 };
 
-export const getPdfPrintConfig = (printName: string): PrintConfig => {
+export function getPdfPrintConfig(printName: string): PrintConfig {
     return pdfPrintConfigs[printName];
-};
+}
 
-export const getPrintConfig = (screenOrPdf_printName: string): PrintConfig | undefined => {
+export function getPrintConfig(screenOrPdf_printName: string): PrintConfig | undefined {
     const printNameSplit = screenOrPdf_printName.split("/");
 
     switch (printNameSplit[0]) {
@@ -62,12 +62,12 @@ export const getPrintConfig = (screenOrPdf_printName: string): PrintConfig | und
     }
 
     return undefined;
-};
+}
 
-export const getReportData = (
+export function getReportData(
     printConfig: PrintConfig,
     requestQuery: { [paramName: string]: unknown }
-) => {
+) {
     const reportData: { [dataName: string]: unknown } = {
         headTitle: printConfig.title
     };
@@ -97,4 +97,4 @@ export const getReportData = (
     }
 
     return reportData;
-};
+}

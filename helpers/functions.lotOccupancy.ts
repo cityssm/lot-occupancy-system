@@ -1,9 +1,9 @@
 import type * as recordTypes from "../types/recordTypes";
 
-export const filterOccupantsByLotOccupantType = (
+export function filterOccupantsByLotOccupantType(
     lotOccupancy: recordTypes.LotOccupancy,
     lotOccupantType: string
-): recordTypes.LotOccupancyOccupant[] => {
+): recordTypes.LotOccupancyOccupant[] {
     const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase();
 
     const occupants = (lotOccupancy.lotOccupancyOccupants || []).filter((possibleOccupant) => {
@@ -13,16 +13,19 @@ export const filterOccupantsByLotOccupantType = (
     });
 
     return occupants;
-};
+}
 
-export const getFieldValueByOccupancyTypeField = (
+export function getFieldValueByOccupancyTypeField(
     lotOccupancy: recordTypes.LotOccupancy,
     occupancyTypeField: string
-): string | undefined => {
+): string | undefined {
     const occupancyTypeFieldLowerCase = occupancyTypeField.toLowerCase();
 
     const field = (lotOccupancy.lotOccupancyFields || []).find((possibleField) => {
-        return (possibleField.occupancyTypeField as string).toLowerCase() === occupancyTypeFieldLowerCase;
+        return (
+            (possibleField.occupancyTypeField as string).toLowerCase() ===
+            occupancyTypeFieldLowerCase
+        );
     });
 
     if (field) {
@@ -30,13 +33,13 @@ export const getFieldValueByOccupancyTypeField = (
     }
 
     return undefined;
-};
+}
 
-export const getFeesByFeeCategory = (
+export function getFeesByFeeCategory(
     lotOccupancy: recordTypes.LotOccupancy,
     feeCategory: string,
     feeCategoryContains = false
-) => {
+) {
     const feeCategoryLowerCase = feeCategory.toLowerCase();
 
     const fees = (lotOccupancy.lotOccupancyFees || []).filter((possibleFee) => {
@@ -46,14 +49,14 @@ export const getFeesByFeeCategory = (
     });
 
     return fees;
-};
+}
 
-export const getTransactionTotal = (lotOccupancy: recordTypes.LotOccupancy) => {
+export function getTransactionTotal(lotOccupancy: recordTypes.LotOccupancy) {
     let transactionTotal = 0;
 
-    for (const transaction of (lotOccupancy.lotOccupancyTransactions || [])) {
+    for (const transaction of lotOccupancy.lotOccupancyTransactions || []) {
         transactionTotal += transaction.transactionAmount;
     }
 
     return transactionTotal;
-};
+}

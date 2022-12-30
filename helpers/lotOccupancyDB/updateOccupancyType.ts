@@ -11,22 +11,22 @@ interface UpdateOccupancyTypeForm {
     occupancyType: string;
 }
 
-export const updateOccupancyType = (
+export function updateOccupancyType(
     occupancyTypeForm: UpdateOccupancyTypeForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update OccupancyTypes" +
-                " set occupancyType = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where occupancyTypeId = ?" +
-                " and recordDelete_timeMillis is null"
+            `update OccupancyTypes
+                set occupancyType = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where occupancyTypeId = ?
+                and recordDelete_timeMillis is null`
         )
         .run(
             occupancyTypeForm.occupancyType,
@@ -40,6 +40,6 @@ export const updateOccupancyType = (
     clearOccupancyTypesCache();
 
     return result.changes > 0;
-};
+}
 
 export default updateOccupancyType;

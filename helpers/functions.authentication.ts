@@ -6,10 +6,10 @@ const userDomain = configFunctions.getProperty("application.userDomain");
 
 const activeDirectoryConfig = configFunctions.getProperty("activeDirectory");
 
-const authenticateViaActiveDirectory = async (
+async function authenticateViaActiveDirectory(
     userName: string,
     password: string
-): Promise<boolean> => {
+): Promise<boolean> {
     return new Promise((resolve) => {
         try {
             const ad = new ActiveDirectory(activeDirectoryConfig);
@@ -25,15 +25,15 @@ const authenticateViaActiveDirectory = async (
             resolve(false);
         }
     });
-};
+}
 
-export const authenticate = async (userName: string, password: string): Promise<boolean> => {
+export async function authenticate(userName: string, password: string): Promise<boolean> {
     if (!userName || userName === "" || !password || password === "") {
         return false;
     }
 
     return await authenticateViaActiveDirectory(userName, password);
-};
+}
 
 const safeRedirects = new Set([
     "/admin/cleanup",
@@ -54,7 +54,7 @@ const safeRedirects = new Set([
     "/reports"
 ]);
 
-export const getSafeRedirectURL = (possibleRedirectURL = "") => {
+export function getSafeRedirectURL(possibleRedirectURL = "") {
     const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
 
     if (typeof possibleRedirectURL === "string") {
@@ -77,4 +77,4 @@ export const getSafeRedirectURL = (possibleRedirectURL = "") => {
     }
 
     return urlPrefix + "/dashboard";
-};
+}

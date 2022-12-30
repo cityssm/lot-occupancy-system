@@ -1,3 +1,3 @@
-export declare const moveLotOccupantTypeDown: (lotOccupantTypeId: number | string) => boolean;
-export declare const moveLotOccupantTypeDownToBottom: (lotOccupantTypeId: number | string) => boolean;
+export declare function moveLotOccupantTypeDown(lotOccupantTypeId: number | string): boolean;
+export declare function moveLotOccupantTypeDownToBottom(lotOccupantTypeId: number | string): boolean;
 export default moveLotOccupantTypeDown;

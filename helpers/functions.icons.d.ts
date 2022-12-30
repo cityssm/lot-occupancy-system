@@ -1,1 +1,1 @@
-export declare const getSolidIconClasses: () => Promise<string[]>;
+export declare function getSolidIconClasses(): Promise<string[]>;

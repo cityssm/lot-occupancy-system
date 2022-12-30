@@ -31,9 +31,10 @@ interface WorkOrderMilestoneOptions {
 
 const commaSeparatedNumbersRegex = /^\d+(,\d+)*$/;
 
-const buildWhereClause = (
-    filters: WorkOrderMilestoneFilters
-): { sqlWhereClause: string; sqlParameters: unknown[] } => {
+function buildWhereClause(filters: WorkOrderMilestoneFilters): {
+    sqlWhereClause: string;
+    sqlParameters: unknown[];
+} {
     let sqlWhereClause =
         " where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null";
     const sqlParameters: unknown[] = [];
@@ -102,13 +103,13 @@ const buildWhereClause = (
         sqlWhereClause,
         sqlParameters
     };
-};
+}
 
-export const getWorkOrderMilestones = (
+export function getWorkOrderMilestones(
     filters: WorkOrderMilestoneFilters,
     options: WorkOrderMilestoneOptions,
     connectedDatabase?: sqlite.Database
-): recordTypes.WorkOrderMilestone[] => {
+): recordTypes.WorkOrderMilestone[] {
     const database =
         connectedDatabase ||
         sqlite(databasePath, {
@@ -119,11 +120,9 @@ export const getWorkOrderMilestones = (
     database.function("userFn_timeIntegerToString", timeIntegerToString);
 
     // Filters
-
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
 
     // Order By
-
     let orderByClause = "";
 
     switch (options.orderBy) {
@@ -145,7 +144,6 @@ export const getWorkOrderMilestones = (
     }
 
     // Query
-
     const sql =
         "select m.workOrderMilestoneId," +
         " m.workOrderMilestoneTypeId, t.workOrderMilestoneType," +
@@ -205,6 +203,6 @@ export const getWorkOrderMilestones = (
     }
 
     return workOrderMilestones;
-};
+}
 
 export default getWorkOrderMilestones;

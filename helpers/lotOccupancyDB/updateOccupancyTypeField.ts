@@ -16,27 +16,27 @@ interface UpdateOccupancyTypeFieldForm {
     occupancyTypeFieldValues: string;
 }
 
-export const updateOccupancyTypeField = (
+export function updateOccupancyTypeField(
     occupancyTypeFieldForm: UpdateOccupancyTypeFieldForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update OccupancyTypeFields" +
-                " set occupancyTypeField = ?," +
-                " isRequired = ?," +
-                " minimumLength = ?," +
-                " maximumLength = ?," +
-                " pattern = ?," +
-                " occupancyTypeFieldValues = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where occupancyTypeFieldId = ?" +
-                " and recordDelete_timeMillis is null"
+            `update OccupancyTypeFields
+                set occupancyTypeField = ?,
+                isRequired = ?,
+                minimumLength = ?,
+                maximumLength = ?,
+                pattern = ?,
+                occupancyTypeFieldValues = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where occupancyTypeFieldId = ?
+                and recordDelete_timeMillis is null`
         )
         .run(
             occupancyTypeFieldForm.occupancyTypeField,
@@ -55,6 +55,6 @@ export const updateOccupancyTypeField = (
     clearOccupancyTypesCache();
 
     return result.changes > 0;
-};
+}
 
 export default updateOccupancyTypeField;

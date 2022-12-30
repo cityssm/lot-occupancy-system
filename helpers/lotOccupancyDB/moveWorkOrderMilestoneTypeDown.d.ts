@@ -1,3 +1,3 @@
-export declare const moveWorkOrderMilestoneTypeDown: (workOrderMilestoneTypeId: number | string) => boolean;
-export declare const moveWorkOrderMilestoneTypeDownToBottom: (workOrderMilestoneTypeId: number | string) => boolean;
+export declare function moveWorkOrderMilestoneTypeDown(workOrderMilestoneTypeId: number | string): boolean;
+export declare function moveWorkOrderMilestoneTypeDownToBottom(workOrderMilestoneTypeId: number | string): boolean;
 export default moveWorkOrderMilestoneTypeDown;

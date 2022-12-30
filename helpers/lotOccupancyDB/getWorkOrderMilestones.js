@@ -5,7 +5,7 @@ import * as configFunctions from "../functions.config.js";
 import { getLots } from "./getLots.js";
 import { getLotOccupancies } from "./getLotOccupancies.js";
 const commaSeparatedNumbersRegex = /^\d+(,\d+)*$/;
-const buildWhereClause = (filters) => {
+function buildWhereClause(filters) {
     let sqlWhereClause = " where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null";
     const sqlParameters = [];
     if (filters.workOrderId) {
@@ -51,8 +51,8 @@ const buildWhereClause = (filters) => {
         sqlWhereClause,
         sqlParameters
     };
-};
-export const getWorkOrderMilestones = (filters, options, connectedDatabase) => {
+}
+export function getWorkOrderMilestones(filters, options, connectedDatabase) {
     const database = connectedDatabase ||
         sqlite(databasePath, {
             readonly: true
@@ -122,5 +122,5 @@ export const getWorkOrderMilestones = (filters, options, connectedDatabase) => {
         database.close();
     }
     return workOrderMilestones;
-};
+}
 export default getWorkOrderMilestones;

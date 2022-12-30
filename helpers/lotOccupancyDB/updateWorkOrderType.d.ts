@@ -3,5 +3,5 @@ interface UpdateWorkOrderTypeForm {
     workOrderTypeId: number | string;
     workOrderType: string;
 }
-export declare const updateWorkOrderType: (workOrderTypeForm: UpdateWorkOrderTypeForm, requestSession: recordTypes.PartialSession) => boolean;
+export declare function updateWorkOrderType(workOrderTypeForm: UpdateWorkOrderTypeForm, requestSession: recordTypes.PartialSession): boolean;
 export default updateWorkOrderType;

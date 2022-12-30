@@ -4,14 +4,12 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearOccupancyTypesCache } from "../functions.cache.js";
 
-export const moveOccupancyTypeFieldUp = (occupancyTypeFieldId: number | string): boolean => {
+export function moveOccupancyTypeFieldUp(occupancyTypeFieldId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentField: { occupancyTypeId?: number; orderNumber: number } = database
         .prepare(
-            "select occupancyTypeId, orderNumber" +
-                " from OccupancyTypeFields" +
-                " where occupancyTypeFieldId = ?"
+            `select occupancyTypeId, orderNumber from OccupancyTypeFields where occupancyTypeFieldId = ?`
         )
         .get(occupancyTypeFieldId);
 
@@ -34,9 +32,7 @@ export const moveOccupancyTypeFieldUp = (occupancyTypeFieldId: number | string):
 
     const result = database
         .prepare(
-            "update OccupancyTypeFields" +
-                " set orderNumber = ? - 1" +
-                " where occupancyTypeFieldId = ?"
+            `update OccupancyTypeFields set orderNumber = ? - 1 where occupancyTypeFieldId = ?`
         )
         .run(currentField.orderNumber, occupancyTypeFieldId);
 
@@ -45,24 +41,21 @@ export const moveOccupancyTypeFieldUp = (occupancyTypeFieldId: number | string):
     clearOccupancyTypesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveOccupancyTypeFieldUpToTop = (occupancyTypeFieldId: number | string): boolean => {
+export function moveOccupancyTypeFieldUpToTop(occupancyTypeFieldId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentField: { occupancyTypeId?: number; orderNumber: number } = database
         .prepare(
-            "select occupancyTypeId, orderNumber" +
-                " from OccupancyTypeFields" +
-                " where occupancyTypeFieldId = ?"
+            `select occupancyTypeId, orderNumber from OccupancyTypeFields where occupancyTypeFieldId = ?`
         )
         .get(occupancyTypeFieldId);
 
     if (currentField.orderNumber > 0) {
         database
             .prepare(
-                "update OccupancyTypeFields set orderNumber = -1" +
-                    " where occupancyTypeFieldId = ?"
+                `update OccupancyTypeFields set orderNumber = -1 where occupancyTypeFieldId = ?`
             )
             .run(occupancyTypeFieldId);
 
@@ -92,6 +85,6 @@ export const moveOccupancyTypeFieldUpToTop = (occupancyTypeFieldId: number | str
     clearOccupancyTypesCache();
 
     return true;
-};
+}
 
 export default moveOccupancyTypeFieldUp;

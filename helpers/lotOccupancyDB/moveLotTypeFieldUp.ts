@@ -4,7 +4,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearLotTypesCache } from "../functions.cache.js";
 
-export const moveLotTypeFieldUp = (lotTypeFieldId: number | string): boolean => {
+export function moveLotTypeFieldUp(lotTypeFieldId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentField: { lotTypeId: number; orderNumber: number } = database
@@ -18,11 +18,11 @@ export const moveLotTypeFieldUp = (lotTypeFieldId: number | string): boolean => 
 
     database
         .prepare(
-            "update LotTypeFields" +
-                " set orderNumber = orderNumber + 1" +
-                " where recordDelete_timeMillis is null" +
-                " and lotTypeId = ?" +
-                " and orderNumber = ? - 1"
+            `update LotTypeFields
+                set orderNumber = orderNumber + 1
+                where recordDelete_timeMillis is null
+                and lotTypeId = ?
+                and orderNumber = ? - 1`
         )
         .run(currentField.lotTypeId, currentField.orderNumber);
 
@@ -35,9 +35,9 @@ export const moveLotTypeFieldUp = (lotTypeFieldId: number | string): boolean => 
     clearLotTypesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveLotTypeFieldUpToTop = (lotTypeFieldId: number | string): boolean => {
+export function moveLotTypeFieldUpToTop(lotTypeFieldId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentField: { lotTypeId: number; orderNumber: number } = database
@@ -51,11 +51,11 @@ export const moveLotTypeFieldUpToTop = (lotTypeFieldId: number | string): boolea
 
         database
             .prepare(
-                "update LotTypeFields" +
-                    " set orderNumber = orderNumber + 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and lotTypeId = ?" +
-                    " and orderNumber < ?"
+                `update LotTypeFields
+                    set orderNumber = orderNumber + 1
+                    where recordDelete_timeMillis is null
+                    and lotTypeId = ?
+                    and orderNumber < ?`
             )
             .run(currentField.lotTypeId, currentField.orderNumber);
     }
@@ -65,6 +65,6 @@ export const moveLotTypeFieldUpToTop = (lotTypeFieldId: number | string): boolea
     clearLotTypesCache();
 
     return true;
-};
+}
 
 export default moveLotTypeFieldUp;

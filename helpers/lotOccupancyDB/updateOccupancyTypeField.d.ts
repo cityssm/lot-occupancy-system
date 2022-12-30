@@ -8,5 +8,5 @@ interface UpdateOccupancyTypeFieldForm {
     pattern?: string;
     occupancyTypeFieldValues: string;
 }
-export declare const updateOccupancyTypeField: (occupancyTypeFieldForm: UpdateOccupancyTypeFieldForm, requestSession: recordTypes.PartialSession) => boolean;
+export declare function updateOccupancyTypeField(occupancyTypeFieldForm: UpdateOccupancyTypeFieldForm, requestSession: recordTypes.PartialSession): boolean;
 export default updateOccupancyTypeField;

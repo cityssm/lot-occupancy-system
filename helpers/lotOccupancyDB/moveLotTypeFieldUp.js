@@ -1,7 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { clearLotTypesCache } from "../functions.cache.js";
-export const moveLotTypeFieldUp = (lotTypeFieldId) => {
+export function moveLotTypeFieldUp(lotTypeFieldId) {
     const database = sqlite(databasePath);
     const currentField = database
         .prepare("select lotTypeId, orderNumber from LotTypeFields where lotTypeFieldId = ?")
@@ -11,11 +11,11 @@ export const moveLotTypeFieldUp = (lotTypeFieldId) => {
         return true;
     }
     database
-        .prepare("update LotTypeFields" +
-        " set orderNumber = orderNumber + 1" +
-        " where recordDelete_timeMillis is null" +
-        " and lotTypeId = ?" +
-        " and orderNumber = ? - 1")
+        .prepare(`update LotTypeFields
+                set orderNumber = orderNumber + 1
+                where recordDelete_timeMillis is null
+                and lotTypeId = ?
+                and orderNumber = ? - 1`)
         .run(currentField.lotTypeId, currentField.orderNumber);
     const result = database
         .prepare("update LotTypeFields set orderNumber = ? - 1 where lotTypeFieldId = ?")
@@ -23,8 +23,8 @@ export const moveLotTypeFieldUp = (lotTypeFieldId) => {
     database.close();
     clearLotTypesCache();
     return result.changes > 0;
-};
-export const moveLotTypeFieldUpToTop = (lotTypeFieldId) => {
+}
+export function moveLotTypeFieldUpToTop(lotTypeFieldId) {
     const database = sqlite(databasePath);
     const currentField = database
         .prepare("select lotTypeId, orderNumber from LotTypeFields where lotTypeFieldId = ?")
@@ -34,15 +34,15 @@ export const moveLotTypeFieldUpToTop = (lotTypeFieldId) => {
             .prepare("update LotTypeFields set orderNumber = -1 where lotTypeFieldId = ?")
             .run(lotTypeFieldId);
         database
-            .prepare("update LotTypeFields" +
-            " set orderNumber = orderNumber + 1" +
-            " where recordDelete_timeMillis is null" +
-            " and lotTypeId = ?" +
-            " and orderNumber < ?")
+            .prepare(`update LotTypeFields
+                    set orderNumber = orderNumber + 1
+                    where recordDelete_timeMillis is null
+                    and lotTypeId = ?
+                    and orderNumber < ?`)
             .run(currentField.lotTypeId, currentField.orderNumber);
     }
     database.close();
     clearLotTypesCache();
     return true;
-};
+}
 export default moveLotTypeFieldUp;

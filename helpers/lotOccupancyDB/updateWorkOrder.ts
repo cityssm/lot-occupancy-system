@@ -13,25 +13,25 @@ interface UpdateWorkOrderForm {
     workOrderOpenDateString: string;
 }
 
-export const updateWorkOrder = (
+export function updateWorkOrder(
     workOrderForm: UpdateWorkOrderForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update WorkOrders" +
-                " set workOrderNumber = ?," +
-                " workOrderTypeId = ?," +
-                " workOrderDescription = ?," +
-                " workOrderOpenDate = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where workOrderId = ?" +
-                " and recordDelete_timeMillis is null"
+            `update WorkOrders
+                set workOrderNumber = ?,
+                workOrderTypeId = ?,
+                workOrderDescription = ?,
+                workOrderOpenDate = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where workOrderId = ?
+                and recordDelete_timeMillis is null`
         )
         .run(
             workOrderForm.workOrderNumber,
@@ -46,6 +46,6 @@ export const updateWorkOrder = (
     database.close();
 
     return result.changes > 0;
-};
+}
 
 export default updateWorkOrder;

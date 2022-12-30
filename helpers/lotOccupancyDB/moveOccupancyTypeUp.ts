@@ -4,7 +4,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearOccupancyTypesCache } from "../functions.cache.js";
 
-export const moveOccupancyTypeUp = (occupancyTypeId: number | string): boolean => {
+export function moveOccupancyTypeUp(occupancyTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -18,10 +18,10 @@ export const moveOccupancyTypeUp = (occupancyTypeId: number | string): boolean =
 
     database
         .prepare(
-            "update OccupancyTypes" +
-                " set orderNumber = orderNumber + 1" +
-                " where recordDelete_timeMillis is null" +
-                " and orderNumber = ? - 1"
+            `update OccupancyTypes
+                set orderNumber = orderNumber + 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? - 1`
         )
         .run(currentOrderNumber);
 
@@ -34,9 +34,9 @@ export const moveOccupancyTypeUp = (occupancyTypeId: number | string): boolean =
     clearOccupancyTypesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveOccupancyTypeUpToTop = (occupancyTypeId: number | string): boolean => {
+export function moveOccupancyTypeUpToTop(occupancyTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -50,10 +50,10 @@ export const moveOccupancyTypeUpToTop = (occupancyTypeId: number | string): bool
 
         database
             .prepare(
-                "update OccupancyTypes" +
-                    " set orderNumber = orderNumber + 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and orderNumber < ?"
+                `update OccupancyTypes
+                    set orderNumber = orderNumber + 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber < ?`
             )
             .run(currentOrderNumber);
     }
@@ -63,6 +63,6 @@ export const moveOccupancyTypeUpToTop = (occupancyTypeId: number | string): bool
     clearOccupancyTypesCache();
 
     return true;
-};
+}
 
 export default moveOccupancyTypeUp;

@@ -4,14 +4,12 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearOccupancyTypesCache } from "../functions.cache.js";
 
-export const moveOccupancyTypeFieldDown = (occupancyTypeFieldId: number | string): boolean => {
+export function moveOccupancyTypeFieldDown(occupancyTypeFieldId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentField: { occupancyTypeId?: number; orderNumber: number } = database
         .prepare(
-            "select occupancyTypeId, orderNumber" +
-                " from OccupancyTypeFields" +
-                " where occupancyTypeFieldId = ?"
+            `select occupancyTypeId, orderNumber from OccupancyTypeFields where occupancyTypeFieldId = ?`
         )
         .get(occupancyTypeFieldId);
 
@@ -29,9 +27,7 @@ export const moveOccupancyTypeFieldDown = (occupancyTypeFieldId: number | string
 
     const result = database
         .prepare(
-            "update OccupancyTypeFields" +
-                " set orderNumber = ? + 1" +
-                " where occupancyTypeFieldId = ?"
+            `update OccupancyTypeFields set orderNumber = ? + 1 where occupancyTypeFieldId = ?`
         )
         .run(currentField.orderNumber, occupancyTypeFieldId);
 
@@ -40,18 +36,16 @@ export const moveOccupancyTypeFieldDown = (occupancyTypeFieldId: number | string
     clearOccupancyTypesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveOccupancyTypeFieldDownToBottom = (
-    occupancyTypeFieldId: number | string
-): boolean => {
+export function moveOccupancyTypeFieldDownToBottom(occupancyTypeFieldId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentField: { occupancyTypeId?: number; orderNumber: number } = database
         .prepare(
-            "select occupancyTypeId, orderNumber" +
-                " from OccupancyTypeFields" +
-                " where occupancyTypeFieldId = ?"
+            `select occupancyTypeId, orderNumber
+                from OccupancyTypeFields
+                where occupancyTypeFieldId = ?`
         )
         .get(occupancyTypeFieldId);
 
@@ -99,6 +93,6 @@ export const moveOccupancyTypeFieldDownToBottom = (
     clearOccupancyTypesCache();
 
     return true;
-};
+}
 
 export default moveOccupancyTypeFieldDown;

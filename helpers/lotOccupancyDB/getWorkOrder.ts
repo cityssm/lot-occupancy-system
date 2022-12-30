@@ -20,23 +20,22 @@ interface WorkOrderOptions {
     includeMilestones: boolean;
 }
 
-const baseSQL =
-    "select w.workOrderId," +
-    " w.workOrderTypeId, t.workOrderType," +
-    " w.workOrderNumber, w.workOrderDescription," +
-    " w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString," +
-    " w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString," +
-    " w.recordCreate_timeMillis, w.recordUpdate_timeMillis" +
-    " from WorkOrders w" +
-    " left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId" +
-    " where w.recordDelete_timeMillis is null";
+const baseSQL = `select w.workOrderId,
+        w.workOrderTypeId, t.workOrderType,
+        w.workOrderNumber, w.workOrderDescription,
+        w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
+        w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
+        w.recordCreate_timeMillis, w.recordUpdate_timeMillis
+        from WorkOrders w
+        left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
+        where w.recordDelete_timeMillis is null`;
 
-const _getWorkOrder = (
+function _getWorkOrder(
     sql: string,
     workOrderId_or_workOrderNumber: number | string,
     options: WorkOrderOptions,
     connectedDatabase?: sqlite.Database
-): recordTypes.WorkOrder => {
+): recordTypes.WorkOrder {
     const database =
         connectedDatabase ||
         sqlite(databasePath, {
@@ -101,33 +100,27 @@ const _getWorkOrder = (
     }
 
     return workOrder;
-};
+}
 
-export const getWorkOrderByWorkOrderNumber = (
-    workOrderNumber: string
-): recordTypes.WorkOrder => {
-    return _getWorkOrder(
-        baseSQL + " and w.workOrderNumber = ?",
-        workOrderNumber,
-        {
-            includeLotsAndLotOccupancies: true,
-            includeComments: true,
-            includeMilestones: true
-        }
-    );
-};
+export function getWorkOrderByWorkOrderNumber(workOrderNumber: string): recordTypes.WorkOrder {
+    return _getWorkOrder(baseSQL + " and w.workOrderNumber = ?", workOrderNumber, {
+        includeLotsAndLotOccupancies: true,
+        includeComments: true,
+        includeMilestones: true
+    });
+}
 
-export const getWorkOrder = (
+export function getWorkOrder(
     workOrderId: number | string,
     options: WorkOrderOptions,
     connectedDatabase?: sqlite.Database
-): recordTypes.WorkOrder => {
+): recordTypes.WorkOrder {
     return _getWorkOrder(
         baseSQL + " and w.workOrderId = ?",
         workOrderId,
         options,
         connectedDatabase
     );
-};
+}
 
 export default getWorkOrder;

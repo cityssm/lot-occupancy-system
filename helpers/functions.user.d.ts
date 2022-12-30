@@ -9,6 +9,6 @@ export interface APIRequest {
         apiKey?: string;
     };
 }
-export declare const userIsAdmin: (request: UserRequest) => boolean;
-export declare const userCanUpdate: (request: UserRequest) => boolean;
-export declare const apiKeyIsValid: (request: APIRequest) => Promise<boolean>;
+export declare function userIsAdmin(request: UserRequest): boolean;
+export declare function userCanUpdate(request: UserRequest): boolean;
+export declare function apiKeyIsValid(request: APIRequest): Promise<boolean>;

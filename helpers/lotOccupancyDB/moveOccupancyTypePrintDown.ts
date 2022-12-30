@@ -4,34 +4,31 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearOccupancyTypesCache } from "../functions.cache.js";
 
-export const moveOccupancyTypePrintDown = (occupancyTypeId: number | string, printEJS: string): boolean => {
+export function moveOccupancyTypePrintDown(
+    occupancyTypeId: number | string,
+    printEJS: string
+): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber = database
         .prepare(
-            "select orderNumber" +
-                " from OccupancyTypePrints" +
-                " where occupancyTypeId = ?" +
-                " and printEJS = ?"
+            `select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?`
         )
         .get(occupancyTypeId, printEJS).orderNumber;
 
     database
         .prepare(
-            "update OccupancyTypePrints" +
-                " set orderNumber = orderNumber - 1" +
-                " where recordDelete_timeMillis is null" +
-                " and occupancyTypeId = '" + occupancyTypeId + "'" +
-                " and orderNumber = ? + 1"
+            `update OccupancyTypePrints
+                set orderNumber = orderNumber - 1
+                where recordDelete_timeMillis is null
+                and occupancyTypeId = ?
+                and orderNumber = ? + 1`
         )
-        .run(currentOrderNumber);
+        .run(occupancyTypeId, currentOrderNumber);
 
     const result = database
         .prepare(
-            "update OccupancyTypePrints" +
-                " set orderNumber = ? + 1" +
-                " where occupancyTypeId = ?" +
-                " and printEJS = ?"
+            `update OccupancyTypePrints set orderNumber = ? + 1 where occupancyTypeId = ? and printEJS = ?`
         )
         .run(currentOrderNumber, occupancyTypeId, printEJS);
 
@@ -40,48 +37,46 @@ export const moveOccupancyTypePrintDown = (occupancyTypeId: number | string, pri
     clearOccupancyTypesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveOccupancyTypePrintDownToBottom = (
+export function moveOccupancyTypePrintDownToBottom(
     occupancyTypeId: number | string,
     printEJS: string
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber = database
         .prepare(
-            "select orderNumber" +
-                " from OccupancyTypePrints" +
-                " where occupancyTypeId = ?" +
-                " and printEJS = ?"
+            `select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?`
         )
         .get(occupancyTypeId, printEJS).orderNumber;
 
     const maxOrderNumber: number = database
         .prepare(
-            "select max(orderNumber) as maxOrderNumber" +
-                " from OccupancyTypePrints" +
-                " where recordDelete_timeMillis is null" +
-                 " and occupancyTypeId = ?"
+            `select max(orderNumber) as maxOrderNumber
+                from OccupancyTypePrints
+                where recordDelete_timeMillis is null
+                and occupancyTypeId = ?`
         )
         .get(occupancyTypeId).maxOrderNumber;
 
     if (currentOrderNumber !== maxOrderNumber) {
         database
             .prepare(
-                "update OccupancyTypePrints set orderNumber = ? + 1" +
-                " where occupancyTypeId = ?" +
-                " and printEJS = ?"
+                `update OccupancyTypePrints
+                    set orderNumber = ? + 1
+                    where occupancyTypeId = ?
+                    and printEJS = ?`
             )
             .run(maxOrderNumber, occupancyTypeId, printEJS);
 
-          database
+        database
             .prepare(
-                "update OccupancyTypeFields" +
-                    " set orderNumber = orderNumber - 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and occupancyTypeId = ?" +
-                    " and orderNumber > ?"
+                `update OccupancyTypeFields
+                    set orderNumber = orderNumber - 1
+                    where recordDelete_timeMillis is null
+                    and occupancyTypeId = ?
+                    and orderNumber > ?`
             )
             .run(occupancyTypeId, currentOrderNumber);
     }
@@ -91,6 +86,6 @@ export const moveOccupancyTypePrintDownToBottom = (
     clearOccupancyTypesCache();
 
     return true;
-};
+}
 
 export default moveOccupancyTypePrintDown;

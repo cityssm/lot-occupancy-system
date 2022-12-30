@@ -15,7 +15,7 @@ interface GetWorkOrdersOptions {
     includeComments?: boolean;
     includeMilestones?: boolean;
 }
-export declare const getWorkOrders: (filters: GetWorkOrdersFilters, options?: GetWorkOrdersOptions, connectedDatabase?: sqlite.Database) => {
+export declare function getWorkOrders(filters: GetWorkOrdersFilters, options?: GetWorkOrdersOptions, connectedDatabase?: sqlite.Database): {
     count: number;
     workOrders: recordTypes.WorkOrder[];
 };

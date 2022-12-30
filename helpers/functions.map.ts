@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 
 let mapSVGs: string[];
 
-export async function getMapSVGs() {
+export async function getMapSVGs(): Promise<string[]> {
     if (!mapSVGs) {
         const files = await fs.readdir("./public/images/maps/");
 

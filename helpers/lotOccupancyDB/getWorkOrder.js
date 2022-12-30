@@ -5,16 +5,16 @@ import { getLots } from "./getLots.js";
 import { getLotOccupancies } from "./getLotOccupancies.js";
 import { getWorkOrderComments } from "./getWorkOrderComments.js";
 import { getWorkOrderMilestones } from "./getWorkOrderMilestones.js";
-const baseSQL = "select w.workOrderId," +
-    " w.workOrderTypeId, t.workOrderType," +
-    " w.workOrderNumber, w.workOrderDescription," +
-    " w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString," +
-    " w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString," +
-    " w.recordCreate_timeMillis, w.recordUpdate_timeMillis" +
-    " from WorkOrders w" +
-    " left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId" +
-    " where w.recordDelete_timeMillis is null";
-const _getWorkOrder = (sql, workOrderId_or_workOrderNumber, options, connectedDatabase) => {
+const baseSQL = `select w.workOrderId,
+        w.workOrderTypeId, t.workOrderType,
+        w.workOrderNumber, w.workOrderDescription,
+        w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
+        w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
+        w.recordCreate_timeMillis, w.recordUpdate_timeMillis
+        from WorkOrders w
+        left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
+        where w.recordDelete_timeMillis is null`;
+function _getWorkOrder(sql, workOrderId_or_workOrderNumber, options, connectedDatabase) {
     const database = connectedDatabase ||
         sqlite(databasePath, {
             readonly: true
@@ -55,15 +55,15 @@ const _getWorkOrder = (sql, workOrderId_or_workOrderNumber, options, connectedDa
         database.close();
     }
     return workOrder;
-};
-export const getWorkOrderByWorkOrderNumber = (workOrderNumber) => {
+}
+export function getWorkOrderByWorkOrderNumber(workOrderNumber) {
     return _getWorkOrder(baseSQL + " and w.workOrderNumber = ?", workOrderNumber, {
         includeLotsAndLotOccupancies: true,
         includeComments: true,
         includeMilestones: true
     });
-};
-export const getWorkOrder = (workOrderId, options, connectedDatabase) => {
+}
+export function getWorkOrder(workOrderId, options, connectedDatabase) {
     return _getWorkOrder(baseSQL + " and w.workOrderId = ?", workOrderId, options, connectedDatabase);
-};
+}
 export default getWorkOrder;

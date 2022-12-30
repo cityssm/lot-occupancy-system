@@ -35,10 +35,10 @@ const occupancyTypeAlias = occupancyCamelCase + "Type";
 const occupancyStartDateAlias = occupancyCamelCase + "StartDate";
 const occupancyEndDateAlias = occupancyCamelCase + "EndDate";
 
-export const getReportData = (
+export function getReportData(
     reportName: string,
     reportParameters?: ReportParameters
-): unknown[] | undefined => {
+): unknown[] | undefined {
     let sql: string;
     const sqlParameters: unknown[] = [];
 
@@ -343,6 +343,6 @@ export const getReportData = (
     database.close();
 
     return rows;
-};
+}
 
 export default getReportData;

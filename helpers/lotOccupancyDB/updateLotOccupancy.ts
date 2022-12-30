@@ -32,15 +32,15 @@ export function updateLotOccupancy(
 
     const result = database
         .prepare(
-            "update LotOccupancies" +
-                " set occupancyTypeId = ?," +
-                " lotId = ?," +
-                " occupancyStartDate = ?," +
-                " occupancyEndDate = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where lotOccupancyId = ?" +
-                " and recordDelete_timeMillis is null"
+            `update LotOccupancies
+                set occupancyTypeId = ?,
+                lotId = ?,
+                occupancyStartDate = ?,
+                occupancyEndDate = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where lotOccupancyId = ?
+                and recordDelete_timeMillis is null`
         )
         .run(
             lotOccupancyForm.occupancyTypeId,
@@ -55,9 +55,7 @@ export function updateLotOccupancy(
         );
 
     if (result.changes > 0) {
-        const occupancyTypeFieldIds = (
-            lotOccupancyForm.occupancyTypeFieldIds || ""
-        ).split(",");
+        const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds || "").split(",");
 
         for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
             const lotOccupancyFieldValue = lotOccupancyForm[

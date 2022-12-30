@@ -9,22 +9,22 @@ interface UpdateFeeCategoryForm {
     feeCategory: string;
 }
 
-export const updateFeeCategory = (
+export function updateFeeCategory(
     feeCategoryForm: UpdateFeeCategoryForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update FeeCategories" +
-                " set feeCategory = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where recordDelete_timeMillis is null" +
-                " and feeCategoryId = ?"
+            `update FeeCategories
+                set feeCategory = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where recordDelete_timeMillis is null
+                and feeCategoryId = ?`
         )
         .run(
             feeCategoryForm.feeCategory,
@@ -36,13 +36,13 @@ export const updateFeeCategory = (
     database.close();
 
     return result.changes > 0;
-};
+}
 
-export const updateFeeCategoryOrderNumber = (
+export function updateFeeCategoryOrderNumber(
     feeCategoryId: number,
     orderNumber: number,
     connectedDatabase?: sqlite.Database
-) => {
+) {
     const database =
         connectedDatabase ||
         sqlite(databasePath, {
@@ -58,6 +58,6 @@ export const updateFeeCategoryOrderNumber = (
     }
 
     return result.changes > 0;
-};
+}
 
 export default updateFeeCategory;

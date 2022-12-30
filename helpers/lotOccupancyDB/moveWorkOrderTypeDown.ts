@@ -4,7 +4,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearWorkOrderTypesCache } from "../functions.cache.js";
 
-export const moveWorkOrderTypeDown = (workOrderTypeId: number | string): boolean => {
+export function moveWorkOrderTypeDown(workOrderTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -13,10 +13,10 @@ export const moveWorkOrderTypeDown = (workOrderTypeId: number | string): boolean
 
     database
         .prepare(
-            "update WorkOrderTypes" +
-                " set orderNumber = orderNumber - 1" +
-                " where recordDelete_timeMillis is null" +
-                " and orderNumber = ? + 1"
+            `update WorkOrderTypes
+                set orderNumber = orderNumber - 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? + 1`
         )
         .run(currentOrderNumber);
 
@@ -29,9 +29,9 @@ export const moveWorkOrderTypeDown = (workOrderTypeId: number | string): boolean
     clearWorkOrderTypesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveWorkOrderTypeDownToBottom = (workOrderTypeId: number | string): boolean => {
+export function moveWorkOrderTypeDownToBottom(workOrderTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -40,9 +40,9 @@ export const moveWorkOrderTypeDownToBottom = (workOrderTypeId: number | string):
 
     const maxOrderNumber: number = database
         .prepare(
-            "select max(orderNumber) as maxOrderNumber" +
-                " from WorkOrderTypes" +
-                " where recordDelete_timeMillis is null"
+            `select max(orderNumber) as maxOrderNumber
+                from WorkOrderTypes
+                where recordDelete_timeMillis is null`
         )
         .get().maxOrderNumber;
 
@@ -53,10 +53,10 @@ export const moveWorkOrderTypeDownToBottom = (workOrderTypeId: number | string):
 
         database
             .prepare(
-                "update WorkOrderTypes" +
-                    " set orderNumber = orderNumber - 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and orderNumber > ?"
+                `update WorkOrderTypes
+                    set orderNumber = orderNumber - 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber > ?`
             )
             .run(currentOrderNumber);
     }
@@ -66,6 +66,6 @@ export const moveWorkOrderTypeDownToBottom = (workOrderTypeId: number | string):
     clearWorkOrderTypesCache();
 
     return true;
-};
+}
 
 export default moveWorkOrderTypeDown;

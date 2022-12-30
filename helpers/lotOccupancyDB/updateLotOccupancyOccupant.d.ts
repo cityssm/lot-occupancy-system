@@ -13,5 +13,5 @@ interface UpdateLotOccupancyOccupantForm {
     occupantEmailAddress: string;
     occupantComment: string;
 }
-export declare const updateLotOccupancyOccupant: (lotOccupancyOccupantForm: UpdateLotOccupancyOccupantForm, requestSession: recordTypes.PartialSession) => boolean;
+export declare function updateLotOccupancyOccupant(lotOccupancyOccupantForm: UpdateLotOccupancyOccupantForm, requestSession: recordTypes.PartialSession): boolean;
 export default updateLotOccupancyOccupant;

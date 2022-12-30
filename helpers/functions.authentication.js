@@ -2,7 +2,7 @@ import * as configFunctions from "./functions.config.js";
 import ActiveDirectory from "activedirectory2";
 const userDomain = configFunctions.getProperty("application.userDomain");
 const activeDirectoryConfig = configFunctions.getProperty("activeDirectory");
-const authenticateViaActiveDirectory = async (userName, password) => {
+async function authenticateViaActiveDirectory(userName, password) {
     return new Promise((resolve) => {
         try {
             const ad = new ActiveDirectory(activeDirectoryConfig);
@@ -17,13 +17,13 @@ const authenticateViaActiveDirectory = async (userName, password) => {
             resolve(false);
         }
     });
-};
-export const authenticate = async (userName, password) => {
+}
+export async function authenticate(userName, password) {
     if (!userName || userName === "" || !password || password === "") {
         return false;
     }
     return await authenticateViaActiveDirectory(userName, password);
-};
+}
 const safeRedirects = new Set([
     "/admin/cleanup",
     "/admin/fees",
@@ -42,7 +42,7 @@ const safeRedirects = new Set([
     "/workorders/outlook",
     "/reports"
 ]);
-export const getSafeRedirectURL = (possibleRedirectURL = "") => {
+export function getSafeRedirectURL(possibleRedirectURL = "") {
     const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
     if (typeof possibleRedirectURL === "string") {
         const urlToCheck = possibleRedirectURL.startsWith(urlPrefix)
@@ -59,4 +59,4 @@ export const getSafeRedirectURL = (possibleRedirectURL = "") => {
         }
     }
     return urlPrefix + "/dashboard";
-};
+}

@@ -6,7 +6,7 @@ import { getLots } from "./getLots.js";
 import { getLotOccupancies } from "./getLotOccupancies.js";
 import { getWorkOrderMilestones } from "./getWorkOrderMilestones.js";
 import { getLotNameWhereClause, getOccupantNameWhereClause } from "../functions.sqlFilters.js";
-const buildWhereClause = (filters) => {
+function buildWhereClause(filters) {
     let sqlWhereClause = " where w.recordDelete_timeMillis is null";
     const sqlParameters = [];
     if (filters.workOrderTypeId) {
@@ -55,8 +55,8 @@ const buildWhereClause = (filters) => {
         sqlWhereClause,
         sqlParameters
     };
-};
-export const getWorkOrders = (filters, options, connectedDatabase) => {
+}
+export function getWorkOrders(filters, options, connectedDatabase) {
     const database = connectedDatabase ||
         sqlite(databasePath, {
             readonly: true
@@ -128,5 +128,5 @@ export const getWorkOrders = (filters, options, connectedDatabase) => {
         count,
         workOrders
     };
-};
+}
 export default getWorkOrders;

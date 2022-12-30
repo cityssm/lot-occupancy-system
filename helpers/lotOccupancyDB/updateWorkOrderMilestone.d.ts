@@ -6,5 +6,5 @@ interface UpdateWorkOrderMilestoneForm {
     workOrderMilestoneTimeString?: string;
     workOrderMilestoneDescription: string;
 }
-export declare const updateWorkOrderMilestone: (milestoneForm: UpdateWorkOrderMilestoneForm, requestSession: recordTypes.PartialSession) => boolean;
+export declare function updateWorkOrderMilestone(milestoneForm: UpdateWorkOrderMilestoneForm, requestSession: recordTypes.PartialSession): boolean;
 export default updateWorkOrderMilestone;

@@ -1,3 +1,3 @@
-export declare const moveOccupancyTypeFieldUp: (occupancyTypeFieldId: number | string) => boolean;
-export declare const moveOccupancyTypeFieldUpToTop: (occupancyTypeFieldId: number | string) => boolean;
+export declare function moveOccupancyTypeFieldUp(occupancyTypeFieldId: number | string): boolean;
+export declare function moveOccupancyTypeFieldUpToTop(occupancyTypeFieldId: number | string): boolean;
 export default moveOccupancyTypeFieldUp;

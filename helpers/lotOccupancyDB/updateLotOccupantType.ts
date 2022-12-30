@@ -12,23 +12,23 @@ interface UpdateLotOccupantTypeForm {
     fontAwesomeIconClass?: string;
 }
 
-export const updateLotOccupantType = (
+export function updateLotOccupantType(
     lotOccupantTypeForm: UpdateLotOccupantTypeForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update LotOccupantTypes" +
-                " set lotOccupantType = ?," +
-                " fontAwesomeIconClass = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where lotOccupantTypeId = ?" +
-                " and recordDelete_timeMillis is null"
+            `update LotOccupantTypes
+                set lotOccupantType = ?,
+                fontAwesomeIconClass = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where lotOccupantTypeId = ?
+                and recordDelete_timeMillis is null`
         )
         .run(
             lotOccupantTypeForm.lotOccupantType,
@@ -43,6 +43,6 @@ export const updateLotOccupantType = (
     clearLotOccupantTypesCache();
 
     return result.changes > 0;
-};
+}
 
 export default updateLotOccupantType;

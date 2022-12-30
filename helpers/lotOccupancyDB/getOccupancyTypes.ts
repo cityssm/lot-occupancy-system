@@ -7,15 +7,15 @@ import { getOccupancyTypePrints } from "./getOccupancyTypePrints.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const getOccupancyTypes = (): recordTypes.OccupancyType[] => {
+export function getOccupancyTypes(): recordTypes.OccupancyType[] {
     const database = sqlite(databasePath);
 
     const occupancyTypes: recordTypes.OccupancyType[] = database
         .prepare(
-            "select occupancyTypeId, occupancyType, orderNumber" +
-                " from OccupancyTypes" +
-                " where recordDelete_timeMillis is null" +
-                " order by orderNumber, occupancyType"
+            `select occupancyTypeId, occupancyType, orderNumber
+                from OccupancyTypes
+                where recordDelete_timeMillis is null
+                order by orderNumber, occupancyType`
         )
         .all();
 
@@ -26,9 +26,7 @@ export const getOccupancyTypes = (): recordTypes.OccupancyType[] => {
 
         if (occupancyType.orderNumber !== expectedTypeOrderNumber) {
             database
-                .prepare(
-                    "update OccupancyTypes" + " set orderNumber = ?" + " where occupancyTypeId = ?"
-                )
+                .prepare("update OccupancyTypes set orderNumber = ? where occupancyTypeId = ?")
                 .run(expectedTypeOrderNumber, occupancyType.occupancyTypeId);
 
             occupancyType.orderNumber = expectedTypeOrderNumber;
@@ -38,7 +36,7 @@ export const getOccupancyTypes = (): recordTypes.OccupancyType[] => {
             occupancyType.occupancyTypeId,
             database
         );
-        
+
         occupancyType.occupancyTypePrints = getOccupancyTypePrints(
             occupancyType.occupancyTypeId,
             database
@@ -52,9 +50,7 @@ export const getOccupancyTypes = (): recordTypes.OccupancyType[] => {
             if (occupancyTypeField.orderNumber !== expectedFieldOrderNumber) {
                 database
                     .prepare(
-                        "update OccupancyTypeFields" +
-                            " set orderNumber = ?" +
-                            " where occupancyTypeFieldId = ?"
+                        `update OccupancyTypeFields set orderNumber = ? where occupancyTypeFieldId = ?`
                     )
                     .run(expectedFieldOrderNumber, occupancyTypeField.occupancyTypeFieldId);
 
@@ -66,6 +62,6 @@ export const getOccupancyTypes = (): recordTypes.OccupancyType[] => {
     database.close();
 
     return occupancyTypes;
-};
+}
 
 export default getOccupancyTypes;

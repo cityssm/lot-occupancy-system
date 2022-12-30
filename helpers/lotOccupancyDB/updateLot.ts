@@ -33,18 +33,18 @@ export function updateLot(
 
     const result = database
         .prepare(
-            "update Lots" +
-                " set lotName = ?," +
-                " lotTypeId = ?," +
-                " lotStatusId = ?," +
-                " mapId = ?," +
-                " mapKey = ?," +
-                " lotLatitude = ?," +
-                " lotLongitude = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where lotId = ?" +
-                " and recordDelete_timeMillis is null"
+            `update Lots
+                set lotName = ?,
+                lotTypeId = ?,
+                lotStatusId = ?,
+                mapId = ?,
+                mapKey = ?,
+                lotLatitude = ?,
+                lotLongitude = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where lotId = ?
+                and recordDelete_timeMillis is null`
         )
         .run(
             lotForm.lotName,
@@ -97,12 +97,12 @@ export function updateLotStatus(
 
     const result = database
         .prepare(
-            "update Lots" +
-                " set lotStatusId = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where lotId = ?" +
-                " and recordDelete_timeMillis is null"
+            `update Lots
+                set lotStatusId = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where lotId = ?
+                and recordDelete_timeMillis is null`
         )
         .run(
             lotStatusId === "" ? undefined : lotStatusId,

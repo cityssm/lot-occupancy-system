@@ -1,6 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-export const getPastLotOccupancyOccupants = (filters, options) => {
+export function getPastLotOccupancyOccupants(filters, options) {
     const database = sqlite(databasePath, {
         readonly: true
     });
@@ -36,5 +36,5 @@ export const getPastLotOccupancyOccupants = (filters, options) => {
         .all(sqlParameters);
     database.close();
     return lotOccupancyOccupants;
-};
+}
 export default getPastLotOccupancyOccupants;

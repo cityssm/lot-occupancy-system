@@ -9,10 +9,10 @@ import {
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const getWorkOrderComments = (
+export function getWorkOrderComments(
     workOrderId: number | string,
     connectedDatabase?: sqlite.Database
-): recordTypes.WorkOrderComment[] => {
+): recordTypes.WorkOrderComment[] {
     const database =
         connectedDatabase ||
         sqlite(databasePath, {
@@ -24,15 +24,15 @@ export const getWorkOrderComments = (
 
     const workOrderComments = database
         .prepare(
-            "select workOrderCommentId," +
-                " workOrderCommentDate, userFn_dateIntegerToString(workOrderCommentDate) as workOrderCommentDateString," +
-                " workOrderCommentTime, userFn_timeIntegerToString(workOrderCommentTime) as workOrderCommentTimeString," +
-                " workOrderComment," +
-                " recordCreate_userName, recordUpdate_userName" +
-                " from WorkOrderComments" +
-                " where recordDelete_timeMillis is null" +
-                " and workOrderId = ?" +
-                " order by workOrderCommentDate desc, workOrderCommentTime desc, workOrderCommentId desc"
+            `select workOrderCommentId,
+                workOrderCommentDate, userFn_dateIntegerToString(workOrderCommentDate) as workOrderCommentDateString,
+                workOrderCommentTime, userFn_timeIntegerToString(workOrderCommentTime) as workOrderCommentTimeString,
+                workOrderComment,
+                recordCreate_userName, recordUpdate_userName
+                from WorkOrderComments
+                where recordDelete_timeMillis is null
+                and workOrderId = ?
+                order by workOrderCommentDate desc, workOrderCommentTime desc, workOrderCommentId desc`
         )
         .all(workOrderId);
 
@@ -41,6 +41,6 @@ export const getWorkOrderComments = (
     }
 
     return workOrderComments;
-};
+}
 
 export default getWorkOrderComments;

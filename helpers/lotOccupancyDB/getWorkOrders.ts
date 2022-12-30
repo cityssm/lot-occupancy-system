@@ -32,9 +32,10 @@ interface GetWorkOrdersOptions {
     includeMilestones?: boolean;
 }
 
-const buildWhereClause = (
-    filters: GetWorkOrdersFilters
-): { sqlWhereClause: string; sqlParameters: unknown[] } => {
+function buildWhereClause(filters: GetWorkOrdersFilters): {
+    sqlWhereClause: string;
+    sqlParameters: unknown[];
+} {
     let sqlWhereClause = " where w.recordDelete_timeMillis is null";
     const sqlParameters: unknown[] = [];
 
@@ -89,16 +90,16 @@ const buildWhereClause = (
         sqlWhereClause,
         sqlParameters
     };
-};
+}
 
-export const getWorkOrders = (
+export function getWorkOrders(
     filters: GetWorkOrdersFilters,
     options?: GetWorkOrdersOptions,
     connectedDatabase?: sqlite.Database
 ): {
     count: number;
     workOrders: recordTypes.WorkOrder[];
-} => {
+} {
     const database =
         connectedDatabase ||
         sqlite(databasePath, {
@@ -201,6 +202,6 @@ export const getWorkOrders = (
         count,
         workOrders
     };
-};
+}
 
 export default getWorkOrders;

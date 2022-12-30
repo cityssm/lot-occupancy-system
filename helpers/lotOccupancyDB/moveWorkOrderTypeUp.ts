@@ -4,11 +4,11 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearWorkOrderTypesCache } from "../functions.cache.js";
 
-export const moveWorkOrderTypeUp = (workOrderTypeId: number | string): boolean => {
+export function moveWorkOrderTypeUp(workOrderTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
-        .prepare("select orderNumber" + " from WorkOrderTypes" + " where workOrderTypeId = ?")
+        .prepare(`select orderNumber from WorkOrderTypes where workOrderTypeId = ?`)
         .get(workOrderTypeId).orderNumber;
 
     if (currentOrderNumber <= 0) {
@@ -18,17 +18,15 @@ export const moveWorkOrderTypeUp = (workOrderTypeId: number | string): boolean =
 
     database
         .prepare(
-            "update WorkOrderTypes" +
-                " set orderNumber = orderNumber + 1" +
-                " where recordDelete_timeMillis is null" +
-                " and orderNumber = ? - 1"
+            `update WorkOrderTypes
+                set orderNumber = orderNumber + 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? - 1`
         )
         .run(currentOrderNumber);
 
     const result = database
-        .prepare(
-            "update WorkOrderTypes" + " set orderNumber = ? - 1" + " where workOrderTypeId = ?"
-        )
+        .prepare(`update WorkOrderTypes set orderNumber = ? - 1 where workOrderTypeId = ?`)
         .run(currentOrderNumber, workOrderTypeId);
 
     database.close();
@@ -36,9 +34,9 @@ export const moveWorkOrderTypeUp = (workOrderTypeId: number | string): boolean =
     clearWorkOrderTypesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveWorkOrderTypeUpToTop = (workOrderTypeId: number | string): boolean => {
+export function moveWorkOrderTypeUpToTop(workOrderTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -52,10 +50,10 @@ export const moveWorkOrderTypeUpToTop = (workOrderTypeId: number | string): bool
 
         database
             .prepare(
-                "update WorkOrderTypes" +
-                    " set orderNumber = orderNumber + 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and orderNumber < ?"
+                `update WorkOrderTypes
+                    set orderNumber = orderNumber + 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber < ?`
             )
             .run(currentOrderNumber);
     }
@@ -65,6 +63,6 @@ export const moveWorkOrderTypeUpToTop = (workOrderTypeId: number | string): bool
     clearWorkOrderTypesCache();
 
     return true;
-};
+}
 
 export default moveWorkOrderTypeUp;

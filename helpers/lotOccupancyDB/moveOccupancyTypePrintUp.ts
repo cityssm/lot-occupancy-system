@@ -4,15 +4,15 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearOccupancyTypesCache } from "../functions.cache.js";
 
-export const moveOccupancyTypePrintUp = (occupancyTypeId: number | string, printEJS: string): boolean => {
+export function moveOccupancyTypePrintUp(
+    occupancyTypeId: number | string,
+    printEJS: string
+): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber = database
         .prepare(
-            "select orderNumber" +
-                " from OccupancyTypePrints" +
-                " where occupancyTypeId = ?" +
-                " and printEJS = ?"
+            `select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?`
         )
         .get(occupancyTypeId, printEJS).orderNumber;
 
@@ -23,20 +23,17 @@ export const moveOccupancyTypePrintUp = (occupancyTypeId: number | string, print
 
     database
         .prepare(
-            "update OccupancyTypePrints" +
-                " set orderNumber = orderNumber + 1" +
-                " where recordDelete_timeMillis is null" +
-                " and occupancyTypeId = '" + occupancyTypeId + "'" +
-                " and orderNumber = ? - 1"
+            `update OccupancyTypePrints
+                set orderNumber = orderNumber + 1
+                where recordDelete_timeMillis is null
+                and occupancyTypeId = ?
+                and orderNumber = ? - 1`
         )
-        .run(currentOrderNumber);
+        .run(occupancyTypeId, currentOrderNumber);
 
     const result = database
         .prepare(
-            "update OccupancyTypePrints" +
-                " set orderNumber = ? - 1" +
-                " where occupancyTypeId = ?" +
-                " and printEJS = ?"
+            `update OccupancyTypePrints set orderNumber = ? - 1 where occupancyTypeId = ? and printEJS = ?`
         )
         .run(currentOrderNumber, occupancyTypeId, printEJS);
 
@@ -45,36 +42,37 @@ export const moveOccupancyTypePrintUp = (occupancyTypeId: number | string, print
     clearOccupancyTypesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveOccupancyTypePrintUpToTop = (occupancyTypeId: number | string, printEJS: string): boolean => {
+export function moveOccupancyTypePrintUpToTop(
+    occupancyTypeId: number | string,
+    printEJS: string
+): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber = database
         .prepare(
-            "select orderNumber" +
-                " from OccupancyTypePrints" +
-                " where occupancyTypeId = ?" +
-                " and printEJS = ?"
+            `select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?`
         )
         .get(occupancyTypeId, printEJS).orderNumber;
 
     if (currentOrderNumber > 0) {
         database
             .prepare(
-                "update OccupancyTypePrints set orderNumber = -1" +
-                    " where occupancyTypeId = ?" +
-                    " and printEJS = ?"
+                `update OccupancyTypePrints
+                    set orderNumber = -1
+                    where occupancyTypeId = ?
+                    and printEJS = ?`
             )
             .run(occupancyTypeId, printEJS);
 
         database
             .prepare(
-                "update OccupancyTypePrints" +
-                    " set orderNumber = orderNumber + 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and occupancyTypeId = ?" +
-                    " and orderNumber < ?"
+                `update OccupancyTypePrints
+                    set orderNumber = orderNumber + 1
+                    where recordDelete_timeMillis is null
+                    and occupancyTypeId = ?
+                    and orderNumber < ?`
             )
             .run(occupancyTypeId, currentOrderNumber);
     }
@@ -84,6 +82,6 @@ export const moveOccupancyTypePrintUpToTop = (occupancyTypeId: number | string, 
     clearOccupancyTypesCache();
 
     return true;
-};
+}
 
 export default moveOccupancyTypePrintUp;

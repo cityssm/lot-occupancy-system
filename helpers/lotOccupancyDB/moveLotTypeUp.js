@@ -1,7 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { clearLotTypesCache } from "../functions.cache.js";
-export const moveLotTypeUp = (lotTypeId) => {
+export function moveLotTypeUp(lotTypeId) {
     const database = sqlite(databasePath);
     const currentOrderNumber = database
         .prepare("select orderNumber from LotTypes where lotTypeId = ?")
@@ -11,10 +11,10 @@ export const moveLotTypeUp = (lotTypeId) => {
         return true;
     }
     database
-        .prepare("update LotTypes" +
-        " set orderNumber = orderNumber + 1" +
-        " where recordDelete_timeMillis is null" +
-        " and orderNumber = ? - 1")
+        .prepare(`update LotTypes
+                set orderNumber = orderNumber + 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? - 1`)
         .run(currentOrderNumber);
     const result = database
         .prepare("update LotTypes set orderNumber = ? - 1 where lotTypeId = ?")
@@ -22,8 +22,8 @@ export const moveLotTypeUp = (lotTypeId) => {
     database.close();
     clearLotTypesCache();
     return result.changes > 0;
-};
-export const moveLotTypeUpToTop = (lotTypeId) => {
+}
+export function moveLotTypeUpToTop(lotTypeId) {
     const database = sqlite(databasePath);
     const currentOrderNumber = database
         .prepare("select orderNumber from LotTypes where lotTypeId = ?")
@@ -31,14 +31,14 @@ export const moveLotTypeUpToTop = (lotTypeId) => {
     if (currentOrderNumber > 0) {
         database.prepare("update LotTypes set orderNumber = -1 where lotTypeId = ?").run(lotTypeId);
         database
-            .prepare("update LotTypes" +
-            " set orderNumber = orderNumber + 1" +
-            " where recordDelete_timeMillis is null" +
-            " and orderNumber < ?")
+            .prepare(`update LotTypes
+                    set orderNumber = orderNumber + 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber < ?`)
             .run(currentOrderNumber);
     }
     database.close();
     clearLotTypesCache();
     return true;
-};
+}
 export default moveLotTypeUp;

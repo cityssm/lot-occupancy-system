@@ -5,15 +5,14 @@ import { lotOccupancyDB as databasePath } from "../data/databasePaths.js";
 import debug from "debug";
 const debugSQL = debug("lot-occupancy-system:databaseInitializer");
 
-const recordColumns =
-    " recordCreate_userName varchar(30) not null," +
-    " recordCreate_timeMillis integer not null," +
-    " recordUpdate_userName varchar(30) not null," +
-    " recordUpdate_timeMillis integer not null," +
-    " recordDelete_userName varchar(30)," +
-    " recordDelete_timeMillis integer";
+const recordColumns = ` recordCreate_userName varchar(30) not null,
+        recordCreate_timeMillis integer not null,
+        recordUpdate_userName varchar(30) not null,
+        recordUpdate_timeMillis integer not null,
+        recordDelete_userName varchar(30),
+        recordDelete_timeMillis integer`;
 
-export const initializeDatabase = (): boolean => {
+export function initializeDatabase(): boolean {
     const lotOccupancyDB = sqlite(databasePath);
 
     const row = lotOccupancyDB
@@ -26,7 +25,6 @@ export const initializeDatabase = (): boolean => {
         debugSQL("Creating " + databasePath);
 
         // Lot Types
-
         lotOccupancyDB
             .prepare(
                 "create table if not exists LotTypes (" +
@@ -90,7 +88,6 @@ export const initializeDatabase = (): boolean => {
             .run();
 
         // Maps and Lots
-
         lotOccupancyDB
             .prepare(
                 "create table if not exists Maps (" +
@@ -169,7 +166,6 @@ export const initializeDatabase = (): boolean => {
             .run();
 
         // Occupancies
-
         lotOccupancyDB
             .prepare(
                 "create table if not exists OccupancyTypes (" +
@@ -332,7 +328,6 @@ export const initializeDatabase = (): boolean => {
             .run();
 
         // Occupancy Fees and Transactions
-
         lotOccupancyDB
             .prepare(
                 "create table if not exists FeeCategories (" +
@@ -420,7 +415,6 @@ export const initializeDatabase = (): boolean => {
             .run();
 
         // Work Orders
-
         lotOccupancyDB
             .prepare(
                 "create table if not exists WorkOrderTypes (" +
@@ -541,4 +535,4 @@ export const initializeDatabase = (): boolean => {
     }
 
     return false;
-};
+}

@@ -4,15 +4,15 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-export const getWorkOrderMilestoneTypes = (): recordTypes.WorkOrderMilestoneType[] => {
+export function getWorkOrderMilestoneTypes(): recordTypes.WorkOrderMilestoneType[] {
     const database = sqlite(databasePath);
 
     const workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[] = database
         .prepare(
-            "select workOrderMilestoneTypeId, workOrderMilestoneType, orderNumber" +
-                " from WorkOrderMilestoneTypes" +
-                " where recordDelete_timeMillis is null" +
-                " order by orderNumber, workOrderMilestoneType"
+            `select workOrderMilestoneTypeId, workOrderMilestoneType, orderNumber
+                from WorkOrderMilestoneTypes
+                where recordDelete_timeMillis is null
+                order by orderNumber, workOrderMilestoneType`
         )
         .all();
 
@@ -22,9 +22,9 @@ export const getWorkOrderMilestoneTypes = (): recordTypes.WorkOrderMilestoneType
         if (workOrderMilestoneType.orderNumber !== expectedOrderNumber) {
             database
                 .prepare(
-                    "update WorkOrderMilestoneTypes" +
-                        " set orderNumber = ?" +
-                        " where workOrderMilestoneTypeId = ?"
+                    `update WorkOrderMilestoneTypes
+                        set orderNumber = ?
+                        where workOrderMilestoneTypeId = ?`
                 )
                 .run(expectedOrderNumber, workOrderMilestoneType.workOrderMilestoneTypeId);
 
@@ -37,6 +37,6 @@ export const getWorkOrderMilestoneTypes = (): recordTypes.WorkOrderMilestoneType
     database.close();
 
     return workOrderMilestoneTypes;
-};
+}
 
 export default getWorkOrderMilestoneTypes;

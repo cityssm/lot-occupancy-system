@@ -4,7 +4,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearLotStatusesCache } from "../functions.cache.js";
 
-export const moveLotStatusUp = (lotStatusId: number | string): boolean => {
+export function moveLotStatusUp(lotStatusId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -18,10 +18,10 @@ export const moveLotStatusUp = (lotStatusId: number | string): boolean => {
 
     database
         .prepare(
-            "update LotStatuses" +
-                " set orderNumber = orderNumber + 1" +
-                " where recordDelete_timeMillis is null" +
-                " and orderNumber = ? - 1"
+            `update LotStatuses
+                set orderNumber = orderNumber + 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? - 1`
         )
         .run(currentOrderNumber);
 
@@ -34,9 +34,9 @@ export const moveLotStatusUp = (lotStatusId: number | string): boolean => {
     clearLotStatusesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveLotStatusUpToTop = (lotStatusId: number | string): boolean => {
+export function moveLotStatusUpToTop(lotStatusId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -50,10 +50,10 @@ export const moveLotStatusUpToTop = (lotStatusId: number | string): boolean => {
 
         database
             .prepare(
-                "update LotStatuses" +
-                    " set orderNumber = orderNumber + 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and orderNumber < ?"
+                `update LotStatuses
+                    set orderNumber = orderNumber + 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber < ?`
             )
             .run(currentOrderNumber);
     }
@@ -63,6 +63,6 @@ export const moveLotStatusUpToTop = (lotStatusId: number | string): boolean => {
     clearLotStatusesCache();
 
     return true;
-};
+}
 
 export default moveLotStatusUp;

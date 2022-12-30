@@ -5,7 +5,7 @@ import exitHook from "exit-hook";
 import ntfyPublish from "@cityssm/ntfy-publish";
 import Debug from "debug";
 const debug = Debug("lot-occupancy-system:www");
-const onError = (error) => {
+function onError(error) {
     if (error.syscall !== "listen") {
         throw error;
     }
@@ -22,14 +22,14 @@ const onError = (error) => {
             throw error;
         }
     }
-};
-const onListening = (server) => {
+}
+function onListening(server) {
     const addr = server.address();
     if (addr) {
         const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port.toString();
         debug("Listening on " + bind);
     }
-};
+}
 const ntfyStartupConfig = configFunctions.getProperty("application.ntfyStartup");
 const httpPort = configFunctions.getProperty("application.httpPort");
 const httpServer = http.createServer(app);

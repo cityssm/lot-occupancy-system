@@ -4,33 +4,29 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearWorkOrderMilestoneTypesCache } from "../functions.cache.js";
 
-export const moveWorkOrderMilestoneTypeDown = (
-    workOrderMilestoneTypeId: number | string
-): boolean => {
+export function moveWorkOrderMilestoneTypeDown(workOrderMilestoneTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
         .prepare(
-            "select orderNumber" +
-                " from WorkOrderMilestoneTypes" +
-                " where workOrderMilestoneTypeId = ?"
+            `select orderNumber from WorkOrderMilestoneTypes where workOrderMilestoneTypeId = ?`
         )
         .get(workOrderMilestoneTypeId).orderNumber;
 
     database
         .prepare(
-            "update WorkOrderMilestoneTypes" +
-                " set orderNumber = orderNumber - 1" +
-                " where recordDelete_timeMillis is null" +
-                " and orderNumber = ? + 1"
+            `update WorkOrderMilestoneTypes
+                set orderNumber = orderNumber - 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? + 1`
         )
         .run(currentOrderNumber);
 
     const result = database
         .prepare(
-            "update WorkOrderMilestoneTypes" +
-                " set orderNumber = ? + 1" +
-                " where workOrderMilestoneTypeId = ?"
+            `update WorkOrderMilestoneTypes
+                set orderNumber = ? + 1
+                where workOrderMilestoneTypeId = ?`
         )
         .run(currentOrderNumber, workOrderMilestoneTypeId);
 
@@ -39,11 +35,11 @@ export const moveWorkOrderMilestoneTypeDown = (
     clearWorkOrderMilestoneTypesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveWorkOrderMilestoneTypeDownToBottom = (
+export function moveWorkOrderMilestoneTypeDownToBottom(
     workOrderMilestoneTypeId: number | string
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -54,9 +50,9 @@ export const moveWorkOrderMilestoneTypeDownToBottom = (
 
     const maxOrderNumber: number = database
         .prepare(
-            "select max(orderNumber) as maxOrderNumber" +
-                " from WorkOrderMilestoneTypes" +
-                " where recordDelete_timeMillis is null"
+            `select max(orderNumber) as maxOrderNumber
+                from WorkOrderMilestoneTypes
+                where recordDelete_timeMillis is null`
         )
         .get().maxOrderNumber;
 
@@ -69,10 +65,10 @@ export const moveWorkOrderMilestoneTypeDownToBottom = (
 
         database
             .prepare(
-                "update WorkOrderMilestoneTypes" +
-                    " set orderNumber = orderNumber - 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and orderNumber > ?"
+                `update WorkOrderMilestoneTypes
+                    set orderNumber = orderNumber - 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber > ?`
             )
             .run(currentOrderNumber);
     }
@@ -82,6 +78,6 @@ export const moveWorkOrderMilestoneTypeDownToBottom = (
     clearWorkOrderMilestoneTypesCache();
 
     return true;
-};
+}
 
 export default moveWorkOrderMilestoneTypeDown;

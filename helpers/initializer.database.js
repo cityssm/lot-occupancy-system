@@ -2,13 +2,13 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../data/databasePaths.js";
 import debug from "debug";
 const debugSQL = debug("lot-occupancy-system:databaseInitializer");
-const recordColumns = " recordCreate_userName varchar(30) not null," +
-    " recordCreate_timeMillis integer not null," +
-    " recordUpdate_userName varchar(30) not null," +
-    " recordUpdate_timeMillis integer not null," +
-    " recordDelete_userName varchar(30)," +
-    " recordDelete_timeMillis integer";
-export const initializeDatabase = () => {
+const recordColumns = ` recordCreate_userName varchar(30) not null,
+        recordCreate_timeMillis integer not null,
+        recordUpdate_userName varchar(30) not null,
+        recordUpdate_timeMillis integer not null,
+        recordDelete_userName varchar(30),
+        recordDelete_timeMillis integer`;
+export function initializeDatabase() {
     const lotOccupancyDB = sqlite(databasePath);
     const row = lotOccupancyDB
         .prepare("select name from sqlite_master where type = 'table' and name = 'WorkOrderMilestones'")
@@ -402,4 +402,4 @@ export const initializeDatabase = () => {
         return true;
     }
     return false;
-};
+}

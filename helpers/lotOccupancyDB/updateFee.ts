@@ -20,33 +20,33 @@ interface UpdateFeeForm {
     isRequired: "" | "1";
 }
 
-export const updateFee = (
+export function updateFee(
     feeForm: UpdateFeeForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update Fees" +
-                " set feeCategoryId = ?," +
-                " feeName = ?," +
-                " feeDescription = ?," +
-                " occupancyTypeId = ?," +
-                " lotTypeId = ?," +
-                " feeAmount = ?," +
-                " feeFunction = ?," +
-                " taxAmount = ?," +
-                " taxPercentage = ?," +
-                " includeQuantity = ?," +
-                " quantityUnit = ?," +
-                " isRequired = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where recordDelete_timeMillis is null" +
-                " and feeId = ?"
+            `update Fees
+                set feeCategoryId = ?,
+                feeName = ?,
+                feeDescription = ?,
+                occupancyTypeId = ?,
+                lotTypeId = ?,
+                feeAmount = ?,
+                feeFunction = ?,
+                taxAmount = ?,
+                taxPercentage = ?,
+                includeQuantity = ?,
+                quantityUnit = ?,
+                isRequired = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where recordDelete_timeMillis is null
+                and feeId = ?`
         )
         .run(
             feeForm.feeCategoryId,
@@ -69,13 +69,13 @@ export const updateFee = (
     database.close();
 
     return result.changes > 0;
-};
+}
 
-export const updateFeeOrderNumber = (
+export function updateFeeOrderNumber(
     feeId: number,
     orderNumber: number,
     connectedDatabase?: sqlite.Database
-) => {
+) {
     const database =
         connectedDatabase ||
         sqlite(databasePath, {
@@ -91,6 +91,6 @@ export const updateFeeOrderNumber = (
     }
 
     return result.changes > 0;
-};
+}
 
 export default updateFee;

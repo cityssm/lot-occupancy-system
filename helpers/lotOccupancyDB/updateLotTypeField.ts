@@ -16,27 +16,27 @@ interface UpdateLotTypeFieldForm {
     lotTypeFieldValues: string;
 }
 
-export const updateLotTypeField = (
+export function updateLotTypeField(
     lotTypeFieldForm: UpdateLotTypeFieldForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const result = database
         .prepare(
-            "update LotTypeFields" +
-                " set lotTypeField = ?," +
-                " isRequired = ?," +
-                " minimumLength = ?," +
-                " maximumLength = ?," +
-                " pattern = ?," +
-                " lotTypeFieldValues = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where lotTypeFieldId = ?" +
-                " and recordDelete_timeMillis is null"
+            `update LotTypeFields
+                set lotTypeField = ?,
+                isRequired = ?,
+                minimumLength = ?,
+                maximumLength = ?,
+                pattern = ?,
+                lotTypeFieldValues = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where lotTypeFieldId = ?
+                and recordDelete_timeMillis is null`
         )
         .run(
             lotTypeFieldForm.lotTypeField,
@@ -55,6 +55,6 @@ export const updateLotTypeField = (
     clearLotTypesCache();
 
     return result.changes > 0;
-};
+}
 
 export default updateLotTypeField;

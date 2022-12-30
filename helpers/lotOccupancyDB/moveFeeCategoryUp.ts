@@ -2,7 +2,7 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-export const moveFeeCategoryUp = (feeCategoryId: number | string): boolean => {
+export function moveFeeCategoryUp(feeCategoryId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -16,10 +16,10 @@ export const moveFeeCategoryUp = (feeCategoryId: number | string): boolean => {
 
     database
         .prepare(
-            "update FeeCategories" +
-                " set orderNumber = orderNumber + 1" +
-                " where recordDelete_timeMillis is null" +
-                " and orderNumber = ? - 1"
+            `update FeeCategories
+                set orderNumber = orderNumber + 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? - 1`
         )
         .run(currentOrderNumber);
 
@@ -30,9 +30,9 @@ export const moveFeeCategoryUp = (feeCategoryId: number | string): boolean => {
     database.close();
 
     return result.changes > 0;
-};
+}
 
-export const moveFeeCategoryUpToTop = (feeCategoryId: number | string): boolean => {
+export function moveFeeCategoryUpToTop(feeCategoryId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -46,10 +46,10 @@ export const moveFeeCategoryUpToTop = (feeCategoryId: number | string): boolean 
 
         database
             .prepare(
-                "update FeeCategories" +
-                    " set orderNumber = orderNumber + 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and orderNumber < ?"
+                `update FeeCategories
+                    set orderNumber = orderNumber + 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber < ?`
             )
             .run(currentOrderNumber);
     }
@@ -57,6 +57,6 @@ export const moveFeeCategoryUpToTop = (feeCategoryId: number | string): boolean 
     database.close();
 
     return true;
-};
+}
 
 export default moveFeeCategoryUp;

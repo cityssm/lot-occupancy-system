@@ -11,9 +11,9 @@ const screenPrintConfigs = {
         params: ["lotOccupancyId"]
     }
 };
-export const getScreenPrintConfig = (printName) => {
+export function getScreenPrintConfig(printName) {
     return screenPrintConfigs[printName];
-};
+}
 const pdfPrintConfigs = {
     workOrder: {
         title: "Work Order Field Sheet",
@@ -32,10 +32,10 @@ const pdfPrintConfigs = {
         params: ["lotOccupancyId"]
     }
 };
-export const getPdfPrintConfig = (printName) => {
+export function getPdfPrintConfig(printName) {
     return pdfPrintConfigs[printName];
-};
-export const getPrintConfig = (screenOrPdf_printName) => {
+}
+export function getPrintConfig(screenOrPdf_printName) {
     const printNameSplit = screenOrPdf_printName.split("/");
     switch (printNameSplit[0]) {
         case "screen": {
@@ -46,8 +46,8 @@ export const getPrintConfig = (screenOrPdf_printName) => {
         }
     }
     return undefined;
-};
-export const getReportData = (printConfig, requestQuery) => {
+}
+export function getReportData(printConfig, requestQuery) {
     const reportData = {
         headTitle: printConfig.title
     };
@@ -68,4 +68,4 @@ export const getReportData = (printConfig, requestQuery) => {
         });
     }
     return reportData;
-};
+}

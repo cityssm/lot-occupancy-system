@@ -19,32 +19,32 @@ interface UpdateLotOccupancyOccupantForm {
     occupantComment: string;
 }
 
-export const updateLotOccupancyOccupant = (
+export function updateLotOccupancyOccupant(
     lotOccupancyOccupantForm: UpdateLotOccupancyOccupantForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
 
     const results = database
         .prepare(
-            "update LotOccupancyOccupants" +
-                " set occupantName = ?," +
-                " occupantAddress1 = ?," +
-                " occupantAddress2 = ?," +
-                " occupantCity = ?," +
-                " occupantProvince = ?," +
-                " occupantPostalCode = ?," +
-                " occupantPhoneNumber = ?," +
-                " occupantEmailAddress = ?," +
-                " occupantComment = ?," +
-                " lotOccupantTypeId = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where recordDelete_timeMillis is null" +
-                " and lotOccupancyId = ?" +
-                " and lotOccupantIndex = ?"
+            `update LotOccupancyOccupants
+                set occupantName = ?,
+                occupantAddress1 = ?,
+                occupantAddress2 = ?,
+                occupantCity = ?,
+                occupantProvince = ?,
+                occupantPostalCode = ?,
+                occupantPhoneNumber = ?,
+                occupantEmailAddress = ?,
+                occupantComment = ?,
+                lotOccupantTypeId = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where recordDelete_timeMillis is null
+                and lotOccupancyId = ?
+                and lotOccupantIndex = ?`
         )
         .run(
             lotOccupancyOccupantForm.occupantName,
@@ -66,6 +66,6 @@ export const updateLotOccupancyOccupant = (
     database.close();
 
     return results.changes > 0;
-};
+}
 
 export default updateLotOccupancyOccupant;

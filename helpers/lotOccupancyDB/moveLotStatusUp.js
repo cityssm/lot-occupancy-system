@@ -1,7 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { clearLotStatusesCache } from "../functions.cache.js";
-export const moveLotStatusUp = (lotStatusId) => {
+export function moveLotStatusUp(lotStatusId) {
     const database = sqlite(databasePath);
     const currentOrderNumber = database
         .prepare("select orderNumber from LotStatuses where lotStatusId = ?")
@@ -11,10 +11,10 @@ export const moveLotStatusUp = (lotStatusId) => {
         return true;
     }
     database
-        .prepare("update LotStatuses" +
-        " set orderNumber = orderNumber + 1" +
-        " where recordDelete_timeMillis is null" +
-        " and orderNumber = ? - 1")
+        .prepare(`update LotStatuses
+                set orderNumber = orderNumber + 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? - 1`)
         .run(currentOrderNumber);
     const result = database
         .prepare("update LotStatuses set orderNumber = ? - 1 where lotStatusId = ?")
@@ -22,8 +22,8 @@ export const moveLotStatusUp = (lotStatusId) => {
     database.close();
     clearLotStatusesCache();
     return result.changes > 0;
-};
-export const moveLotStatusUpToTop = (lotStatusId) => {
+}
+export function moveLotStatusUpToTop(lotStatusId) {
     const database = sqlite(databasePath);
     const currentOrderNumber = database
         .prepare("select orderNumber from LotStatuses where lotStatusId = ?")
@@ -33,14 +33,14 @@ export const moveLotStatusUpToTop = (lotStatusId) => {
             .prepare("update LotStatuses set orderNumber = -1 where lotStatusId = ?")
             .run(lotStatusId);
         database
-            .prepare("update LotStatuses" +
-            " set orderNumber = orderNumber + 1" +
-            " where recordDelete_timeMillis is null" +
-            " and orderNumber < ?")
+            .prepare(`update LotStatuses
+                    set orderNumber = orderNumber + 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber < ?`)
             .run(currentOrderNumber);
     }
     database.close();
     clearLotStatusesCache();
     return true;
-};
+}
 export default moveLotStatusUp;

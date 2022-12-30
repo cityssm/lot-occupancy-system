@@ -1,6 +1,6 @@
 import faIcons from "font-awesome-v5-icons";
 let solidIcons = [];
-export const getSolidIconClasses = async () => {
+export async function getSolidIconClasses() {
     if (solidIcons.length === 0) {
         const allIcons = await faIcons.getListByKeys(["name", "styles"]);
         const list = [];
@@ -12,4 +12,4 @@ export const getSolidIconClasses = async () => {
         solidIcons = list;
     }
     return solidIcons;
-};
+}

@@ -4,7 +4,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearLotTypesCache } from "../functions.cache.js";
 
-export const moveLotTypeFieldDown = (lotTypeFieldId: number | string): boolean => {
+export function moveLotTypeFieldDown(lotTypeFieldId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentField: { lotTypeId?: number; orderNumber: number } = database
@@ -13,11 +13,10 @@ export const moveLotTypeFieldDown = (lotTypeFieldId: number | string): boolean =
 
     database
         .prepare(
-            "update LotTypeFields" +
-                " set orderNumber = orderNumber - 1" +
-                " where recordDelete_timeMillis is null" +
-                " and lotTypeId = ?" +
-                " and orderNumber = ? + 1"
+            `update LotTypeFields
+                set orderNumber = orderNumber - 1
+                where recordDelete_timeMillis is null
+                and lotTypeId = ? and orderNumber = ? + 1`
         )
         .run(currentField.lotTypeId, currentField.orderNumber);
 
@@ -30,9 +29,9 @@ export const moveLotTypeFieldDown = (lotTypeFieldId: number | string): boolean =
     clearLotTypesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveLotTypeFieldDownToBottom = (lotTypeFieldId: number | string): boolean => {
+export function moveLotTypeFieldDownToBottom(lotTypeFieldId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentField: { lotTypeId?: number; orderNumber: number } = database
@@ -41,10 +40,10 @@ export const moveLotTypeFieldDownToBottom = (lotTypeFieldId: number | string): b
 
     const maxOrderNumber: number = database
         .prepare(
-            "select max(orderNumber) as maxOrderNumber" +
-                " from LotTypeFields" +
-                " where recordDelete_timeMillis is null" +
-                " and lotTypeId = ?"
+            `select max(orderNumber) as maxOrderNumber
+                from LotTypeFields
+                where recordDelete_timeMillis is null
+                and lotTypeId = ?`
         )
         .get(currentField.lotTypeId).maxOrderNumber;
 
@@ -55,11 +54,11 @@ export const moveLotTypeFieldDownToBottom = (lotTypeFieldId: number | string): b
 
         database
             .prepare(
-                "update LotTypeFields" +
-                    " set orderNumber = orderNumber - 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and lotTypeId = ?" +
-                    " and orderNumber > ?"
+                `update LotTypeFields
+                    set orderNumber = orderNumber - 1
+                    where recordDelete_timeMillis is null
+                    and lotTypeId = ?
+                    and orderNumber > ?`
             )
             .run(currentField.lotTypeId, currentField.orderNumber);
     }
@@ -69,6 +68,6 @@ export const moveLotTypeFieldDownToBottom = (lotTypeFieldId: number | string): b
     clearLotTypesCache();
 
     return true;
-};
+}
 
 export default moveLotTypeFieldDown;

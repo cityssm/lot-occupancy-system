@@ -7,8 +7,6 @@ export const calculateFeeAmount = (
     return fee.feeFunction ? 0 : fee.feeAmount || 0;
 };
 
-export const calculateTaxAmount = (fee: recordTypes.Fee, feeAmount: number) => {
-    return fee.taxPercentage
-        ? feeAmount * (fee.taxPercentage / 100)
-        : fee.taxAmount || 0;
-};
+export function calculateTaxAmount(fee: recordTypes.Fee, feeAmount: number) {
+    return fee.taxPercentage ? feeAmount * (fee.taxPercentage / 100) : fee.taxAmount || 0;
+}

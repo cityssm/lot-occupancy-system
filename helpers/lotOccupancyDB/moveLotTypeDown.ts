@@ -4,7 +4,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { clearLotTypesCache } from "../functions.cache.js";
 
-export const moveLotTypeDown = (lotTypeId: number | string): boolean => {
+export function moveLotTypeDown(lotTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -13,10 +13,10 @@ export const moveLotTypeDown = (lotTypeId: number | string): boolean => {
 
     database
         .prepare(
-            "update LotTypes" +
-                " set orderNumber = orderNumber - 1" +
-                " where recordDelete_timeMillis is null" +
-                " and orderNumber = ? + 1"
+            `update LotTypes
+                set orderNumber = orderNumber - 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? + 1`
         )
         .run(currentOrderNumber);
 
@@ -29,9 +29,9 @@ export const moveLotTypeDown = (lotTypeId: number | string): boolean => {
     clearLotTypesCache();
 
     return result.changes > 0;
-};
+}
 
-export const moveLotTypeDownToBottom = (lotTypeId: number | string): boolean => {
+export function moveLotTypeDownToBottom(lotTypeId: number | string): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber: number = database
@@ -40,9 +40,9 @@ export const moveLotTypeDownToBottom = (lotTypeId: number | string): boolean => 
 
     const maxOrderNumber: number = database
         .prepare(
-            "select max(orderNumber) as maxOrderNumber" +
-                " from LotTypes" +
-                " where recordDelete_timeMillis is null"
+            `select max(orderNumber) as maxOrderNumber
+                from LotTypes
+                where recordDelete_timeMillis is null`
         )
         .get().maxOrderNumber;
 
@@ -53,10 +53,10 @@ export const moveLotTypeDownToBottom = (lotTypeId: number | string): boolean => 
 
         database
             .prepare(
-                "update LotTypes" +
-                    " set orderNumber = orderNumber - 1" +
-                    " where recordDelete_timeMillis is null" +
-                    " and orderNumber > ?"
+                `update LotTypes
+                    set orderNumber = orderNumber - 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber > ?`
             )
             .run(currentOrderNumber);
     }
@@ -66,6 +66,6 @@ export const moveLotTypeDownToBottom = (lotTypeId: number | string): boolean => 
     clearLotTypesCache();
 
     return true;
-};
+}
 
 export default moveLotTypeDown;

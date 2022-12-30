@@ -17,32 +17,30 @@ interface UpdateWorkOrderMilestoneForm {
     workOrderMilestoneDescription: string;
 }
 
-export const updateWorkOrderMilestone = (
+export function updateWorkOrderMilestone(
     milestoneForm: UpdateWorkOrderMilestoneForm,
     requestSession: recordTypes.PartialSession
-): boolean => {
+): boolean {
     const rightNow = new Date();
 
     const database = sqlite(databasePath);
 
     const result = database
         .prepare(
-            "update WorkOrderMilestones" +
-                " set workOrderMilestoneTypeId = ?," +
-                " workOrderMilestoneDate = ?," +
-                " workOrderMilestoneTime = ?," +
-                " workOrderMilestoneDescription = ?," +
-                " recordUpdate_userName = ?," +
-                " recordUpdate_timeMillis = ?" +
-                " where workOrderMilestoneId = ?"
+            `update WorkOrderMilestones
+                set workOrderMilestoneTypeId = ?,
+                workOrderMilestoneDate = ?,
+                workOrderMilestoneTime = ?,
+                workOrderMilestoneDescription = ?,
+                recordUpdate_userName = ?,
+                recordUpdate_timeMillis = ?
+                where workOrderMilestoneId = ?`
         )
         .run(
             milestoneForm.workOrderMilestoneTypeId || undefined,
             dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
             milestoneForm.workOrderMilestoneTimeString
-                ? timeStringToInteger(
-                      milestoneForm.workOrderMilestoneTimeString
-                  )
+                ? timeStringToInteger(milestoneForm.workOrderMilestoneTimeString)
                 : 0,
             milestoneForm.workOrderMilestoneDescription,
 
@@ -54,6 +52,6 @@ export const updateWorkOrderMilestone = (
     database.close();
 
     return result.changes > 0;
-};
+}
 
 export default updateWorkOrderMilestone;

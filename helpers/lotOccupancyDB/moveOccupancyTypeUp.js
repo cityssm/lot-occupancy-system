@@ -1,7 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { clearOccupancyTypesCache } from "../functions.cache.js";
-export const moveOccupancyTypeUp = (occupancyTypeId) => {
+export function moveOccupancyTypeUp(occupancyTypeId) {
     const database = sqlite(databasePath);
     const currentOrderNumber = database
         .prepare("select orderNumber from OccupancyTypes where occupancyTypeId = ?")
@@ -11,10 +11,10 @@ export const moveOccupancyTypeUp = (occupancyTypeId) => {
         return true;
     }
     database
-        .prepare("update OccupancyTypes" +
-        " set orderNumber = orderNumber + 1" +
-        " where recordDelete_timeMillis is null" +
-        " and orderNumber = ? - 1")
+        .prepare(`update OccupancyTypes
+                set orderNumber = orderNumber + 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? - 1`)
         .run(currentOrderNumber);
     const result = database
         .prepare("update OccupancyTypes set orderNumber = ? - 1 where occupancyTypeId = ?")
@@ -22,8 +22,8 @@ export const moveOccupancyTypeUp = (occupancyTypeId) => {
     database.close();
     clearOccupancyTypesCache();
     return result.changes > 0;
-};
-export const moveOccupancyTypeUpToTop = (occupancyTypeId) => {
+}
+export function moveOccupancyTypeUpToTop(occupancyTypeId) {
     const database = sqlite(databasePath);
     const currentOrderNumber = database
         .prepare("select orderNumber from OccupancyTypes where occupancyTypeId = ?")
@@ -33,14 +33,14 @@ export const moveOccupancyTypeUpToTop = (occupancyTypeId) => {
             .prepare("update OccupancyTypes set orderNumber = -1 where occupancyTypeId = ?")
             .run(occupancyTypeId);
         database
-            .prepare("update OccupancyTypes" +
-            " set orderNumber = orderNumber + 1" +
-            " where recordDelete_timeMillis is null" +
-            " and orderNumber < ?")
+            .prepare(`update OccupancyTypes
+                    set orderNumber = orderNumber + 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber < ?`)
             .run(currentOrderNumber);
     }
     database.close();
     clearOccupancyTypesCache();
     return true;
-};
+}
 export default moveOccupancyTypeUp;
