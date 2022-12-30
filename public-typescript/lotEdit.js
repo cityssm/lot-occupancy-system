@@ -6,24 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const lotId = document.querySelector("#lot--lotId").value;
     const isCreate = lotId === "";
     // Main form
-    let hasUnsavedChanges = false;
     let refreshAfterSave = isCreate;
-    const setUnsavedChanges = () => {
-        if (!hasUnsavedChanges) {
-            hasUnsavedChanges = true;
-            cityssm.enableNavBlocker();
-        }
-    };
-    const clearUnsavedChanges = () => {
-        hasUnsavedChanges = false;
-        cityssm.disableNavBlocker();
-    };
     const formElement = document.querySelector("#form--lot");
-    const updateLot = (formEvent) => {
+    function updateLot(formEvent) {
         formEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix + "/lots/" + (isCreate ? "doCreateLot" : "doUpdateLot"), formElement, (responseJSON) => {
             if (responseJSON.success) {
-                clearUnsavedChanges();
+                los.clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
                     window.location.href =
                         los.urlPrefix + "/lots/" + responseJSON.lotId + "/edit?t=" + Date.now();
@@ -43,11 +32,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
         });
-    };
+    }
     formElement.addEventListener("submit", updateLot);
     const formInputElements = formElement.querySelectorAll("input, select");
     for (const formInputElement of formInputElements) {
-        formInputElement.addEventListener("change", setUnsavedChanges);
+        formInputElement.addEventListener("change", los.setUnsavedChanges);
     }
     los.initializeUnlockFieldButtons(formElement);
     if (!isCreate) {
@@ -195,7 +184,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     // Comments
     let lotComments = exports.lotComments;
     delete exports.lotComments;
-    const openEditLotComment = (clickEvent) => {
+    function openEditLotComment(clickEvent) {
         const lotCommentId = Number.parseInt(clickEvent.currentTarget.closest("tr").dataset.lotCommentId, 10);
         const lotComment = lotComments.find((currentLotComment) => {
             return currentLotComment.lotCommentId === lotCommentId;
@@ -248,8 +237,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
-    const deleteLotComment = (clickEvent) => {
+    }
+    function deleteLotComment(clickEvent) {
         const lotCommentId = Number.parseInt(clickEvent.currentTarget.closest("tr").dataset.lotCommentId, 10);
         const doDelete = () => {
             cityssm.postJSON(los.urlPrefix + "/lots/doDeleteLotComment", {
@@ -278,8 +267,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             },
             contextualColorName: "warning"
         });
-    };
-    const renderLotComments = () => {
+    }
+    function renderLotComments() {
         const containerElement = document.querySelector("#container--lotComments");
         if (lotComments.length === 0) {
             containerElement.innerHTML =
@@ -329,8 +318,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         containerElement.innerHTML = "";
         containerElement.append(tableElement);
-    };
-    const openAddCommentModal = () => {
+    }
+    function openAddCommentModal() {
         let addCommentCloseModalFunction;
         const doAddComment = (formEvent) => {
             formEvent.preventDefault();
@@ -359,7 +348,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 document.querySelector("#lotComments--add").focus();
             }
         });
-    };
+    }
     if (!isCreate) {
         document.querySelector("#lotComments--add").addEventListener("click", openAddCommentModal);
         renderLotComments();

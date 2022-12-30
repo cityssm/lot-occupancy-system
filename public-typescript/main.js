@@ -2,7 +2,21 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const highlightMap = (mapContainerElement, mapKey, contextualClass) => {
+    let _hasUnsavedChanges = false;
+    function setUnsavedChanges() {
+        if (!hasUnsavedChanges()) {
+            _hasUnsavedChanges = true;
+            cityssm.enableNavBlocker();
+        }
+    }
+    function clearUnsavedChanges() {
+        _hasUnsavedChanges = false;
+        cityssm.disableNavBlocker();
+    }
+    function hasUnsavedChanges() {
+        return _hasUnsavedChanges;
+    }
+    function highlightMap(mapContainerElement, mapKey, contextualClass) {
         // Search for ID
         let svgId = mapKey;
         let svgElementToHighlight;
@@ -24,8 +38,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 pathElement.style.fill = "";
             }
         }
-    };
-    const unlockField = (clickEvent) => {
+    }
+    function unlockField(clickEvent) {
         const fieldElement = clickEvent.currentTarget.closest(".field");
         const inputOrSelectElement = fieldElement.querySelector("input, select");
         inputOrSelectElement.classList.remove("is-readonly");
@@ -40,13 +54,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         }
         inputOrSelectElement.focus();
-    };
-    const initializeUnlockFieldButtons = (containerElement) => {
+    }
+    function initializeUnlockFieldButtons(containerElement) {
         const unlockFieldButtonElements = containerElement.querySelectorAll(".is-unlock-field-button");
         for (const unlockFieldButtonElement of unlockFieldButtonElements) {
             unlockFieldButtonElement.addEventListener("click", unlockField);
         }
-    };
+    }
     const datePickerBaseOptions = {
         type: "date",
         dateFormat: "yyyy-MM-dd",
@@ -54,7 +68,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         color: "info",
         displayMode: "dialog"
     };
-    const initializeDatePickers = (containerElement) => {
+    function initializeDatePickers(containerElement) {
         const dateElements = containerElement.querySelectorAll("input[type='date']");
         for (const dateElement of dateElements) {
             const datePickerOptions = Object.assign({}, datePickerBaseOptions);
@@ -111,7 +125,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     labelElement.textContent;
             }
         }
-    };
+    }
     /*
     const timePickerBaseOptions: BulmaCalendarOptions = {
         type: "time",
@@ -184,7 +198,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     };
     */
-    const populateAliases = (containerElement) => {
+    function populateAliases(containerElement) {
         const aliasElements = containerElement.querySelectorAll(".alias");
         for (const aliasElement of aliasElements) {
             switch (aliasElement.dataset.alias) {
@@ -222,7 +236,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             }
         }
-    };
+    }
     const escapedAliases = Object.freeze({
         Map: cityssm.escapeHTML(exports.aliases.map),
         map: cityssm.escapeHTML(exports.aliases.map.toLowerCase()),
@@ -249,7 +263,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     });
     const hues = ["red", "green", "orange", "blue", "pink", "yellow", "purple"];
     const luminosity = ["bright", "light", "dark"];
-    const getRandomColor = (seedString) => {
+    function getRandomColor(seedString) {
         let actualSeedString = seedString;
         if (actualSeedString.length < 2) {
             actualSeedString = actualSeedString + "a1";
@@ -259,7 +273,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             hue: hues[actualSeedString.codePointAt(actualSeedString.length - 1) % hues.length],
             luminosity: luminosity[actualSeedString.codePointAt(actualSeedString.length - 2) % luminosity.length]
         });
-    };
+    }
     const los = {
         urlPrefix: document.querySelector("main").dataset.urlPrefix,
         apiKey: document.querySelector("main").dataset.apiKey,
@@ -269,7 +283,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         // initializeTimePickers,
         populateAliases,
         escapedAliases,
-        getRandomColor
+        getRandomColor,
+        setUnsavedChanges,
+        clearUnsavedChanges,
+        hasUnsavedChanges
     };
     exports.los = los;
 })();

@@ -9,18 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * Main form
      */
-    let hasUnsavedChanges = false;
     let refreshAfterSave = isCreate;
-    const setUnsavedChanges = () => {
-        if (!hasUnsavedChanges) {
-            hasUnsavedChanges = true;
-            cityssm.enableNavBlocker();
-        }
-    };
-    const clearUnsavedChanges = () => {
-        hasUnsavedChanges = false;
-        cityssm.disableNavBlocker();
-    };
     const formElement = document.querySelector("#form--lotOccupancy");
     formElement.addEventListener("submit", (formEvent) => {
         formEvent.preventDefault();
@@ -28,7 +17,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             "/lotOccupancies/" +
             (isCreate ? "doCreateLotOccupancy" : "doUpdateLotOccupancy"), formElement, (responseJSON) => {
             if (responseJSON.success) {
-                clearUnsavedChanges();
+                los.clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
                     window.location.href =
                         los.urlPrefix +
@@ -55,7 +44,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     });
     const formInputElements = formElement.querySelectorAll("input, select");
     for (const formInputElement of formInputElements) {
-        formInputElement.addEventListener("change", setUnsavedChanges);
+        formInputElement.addEventListener("change", los.setUnsavedChanges);
     }
     if (!isCreate) {
         const doCopy = () => {
@@ -83,7 +72,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         (_a = document
             .querySelector("#button--copyLotOccupancy")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
-            if (hasUnsavedChanges) {
+            if (los.hasUnsavedChanges()) {
                 bulmaJS.alert({
                     title: "Unsaved Changes",
                     message: "Please save all unsaved changes before continuing.",
@@ -312,7 +301,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             document.querySelector("#lotOccupancy--lotId").value =
                 lotId.toString();
             document.querySelector("#lotOccupancy--lotName").value = lotName;
-            setUnsavedChanges();
+            los.setUnsavedChanges();
             lotSelectCloseModalFunction();
         };
         const selectExistingLot = (clickEvent) => {
@@ -468,7 +457,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         else {
             lotNameElement.value = "(No " + exports.aliases.lot + ")";
             document.querySelector("#lotOccupancy--lotId").value = "";
-            setUnsavedChanges();
+            los.setUnsavedChanges();
         }
     });
     // Start Date

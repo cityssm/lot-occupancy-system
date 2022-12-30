@@ -22,20 +22,7 @@ declare const bulmaJS: BulmaJS;
      * Main form
      */
 
-    let hasUnsavedChanges = false;
     let refreshAfterSave = isCreate;
-
-    const setUnsavedChanges = () => {
-        if (!hasUnsavedChanges) {
-            hasUnsavedChanges = true;
-            cityssm.enableNavBlocker();
-        }
-    };
-
-    const clearUnsavedChanges = () => {
-        hasUnsavedChanges = false;
-        cityssm.disableNavBlocker();
-    };
 
     const formElement = document.querySelector("#form--lotOccupancy") as HTMLFormElement;
 
@@ -53,7 +40,7 @@ declare const bulmaJS: BulmaJS;
                 errorMessage?: string;
             }) => {
                 if (responseJSON.success) {
-                    clearUnsavedChanges();
+                    los.clearUnsavedChanges();
 
                     if (isCreate || refreshAfterSave) {
                         window.location.href =
@@ -82,7 +69,7 @@ declare const bulmaJS: BulmaJS;
     const formInputElements = formElement.querySelectorAll("input, select");
 
     for (const formInputElement of formInputElements) {
-        formInputElement.addEventListener("change", setUnsavedChanges);
+        formInputElement.addEventListener("change", los.setUnsavedChanges);
     }
 
     if (!isCreate) {
@@ -120,7 +107,7 @@ declare const bulmaJS: BulmaJS;
             ?.addEventListener("click", (clickEvent) => {
                 clickEvent.preventDefault();
 
-                if (hasUnsavedChanges) {
+                if (los.hasUnsavedChanges()) {
                     bulmaJS.alert({
                         title: "Unsaved Changes",
                         message: "Please save all unsaved changes before continuing.",
@@ -440,7 +427,7 @@ declare const bulmaJS: BulmaJS;
                 lotId.toString();
             (document.querySelector("#lotOccupancy--lotName") as HTMLInputElement).value = lotName;
 
-            setUnsavedChanges();
+            los.setUnsavedChanges();
             lotSelectCloseModalFunction();
         };
 
@@ -672,7 +659,7 @@ declare const bulmaJS: BulmaJS;
             } else {
                 lotNameElement.value = "(No " + exports.aliases.lot + ")";
                 (document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value = "";
-                setUnsavedChanges();
+                los.setUnsavedChanges();
             }
         }
     );

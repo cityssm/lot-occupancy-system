@@ -30,4 +30,7 @@ export interface LOS {
         workOrderCloseDate: string;
     };
     getRandomColor: (seedString: string) => string;
+    setUnsavedChanges: () => void;
+    clearUnsavedChanges: () => void;
+    hasUnsavedChanges: () => boolean;
 }

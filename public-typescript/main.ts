@@ -9,13 +9,30 @@ declare const cityssm: cityssmGlobal;
 declare const bulmaJS: BulmaJS;
 
 (() => {
-    const highlightMap = (
+    let _hasUnsavedChanges = false;
+
+    function setUnsavedChanges() {
+        if (!hasUnsavedChanges()) {
+            _hasUnsavedChanges = true;
+            cityssm.enableNavBlocker();
+        }
+    }
+
+    function clearUnsavedChanges() {
+        _hasUnsavedChanges = false;
+        cityssm.disableNavBlocker();
+    }
+
+    function hasUnsavedChanges() {
+        return _hasUnsavedChanges;
+    }
+
+    function highlightMap(
         mapContainerElement: HTMLElement,
         mapKey: string,
         contextualClass: "success" | "danger"
-    ) => {
+    ): void {
         // Search for ID
-
         let svgId = mapKey;
         let svgElementToHighlight: SVGElement | null;
 
@@ -42,9 +59,9 @@ declare const bulmaJS: BulmaJS;
                 pathElement.style.fill = "";
             }
         }
-    };
+    }
 
-    const unlockField = (clickEvent: Event) => {
+    function unlockField(clickEvent: Event): void {
         const fieldElement = (clickEvent.currentTarget as HTMLElement).closest(".field")!;
 
         const inputOrSelectElement = fieldElement.querySelector("input, select") as
@@ -64,16 +81,16 @@ declare const bulmaJS: BulmaJS;
         }
 
         inputOrSelectElement.focus();
-    };
+    }
 
-    const initializeUnlockFieldButtons = (containerElement: HTMLElement) => {
+    function initializeUnlockFieldButtons(containerElement: HTMLElement): void {
         const unlockFieldButtonElements =
             containerElement.querySelectorAll(".is-unlock-field-button");
 
         for (const unlockFieldButtonElement of unlockFieldButtonElements) {
             unlockFieldButtonElement.addEventListener("click", unlockField);
         }
-    };
+    }
 
     const datePickerBaseOptions: BulmaCalendarOptions = {
         type: "date",
@@ -83,7 +100,7 @@ declare const bulmaJS: BulmaJS;
         displayMode: "dialog"
     };
 
-    const initializeDatePickers = (containerElement: HTMLElement) => {
+    function initializeDatePickers(containerElement: HTMLElement): void {
         const dateElements = containerElement.querySelectorAll(
             "input[type='date']"
         ) as NodeListOf<HTMLInputElement>;
@@ -124,11 +141,9 @@ declare const bulmaJS: BulmaJS;
             });
 
             // Get the datepicker container element
-
             const datepickerElement = containerElement.querySelector("#" + cal._id) as HTMLElement;
 
             // Override the previous and next month button styles
-
             const datePickerNavButtonElements = datepickerElement.querySelectorAll(
                 ".datepicker-nav button.is-text"
             );
@@ -139,7 +154,6 @@ declare const bulmaJS: BulmaJS;
             }
 
             // Override the clear button style
-
             const clearButtonElement = datepickerElement.querySelector(
                 ".datetimepicker-clear-button"
             ) as HTMLElement;
@@ -156,7 +170,6 @@ declare const bulmaJS: BulmaJS;
             }
 
             // Apply a label
-
             const labelElement = document.querySelector("label[for='" + dateElement.id + "']");
 
             if (labelElement) {
@@ -164,7 +177,7 @@ declare const bulmaJS: BulmaJS;
                     labelElement.textContent;
             }
         }
-    };
+    }
 
     /*
     const timePickerBaseOptions: BulmaCalendarOptions = {
@@ -239,7 +252,7 @@ declare const bulmaJS: BulmaJS;
     };
     */
 
-    const populateAliases = (containerElement: HTMLElement) => {
+    function populateAliases(containerElement: HTMLElement): void {
         const aliasElements = containerElement.querySelectorAll(
             ".alias"
         ) as NodeListOf<HTMLElement>;
@@ -280,7 +293,7 @@ declare const bulmaJS: BulmaJS;
                 }
             }
         }
-    };
+    }
 
     const escapedAliases = Object.freeze({
         Map: cityssm.escapeHTML(exports.aliases.map),
@@ -319,7 +332,7 @@ declare const bulmaJS: BulmaJS;
     const hues = ["red", "green", "orange", "blue", "pink", "yellow", "purple"];
     const luminosity = ["bright", "light", "dark"];
 
-    const getRandomColor = (seedString: string) => {
+    function getRandomColor(seedString: string) {
         let actualSeedString = seedString;
 
         if (actualSeedString.length < 2) {
@@ -334,7 +347,7 @@ declare const bulmaJS: BulmaJS;
                     actualSeedString.codePointAt(actualSeedString.length - 2)! % luminosity.length
                 ]
         });
-    };
+    }
 
     const los: globalTypes.LOS = {
         urlPrefix: document.querySelector("main")!.dataset.urlPrefix!,
@@ -345,7 +358,11 @@ declare const bulmaJS: BulmaJS;
         // initializeTimePickers,
         populateAliases,
         escapedAliases,
-        getRandomColor
+        getRandomColor,
+
+        setUnsavedChanges,
+        clearUnsavedChanges,
+        hasUnsavedChanges
     };
 
     exports.los = los;

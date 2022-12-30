@@ -18,24 +18,11 @@ declare const bulmaJS: BulmaJS;
 
     // Main form
 
-    let hasUnsavedChanges = false;
     let refreshAfterSave = isCreate;
-
-    const setUnsavedChanges = () => {
-        if (!hasUnsavedChanges) {
-            hasUnsavedChanges = true;
-            cityssm.enableNavBlocker();
-        }
-    };
-
-    const clearUnsavedChanges = () => {
-        hasUnsavedChanges = false;
-        cityssm.disableNavBlocker();
-    };
 
     const formElement = document.querySelector("#form--lot") as HTMLFormElement;
 
-    const updateLot = (formEvent: SubmitEvent) => {
+    function updateLot(formEvent: SubmitEvent) {
         formEvent.preventDefault();
 
         cityssm.postJSON(
@@ -43,7 +30,7 @@ declare const bulmaJS: BulmaJS;
             formElement,
             (responseJSON: { success: boolean; lotId?: number; errorMessage?: string }) => {
                 if (responseJSON.success) {
-                    clearUnsavedChanges();
+                    los.clearUnsavedChanges();
 
                     if (isCreate || refreshAfterSave) {
                         window.location.href =
@@ -63,14 +50,14 @@ declare const bulmaJS: BulmaJS;
                 }
             }
         );
-    };
+    }
 
     formElement.addEventListener("submit", updateLot);
 
     const formInputElements = formElement.querySelectorAll("input, select");
 
     for (const formInputElement of formInputElements) {
-        formInputElement.addEventListener("change", setUnsavedChanges);
+        formInputElement.addEventListener("change", los.setUnsavedChanges);
     }
 
     los.initializeUnlockFieldButtons(formElement);
@@ -275,7 +262,7 @@ declare const bulmaJS: BulmaJS;
     let lotComments: recordTypes.LotComment[] = exports.lotComments;
     delete exports.lotComments;
 
-    const openEditLotComment = (clickEvent: Event) => {
+    function openEditLotComment(clickEvent: Event) {
         const lotCommentId = Number.parseInt(
             (clickEvent.currentTarget as HTMLElement).closest("tr")!.dataset.lotCommentId!,
             10
@@ -352,7 +339,6 @@ declare const bulmaJS: BulmaJS;
 
                 los.initializeDatePickers(modalElement);
                 // los.initializeTimePickers(modalElement);
-
                 (
                     modalElement.querySelector("#lotCommentEdit--lotComment") as HTMLTextAreaElement
                 ).focus();
@@ -366,9 +352,9 @@ declare const bulmaJS: BulmaJS;
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
+    }
 
-    const deleteLotComment = (clickEvent: Event) => {
+    function deleteLotComment(clickEvent: Event) {
         const lotCommentId = Number.parseInt(
             (clickEvent.currentTarget as HTMLElement).closest("tr")!.dataset.lotCommentId!,
             10
@@ -409,9 +395,9 @@ declare const bulmaJS: BulmaJS;
             },
             contextualColorName: "warning"
         });
-    };
+    }
 
-    const renderLotComments = () => {
+    function renderLotComments() {
         const containerElement = document.querySelector("#container--lotComments") as HTMLElement;
 
         if (lotComments.length === 0) {
@@ -474,9 +460,9 @@ declare const bulmaJS: BulmaJS;
 
         containerElement.innerHTML = "";
         containerElement.append(tableElement);
-    };
+    }
 
-    const openAddCommentModal = () => {
+    function openAddCommentModal() {
         let addCommentCloseModalFunction: () => void;
 
         const doAddComment = (formEvent: SubmitEvent) => {
@@ -514,7 +500,7 @@ declare const bulmaJS: BulmaJS;
                 (document.querySelector("#lotComments--add") as HTMLButtonElement).focus();
             }
         });
-    };
+    }
 
     if (!isCreate) {
         (document.querySelector("#lotComments--add") as HTMLButtonElement).addEventListener(

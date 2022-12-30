@@ -41,4 +41,8 @@ export interface LOS {
     };
 
     getRandomColor: (seedString: string) => string;
+
+    setUnsavedChanges: () => void;
+    clearUnsavedChanges: () => void;
+    hasUnsavedChanges: () => boolean;
 }
