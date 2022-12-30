@@ -154,14 +154,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '<td class="is-nowrap">' +
                     '<div class="field is-grouped">' +
                     '<div class="control">' +
-                    ('<div class="field has-addons">' +
-                        '<div class="control">' +
-                        '<button class="button button--moveWorkOrderTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
-                        "</div>" +
-                        '<div class="control">' +
-                        '<button class="button button--moveWorkOrderTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
-                        "</div>" +
-                        "</div>") +
+                    los.getMoveUpDownButtonFieldHTML("button--moveWorkOrderTypeUp", "button--moveWorkOrderTypeDown", false) +
                     "</div>" +
                     '<div class="control">' +
                     '<button class="button is-danger is-light button--deleteWorkOrderType" data-tooltip="Delete Work Order Type" type="button" aria-label="Delete Work Order Type">' +
@@ -342,14 +335,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '<td class="is-nowrap">' +
                     '<div class="field is-grouped">' +
                     '<div class="control">' +
-                    ('<div class="field has-addons">' +
-                        '<div class="control">' +
-                        '<button class="button button--moveWorkOrderMilestoneTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
-                        "</div>" +
-                        '<div class="control">' +
-                        '<button class="button button--moveWorkOrderMilestoneTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
-                        "</div>" +
-                        "</div>") +
+                    los.getMoveUpDownButtonFieldHTML("button--moveWorkOrderMilestoneTypeUp", "button--moveWorkOrderMilestoneTypeDown", false) +
                     "</div>" +
                     '<div class="control">' +
                     '<button class="button is-danger is-light button--deleteWorkOrderMilestoneType" data-tooltip="Delete Mielstone Type" type="button" aria-label="Delete Milestone Type">' +
@@ -534,14 +520,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '<td class="is-nowrap">' +
                     '<div class="field is-grouped">' +
                     '<div class="control">' +
-                    ('<div class="field has-addons">' +
-                        '<div class="control">' +
-                        '<button class="button button--moveLotStatusUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
-                        "</div>" +
-                        '<div class="control">' +
-                        '<button class="button button--moveLotStatusDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
-                        "</div>" +
-                        "</div>") +
+                    los.getMoveUpDownButtonFieldHTML("button--moveLotStatusUp", "button--moveLotStatusDown", false) +
                     "</div>" +
                     '<div class="control">' +
                     '<button class="button is-danger is-light button--deleteLotStatus" data-tooltip="Delete Status" type="button" aria-label="Delete Status">' +
@@ -733,8 +712,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         containerElement.innerHTML = "";
         for (const lotOccupantType of lotOccupantTypes) {
             const tableRowElement = document.createElement("tr");
-            tableRowElement.dataset.lotOccupantTypeId =
-                lotOccupantType.lotOccupantTypeId.toString();
+            tableRowElement.dataset.lotOccupantTypeId = lotOccupantType.lotOccupantTypeId.toString();
             const formId = "form--lotOccupantType-" + lotOccupantType.lotOccupantTypeId;
             tableRowElement.innerHTML =
                 "<td>" +
@@ -778,14 +756,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '<td class="is-nowrap">' +
                     '<div class="field is-grouped">' +
                     '<div class="control">' +
-                    ('<div class="field has-addons">' +
-                        '<div class="control">' +
-                        '<button class="button button--moveLotOccupantTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
-                        "</div>" +
-                        '<div class="control">' +
-                        '<button class="button button--moveLotOccupantTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
-                        "</div>" +
-                        "</div>") +
+                    los.getMoveUpDownButtonFieldHTML("button--moveLotOccupantTypeUp", "button--moveLotOccupantTypeDown", false) +
                     "</div>" +
                     '<div class="control">' +
                     '<button class="button is-danger is-light button--deleteLotOccupantType"' +
@@ -807,9 +778,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const fontAwesomeInputElement = tableRowElement.querySelector("input[name='fontAwesomeIconClass']");
             fontAwesomeInputElement.addEventListener("keyup", refreshFontAwesomeIcon);
             fontAwesomeInputElement.addEventListener("change", refreshFontAwesomeIcon);
-            tableRowElement
-                .querySelector("form")
-                .addEventListener("submit", updateLotOccupantType);
+            tableRowElement.querySelector("form").addEventListener("submit", updateLotOccupantType);
             tableRowElement.querySelector(".button--moveLotOccupantTypeUp").addEventListener("click", moveLotOccupantTypeUp);
             tableRowElement.querySelector(".button--moveLotOccupantTypeDown").addEventListener("click", moveLotOccupantTypeDown);
             tableRowElement.querySelector(".button--deleteLotOccupantType").addEventListener("click", deleteLotOccupantType);

@@ -119,8 +119,7 @@ const deleteLotOccupantType = (clickEvent: Event) => {
         messageIsHtml: true,
         contextualColorName: "warning",
         okButton: {
-            text:
-                "Yes, Delete " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+            text: "Yes, Delete " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
             callbackFunction: doDelete
         }
     });
@@ -223,8 +222,7 @@ const renderLotOccupantTypes = () => {
     for (const lotOccupantType of lotOccupantTypes) {
         const tableRowElement = document.createElement("tr");
 
-        tableRowElement.dataset.lotOccupantTypeId =
-            lotOccupantType.lotOccupantTypeId.toString();
+        tableRowElement.dataset.lotOccupantTypeId = lotOccupantType.lotOccupantTypeId.toString();
 
         const formId = "form--lotOccupantType-" + lotOccupantType.lotOccupantTypeId;
 
@@ -270,14 +268,11 @@ const renderLotOccupantTypes = () => {
             '<td class="is-nowrap">' +
             '<div class="field is-grouped">' +
             '<div class="control">' +
-            ('<div class="field has-addons">' +
-                '<div class="control">' +
-                '<button class="button button--moveLotOccupantTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
-                "</div>" +
-                '<div class="control">' +
-                '<button class="button button--moveLotOccupantTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
-                "</div>" +
-                "</div>") +
+            los.getMoveUpDownButtonFieldHTML(
+                "button--moveLotOccupantTypeUp",
+                "button--moveLotOccupantTypeDown",
+                false
+            ) +
             "</div>" +
             '<div class="control">' +
             '<button class="button is-danger is-light button--deleteLotOccupantType"' +
@@ -304,18 +299,14 @@ const renderLotOccupantTypes = () => {
         fontAwesomeInputElement.addEventListener("keyup", refreshFontAwesomeIcon);
         fontAwesomeInputElement.addEventListener("change", refreshFontAwesomeIcon);
 
-        tableRowElement
-            .querySelector("form")!
-            .addEventListener("submit", updateLotOccupantType);
+        tableRowElement.querySelector("form")!.addEventListener("submit", updateLotOccupantType);
 
         (
             tableRowElement.querySelector(".button--moveLotOccupantTypeUp") as HTMLButtonElement
         ).addEventListener("click", moveLotOccupantTypeUp);
 
         (
-            tableRowElement.querySelector(
-                ".button--moveLotOccupantTypeDown"
-            ) as HTMLButtonElement
+            tableRowElement.querySelector(".button--moveLotOccupantTypeDown") as HTMLButtonElement
         ).addEventListener("click", moveLotOccupantTypeDown);
 
         (

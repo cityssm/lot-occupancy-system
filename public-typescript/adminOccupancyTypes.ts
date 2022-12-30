@@ -16,6 +16,7 @@ declare const bulmaJS: BulmaJS;
     const occupancyTypesContainerElement = document.querySelector(
         "#container--occupancyTypes"
     ) as HTMLElement;
+
     const occupancyTypePrintsContainerElement = document.querySelector(
         "#container--occupancyTypePrints"
     ) as HTMLElement;
@@ -551,18 +552,10 @@ declare const bulmaJS: BulmaJS;
                     "</div>" +
                     '<div class="level-right">' +
                     ('<div class="level-item">' +
-                        '<div class="field has-addons">' +
-                        '<div class="control">' +
-                        '<button class="button is-small button--moveOccupancyTypeFieldUp" data-tooltip="Move Up" type="button" aria-label="Move Up">' +
-                        '<i class="fas fa-arrow-up" aria-hidden="true"></i>' +
-                        "</button>" +
-                        "</div>" +
-                        '<div class="control">' +
-                        '<button class="button is-small button--moveOccupancyTypeFieldDown" data-tooltip="Move Down" type="button" aria-label="Move Down">' +
-                        '<i class="fas fa-arrow-down" aria-hidden="true"></i>' +
-                        "</button>" +
-                        "</div>" +
-                        "</div>" +
+                        los.getMoveUpDownButtonFieldHTML(
+                            "button--moveOccupancyTypeFieldUp",
+                            "button--moveOccupancyTypeFieldDown"
+                        ) +
                         "</div>") +
                     "</div>" +
                     "</div>";
@@ -788,18 +781,10 @@ declare const bulmaJS: BulmaJS;
                     "</div>" +
                     '<div class="level-right">' +
                     ('<div class="level-item">' +
-                        '<div class="field has-addons">' +
-                        '<div class="control">' +
-                        '<button class="button is-small button--moveOccupancyTypePrintUp" data-tooltip="Move Up" type="button" aria-label="Move Up">' +
-                        '<i class="fas fa-arrow-up" aria-hidden="true"></i>' +
-                        "</button>" +
-                        "</div>" +
-                        '<div class="control">' +
-                        '<button class="button is-small button--moveOccupancyTypePrintDown" data-tooltip="Move Down" type="button" aria-label="Move Down">' +
-                        '<i class="fas fa-arrow-down" aria-hidden="true"></i>' +
-                        "</button>" +
-                        "</div>" +
-                        "</div>" +
+                        los.getMoveUpDownButtonFieldHTML(
+                            "button--moveOccupancyTypePrintUp",
+                            "button--moveOccupancyTypePrintDown"
+                        ) +
                         "</div>") +
                     ('<div class="level-item">' +
                         '<button class="button is-small is-danger button--deleteOccupancyTypePrint" data-tooltip="Delete" type="button" aria-label="Delete Print">' +
@@ -940,18 +925,10 @@ declare const bulmaJS: BulmaJS;
                             "</button>" +
                             "</div>") +
                         ('<div class="level-item">' +
-                            '<div class="field has-addons">' +
-                            '<div class="control">' +
-                            '<button class="button is-small button--moveOccupancyTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up">' +
-                            '<i class="fas fa-arrow-up" aria-hidden="true"></i>' +
-                            "</button>" +
-                            "</div>" +
-                            '<div class="control">' +
-                            '<button class="button is-small button--moveOccupancyTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down">' +
-                            '<i class="fas fa-arrow-down" aria-hidden="true"></i>' +
-                            "</button>" +
-                            "</div>" +
-                            "</div>" +
+                            los.getMoveUpDownButtonFieldHTML(
+                                "button--moveOccupancyTypeUp",
+                                "button--moveOccupancyTypeDown"
+                            ) +
                             "</div>") +
                         "</div>") +
                     "</div>" +

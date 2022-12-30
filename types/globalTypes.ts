@@ -45,4 +45,6 @@ export interface LOS {
     setUnsavedChanges: () => void;
     clearUnsavedChanges: () => void;
     hasUnsavedChanges: () => boolean;
+
+    getMoveUpDownButtonFieldHTML: (upButtonClassNames: string, downButtonClassNames: string, isSmall?: boolean) => string;
 }

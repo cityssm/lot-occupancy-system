@@ -9,6 +9,10 @@ declare const cityssm: cityssmGlobal;
 declare const bulmaJS: BulmaJS;
 
 (() => {
+    /*
+     * Unsaved Changes
+     */
+
     let _hasUnsavedChanges = false;
 
     function setUnsavedChanges() {
@@ -91,6 +95,10 @@ declare const bulmaJS: BulmaJS;
             unlockFieldButtonElement.addEventListener("click", unlockField);
         }
     }
+
+    /*
+     * Date Pickers
+     */
 
     const datePickerBaseOptions: BulmaCalendarOptions = {
         type: "date",
@@ -252,6 +260,10 @@ declare const bulmaJS: BulmaJS;
     };
     */
 
+    /*
+     * Aliases
+     */
+
     function populateAliases(containerElement: HTMLElement): void {
         const aliasElements = containerElement.querySelectorAll(
             ".alias"
@@ -349,20 +361,54 @@ declare const bulmaJS: BulmaJS;
         });
     }
 
+    /*
+     * Bulma Snippets
+     */
+
+    function getMoveUpDownButtonFieldHTML(
+        upButtonClassNames: string,
+        downButtonClassNames: string,
+        isSmall = true
+    ): string {
+        return `<div class="field has-addons">
+            <div class="control">
+            <button
+                class="button ${isSmall ? "is-small" : ""} ${upButtonClassNames}"
+                data-tooltip="Move Up" type="button" aria-label="Move Up">
+            <i class="fas fa-arrow-up" aria-hidden="true"></i>
+            </button>
+            </div>
+            <div class="control">
+            <button
+                class="button ${isSmall ? "is-small" : ""} ${downButtonClassNames}"
+                data-tooltip="Move Down" type="button" aria-label="Move Down">
+            <i class="fas fa-arrow-down" aria-hidden="true"></i>
+            </button>
+            </div>
+            </div>`;
+    }
+
+    /*
+     * Declare LOS
+     */
+
     const los: globalTypes.LOS = {
         urlPrefix: document.querySelector("main")!.dataset.urlPrefix!,
         apiKey: document.querySelector("main")!.dataset.apiKey!,
         highlightMap,
         initializeUnlockFieldButtons,
         initializeDatePickers,
-        // initializeTimePickers,
+
         populateAliases,
         escapedAliases,
+
         getRandomColor,
 
         setUnsavedChanges,
         clearUnsavedChanges,
-        hasUnsavedChanges
+        hasUnsavedChanges,
+
+        getMoveUpDownButtonFieldHTML
     };
 
     exports.los = los;

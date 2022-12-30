@@ -2,6 +2,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    /*
+     * Unsaved Changes
+     */
     let _hasUnsavedChanges = false;
     function setUnsavedChanges() {
         if (!hasUnsavedChanges()) {
@@ -61,6 +64,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             unlockFieldButtonElement.addEventListener("click", unlockField);
         }
     }
+    /*
+     * Date Pickers
+     */
     const datePickerBaseOptions = {
         type: "date",
         dateFormat: "yyyy-MM-dd",
@@ -198,6 +204,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     };
     */
+    /*
+     * Aliases
+     */
     function populateAliases(containerElement) {
         const aliasElements = containerElement.querySelectorAll(".alias");
         for (const aliasElement of aliasElements) {
@@ -274,19 +283,43 @@ Object.defineProperty(exports, "__esModule", { value: true });
             luminosity: luminosity[actualSeedString.codePointAt(actualSeedString.length - 2) % luminosity.length]
         });
     }
+    /*
+     * Bulma Snippets
+     */
+    function getMoveUpDownButtonFieldHTML(upButtonClassNames, downButtonClassNames, isSmall = true) {
+        return `<div class="field has-addons">
+            <div class="control">
+            <button
+                class="button ${isSmall ? "is-small" : ""} ${upButtonClassNames}"
+                data-tooltip="Move Up" type="button" aria-label="Move Up">
+            <i class="fas fa-arrow-up" aria-hidden="true"></i>
+            </button>
+            </div>
+            <div class="control">
+            <button
+                class="button ${isSmall ? "is-small" : ""} ${downButtonClassNames}"
+                data-tooltip="Move Down" type="button" aria-label="Move Down">
+            <i class="fas fa-arrow-down" aria-hidden="true"></i>
+            </button>
+            </div>
+            </div>`;
+    }
+    /*
+     * Declare LOS
+     */
     const los = {
         urlPrefix: document.querySelector("main").dataset.urlPrefix,
         apiKey: document.querySelector("main").dataset.apiKey,
         highlightMap,
         initializeUnlockFieldButtons,
         initializeDatePickers,
-        // initializeTimePickers,
         populateAliases,
         escapedAliases,
         getRandomColor,
         setUnsavedChanges,
         clearUnsavedChanges,
-        hasUnsavedChanges
+        hasUnsavedChanges,
+        getMoveUpDownButtonFieldHTML
     };
     exports.los = los;
 })();

@@ -51,18 +51,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</button>" +
                             "</div>") +
                         ('<div class="control">' +
-                            '<div class="field has-addons">' +
-                            '<div class="control">' +
-                            '<button class="button is-small button--moveFeeCategoryUp" data-tooltip="Move Up" type="button" aria-label="Move Up">' +
-                            '<i class="fas fa-arrow-up" aria-hidden="true"></i>' +
-                            "</button>" +
-                            "</div>" +
-                            '<div class="control">' +
-                            '<button class="button is-small button--moveFeeCategoryDown" data-tooltip="Move Down" type="button" aria-label="Move Down">' +
-                            '<i class="fas fa-arrow-down" aria-hidden="true"></i>' +
-                            "</button>" +
-                            "</div>" +
-                            "</div>" +
+                            los.getMoveUpDownButtonFieldHTML("button--moveFeeCategoryUp", "button--moveFeeCategoryDown") +
                             "</div>") +
                         "</div>") +
                     "</div>" +
@@ -148,17 +137,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 "</div>" +
                                 "</div>") +
                             ('<div class="column is-narrow">' +
-                                '<div class="field has-addons is-justify-content-end">' +
-                                '<div class="control">' +
-                                '<button class="button is-small button--moveFeeUp" data-tooltip="Move Up" type="button" aria-label="Move Up">' +
-                                '<i class="fas fa-arrow-up" aria-hidden="true"></i>' +
-                                "</button>" +
-                                "</div>" +
-                                '<div class="control">' +
-                                '<button class="button is-small button--moveFeeDown" data-tooltip="Move Down" type="button" aria-label="Move Down">' +
-                                '<i class="fas fa-arrow-down" aria-hidden="true"></i>' +
-                                "</button>" +
-                                "</div>" +
+                                los.getMoveUpDownButtonFieldHTML("button--moveFeeUp", "button--moveFeeDown") +
                                 "</div>" +
                                 "</div>") +
                             "</div>";

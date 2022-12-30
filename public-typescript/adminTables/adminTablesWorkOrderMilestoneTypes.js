@@ -142,14 +142,7 @@ const renderWorkOrderMilestoneTypes = () => {
                 '<td class="is-nowrap">' +
                 '<div class="field is-grouped">' +
                 '<div class="control">' +
-                ('<div class="field has-addons">' +
-                    '<div class="control">' +
-                    '<button class="button button--moveWorkOrderMilestoneTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
-                    "</div>" +
-                    '<div class="control">' +
-                    '<button class="button button--moveWorkOrderMilestoneTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
-                    "</div>" +
-                    "</div>") +
+                los.getMoveUpDownButtonFieldHTML("button--moveWorkOrderMilestoneTypeUp", "button--moveWorkOrderMilestoneTypeDown", false) +
                 "</div>" +
                 '<div class="control">' +
                 '<button class="button is-danger is-light button--deleteWorkOrderMilestoneType" data-tooltip="Delete Mielstone Type" type="button" aria-label="Delete Milestone Type">' +

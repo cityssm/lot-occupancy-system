@@ -146,14 +146,7 @@ const renderLotStatuses = () => {
                 '<td class="is-nowrap">' +
                 '<div class="field is-grouped">' +
                 '<div class="control">' +
-                ('<div class="field has-addons">' +
-                    '<div class="control">' +
-                    '<button class="button button--moveLotStatusUp" data-tooltip="Move Up" type="button" aria-label="Move Up"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>' +
-                    "</div>" +
-                    '<div class="control">' +
-                    '<button class="button button--moveLotStatusDown" data-tooltip="Move Down" type="button" aria-label="Move Down"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>' +
-                    "</div>" +
-                    "</div>") +
+                los.getMoveUpDownButtonFieldHTML("button--moveLotStatusUp", "button--moveLotStatusDown", false) +
                 "</div>" +
                 '<div class="control">' +
                 '<button class="button is-danger is-light button--deleteLotStatus" data-tooltip="Delete Status" type="button" aria-label="Delete Status">' +

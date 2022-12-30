@@ -504,18 +504,10 @@ declare const bulmaJS: BulmaJS;
                     "</div>" +
                     '<div class="level-right">' +
                     ('<div class="level-item">' +
-                        '<div class="field has-addons">' +
-                        '<div class="control">' +
-                        '<button class="button is-small button--moveLotTypeFieldUp" data-tooltip="Move Up" type="button" aria-label="Move Up">' +
-                        '<i class="fas fa-arrow-up" aria-hidden="true"></i>' +
-                        "</button>" +
-                        "</div>" +
-                        '<div class="control">' +
-                        '<button class="button is-small button--moveLotTypeFieldDown" data-tooltip="Move Down" type="button" aria-label="Move Down">' +
-                        '<i class="fas fa-arrow-down" aria-hidden="true"></i>' +
-                        "</button>" +
-                        "</div>" +
-                        "</div>" +
+                        los.getMoveUpDownButtonFieldHTML(
+                            "button--moveLotTypeFieldUp",
+                            "button--moveLotTypeFieldDown"
+                        ) +
                         "</div>") +
                     "</div>" +
                     "</div>";
@@ -601,18 +593,10 @@ declare const bulmaJS: BulmaJS;
                         "</button>" +
                         "</div>") +
                     ('<div class="level-item">' +
-                        '<div class="field has-addons">' +
-                        '<div class="control">' +
-                        '<button class="button is-small button--moveLotTypeUp" data-tooltip="Move Up" type="button" aria-label="Move Up">' +
-                        '<i class="fas fa-arrow-up" aria-hidden="true"></i>' +
-                        "</button>" +
-                        "</div>" +
-                        '<div class="control">' +
-                        '<button class="button is-small button--moveLotTypeDown" data-tooltip="Move Down" type="button" aria-label="Move Down">' +
-                        '<i class="fas fa-arrow-down" aria-hidden="true"></i>' +
-                        "</button>" +
-                        "</div>" +
-                        "</div>" +
+                        los.getMoveUpDownButtonFieldHTML(
+                            "button--moveLotTypeUp",
+                            "button--moveLotTypeDown"
+                        ) +
                         "</div>") +
                     "</div>") +
                 "</div>" +
