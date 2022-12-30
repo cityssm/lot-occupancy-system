@@ -122,36 +122,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '<th class="has-tooltip-bottom" data-tooltip="Completed / Total Milestones">Progress</th>' +
                 (workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : "") +
                 "</tr></thead>" +
-                "<table>" +
-                '<div class="level">' +
-                ('<div class="level-left">' +
-                    '<div class="level-item has-text-weight-bold">' +
-                    "Displaying " +
-                    (responseJSON.offset + 1).toString() +
-                    " to " +
-                    Math.min(responseJSON.count, limit + responseJSON.offset) +
-                    " of " +
-                    responseJSON.count +
-                    "</div>" +
-                    "</div>") +
-                ('<div class="level-right">' +
-                    (responseJSON.offset > 0
-                        ? '<div class="level-item">' +
-                            '<button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">' +
-                            '<i class="fas fa-arrow-left" aria-hidden="true"></i>' +
-                            "</button>" +
-                            "</div>"
-                        : "") +
-                    (limit + responseJSON.offset < responseJSON.count
-                        ? '<div class="level-item">' +
-                            '<button class="button is-rounded is-link" data-page="next" type="button" title="Next">' +
-                            "<span>Next</span>" +
-                            '<span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>' +
-                            "</button>" +
-                            "</div>"
-                        : "") +
-                    "</div>") +
-                "</div>";
+                "<table>";
+        searchResultsContainerElement.insertAdjacentHTML("beforeend", los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
         searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
         if (responseJSON.offset > 0) {
             searchResultsContainerElement

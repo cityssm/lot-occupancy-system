@@ -312,6 +312,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${cityssm.escapeHTML(captionText)}
             </p>`;
     }
+    function getSearchResultsPagerHTML(limit, offset, count) {
+        return ('<div class="level">' +
+            ('<div class="level-left">' +
+                '<div class="level-item has-text-weight-bold">' +
+                "Displaying " +
+                (offset + 1).toString() +
+                " to " +
+                Math.min(count, limit + offset) +
+                " of " +
+                count +
+                "</div>" +
+                "</div>") +
+            ('<div class="level-right">' +
+                (offset > 0
+                    ? '<div class="level-item">' +
+                        '<button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">' +
+                        '<i class="fas fa-arrow-left" aria-hidden="true"></i>' +
+                        "</button>" +
+                        "</div>"
+                    : "") +
+                (limit + offset < count
+                    ? '<div class="level-item">' +
+                        '<button class="button is-rounded is-link" data-page="next" type="button" title="Next">' +
+                        "<span>Next</span>" +
+                        '<span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>' +
+                        "</button>" +
+                        "</div>"
+                    : "") +
+                "</div>") +
+            "</div>");
+    }
     /*
      * Declare LOS
      */
@@ -328,7 +359,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clearUnsavedChanges,
         hasUnsavedChanges,
         getMoveUpDownButtonFieldHTML,
-        getLoadingParagraphHTML
+        getLoadingParagraphHTML,
+        getSearchResultsPagerHTML
     };
     exports.los = los;
 })();

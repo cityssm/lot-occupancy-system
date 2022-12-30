@@ -50,4 +50,5 @@ export interface LOS {
 
     getMoveUpDownButtonFieldHTML: (upButtonClassNames: string, downButtonClassNames: string, isSmall?: boolean) => string;
     getLoadingParagraphHTML: (captionText?: string) => string;
+    getSearchResultsPagerHTML: (limit: number, offset: number, count: number) => string;
 }

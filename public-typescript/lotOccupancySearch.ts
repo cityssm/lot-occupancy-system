@@ -149,49 +149,24 @@ declare const cityssm: cityssmGlobal;
             );
         }
 
-        searchResultsContainerElement.innerHTML =
-            '<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">' +
-            "<thead><tr>" +
-            '<th class="has-width-1"></th>' +
-            ("<th>" + los.escapedAliases.Occupancy + " Type</th>") +
-            ("<th>" + los.escapedAliases.Lot + "</th>") +
-            ("<th>" + los.escapedAliases.OccupancyStartDate + "</th>") +
-            "<th>End Date</th>" +
-            ("<th>" + los.escapedAliases.Occupants + "</th>") +
-            '<th class="has-width-1"><span class="is-sr-only">Print</span></th>' +
-            "</tr></thead>" +
-            "<table>" +
-            '<div class="level">' +
-            ('<div class="level-left">' +
-                '<div class="level-item has-text-weight-bold">' +
-                "Displaying " +
-                (responseJSON.offset + 1).toString() +
-                " to " +
-                Math.min(responseJSON.count, limit + responseJSON.offset) +
-                " of " +
-                responseJSON.count +
-                "</div>" +
-                "</div>") +
-            ('<div class="level-right">' +
-                (responseJSON.offset > 0
-                    ? '<div class="level-item">' +
-                      '<button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">' +
-                      '<i class="fas fa-arrow-left" aria-hidden="true"></i>' +
-                      "</button>" +
-                      "</div>"
-                    : "") +
-                (limit + responseJSON.offset < responseJSON.count
-                    ? '<div class="level-item">' +
-                      '<button class="button is-rounded is-link" data-page="next" type="button" title="Next">' +
-                      "<span>Next</span>" +
-                      '<span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>' +
-                      "</button>" +
-                      "</div>"
-                    : "") +
-                "</div>") +
-            "</div>";
+        searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+            <thead><tr>
+            <th class="has-width-1"></th>
+            <th>${los.escapedAliases.Occupancy} Type</th>
+            <th>${los.escapedAliases.Lot}</th>
+            <th>${los.escapedAliases.OccupancyStartDate}</th>
+            <th>End Date</th>
+            <th>${los.escapedAliases.Occupants}</th>
+            <th class="has-width-1"><span class="is-sr-only">Print</span></th>
+            </tr></thead>
+            <table>`;
 
         searchResultsContainerElement.querySelector("table")!.append(resultsTbodyElement);
+
+        searchResultsContainerElement.insertAdjacentHTML(
+            "beforeend",
+            los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count)
+        );
 
         if (responseJSON.offset > 0) {
             searchResultsContainerElement
