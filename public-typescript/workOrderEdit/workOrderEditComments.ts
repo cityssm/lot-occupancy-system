@@ -30,7 +30,7 @@ const openEditWorkOrderComment = (clickEvent: Event) => {
     let editFormElement: HTMLFormElement;
     let editCloseModalFunction: () => void;
 
-    const editComment = (submitEvent: SubmitEvent) => {
+    function editComment(submitEvent: SubmitEvent): void {
         submitEvent.preventDefault();
 
         cityssm.postJSON(
@@ -54,14 +54,12 @@ const openEditWorkOrderComment = (clickEvent: Event) => {
                 }
             }
         );
-    };
+    }
 
     cityssm.openHtmlModal("workOrder-editComment", {
-        onshow: (modalElement) => {
+        onshow(modalElement) {
             (
-                modalElement.querySelector(
-                    "#workOrderCommentEdit--workOrderId"
-                ) as HTMLInputElement
+                modalElement.querySelector("#workOrderCommentEdit--workOrderId") as HTMLInputElement
             ).value = workOrderId;
             (
                 modalElement.querySelector(
@@ -79,8 +77,7 @@ const openEditWorkOrderComment = (clickEvent: Event) => {
                 "#workOrderCommentEdit--workOrderCommentDateString"
             ) as HTMLInputElement;
 
-            workOrderCommentDateStringElement.value =
-                workOrderComment.workOrderCommentDateString!;
+            workOrderCommentDateStringElement.value = workOrderComment.workOrderCommentDateString!;
 
             const currentDateString = cityssm.dateToString(new Date());
 
@@ -95,7 +92,7 @@ const openEditWorkOrderComment = (clickEvent: Event) => {
                 ) as HTMLInputElement
             ).value = workOrderComment.workOrderCommentTimeString!;
         },
-        onshown: (modalElement, closeModalFunction) => {
+        onshown(modalElement, closeModalFunction) {
             bulmaJS.toggleHtmlClipped();
 
             los.initializeDatePickers(modalElement);
@@ -112,19 +109,19 @@ const openEditWorkOrderComment = (clickEvent: Event) => {
 
             editCloseModalFunction = closeModalFunction;
         },
-        onremoved: () => {
+        onremoved() {
             bulmaJS.toggleHtmlClipped();
         }
     });
 };
 
-const deleteWorkOrderComment = (clickEvent: Event) => {
+function deleteWorkOrderComment(clickEvent: Event): void {
     const workOrderCommentId = Number.parseInt(
         (clickEvent.currentTarget as HTMLElement).closest("tr")!.dataset.workOrderCommentId!,
         10
     );
 
-    const doDelete = () => {
+    function doDelete() {
         cityssm.postJSON(
             los.urlPrefix + "/workOrders/doDeleteWorkOrderComment",
             {
@@ -148,7 +145,7 @@ const deleteWorkOrderComment = (clickEvent: Event) => {
                 }
             }
         );
-    };
+    }
 
     bulmaJS.confirm({
         title: "Remove Comment?",
@@ -159,12 +156,10 @@ const deleteWorkOrderComment = (clickEvent: Event) => {
         },
         contextualColorName: "warning"
     });
-};
+}
 
-const renderWorkOrderComments = () => {
-    const containerElement = document.querySelector(
-        "#container--workOrderComments"
-    ) as HTMLElement;
+function renderWorkOrderComments() {
+    const containerElement = document.querySelector("#container--workOrderComments") as HTMLElement;
 
     if (workOrderComments.length === 0) {
         containerElement.innerHTML =
@@ -215,26 +210,25 @@ const renderWorkOrderComments = () => {
                 "</div>" +
                 "</td>");
 
-        (tableRowElement.querySelector(".button--edit") as HTMLButtonElement).addEventListener(
-            "click",
-            openEditWorkOrderComment
-        );
+        tableRowElement
+            .querySelector(".button--edit")!
+            .addEventListener("click", openEditWorkOrderComment);
 
-        (
-            tableRowElement.querySelector(".button--delete") as HTMLButtonElement
-        ).addEventListener("click", deleteWorkOrderComment);
+        tableRowElement
+            .querySelector(".button--delete")!
+            .addEventListener("click", deleteWorkOrderComment);
 
         tableElement.querySelector("tbody")!.append(tableRowElement);
     }
 
     containerElement.innerHTML = "";
     containerElement.append(tableElement);
-};
+}
 
-const openAddCommentModal = () => {
+function openAddCommentModal() {
     let addCommentCloseModalFunction: () => void;
 
-    const doAddComment = (formEvent: SubmitEvent) => {
+    function doAddComment(formEvent: SubmitEvent) {
         formEvent.preventDefault();
 
         cityssm.postJSON(
@@ -251,15 +245,13 @@ const openAddCommentModal = () => {
                 }
             }
         );
-    };
+    }
 
     cityssm.openHtmlModal("workOrder-addComment", {
         onshow(modalElement) {
             los.populateAliases(modalElement);
             (
-                modalElement.querySelector(
-                    "#workOrderCommentAdd--workOrderId"
-                ) as HTMLInputElement
+                modalElement.querySelector("#workOrderCommentAdd--workOrderId") as HTMLInputElement
             ).value = workOrderId;
             modalElement.querySelector("form")!.addEventListener("submit", doAddComment);
         },
@@ -277,12 +269,12 @@ const openAddCommentModal = () => {
             (document.querySelector("#workOrderComments--add") as HTMLButtonElement).focus();
         }
     });
-};
+}
 
 if (!isCreate) {
-    (document.querySelector("#workOrderComments--add") as HTMLButtonElement).addEventListener(
-        "click",
-        openAddCommentModal
-    );
+    document
+        .querySelector("#workOrderComments--add")!
+        .addEventListener("click", openAddCommentModal);
+        
     renderWorkOrderComments();
 }
