@@ -134,11 +134,8 @@ export function getLotOccupancies(
 
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
 
-    let count = 0;
+    let count = options.limit;
 
-    /**
-     * options.limit !== -1
-     */
     const isLimited = options.limit !== -1;
 
     if (isLimited) {
@@ -154,7 +151,7 @@ export function getLotOccupancies(
 
     let lotOccupancies: recordTypes.LotOccupancy[] = [];
 
-    if (!isLimited || count > 0) {
+    if (count !== 0) {
         lotOccupancies = database
             .prepare(
                 `select o.lotOccupancyId,
@@ -170,7 +167,7 @@ export function getLotOccupancies(
                     left join Maps m on l.mapId = m.mapId
                     ${sqlWhereClause}
                     order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId, o.lotOccupancyId desc` +
-                    (isLimited ? " limit " + options.limit + " offset " + options.offset : "")
+                    (isLimited ? ` limit ${options.limit} offset ${options.offset}` : "")
             )
             .all(sqlParameters);
 
@@ -189,7 +186,7 @@ export function getLotOccupancies(
 
             if (options.includeOccupants) {
                 lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(
-                    lotOccupancy.lotOccupancyId as number,
+                    lotOccupancy.lotOccupancyId,
                     database
                 );
             }
