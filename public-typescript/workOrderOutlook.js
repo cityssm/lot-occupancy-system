@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const workOrderTypeIdsElement = document.querySelector("#icsFilters--workOrderTypeIds");
     const workOrderMilestoneTypeIdsElement = document.querySelector("#icsFilters--workOrderMilestoneTypeIds");
     const calendarLinkElement = document.querySelector("#icsFilters--calendarURL");
-    const updateCalendarURL = () => {
+    function updateCalendarURL() {
         let url = window.location.href.slice(0, Math.max(0, window.location.href.indexOf(window.location.pathname) + 1)) +
             los.urlPrefix +
             "api/" +
@@ -31,7 +31,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             url = url.slice(0, -1) + "&";
         }
         calendarLinkElement.value = url.slice(0, -1);
-    };
+    }
     document.querySelector("#icsFilters--workOrderTypeIds-all").addEventListener("change", (changeEvent) => {
         workOrderTypeIdsElement.disabled = changeEvent.currentTarget.checked;
     });

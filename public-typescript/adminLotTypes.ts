@@ -632,12 +632,12 @@ declare const bulmaJS: BulmaJS;
         }
     }
 
-    (document.querySelector("#button--addLotType") as HTMLButtonElement).addEventListener(
+    document.querySelector("#button--addLotType")!.addEventListener(
         "click",
         () => {
             let addCloseModalFunction: () => void;
 
-            const doAdd = (submitEvent: SubmitEvent) => {
+            function doAdd(submitEvent: SubmitEvent): void {
                 submitEvent.preventDefault();
 
                 cityssm.postJSON(
@@ -661,7 +661,7 @@ declare const bulmaJS: BulmaJS;
                         }
                     }
                 );
-            };
+            }
 
             cityssm.openHtmlModal("adminLotTypes-addLotType", {
                 onshow(modalElement) {

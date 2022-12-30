@@ -17,12 +17,11 @@ import type * as globalTypes from "../types/globalTypes";
         "#icsFilters--calendarURL"
     ) as HTMLTextAreaElement;
 
-    const updateCalendarURL = () => {
-        let url =
-            window.location.href.slice(
-                0,
-                Math.max(0, window.location.href.indexOf(window.location.pathname) + 1)
-            ) +
+    function updateCalendarURL() {
+        let url = window.location.href.slice(
+            0,
+            Math.max(0, window.location.href.indexOf(window.location.pathname) + 1)
+        ) +
             los.urlPrefix +
             "api/" +
             los.apiKey +
@@ -30,10 +29,8 @@ import type * as globalTypes from "../types/globalTypes";
             "milestoneICS/" +
             "?";
 
-        if (
-            !workOrderTypeIdsElement.disabled &&
-            workOrderTypeIdsElement.selectedOptions.length > 0
-        ) {
+        if (!workOrderTypeIdsElement.disabled &&
+            workOrderTypeIdsElement.selectedOptions.length > 0) {
             url += "workOrderTypeIds=";
 
             for (const optionElement of workOrderTypeIdsElement.selectedOptions) {
@@ -43,10 +40,8 @@ import type * as globalTypes from "../types/globalTypes";
             url = url.slice(0, -1) + "&";
         }
 
-        if (
-            !workOrderMilestoneTypeIdsElement.disabled &&
-            workOrderMilestoneTypeIdsElement.selectedOptions.length > 0
-        ) {
+        if (!workOrderMilestoneTypeIdsElement.disabled &&
+            workOrderMilestoneTypeIdsElement.selectedOptions.length > 0) {
             url += "workOrderMilestoneTypeIds=";
 
             for (const optionElement of workOrderMilestoneTypeIdsElement.selectedOptions) {
@@ -57,7 +52,7 @@ import type * as globalTypes from "../types/globalTypes";
         }
 
         calendarLinkElement.value = url.slice(0, -1);
-    };
+    }
 
     (
         document.querySelector("#icsFilters--workOrderTypeIds-all") as HTMLInputElement

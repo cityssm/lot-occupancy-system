@@ -369,7 +369,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     document.querySelector("#button--addLotType").addEventListener("click", () => {
         let addCloseModalFunction;
-        const doAdd = (submitEvent) => {
+        function doAdd(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + "/admin/doAddLotType", submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
@@ -385,7 +385,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     });
                 }
             });
-        };
+        }
         cityssm.openHtmlModal("adminLotTypes-addLotType", {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
