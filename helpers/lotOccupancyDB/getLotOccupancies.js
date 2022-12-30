@@ -70,7 +70,8 @@ export function getLotOccupancies(filters, options, connectedDatabase) {
     database.function("userFn_dateIntegerToString", dateIntegerToString);
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
     let count = 0;
-    if (options.limit !== -1) {
+    const isLimited = options.limit !== -1;
+    if (isLimited) {
         count = database
             .prepare("select count(*) as recordCount" +
             " from LotOccupancies o" +
@@ -79,26 +80,24 @@ export function getLotOccupancies(filters, options, connectedDatabase) {
             .get(sqlParameters).recordCount;
     }
     let lotOccupancies = [];
-    if (options.limit === -1 || count > 0) {
+    if (!isLimited || count > 0) {
         lotOccupancies = database
-            .prepare("select o.lotOccupancyId," +
-            " o.occupancyTypeId, t.occupancyType," +
-            " o.lotId, lt.lotType, l.lotName," +
-            " l.mapId, m.mapName," +
-            " o.occupancyStartDate, userFn_dateIntegerToString(o.occupancyStartDate) as occupancyStartDateString," +
-            " o.occupancyEndDate,  userFn_dateIntegerToString(o.occupancyEndDate) as occupancyEndDateString" +
-            " from LotOccupancies o" +
-            " left join OccupancyTypes t on o.occupancyTypeId = t.occupancyTypeId" +
-            " left join Lots l on o.lotId = l.lotId" +
-            " left join LotTypes lt on l.lotTypeId = lt.lotTypeId" +
-            " left join Maps m on l.mapId = m.mapId" +
-            sqlWhereClause +
-            " order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId, o.lotOccupancyId desc" +
-            (options.limit === -1
-                ? ""
-                : " limit " + options.limit + " offset " + options.offset))
+            .prepare(`select o.lotOccupancyId,
+                    o.occupancyTypeId, t.occupancyType,
+                    o.lotId, lt.lotType, l.lotName,
+                    l.mapId, m.mapName,
+                    o.occupancyStartDate, userFn_dateIntegerToString(o.occupancyStartDate) as occupancyStartDateString,
+                    o.occupancyEndDate,  userFn_dateIntegerToString(o.occupancyEndDate) as occupancyEndDateString
+                    from LotOccupancies o
+                    left join OccupancyTypes t on o.occupancyTypeId = t.occupancyTypeId
+                    left join Lots l on o.lotId = l.lotId
+                    left join LotTypes lt on l.lotTypeId = lt.lotTypeId
+                    left join Maps m on l.mapId = m.mapId
+                    ${sqlWhereClause}
+                    order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId, o.lotOccupancyId desc` +
+            (isLimited ? " limit " + options.limit + " offset " + options.offset : ""))
             .all(sqlParameters);
-        if (options.limit === -1) {
+        if (!isLimited) {
             count = lotOccupancies.length;
         }
         for (const lotOccupancy of lotOccupancies) {
