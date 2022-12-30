@@ -5,9 +5,9 @@ let workOrderLots = exports.workOrderLots;
 delete exports.workOrderLots;
 let workOrderLotOccupancies = exports.workOrderLotOccupancies;
 delete exports.workOrderLotOccupancies;
-const deleteLotOccupancy = (clickEvent) => {
+function deleteLotOccupancy(clickEvent) {
     const lotOccupancyId = clickEvent.currentTarget.closest(".container--lotOccupancy").dataset.lotOccupancyId;
-    const doDelete = () => {
+    function doDelete() {
         cityssm.postJSON(los.urlPrefix + "/workOrders/doDeleteWorkOrderLotOccupancy", {
             workOrderId,
             lotOccupancyId
@@ -24,22 +24,18 @@ const deleteLotOccupancy = (clickEvent) => {
                 });
             }
         });
-    };
+    }
     bulmaJS.confirm({
-        title: "Delete " + exports.aliases.lot + " " + exports.aliases.occupancy + " Relationship",
-        message: "Are you sure you want to remove the relationship to this " +
-            exports.aliases.lot.toLowerCase() +
-            " " +
-            exports.aliases.occupancy.toLowerCase() +
-            " record from this work order?  Note that the record will remain.",
+        title: `Delete ${exports.aliases.occupancy} Relationship`,
+        message: `Are you sure you want to remove the relationship to this ${exports.aliases.occupancy.toLowerCase()} record from this work order?  Note that the record will remain.`,
         contextualColorName: "warning",
         okButton: {
             text: "Yes, Delete Relationship",
             callbackFunction: doDelete
         }
     });
-};
-const addLot = (lotId, callbackFunction) => {
+}
+function addLot(lotId, callbackFunction) {
     cityssm.postJSON(los.urlPrefix + "/workOrders/doAddWorkOrderLot", {
         workOrderId,
         lotId
@@ -59,8 +55,8 @@ const addLot = (lotId, callbackFunction) => {
             callbackFunction(responseJSON.success);
         }
     });
-};
-const addLotOccupancy = (lotOccupancyId, callbackFunction) => {
+}
+function addLotOccupancy(lotOccupancyId, callbackFunction) {
     cityssm.postJSON(los.urlPrefix + "/workOrders/doAddWorkOrderLotOccupancy", {
         workOrderId,
         lotOccupancyId
@@ -80,39 +76,30 @@ const addLotOccupancy = (lotOccupancyId, callbackFunction) => {
             callbackFunction(responseJSON.success);
         }
     });
-};
-const addLotFromLotOccupancy = (clickEvent) => {
+}
+function addLotFromLotOccupancy(clickEvent) {
     const lotId = clickEvent.currentTarget.dataset.lotId;
     addLot(lotId);
-};
-const renderRelatedOccupancies = () => {
+}
+function renderRelatedOccupancies() {
     var _a;
     const occupanciesContainerElement = document.querySelector("#container--lotOccupancies");
     document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent = workOrderLotOccupancies.length.toString();
     if (workOrderLotOccupancies.length === 0) {
-        occupanciesContainerElement.innerHTML =
-            '<div class="message is-info">' +
-                '<p class="message-body">There are no ' +
-                exports.aliases.occupancies.toLowerCase() +
-                " associated with this work order.</p>" +
-                "</div>";
+        occupanciesContainerElement.innerHTML = `<div class="message is-info">
+            <p class="message-body">There are no ${exports.aliases.occupancies.toLowerCase()} associated with this work order.</p>
+            </div>`;
         return;
     }
-    occupanciesContainerElement.innerHTML =
-        '<table class="table is-fullwidth is-striped is-hoverable">' +
-            "<thead>" +
-            "<tr>" +
-            '<th class="has-width-1"></th>' +
-            ("<th>" + exports.aliases.occupancy + " Type</th>") +
-            ("<th>" + exports.aliases.lot + "</th>") +
-            ("<th>" + exports.aliases.occupancyStartDate + "</th>") +
-            "<th>End Date</th>" +
-            ("<th>" + exports.aliases.occupants + "</th>") +
-            '<th class="has-width-1"></th>' +
-            "</tr>" +
-            "</thead>" +
-            "<tbody></tbody>" +
-            "</table>";
+    occupanciesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
+        <thead><tr>
+        <th class="has-width-1"></th><th>${los.escapedAliases.Occupancy} Type</th>
+        <th>${los.escapedAliases.Lot}</th><th>${los.escapedAliases.OccupancyStartDate}</th>
+        <th>End Date</th><th>${los.escapedAliases.Occupants}</th>
+        <th class="has-width-1"></th>
+        </tr></thead>
+        <tbody></tbody>
+        </table>`;
     const currentDateString = cityssm.dateToString(new Date());
     for (const lotOccupancy of workOrderLotOccupancies) {
         const rowElement = document.createElement("tr");
@@ -163,11 +150,7 @@ const renderRelatedOccupancies = () => {
                 "</td>");
         }
         else {
-            rowElement.insertAdjacentHTML("beforeend", "<td>" +
-                '<span class="has-text-grey">(No ' +
-                exports.aliases.lot +
-                ")</span>" +
-                "</td>");
+            rowElement.insertAdjacentHTML("beforeend", `<td><span class="has-text-grey">(No ${exports.aliases.lot})</span></td>`);
         }
         rowElement.insertAdjacentHTML("beforeend", "<td>" +
             lotOccupancy.occupancyStartDateString +
@@ -202,20 +185,24 @@ const renderRelatedOccupancies = () => {
                 "</button>" +
                 "</td>"));
         if (lotOccupancy.lotId && !hasLotRecord) {
-            rowElement.querySelector(".button--addLot").addEventListener("click", addLotFromLotOccupancy);
+            rowElement
+                .querySelector(".button--addLot")
+                .addEventListener("click", addLotFromLotOccupancy);
         }
-        rowElement.querySelector(".button--deleteLotOccupancy").addEventListener("click", deleteLotOccupancy);
+        rowElement
+            .querySelector(".button--deleteLotOccupancy")
+            .addEventListener("click", deleteLotOccupancy);
         occupanciesContainerElement.querySelector("tbody").append(rowElement);
     }
-};
-const openEditLotStatus = (clickEvent) => {
+}
+function openEditLotStatus(clickEvent) {
     const lotId = Number.parseInt(clickEvent.currentTarget.closest(".container--lot")
         .dataset.lotId, 10);
     const lot = workOrderLots.find((possibleLot) => {
         return possibleLot.lotId === lotId;
     });
     let editCloseModalFunction;
-    const doUpdateLotStatus = (submitEvent) => {
+    function doUpdateLotStatus(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix + "/workOrders/doUpdateLotStatus", submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
@@ -231,9 +218,9 @@ const openEditLotStatus = (clickEvent) => {
                 });
             }
         });
-    };
+    }
     cityssm.openHtmlModal("lot-editLotStatus", {
-        onshow: (modalElement) => {
+        onshow(modalElement) {
             los.populateAliases(modalElement);
             modalElement.querySelector("#lotStatusEdit--lotId").value =
                 lotId.toString();
@@ -263,19 +250,19 @@ const openEditLotStatus = (clickEvent) => {
                 .querySelector("form")
                 .insertAdjacentHTML("beforeend", '<input name="workOrderId" type="hidden" value="' + workOrderId + '" />');
         },
-        onshown: (modalElement, closeModalFunction) => {
+        onshown(modalElement, closeModalFunction) {
             editCloseModalFunction = closeModalFunction;
             bulmaJS.toggleHtmlClipped();
             modalElement.querySelector("form").addEventListener("submit", doUpdateLotStatus);
         },
-        onremoved: () => {
+        onremoved() {
             bulmaJS.toggleHtmlClipped();
         }
     });
-};
-const deleteLot = (clickEvent) => {
+}
+function deleteLot(clickEvent) {
     const lotId = clickEvent.currentTarget.closest(".container--lot").dataset.lotId;
-    const doDelete = () => {
+    function doDelete() {
         cityssm.postJSON(los.urlPrefix + "/workOrders/doDeleteWorkOrderLot", {
             workOrderId,
             lotId
@@ -292,47 +279,37 @@ const deleteLot = (clickEvent) => {
                 });
             }
         });
-    };
+    }
     bulmaJS.confirm({
-        title: "Delete " + exports.aliases.lot + " " + exports.aliases.occupancy + " Relationship",
-        message: "Are you sure you want to remove the relationship to this " +
-            exports.aliases.lot.toLowerCase() +
-            " " +
-            exports.aliases.occupancy.toLowerCase() +
-            " record from this work order?  Note that the record will remain.",
+        title: `Delete ${los.escapedAliases.Occupancy} Relationship`,
+        message: `Are you sure you want to remove the relationship to this ${los.escapedAliases.occupancy} record from this work order?  Note that the record will remain.`,
         contextualColorName: "warning",
         okButton: {
             text: "Yes, Delete Relationship",
             callbackFunction: doDelete
         }
     });
-};
-const renderRelatedLots = () => {
+}
+function renderRelatedLots() {
     const lotsContainerElement = document.querySelector("#container--lots");
     document.querySelector(".tabs a[href='#relatedTab--lots'] .tag").textContent =
         workOrderLots.length.toString();
     if (workOrderLots.length === 0) {
-        lotsContainerElement.innerHTML =
-            '<div class="message is-info">' +
-                '<p class="message-body">There are no ' +
-                exports.aliases.lots.toLowerCase() +
-                " associated with this work order.</p>" +
-                "</div>";
+        lotsContainerElement.innerHTML = `<div class="message is-info">
+            <p class="message-body">There are no ${los.escapedAliases.lots} associated with this work order.</p>
+            </div>`;
         return;
     }
-    lotsContainerElement.innerHTML =
-        '<table class="table is-fullwidth is-striped is-hoverable">' +
-            "<thead>" +
-            "<tr>" +
-            ("<th>" + exports.aliases.lot + "</th>") +
-            ("<th>" + exports.aliases.map + "</th>") +
-            ("<th>" + exports.aliases.lot + " Type</th>") +
-            "<th>Status</th>" +
-            '<th class="has-width-1"></th>' +
-            "</tr>" +
-            "</thead>" +
-            "<tbody></tbody>" +
-            "</table>";
+    lotsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
+        <thead><tr>
+        <th>${los.escapedAliases.Lot}</th>
+        <th>${los.escapedAliases.Map}</th>
+        <th>${los.escapedAliases.Lot} Type</th>
+        <th>Status</th>
+        <th class="has-width-1"></th>
+        </tr></thead>
+        <tbody></tbody>
+        </table>`;
     for (const lot of workOrderLots) {
         const rowElement = document.createElement("tr");
         rowElement.className = "container--lot";
@@ -362,17 +339,19 @@ const renderRelatedLots = () => {
                     '<i class="fas fa-trash" aria-hidden="true"></i>' +
                     "</button>" +
                     "</td>");
-        rowElement.querySelector(".button--editLotStatus").addEventListener("click", openEditLotStatus);
+        rowElement
+            .querySelector(".button--editLotStatus")
+            .addEventListener("click", openEditLotStatus);
         rowElement.querySelector(".button--deleteLot").addEventListener("click", deleteLot);
         lotsContainerElement.querySelector("tbody").append(rowElement);
     }
-};
-const renderRelatedLotsAndOccupancies = () => {
+}
+function renderRelatedLotsAndOccupancies() {
     renderRelatedOccupancies();
     renderRelatedLots();
-};
+}
 renderRelatedLotsAndOccupancies();
-const doAddLotOccupancy = (clickEvent) => {
+function doAddLotOccupancy(clickEvent) {
     const rowElement = clickEvent.currentTarget.closest("tr");
     const lotOccupancyId = rowElement.dataset.lotOccupancyId;
     addLotOccupancy(lotOccupancyId, (success) => {
@@ -380,11 +359,11 @@ const doAddLotOccupancy = (clickEvent) => {
             rowElement.remove();
         }
     });
-};
+}
 document.querySelector("#button--addLotOccupancy").addEventListener("click", () => {
     let searchFormElement;
     let searchResultsContainerElement;
-    const doSearch = (event) => {
+    function doSearch(event) {
         if (event) {
             event.preventDefault();
         }
@@ -401,20 +380,17 @@ document.querySelector("#button--addLotOccupancy").addEventListener("click", () 
                         "</div>";
                 return;
             }
-            searchResultsContainerElement.innerHTML =
-                '<table class="table is-fullwidth is-striped is-hoverable">' +
-                    "<thead>" +
-                    "<tr>" +
-                    '<th class="has-width-1"></th>' +
-                    ("<th>" + exports.aliases.occupancy + " Type</th>") +
-                    ("<th>" + exports.aliases.lot + "</th>") +
-                    "<th>Start Date</th>" +
-                    "<th>End Date</th>" +
-                    ("<th>" + exports.aliases.occupants + "</th>") +
-                    "</tr>" +
-                    "</thead>" +
-                    "<tbody></tbody>" +
-                    "</table>";
+            searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
+                        <thead><tr>
+                        <th class="has-width-1"></th>
+                        <th>${los.escapedAliases.Occupancy} Type</th>
+                        <th>${los.escapedAliases.Lot}</th>
+                        <th>${los.escapedAliases.OccupancyStartDate}</th>
+                        <th>End Date</th>
+                        <th>${los.escapedAliases.Occupants}</th>
+                        </tr></thead>
+                        <tbody></tbody>
+                        </table>`;
             for (const lotOccupancy of responseJSON.lotOccupancies) {
                 const rowElement = document.createElement("tr");
                 rowElement.className = "container--lotOccupancy";
@@ -432,11 +408,7 @@ document.querySelector("#button--addLotOccupancy").addEventListener("click", () 
                     rowElement.insertAdjacentHTML("beforeend", "<td>" + cityssm.escapeHTML(lotOccupancy.lotName || "") + "</td>");
                 }
                 else {
-                    rowElement.insertAdjacentHTML("beforeend", "<td>" +
-                        '<span class="has-text-grey">(No ' +
-                        exports.aliases.lot +
-                        ")</span>" +
-                        "</td>");
+                    rowElement.insertAdjacentHTML("beforeend", `<td><span class="has-text-grey">(No ${los.escapedAliases.Lot})</span></td>`);
                 }
                 rowElement.insertAdjacentHTML("beforeend", "<td>" +
                     lotOccupancy.occupancyStartDateString +
@@ -457,13 +429,15 @@ document.querySelector("#button--addLotOccupancy").addEventListener("click", () 
                                         (lotOccupancy.lotOccupancyOccupants.length - 1)
                                     : "")) +
                         "</td>"));
-                rowElement.querySelector(".button--addLotOccupancy").addEventListener("click", doAddLotOccupancy);
+                rowElement
+                    .querySelector(".button--addLotOccupancy")
+                    .addEventListener("click", doAddLotOccupancy);
                 searchResultsContainerElement.querySelector("tbody").append(rowElement);
             }
         });
-    };
+    }
     cityssm.openHtmlModal("workOrder-addLotOccupancy", {
-        onshow: (modalElement) => {
+        onshow(modalElement) {
             los.populateAliases(modalElement);
             searchFormElement = modalElement.querySelector("form");
             searchResultsContainerElement = modalElement.querySelector("#resultsContainer--lotOccupancyAdd");
@@ -471,18 +445,18 @@ document.querySelector("#button--addLotOccupancy").addEventListener("click", () 
             modalElement.querySelector("#lotOccupancySearch--occupancyEffectiveDateString").value = document.querySelector("#workOrderEdit--workOrderOpenDateString").value;
             doSearch();
         },
-        onshown: (modalElement) => {
+        onshown(modalElement) {
             bulmaJS.toggleHtmlClipped();
             modalElement.querySelector("#lotOccupancySearch--occupantName").addEventListener("change", doSearch);
             modalElement.querySelector("#lotOccupancySearch--lotName").addEventListener("change", doSearch);
             searchFormElement.addEventListener("submit", doSearch);
         },
-        onremoved: () => {
+        onremoved() {
             bulmaJS.toggleHtmlClipped();
         }
     });
 });
-const doAddLot = (clickEvent) => {
+function doAddLot(clickEvent) {
     const rowElement = clickEvent.currentTarget.closest("tr");
     const lotId = rowElement.dataset.lotId;
     addLot(lotId, (success) => {
@@ -490,11 +464,11 @@ const doAddLot = (clickEvent) => {
             rowElement.remove();
         }
     });
-};
+}
 document.querySelector("#button--addLot").addEventListener("click", () => {
     let searchFormElement;
     let searchResultsContainerElement;
-    const doSearch = (event) => {
+    function doSearch(event) {
         if (event) {
             event.preventDefault();
         }
@@ -511,19 +485,16 @@ document.querySelector("#button--addLot").addEventListener("click", () => {
                         "</div>";
                 return;
             }
-            searchResultsContainerElement.innerHTML =
-                '<table class="table is-fullwidth is-striped is-hoverable">' +
-                    "<thead>" +
-                    "<tr>" +
-                    '<th class="has-width-1"></th>' +
-                    ("<th>" + exports.aliases.lot + "</th>") +
-                    ("<th>" + exports.aliases.map + "</th>") +
-                    ("<th>" + exports.aliases.lot + " Type</th>") +
-                    "<th>Status</th>" +
-                    "</tr>" +
-                    "</thead>" +
-                    "<tbody></tbody>" +
-                    "</table>";
+            searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
+                    <thead><tr>
+                    <th class="has-width-1"></th>
+                    <th>${los.escapedAliases.Lot}</th>
+                    <th>${los.escapedAliases.Map}</th>
+                    <th>${los.escapedAliases.Lot} Type</th>
+                    <th>Status</th>
+                    </tr></thead>
+                    <tbody></tbody>
+                    </table>`;
             for (const lot of responseJSON.lots) {
                 const rowElement = document.createElement("tr");
                 rowElement.className = "container--lot";
@@ -542,13 +513,15 @@ document.querySelector("#button--addLot").addEventListener("click", () => {
                         "</td>" +
                         ("<td>" + cityssm.escapeHTML(lot.lotType || "") + "</td>") +
                         ("<td>" + cityssm.escapeHTML(lot.lotStatus || "") + "</td>");
-                rowElement.querySelector(".button--addLot").addEventListener("click", doAddLot);
+                rowElement
+                    .querySelector(".button--addLot")
+                    .addEventListener("click", doAddLot);
                 searchResultsContainerElement.querySelector("tbody").append(rowElement);
             }
         });
-    };
+    }
     cityssm.openHtmlModal("workOrder-addLot", {
-        onshow: (modalElement) => {
+        onshow(modalElement) {
             los.populateAliases(modalElement);
             searchFormElement = modalElement.querySelector("form");
             searchResultsContainerElement = modalElement.querySelector("#resultsContainer--lotAdd");
@@ -563,13 +536,13 @@ document.querySelector("#button--addLot").addEventListener("click", () => {
             }
             doSearch();
         },
-        onshown: (modalElement) => {
+        onshown(modalElement) {
             bulmaJS.toggleHtmlClipped();
             modalElement.querySelector("#lotSearch--lotName").addEventListener("change", doSearch);
             modalElement.querySelector("#lotSearch--lotStatusId").addEventListener("change", doSearch);
             searchFormElement.addEventListener("submit", doSearch);
         },
-        onremoved: () => {
+        onremoved() {
             bulmaJS.toggleHtmlClipped();
         }
     });

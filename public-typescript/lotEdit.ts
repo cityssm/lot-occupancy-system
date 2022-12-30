@@ -503,10 +503,7 @@ declare const bulmaJS: BulmaJS;
     }
 
     if (!isCreate) {
-        (document.querySelector("#lotComments--add") as HTMLButtonElement).addEventListener(
-            "click",
-            openAddCommentModal
-        );
+        document.querySelector("#lotComments--add")!.addEventListener("click", openAddCommentModal);
         renderLotComments();
     }
 })();

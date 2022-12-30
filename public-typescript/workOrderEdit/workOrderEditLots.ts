@@ -19,12 +19,12 @@ delete exports.workOrderLots;
 let workOrderLotOccupancies: recordTypes.LotOccupancy[] = exports.workOrderLotOccupancies;
 delete exports.workOrderLotOccupancies;
 
-const deleteLotOccupancy = (clickEvent: Event) => {
+function deleteLotOccupancy(clickEvent: Event): void {
     const lotOccupancyId = (
         (clickEvent.currentTarget as HTMLElement).closest(".container--lotOccupancy") as HTMLElement
     ).dataset.lotOccupancyId;
 
-    const doDelete = () => {
+    function doDelete(): void {
         cityssm.postJSON(
             los.urlPrefix + "/workOrders/doDeleteWorkOrderLotOccupancy",
             {
@@ -48,25 +48,20 @@ const deleteLotOccupancy = (clickEvent: Event) => {
                 }
             }
         );
-    };
+    }
 
     bulmaJS.confirm({
-        title: "Delete " + exports.aliases.lot + " " + exports.aliases.occupancy + " Relationship",
-        message:
-            "Are you sure you want to remove the relationship to this " +
-            exports.aliases.lot.toLowerCase() +
-            " " +
-            exports.aliases.occupancy.toLowerCase() +
-            " record from this work order?  Note that the record will remain.",
+        title: `Delete ${exports.aliases.occupancy} Relationship`,
+        message: `Are you sure you want to remove the relationship to this ${exports.aliases.occupancy.toLowerCase()} record from this work order?  Note that the record will remain.`,
         contextualColorName: "warning",
         okButton: {
             text: "Yes, Delete Relationship",
             callbackFunction: doDelete
         }
     });
-};
+}
 
-const addLot = (lotId: number | string, callbackFunction?: (success?: boolean) => void) => {
+function addLot(lotId: number | string, callbackFunction?: (success?: boolean) => void): void {
     cityssm.postJSON(
         los.urlPrefix + "/workOrders/doAddWorkOrderLot",
         {
@@ -94,12 +89,12 @@ const addLot = (lotId: number | string, callbackFunction?: (success?: boolean) =
             }
         }
     );
-};
+}
 
-const addLotOccupancy = (
+function addLotOccupancy(
     lotOccupancyId: number | string,
     callbackFunction?: (success?: boolean) => void
-) => {
+): void {
     cityssm.postJSON(
         los.urlPrefix + "/workOrders/doAddWorkOrderLotOccupancy",
         {
@@ -127,14 +122,14 @@ const addLotOccupancy = (
             }
         }
     );
-};
+}
 
-const addLotFromLotOccupancy = (clickEvent: Event) => {
+function addLotFromLotOccupancy(clickEvent: Event): void {
     const lotId = (clickEvent.currentTarget as HTMLElement).dataset.lotId!;
     addLot(lotId);
-};
+}
 
-const renderRelatedOccupancies = () => {
+function renderRelatedOccupancies(): void {
     const occupanciesContainerElement = document.querySelector(
         "#container--lotOccupancies"
     ) as HTMLElement;
@@ -144,31 +139,22 @@ const renderRelatedOccupancies = () => {
     ).textContent = workOrderLotOccupancies.length.toString();
 
     if (workOrderLotOccupancies.length === 0) {
-        occupanciesContainerElement.innerHTML =
-            '<div class="message is-info">' +
-            '<p class="message-body">There are no ' +
-            exports.aliases.occupancies.toLowerCase() +
-            " associated with this work order.</p>" +
-            "</div>";
+        occupanciesContainerElement.innerHTML = `<div class="message is-info">
+            <p class="message-body">There are no ${exports.aliases.occupancies.toLowerCase()} associated with this work order.</p>
+            </div>`;
 
         return;
     }
 
-    occupanciesContainerElement.innerHTML =
-        '<table class="table is-fullwidth is-striped is-hoverable">' +
-        "<thead>" +
-        "<tr>" +
-        '<th class="has-width-1"></th>' +
-        ("<th>" + exports.aliases.occupancy + " Type</th>") +
-        ("<th>" + exports.aliases.lot + "</th>") +
-        ("<th>" + exports.aliases.occupancyStartDate + "</th>") +
-        "<th>End Date</th>" +
-        ("<th>" + exports.aliases.occupants + "</th>") +
-        '<th class="has-width-1"></th>' +
-        "</tr>" +
-        "</thead>" +
-        "<tbody></tbody>" +
-        "</table>";
+    occupanciesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
+        <thead><tr>
+        <th class="has-width-1"></th><th>${los.escapedAliases.Occupancy} Type</th>
+        <th>${los.escapedAliases.Lot}</th><th>${los.escapedAliases.OccupancyStartDate}</th>
+        <th>End Date</th><th>${los.escapedAliases.Occupants}</th>
+        <th class="has-width-1"></th>
+        </tr></thead>
+        <tbody></tbody>
+        </table>`;
 
     const currentDateString = cityssm.dateToString(new Date());
 
@@ -232,11 +218,7 @@ const renderRelatedOccupancies = () => {
         } else {
             rowElement.insertAdjacentHTML(
                 "beforeend",
-                "<td>" +
-                    '<span class="has-text-grey">(No ' +
-                    exports.aliases.lot +
-                    ")</span>" +
-                    "</td>"
+                `<td><span class="has-text-grey">(No ${exports.aliases.lot})</span></td>`
             );
         }
 
@@ -279,21 +261,20 @@ const renderRelatedOccupancies = () => {
         );
 
         if (lotOccupancy.lotId && !hasLotRecord) {
-            (rowElement.querySelector(".button--addLot") as HTMLButtonElement).addEventListener(
-                "click",
-                addLotFromLotOccupancy
-            );
+            rowElement
+                .querySelector(".button--addLot")!
+                .addEventListener("click", addLotFromLotOccupancy);
         }
 
-        (
-            rowElement.querySelector(".button--deleteLotOccupancy") as HTMLButtonElement
-        ).addEventListener("click", deleteLotOccupancy);
+        rowElement
+            .querySelector(".button--deleteLotOccupancy")!
+            .addEventListener("click", deleteLotOccupancy);
 
         occupanciesContainerElement.querySelector("tbody")!.append(rowElement);
     }
-};
+}
 
-const openEditLotStatus = (clickEvent: Event) => {
+function openEditLotStatus(clickEvent: Event): void {
     const lotId = Number.parseInt(
         ((clickEvent.currentTarget as HTMLElement).closest(".container--lot") as HTMLElement)
             .dataset.lotId!,
@@ -306,7 +287,7 @@ const openEditLotStatus = (clickEvent: Event) => {
 
     let editCloseModalFunction: () => void;
 
-    const doUpdateLotStatus = (submitEvent: SubmitEvent) => {
+    function doUpdateLotStatus(submitEvent: SubmitEvent) {
         submitEvent.preventDefault();
 
         cityssm.postJSON(
@@ -330,10 +311,10 @@ const openEditLotStatus = (clickEvent: Event) => {
                 }
             }
         );
-    };
+    }
 
     cityssm.openHtmlModal("lot-editLotStatus", {
-        onshow: (modalElement) => {
+        onshow(modalElement) {
             los.populateAliases(modalElement);
 
             (modalElement.querySelector("#lotStatusEdit--lotId") as HTMLInputElement).value =
@@ -378,25 +359,25 @@ const openEditLotStatus = (clickEvent: Event) => {
                     '<input name="workOrderId" type="hidden" value="' + workOrderId + '" />'
                 );
         },
-        onshown: (modalElement, closeModalFunction) => {
+        onshown(modalElement, closeModalFunction) {
             editCloseModalFunction = closeModalFunction;
 
             bulmaJS.toggleHtmlClipped();
 
             modalElement.querySelector("form")!.addEventListener("submit", doUpdateLotStatus);
         },
-        onremoved: () => {
+        onremoved() {
             bulmaJS.toggleHtmlClipped();
         }
     });
-};
+}
 
-const deleteLot = (clickEvent: Event) => {
+function deleteLot(clickEvent: Event): void {
     const lotId = (
         (clickEvent.currentTarget as HTMLElement).closest(".container--lot") as HTMLElement
     ).dataset.lotId;
 
-    const doDelete = () => {
+    function doDelete(): void {
         cityssm.postJSON(
             los.urlPrefix + "/workOrders/doDeleteWorkOrderLot",
             {
@@ -420,54 +401,43 @@ const deleteLot = (clickEvent: Event) => {
                 }
             }
         );
-    };
+    }
 
     bulmaJS.confirm({
-        title: "Delete " + exports.aliases.lot + " " + exports.aliases.occupancy + " Relationship",
-        message:
-            "Are you sure you want to remove the relationship to this " +
-            exports.aliases.lot.toLowerCase() +
-            " " +
-            exports.aliases.occupancy.toLowerCase() +
-            " record from this work order?  Note that the record will remain.",
+        title: `Delete ${los.escapedAliases.Occupancy} Relationship`,
+        message: `Are you sure you want to remove the relationship to this ${los.escapedAliases.occupancy} record from this work order?  Note that the record will remain.`,
         contextualColorName: "warning",
         okButton: {
             text: "Yes, Delete Relationship",
             callbackFunction: doDelete
         }
     });
-};
+}
 
-const renderRelatedLots = () => {
+function renderRelatedLots() {
     const lotsContainerElement = document.querySelector("#container--lots") as HTMLElement;
 
     (document.querySelector(".tabs a[href='#relatedTab--lots'] .tag") as HTMLElement).textContent =
         workOrderLots.length.toString();
 
     if (workOrderLots.length === 0) {
-        lotsContainerElement.innerHTML =
-            '<div class="message is-info">' +
-            '<p class="message-body">There are no ' +
-            exports.aliases.lots.toLowerCase() +
-            " associated with this work order.</p>" +
-            "</div>";
+        lotsContainerElement.innerHTML = `<div class="message is-info">
+            <p class="message-body">There are no ${los.escapedAliases.lots} associated with this work order.</p>
+            </div>`;
 
         return;
     }
 
-    lotsContainerElement.innerHTML =
-        '<table class="table is-fullwidth is-striped is-hoverable">' +
-        "<thead>" +
-        "<tr>" +
-        ("<th>" + exports.aliases.lot + "</th>") +
-        ("<th>" + exports.aliases.map + "</th>") +
-        ("<th>" + exports.aliases.lot + " Type</th>") +
-        "<th>Status</th>" +
-        '<th class="has-width-1"></th>' +
-        "</tr>" +
-        "</thead>" +
-        "<tbody></tbody>" +
-        "</table>";
+    lotsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
+        <thead><tr>
+        <th>${los.escapedAliases.Lot}</th>
+        <th>${los.escapedAliases.Map}</th>
+        <th>${los.escapedAliases.Lot} Type</th>
+        <th>Status</th>
+        <th class="has-width-1"></th>
+        </tr></thead>
+        <tbody></tbody>
+        </table>`;
 
     for (const lot of workOrderLots) {
         const rowElement = document.createElement("tr");
@@ -501,28 +471,24 @@ const renderRelatedLots = () => {
                 "</button>" +
                 "</td>");
 
-        (rowElement.querySelector(".button--editLotStatus") as HTMLButtonElement).addEventListener(
-            "click",
-            openEditLotStatus
-        );
+        rowElement
+            .querySelector(".button--editLotStatus")!
+            .addEventListener("click", openEditLotStatus);
 
-        (rowElement.querySelector(".button--deleteLot") as HTMLButtonElement).addEventListener(
-            "click",
-            deleteLot
-        );
+        rowElement.querySelector(".button--deleteLot")!.addEventListener("click", deleteLot);
 
         lotsContainerElement.querySelector("tbody")!.append(rowElement);
     }
-};
+}
 
-const renderRelatedLotsAndOccupancies = () => {
+function renderRelatedLotsAndOccupancies(): void {
     renderRelatedOccupancies();
     renderRelatedLots();
-};
+}
 
 renderRelatedLotsAndOccupancies();
 
-const doAddLotOccupancy = (clickEvent: Event) => {
+function doAddLotOccupancy(clickEvent: Event) {
     const rowElement = (clickEvent.currentTarget as HTMLElement).closest("tr")!;
 
     const lotOccupancyId = rowElement.dataset.lotOccupancyId!;
@@ -532,172 +498,158 @@ const doAddLotOccupancy = (clickEvent: Event) => {
             rowElement.remove();
         }
     });
-};
+}
 
-(document.querySelector("#button--addLotOccupancy") as HTMLButtonElement).addEventListener(
-    "click",
-    () => {
-        let searchFormElement: HTMLFormElement;
-        let searchResultsContainerElement: HTMLElement;
+document.querySelector("#button--addLotOccupancy")!.addEventListener("click", () => {
+    let searchFormElement: HTMLFormElement;
+    let searchResultsContainerElement: HTMLElement;
 
-        const doSearch = (event?: Event) => {
-            if (event) {
-                event.preventDefault();
-            }
+    function doSearch(event?: Event) {
+        if (event) {
+            event.preventDefault();
+        }
 
-            searchResultsContainerElement.innerHTML =
-                '<p class="has-text-centered has-text-grey-dark">' +
-                '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-                "Searching..." +
-                "</p>";
+        searchResultsContainerElement.innerHTML =
+            '<p class="has-text-centered has-text-grey-dark">' +
+            '<i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
+            "Searching..." +
+            "</p>";
 
-            cityssm.postJSON(
-                los.urlPrefix + "/lotOccupancies/doSearchLotOccupancies",
-                searchFormElement,
-                (responseJSON: { lotOccupancies: recordTypes.LotOccupancy[] }) => {
-                    if (responseJSON.lotOccupancies.length === 0) {
-                        searchResultsContainerElement.innerHTML =
-                            '<div class="message is-info">' +
-                            '<p class="message-body">There are no records that meet the search criteria.</p>' +
-                            "</div>";
-
-                        return;
-                    }
-
+        cityssm.postJSON(
+            los.urlPrefix + "/lotOccupancies/doSearchLotOccupancies",
+            searchFormElement,
+            (responseJSON: { lotOccupancies: recordTypes.LotOccupancy[] }) => {
+                if (responseJSON.lotOccupancies.length === 0) {
                     searchResultsContainerElement.innerHTML =
-                        '<table class="table is-fullwidth is-striped is-hoverable">' +
-                        "<thead>" +
-                        "<tr>" +
-                        '<th class="has-width-1"></th>' +
-                        ("<th>" + exports.aliases.occupancy + " Type</th>") +
-                        ("<th>" + exports.aliases.lot + "</th>") +
-                        "<th>Start Date</th>" +
-                        "<th>End Date</th>" +
-                        ("<th>" + exports.aliases.occupants + "</th>") +
-                        "</tr>" +
-                        "</thead>" +
-                        "<tbody></tbody>" +
-                        "</table>";
+                        '<div class="message is-info">' +
+                        '<p class="message-body">There are no records that meet the search criteria.</p>' +
+                        "</div>";
 
-                    for (const lotOccupancy of responseJSON.lotOccupancies) {
-                        const rowElement = document.createElement("tr");
-                        rowElement.className = "container--lotOccupancy";
-                        rowElement.dataset.lotOccupancyId = lotOccupancy.lotOccupancyId!.toString();
+                    return;
+                }
 
-                        rowElement.innerHTML =
-                            '<td class="has-text-centered">' +
-                            '<button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">' +
-                            '<i class="fas fa-plus" aria-hidden="true"></i>' +
-                            "</button>" +
-                            "</td>" +
-                            ('<td class="has-text-weight-bold">' +
-                                cityssm.escapeHTML(lotOccupancy.occupancyType || "") +
-                                "</td>");
+                searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
+                        <thead><tr>
+                        <th class="has-width-1"></th>
+                        <th>${los.escapedAliases.Occupancy} Type</th>
+                        <th>${los.escapedAliases.Lot}</th>
+                        <th>${los.escapedAliases.OccupancyStartDate}</th>
+                        <th>End Date</th>
+                        <th>${los.escapedAliases.Occupants}</th>
+                        </tr></thead>
+                        <tbody></tbody>
+                        </table>`;
 
-                        if (lotOccupancy.lotId) {
-                            rowElement.insertAdjacentHTML(
-                                "beforeend",
-                                "<td>" + cityssm.escapeHTML(lotOccupancy.lotName || "") + "</td>"
-                            );
-                        } else {
-                            rowElement.insertAdjacentHTML(
-                                "beforeend",
-                                "<td>" +
-                                    '<span class="has-text-grey">(No ' +
-                                    exports.aliases.lot +
-                                    ")</span>" +
-                                    "</td>"
-                            );
-                        }
+                for (const lotOccupancy of responseJSON.lotOccupancies) {
+                    const rowElement = document.createElement("tr");
+                    rowElement.className = "container--lotOccupancy";
+                    rowElement.dataset.lotOccupancyId = lotOccupancy.lotOccupancyId!.toString();
 
+                    rowElement.innerHTML =
+                        '<td class="has-text-centered">' +
+                        '<button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">' +
+                        '<i class="fas fa-plus" aria-hidden="true"></i>' +
+                        "</button>" +
+                        "</td>" +
+                        ('<td class="has-text-weight-bold">' +
+                            cityssm.escapeHTML(lotOccupancy.occupancyType || "") +
+                            "</td>");
+
+                    if (lotOccupancy.lotId) {
                         rowElement.insertAdjacentHTML(
                             "beforeend",
-                            "<td>" +
-                                lotOccupancy.occupancyStartDateString +
-                                "</td>" +
-                                ("<td>" +
-                                    (lotOccupancy.occupancyEndDate
-                                        ? lotOccupancy.occupancyEndDateString
-                                        : '<span class="has-text-grey">(No End Date)</span>') +
-                                    "</td>") +
-                                ("<td>" +
-                                    (lotOccupancy.lotOccupancyOccupants!.length === 0
-                                        ? '<span class="has-text-grey">(No ' +
-                                          cityssm.escapeHTML(exports.aliases.occupants) +
-                                          ")</span>"
-                                        : cityssm.escapeHTML(
-                                              lotOccupancy.lotOccupancyOccupants![0].occupantName!
-                                          ) +
-                                          (lotOccupancy.lotOccupancyOccupants!.length > 1
-                                              ? " plus " +
-                                                (lotOccupancy.lotOccupancyOccupants!.length - 1)
-                                              : "")) +
-                                    "</td>")
+                            "<td>" + cityssm.escapeHTML(lotOccupancy.lotName || "") + "</td>"
                         );
-
-                        (
-                            rowElement.querySelector(
-                                ".button--addLotOccupancy"
-                            ) as HTMLButtonElement
-                        ).addEventListener("click", doAddLotOccupancy);
-
-                        searchResultsContainerElement.querySelector("tbody")!.append(rowElement);
+                    } else {
+                        rowElement.insertAdjacentHTML(
+                            "beforeend",
+                            `<td><span class="has-text-grey">(No ${los.escapedAliases.Lot})</span></td>`
+                        );
                     }
+
+                    rowElement.insertAdjacentHTML(
+                        "beforeend",
+                        "<td>" +
+                            lotOccupancy.occupancyStartDateString +
+                            "</td>" +
+                            ("<td>" +
+                                (lotOccupancy.occupancyEndDate
+                                    ? lotOccupancy.occupancyEndDateString
+                                    : '<span class="has-text-grey">(No End Date)</span>') +
+                                "</td>") +
+                            ("<td>" +
+                                (lotOccupancy.lotOccupancyOccupants!.length === 0
+                                    ? '<span class="has-text-grey">(No ' +
+                                      cityssm.escapeHTML(exports.aliases.occupants) +
+                                      ")</span>"
+                                    : cityssm.escapeHTML(
+                                          lotOccupancy.lotOccupancyOccupants![0].occupantName!
+                                      ) +
+                                      (lotOccupancy.lotOccupancyOccupants!.length > 1
+                                          ? " plus " +
+                                            (lotOccupancy.lotOccupancyOccupants!.length - 1)
+                                          : "")) +
+                                "</td>")
+                    );
+
+                    rowElement
+                        .querySelector(".button--addLotOccupancy")!
+                        .addEventListener("click", doAddLotOccupancy);
+
+                    searchResultsContainerElement.querySelector("tbody")!.append(rowElement);
                 }
-            );
-        };
-
-        cityssm.openHtmlModal("workOrder-addLotOccupancy", {
-            onshow: (modalElement) => {
-                los.populateAliases(modalElement);
-
-                searchFormElement = modalElement.querySelector("form")!;
-
-                searchResultsContainerElement = modalElement.querySelector(
-                    "#resultsContainer--lotOccupancyAdd"
-                ) as HTMLElement;
-
-                (
-                    modalElement.querySelector(
-                        "#lotOccupancySearch--notWorkOrderId"
-                    ) as HTMLInputElement
-                ).value = workOrderId;
-
-                (
-                    modalElement.querySelector(
-                        "#lotOccupancySearch--occupancyEffectiveDateString"
-                    ) as HTMLInputElement
-                ).value = (
-                    document.querySelector(
-                        "#workOrderEdit--workOrderOpenDateString"
-                    ) as HTMLInputElement
-                ).value;
-
-                doSearch();
-            },
-            onshown: (modalElement) => {
-                bulmaJS.toggleHtmlClipped();
-
-                (
-                    modalElement.querySelector(
-                        "#lotOccupancySearch--occupantName"
-                    ) as HTMLInputElement
-                ).addEventListener("change", doSearch);
-
-                (
-                    modalElement.querySelector("#lotOccupancySearch--lotName") as HTMLInputElement
-                ).addEventListener("change", doSearch);
-
-                searchFormElement.addEventListener("submit", doSearch);
-            },
-            onremoved: () => {
-                bulmaJS.toggleHtmlClipped();
             }
-        });
+        );
     }
-);
 
-const doAddLot = (clickEvent: Event) => {
+    cityssm.openHtmlModal("workOrder-addLotOccupancy", {
+        onshow(modalElement) {
+            los.populateAliases(modalElement);
+
+            searchFormElement = modalElement.querySelector("form")!;
+
+            searchResultsContainerElement = modalElement.querySelector(
+                "#resultsContainer--lotOccupancyAdd"
+            ) as HTMLElement;
+
+            (
+                modalElement.querySelector(
+                    "#lotOccupancySearch--notWorkOrderId"
+                ) as HTMLInputElement
+            ).value = workOrderId;
+
+            (
+                modalElement.querySelector(
+                    "#lotOccupancySearch--occupancyEffectiveDateString"
+                ) as HTMLInputElement
+            ).value = (
+                document.querySelector(
+                    "#workOrderEdit--workOrderOpenDateString"
+                ) as HTMLInputElement
+            ).value;
+
+            doSearch();
+        },
+        onshown(modalElement) {
+            bulmaJS.toggleHtmlClipped();
+
+            (
+                modalElement.querySelector("#lotOccupancySearch--occupantName") as HTMLInputElement
+            ).addEventListener("change", doSearch);
+
+            (
+                modalElement.querySelector("#lotOccupancySearch--lotName") as HTMLInputElement
+            ).addEventListener("change", doSearch);
+
+            searchFormElement.addEventListener("submit", doSearch);
+        },
+        onremoved() {
+            bulmaJS.toggleHtmlClipped();
+        }
+    });
+});
+
+function doAddLot(clickEvent: Event): void {
     const rowElement = (clickEvent.currentTarget as HTMLElement).closest("tr")!;
 
     const lotId = rowElement.dataset.lotId!;
@@ -707,13 +659,13 @@ const doAddLot = (clickEvent: Event) => {
             rowElement.remove();
         }
     });
-};
+}
 
-(document.querySelector("#button--addLot") as HTMLButtonElement).addEventListener("click", () => {
+document.querySelector("#button--addLot")!.addEventListener("click", () => {
     let searchFormElement: HTMLFormElement;
     let searchResultsContainerElement: HTMLElement;
 
-    const doSearch = (event?: Event) => {
+    function doSearch(event?: Event) {
         if (event) {
             event.preventDefault();
         }
@@ -737,19 +689,16 @@ const doAddLot = (clickEvent: Event) => {
                     return;
                 }
 
-                searchResultsContainerElement.innerHTML =
-                    '<table class="table is-fullwidth is-striped is-hoverable">' +
-                    "<thead>" +
-                    "<tr>" +
-                    '<th class="has-width-1"></th>' +
-                    ("<th>" + exports.aliases.lot + "</th>") +
-                    ("<th>" + exports.aliases.map + "</th>") +
-                    ("<th>" + exports.aliases.lot + " Type</th>") +
-                    "<th>Status</th>" +
-                    "</tr>" +
-                    "</thead>" +
-                    "<tbody></tbody>" +
-                    "</table>";
+                searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
+                    <thead><tr>
+                    <th class="has-width-1"></th>
+                    <th>${los.escapedAliases.Lot}</th>
+                    <th>${los.escapedAliases.Map}</th>
+                    <th>${los.escapedAliases.Lot} Type</th>
+                    <th>Status</th>
+                    </tr></thead>
+                    <tbody></tbody>
+                    </table>`;
 
                 for (const lot of responseJSON.lots) {
                     const rowElement = document.createElement("tr");
@@ -771,18 +720,18 @@ const doAddLot = (clickEvent: Event) => {
                         ("<td>" + cityssm.escapeHTML(lot.lotType || "") + "</td>") +
                         ("<td>" + cityssm.escapeHTML(lot.lotStatus || "") + "</td>");
 
-                    (
-                        rowElement.querySelector(".button--addLot") as HTMLButtonElement
-                    ).addEventListener("click", doAddLot);
+                    rowElement
+                        .querySelector(".button--addLot")!
+                        .addEventListener("click", doAddLot);
 
                     searchResultsContainerElement.querySelector("tbody")!.append(rowElement);
                 }
             }
         );
-    };
+    }
 
     cityssm.openHtmlModal("workOrder-addLot", {
-        onshow: (modalElement) => {
+        onshow(modalElement) {
             los.populateAliases(modalElement);
 
             searchFormElement = modalElement.querySelector("form")!;
@@ -807,7 +756,7 @@ const doAddLot = (clickEvent: Event) => {
 
             doSearch();
         },
-        onshown: (modalElement) => {
+        onshown(modalElement) {
             bulmaJS.toggleHtmlClipped();
 
             (
@@ -820,7 +769,7 @@ const doAddLot = (clickEvent: Event) => {
 
             searchFormElement.addEventListener("submit", doSearch);
         },
-        onremoved: () => {
+        onremoved() {
             bulmaJS.toggleHtmlClipped();
         }
     });
