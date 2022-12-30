@@ -28,7 +28,7 @@ declare const bulmaJS: BulmaJS;
 
     const expandedOccupancyTypes = new Set<number>();
 
-    const toggleOccupancyTypeFields = (clickEvent: Event) => {
+    function toggleOccupancyTypeFields(clickEvent: Event): void {
         const toggleButtonElement = clickEvent.currentTarget as HTMLButtonElement;
 
         const occupancyTypeElement = toggleButtonElement.closest(
@@ -52,14 +52,14 @@ declare const bulmaJS: BulmaJS;
         for (const panelBlockElement of panelBlockElements) {
             panelBlockElement.classList.toggle("is-hidden");
         }
-    };
+    }
 
-    const occupancyTypeResponseHandler = (responseJSON: {
+    function occupancyTypeResponseHandler(responseJSON: {
         success: boolean;
         errorMessage?: string;
         occupancyTypes?: recordTypes.OccupancyType[];
         allOccupancyTypeFields?: recordTypes.OccupancyTypeField[];
-    }) => {
+    }) {
         if (responseJSON.success) {
             occupancyTypes = responseJSON.occupancyTypes!;
             allOccupancyTypeFields = responseJSON.allOccupancyTypeFields!;
@@ -71,9 +71,9 @@ declare const bulmaJS: BulmaJS;
                 contextualColorName: "danger"
             });
         }
-    };
+    }
 
-    const deleteOccupancyType = (clickEvent: Event) => {
+    function deleteOccupancyType(clickEvent: Event) {
         const occupancyTypeId = Number.parseInt(
             (
                 (clickEvent.currentTarget as HTMLElement).closest(
@@ -83,7 +83,7 @@ declare const bulmaJS: BulmaJS;
             10
         );
 
-        const doDelete = () => {
+        function doDelete(): void {
             cityssm.postJSON(
                 los.urlPrefix + "/admin/doDeleteOccupancyType",
                 {
@@ -91,23 +91,20 @@ declare const bulmaJS: BulmaJS;
                 },
                 occupancyTypeResponseHandler
             );
-        };
+        }
 
         bulmaJS.confirm({
-            title: "Delete " + exports.aliases.occupancy + " Type",
-            message:
-                "Are you sure you want to delete this " +
-                exports.aliases.occupancy.toLowerCase() +
-                " type?",
+            title: `Delete ${exports.aliases.occupancy} Type`,
+            message: `Are you sure you want to delete this ${exports.aliases.occupancy.toLowerCase()} type?`,
             contextualColorName: "warning",
             okButton: {
-                text: "Yes, Delete " + exports.aliases.occupancy + " Type",
+                text: `Yes, Delete ${exports.aliases.occupancy} Type`,
                 callbackFunction: doDelete
             }
         });
-    };
+    }
 
-    const openEditOccupancyType = (clickEvent: Event) => {
+    function openEditOccupancyType(clickEvent: Event): void {
         const occupancyTypeId = Number.parseInt(
             (
                 (clickEvent.currentTarget as HTMLElement).closest(
@@ -123,7 +120,7 @@ declare const bulmaJS: BulmaJS;
 
         let editCloseModalFunction: () => void;
 
-        const doEdit = (submitEvent: SubmitEvent) => {
+        function doEdit(submitEvent: SubmitEvent): void {
             submitEvent.preventDefault();
 
             cityssm.postJSON(
@@ -141,10 +138,10 @@ declare const bulmaJS: BulmaJS;
                     }
                 }
             );
-        };
+        }
 
         cityssm.openHtmlModal("adminOccupancyTypes-editOccupancyType", {
-            onshow: (modalElement) => {
+            onshow(modalElement): void {
                 los.populateAliases(modalElement);
 
                 (
@@ -159,7 +156,7 @@ declare const bulmaJS: BulmaJS;
                     ) as HTMLInputElement
                 ).value = occupancyType.occupancyType;
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
                 editCloseModalFunction = closeModalFunction;
 
                 (
@@ -172,13 +169,13 @@ declare const bulmaJS: BulmaJS;
 
                 bulmaJS.toggleHtmlClipped();
             },
-            onremoved: () => {
+            onremoved() {
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
+    }
 
-    const openAddOccupancyTypeField = (clickEvent: Event) => {
+    function openAddOccupancyTypeField(clickEvent: Event) {
         const occupancyTypeId = Number.parseInt(
             (
                 (clickEvent.currentTarget as HTMLElement).closest(
@@ -190,7 +187,7 @@ declare const bulmaJS: BulmaJS;
 
         let addCloseModalFunction: () => void;
 
-        const doAdd = (submitEvent: SubmitEvent) => {
+        function doAdd(submitEvent: SubmitEvent) {
             submitEvent.preventDefault();
 
             cityssm.postJSON(
@@ -215,10 +212,10 @@ declare const bulmaJS: BulmaJS;
                     }
                 }
             );
-        };
+        }
 
         cityssm.openHtmlModal("adminOccupancyTypes-addOccupancyTypeField", {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
                 los.populateAliases(modalElement);
 
                 if (occupancyTypeId) {
@@ -229,7 +226,7 @@ declare const bulmaJS: BulmaJS;
                     ).value = occupancyTypeId.toString();
                 }
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;
 
                 (
@@ -242,13 +239,13 @@ declare const bulmaJS: BulmaJS;
 
                 bulmaJS.toggleHtmlClipped();
             },
-            onremoved: () => {
+            onremoved() {
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
+    }
 
-    const moveOccupancyTypeUp = (clickEvent: MouseEvent) => {
+    function moveOccupancyTypeUp(clickEvent: MouseEvent) {
         clickEvent.preventDefault();
 
         const occupancyTypeId = (
@@ -265,9 +262,9 @@ declare const bulmaJS: BulmaJS;
             },
             occupancyTypeResponseHandler
         );
-    };
+    }
 
-    const moveOccupancyTypeDown = (clickEvent: MouseEvent) => {
+    function moveOccupancyTypeDown(clickEvent: MouseEvent) {
         clickEvent.preventDefault();
 
         const occupancyTypeId = (
@@ -284,9 +281,9 @@ declare const bulmaJS: BulmaJS;
             },
             occupancyTypeResponseHandler
         );
-    };
+    }
 
-    const openEditOccupancyTypeField = (occupancyTypeId: number, occupancyTypeFieldId: number) => {
+    function openEditOccupancyTypeField(occupancyTypeId: number, occupancyTypeFieldId: number) {
         let occupancyType: recordTypes.OccupancyType | undefined;
 
         if (occupancyTypeId) {
@@ -308,11 +305,11 @@ declare const bulmaJS: BulmaJS;
 
         let editCloseModalFunction: () => void;
 
-        const updateMaximumLengthMin = () => {
+        function updateMaximumLengthMin(): void {
             maximumLengthElement.min = minimumLengthElement.value;
-        };
+        }
 
-        const toggleInputFields = () => {
+        function toggleInputFields(): void {
             if (occupancyTypeFieldValuesElement.value === "") {
                 minimumLengthElement.disabled = false;
                 maximumLengthElement.disabled = false;
@@ -322,9 +319,9 @@ declare const bulmaJS: BulmaJS;
                 maximumLengthElement.disabled = true;
                 patternElement.disabled = true;
             }
-        };
+        }
 
-        const doUpdate = (submitEvent: SubmitEvent) => {
+        function doUpdate(submitEvent: SubmitEvent): void {
             submitEvent.preventDefault();
 
             cityssm.postJSON(
@@ -341,28 +338,28 @@ declare const bulmaJS: BulmaJS;
                     }
                 }
             );
-        };
+        }
 
-        const doDelete = () => {
-            const _doDelete = () => {
-                cityssm.postJSON(
-                    los.urlPrefix + "/admin/doDeleteOccupancyTypeField",
-                    {
-                        occupancyTypeFieldId
-                    },
-                    (responseJSON: {
-                        success: boolean;
-                        errorMessage?: string;
-                        occupancyTypes?: recordTypes.OccupancyType[];
-                    }) => {
-                        occupancyTypeResponseHandler(responseJSON);
-                        if (responseJSON.success) {
-                            editCloseModalFunction();
-                        }
+        function doDelete() {
+            cityssm.postJSON(
+                los.urlPrefix + "/admin/doDeleteOccupancyTypeField",
+                {
+                    occupancyTypeFieldId
+                },
+                (responseJSON: {
+                    success: boolean;
+                    errorMessage?: string;
+                    occupancyTypes?: recordTypes.OccupancyType[];
+                }) => {
+                    occupancyTypeResponseHandler(responseJSON);
+                    if (responseJSON.success) {
+                        editCloseModalFunction();
                     }
-                );
-            };
+                }
+            );
+        }
 
+        function confirmDoDelete() {
             bulmaJS.confirm({
                 title: "Delete Field",
                 message:
@@ -370,10 +367,10 @@ declare const bulmaJS: BulmaJS;
                 contextualColorName: "warning",
                 okButton: {
                     text: "Yes, Delete Field",
-                    callbackFunction: _doDelete
+                    callbackFunction: doDelete
                 }
             });
-        };
+        }
 
         cityssm.openHtmlModal("adminOccupancyTypes-editOccupancyTypeField", {
             onshow: (modalElement) => {
@@ -442,16 +439,16 @@ declare const bulmaJS: BulmaJS;
                     modalElement.querySelector(
                         "#button--deleteOccupancyTypeField"
                     ) as HTMLButtonElement
-                ).addEventListener("click", doDelete);
+                ).addEventListener("click", confirmDoDelete);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
                 cityssm.disableNavBlocker();
             }
         });
-    };
+    }
 
-    const openEditOccupancyTypeFieldByClick = (clickEvent: Event) => {
+    function openEditOccupancyTypeFieldByClick(clickEvent: Event) {
         clickEvent.preventDefault();
 
         const occupancyTypeFieldId = Number.parseInt(
@@ -473,9 +470,9 @@ declare const bulmaJS: BulmaJS;
         );
 
         openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId);
-    };
+    }
 
-    const moveOccupancyTypeFieldUp = (clickEvent: MouseEvent) => {
+    function moveOccupancyTypeFieldUp(clickEvent: MouseEvent) {
         clickEvent.preventDefault();
 
         const occupancyTypeFieldId = (
@@ -492,9 +489,9 @@ declare const bulmaJS: BulmaJS;
             },
             occupancyTypeResponseHandler
         );
-    };
+    }
 
-    const moveOccupancyTypeFieldDown = (clickEvent: MouseEvent) => {
+    function moveOccupancyTypeFieldDown(clickEvent: MouseEvent) {
         clickEvent.preventDefault();
 
         const occupancyTypeFieldId = (
@@ -511,13 +508,13 @@ declare const bulmaJS: BulmaJS;
             },
             occupancyTypeResponseHandler
         );
-    };
+    }
 
-    const renderOccupancyTypeFields = (
+    function renderOccupancyTypeFields(
         panelElement: HTMLElement,
         occupancyTypeId: number | undefined,
         occupancyTypeFields: recordTypes.OccupancyTypeField[]
-    ) => {
+    ) {
         if (occupancyTypeFields.length === 0) {
             panelElement.insertAdjacentHTML(
                 "beforeend",
@@ -591,9 +588,9 @@ declare const bulmaJS: BulmaJS;
                 panelElement.append(panelBlockElement);
             }
         }
-    };
+    }
 
-    const openAddOccupancyTypePrint = (clickEvent: MouseEvent) => {
+    function openAddOccupancyTypePrint(clickEvent: MouseEvent): void {
         const occupancyTypeId = (
             (clickEvent.currentTarget as HTMLElement).closest(
                 ".container--occupancyTypePrintList"
@@ -602,7 +599,7 @@ declare const bulmaJS: BulmaJS;
 
         let closeAddModalFunction: () => void;
 
-        const doAdd = (formEvent: SubmitEvent) => {
+        function doAdd(formEvent: SubmitEvent) {
             formEvent.preventDefault();
 
             cityssm.postJSON(
@@ -621,10 +618,10 @@ declare const bulmaJS: BulmaJS;
                     occupancyTypeResponseHandler(responseJSON);
                 }
             );
-        };
+        }
 
         cityssm.openHtmlModal("adminOccupancyTypes-addOccupancyTypePrint", {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
                 los.populateAliases(modalElement);
 
                 (
@@ -646,15 +643,15 @@ declare const bulmaJS: BulmaJS;
                     printSelectElement.append(optionElement);
                 }
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
                 closeAddModalFunction = closeModalFunction;
 
                 modalElement.querySelector("form")?.addEventListener("submit", doAdd);
             }
         });
-    };
+    }
 
-    const moveOccupancyTypePrintUp = (clickEvent: MouseEvent) => {
+    function moveOccupancyTypePrintUp(clickEvent: MouseEvent): void {
         clickEvent.preventDefault();
 
         const printEJS = (
@@ -678,9 +675,9 @@ declare const bulmaJS: BulmaJS;
             },
             occupancyTypeResponseHandler
         );
-    };
+    }
 
-    const moveOccupancyTypePrintDown = (clickEvent: MouseEvent) => {
+    function moveOccupancyTypePrintDown(clickEvent: MouseEvent): void {
         clickEvent.preventDefault();
 
         const printEJS = (
@@ -704,9 +701,9 @@ declare const bulmaJS: BulmaJS;
             },
             occupancyTypeResponseHandler
         );
-    };
+    }
 
-    const deleteOccupancyTypePrint = (clickEvent: MouseEvent) => {
+    function deleteOccupancyTypePrint(clickEvent: MouseEvent): void {
         clickEvent.preventDefault();
 
         const printEJS = (
@@ -721,7 +718,7 @@ declare const bulmaJS: BulmaJS;
             ) as HTMLElement
         ).dataset.occupancyTypeId;
 
-        const doDelete = () => {
+        function doDelete() {
             cityssm.postJSON(
                 los.urlPrefix + "/admin/doDeleteOccupancyTypePrint",
                 {
@@ -730,7 +727,7 @@ declare const bulmaJS: BulmaJS;
                 },
                 occupancyTypeResponseHandler
             );
-        };
+        }
 
         bulmaJS.confirm({
             title: "Delete Print",
@@ -741,21 +738,21 @@ declare const bulmaJS: BulmaJS;
                 callbackFunction: doDelete
             }
         });
-    };
+    }
 
-    const renderOccupancyTypePrints = (
+    function renderOccupancyTypePrints(
         panelElement: HTMLElement,
         occupancyTypeId: number,
         occupancyTypePrints: string[]
-    ) => {
+    ): void {
         if (occupancyTypePrints.length === 0) {
             panelElement.insertAdjacentHTML(
                 "beforeend",
-                '<div class="panel-block is-block">' +
-                    '<div class="message is-info">' +
-                    '<p class="message-body">There are no prints associated with this record.</p>' +
-                    "</div>" +
-                    "</div>"
+                `<div class="panel-block is-block">
+                    <div class="message is-info">
+                        <p class="message-body">There are no prints associated with this record.</p>
+                    </div>
+                </div>`
             );
         } else {
             for (const printEJS of occupancyTypePrints) {
@@ -834,9 +831,9 @@ declare const bulmaJS: BulmaJS;
                 panelElement.append(panelBlockElement);
             }
         }
-    };
+    }
 
-    const renderOccupancyTypes = () => {
+    function renderOccupancyTypes(): void {
         occupancyTypesContainerElement.innerHTML =
             '<div class="panel container--occupancyType" id="container--allOccupancyTypeFields" data-occupancy-type-id="">' +
             '<div class="panel-heading">' +
@@ -879,20 +876,16 @@ declare const bulmaJS: BulmaJS;
         if (occupancyTypes.length === 0) {
             occupancyTypesContainerElement.insertAdjacentHTML(
                 "afterbegin",
-                '<div class="message is-warning>' +
-                    '<p class="message-body">There are no active ' +
-                    exports.aliases.occupancy.toLowerCase() +
-                    " types.</p>" +
-                    "</div>"
+                `<div class="message is-warning>
+                <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
+                </div>`
             );
 
             occupancyTypePrintsContainerElement.insertAdjacentHTML(
                 "afterbegin",
-                '<div class="message is-warning>' +
-                    '<p class="message-body">There are no active ' +
-                    exports.aliases.occupancy.toLowerCase() +
-                    " types.</p>" +
-                    "</div>"
+                `<div class="message is-warning>
+                <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
+                </div>`
             );
 
             return;
@@ -900,7 +893,6 @@ declare const bulmaJS: BulmaJS;
 
         for (const occupancyType of occupancyTypes) {
             // Types and Fields
-            
             {
                 const occupancyTypeContainer = document.createElement("div");
 
@@ -1011,7 +1003,6 @@ declare const bulmaJS: BulmaJS;
             }
 
             // Prints
-
             {
                 const occupancyTypePrintContainer = document.createElement("div");
 
@@ -1056,7 +1047,7 @@ declare const bulmaJS: BulmaJS;
                 occupancyTypePrintsContainerElement.append(occupancyTypePrintContainer);
             }
         }
-    };
+    }
 
     (document.querySelector("#button--addOccupancyType") as HTMLButtonElement).addEventListener(
         "click",

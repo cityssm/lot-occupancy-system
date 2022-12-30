@@ -10,7 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     let allOccupancyTypeFields = exports.allOccupancyTypeFields;
     delete exports.allOccupancyTypeFields;
     const expandedOccupancyTypes = new Set();
-    const toggleOccupancyTypeFields = (clickEvent) => {
+    function toggleOccupancyTypeFields(clickEvent) {
         const toggleButtonElement = clickEvent.currentTarget;
         const occupancyTypeElement = toggleButtonElement.closest(".container--occupancyType");
         const occupancyTypeId = Number.parseInt(occupancyTypeElement.dataset.occupancyTypeId, 10);
@@ -27,8 +27,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         for (const panelBlockElement of panelBlockElements) {
             panelBlockElement.classList.toggle("is-hidden");
         }
-    };
-    const occupancyTypeResponseHandler = (responseJSON) => {
+    }
+    function occupancyTypeResponseHandler(responseJSON) {
         if (responseJSON.success) {
             occupancyTypes = responseJSON.occupancyTypes;
             allOccupancyTypeFields = responseJSON.allOccupancyTypeFields;
@@ -41,33 +41,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 contextualColorName: "danger"
             });
         }
-    };
-    const deleteOccupancyType = (clickEvent) => {
+    }
+    function deleteOccupancyType(clickEvent) {
         const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId, 10);
-        const doDelete = () => {
+        function doDelete() {
             cityssm.postJSON(los.urlPrefix + "/admin/doDeleteOccupancyType", {
                 occupancyTypeId
             }, occupancyTypeResponseHandler);
-        };
+        }
         bulmaJS.confirm({
-            title: "Delete " + exports.aliases.occupancy + " Type",
-            message: "Are you sure you want to delete this " +
-                exports.aliases.occupancy.toLowerCase() +
-                " type?",
+            title: `Delete ${exports.aliases.occupancy} Type`,
+            message: `Are you sure you want to delete this ${exports.aliases.occupancy.toLowerCase()} type?`,
             contextualColorName: "warning",
             okButton: {
-                text: "Yes, Delete " + exports.aliases.occupancy + " Type",
+                text: `Yes, Delete ${exports.aliases.occupancy} Type`,
                 callbackFunction: doDelete
             }
         });
-    };
-    const openEditOccupancyType = (clickEvent) => {
+    }
+    function openEditOccupancyType(clickEvent) {
         const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId, 10);
         const occupancyType = occupancyTypes.find((currentOccupancyType) => {
             return occupancyTypeId === currentOccupancyType.occupancyTypeId;
         });
         let editCloseModalFunction;
-        const doEdit = (submitEvent) => {
+        function doEdit(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + "/admin/doUpdateOccupancyType", submitEvent.currentTarget, (responseJSON) => {
                 occupancyTypeResponseHandler(responseJSON);
@@ -75,28 +73,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     editCloseModalFunction();
                 }
             });
-        };
+        }
         cityssm.openHtmlModal("adminOccupancyTypes-editOccupancyType", {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
                 los.populateAliases(modalElement);
                 modalElement.querySelector("#occupancyTypeEdit--occupancyTypeId").value = occupancyTypeId.toString();
                 modalElement.querySelector("#occupancyTypeEdit--occupancyType").value = occupancyType.occupancyType;
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
                 editCloseModalFunction = closeModalFunction;
                 modalElement.querySelector("#occupancyTypeEdit--occupancyType").focus();
                 modalElement.querySelector("form").addEventListener("submit", doEdit);
                 bulmaJS.toggleHtmlClipped();
             },
-            onremoved: () => {
+            onremoved() {
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
-    const openAddOccupancyTypeField = (clickEvent) => {
+    }
+    function openAddOccupancyTypeField(clickEvent) {
         const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId, 10);
         let addCloseModalFunction;
-        const doAdd = (submitEvent) => {
+        function doAdd(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + "/admin/doAddOccupancyTypeField", submitEvent.currentTarget, (responseJSON) => {
                 expandedOccupancyTypes.add(occupancyTypeId);
@@ -106,42 +104,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     openEditOccupancyTypeField(occupancyTypeId, responseJSON.occupancyTypeFieldId);
                 }
             });
-        };
+        }
         cityssm.openHtmlModal("adminOccupancyTypes-addOccupancyTypeField", {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
                 los.populateAliases(modalElement);
                 if (occupancyTypeId) {
                     modalElement.querySelector("#occupancyTypeFieldAdd--occupancyTypeId").value = occupancyTypeId.toString();
                 }
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;
                 modalElement.querySelector("#occupancyTypeFieldAdd--occupancyTypeField").focus();
                 modalElement.querySelector("form").addEventListener("submit", doAdd);
                 bulmaJS.toggleHtmlClipped();
             },
-            onremoved: () => {
+            onremoved() {
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
-    const moveOccupancyTypeUp = (clickEvent) => {
+    }
+    function moveOccupancyTypeUp(clickEvent) {
         clickEvent.preventDefault();
         const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId;
         cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypeUp", {
             occupancyTypeId,
             moveToTop: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
-    };
-    const moveOccupancyTypeDown = (clickEvent) => {
+    }
+    function moveOccupancyTypeDown(clickEvent) {
         clickEvent.preventDefault();
         const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId;
         cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypeDown", {
             occupancyTypeId,
             moveToBottom: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
-    };
-    const openEditOccupancyTypeField = (occupancyTypeId, occupancyTypeFieldId) => {
+    }
+    function openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId) {
         let occupancyType;
         if (occupancyTypeId) {
             occupancyType = occupancyTypes.find((currentOccupancyType) => {
@@ -156,10 +154,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let patternElement;
         let occupancyTypeFieldValuesElement;
         let editCloseModalFunction;
-        const updateMaximumLengthMin = () => {
+        function updateMaximumLengthMin() {
             maximumLengthElement.min = minimumLengthElement.value;
-        };
-        const toggleInputFields = () => {
+        }
+        function toggleInputFields() {
             if (occupancyTypeFieldValuesElement.value === "") {
                 minimumLengthElement.disabled = false;
                 maximumLengthElement.disabled = false;
@@ -170,8 +168,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 maximumLengthElement.disabled = true;
                 patternElement.disabled = true;
             }
-        };
-        const doUpdate = (submitEvent) => {
+        }
+        function doUpdate(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + "/admin/doUpdateOccupancyTypeField", submitEvent.currentTarget, (responseJSON) => {
                 occupancyTypeResponseHandler(responseJSON);
@@ -179,28 +177,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     editCloseModalFunction();
                 }
             });
-        };
-        const doDelete = () => {
-            const _doDelete = () => {
-                cityssm.postJSON(los.urlPrefix + "/admin/doDeleteOccupancyTypeField", {
-                    occupancyTypeFieldId
-                }, (responseJSON) => {
-                    occupancyTypeResponseHandler(responseJSON);
-                    if (responseJSON.success) {
-                        editCloseModalFunction();
-                    }
-                });
-            };
+        }
+        function doDelete() {
+            cityssm.postJSON(los.urlPrefix + "/admin/doDeleteOccupancyTypeField", {
+                occupancyTypeFieldId
+            }, (responseJSON) => {
+                occupancyTypeResponseHandler(responseJSON);
+                if (responseJSON.success) {
+                    editCloseModalFunction();
+                }
+            });
+        }
+        function confirmDoDelete() {
             bulmaJS.confirm({
                 title: "Delete Field",
                 message: "Are you sure you want to delete this field?  Note that historical records that make use of this field will not be affected.",
                 contextualColorName: "warning",
                 okButton: {
                     text: "Yes, Delete Field",
-                    callbackFunction: _doDelete
+                    callbackFunction: doDelete
                 }
             });
-        };
+        }
         cityssm.openHtmlModal("adminOccupancyTypes-editOccupancyTypeField", {
             onshow: (modalElement) => {
                 los.populateAliases(modalElement);
@@ -227,37 +225,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 minimumLengthElement.addEventListener("keyup", updateMaximumLengthMin);
                 updateMaximumLengthMin();
                 occupancyTypeFieldValuesElement.addEventListener("keyup", toggleInputFields);
-                modalElement.querySelector("#button--deleteOccupancyTypeField").addEventListener("click", doDelete);
+                modalElement.querySelector("#button--deleteOccupancyTypeField").addEventListener("click", confirmDoDelete);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
                 cityssm.disableNavBlocker();
             }
         });
-    };
-    const openEditOccupancyTypeFieldByClick = (clickEvent) => {
+    }
+    function openEditOccupancyTypeFieldByClick(clickEvent) {
         clickEvent.preventDefault();
         const occupancyTypeFieldId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyTypeField").dataset.occupancyTypeFieldId, 10);
         const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId, 10);
         openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId);
-    };
-    const moveOccupancyTypeFieldUp = (clickEvent) => {
+    }
+    function moveOccupancyTypeFieldUp(clickEvent) {
         clickEvent.preventDefault();
         const occupancyTypeFieldId = clickEvent.currentTarget.closest(".container--occupancyTypeField").dataset.occupancyTypeFieldId;
         cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypeFieldUp", {
             occupancyTypeFieldId,
             moveToTop: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
-    };
-    const moveOccupancyTypeFieldDown = (clickEvent) => {
+    }
+    function moveOccupancyTypeFieldDown(clickEvent) {
         clickEvent.preventDefault();
         const occupancyTypeFieldId = clickEvent.currentTarget.closest(".container--occupancyTypeField").dataset.occupancyTypeFieldId;
         cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypeFieldDown", {
             occupancyTypeFieldId,
             moveToBottom: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
-    };
-    const renderOccupancyTypeFields = (panelElement, occupancyTypeId, occupancyTypeFields) => {
+    }
+    function renderOccupancyTypeFields(panelElement, occupancyTypeId, occupancyTypeFields) {
         if (occupancyTypeFields.length === 0) {
             panelElement.insertAdjacentHTML("beforeend", '<div class="panel-block is-block' +
                 (!occupancyTypeId || expandedOccupancyTypes.has(occupancyTypeId)
@@ -310,11 +308,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 panelElement.append(panelBlockElement);
             }
         }
-    };
-    const openAddOccupancyTypePrint = (clickEvent) => {
+    }
+    function openAddOccupancyTypePrint(clickEvent) {
         const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyTypePrintList").dataset.occupancyTypeId;
         let closeAddModalFunction;
-        const doAdd = (formEvent) => {
+        function doAdd(formEvent) {
             formEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + "/admin/doAddOccupancyTypePrint", formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
@@ -322,9 +320,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 occupancyTypeResponseHandler(responseJSON);
             });
-        };
+        }
         cityssm.openHtmlModal("adminOccupancyTypes-addOccupancyTypePrint", {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
                 los.populateAliases(modalElement);
                 modalElement.querySelector("#occupancyTypePrintAdd--occupancyTypeId").value = occupancyTypeId;
                 const printSelectElement = modalElement.querySelector("#occupancyTypePrintAdd--printEJS");
@@ -335,14 +333,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     printSelectElement.append(optionElement);
                 }
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
                 var _a;
                 closeAddModalFunction = closeModalFunction;
                 (_a = modalElement.querySelector("form")) === null || _a === void 0 ? void 0 : _a.addEventListener("submit", doAdd);
             }
         });
-    };
-    const moveOccupancyTypePrintUp = (clickEvent) => {
+    }
+    function moveOccupancyTypePrintUp(clickEvent) {
         clickEvent.preventDefault();
         const printEJS = clickEvent.currentTarget.closest(".container--occupancyTypePrint").dataset.printEJS;
         const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyTypePrintList").dataset.occupancyTypeId;
@@ -351,8 +349,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             printEJS,
             moveToTop: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
-    };
-    const moveOccupancyTypePrintDown = (clickEvent) => {
+    }
+    function moveOccupancyTypePrintDown(clickEvent) {
         clickEvent.preventDefault();
         const printEJS = clickEvent.currentTarget.closest(".container--occupancyTypePrint").dataset.printEJS;
         const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyTypePrintList").dataset.occupancyTypeId;
@@ -361,17 +359,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             printEJS,
             moveToBottom: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
-    };
-    const deleteOccupancyTypePrint = (clickEvent) => {
+    }
+    function deleteOccupancyTypePrint(clickEvent) {
         clickEvent.preventDefault();
         const printEJS = clickEvent.currentTarget.closest(".container--occupancyTypePrint").dataset.printEJS;
         const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyTypePrintList").dataset.occupancyTypeId;
-        const doDelete = () => {
+        function doDelete() {
             cityssm.postJSON(los.urlPrefix + "/admin/doDeleteOccupancyTypePrint", {
                 occupancyTypeId,
                 printEJS
             }, occupancyTypeResponseHandler);
-        };
+        }
         bulmaJS.confirm({
             title: "Delete Print",
             message: "Are you sure you want to remove this print option?",
@@ -381,14 +379,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 callbackFunction: doDelete
             }
         });
-    };
-    const renderOccupancyTypePrints = (panelElement, occupancyTypeId, occupancyTypePrints) => {
+    }
+    function renderOccupancyTypePrints(panelElement, occupancyTypeId, occupancyTypePrints) {
         if (occupancyTypePrints.length === 0) {
-            panelElement.insertAdjacentHTML("beforeend", '<div class="panel-block is-block">' +
-                '<div class="message is-info">' +
-                '<p class="message-body">There are no prints associated with this record.</p>' +
-                "</div>" +
-                "</div>");
+            panelElement.insertAdjacentHTML("beforeend", `<div class="panel-block is-block">
+                    <div class="message is-info">
+                        <p class="message-body">There are no prints associated with this record.</p>
+                    </div>
+                </div>`);
         }
         else {
             for (const printEJS of occupancyTypePrints) {
@@ -446,8 +444,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 panelElement.append(panelBlockElement);
             }
         }
-    };
-    const renderOccupancyTypes = () => {
+    }
+    function renderOccupancyTypes() {
         occupancyTypesContainerElement.innerHTML =
             '<div class="panel container--occupancyType" id="container--allOccupancyTypeFields" data-occupancy-type-id="">' +
                 '<div class="panel-heading">' +
@@ -474,16 +472,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         renderOccupancyTypeFields(occupancyTypesContainerElement.querySelector("#container--allOccupancyTypeFields"), undefined, allOccupancyTypeFields);
         occupancyTypesContainerElement.querySelector(".button--addOccupancyTypeField").addEventListener("click", openAddOccupancyTypeField);
         if (occupancyTypes.length === 0) {
-            occupancyTypesContainerElement.insertAdjacentHTML("afterbegin", '<div class="message is-warning>' +
-                '<p class="message-body">There are no active ' +
-                exports.aliases.occupancy.toLowerCase() +
-                " types.</p>" +
-                "</div>");
-            occupancyTypePrintsContainerElement.insertAdjacentHTML("afterbegin", '<div class="message is-warning>' +
-                '<p class="message-body">There are no active ' +
-                exports.aliases.occupancy.toLowerCase() +
-                " types.</p>" +
-                "</div>");
+            occupancyTypesContainerElement.insertAdjacentHTML("afterbegin", `<div class="message is-warning>
+                <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
+                </div>`);
+            occupancyTypePrintsContainerElement.insertAdjacentHTML("afterbegin", `<div class="message is-warning>
+                <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
+                </div>`);
             return;
         }
         for (const occupancyType of occupancyTypes) {
@@ -588,7 +582,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 occupancyTypePrintsContainerElement.append(occupancyTypePrintContainer);
             }
         }
-    };
+    }
     document.querySelector("#button--addOccupancyType").addEventListener("click", () => {
         let addCloseModalFunction;
         const doAdd = (submitEvent) => {
