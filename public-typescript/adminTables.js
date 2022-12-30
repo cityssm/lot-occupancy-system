@@ -166,7 +166,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             tableRowElement.querySelector("form").addEventListener("submit", updateWorkOrderType);
             tableRowElement.querySelector(".button--moveWorkOrderTypeUp").addEventListener("click", moveWorkOrderTypeUp);
             tableRowElement.querySelector(".button--moveWorkOrderTypeDown").addEventListener("click", moveWorkOrderTypeDown);
-            tableRowElement.querySelector(".button--deleteWorkOrderType").addEventListener("click", deleteWorkOrderType);
+            tableRowElement
+                .querySelector(".button--deleteWorkOrderType")
+                .addEventListener("click", deleteWorkOrderType);
             containerElement.append(tableRowElement);
         }
     };
@@ -347,7 +349,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             tableRowElement.querySelector("form").addEventListener("submit", updateWorkOrderMilestoneType);
             tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeUp").addEventListener("click", moveWorkOrderMilestoneTypeUp);
             tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeDown").addEventListener("click", moveWorkOrderMilestoneTypeDown);
-            tableRowElement.querySelector(".button--deleteWorkOrderMilestoneType").addEventListener("click", deleteWorkOrderMilestoneType);
+            tableRowElement
+                .querySelector(".button--deleteWorkOrderMilestoneType")
+                .addEventListener("click", deleteWorkOrderMilestoneType);
             containerElement.append(tableRowElement);
         }
     };
@@ -532,7 +536,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             tableRowElement.querySelector("form").addEventListener("submit", updateLotStatus);
             tableRowElement.querySelector(".button--moveLotStatusUp").addEventListener("click", moveLotStatusUp);
             tableRowElement.querySelector(".button--moveLotStatusDown").addEventListener("click", moveLotStatusDown);
-            tableRowElement.querySelector(".button--deleteLotStatus").addEventListener("click", deleteLotStatus);
+            tableRowElement
+                .querySelector(".button--deleteLotStatus")
+                .addEventListener("click", deleteLotStatus);
             containerElement.append(tableRowElement);
         }
     };
@@ -781,7 +787,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             tableRowElement.querySelector("form").addEventListener("submit", updateLotOccupantType);
             tableRowElement.querySelector(".button--moveLotOccupantTypeUp").addEventListener("click", moveLotOccupantTypeUp);
             tableRowElement.querySelector(".button--moveLotOccupantTypeDown").addEventListener("click", moveLotOccupantTypeDown);
-            tableRowElement.querySelector(".button--deleteLotOccupantType").addEventListener("click", deleteLotOccupantType);
+            tableRowElement
+                .querySelector(".button--deleteLotOccupantType")
+                .addEventListener("click", deleteLotOccupantType);
             containerElement.append(tableRowElement);
         }
     };

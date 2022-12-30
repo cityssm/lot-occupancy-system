@@ -43,17 +43,14 @@ declare const bulmaJS: BulmaJS;
         );
     };
 
-    (document.querySelector("#button--cleanupDatabase") as HTMLButtonElement).addEventListener(
-        "click",
-        () => {
-            bulmaJS.confirm({
-                title: "Cleanup Database",
-                message: "Are you sure you want to cleanup up the database?",
-                okButton: {
-                    text: "Yes, Cleanup Database",
-                    callbackFunction: doCleanup
-                }
-            });
-        }
-    );
+    document.querySelector("#button--cleanupDatabase")!.addEventListener("click", () => {
+        bulmaJS.confirm({
+            title: "Cleanup Database",
+            message: "Are you sure you want to cleanup up the database?",
+            okButton: {
+                text: "Yes, Cleanup Database",
+                callbackFunction: doCleanup
+            }
+        });
+    });
 })();

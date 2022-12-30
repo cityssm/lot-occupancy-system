@@ -194,19 +194,15 @@ declare const cityssm: cityssmGlobal;
         searchResultsContainerElement.querySelector("table")!.append(resultsTbodyElement);
 
         if (responseJSON.offset > 0) {
-            (
-                searchResultsContainerElement.querySelector(
-                    "button[data-page='previous']"
-                ) as HTMLButtonElement
-            ).addEventListener("click", previousAndGetLotOccupancies);
+            searchResultsContainerElement
+                .querySelector("button[data-page='previous']")!
+                .addEventListener("click", previousAndGetLotOccupancies);
         }
 
         if (limit + responseJSON.offset < responseJSON.count) {
-            (
-                searchResultsContainerElement.querySelector(
-                    "button[data-page='next']"
-                ) as HTMLButtonElement
-            ).addEventListener("click", nextAndGetLotOccupancies);
+            searchResultsContainerElement
+                .querySelector("button[data-page='next']")!
+                .addEventListener("click", nextAndGetLotOccupancies);
         }
     }
 

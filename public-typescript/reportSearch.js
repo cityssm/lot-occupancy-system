@@ -2,7 +2,7 @@
 (() => {
     const menuTabElements = document.querySelectorAll(".menu a");
     const tabContainerElements = document.querySelectorAll(".tabs-container > div");
-    const selectTab = (clickEvent) => {
+    function selectTab(clickEvent) {
         clickEvent.preventDefault();
         // Remove .is-active from all tabs
         for (const menuTabElement of menuTabElements) {
@@ -21,7 +21,7 @@
                 tabContainerElement.classList.add("is-hidden");
             }
         }
-    };
+    }
     for (const menuTabElement of menuTabElements) {
         menuTabElement.addEventListener("click", selectTab);
     }

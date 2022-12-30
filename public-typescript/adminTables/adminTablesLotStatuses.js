@@ -158,7 +158,9 @@ const renderLotStatuses = () => {
         tableRowElement.querySelector("form").addEventListener("submit", updateLotStatus);
         tableRowElement.querySelector(".button--moveLotStatusUp").addEventListener("click", moveLotStatusUp);
         tableRowElement.querySelector(".button--moveLotStatusDown").addEventListener("click", moveLotStatusDown);
-        tableRowElement.querySelector(".button--deleteLotStatus").addEventListener("click", deleteLotStatus);
+        tableRowElement
+            .querySelector(".button--deleteLotStatus")
+            .addEventListener("click", deleteLotStatus);
         containerElement.append(tableRowElement);
     }
 };

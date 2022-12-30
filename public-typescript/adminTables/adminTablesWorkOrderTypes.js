@@ -153,7 +153,9 @@ const renderWorkOrderTypes = () => {
         tableRowElement.querySelector("form").addEventListener("submit", updateWorkOrderType);
         tableRowElement.querySelector(".button--moveWorkOrderTypeUp").addEventListener("click", moveWorkOrderTypeUp);
         tableRowElement.querySelector(".button--moveWorkOrderTypeDown").addEventListener("click", moveWorkOrderTypeDown);
-        tableRowElement.querySelector(".button--deleteWorkOrderType").addEventListener("click", deleteWorkOrderType);
+        tableRowElement
+            .querySelector(".button--deleteWorkOrderType")
+            .addEventListener("click", deleteWorkOrderType);
         containerElement.append(tableRowElement);
     }
 };

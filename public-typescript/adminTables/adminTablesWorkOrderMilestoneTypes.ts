@@ -236,11 +236,9 @@ const renderWorkOrderMilestoneTypes = () => {
             ) as HTMLButtonElement
         ).addEventListener("click", moveWorkOrderMilestoneTypeDown);
 
-        (
-            tableRowElement.querySelector(
-                ".button--deleteWorkOrderMilestoneType"
-            ) as HTMLButtonElement
-        ).addEventListener("click", deleteWorkOrderMilestoneType);
+        tableRowElement
+            .querySelector(".button--deleteWorkOrderMilestoneType")!
+            .addEventListener("click", deleteWorkOrderMilestoneType);
 
         containerElement.append(tableRowElement);
     }

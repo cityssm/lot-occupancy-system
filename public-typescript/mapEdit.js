@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const mapId = document.querySelector("#map--mapId").value;
     const isCreate = mapId === "";
     const mapForm = document.querySelector("#form--map");
-    const updateMap = (formEvent) => {
+    function updateMap(formEvent) {
         formEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix + "/maps/" + (isCreate ? "doCreateMap" : "doUpdateMap"), mapForm, (responseJSON) => {
             if (responseJSON.success) {
@@ -30,7 +30,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
         });
-    };
+    }
     mapForm.addEventListener("submit", updateMap);
     const inputElements = mapForm.querySelectorAll("input, select");
     for (const inputElement of inputElements) {
@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     if (!isCreate) {
         document.querySelector("#button--deleteMap").addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
-            const doDelete = () => {
+            function doDelete() {
                 cityssm.postJSON(los.urlPrefix + "/maps/doDeleteMap", {
                     mapId
                 }, (responseJSON) => {
@@ -54,17 +54,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         });
                     }
                 });
-            };
+            }
             bulmaJS.confirm({
                 title: "Delete " + exports.aliases.map,
-                message: "Are you sure you want to delete this " +
-                    exports.aliases.map.toLowerCase() +
-                    " and all related " +
-                    exports.aliases.lots.toLowerCase() +
-                    "?",
+                message: `Are you sure you want to delete this ${exports.aliases.map.toLowerCase()} and all related ${exports.aliases.lots.toLowerCase()}?`,
                 contextualColorName: "warning",
                 okButton: {
-                    text: "Yes, Delete " + exports.aliases.map + "?",
+                    text: `Yes, Delete ${exports.aliases.map}`,
                     callbackFunction: doDelete
                 }
             });

@@ -309,9 +309,9 @@ const renderLotOccupantTypes = () => {
             tableRowElement.querySelector(".button--moveLotOccupantTypeDown") as HTMLButtonElement
         ).addEventListener("click", moveLotOccupantTypeDown);
 
-        (
-            tableRowElement.querySelector(".button--deleteLotOccupantType") as HTMLButtonElement
-        ).addEventListener("click", deleteLotOccupantType);
+        tableRowElement
+            .querySelector(".button--deleteLotOccupantType")!
+            .addEventListener("click", deleteLotOccupantType);
 
         containerElement.append(tableRowElement);
     }

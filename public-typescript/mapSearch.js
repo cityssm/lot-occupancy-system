@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const maps = exports.maps;
     const searchFilterElement = document.querySelector("#searchFilter--map");
     const searchResultsContainerElement = document.querySelector("#container--searchResults");
-    const renderResults = () => {
+    function renderResults() {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${exports.aliases.maps}...`);
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement("tbody");
@@ -86,19 +86,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const searchResultsTableElement = document.createElement("table");
             searchResultsTableElement.className =
                 "table is-fullwidth is-striped is-hoverable has-sticky-header";
-            searchResultsTableElement.innerHTML =
-                "<thead><tr>" +
-                    ("<th>" + exports.aliases.map + "</th>") +
-                    "<th>Address</th>" +
-                    "<th>Phone Number</th>" +
-                    '<th class="has-text-centered">Coordinates</th>' +
-                    '<th class="has-text-centered">Image</th>' +
-                    ('<th class="has-text-right">' + exports.aliases.lot + " Count</th>") +
-                    "</tr></thead>";
+            searchResultsTableElement.innerHTML = `<thead><tr>
+                <th>${los.escapedAliases.Map}</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th class="has-text-centered">Coordinates</th>
+                <th class="has-text-centered">Image</th>
+                <th class="has-text-right">${los.escapedAliases.Lot} Count</th>
+                </tr></thead>`;
             searchResultsTableElement.append(searchResultsTbodyElement);
             searchResultsContainerElement.append(searchResultsTableElement);
         }
-    };
+    }
     searchFilterElement.addEventListener("keyup", renderResults);
     document.querySelector("#form--searchFilters").addEventListener("submit", (formEvent) => {
         formEvent.preventDefault();

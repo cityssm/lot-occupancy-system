@@ -348,13 +348,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</div>") +
                     "</div>";
             if (milestone.workOrderMilestoneCompletionDate) {
-                panelBlockElement.querySelector(".button--reopenMilestone").addEventListener("click", reopenMilestone);
+                panelBlockElement
+                    .querySelector(".button--reopenMilestone")
+                    .addEventListener("click", reopenMilestone);
             }
             else {
-                panelBlockElement.querySelector(".button--editMilestone").addEventListener("click", editMilestone);
-                panelBlockElement.querySelector(".button--completeMilestone").addEventListener("click", completeMilestone);
+                panelBlockElement
+                    .querySelector(".button--editMilestone")
+                    .addEventListener("click", editMilestone);
+                panelBlockElement
+                    .querySelector(".button--completeMilestone")
+                    .addEventListener("click", completeMilestone);
             }
-            panelBlockElement.querySelector(".button--deleteMilestone").addEventListener("click", deleteMilestone);
+            panelBlockElement
+                .querySelector(".button--deleteMilestone")
+                .addEventListener("click", deleteMilestone);
             milestonesPanelElement.append(panelBlockElement);
         }
         bulmaJS.init(milestonesPanelElement);

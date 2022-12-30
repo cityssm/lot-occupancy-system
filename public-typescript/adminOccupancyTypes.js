@@ -225,7 +225,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 minimumLengthElement.addEventListener("keyup", updateMaximumLengthMin);
                 updateMaximumLengthMin();
                 occupancyTypeFieldValuesElement.addEventListener("keyup", toggleInputFields);
-                modalElement.querySelector("#button--deleteOccupancyTypeField").addEventListener("click", confirmDoDelete);
+                modalElement
+                    .querySelector("#button--deleteOccupancyTypeField")
+                    .addEventListener("click", confirmDoDelete);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
@@ -291,7 +293,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</div>") +
                         "</div>" +
                         "</div>";
-                panelBlockElement.querySelector(".button--editOccupancyTypeField").addEventListener("click", openEditOccupancyTypeFieldByClick);
+                panelBlockElement
+                    .querySelector(".button--editOccupancyTypeField")
+                    .addEventListener("click", openEditOccupancyTypeFieldByClick);
                 panelBlockElement.querySelector(".button--moveOccupancyTypeFieldUp").addEventListener("click", moveOccupancyTypeFieldUp);
                 panelBlockElement.querySelector(".button--moveOccupancyTypeFieldDown").addEventListener("click", moveOccupancyTypeFieldDown);
                 panelElement.append(panelBlockElement);
@@ -418,7 +422,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</div>";
                 panelBlockElement.querySelector(".button--moveOccupancyTypePrintUp").addEventListener("click", moveOccupancyTypePrintUp);
                 panelBlockElement.querySelector(".button--moveOccupancyTypePrintDown").addEventListener("click", moveOccupancyTypePrintDown);
-                panelBlockElement.querySelector(".button--deleteOccupancyTypePrint").addEventListener("click", deleteOccupancyTypePrint);
+                panelBlockElement
+                    .querySelector(".button--deleteOccupancyTypePrint")
+                    .addEventListener("click", deleteOccupancyTypePrint);
                 panelElement.append(panelBlockElement);
             }
         }
@@ -448,7 +454,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "</div>";
         occupancyTypePrintsContainerElement.innerHTML = "";
         renderOccupancyTypeFields(occupancyTypesContainerElement.querySelector("#container--allOccupancyTypeFields"), undefined, allOccupancyTypeFields);
-        occupancyTypesContainerElement.querySelector(".button--addOccupancyTypeField").addEventListener("click", openAddOccupancyTypeField);
+        occupancyTypesContainerElement
+            .querySelector(".button--addOccupancyTypeField")
+            .addEventListener("click", openAddOccupancyTypeField);
         if (occupancyTypes.length === 0) {
             occupancyTypesContainerElement.insertAdjacentHTML("afterbegin", `<div class="message is-warning>
                 <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
@@ -510,10 +518,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</div>" +
                         "</div>";
                 renderOccupancyTypeFields(occupancyTypeContainer, occupancyType.occupancyTypeId, occupancyType.occupancyTypeFields);
-                occupancyTypeContainer.querySelector(".button--toggleOccupancyTypeFields").addEventListener("click", toggleOccupancyTypeFields);
-                occupancyTypeContainer.querySelector(".button--deleteOccupancyType").addEventListener("click", deleteOccupancyType);
-                occupancyTypeContainer.querySelector(".button--editOccupancyType").addEventListener("click", openEditOccupancyType);
-                occupancyTypeContainer.querySelector(".button--addOccupancyTypeField").addEventListener("click", openAddOccupancyTypeField);
+                occupancyTypeContainer
+                    .querySelector(".button--toggleOccupancyTypeFields")
+                    .addEventListener("click", toggleOccupancyTypeFields);
+                occupancyTypeContainer
+                    .querySelector(".button--deleteOccupancyType")
+                    .addEventListener("click", deleteOccupancyType);
+                occupancyTypeContainer
+                    .querySelector(".button--editOccupancyType")
+                    .addEventListener("click", openEditOccupancyType);
+                occupancyTypeContainer
+                    .querySelector(".button--addOccupancyTypeField")
+                    .addEventListener("click", openAddOccupancyTypeField);
                 occupancyTypeContainer.querySelector(".button--moveOccupancyTypeUp").addEventListener("click", moveOccupancyTypeUp);
                 occupancyTypeContainer.querySelector(".button--moveOccupancyTypeDown").addEventListener("click", moveOccupancyTypeDown);
                 occupancyTypesContainerElement.append(occupancyTypeContainer);
@@ -545,7 +561,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</div>" +
                         "</div>";
                 renderOccupancyTypePrints(occupancyTypePrintContainer, occupancyType.occupancyTypeId, occupancyType.occupancyTypePrints);
-                occupancyTypePrintContainer.querySelector(".button--addOccupancyTypePrint").addEventListener("click", openAddOccupancyTypePrint);
+                occupancyTypePrintContainer
+                    .querySelector(".button--addOccupancyTypePrint")
+                    .addEventListener("click", openAddOccupancyTypePrint);
                 occupancyTypePrintsContainerElement.append(occupancyTypePrintContainer);
             }
         }

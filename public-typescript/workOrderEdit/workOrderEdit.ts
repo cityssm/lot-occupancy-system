@@ -506,24 +506,22 @@ declare const bulmaJS: BulmaJS;
                 "</div>";
 
             if (milestone.workOrderMilestoneCompletionDate) {
-                (
-                    panelBlockElement.querySelector(".button--reopenMilestone") as HTMLButtonElement
-                ).addEventListener("click", reopenMilestone);
+                panelBlockElement
+                    .querySelector(".button--reopenMilestone")!
+                    .addEventListener("click", reopenMilestone);
             } else {
-                (
-                    panelBlockElement.querySelector(".button--editMilestone") as HTMLButtonElement
-                ).addEventListener("click", editMilestone);
+                panelBlockElement
+                    .querySelector(".button--editMilestone")!
+                    .addEventListener("click", editMilestone);
 
-                (
-                    panelBlockElement.querySelector(
-                        ".button--completeMilestone"
-                    ) as HTMLButtonElement
-                ).addEventListener("click", completeMilestone);
+                panelBlockElement
+                    .querySelector(".button--completeMilestone")!
+                    .addEventListener("click", completeMilestone);
             }
 
-            (
-                panelBlockElement.querySelector(".button--deleteMilestone") as HTMLButtonElement
-            ).addEventListener("click", deleteMilestone);
+            panelBlockElement
+                .querySelector(".button--deleteMilestone")!
+                .addEventListener("click", deleteMilestone);
 
             milestonesPanelElement.append(panelBlockElement);
         }

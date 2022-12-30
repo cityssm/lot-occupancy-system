@@ -435,8 +435,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     document.querySelector(".is-lot-view-button").addEventListener("click", () => {
-        const lotId = document.querySelector("#lotOccupancy--lotId")
-            .value;
+        const lotId = document.querySelector("#lotOccupancy--lotId").value;
         if (lotId) {
             window.open(los.urlPrefix + "/lots/" + lotId);
         }

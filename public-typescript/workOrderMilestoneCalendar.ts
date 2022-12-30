@@ -25,7 +25,7 @@ declare const cityssm: cityssmGlobal;
         "#container--milestoneCalendar"
     ) as HTMLElement;
 
-    const renderMilestones = (workOrderMilestones: recordTypes.WorkOrderMilestone[]) => {
+    function renderMilestones(workOrderMilestones: recordTypes.WorkOrderMilestone[]) {
         if (workOrderMilestones.length === 0) {
             milestoneCalendarContainerElement.innerHTML =
                 '<div class="message is-info">' +
@@ -141,9 +141,9 @@ declare const cityssm: cityssmGlobal;
         }
 
         milestoneCalendarContainerElement.append(currentPanelElement!);
-    };
+    }
 
-    const getMilestones = (event?: Event) => {
+    function getMilestones(event?: Event) {
         if (event) {
             event.preventDefault();
         }
@@ -158,7 +158,7 @@ declare const cityssm: cityssmGlobal;
                 renderMilestones(responseJSON.workOrderMilestones);
             }
         );
-    };
+    }
 
     workOrderMilestoneDateFilterElement.addEventListener("change", () => {
         workOrderMilestoneDateStringElement.closest("fieldset")!.disabled =

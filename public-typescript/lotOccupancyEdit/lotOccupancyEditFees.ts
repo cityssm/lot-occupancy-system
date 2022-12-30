@@ -169,7 +169,7 @@ const renderLotOccupancyFees = () => {
     renderLotOccupancyTransactions();
 };
 
-(document.querySelector("#button--addFee") as HTMLButtonElement).addEventListener("click", () => {
+document.querySelector("#button--addFee")!.addEventListener("click", () => {
     if (hasUnsavedChanges) {
         bulmaJS.alert({
             message: "Please save all unsaved changes before adding fees.",
@@ -530,76 +530,73 @@ const renderLotOccupancyTransactions = () => {
     }
 };
 
-(document.querySelector("#button--addTransaction") as HTMLButtonElement).addEventListener(
-    "click",
-    () => {
-        let addCloseModalFunction: () => void;
+document.querySelector("#button--addTransaction")!.addEventListener("click", () => {
+    let addCloseModalFunction: () => void;
 
-        const doAddTransaction = (submitEvent: SubmitEvent) => {
-            submitEvent.preventDefault();
+    const doAddTransaction = (submitEvent: SubmitEvent) => {
+        submitEvent.preventDefault();
 
-            cityssm.postJSON(
-                los.urlPrefix + "/lotOccupancies/doAddLotOccupancyTransaction",
-                submitEvent.currentTarget,
-                (responseJSON: {
-                    success: boolean;
-                    errorMessage?: string;
-                    lotOccupancyTransactions?: recordTypes.LotOccupancyTransaction[];
-                }) => {
-                    if (responseJSON.success) {
-                        lotOccupancyTransactions = responseJSON.lotOccupancyTransactions!;
-                        addCloseModalFunction();
-                        renderLotOccupancyTransactions();
-                    } else {
-                        bulmaJS.confirm({
-                            title: "Error Adding Transaction",
-                            message: responseJSON.errorMessage || "",
-                            contextualColorName: "danger"
-                        });
-                    }
+        cityssm.postJSON(
+            los.urlPrefix + "/lotOccupancies/doAddLotOccupancyTransaction",
+            submitEvent.currentTarget,
+            (responseJSON: {
+                success: boolean;
+                errorMessage?: string;
+                lotOccupancyTransactions?: recordTypes.LotOccupancyTransaction[];
+            }) => {
+                if (responseJSON.success) {
+                    lotOccupancyTransactions = responseJSON.lotOccupancyTransactions!;
+                    addCloseModalFunction();
+                    renderLotOccupancyTransactions();
+                } else {
+                    bulmaJS.confirm({
+                        title: "Error Adding Transaction",
+                        message: responseJSON.errorMessage || "",
+                        contextualColorName: "danger"
+                    });
                 }
-            );
-        };
-
-        cityssm.openHtmlModal("lotOccupancy-addTransaction", {
-            onshow: (modalElement) => {
-                los.populateAliases(modalElement);
-
-                (
-                    modalElement.querySelector(
-                        "#lotOccupancyTransactionAdd--lotOccupancyId"
-                    ) as HTMLInputElement
-                ).value = lotOccupancyId.toString();
-
-                const feeGrandTotal = getFeeGrandTotal();
-                const transactionGrandTotal = getTransactionGrandTotal();
-
-                const transactionAmountElement = modalElement.querySelector(
-                    "#lotOccupancyTransactionAdd--transactionAmount"
-                ) as HTMLInputElement;
-
-                transactionAmountElement.min = (-1 * transactionGrandTotal).toFixed(2);
-                transactionAmountElement.max = Math.max(
-                    feeGrandTotal - transactionGrandTotal,
-                    0
-                ).toFixed(2);
-                transactionAmountElement.value = Math.max(
-                    feeGrandTotal - transactionGrandTotal,
-                    0
-                ).toFixed(2);
-            },
-            onshown: (modalElement, closeModalFunction) => {
-                bulmaJS.toggleHtmlClipped();
-
-                addCloseModalFunction = closeModalFunction;
-
-                modalElement.querySelector("form")!.addEventListener("submit", doAddTransaction);
-            },
-            onremoved: () => {
-                bulmaJS.toggleHtmlClipped();
             }
-        });
-    }
-);
+        );
+    };
+
+    cityssm.openHtmlModal("lotOccupancy-addTransaction", {
+        onshow: (modalElement) => {
+            los.populateAliases(modalElement);
+
+            (
+                modalElement.querySelector(
+                    "#lotOccupancyTransactionAdd--lotOccupancyId"
+                ) as HTMLInputElement
+            ).value = lotOccupancyId.toString();
+
+            const feeGrandTotal = getFeeGrandTotal();
+            const transactionGrandTotal = getTransactionGrandTotal();
+
+            const transactionAmountElement = modalElement.querySelector(
+                "#lotOccupancyTransactionAdd--transactionAmount"
+            ) as HTMLInputElement;
+
+            transactionAmountElement.min = (-1 * transactionGrandTotal).toFixed(2);
+            transactionAmountElement.max = Math.max(
+                feeGrandTotal - transactionGrandTotal,
+                0
+            ).toFixed(2);
+            transactionAmountElement.value = Math.max(
+                feeGrandTotal - transactionGrandTotal,
+                0
+            ).toFixed(2);
+        },
+        onshown: (modalElement, closeModalFunction) => {
+            bulmaJS.toggleHtmlClipped();
+
+            addCloseModalFunction = closeModalFunction;
+
+            modalElement.querySelector("form")!.addEventListener("submit", doAddTransaction);
+        },
+        onremoved: () => {
+            bulmaJS.toggleHtmlClipped();
+        }
+    });
+});
 
 renderLotOccupancyFees();

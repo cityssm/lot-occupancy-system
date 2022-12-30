@@ -233,9 +233,9 @@ const renderLotStatuses = () => {
             tableRowElement.querySelector(".button--moveLotStatusDown") as HTMLButtonElement
         ).addEventListener("click", moveLotStatusDown);
 
-        (
-            tableRowElement.querySelector(".button--deleteLotStatus") as HTMLButtonElement
-        ).addEventListener("click", deleteLotStatus);
+        tableRowElement
+            .querySelector(".button--deleteLotStatus")!
+            .addEventListener("click", deleteLotStatus);
 
         containerElement.append(tableRowElement);
     }

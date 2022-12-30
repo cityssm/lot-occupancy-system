@@ -312,8 +312,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</button>") +
                         "</div>" +
                         "</td>");
-            tableRowElement.querySelector(".button--edit").addEventListener("click", openEditLotComment);
-            tableRowElement.querySelector(".button--delete").addEventListener("click", deleteLotComment);
+            tableRowElement
+                .querySelector(".button--edit")
+                .addEventListener("click", openEditLotComment);
+            tableRowElement
+                .querySelector(".button--delete")
+                .addEventListener("click", deleteLotComment);
             tableElement.querySelector("tbody").append(tableRowElement);
         }
         containerElement.innerHTML = "";

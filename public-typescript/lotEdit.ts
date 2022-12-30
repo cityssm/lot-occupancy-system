@@ -63,46 +63,43 @@ declare const bulmaJS: BulmaJS;
     los.initializeUnlockFieldButtons(formElement);
 
     if (!isCreate) {
-        (document.querySelector("#button--deleteLot") as HTMLButtonElement).addEventListener(
-            "click",
-            (clickEvent) => {
-                clickEvent.preventDefault();
+        document.querySelector("#button--deleteLot")!.addEventListener("click", (clickEvent) => {
+            clickEvent.preventDefault();
 
-                const doDelete = () => {
-                    cityssm.postJSON(
-                        los.urlPrefix + "/lots/doDeleteLot",
-                        {
-                            lotId
-                        },
-                        (responseJSON: { success: boolean; errorMessage?: string }) => {
-                            if (responseJSON.success) {
-                                cityssm.disableNavBlocker();
-                                window.location.href = los.urlPrefix + "/lots/?t=" + Date.now();
-                            } else {
-                                bulmaJS.alert({
-                                    title: "Error Deleting " + exports.aliases.lot,
-                                    message: responseJSON.errorMessage || "",
-                                    contextualColorName: "danger"
-                                });
-                            }
+            const doDelete = () => {
+                cityssm.postJSON(
+                    los.urlPrefix + "/lots/doDeleteLot",
+                    {
+                        lotId
+                    },
+                    (responseJSON: { success: boolean; errorMessage?: string }) => {
+                        if (responseJSON.success) {
+                            cityssm.disableNavBlocker();
+                            window.location.href = los.urlPrefix + "/lots/?t=" + Date.now();
+                        } else {
+                            bulmaJS.alert({
+                                title: "Error Deleting " + exports.aliases.lot,
+                                message: responseJSON.errorMessage || "",
+                                contextualColorName: "danger"
+                            });
                         }
-                    );
-                };
-
-                bulmaJS.confirm({
-                    title: "Delete " + exports.aliases.lot,
-                    message:
-                        "Are you sure you want to delete this " +
-                        exports.aliases.lot.toLowerCase() +
-                        "?",
-                    contextualColorName: "warning",
-                    okButton: {
-                        text: "Yes, Delete " + exports.aliases.lot,
-                        callbackFunction: doDelete
                     }
-                });
-            }
-        );
+                );
+            };
+
+            bulmaJS.confirm({
+                title: "Delete " + exports.aliases.lot,
+                message:
+                    "Are you sure you want to delete this " +
+                    exports.aliases.lot.toLowerCase() +
+                    "?",
+                contextualColorName: "warning",
+                okButton: {
+                    text: "Yes, Delete " + exports.aliases.lot,
+                    callbackFunction: doDelete
+                }
+            });
+        });
     }
 
     // Lot Type
@@ -446,14 +443,13 @@ declare const bulmaJS: BulmaJS;
                     "</div>" +
                     "</td>");
 
-            (tableRowElement.querySelector(".button--edit") as HTMLButtonElement).addEventListener(
-                "click",
-                openEditLotComment
-            );
+            tableRowElement
+                .querySelector(".button--edit")!
+                .addEventListener("click", openEditLotComment);
 
-            (
-                tableRowElement.querySelector(".button--delete") as HTMLButtonElement
-            ).addEventListener("click", deleteLotComment);
+            tableRowElement
+                .querySelector(".button--delete")!
+                .addEventListener("click", deleteLotComment);
 
             tableElement.querySelector("tbody")!.append(tableRowElement);
         }

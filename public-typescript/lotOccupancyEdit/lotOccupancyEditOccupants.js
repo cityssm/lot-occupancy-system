@@ -179,8 +179,12 @@ const renderLotOccupancyOccupants = () => {
                         "</button>") +
                     "</div>" +
                     "</td>");
-        tableRowElement.querySelector(".button--edit").addEventListener("click", openEditLotOccupancyOccupant);
-        tableRowElement.querySelector(".button--delete").addEventListener("click", deleteLotOccupancyOccupant);
+        tableRowElement
+            .querySelector(".button--edit")
+            .addEventListener("click", openEditLotOccupancyOccupant);
+        tableRowElement
+            .querySelector(".button--delete")
+            .addEventListener("click", deleteLotOccupancyOccupant);
         tableElement.querySelector("tbody").append(tableRowElement);
     }
     occupantsContainer.append(tableElement);
@@ -283,8 +287,7 @@ else {
                                 "</div>") +
                             ('<div class="column">' +
                                 (occupant.occupantPhoneNumber
-                                    ? cityssm.escapeHTML(occupant.occupantPhoneNumber) +
-                                        "<br />"
+                                    ? cityssm.escapeHTML(occupant.occupantPhoneNumber) + "<br />"
                                     : "") +
                                 cityssm.escapeHTML(occupant.occupantEmailAddress || "") +
                                 "<br />" +

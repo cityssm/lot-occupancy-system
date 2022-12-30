@@ -18,7 +18,7 @@ declare const cityssm: cityssmGlobal;
         "#container--searchResults"
     ) as HTMLElement;
 
-    const renderResults = () => {
+    function renderResults(): void {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
             `Loading ${exports.aliases.maps}...`
         );
@@ -116,31 +116,27 @@ declare const cityssm: cityssmGlobal;
             searchResultsTableElement.className =
                 "table is-fullwidth is-striped is-hoverable has-sticky-header";
 
-            searchResultsTableElement.innerHTML =
-                "<thead><tr>" +
-                ("<th>" + exports.aliases.map + "</th>") +
-                "<th>Address</th>" +
-                "<th>Phone Number</th>" +
-                '<th class="has-text-centered">Coordinates</th>' +
-                '<th class="has-text-centered">Image</th>' +
-                ('<th class="has-text-right">' + exports.aliases.lot + " Count</th>") +
-                "</tr></thead>";
+            searchResultsTableElement.innerHTML = `<thead><tr>
+                <th>${los.escapedAliases.Map}</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th class="has-text-centered">Coordinates</th>
+                <th class="has-text-centered">Image</th>
+                <th class="has-text-right">${los.escapedAliases.Lot} Count</th>
+                </tr></thead>`;
 
             searchResultsTableElement.append(searchResultsTbodyElement);
 
             searchResultsContainerElement.append(searchResultsTableElement);
         }
-    };
+    }
 
     searchFilterElement.addEventListener("keyup", renderResults);
 
-    (document.querySelector("#form--searchFilters") as HTMLFormElement).addEventListener(
-        "submit",
-        (formEvent) => {
-            formEvent.preventDefault();
-            renderResults();
-        }
-    );
+    document.querySelector("#form--searchFilters")!.addEventListener("submit", (formEvent) => {
+        formEvent.preventDefault();
+        renderResults();
+    });
 
     renderResults();
 })();

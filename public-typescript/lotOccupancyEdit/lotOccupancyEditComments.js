@@ -134,8 +134,12 @@ const renderLotOccupancyComments = () => {
                         "</button>") +
                     "</div>" +
                     "</td>");
-        tableRowElement.querySelector(".button--edit").addEventListener("click", openEditLotOccupancyComment);
-        tableRowElement.querySelector(".button--delete").addEventListener("click", deleteLotOccupancyComment);
+        tableRowElement
+            .querySelector(".button--edit")
+            .addEventListener("click", openEditLotOccupancyComment);
+        tableRowElement
+            .querySelector(".button--delete")
+            .addEventListener("click", deleteLotOccupancyComment);
         tableElement.querySelector("tbody").append(tableRowElement);
     }
     containerElement.innerHTML = "";

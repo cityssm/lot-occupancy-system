@@ -435,8 +435,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     document.querySelector(".is-lot-view-button").addEventListener("click", () => {
-        const lotId = document.querySelector("#lotOccupancy--lotId")
-            .value;
+        const lotId = document.querySelector("#lotOccupancy--lotId").value;
         if (lotId) {
             window.open(los.urlPrefix + "/lots/" + lotId);
         }
@@ -652,8 +651,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</button>") +
                         "</div>" +
                         "</td>");
-            tableRowElement.querySelector(".button--edit").addEventListener("click", openEditLotOccupancyOccupant);
-            tableRowElement.querySelector(".button--delete").addEventListener("click", deleteLotOccupancyOccupant);
+            tableRowElement
+                .querySelector(".button--edit")
+                .addEventListener("click", openEditLotOccupancyOccupant);
+            tableRowElement
+                .querySelector(".button--delete")
+                .addEventListener("click", deleteLotOccupancyOccupant);
             tableElement.querySelector("tbody").append(tableRowElement);
         }
         occupantsContainer.append(tableElement);
@@ -756,8 +759,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                     "</div>") +
                                 ('<div class="column">' +
                                     (occupant.occupantPhoneNumber
-                                        ? cityssm.escapeHTML(occupant.occupantPhoneNumber) +
-                                            "<br />"
+                                        ? cityssm.escapeHTML(occupant.occupantPhoneNumber) + "<br />"
                                         : "") +
                                     cityssm.escapeHTML(occupant.occupantEmailAddress || "") +
                                     "<br />" +
@@ -945,8 +947,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 "</button>") +
                             "</div>" +
                             "</td>");
-                tableRowElement.querySelector(".button--edit").addEventListener("click", openEditLotOccupancyComment);
-                tableRowElement.querySelector(".button--delete").addEventListener("click", deleteLotOccupancyComment);
+                tableRowElement
+                    .querySelector(".button--edit")
+                    .addEventListener("click", openEditLotOccupancyComment);
+                tableRowElement
+                    .querySelector(".button--delete")
+                    .addEventListener("click", deleteLotOccupancyComment);
                 tableElement.querySelector("tbody").append(tableRowElement);
             }
             containerElement.innerHTML = "";

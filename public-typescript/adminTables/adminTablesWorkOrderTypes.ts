@@ -228,9 +228,9 @@ const renderWorkOrderTypes = () => {
             tableRowElement.querySelector(".button--moveWorkOrderTypeDown") as HTMLButtonElement
         ).addEventListener("click", moveWorkOrderTypeDown);
 
-        (
-            tableRowElement.querySelector(".button--deleteWorkOrderType") as HTMLButtonElement
-        ).addEventListener("click", deleteWorkOrderType);
+        tableRowElement
+            .querySelector(".button--deleteWorkOrderType")!
+            .addEventListener("click", deleteWorkOrderType);
 
         containerElement.append(tableRowElement);
     }

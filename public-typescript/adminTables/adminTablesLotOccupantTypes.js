@@ -222,7 +222,9 @@ const renderLotOccupantTypes = () => {
         tableRowElement.querySelector("form").addEventListener("submit", updateLotOccupantType);
         tableRowElement.querySelector(".button--moveLotOccupantTypeUp").addEventListener("click", moveLotOccupantTypeUp);
         tableRowElement.querySelector(".button--moveLotOccupantTypeDown").addEventListener("click", moveLotOccupantTypeDown);
-        tableRowElement.querySelector(".button--deleteLotOccupantType").addEventListener("click", deleteLotOccupantType);
+        tableRowElement
+            .querySelector(".button--deleteLotOccupantType")
+            .addEventListener("click", deleteLotOccupantType);
         containerElement.append(tableRowElement);
     }
 };

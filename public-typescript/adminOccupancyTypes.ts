@@ -436,11 +436,9 @@ declare const bulmaJS: BulmaJS;
 
                 occupancyTypeFieldValuesElement.addEventListener("keyup", toggleInputFields);
 
-                (
-                    modalElement.querySelector(
-                        "#button--deleteOccupancyTypeField"
-                    ) as HTMLButtonElement
-                ).addEventListener("click", confirmDoDelete);
+                modalElement
+                    .querySelector("#button--deleteOccupancyTypeField")!
+                    .addEventListener("click", confirmDoDelete);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
@@ -560,11 +558,9 @@ declare const bulmaJS: BulmaJS;
                     "</div>" +
                     "</div>";
 
-                (
-                    panelBlockElement.querySelector(
-                        ".button--editOccupancyTypeField"
-                    ) as HTMLButtonElement
-                ).addEventListener("click", openEditOccupancyTypeFieldByClick);
+                panelBlockElement
+                    .querySelector(".button--editOccupancyTypeField")!
+                    .addEventListener("click", openEditOccupancyTypeFieldByClick);
 
                 (
                     panelBlockElement.querySelector(
@@ -583,7 +579,7 @@ declare const bulmaJS: BulmaJS;
         }
     }
 
-    function openAddOccupancyTypePrint(clickEvent: MouseEvent): void {
+    function openAddOccupancyTypePrint(clickEvent: Event): void {
         const occupancyTypeId = (
             (clickEvent.currentTarget as HTMLElement).closest(
                 ".container--occupancyTypePrintList"
@@ -696,7 +692,7 @@ declare const bulmaJS: BulmaJS;
         );
     }
 
-    function deleteOccupancyTypePrint(clickEvent: MouseEvent): void {
+    function deleteOccupancyTypePrint(clickEvent: Event): void {
         clickEvent.preventDefault();
 
         const printEJS = (
@@ -807,11 +803,9 @@ declare const bulmaJS: BulmaJS;
                     ) as HTMLButtonElement
                 ).addEventListener("click", moveOccupancyTypePrintDown);
 
-                (
-                    panelBlockElement.querySelector(
-                        ".button--deleteOccupancyTypePrint"
-                    ) as HTMLButtonElement
-                ).addEventListener("click", deleteOccupancyTypePrint);
+                panelBlockElement
+                    .querySelector(".button--deleteOccupancyTypePrint")!
+                    .addEventListener("click", deleteOccupancyTypePrint);
 
                 panelElement.append(panelBlockElement);
             }
@@ -852,11 +846,9 @@ declare const bulmaJS: BulmaJS;
             allOccupancyTypeFields
         );
 
-        (
-            occupancyTypesContainerElement.querySelector(
-                ".button--addOccupancyTypeField"
-            ) as HTMLButtonElement
-        ).addEventListener("click", openAddOccupancyTypeField);
+        occupancyTypesContainerElement
+            .querySelector(".button--addOccupancyTypeField")!
+            .addEventListener("click", openAddOccupancyTypeField);
 
         if (occupancyTypes.length === 0) {
             occupancyTypesContainerElement.insertAdjacentHTML(
@@ -940,29 +932,21 @@ declare const bulmaJS: BulmaJS;
                     occupancyType.occupancyTypeFields!
                 );
 
-                (
-                    occupancyTypeContainer.querySelector(
-                        ".button--toggleOccupancyTypeFields"
-                    ) as HTMLButtonElement
-                ).addEventListener("click", toggleOccupancyTypeFields);
+                occupancyTypeContainer
+                    .querySelector(".button--toggleOccupancyTypeFields")!
+                    .addEventListener("click", toggleOccupancyTypeFields);
 
-                (
-                    occupancyTypeContainer.querySelector(
-                        ".button--deleteOccupancyType"
-                    ) as HTMLButtonElement
-                ).addEventListener("click", deleteOccupancyType);
+                occupancyTypeContainer
+                    .querySelector(".button--deleteOccupancyType")!
+                    .addEventListener("click", deleteOccupancyType);
 
-                (
-                    occupancyTypeContainer.querySelector(
-                        ".button--editOccupancyType"
-                    ) as HTMLButtonElement
-                ).addEventListener("click", openEditOccupancyType);
+                occupancyTypeContainer
+                    .querySelector(".button--editOccupancyType")!
+                    .addEventListener("click", openEditOccupancyType);
 
-                (
-                    occupancyTypeContainer.querySelector(
-                        ".button--addOccupancyTypeField"
-                    ) as HTMLButtonElement
-                ).addEventListener("click", openAddOccupancyTypeField);
+                occupancyTypeContainer
+                    .querySelector(".button--addOccupancyTypeField")!
+                    .addEventListener("click", openAddOccupancyTypeField);
 
                 (
                     occupancyTypeContainer.querySelector(
@@ -1015,18 +999,16 @@ declare const bulmaJS: BulmaJS;
                     occupancyType.occupancyTypePrints!
                 );
 
-                (
-                    occupancyTypePrintContainer.querySelector(
-                        ".button--addOccupancyTypePrint"
-                    ) as HTMLButtonElement
-                ).addEventListener("click", openAddOccupancyTypePrint);
+                occupancyTypePrintContainer
+                    .querySelector(".button--addOccupancyTypePrint")!
+                    .addEventListener("click", openAddOccupancyTypePrint);
 
                 occupancyTypePrintsContainerElement.append(occupancyTypePrintContainer);
             }
         }
     }
 
-    (document.querySelector("#button--addOccupancyType") as HTMLButtonElement).addEventListener(
+    document.querySelector("#button--addOccupancyType")!.addEventListener(
         "click",
         () => {
             let addCloseModalFunction: () => void;

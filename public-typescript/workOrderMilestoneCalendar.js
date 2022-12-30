@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const workOrderMilestoneDateFilterElement = workOrderSearchFiltersFormElement.querySelector("#searchFilter--workOrderMilestoneDateFilter");
     const workOrderMilestoneDateStringElement = workOrderSearchFiltersFormElement.querySelector("#searchFilter--workOrderMilestoneDateString");
     const milestoneCalendarContainerElement = document.querySelector("#container--milestoneCalendar");
-    const renderMilestones = (workOrderMilestones) => {
+    function renderMilestones(workOrderMilestones) {
         if (workOrderMilestones.length === 0) {
             milestoneCalendarContainerElement.innerHTML =
                 '<div class="message is-info">' +
@@ -105,8 +105,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             currentPanelElement.append(panelBlockElement);
         }
         milestoneCalendarContainerElement.append(currentPanelElement);
-    };
-    const getMilestones = (event) => {
+    }
+    function getMilestones(event) {
         if (event) {
             event.preventDefault();
         }
@@ -115,7 +115,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.postJSON(los.urlPrefix + "/workOrders/doGetWorkOrderMilestones", workOrderSearchFiltersFormElement, (responseJSON) => {
             renderMilestones(responseJSON.workOrderMilestones);
         });
-    };
+    }
     workOrderMilestoneDateFilterElement.addEventListener("change", () => {
         workOrderMilestoneDateStringElement.closest("fieldset").disabled =
             workOrderMilestoneDateFilterElement.value !== "date";

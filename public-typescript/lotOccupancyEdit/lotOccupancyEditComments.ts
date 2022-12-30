@@ -217,15 +217,13 @@ const renderLotOccupancyComments = () => {
                 "</div>" +
                 "</td>");
 
-        (tableRowElement.querySelector(".button--edit") as HTMLButtonElement).addEventListener(
-            "click",
-            openEditLotOccupancyComment
-        );
+        tableRowElement
+            .querySelector(".button--edit")!
+            .addEventListener("click", openEditLotOccupancyComment);
 
-        (tableRowElement.querySelector(".button--delete") as HTMLButtonElement).addEventListener(
-            "click",
-            deleteLotOccupancyComment
-        );
+        tableRowElement
+            .querySelector(".button--delete")!
+            .addEventListener("click", deleteLotOccupancyComment);
 
         tableElement.querySelector("tbody")!.append(tableRowElement);
     }
@@ -234,67 +232,64 @@ const renderLotOccupancyComments = () => {
     containerElement.append(tableElement);
 };
 
-(document.querySelector("#button--addComment") as HTMLButtonElement).addEventListener(
-    "click",
-    () => {
-        let addFormElement: HTMLFormElement;
-        let addCloseModalFunction: () => void;
+document.querySelector("#button--addComment")!.addEventListener("click", () => {
+    let addFormElement: HTMLFormElement;
+    let addCloseModalFunction: () => void;
 
-        const addComment = (submitEvent: SubmitEvent) => {
-            submitEvent.preventDefault();
+    const addComment = (submitEvent: SubmitEvent) => {
+        submitEvent.preventDefault();
 
-            cityssm.postJSON(
-                los.urlPrefix + "/lotOccupancies/doAddLotOccupancyComment",
-                addFormElement,
-                (responseJSON: {
-                    success: boolean;
-                    errorMessage?: string;
-                    lotOccupancyComments?: recordTypes.LotOccupancyComment[];
-                }) => {
-                    if (responseJSON.success) {
-                        lotOccupancyComments = responseJSON.lotOccupancyComments!;
-                        addCloseModalFunction();
-                        renderLotOccupancyComments();
-                    } else {
-                        bulmaJS.alert({
-                            title: "Error Adding Comment",
-                            message: responseJSON.errorMessage || "",
-                            contextualColorName: "danger"
-                        });
-                    }
+        cityssm.postJSON(
+            los.urlPrefix + "/lotOccupancies/doAddLotOccupancyComment",
+            addFormElement,
+            (responseJSON: {
+                success: boolean;
+                errorMessage?: string;
+                lotOccupancyComments?: recordTypes.LotOccupancyComment[];
+            }) => {
+                if (responseJSON.success) {
+                    lotOccupancyComments = responseJSON.lotOccupancyComments!;
+                    addCloseModalFunction();
+                    renderLotOccupancyComments();
+                } else {
+                    bulmaJS.alert({
+                        title: "Error Adding Comment",
+                        message: responseJSON.errorMessage || "",
+                        contextualColorName: "danger"
+                    });
                 }
-            );
-        };
-
-        cityssm.openHtmlModal("lotOccupancy-addComment", {
-            onshow: (modalElement) => {
-                los.populateAliases(modalElement);
-
-                (
-                    modalElement.querySelector(
-                        "#lotOccupancyCommentAdd--lotOccupancyId"
-                    ) as HTMLInputElement
-                ).value = lotOccupancyId;
-            },
-            onshown: (modalElement, closeModalFunction) => {
-                bulmaJS.toggleHtmlClipped();
-
-                (
-                    modalElement.querySelector(
-                        "#lotOccupancyCommentAdd--lotOccupancyComment"
-                    ) as HTMLTextAreaElement
-                ).focus();
-
-                addFormElement = modalElement.querySelector("form")!;
-                addFormElement.addEventListener("submit", addComment);
-
-                addCloseModalFunction = closeModalFunction;
-            },
-            onremoved: () => {
-                bulmaJS.toggleHtmlClipped();
             }
-        });
-    }
-);
+        );
+    };
+
+    cityssm.openHtmlModal("lotOccupancy-addComment", {
+        onshow: (modalElement) => {
+            los.populateAliases(modalElement);
+
+            (
+                modalElement.querySelector(
+                    "#lotOccupancyCommentAdd--lotOccupancyId"
+                ) as HTMLInputElement
+            ).value = lotOccupancyId;
+        },
+        onshown: (modalElement, closeModalFunction) => {
+            bulmaJS.toggleHtmlClipped();
+
+            (
+                modalElement.querySelector(
+                    "#lotOccupancyCommentAdd--lotOccupancyComment"
+                ) as HTMLTextAreaElement
+            ).focus();
+
+            addFormElement = modalElement.querySelector("form")!;
+            addFormElement.addEventListener("submit", addComment);
+
+            addCloseModalFunction = closeModalFunction;
+        },
+        onremoved: () => {
+            bulmaJS.toggleHtmlClipped();
+        }
+    });
+});
 
 renderLotOccupancyComments();

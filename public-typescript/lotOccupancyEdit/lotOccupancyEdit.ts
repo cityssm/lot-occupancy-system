@@ -631,38 +631,31 @@ declare const bulmaJS: BulmaJS;
         });
     });
 
-    (document.querySelector(".is-lot-view-button") as HTMLButtonElement).addEventListener(
-        "click",
-        () => {
-            const lotId = (document.querySelector("#lotOccupancy--lotId") as HTMLInputElement)
-                .value;
+    document.querySelector(".is-lot-view-button")!.addEventListener("click", () => {
+        const lotId = (document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value;
 
-            if (lotId) {
-                window.open(los.urlPrefix + "/lots/" + lotId);
-            } else {
-                bulmaJS.alert({
-                    message: "No " + exports.aliases.lot.toLowerCase() + " selected.",
-                    contextualColorName: "info"
-                });
-            }
+        if (lotId) {
+            window.open(los.urlPrefix + "/lots/" + lotId);
+        } else {
+            bulmaJS.alert({
+                message: "No " + exports.aliases.lot.toLowerCase() + " selected.",
+                contextualColorName: "info"
+            });
         }
-    );
+    });
 
-    (document.querySelector(".is-clear-lot-button") as HTMLButtonElement).addEventListener(
-        "click",
-        () => {
-            if (lotNameElement.disabled) {
-                bulmaJS.alert({
-                    message: "You need to unlock the field before clearing it.",
-                    contextualColorName: "info"
-                });
-            } else {
-                lotNameElement.value = "(No " + exports.aliases.lot + ")";
-                (document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value = "";
-                los.setUnsavedChanges();
-            }
+    document.querySelector(".is-clear-lot-button")!.addEventListener("click", () => {
+        if (lotNameElement.disabled) {
+            bulmaJS.alert({
+                message: "You need to unlock the field before clearing it.",
+                contextualColorName: "info"
+            });
+        } else {
+            lotNameElement.value = "(No " + exports.aliases.lot + ")";
+            (document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value = "";
+            los.setUnsavedChanges();
         }
-    );
+    });
 
     // Start Date
 

@@ -17,10 +17,10 @@ declare const bulmaJS: BulmaJS;
     ) as HTMLButtonElement;
 
     if (reopenWorkOrderButtonElement) {
-        reopenWorkOrderButtonElement.addEventListener("click", () => {
-            const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId;
+        const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId;
 
-            const doReopen = () => {
+        reopenWorkOrderButtonElement.addEventListener("click", () => {
+            function doReopen() {
                 cityssm.postJSON(
                     los.urlPrefix + "/workOrders/doReopenWorkOrder",
                     {
@@ -29,7 +29,11 @@ declare const bulmaJS: BulmaJS;
                     (responseJSON: { success: boolean; errorMessage?: string }) => {
                         if (responseJSON.success) {
                             window.location.href =
-                                los.urlPrefix + "/workOrders/" + workOrderId + "/edit/?t=" + Date.now();
+                                los.urlPrefix +
+                                "/workOrders/" +
+                                workOrderId +
+                                "/edit/?t=" +
+                                Date.now();
                         } else {
                             bulmaJS.alert({
                                 title: "Error Reopening Work Order",
@@ -39,7 +43,7 @@ declare const bulmaJS: BulmaJS;
                         }
                     }
                 );
-            };
+            }
 
             bulmaJS.confirm({
                 title: "Reopen Work Order",

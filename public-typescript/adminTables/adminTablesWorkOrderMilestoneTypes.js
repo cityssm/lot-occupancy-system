@@ -154,7 +154,9 @@ const renderWorkOrderMilestoneTypes = () => {
         tableRowElement.querySelector("form").addEventListener("submit", updateWorkOrderMilestoneType);
         tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeUp").addEventListener("click", moveWorkOrderMilestoneTypeUp);
         tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeDown").addEventListener("click", moveWorkOrderMilestoneTypeDown);
-        tableRowElement.querySelector(".button--deleteWorkOrderMilestoneType").addEventListener("click", deleteWorkOrderMilestoneType);
+        tableRowElement
+            .querySelector(".button--deleteWorkOrderMilestoneType")
+            .addEventListener("click", deleteWorkOrderMilestoneType);
         containerElement.append(tableRowElement);
     }
 };

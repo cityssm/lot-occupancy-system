@@ -92,10 +92,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "</div>";
         searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
         if (responseJSON.offset > 0) {
-            searchResultsContainerElement.querySelector("button[data-page='previous']").addEventListener("click", previousAndGetLots);
+            searchResultsContainerElement
+                .querySelector("button[data-page='previous']")
+                .addEventListener("click", previousAndGetLots);
         }
         if (limit + responseJSON.offset < responseJSON.count) {
-            searchResultsContainerElement.querySelector("button[data-page='next']").addEventListener("click", nextAndGetLots);
+            searchResultsContainerElement
+                .querySelector("button[data-page='next']")
+                .addEventListener("click", nextAndGetLots);
         }
     }
     function getLots() {
