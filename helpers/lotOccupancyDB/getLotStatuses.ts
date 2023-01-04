@@ -9,7 +9,7 @@ export function getLotStatuses(): recordTypes.LotStatus[] {
 
     const lotStatuses: recordTypes.LotStatus[] = database
         .prepare(
-            `select lotStatusId, lotStatus
+            `select lotStatusId, lotStatus, orderNumber
                 from LotStatuses
                 where recordDelete_timeMillis is null
                 order by orderNumber, lotStatus`
