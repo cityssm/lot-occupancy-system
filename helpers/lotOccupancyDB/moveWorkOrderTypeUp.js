@@ -22,8 +22,8 @@ export function moveWorkOrderTypeUp(workOrderTypeId) {
 }
 export function moveWorkOrderTypeUpToTop(workOrderTypeId) {
     const currentOrderNumber = getWorkOrderTypeById(typeof workOrderTypeId === "string" ? Number.parseInt(workOrderTypeId) : workOrderTypeId).orderNumber;
-    const database = sqlite(databasePath);
     if (currentOrderNumber > 0) {
+        const database = sqlite(databasePath);
         database
             .prepare("update WorkOrderTypes set orderNumber = -1 where workOrderTypeId = ?")
             .run(workOrderTypeId);
@@ -33,9 +33,9 @@ export function moveWorkOrderTypeUpToTop(workOrderTypeId) {
                     where recordDelete_timeMillis is null
                     and orderNumber < ?`)
             .run(currentOrderNumber);
+        database.close();
+        clearWorkOrderTypesCache();
     }
-    database.close();
-    clearWorkOrderTypesCache();
     return true;
 }
 export default moveWorkOrderTypeUp;

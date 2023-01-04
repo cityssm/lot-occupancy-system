@@ -40,9 +40,9 @@ export function moveWorkOrderTypeUpToTop(workOrderTypeId: number | string): bool
         typeof workOrderTypeId === "string" ? Number.parseInt(workOrderTypeId) : workOrderTypeId
     ).orderNumber;
 
-    const database = sqlite(databasePath);
-
     if (currentOrderNumber > 0) {
+        const database = sqlite(databasePath);
+
         database
             .prepare("update WorkOrderTypes set orderNumber = -1 where workOrderTypeId = ?")
             .run(workOrderTypeId);
@@ -55,11 +55,11 @@ export function moveWorkOrderTypeUpToTop(workOrderTypeId: number | string): bool
                     and orderNumber < ?`
             )
             .run(currentOrderNumber);
+
+        database.close();
+
+        clearWorkOrderTypesCache();
     }
-
-    database.close();
-
-    clearWorkOrderTypesCache();
 
     return true;
 }

@@ -22,8 +22,8 @@ export function moveLotTypeUp(lotTypeId) {
 }
 export function moveLotTypeUpToTop(lotTypeId) {
     const currentOrderNumber = getLotTypeById(typeof lotTypeId === "string" ? Number.parseInt(lotTypeId) : lotTypeId).orderNumber;
-    const database = sqlite(databasePath);
     if (currentOrderNumber > 0) {
+        const database = sqlite(databasePath);
         database.prepare("update LotTypes set orderNumber = -1 where lotTypeId = ?").run(lotTypeId);
         database
             .prepare(`update LotTypes
@@ -31,9 +31,9 @@ export function moveLotTypeUpToTop(lotTypeId) {
                     where recordDelete_timeMillis is null
                     and orderNumber < ?`)
             .run(currentOrderNumber);
+        database.close();
+        clearLotTypesCache();
     }
-    database.close();
-    clearLotTypesCache();
     return true;
 }
 export default moveLotTypeUp;

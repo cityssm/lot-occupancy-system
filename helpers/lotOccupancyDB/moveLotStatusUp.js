@@ -22,9 +22,9 @@ export function moveLotStatusUp(lotStatusId) {
     return result.changes > 0;
 }
 export function moveLotStatusUpToTop(lotStatusId) {
-    const database = sqlite(databasePath);
     const currentOrderNumber = getLotStatusById(typeof lotStatusId === "string" ? Number.parseInt(lotStatusId) : lotStatusId).orderNumber;
     if (currentOrderNumber > 0) {
+        const database = sqlite(databasePath);
         database
             .prepare("update LotStatuses set orderNumber = -1 where lotStatusId = ?")
             .run(lotStatusId);
@@ -34,9 +34,9 @@ export function moveLotStatusUpToTop(lotStatusId) {
                     where recordDelete_timeMillis is null
                     and orderNumber < ?`)
             .run(currentOrderNumber);
+        database.close();
+        clearLotStatusesCache();
     }
-    database.close();
-    clearLotStatusesCache();
     return true;
 }
 export default moveLotStatusUp;

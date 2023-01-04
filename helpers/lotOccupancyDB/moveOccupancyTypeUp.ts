@@ -40,9 +40,9 @@ export function moveOccupancyTypeUpToTop(occupancyTypeId: number | string): bool
         typeof occupancyTypeId === "string" ? Number.parseInt(occupancyTypeId) : occupancyTypeId
     ).orderNumber;
 
-    const database = sqlite(databasePath);
-
     if (currentOrderNumber > 0) {
+        const database = sqlite(databasePath);
+
         database
             .prepare("update OccupancyTypes set orderNumber = -1 where occupancyTypeId = ?")
             .run(occupancyTypeId);
@@ -55,11 +55,11 @@ export function moveOccupancyTypeUpToTop(occupancyTypeId: number | string): bool
                     and orderNumber < ?`
             )
             .run(currentOrderNumber);
+
+        database.close();
+
+        clearOccupancyTypesCache();
     }
-
-    database.close();
-
-    clearOccupancyTypesCache();
 
     return true;
 }

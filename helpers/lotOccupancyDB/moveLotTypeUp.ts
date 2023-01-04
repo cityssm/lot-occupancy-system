@@ -40,9 +40,8 @@ export function moveLotTypeUpToTop(lotTypeId: number | string): boolean {
         typeof lotTypeId === "string" ? Number.parseInt(lotTypeId) : lotTypeId
     ).orderNumber;
 
-    const database = sqlite(databasePath);
-
     if (currentOrderNumber > 0) {
+        const database = sqlite(databasePath);
         database.prepare("update LotTypes set orderNumber = -1 where lotTypeId = ?").run(lotTypeId);
 
         database
@@ -53,11 +52,11 @@ export function moveLotTypeUpToTop(lotTypeId: number | string): boolean {
                     and orderNumber < ?`
             )
             .run(currentOrderNumber);
+
+        database.close();
+
+        clearLotTypesCache();
     }
-
-    database.close();
-
-    clearLotTypesCache();
 
     return true;
 }
