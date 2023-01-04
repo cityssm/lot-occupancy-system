@@ -9,7 +9,7 @@ import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.
 
 export const handler: RequestHandler = async (request, response) => {
     const success =
-        request.body.moveToTop === "1"
+        request.body.moveToEnd === "1"
             ? moveFeeCategoryUpToTop(request.body.feeCategoryId)
             : moveFeeCategoryUp(request.body.feeCategoryId);
 

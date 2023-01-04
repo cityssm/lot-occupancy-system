@@ -376,14 +376,14 @@ declare const bulmaJS: BulmaJS;
             <div class="control">
             <button
                 class="button ${isSmall ? "is-small" : ""} ${upButtonClassNames}"
-                data-tooltip="Move Up" type="button" aria-label="Move Up">
+                data-tooltip="Move Up" data-direction="up" type="button" aria-label="Move Up">
             <i class="fas fa-arrow-up" aria-hidden="true"></i>
             </button>
             </div>
             <div class="control">
             <button
                 class="button ${isSmall ? "is-small" : ""} ${downButtonClassNames}"
-                data-tooltip="Move Down" type="button" aria-label="Move Down">
+                data-tooltip="Move Down" data-direction="down" type="button" aria-label="Move Down">
             <i class="fas fa-arrow-down" aria-hidden="true"></i>
             </button>
             </div>

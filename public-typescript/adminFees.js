@@ -142,8 +142,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 "</div>") +
                             "</div>";
                     panelBlockElement.querySelector("a").addEventListener("click", openEditFee);
-                    panelBlockElement.querySelector(".button--moveFeeUp").addEventListener("click", moveFeeUp);
-                    panelBlockElement.querySelector(".button--moveFeeDown").addEventListener("click", moveFeeDown);
+                    panelBlockElement.querySelector(".button--moveFeeUp").addEventListener("click", moveFee);
+                    panelBlockElement.querySelector(".button--moveFeeDown").addEventListener("click", moveFee);
                     feeCategoryContainerElement.append(panelBlockElement);
                 }
             }
@@ -153,8 +153,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             feeCategoryContainerElement
                 .querySelector(".button--addFee")
                 .addEventListener("click", openAddFee);
-            feeCategoryContainerElement.querySelector(".button--moveFeeCategoryUp").addEventListener("click", moveFeeCategoryUp);
-            feeCategoryContainerElement.querySelector(".button--moveFeeCategoryDown").addEventListener("click", moveFeeCategoryDown);
+            feeCategoryContainerElement.querySelector(".button--moveFeeCategoryUp").addEventListener("click", moveFeeCategory);
+            feeCategoryContainerElement.querySelector(".button--moveFeeCategoryDown").addEventListener("click", moveFeeCategory);
             feeCategoriesContainerElement.append(feeCategoryContainerElement);
         }
     }
@@ -260,30 +260,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    function moveFeeCategoryUp(clickEvent) {
-        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveFeeCategoryUp", {
+    function moveFeeCategory(clickEvent) {
+        const buttonElement = clickEvent.currentTarget;
+        const feeCategoryId = Number.parseInt(buttonElement.closest(".container--feeCategory").dataset
+            .feeCategoryId, 10);
+        cityssm.postJSON(los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveFeeCategoryUp"
+                : "doMoveFeeCategoryDown"), {
             feeCategoryId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        }, (responseJSON) => {
-            if (responseJSON.success) {
-                feeCategories = responseJSON.feeCategories;
-                renderFeeCategories();
-            }
-            else {
-                bulmaJS.alert({
-                    title: "Error Moving Fee Category",
-                    message: responseJSON.errorMessage || "",
-                    contextualColorName: "danger"
-                });
-            }
-        });
-    }
-    function moveFeeCategoryDown(clickEvent) {
-        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveFeeCategoryDown", {
-            feeCategoryId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, (responseJSON) => {
             if (responseJSON.success) {
                 feeCategories = responseJSON.feeCategories;
@@ -562,32 +549,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    function moveFeeUp(clickEvent) {
-        const feeContainerElement = clickEvent.currentTarget.closest(".container--fee");
+    function moveFee(clickEvent) {
+        const buttonElement = clickEvent.currentTarget;
+        const feeContainerElement = buttonElement.closest(".container--fee");
         const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveFeeUp", {
+        cityssm.postJSON(los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up" ? "doMoveFeeUp" : "doMoveFeeDown"), {
             feeId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        }, (responseJSON) => {
-            if (responseJSON.success) {
-                feeCategories = responseJSON.feeCategories;
-                renderFeeCategories();
-            }
-            else {
-                bulmaJS.alert({
-                    title: "Error Moving Fee",
-                    message: responseJSON.errorMessage || "",
-                    contextualColorName: "danger"
-                });
-            }
-        });
-    }
-    function moveFeeDown(clickEvent) {
-        const feeContainerElement = clickEvent.currentTarget.closest(".container--fee");
-        const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveFeeDown", {
-            feeId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, (responseJSON) => {
             if (responseJSON.success) {
                 feeCategories = responseJSON.feeCategories;

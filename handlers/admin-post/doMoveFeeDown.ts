@@ -6,7 +6,7 @@ import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.
 
 export const handler: RequestHandler = async (request, response) => {
     const success =
-        request.body.moveToBottom === "1"
+        request.body.moveToEnd === "1"
             ? moveFeeDownToBottom(request.body.feeId)
             : moveFeeDown(request.body.feeId);
 

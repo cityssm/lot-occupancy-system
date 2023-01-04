@@ -179,11 +179,11 @@ declare const bulmaJS: BulmaJS;
 
                     (
                         panelBlockElement.querySelector(".button--moveFeeUp") as HTMLButtonElement
-                    ).addEventListener("click", moveFeeUp);
+                    ).addEventListener("click", moveFee);
 
                     (
                         panelBlockElement.querySelector(".button--moveFeeDown") as HTMLButtonElement
-                    ).addEventListener("click", moveFeeDown);
+                    ).addEventListener("click", moveFee);
 
                     feeCategoryContainerElement.append(panelBlockElement);
                 }
@@ -201,13 +201,13 @@ declare const bulmaJS: BulmaJS;
                 feeCategoryContainerElement.querySelector(
                     ".button--moveFeeCategoryUp"
                 ) as HTMLButtonElement
-            ).addEventListener("click", moveFeeCategoryUp);
+            ).addEventListener("click", moveFeeCategory);
 
             (
                 feeCategoryContainerElement.querySelector(
                     ".button--moveFeeCategoryDown"
                 ) as HTMLButtonElement
-            ).addEventListener("click", moveFeeCategoryDown);
+            ).addEventListener("click", moveFeeCategory);
 
             feeCategoriesContainerElement.append(feeCategoryContainerElement);
         }
@@ -378,56 +378,24 @@ declare const bulmaJS: BulmaJS;
         });
     }
 
-    function moveFeeCategoryUp(clickEvent: MouseEvent): void {
+    function moveFeeCategory(clickEvent: MouseEvent): void {
+        const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
+
         const feeCategoryId = Number.parseInt(
-            (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--feeCategory"
-                ) as HTMLElement
-            ).dataset.feeCategoryId!,
+            (buttonElement.closest(".container--feeCategory") as HTMLElement).dataset
+                .feeCategoryId!,
             10
         );
 
         cityssm.postJSON(
-            los.urlPrefix + "/admin/doMoveFeeCategoryUp",
+            los.urlPrefix +
+                "/admin/" +
+                (buttonElement.dataset.direction === "up"
+                    ? "doMoveFeeCategoryUp"
+                    : "doMoveFeeCategoryDown"),
             {
                 feeCategoryId,
-                moveToTop: clickEvent.shiftKey ? "1" : "0"
-            },
-            (responseJSON: {
-                success: boolean;
-                errorMessage?: string;
-                feeCategories?: recordTypes.FeeCategory[];
-            }) => {
-                if (responseJSON.success) {
-                    feeCategories = responseJSON.feeCategories!;
-                    renderFeeCategories();
-                } else {
-                    bulmaJS.alert({
-                        title: "Error Moving Fee Category",
-                        message: responseJSON.errorMessage || "",
-                        contextualColorName: "danger"
-                    });
-                }
-            }
-        );
-    }
-
-    function moveFeeCategoryDown(clickEvent: MouseEvent): void {
-        const feeCategoryId = Number.parseInt(
-            (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--feeCategory"
-                ) as HTMLElement
-            ).dataset.feeCategoryId!,
-            10
-        );
-
-        cityssm.postJSON(
-            los.urlPrefix + "/admin/doMoveFeeCategoryDown",
-            {
-                feeCategoryId,
-                moveToBottom: clickEvent.shiftKey ? "1" : "0"
+                moveToEnd: clickEvent.shiftKey ? "1" : "0"
             },
             (responseJSON: {
                 success: boolean;
@@ -874,50 +842,20 @@ declare const bulmaJS: BulmaJS;
         });
     }
 
-    function moveFeeUp(clickEvent: MouseEvent): void {
-        const feeContainerElement = (clickEvent.currentTarget as HTMLElement).closest(
-            ".container--fee"
-        ) as HTMLElement;
+    function moveFee(clickEvent: MouseEvent): void {
+        const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
+
+        const feeContainerElement = buttonElement.closest(".container--fee") as HTMLElement;
 
         const feeId = Number.parseInt(feeContainerElement.dataset.feeId!, 10);
 
         cityssm.postJSON(
-            los.urlPrefix + "/admin/doMoveFeeUp",
+            los.urlPrefix +
+                "/admin/" +
+                (buttonElement.dataset.direction === "up" ? "doMoveFeeUp" : "doMoveFeeDown"),
             {
                 feeId,
-                moveToTop: clickEvent.shiftKey ? "1" : "0"
-            },
-            (responseJSON: {
-                success: boolean;
-                errorMessage?: string;
-                feeCategories?: recordTypes.FeeCategory[];
-            }) => {
-                if (responseJSON.success) {
-                    feeCategories = responseJSON.feeCategories!;
-                    renderFeeCategories();
-                } else {
-                    bulmaJS.alert({
-                        title: "Error Moving Fee",
-                        message: responseJSON.errorMessage || "",
-                        contextualColorName: "danger"
-                    });
-                }
-            }
-        );
-    }
-
-    function moveFeeDown(clickEvent: MouseEvent): void {
-        const feeContainerElement = (clickEvent.currentTarget as HTMLElement).closest(
-            ".container--fee"
-        ) as HTMLElement;
-
-        const feeId = Number.parseInt(feeContainerElement.dataset.feeId!, 10);
-
-        cityssm.postJSON(
-            los.urlPrefix + "/admin/doMoveFeeDown",
-            {
-                feeId,
-                moveToBottom: clickEvent.shiftKey ? "1" : "0"
+                moveToEnd: clickEvent.shiftKey ? "1" : "0"
             },
             (responseJSON: {
                 success: boolean;
