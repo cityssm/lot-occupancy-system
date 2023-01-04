@@ -1,15 +1,14 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearLotOccupantTypesCache } from "../functions.cache.js";
+import { getLotOccupantTypeById, clearLotOccupantTypesCache } from "../functions.cache.js";
 export function moveLotOccupantTypeUp(lotOccupantTypeId) {
-    const database = sqlite(databasePath);
-    const currentOrderNumber = database
-        .prepare(`select orderNumber from LotOccupantTypes where lotOccupantTypeId = ?`)
-        .get(lotOccupantTypeId).orderNumber;
+    const currentOrderNumber = getLotOccupantTypeById(typeof lotOccupantTypeId === "string"
+        ? Number.parseInt(lotOccupantTypeId)
+        : lotOccupantTypeId).orderNumber;
     if (currentOrderNumber <= 0) {
-        database.close();
         return true;
     }
+    const database = sqlite(databasePath);
     database
         .prepare(`update LotOccupantTypes
                 set orderNumber = orderNumber + 1
@@ -26,11 +25,11 @@ export function moveLotOccupantTypeUp(lotOccupantTypeId) {
     return result.changes > 0;
 }
 export function moveLotOccupantTypeUpToTop(lotOccupantTypeId) {
-    const database = sqlite(databasePath);
-    const currentOrderNumber = database
-        .prepare("select orderNumber from LotOccupantTypes where lotOccupantTypeId = ?")
-        .get(lotOccupantTypeId).orderNumber;
+    const currentOrderNumber = getLotOccupantTypeById(typeof lotOccupantTypeId === "string"
+        ? Number.parseInt(lotOccupantTypeId)
+        : lotOccupantTypeId).orderNumber;
     if (currentOrderNumber > 0) {
+        const database = sqlite(databasePath);
         database
             .prepare("update LotOccupantTypes set orderNumber = -1 where lotOccupantTypeId = ?")
             .run(lotOccupantTypeId);
@@ -40,9 +39,9 @@ export function moveLotOccupantTypeUpToTop(lotOccupantTypeId) {
                     where recordDelete_timeMillis is null
                     and orderNumber < ?`)
             .run(currentOrderNumber);
+        database.close();
+        clearLotOccupantTypesCache();
     }
-    database.close();
-    clearLotOccupantTypesCache();
     return true;
 }
 export default moveLotOccupantTypeUp;
