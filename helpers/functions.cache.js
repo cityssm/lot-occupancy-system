@@ -139,6 +139,12 @@ export function getWorkOrderMilestoneTypes() {
     }
     return workOrderMilestoneTypes;
 }
+export function getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(workOrderMilestoneTypeId) {
+    const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+    return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => {
+        return currentWorkOrderMilestoneType.workOrderMilestoneTypeId === workOrderMilestoneTypeId;
+    });
+}
 export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString) {
     const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
     const workOrderMilestoneTypeLowerCase = workOrderMilestoneTypeString.toLowerCase();

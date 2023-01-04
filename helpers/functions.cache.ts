@@ -222,6 +222,16 @@ export function getWorkOrderMilestoneTypes() {
     return workOrderMilestoneTypes;
 }
 
+export function getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(
+    workOrderMilestoneTypeId: number
+) {
+    const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+
+    return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => {
+        return currentWorkOrderMilestoneType.workOrderMilestoneTypeId === workOrderMilestoneTypeId;
+    });
+}
+
 export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     workOrderMilestoneTypeString: string
 ) {

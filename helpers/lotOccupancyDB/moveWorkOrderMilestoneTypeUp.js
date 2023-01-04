@@ -1,15 +1,14 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearWorkOrderMilestoneTypesCache } from "../functions.cache.js";
+import { getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId, clearWorkOrderMilestoneTypesCache } from "../functions.cache.js";
 export function moveWorkOrderMilestoneTypeUp(workOrderMilestoneTypeId) {
-    const database = sqlite(databasePath);
-    const currentOrderNumber = database
-        .prepare(`select orderNumber from WorkOrderMilestoneTypes where workOrderMilestoneTypeId = ?`)
-        .get(workOrderMilestoneTypeId).orderNumber;
+    const currentOrderNumber = getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(typeof workOrderMilestoneTypeId === "string"
+        ? Number.parseInt(workOrderMilestoneTypeId)
+        : workOrderMilestoneTypeId).orderNumber;
     if (currentOrderNumber <= 0) {
-        database.close();
         return true;
     }
+    const database = sqlite(databasePath);
     database
         .prepare(`update WorkOrderMilestoneTypes
                 set orderNumber = orderNumber + 1
@@ -26,11 +25,11 @@ export function moveWorkOrderMilestoneTypeUp(workOrderMilestoneTypeId) {
     return result.changes > 0;
 }
 export function moveWorkOrderMilestoneTypeUpToTop(workOrderMilestoneTypeId) {
-    const database = sqlite(databasePath);
-    const currentOrderNumber = database
-        .prepare("select orderNumber from WorkOrderMilestoneTypes where workOrderMilestoneTypeId = ?")
-        .get(workOrderMilestoneTypeId).orderNumber;
+    const currentOrderNumber = getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(typeof workOrderMilestoneTypeId === "string"
+        ? Number.parseInt(workOrderMilestoneTypeId)
+        : workOrderMilestoneTypeId).orderNumber;
     if (currentOrderNumber > 0) {
+        const database = sqlite(databasePath);
         database
             .prepare("update WorkOrderMilestoneTypes set orderNumber = -1 where workOrderMilestoneTypeId = ?")
             .run(workOrderMilestoneTypeId);
@@ -40,9 +39,9 @@ export function moveWorkOrderMilestoneTypeUpToTop(workOrderMilestoneTypeId) {
                     where recordDelete_timeMillis is null
                     and orderNumber < ?`)
             .run(currentOrderNumber);
+        database.close();
+        clearWorkOrderMilestoneTypesCache();
     }
-    database.close();
-    clearWorkOrderMilestoneTypesCache();
     return true;
 }
 export default moveWorkOrderMilestoneTypeUp;

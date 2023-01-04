@@ -1,11 +1,11 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearWorkOrderMilestoneTypesCache } from "../functions.cache.js";
+import { getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId, clearWorkOrderMilestoneTypesCache } from "../functions.cache.js";
 export function moveWorkOrderMilestoneTypeDown(workOrderMilestoneTypeId) {
+    const currentOrderNumber = getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(typeof workOrderMilestoneTypeId === "string"
+        ? Number.parseInt(workOrderMilestoneTypeId)
+        : workOrderMilestoneTypeId).orderNumber;
     const database = sqlite(databasePath);
-    const currentOrderNumber = database
-        .prepare(`select orderNumber from WorkOrderMilestoneTypes where workOrderMilestoneTypeId = ?`)
-        .get(workOrderMilestoneTypeId).orderNumber;
     database
         .prepare(`update WorkOrderMilestoneTypes
                 set orderNumber = orderNumber - 1
@@ -22,10 +22,10 @@ export function moveWorkOrderMilestoneTypeDown(workOrderMilestoneTypeId) {
     return result.changes > 0;
 }
 export function moveWorkOrderMilestoneTypeDownToBottom(workOrderMilestoneTypeId) {
+    const currentOrderNumber = getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(typeof workOrderMilestoneTypeId === "string"
+        ? Number.parseInt(workOrderMilestoneTypeId)
+        : workOrderMilestoneTypeId).orderNumber;
     const database = sqlite(databasePath);
-    const currentOrderNumber = database
-        .prepare("select orderNumber from WorkOrderMilestoneTypes where workOrderMilestoneTypeId = ?")
-        .get(workOrderMilestoneTypeId).orderNumber;
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
                 from WorkOrderMilestoneTypes
