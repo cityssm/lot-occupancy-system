@@ -9,7 +9,7 @@ import { getAllOccupancyTypeFields, getOccupancyTypes } from "../../helpers/func
 
 export const handler: RequestHandler = async (request, response) => {
     const success =
-        request.body.moveToBottom === "1"
+        request.body.moveToEnd === "1"
             ? moveOccupancyTypeFieldDownToBottom(request.body.occupancyTypeFieldId)
             : moveOccupancyTypeFieldDown(request.body.occupancyTypeFieldId);
 

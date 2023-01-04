@@ -1,7 +1,7 @@
 import { moveOccupancyTypePrintUp, moveOccupancyTypePrintUpToTop } from "../../helpers/lotOccupancyDB/moveOccupancyTypePrintUp.js";
 import { getAllOccupancyTypeFields, getOccupancyTypes } from "../../helpers/functions.cache.js";
 export const handler = async (request, response) => {
-    const success = request.body.moveToTop === "1"
+    const success = request.body.moveToEnd === "1"
         ? moveOccupancyTypePrintUpToTop(request.body.occupancyTypeId, request.body.printEJS)
         : moveOccupancyTypePrintUp(request.body.occupancyTypeId, request.body.printEJS);
     const occupancyTypes = getOccupancyTypes();

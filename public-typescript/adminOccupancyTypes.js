@@ -123,20 +123,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    function moveOccupancyTypeUp(clickEvent) {
-        clickEvent.preventDefault();
+    function moveOccupancyType(clickEvent) {
+        const buttonElement = clickEvent.currentTarget;
         const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypeUp", {
+        cityssm.postJSON(los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveOccupancyTypeUp"
+                : "doMoveOccupancyTypeDown"), {
             occupancyTypeId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        }, occupancyTypeResponseHandler);
-    }
-    function moveOccupancyTypeDown(clickEvent) {
-        clickEvent.preventDefault();
-        const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypeDown", {
-            occupancyTypeId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
     }
     function openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId) {
@@ -241,20 +237,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--occupancyType").dataset.occupancyTypeId, 10);
         openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId);
     }
-    function moveOccupancyTypeFieldUp(clickEvent) {
-        clickEvent.preventDefault();
+    function moveOccupancyTypeField(clickEvent) {
+        const buttonElement = clickEvent.currentTarget;
         const occupancyTypeFieldId = clickEvent.currentTarget.closest(".container--occupancyTypeField").dataset.occupancyTypeFieldId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypeFieldUp", {
+        cityssm.postJSON(los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveOccupancyTypeFieldUp"
+                : "doMoveOccupancyTypeFieldDown"), {
             occupancyTypeFieldId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        }, occupancyTypeResponseHandler);
-    }
-    function moveOccupancyTypeFieldDown(clickEvent) {
-        clickEvent.preventDefault();
-        const occupancyTypeFieldId = clickEvent.currentTarget.closest(".container--occupancyTypeField").dataset.occupancyTypeFieldId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypeFieldDown", {
-            occupancyTypeFieldId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
     }
     function renderOccupancyTypeFields(panelElement, occupancyTypeId, occupancyTypeFields) {
@@ -296,8 +288,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 panelBlockElement
                     .querySelector(".button--editOccupancyTypeField")
                     .addEventListener("click", openEditOccupancyTypeFieldByClick);
-                panelBlockElement.querySelector(".button--moveOccupancyTypeFieldUp").addEventListener("click", moveOccupancyTypeFieldUp);
-                panelBlockElement.querySelector(".button--moveOccupancyTypeFieldDown").addEventListener("click", moveOccupancyTypeFieldDown);
+                panelBlockElement.querySelector(".button--moveOccupancyTypeFieldUp").addEventListener("click", moveOccupancyTypeField);
+                panelBlockElement.querySelector(".button--moveOccupancyTypeFieldDown").addEventListener("click", moveOccupancyTypeField);
                 panelElement.append(panelBlockElement);
             }
         }
@@ -333,24 +325,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    function moveOccupancyTypePrintUp(clickEvent) {
-        clickEvent.preventDefault();
-        const printEJS = clickEvent.currentTarget.closest(".container--occupancyTypePrint").dataset.printEJS;
-        const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyTypePrintList").dataset.occupancyTypeId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypePrintUp", {
+    function moveOccupancyTypePrint(clickEvent) {
+        const buttonElement = clickEvent.currentTarget;
+        const printEJS = buttonElement.closest(".container--occupancyTypePrint")
+            .dataset.printEJS;
+        const occupancyTypeId = buttonElement.closest(".container--occupancyTypePrintList").dataset.occupancyTypeId;
+        cityssm.postJSON(los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveOccupancyTypePrintUp"
+                : "doMoveOccupancyTypePrintDown"), {
             occupancyTypeId,
             printEJS,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        }, occupancyTypeResponseHandler);
-    }
-    function moveOccupancyTypePrintDown(clickEvent) {
-        clickEvent.preventDefault();
-        const printEJS = clickEvent.currentTarget.closest(".container--occupancyTypePrint").dataset.printEJS;
-        const occupancyTypeId = clickEvent.currentTarget.closest(".container--occupancyTypePrintList").dataset.occupancyTypeId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveOccupancyTypePrintDown", {
-            occupancyTypeId,
-            printEJS,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, occupancyTypeResponseHandler);
     }
     function deleteOccupancyTypePrint(clickEvent) {
@@ -420,8 +407,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</div>") +
                         "</div>" +
                         "</div>";
-                panelBlockElement.querySelector(".button--moveOccupancyTypePrintUp").addEventListener("click", moveOccupancyTypePrintUp);
-                panelBlockElement.querySelector(".button--moveOccupancyTypePrintDown").addEventListener("click", moveOccupancyTypePrintDown);
+                panelBlockElement.querySelector(".button--moveOccupancyTypePrintUp").addEventListener("click", moveOccupancyTypePrint);
+                panelBlockElement.querySelector(".button--moveOccupancyTypePrintDown").addEventListener("click", moveOccupancyTypePrint);
                 panelBlockElement
                     .querySelector(".button--deleteOccupancyTypePrint")
                     .addEventListener("click", deleteOccupancyTypePrint);
@@ -530,8 +517,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 occupancyTypeContainer
                     .querySelector(".button--addOccupancyTypeField")
                     .addEventListener("click", openAddOccupancyTypeField);
-                occupancyTypeContainer.querySelector(".button--moveOccupancyTypeUp").addEventListener("click", moveOccupancyTypeUp);
-                occupancyTypeContainer.querySelector(".button--moveOccupancyTypeDown").addEventListener("click", moveOccupancyTypeDown);
+                occupancyTypeContainer.querySelector(".button--moveOccupancyTypeUp").addEventListener("click", moveOccupancyType);
+                occupancyTypeContainer.querySelector(".button--moveOccupancyTypeDown").addEventListener("click", moveOccupancyType);
                 occupancyTypesContainerElement.append(occupancyTypeContainer);
             }
             // Prints

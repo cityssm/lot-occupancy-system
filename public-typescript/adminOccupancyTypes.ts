@@ -246,8 +246,8 @@ declare const bulmaJS: BulmaJS;
         });
     }
 
-    function moveOccupancyTypeUp(clickEvent: MouseEvent) {
-        clickEvent.preventDefault();
+    function moveOccupancyType(clickEvent: MouseEvent) {
+        const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
 
         const occupancyTypeId = (
             (clickEvent.currentTarget as HTMLElement).closest(
@@ -256,29 +256,14 @@ declare const bulmaJS: BulmaJS;
         ).dataset.occupancyTypeId;
 
         cityssm.postJSON(
-            los.urlPrefix + "/admin/doMoveOccupancyTypeUp",
+            los.urlPrefix +
+                "/admin/" +
+                (buttonElement.dataset.direction === "up"
+                    ? "doMoveOccupancyTypeUp"
+                    : "doMoveOccupancyTypeDown"),
             {
                 occupancyTypeId,
-                moveToTop: clickEvent.shiftKey ? "1" : "0"
-            },
-            occupancyTypeResponseHandler
-        );
-    }
-
-    function moveOccupancyTypeDown(clickEvent: MouseEvent) {
-        clickEvent.preventDefault();
-
-        const occupancyTypeId = (
-            (clickEvent.currentTarget as HTMLElement).closest(
-                ".container--occupancyType"
-            ) as HTMLElement
-        ).dataset.occupancyTypeId;
-
-        cityssm.postJSON(
-            los.urlPrefix + "/admin/doMoveOccupancyTypeDown",
-            {
-                occupancyTypeId,
-                moveToBottom: clickEvent.shiftKey ? "1" : "0"
+                moveToEnd: clickEvent.shiftKey ? "1" : "0"
             },
             occupancyTypeResponseHandler
         );
@@ -471,8 +456,8 @@ declare const bulmaJS: BulmaJS;
         openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId);
     }
 
-    function moveOccupancyTypeFieldUp(clickEvent: MouseEvent) {
-        clickEvent.preventDefault();
+    function moveOccupancyTypeField(clickEvent: MouseEvent) {
+        const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
 
         const occupancyTypeFieldId = (
             (clickEvent.currentTarget as HTMLElement).closest(
@@ -481,29 +466,14 @@ declare const bulmaJS: BulmaJS;
         ).dataset.occupancyTypeFieldId;
 
         cityssm.postJSON(
-            los.urlPrefix + "/admin/doMoveOccupancyTypeFieldUp",
+            los.urlPrefix +
+                "/admin/" +
+                (buttonElement.dataset.direction === "up"
+                    ? "doMoveOccupancyTypeFieldUp"
+                    : "doMoveOccupancyTypeFieldDown"),
             {
                 occupancyTypeFieldId,
-                moveToTop: clickEvent.shiftKey ? "1" : "0"
-            },
-            occupancyTypeResponseHandler
-        );
-    }
-
-    function moveOccupancyTypeFieldDown(clickEvent: MouseEvent) {
-        clickEvent.preventDefault();
-
-        const occupancyTypeFieldId = (
-            (clickEvent.currentTarget as HTMLElement).closest(
-                ".container--occupancyTypeField"
-            ) as HTMLElement
-        ).dataset.occupancyTypeFieldId;
-
-        cityssm.postJSON(
-            los.urlPrefix + "/admin/doMoveOccupancyTypeFieldDown",
-            {
-                occupancyTypeFieldId,
-                moveToBottom: clickEvent.shiftKey ? "1" : "0"
+                moveToEnd: clickEvent.shiftKey ? "1" : "0"
             },
             occupancyTypeResponseHandler
         );
@@ -566,13 +536,13 @@ declare const bulmaJS: BulmaJS;
                     panelBlockElement.querySelector(
                         ".button--moveOccupancyTypeFieldUp"
                     ) as HTMLButtonElement
-                ).addEventListener("click", moveOccupancyTypeFieldUp);
+                ).addEventListener("click", moveOccupancyTypeField);
 
                 (
                     panelBlockElement.querySelector(
                         ".button--moveOccupancyTypeFieldDown"
                     ) as HTMLButtonElement
-                ).addEventListener("click", moveOccupancyTypeFieldDown);
+                ).addEventListener("click", moveOccupancyTypeField);
 
                 panelElement.append(panelBlockElement);
             }
@@ -640,53 +610,26 @@ declare const bulmaJS: BulmaJS;
         });
     }
 
-    function moveOccupancyTypePrintUp(clickEvent: MouseEvent): void {
-        clickEvent.preventDefault();
+    function moveOccupancyTypePrint(clickEvent: MouseEvent): void {
+        const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
 
-        const printEJS = (
-            (clickEvent.currentTarget as HTMLElement).closest(
-                ".container--occupancyTypePrint"
-            ) as HTMLElement
-        ).dataset.printEJS;
+        const printEJS = (buttonElement.closest(".container--occupancyTypePrint") as HTMLElement)
+            .dataset.printEJS;
 
         const occupancyTypeId = (
-            (clickEvent.currentTarget as HTMLElement).closest(
-                ".container--occupancyTypePrintList"
-            ) as HTMLElement
+            buttonElement.closest(".container--occupancyTypePrintList") as HTMLElement
         ).dataset.occupancyTypeId;
 
         cityssm.postJSON(
-            los.urlPrefix + "/admin/doMoveOccupancyTypePrintUp",
+            los.urlPrefix +
+                "/admin/" +
+                (buttonElement.dataset.direction === "up"
+                    ? "doMoveOccupancyTypePrintUp"
+                    : "doMoveOccupancyTypePrintDown"),
             {
                 occupancyTypeId,
                 printEJS,
-                moveToTop: clickEvent.shiftKey ? "1" : "0"
-            },
-            occupancyTypeResponseHandler
-        );
-    }
-
-    function moveOccupancyTypePrintDown(clickEvent: MouseEvent): void {
-        clickEvent.preventDefault();
-
-        const printEJS = (
-            (clickEvent.currentTarget as HTMLElement).closest(
-                ".container--occupancyTypePrint"
-            ) as HTMLElement
-        ).dataset.printEJS;
-
-        const occupancyTypeId = (
-            (clickEvent.currentTarget as HTMLElement).closest(
-                ".container--occupancyTypePrintList"
-            ) as HTMLElement
-        ).dataset.occupancyTypeId;
-
-        cityssm.postJSON(
-            los.urlPrefix + "/admin/doMoveOccupancyTypePrintDown",
-            {
-                occupancyTypeId,
-                printEJS,
-                moveToBottom: clickEvent.shiftKey ? "1" : "0"
+                moveToEnd: clickEvent.shiftKey ? "1" : "0"
             },
             occupancyTypeResponseHandler
         );
@@ -795,13 +738,13 @@ declare const bulmaJS: BulmaJS;
                     panelBlockElement.querySelector(
                         ".button--moveOccupancyTypePrintUp"
                     ) as HTMLButtonElement
-                ).addEventListener("click", moveOccupancyTypePrintUp);
+                ).addEventListener("click", moveOccupancyTypePrint);
 
                 (
                     panelBlockElement.querySelector(
                         ".button--moveOccupancyTypePrintDown"
                     ) as HTMLButtonElement
-                ).addEventListener("click", moveOccupancyTypePrintDown);
+                ).addEventListener("click", moveOccupancyTypePrint);
 
                 panelBlockElement
                     .querySelector(".button--deleteOccupancyTypePrint")!
@@ -952,13 +895,13 @@ declare const bulmaJS: BulmaJS;
                     occupancyTypeContainer.querySelector(
                         ".button--moveOccupancyTypeUp"
                     ) as HTMLButtonElement
-                ).addEventListener("click", moveOccupancyTypeUp);
+                ).addEventListener("click", moveOccupancyType);
 
                 (
                     occupancyTypeContainer.querySelector(
                         ".button--moveOccupancyTypeDown"
                     ) as HTMLButtonElement
-                ).addEventListener("click", moveOccupancyTypeDown);
+                ).addEventListener("click", moveOccupancyType);
 
                 occupancyTypesContainerElement.append(occupancyTypeContainer);
             }
@@ -1008,60 +951,57 @@ declare const bulmaJS: BulmaJS;
         }
     }
 
-    document.querySelector("#button--addOccupancyType")!.addEventListener(
-        "click",
-        () => {
-            let addCloseModalFunction: () => void;
+    document.querySelector("#button--addOccupancyType")!.addEventListener("click", () => {
+        let addCloseModalFunction: () => void;
 
-            const doAdd = (submitEvent: SubmitEvent) => {
-                submitEvent.preventDefault();
+        const doAdd = (submitEvent: SubmitEvent) => {
+            submitEvent.preventDefault();
 
-                cityssm.postJSON(
-                    los.urlPrefix + "/admin/doAddOccupancyType",
-                    submitEvent.currentTarget,
-                    (responseJSON: {
-                        success: boolean;
-                        errorMessage?: string;
-                        occupancyTypes?: recordTypes.OccupancyType[];
-                    }) => {
-                        if (responseJSON.success) {
-                            addCloseModalFunction();
-                            occupancyTypes = responseJSON.occupancyTypes!;
-                            renderOccupancyTypes();
-                        } else {
-                            bulmaJS.alert({
-                                title: "Error Adding " + exports.aliases.occupancy + " Type",
-                                message: responseJSON.errorMessage || "",
-                                contextualColorName: "danger"
-                            });
-                        }
+            cityssm.postJSON(
+                los.urlPrefix + "/admin/doAddOccupancyType",
+                submitEvent.currentTarget,
+                (responseJSON: {
+                    success: boolean;
+                    errorMessage?: string;
+                    occupancyTypes?: recordTypes.OccupancyType[];
+                }) => {
+                    if (responseJSON.success) {
+                        addCloseModalFunction();
+                        occupancyTypes = responseJSON.occupancyTypes!;
+                        renderOccupancyTypes();
+                    } else {
+                        bulmaJS.alert({
+                            title: "Error Adding " + exports.aliases.occupancy + " Type",
+                            message: responseJSON.errorMessage || "",
+                            contextualColorName: "danger"
+                        });
                     }
-                );
-            };
-
-            cityssm.openHtmlModal("adminOccupancyTypes-addOccupancyType", {
-                onshow: (modalElement) => {
-                    los.populateAliases(modalElement);
-                },
-                onshown: (modalElement, closeModalFunction) => {
-                    addCloseModalFunction = closeModalFunction;
-
-                    (
-                        modalElement.querySelector(
-                            "#occupancyTypeAdd--occupancyType"
-                        ) as HTMLInputElement
-                    ).focus();
-
-                    modalElement.querySelector("form")!.addEventListener("submit", doAdd);
-
-                    bulmaJS.toggleHtmlClipped();
-                },
-                onremoved: () => {
-                    bulmaJS.toggleHtmlClipped();
                 }
-            });
-        }
-    );
+            );
+        };
+
+        cityssm.openHtmlModal("adminOccupancyTypes-addOccupancyType", {
+            onshow: (modalElement) => {
+                los.populateAliases(modalElement);
+            },
+            onshown: (modalElement, closeModalFunction) => {
+                addCloseModalFunction = closeModalFunction;
+
+                (
+                    modalElement.querySelector(
+                        "#occupancyTypeAdd--occupancyType"
+                    ) as HTMLInputElement
+                ).focus();
+
+                modalElement.querySelector("form")!.addEventListener("submit", doAdd);
+
+                bulmaJS.toggleHtmlClipped();
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
+            }
+        });
+    });
 
     renderOccupancyTypes();
 })();
