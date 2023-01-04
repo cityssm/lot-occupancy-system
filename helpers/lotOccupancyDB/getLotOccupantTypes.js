@@ -3,7 +3,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 export function getLotOccupantTypes() {
     const database = sqlite(databasePath);
     const lotOccupantTypes = database
-        .prepare(`select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass
+        .prepare(`select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass, orderNumber
                 from LotOccupantTypes
                 where recordDelete_timeMillis is null
                 order by orderNumber, lotOccupantType`)

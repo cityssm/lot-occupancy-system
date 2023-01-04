@@ -9,7 +9,7 @@ export function getLotOccupantTypes(): recordTypes.LotOccupantType[] {
 
     const lotOccupantTypes: recordTypes.LotOccupantType[] = database
         .prepare(
-            `select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass
+            `select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass, orderNumber
                 from LotOccupantTypes
                 where recordDelete_timeMillis is null
                 order by orderNumber, lotOccupantType`
