@@ -2,19 +2,18 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import { clearLotTypesCache } from "../functions.cache.js";
+import { getLotTypeById, clearLotTypesCache } from "../functions.cache.js";
 
 export function moveLotTypeUp(lotTypeId: number | string): boolean {
-    const database = sqlite(databasePath);
-
-    const currentOrderNumber: number = database
-        .prepare("select orderNumber from LotTypes where lotTypeId = ?")
-        .get(lotTypeId).orderNumber;
+    const currentOrderNumber = getLotTypeById(
+        typeof lotTypeId === "string" ? Number.parseInt(lotTypeId) : lotTypeId
+    ).orderNumber;
 
     if (currentOrderNumber <= 0) {
-        database.close();
         return true;
     }
+
+    const database = sqlite(databasePath);
 
     database
         .prepare(
@@ -37,11 +36,11 @@ export function moveLotTypeUp(lotTypeId: number | string): boolean {
 }
 
 export function moveLotTypeUpToTop(lotTypeId: number | string): boolean {
-    const database = sqlite(databasePath);
+    const currentOrderNumber = getLotTypeById(
+        typeof lotTypeId === "string" ? Number.parseInt(lotTypeId) : lotTypeId
+    ).orderNumber;
 
-    const currentOrderNumber: number = database
-        .prepare("select orderNumber from LotTypes where lotTypeId = ?")
-        .get(lotTypeId).orderNumber;
+    const database = sqlite(databasePath);
 
     if (currentOrderNumber > 0) {
         database.prepare("update LotTypes set orderNumber = -1 where lotTypeId = ?").run(lotTypeId);

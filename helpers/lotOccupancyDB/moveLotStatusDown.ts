@@ -2,14 +2,14 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import { clearLotStatusesCache } from "../functions.cache.js";
+import { getLotStatusById, clearLotStatusesCache } from "../functions.cache.js";
 
 export function moveLotStatusDown(lotStatusId: number | string): boolean {
     const database = sqlite(databasePath);
 
-    const currentOrderNumber: number = database
-        .prepare(`select orderNumber from LotStatuses where lotStatusId = ?`)
-        .get(lotStatusId).orderNumber;
+    const currentOrderNumber: number = getLotStatusById(
+        typeof lotStatusId === "string" ? Number.parseInt(lotStatusId) : lotStatusId
+    ).orderNumber;
 
     database
         .prepare(
@@ -34,9 +34,9 @@ export function moveLotStatusDown(lotStatusId: number | string): boolean {
 export function moveLotStatusDownToBottom(lotStatusId: number | string): boolean {
     const database = sqlite(databasePath);
 
-    const currentOrderNumber: number = database
-        .prepare("select orderNumber from LotStatuses where lotStatusId = ?")
-        .get(lotStatusId).orderNumber;
+    const currentOrderNumber: number = getLotStatusById(
+        typeof lotStatusId === "string" ? Number.parseInt(lotStatusId) : lotStatusId
+    ).orderNumber;
 
     const maxOrderNumber: number = database
         .prepare(

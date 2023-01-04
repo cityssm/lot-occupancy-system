@@ -1,15 +1,12 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearOccupancyTypesCache } from "../functions.cache.js";
+import { getOccupancyTypeById, clearOccupancyTypesCache } from "../functions.cache.js";
 export function moveOccupancyTypeUp(occupancyTypeId) {
-    const database = sqlite(databasePath);
-    const currentOrderNumber = database
-        .prepare("select orderNumber from OccupancyTypes where occupancyTypeId = ?")
-        .get(occupancyTypeId).orderNumber;
+    const currentOrderNumber = getOccupancyTypeById(typeof occupancyTypeId === "string" ? Number.parseInt(occupancyTypeId) : occupancyTypeId).orderNumber;
     if (currentOrderNumber <= 0) {
-        database.close();
         return true;
     }
+    const database = sqlite(databasePath);
     database
         .prepare(`update OccupancyTypes
                 set orderNumber = orderNumber + 1
@@ -24,10 +21,8 @@ export function moveOccupancyTypeUp(occupancyTypeId) {
     return result.changes > 0;
 }
 export function moveOccupancyTypeUpToTop(occupancyTypeId) {
+    const currentOrderNumber = getOccupancyTypeById(typeof occupancyTypeId === "string" ? Number.parseInt(occupancyTypeId) : occupancyTypeId).orderNumber;
     const database = sqlite(databasePath);
-    const currentOrderNumber = database
-        .prepare("select orderNumber from OccupancyTypes where occupancyTypeId = ?")
-        .get(occupancyTypeId).orderNumber;
     if (currentOrderNumber > 0) {
         database
             .prepare("update OccupancyTypes set orderNumber = -1 where occupancyTypeId = ?")

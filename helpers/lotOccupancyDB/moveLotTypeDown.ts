@@ -2,14 +2,14 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import { clearLotTypesCache } from "../functions.cache.js";
+import { getLotTypeById, clearLotTypesCache } from "../functions.cache.js";
 
 export function moveLotTypeDown(lotTypeId: number | string): boolean {
-    const database = sqlite(databasePath);
+    const currentOrderNumber = getLotTypeById(
+        typeof lotTypeId === "string" ? Number.parseInt(lotTypeId) : lotTypeId
+    ).orderNumber;
 
-    const currentOrderNumber: number = database
-        .prepare("select orderNumber from LotTypes where lotTypeId = ?")
-        .get(lotTypeId).orderNumber;
+    const database = sqlite(databasePath);
 
     database
         .prepare(
@@ -32,11 +32,11 @@ export function moveLotTypeDown(lotTypeId: number | string): boolean {
 }
 
 export function moveLotTypeDownToBottom(lotTypeId: number | string): boolean {
-    const database = sqlite(databasePath);
+    const currentOrderNumber = getLotTypeById(
+        typeof lotTypeId === "string" ? Number.parseInt(lotTypeId) : lotTypeId
+    ).orderNumber;
 
-    const currentOrderNumber: number = database
-        .prepare("select orderNumber from LotTypes where lotTypeId = ?")
-        .get(lotTypeId).orderNumber;
+    const database = sqlite(databasePath);
 
     const maxOrderNumber: number = database
         .prepare(

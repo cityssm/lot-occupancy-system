@@ -2,14 +2,14 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import { clearWorkOrderTypesCache } from "../functions.cache.js";
+import { getWorkOrderTypeById, clearWorkOrderTypesCache } from "../functions.cache.js";
 
 export function moveWorkOrderTypeDown(workOrderTypeId: number | string): boolean {
-    const database = sqlite(databasePath);
+    const currentOrderNumber: number = getWorkOrderTypeById(
+        typeof workOrderTypeId === "string" ? Number.parseInt(workOrderTypeId) : workOrderTypeId
+    ).orderNumber;
 
-    const currentOrderNumber: number = database
-        .prepare("select orderNumber from WorkOrderTypes where workOrderTypeId = ?")
-        .get(workOrderTypeId).orderNumber;
+    const database = sqlite(databasePath);
 
     database
         .prepare(
@@ -32,11 +32,11 @@ export function moveWorkOrderTypeDown(workOrderTypeId: number | string): boolean
 }
 
 export function moveWorkOrderTypeDownToBottom(workOrderTypeId: number | string): boolean {
-    const database = sqlite(databasePath);
+    const currentOrderNumber: number = getWorkOrderTypeById(
+        typeof workOrderTypeId === "string" ? Number.parseInt(workOrderTypeId) : workOrderTypeId
+    ).orderNumber;
 
-    const currentOrderNumber: number = database
-        .prepare("select orderNumber from WorkOrderTypes where workOrderTypeId = ?")
-        .get(workOrderTypeId).orderNumber;
+    const database = sqlite(databasePath);
 
     const maxOrderNumber: number = database
         .prepare(

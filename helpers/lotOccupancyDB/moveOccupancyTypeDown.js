@@ -1,11 +1,9 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearOccupancyTypesCache } from "../functions.cache.js";
+import { getOccupancyTypeById, clearOccupancyTypesCache } from "../functions.cache.js";
 export function moveOccupancyTypeDown(occupancyTypeId) {
+    const currentOrderNumber = getOccupancyTypeById(typeof occupancyTypeId === "string" ? Number.parseInt(occupancyTypeId) : occupancyTypeId).orderNumber;
     const database = sqlite(databasePath);
-    const currentOrderNumber = database
-        .prepare("select orderNumber from OccupancyTypes where occupancyTypeId = ?")
-        .get(occupancyTypeId).orderNumber;
     database
         .prepare(`update OccupancyTypes
                 set orderNumber = orderNumber - 1
@@ -20,10 +18,8 @@ export function moveOccupancyTypeDown(occupancyTypeId) {
     return result.changes > 0;
 }
 export function moveOccupancyTypeDownToBottom(occupancyTypeId) {
+    const currentOrderNumber = getOccupancyTypeById(typeof occupancyTypeId === "string" ? Number.parseInt(occupancyTypeId) : occupancyTypeId).orderNumber;
     const database = sqlite(databasePath);
-    const currentOrderNumber = database
-        .prepare("select orderNumber from OccupancyTypes where occupancyTypeId = ?")
-        .get(occupancyTypeId).orderNumber;
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
                 from OccupancyTypes

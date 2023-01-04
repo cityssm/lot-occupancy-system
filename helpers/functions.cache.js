@@ -123,6 +123,12 @@ export function getWorkOrderTypes() {
     }
     return workOrderTypes;
 }
+export function getWorkOrderTypeById(workOrderTypeId) {
+    const cachedWorkOrderTypes = getWorkOrderTypes();
+    return cachedWorkOrderTypes.find((currentWorkOrderType) => {
+        return currentWorkOrderType.workOrderTypeId === workOrderTypeId;
+    });
+}
 export function clearWorkOrderTypesCache() {
     workOrderTypes = undefined;
 }
