@@ -121,20 +121,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    function moveLotTypeUp(clickEvent) {
-        clickEvent.preventDefault();
-        const lotTypeId = clickEvent.currentTarget.closest(".container--lotType").dataset.lotTypeId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveLotTypeUp", {
+    function moveLotType(clickEvent) {
+        const buttonElement = clickEvent.currentTarget;
+        const lotTypeId = buttonElement.closest(".container--lotType").dataset
+            .lotTypeId;
+        cityssm.postJSON(los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveLotTypeUp"
+                : "doMoveLotTypeDown"), {
             lotTypeId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        }, lotTypeResponseHandler);
-    }
-    function moveLotTypeDown(clickEvent) {
-        clickEvent.preventDefault();
-        const lotTypeId = clickEvent.currentTarget.closest(".container--lotType").dataset.lotTypeId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveLotTypeDown", {
-            lotTypeId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, lotTypeResponseHandler);
     }
     function openEditLotTypeField(lotTypeId, lotTypeFieldId) {
@@ -235,20 +232,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--lotType").dataset.lotTypeId, 10);
         openEditLotTypeField(lotTypeId, lotTypeFieldId);
     }
-    function moveLotTypeFieldUp(clickEvent) {
-        clickEvent.preventDefault();
-        const lotTypeFieldId = clickEvent.currentTarget.closest(".container--lotTypeField").dataset.lotTypeFieldId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveLotTypeFieldUp", {
+    function moveLotTypeField(clickEvent) {
+        const buttonElement = clickEvent.currentTarget;
+        const lotTypeFieldId = buttonElement.closest(".container--lotTypeField")
+            .dataset.lotTypeFieldId;
+        cityssm.postJSON(los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveLotTypeFieldUp"
+                : "doMoveLotTypeFieldDown"), {
             lotTypeFieldId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        }, lotTypeResponseHandler);
-    }
-    function moveLotTypeFieldDown(clickEvent) {
-        clickEvent.preventDefault();
-        const lotTypeFieldId = clickEvent.currentTarget.closest(".container--lotTypeField").dataset.lotTypeFieldId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveLotTypeFieldDown", {
-            lotTypeFieldId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, lotTypeResponseHandler);
     }
     function renderLotTypeFields(panelElement, lotTypeId, lotTypeFields) {
@@ -287,8 +281,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 panelBlockElement
                     .querySelector(".button--editLotTypeField")
                     .addEventListener("click", openEditLotTypeFieldByClick);
-                panelBlockElement.querySelector(".button--moveLotTypeFieldUp").addEventListener("click", moveLotTypeFieldUp);
-                panelBlockElement.querySelector(".button--moveLotTypeFieldDown").addEventListener("click", moveLotTypeFieldDown);
+                panelBlockElement.querySelector(".button--moveLotTypeFieldUp").addEventListener("click", moveLotTypeField);
+                panelBlockElement.querySelector(".button--moveLotTypeFieldDown").addEventListener("click", moveLotTypeField);
                 panelElement.append(panelBlockElement);
             }
         }
@@ -362,8 +356,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             lotTypeContainer
                 .querySelector(".button--addLotTypeField")
                 .addEventListener("click", openAddLotTypeField);
-            lotTypeContainer.querySelector(".button--moveLotTypeUp").addEventListener("click", moveLotTypeUp);
-            lotTypeContainer.querySelector(".button--moveLotTypeDown").addEventListener("click", moveLotTypeDown);
+            lotTypeContainer.querySelector(".button--moveLotTypeUp").addEventListener("click", moveLotType);
+            lotTypeContainer.querySelector(".button--moveLotTypeDown").addEventListener("click", moveLotType);
             containerElement.append(lotTypeContainer);
         }
     }

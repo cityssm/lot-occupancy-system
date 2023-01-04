@@ -9,7 +9,7 @@ import { getLotTypes } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
     const success =
-        request.body.moveToBottom === "1"
+        request.body.moveToEnd === "1"
             ? moveLotTypeFieldDownToBottom(request.body.lotTypeFieldId)
             : moveLotTypeFieldDown(request.body.lotTypeFieldId);
 
