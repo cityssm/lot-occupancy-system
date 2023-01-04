@@ -98,46 +98,22 @@ const deleteWorkOrderMilestoneType = (clickEvent: Event) => {
     });
 };
 
-const moveWorkOrderMilestoneTypeUp = (clickEvent: MouseEvent) => {
-    const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr")!;
+const moveWorkOrderMilestoneType = (clickEvent: MouseEvent) => {
+    const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
+
+    const tableRowElement = buttonElement.closest("tr")!;
 
     const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
 
     cityssm.postJSON(
-        los.urlPrefix + "/admin/doMoveWorkOrderMilestoneTypeUp",
+        los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveWorkOrderMilestoneTypeUp"
+                : "doMoveWorkOrderMilestoneTypeDown"),
         {
             workOrderMilestoneTypeId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        },
-        (responseJSON: {
-            success: boolean;
-            errorMessage?: string;
-            workOrderMilestoneTypes?: recordTypes.WorkOrderMilestoneType[];
-        }) => {
-            if (responseJSON.success) {
-                workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes!;
-                renderWorkOrderMilestoneTypes();
-            } else {
-                bulmaJS.alert({
-                    title: "Error Moving Work Order Milestone Type",
-                    message: responseJSON.errorMessage || "",
-                    contextualColorName: "danger"
-                });
-            }
-        }
-    );
-};
-
-const moveWorkOrderMilestoneTypeDown = (clickEvent: MouseEvent) => {
-    const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr")!;
-
-    const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
-
-    cityssm.postJSON(
-        los.urlPrefix + "/admin/doMoveWorkOrderMilestoneTypeDown",
-        {
-            workOrderMilestoneTypeId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         },
         (responseJSON: {
             success: boolean;
@@ -228,13 +204,13 @@ const renderWorkOrderMilestoneTypes = () => {
             tableRowElement.querySelector(
                 ".button--moveWorkOrderMilestoneTypeUp"
             ) as HTMLButtonElement
-        ).addEventListener("click", moveWorkOrderMilestoneTypeUp);
+        ).addEventListener("click", moveWorkOrderMilestoneType);
 
         (
             tableRowElement.querySelector(
                 ".button--moveWorkOrderMilestoneTypeDown"
             ) as HTMLButtonElement
-        ).addEventListener("click", moveWorkOrderMilestoneTypeDown);
+        ).addEventListener("click", moveWorkOrderMilestoneType);
 
         tableRowElement
             .querySelector(".button--deleteWorkOrderMilestoneType")!

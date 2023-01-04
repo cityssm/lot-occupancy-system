@@ -9,7 +9,7 @@ import { getLotStatuses } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
     const success =
-        request.body.moveToBottom === "1"
+        request.body.moveToEnd === "1"
             ? moveLotStatusDownToBottom(request.body.lotStatusId)
             : moveLotStatusDown(request.body.lotStatusId);
 

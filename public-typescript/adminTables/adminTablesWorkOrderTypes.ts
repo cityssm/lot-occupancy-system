@@ -98,46 +98,22 @@ const deleteWorkOrderType = (clickEvent: Event) => {
     });
 };
 
-const moveWorkOrderTypeUp = (clickEvent: MouseEvent) => {
-    const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr")!;
+const moveWorkOrderType = (clickEvent: MouseEvent) => {
+    const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
+
+    const tableRowElement = buttonElement.closest("tr")!;
 
     const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
 
     cityssm.postJSON(
-        los.urlPrefix + "/admin/doMoveWorkOrderTypeUp",
+        los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveWorkOrderTypeUp"
+                : "doMoveWorkOrderTypeDown"),
         {
             workOrderTypeId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        },
-        (responseJSON: {
-            success: boolean;
-            errorMessage?: string;
-            workOrderTypes?: recordTypes.WorkOrderType[];
-        }) => {
-            if (responseJSON.success) {
-                workOrderTypes = responseJSON.workOrderTypes!;
-                renderWorkOrderTypes();
-            } else {
-                bulmaJS.alert({
-                    title: "Error Moving Work Order Type",
-                    message: responseJSON.errorMessage || "",
-                    contextualColorName: "danger"
-                });
-            }
-        }
-    );
-};
-
-const moveWorkOrderTypeDown = (clickEvent: MouseEvent) => {
-    const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr")!;
-
-    const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
-
-    cityssm.postJSON(
-        los.urlPrefix + "/admin/doMoveWorkOrderTypeDown",
-        {
-            workOrderTypeId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         },
         (responseJSON: {
             success: boolean;
@@ -222,11 +198,11 @@ const renderWorkOrderTypes = () => {
 
         (
             tableRowElement.querySelector(".button--moveWorkOrderTypeUp") as HTMLButtonElement
-        ).addEventListener("click", moveWorkOrderTypeUp);
+        ).addEventListener("click", moveWorkOrderType);
 
         (
             tableRowElement.querySelector(".button--moveWorkOrderTypeDown") as HTMLButtonElement
-        ).addEventListener("click", moveWorkOrderTypeDown);
+        ).addEventListener("click", moveWorkOrderType);
 
         tableRowElement
             .querySelector(".button--deleteWorkOrderType")!

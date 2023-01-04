@@ -1,7 +1,7 @@
 import { moveWorkOrderTypeUp, moveWorkOrderTypeUpToTop } from "../../helpers/lotOccupancyDB/moveWorkOrderTypeUp.js";
 import { getWorkOrderTypes } from "../../helpers/functions.cache.js";
 export const handler = async (request, response) => {
-    const success = request.body.moveToTop === "1"
+    const success = request.body.moveToEnd === "1"
         ? moveWorkOrderTypeUpToTop(request.body.workOrderTypeId)
         : moveWorkOrderTypeUp(request.body.workOrderTypeId);
     const workOrderTypes = getWorkOrderTypes();

@@ -100,46 +100,22 @@ const deleteLotStatus = (clickEvent: Event) => {
     });
 };
 
-const moveLotStatusUp = (clickEvent: MouseEvent) => {
-    const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr")!;
+const moveLotStatus = (clickEvent: MouseEvent) => {
+    const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
+
+    const tableRowElement = buttonElement.closest("tr")!;
 
     const lotStatusId = tableRowElement.dataset.lotStatusId;
 
     cityssm.postJSON(
-        los.urlPrefix + "/admin/doMoveLotStatusUp",
+        los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveLotStatusUp"
+                : "doMoveLotStatusDown"),
         {
             lotStatusId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        },
-        (responseJSON: {
-            success: boolean;
-            errorMessage?: string;
-            lotStatuses?: recordTypes.LotStatus[];
-        }) => {
-            if (responseJSON.success) {
-                lotStatuses = responseJSON.lotStatuses!;
-                renderLotStatuses();
-            } else {
-                bulmaJS.alert({
-                    title: "Error Moving " + exports.aliases.lot + " Status",
-                    message: responseJSON.errorMessage || "",
-                    contextualColorName: "danger"
-                });
-            }
-        }
-    );
-};
-
-const moveLotStatusDown = (clickEvent: MouseEvent) => {
-    const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr")!;
-
-    const lotStatusId = tableRowElement.dataset.lotStatusId;
-
-    cityssm.postJSON(
-        los.urlPrefix + "/admin/doMoveLotStatusDown",
-        {
-            lotStatusId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         },
         (responseJSON: {
             success: boolean;
@@ -227,11 +203,11 @@ const renderLotStatuses = () => {
 
         (
             tableRowElement.querySelector(".button--moveLotStatusUp") as HTMLButtonElement
-        ).addEventListener("click", moveLotStatusUp);
+        ).addEventListener("click", moveLotStatus);
 
         (
             tableRowElement.querySelector(".button--moveLotStatusDown") as HTMLButtonElement
-        ).addEventListener("click", moveLotStatusDown);
+        ).addEventListener("click", moveLotStatus);
 
         tableRowElement
             .querySelector(".button--deleteLotStatus")!

@@ -125,51 +125,22 @@ const deleteLotOccupantType = (clickEvent: Event) => {
     });
 };
 
-const moveLotOccupantTypeUp = (clickEvent: MouseEvent) => {
-    const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr")!;
+const moveLotOccupantType = (clickEvent: MouseEvent) => {
+    const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
+
+    const tableRowElement = buttonElement.closest("tr")!;
 
     const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
 
     cityssm.postJSON(
-        los.urlPrefix + "/admin/doMoveLotOccupantTypeUp",
+        los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveLotOccupantTypeUp"
+                : "doMoveLotOccupantTypeDown"),
         {
             lotOccupantTypeId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        },
-        (responseJSON: {
-            success: boolean;
-            errorMessage?: string;
-            lotOccupantTypes?: recordTypes.LotOccupantType[];
-        }) => {
-            if (responseJSON.success) {
-                lotOccupantTypes = responseJSON.lotOccupantTypes!;
-                renderLotOccupantTypes();
-            } else {
-                bulmaJS.alert({
-                    title:
-                        "Error Moving " +
-                        exports.aliases.lot +
-                        " " +
-                        exports.aliases.occupant +
-                        " Type",
-                    message: responseJSON.errorMessage || "",
-                    contextualColorName: "danger"
-                });
-            }
-        }
-    );
-};
-
-const moveLotOccupantTypeDown = (clickEvent: MouseEvent) => {
-    const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest("tr")!;
-
-    const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
-
-    cityssm.postJSON(
-        los.urlPrefix + "/admin/doMoveLotOccupantTypeDown",
-        {
-            lotOccupantTypeId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         },
         (responseJSON: {
             success: boolean;
@@ -303,11 +274,11 @@ const renderLotOccupantTypes = () => {
 
         (
             tableRowElement.querySelector(".button--moveLotOccupantTypeUp") as HTMLButtonElement
-        ).addEventListener("click", moveLotOccupantTypeUp);
+        ).addEventListener("click", moveLotOccupantType);
 
         (
             tableRowElement.querySelector(".button--moveLotOccupantTypeDown") as HTMLButtonElement
-        ).addEventListener("click", moveLotOccupantTypeDown);
+        ).addEventListener("click", moveLotOccupantType);
 
         tableRowElement
             .querySelector(".button--deleteLotOccupantType")!

@@ -76,32 +76,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     };
-    const moveWorkOrderTypeUp = (clickEvent) => {
-        const tableRowElement = clickEvent.currentTarget.closest("tr");
+    const moveWorkOrderType = (clickEvent) => {
+        const buttonElement = clickEvent.currentTarget;
+        const tableRowElement = buttonElement.closest("tr");
         const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveWorkOrderTypeUp", {
+        cityssm.postJSON(los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveWorkOrderTypeUp"
+                : "doMoveWorkOrderTypeDown"), {
             workOrderTypeId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        }, (responseJSON) => {
-            if (responseJSON.success) {
-                workOrderTypes = responseJSON.workOrderTypes;
-                renderWorkOrderTypes();
-            }
-            else {
-                bulmaJS.alert({
-                    title: "Error Moving Work Order Type",
-                    message: responseJSON.errorMessage || "",
-                    contextualColorName: "danger"
-                });
-            }
-        });
-    };
-    const moveWorkOrderTypeDown = (clickEvent) => {
-        const tableRowElement = clickEvent.currentTarget.closest("tr");
-        const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveWorkOrderTypeDown", {
-            workOrderTypeId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
@@ -164,8 +149,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</div>" +
                     "</td>";
             tableRowElement.querySelector("form").addEventListener("submit", updateWorkOrderType);
-            tableRowElement.querySelector(".button--moveWorkOrderTypeUp").addEventListener("click", moveWorkOrderTypeUp);
-            tableRowElement.querySelector(".button--moveWorkOrderTypeDown").addEventListener("click", moveWorkOrderTypeDown);
+            tableRowElement.querySelector(".button--moveWorkOrderTypeUp").addEventListener("click", moveWorkOrderType);
+            tableRowElement.querySelector(".button--moveWorkOrderTypeDown").addEventListener("click", moveWorkOrderType);
             tableRowElement
                 .querySelector(".button--deleteWorkOrderType")
                 .addEventListener("click", deleteWorkOrderType);
@@ -258,32 +243,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     };
-    const moveWorkOrderMilestoneTypeUp = (clickEvent) => {
-        const tableRowElement = clickEvent.currentTarget.closest("tr");
+    const moveWorkOrderMilestoneType = (clickEvent) => {
+        const buttonElement = clickEvent.currentTarget;
+        const tableRowElement = buttonElement.closest("tr");
         const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveWorkOrderMilestoneTypeUp", {
+        cityssm.postJSON(los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveWorkOrderMilestoneTypeUp"
+                : "doMoveWorkOrderMilestoneTypeDown"), {
             workOrderMilestoneTypeId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        }, (responseJSON) => {
-            if (responseJSON.success) {
-                workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
-                renderWorkOrderMilestoneTypes();
-            }
-            else {
-                bulmaJS.alert({
-                    title: "Error Moving Work Order Milestone Type",
-                    message: responseJSON.errorMessage || "",
-                    contextualColorName: "danger"
-                });
-            }
-        });
-    };
-    const moveWorkOrderMilestoneTypeDown = (clickEvent) => {
-        const tableRowElement = clickEvent.currentTarget.closest("tr");
-        const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveWorkOrderMilestoneTypeDown", {
-            workOrderMilestoneTypeId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
@@ -347,8 +317,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</div>" +
                     "</td>";
             tableRowElement.querySelector("form").addEventListener("submit", updateWorkOrderMilestoneType);
-            tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeUp").addEventListener("click", moveWorkOrderMilestoneTypeUp);
-            tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeDown").addEventListener("click", moveWorkOrderMilestoneTypeDown);
+            tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeUp").addEventListener("click", moveWorkOrderMilestoneType);
+            tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeDown").addEventListener("click", moveWorkOrderMilestoneType);
             tableRowElement
                 .querySelector(".button--deleteWorkOrderMilestoneType")
                 .addEventListener("click", deleteWorkOrderMilestoneType);
@@ -443,32 +413,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     };
-    const moveLotStatusUp = (clickEvent) => {
-        const tableRowElement = clickEvent.currentTarget.closest("tr");
+    const moveLotStatus = (clickEvent) => {
+        const buttonElement = clickEvent.currentTarget;
+        const tableRowElement = buttonElement.closest("tr");
         const lotStatusId = tableRowElement.dataset.lotStatusId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveLotStatusUp", {
+        cityssm.postJSON(los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveLotStatusUp"
+                : "doMoveLotStatusDown"), {
             lotStatusId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        }, (responseJSON) => {
-            if (responseJSON.success) {
-                lotStatuses = responseJSON.lotStatuses;
-                renderLotStatuses();
-            }
-            else {
-                bulmaJS.alert({
-                    title: "Error Moving " + exports.aliases.lot + " Status",
-                    message: responseJSON.errorMessage || "",
-                    contextualColorName: "danger"
-                });
-            }
-        });
-    };
-    const moveLotStatusDown = (clickEvent) => {
-        const tableRowElement = clickEvent.currentTarget.closest("tr");
-        const lotStatusId = tableRowElement.dataset.lotStatusId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveLotStatusDown", {
-            lotStatusId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, (responseJSON) => {
             if (responseJSON.success) {
                 lotStatuses = responseJSON.lotStatuses;
@@ -534,8 +489,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</div>" +
                     "</td>";
             tableRowElement.querySelector("form").addEventListener("submit", updateLotStatus);
-            tableRowElement.querySelector(".button--moveLotStatusUp").addEventListener("click", moveLotStatusUp);
-            tableRowElement.querySelector(".button--moveLotStatusDown").addEventListener("click", moveLotStatusDown);
+            tableRowElement.querySelector(".button--moveLotStatusUp").addEventListener("click", moveLotStatus);
+            tableRowElement.querySelector(".button--moveLotStatusDown").addEventListener("click", moveLotStatus);
             tableRowElement
                 .querySelector(".button--deleteLotStatus")
                 .addEventListener("click", deleteLotStatus);
@@ -650,36 +605,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     };
-    const moveLotOccupantTypeUp = (clickEvent) => {
-        const tableRowElement = clickEvent.currentTarget.closest("tr");
+    const moveLotOccupantType = (clickEvent) => {
+        const buttonElement = clickEvent.currentTarget;
+        const tableRowElement = buttonElement.closest("tr");
         const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveLotOccupantTypeUp", {
+        cityssm.postJSON(los.urlPrefix +
+            "/admin/" +
+            (buttonElement.dataset.direction === "up"
+                ? "doMoveLotOccupantTypeUp"
+                : "doMoveLotOccupantTypeDown"), {
             lotOccupantTypeId,
-            moveToTop: clickEvent.shiftKey ? "1" : "0"
-        }, (responseJSON) => {
-            if (responseJSON.success) {
-                lotOccupantTypes = responseJSON.lotOccupantTypes;
-                renderLotOccupantTypes();
-            }
-            else {
-                bulmaJS.alert({
-                    title: "Error Moving " +
-                        exports.aliases.lot +
-                        " " +
-                        exports.aliases.occupant +
-                        " Type",
-                    message: responseJSON.errorMessage || "",
-                    contextualColorName: "danger"
-                });
-            }
-        });
-    };
-    const moveLotOccupantTypeDown = (clickEvent) => {
-        const tableRowElement = clickEvent.currentTarget.closest("tr");
-        const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
-        cityssm.postJSON(los.urlPrefix + "/admin/doMoveLotOccupantTypeDown", {
-            lotOccupantTypeId,
-            moveToBottom: clickEvent.shiftKey ? "1" : "0"
+            moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, (responseJSON) => {
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
@@ -785,8 +721,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             fontAwesomeInputElement.addEventListener("keyup", refreshFontAwesomeIcon);
             fontAwesomeInputElement.addEventListener("change", refreshFontAwesomeIcon);
             tableRowElement.querySelector("form").addEventListener("submit", updateLotOccupantType);
-            tableRowElement.querySelector(".button--moveLotOccupantTypeUp").addEventListener("click", moveLotOccupantTypeUp);
-            tableRowElement.querySelector(".button--moveLotOccupantTypeDown").addEventListener("click", moveLotOccupantTypeDown);
+            tableRowElement.querySelector(".button--moveLotOccupantTypeUp").addEventListener("click", moveLotOccupantType);
+            tableRowElement.querySelector(".button--moveLotOccupantTypeDown").addEventListener("click", moveLotOccupantType);
             tableRowElement
                 .querySelector(".button--deleteLotOccupantType")
                 .addEventListener("click", deleteLotOccupantType);

@@ -85,36 +85,17 @@ const deleteLotOccupantType = (clickEvent) => {
         }
     });
 };
-const moveLotOccupantTypeUp = (clickEvent) => {
-    const tableRowElement = clickEvent.currentTarget.closest("tr");
+const moveLotOccupantType = (clickEvent) => {
+    const buttonElement = clickEvent.currentTarget;
+    const tableRowElement = buttonElement.closest("tr");
     const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
-    cityssm.postJSON(los.urlPrefix + "/admin/doMoveLotOccupantTypeUp", {
+    cityssm.postJSON(los.urlPrefix +
+        "/admin/" +
+        (buttonElement.dataset.direction === "up"
+            ? "doMoveLotOccupantTypeUp"
+            : "doMoveLotOccupantTypeDown"), {
         lotOccupantTypeId,
-        moveToTop: clickEvent.shiftKey ? "1" : "0"
-    }, (responseJSON) => {
-        if (responseJSON.success) {
-            lotOccupantTypes = responseJSON.lotOccupantTypes;
-            renderLotOccupantTypes();
-        }
-        else {
-            bulmaJS.alert({
-                title: "Error Moving " +
-                    exports.aliases.lot +
-                    " " +
-                    exports.aliases.occupant +
-                    " Type",
-                message: responseJSON.errorMessage || "",
-                contextualColorName: "danger"
-            });
-        }
-    });
-};
-const moveLotOccupantTypeDown = (clickEvent) => {
-    const tableRowElement = clickEvent.currentTarget.closest("tr");
-    const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
-    cityssm.postJSON(los.urlPrefix + "/admin/doMoveLotOccupantTypeDown", {
-        lotOccupantTypeId,
-        moveToBottom: clickEvent.shiftKey ? "1" : "0"
+        moveToEnd: clickEvent.shiftKey ? "1" : "0"
     }, (responseJSON) => {
         if (responseJSON.success) {
             lotOccupantTypes = responseJSON.lotOccupantTypes;
@@ -220,8 +201,8 @@ const renderLotOccupantTypes = () => {
         fontAwesomeInputElement.addEventListener("keyup", refreshFontAwesomeIcon);
         fontAwesomeInputElement.addEventListener("change", refreshFontAwesomeIcon);
         tableRowElement.querySelector("form").addEventListener("submit", updateLotOccupantType);
-        tableRowElement.querySelector(".button--moveLotOccupantTypeUp").addEventListener("click", moveLotOccupantTypeUp);
-        tableRowElement.querySelector(".button--moveLotOccupantTypeDown").addEventListener("click", moveLotOccupantTypeDown);
+        tableRowElement.querySelector(".button--moveLotOccupantTypeUp").addEventListener("click", moveLotOccupantType);
+        tableRowElement.querySelector(".button--moveLotOccupantTypeDown").addEventListener("click", moveLotOccupantType);
         tableRowElement
             .querySelector(".button--deleteLotOccupantType")
             .addEventListener("click", deleteLotOccupantType);

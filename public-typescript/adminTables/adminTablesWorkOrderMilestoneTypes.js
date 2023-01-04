@@ -63,32 +63,17 @@ const deleteWorkOrderMilestoneType = (clickEvent) => {
         }
     });
 };
-const moveWorkOrderMilestoneTypeUp = (clickEvent) => {
-    const tableRowElement = clickEvent.currentTarget.closest("tr");
+const moveWorkOrderMilestoneType = (clickEvent) => {
+    const buttonElement = clickEvent.currentTarget;
+    const tableRowElement = buttonElement.closest("tr");
     const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
-    cityssm.postJSON(los.urlPrefix + "/admin/doMoveWorkOrderMilestoneTypeUp", {
+    cityssm.postJSON(los.urlPrefix +
+        "/admin/" +
+        (buttonElement.dataset.direction === "up"
+            ? "doMoveWorkOrderMilestoneTypeUp"
+            : "doMoveWorkOrderMilestoneTypeDown"), {
         workOrderMilestoneTypeId,
-        moveToTop: clickEvent.shiftKey ? "1" : "0"
-    }, (responseJSON) => {
-        if (responseJSON.success) {
-            workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
-            renderWorkOrderMilestoneTypes();
-        }
-        else {
-            bulmaJS.alert({
-                title: "Error Moving Work Order Milestone Type",
-                message: responseJSON.errorMessage || "",
-                contextualColorName: "danger"
-            });
-        }
-    });
-};
-const moveWorkOrderMilestoneTypeDown = (clickEvent) => {
-    const tableRowElement = clickEvent.currentTarget.closest("tr");
-    const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
-    cityssm.postJSON(los.urlPrefix + "/admin/doMoveWorkOrderMilestoneTypeDown", {
-        workOrderMilestoneTypeId,
-        moveToBottom: clickEvent.shiftKey ? "1" : "0"
+        moveToEnd: clickEvent.shiftKey ? "1" : "0"
     }, (responseJSON) => {
         if (responseJSON.success) {
             workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
@@ -152,8 +137,8 @@ const renderWorkOrderMilestoneTypes = () => {
                 "</div>" +
                 "</td>";
         tableRowElement.querySelector("form").addEventListener("submit", updateWorkOrderMilestoneType);
-        tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeUp").addEventListener("click", moveWorkOrderMilestoneTypeUp);
-        tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeDown").addEventListener("click", moveWorkOrderMilestoneTypeDown);
+        tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeUp").addEventListener("click", moveWorkOrderMilestoneType);
+        tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeDown").addEventListener("click", moveWorkOrderMilestoneType);
         tableRowElement
             .querySelector(".button--deleteWorkOrderMilestoneType")
             .addEventListener("click", deleteWorkOrderMilestoneType);

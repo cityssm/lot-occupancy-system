@@ -9,7 +9,7 @@ import { getWorkOrderMilestoneTypes } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
     const success =
-        request.body.moveToTop === "1"
+        request.body.moveToEnd === "1"
             ? moveWorkOrderMilestoneTypeUpToTop(request.body.workOrderMilestoneTypeId)
             : moveWorkOrderMilestoneTypeUp(request.body.workOrderMilestoneTypeId);
 
