@@ -43,7 +43,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 mapId
             }, (responseJSON) => {
                 if (responseJSON.success) {
-                    window.location.href = los.urlPrefix + "/maps?t=" + Date.now();
+                    window.location.href = los.getMapURL();
                 }
                 else {
                     bulmaJS.alert({

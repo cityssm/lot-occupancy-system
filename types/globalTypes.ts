@@ -56,8 +56,8 @@ export interface LOS {
     getLoadingParagraphHTML: (captionText?: string) => string;
     getSearchResultsPagerHTML: (limit: number, offset: number, count: number) => string;
 
-    getMapURL: (mapId: number | string, edit?: boolean, time?: boolean) => string;
-    getLotURL: (lotId: number | string, edit?: boolean, time?: boolean) => string;
-    getLotOccupancyURL: (lotOccupancyId: number | string, edit?: boolean, time?: boolean) => string;
-    getWorkOrderURL: (workOrderId: number | string, edit?: boolean, time?: boolean) => string;
+    getMapURL: (mapId?: number | string, edit?: boolean, time?: boolean) => string;
+    getLotURL: (lotId?: number | string, edit?: boolean, time?: boolean) => string;
+    getLotOccupancyURL: (lotOccupancyId?: number | string, edit?: boolean, time?: boolean) => string;
+    getWorkOrderURL: (workOrderId?: number | string, edit?: boolean, time?: boolean) => string;
 }

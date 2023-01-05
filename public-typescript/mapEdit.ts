@@ -66,7 +66,7 @@ declare const bulmaJS: BulmaJS;
                 },
                 (responseJSON: { success: boolean; errorMessage?: string }) => {
                     if (responseJSON.success) {
-                        window.location.href = los.urlPrefix + "/maps?t=" + Date.now();
+                        window.location.href = los.getMapURL();
                     } else {
                         bulmaJS.alert({
                             title: "Error Deleting " + exports.aliases.map,

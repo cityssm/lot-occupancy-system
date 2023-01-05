@@ -15,8 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 los.clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
-                    window.location.href =
-                        los.urlPrefix + "/lots/" + responseJSON.lotId + "/edit?t=" + Date.now();
+                    window.location.href = los.getLotURL(responseJSON.lotId, true, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -48,7 +47,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, (responseJSON) => {
                 if (responseJSON.success) {
                     cityssm.disableNavBlocker();
-                    window.location.href = los.urlPrefix + "/lots/?t=" + Date.now();
+                    window.location.href = los.getLotURL();
                 }
                 else {
                     bulmaJS.alert({

@@ -448,26 +448,25 @@ declare const bulmaJS: BulmaJS;
             urlPrefix +
             "/" +
             recordTypePlural +
-            "/" +
-            recordId +
-            (edit ? "/edit" : "") +
+            (recordId ? "/" + recordId : "") +
+            (recordId && edit ? "/edit" : "") +
             (time ? "/?t=" + Date.now() : "")
         );
     }
 
-    function getMapURL(mapId: number | string, edit = false, time = false) {
+    function getMapURL(mapId: number | string = "", edit = false, time = false) {
         return getRecordURL("maps", mapId, edit, time);
     }
 
-    function getLotURL(lotId: number | string, edit = false, time = false) {
+    function getLotURL(lotId: number | string = "", edit = false, time = false) {
         return getRecordURL("lots", lotId, edit, time);
     }
 
-    function getLotOccupancyURL(lotOccupancyId: number | string, edit = false, time = false) {
+    function getLotOccupancyURL(lotOccupancyId: number | string = "", edit = false, time = false) {
         return getRecordURL("lotOccupancies", lotOccupancyId, edit, time);
     }
 
-    function getWorkOrderURL(workOrderId: number | string, edit = false, time = false) {
+    function getWorkOrderURL(workOrderId: number | string = "", edit = false, time = false) {
         return getRecordURL("workOrders", workOrderId, edit, time);
     }
 

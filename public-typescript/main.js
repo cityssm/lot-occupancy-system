@@ -357,21 +357,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
         return (urlPrefix +
             "/" +
             recordTypePlural +
-            "/" +
-            recordId +
-            (edit ? "/edit" : "") +
+            (recordId ? "/" + recordId : "") +
+            (recordId && edit ? "/edit" : "") +
             (time ? "/?t=" + Date.now() : ""));
     }
-    function getMapURL(mapId, edit = false, time = false) {
+    function getMapURL(mapId = "", edit = false, time = false) {
         return getRecordURL("maps", mapId, edit, time);
     }
-    function getLotURL(lotId, edit = false, time = false) {
+    function getLotURL(lotId = "", edit = false, time = false) {
         return getRecordURL("lots", lotId, edit, time);
     }
-    function getLotOccupancyURL(lotOccupancyId, edit = false, time = false) {
+    function getLotOccupancyURL(lotOccupancyId = "", edit = false, time = false) {
         return getRecordURL("lotOccupancies", lotOccupancyId, edit, time);
     }
-    function getWorkOrderURL(workOrderId, edit = false, time = false) {
+    function getWorkOrderURL(workOrderId = "", edit = false, time = false) {
         return getRecordURL("workOrders", workOrderId, edit, time);
     }
     /*

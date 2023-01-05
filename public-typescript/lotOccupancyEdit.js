@@ -18,16 +18,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 los.clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
-                    window.location.href =
-                        los.urlPrefix +
-                            "/lotOccupancies/" +
-                            responseJSON.lotOccupancyId +
-                            "/edit?t=" +
-                            Date.now();
+                    window.location.href = los.getLotOccupancyURL(responseJSON.lotOccupancyId, true, true);
                 }
                 else {
                     bulmaJS.alert({
-                        message: exports.aliases.occupancy + " Updated Successfully",
+                        message: `${los.escapedAliases.Occupancy} Updated Successfully`,
                         contextualColorName: "success"
                     });
                 }
@@ -49,14 +44,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.postJSON(los.urlPrefix + "/lotOccupancies/doCopyLotOccupancy", {
             lotOccupancyId
         }, (responseJSON) => {
-            var _a;
             if (responseJSON.success) {
                 cityssm.disableNavBlocker();
-                window.location.href =
-                    los.urlPrefix +
-                        "/lotOccupancies/" +
-                        ((_a = responseJSON.lotOccupancyId) === null || _a === void 0 ? void 0 : _a.toString()) +
-                        "/edit";
+                window.location.href = los.getLotOccupancyURL(responseJSON.lotOccupancyId, true);
             }
             else {
                 bulmaJS.alert({
@@ -96,7 +86,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, (responseJSON) => {
                 if (responseJSON.success) {
                     cityssm.disableNavBlocker();
-                    window.location.href = los.urlPrefix + "/lotOccupancies?t=" + Date.now();
+                    window.location.href = los.getLotOccupancyURL();
                 }
                 else {
                     bulmaJS.alert({

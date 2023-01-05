@@ -33,8 +33,7 @@ declare const bulmaJS: BulmaJS;
                     los.clearUnsavedChanges();
 
                     if (isCreate || refreshAfterSave) {
-                        window.location.href =
-                            los.urlPrefix + "/lots/" + responseJSON.lotId + "/edit?t=" + Date.now();
+                        window.location.href = los.getLotURL(responseJSON.lotId, true, true);
                     } else {
                         bulmaJS.alert({
                             message: exports.aliases.lot + " Updated Successfully",
@@ -74,7 +73,7 @@ declare const bulmaJS: BulmaJS;
                 (responseJSON: { success: boolean; errorMessage?: string }) => {
                     if (responseJSON.success) {
                         cityssm.disableNavBlocker();
-                        window.location.href = los.urlPrefix + "/lots/?t=" + Date.now();
+                        window.location.href = los.getLotURL();
                     } else {
                         bulmaJS.alert({
                             title: `Error Deleting ${los.escapedAliases.Lot}`,
