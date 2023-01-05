@@ -1,71 +1,16 @@
-import sqlite from "better-sqlite3";
-
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-
-import { getLotTypeById, clearLotTypesCache } from "../functions.cache.js";
+import { clearLotTypesCache } from "../functions.cache.js";
+import { moveRecordDown, moveRecordDownToBottom } from "./moveRecord.js";
 
 export function moveLotTypeDown(lotTypeId: number | string): boolean {
-    const currentOrderNumber = getLotTypeById(
-        typeof lotTypeId === "string" ? Number.parseInt(lotTypeId) : lotTypeId
-    ).orderNumber;
-
-    const database = sqlite(databasePath);
-
-    database
-        .prepare(
-            `update LotTypes
-                set orderNumber = orderNumber - 1
-                where recordDelete_timeMillis is null
-                and orderNumber = ? + 1`
-        )
-        .run(currentOrderNumber);
-
-    const result = database
-        .prepare("update LotTypes set orderNumber = ? + 1 where lotTypeId = ?")
-        .run(currentOrderNumber, lotTypeId);
-
-    database.close();
-
+    const success = moveRecordDown("LotTypes", lotTypeId);
     clearLotTypesCache();
-
-    return result.changes > 0;
+    return success;
 }
 
 export function moveLotTypeDownToBottom(lotTypeId: number | string): boolean {
-    const currentOrderNumber = getLotTypeById(
-        typeof lotTypeId === "string" ? Number.parseInt(lotTypeId) : lotTypeId
-    ).orderNumber;
-
-    const database = sqlite(databasePath);
-
-    const maxOrderNumber: number = database
-        .prepare(
-            `select max(orderNumber) as maxOrderNumber
-                from LotTypes
-                where recordDelete_timeMillis is null`
-        )
-        .get().maxOrderNumber;
-
-    if (currentOrderNumber !== maxOrderNumber) {
-        database
-            .prepare("update LotTypes set orderNumber = ? + 1 where lotTypeId = ?")
-            .run(maxOrderNumber, lotTypeId);
-
-        database
-            .prepare(
-                `update LotTypes
-                    set orderNumber = orderNumber - 1
-                    where recordDelete_timeMillis is null
-                    and orderNumber > ?`
-            )
-            .run(currentOrderNumber);
-    }
-
-    database.close();
-
+    const success = moveRecordDownToBottom("LotTypes", lotTypeId);
     clearLotTypesCache();
-
-    return true;
+    return success;
 }
 
 export default moveLotTypeDown;

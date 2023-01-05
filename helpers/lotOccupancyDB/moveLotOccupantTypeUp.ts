@@ -1,75 +1,16 @@
-import sqlite from "better-sqlite3";
-
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-
-import { getLotOccupantTypeById, clearLotOccupantTypesCache } from "../functions.cache.js";
+import { clearLotOccupantTypesCache } from "../functions.cache.js";
+import { moveRecordUp, moveRecordUpToTop } from "./moveRecord.js";
 
 export function moveLotOccupantTypeUp(lotOccupantTypeId: number | string): boolean {
-    const currentOrderNumber: number = getLotOccupantTypeById(
-        typeof lotOccupantTypeId === "string"
-            ? Number.parseInt(lotOccupantTypeId)
-            : lotOccupantTypeId
-    ).orderNumber;
-
-    if (currentOrderNumber <= 0) {
-        return true;
-    }
-
-    const database = sqlite(databasePath);
-
-    database
-        .prepare(
-            `update LotOccupantTypes
-                set orderNumber = orderNumber + 1
-                where recordDelete_timeMillis is null
-                and orderNumber = ? - 1`
-        )
-        .run(currentOrderNumber);
-
-    const result = database
-        .prepare(
-            `update LotOccupantTypes
-                set orderNumber = ? - 1
-                where lotOccupantTypeId = ?`
-        )
-        .run(currentOrderNumber, lotOccupantTypeId);
-
-    database.close();
-
+    const success = moveRecordUp("LotOccupantTypes", lotOccupantTypeId);
     clearLotOccupantTypesCache();
-
-    return result.changes > 0;
+    return success;
 }
 
 export function moveLotOccupantTypeUpToTop(lotOccupantTypeId: number | string): boolean {
-    const currentOrderNumber: number = getLotOccupantTypeById(
-        typeof lotOccupantTypeId === "string"
-            ? Number.parseInt(lotOccupantTypeId)
-            : lotOccupantTypeId
-    ).orderNumber;
-
-    if (currentOrderNumber > 0) {
-        const database = sqlite(databasePath);
-
-        database
-            .prepare("update LotOccupantTypes set orderNumber = -1 where lotOccupantTypeId = ?")
-            .run(lotOccupantTypeId);
-
-        database
-            .prepare(
-                `update LotOccupantTypes
-                    set orderNumber = orderNumber + 1
-                    where recordDelete_timeMillis is null
-                    and orderNumber < ?`
-            )
-            .run(currentOrderNumber);
-
-        database.close();
-
-        clearLotOccupantTypesCache();
-    }
-
-    return true;
+    const success = moveRecordUpToTop("LotOccupantTypes", lotOccupantTypeId);
+    clearLotOccupantTypesCache();
+    return success;
 }
 
 export default moveLotOccupantTypeUp;

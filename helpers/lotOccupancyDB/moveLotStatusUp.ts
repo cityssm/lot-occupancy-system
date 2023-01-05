@@ -1,68 +1,16 @@
-import sqlite from "better-sqlite3";
-
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-
-import { getLotStatusById, clearLotStatusesCache } from "../functions.cache.js";
+import { clearLotStatusesCache } from "../functions.cache.js";
+import { moveRecordUp, moveRecordUpToTop } from "./moveRecord.js";
 
 export function moveLotStatusUp(lotStatusId: number | string): boolean {
-    const database = sqlite(databasePath);
-
-    const currentOrderNumber: number = getLotStatusById(
-        typeof lotStatusId === "string" ? Number.parseInt(lotStatusId) : lotStatusId
-    ).orderNumber;
-
-    if (currentOrderNumber <= 0) {
-        database.close();
-        return true;
-    }
-
-    database
-        .prepare(
-            `update LotStatuses
-                set orderNumber = orderNumber + 1
-                where recordDelete_timeMillis is null
-                and orderNumber = ? - 1`
-        )
-        .run(currentOrderNumber);
-
-    const result = database
-        .prepare("update LotStatuses set orderNumber = ? - 1 where lotStatusId = ?")
-        .run(currentOrderNumber, lotStatusId);
-
-    database.close();
-
+    const success = moveRecordUp("LotStatuses", lotStatusId);
     clearLotStatusesCache();
-
-    return result.changes > 0;
+    return success;
 }
 
 export function moveLotStatusUpToTop(lotStatusId: number | string): boolean {
-    const currentOrderNumber: number = getLotStatusById(
-        typeof lotStatusId === "string" ? Number.parseInt(lotStatusId) : lotStatusId
-    ).orderNumber;
-
-    if (currentOrderNumber > 0) {
-        const database = sqlite(databasePath);
-
-        database
-            .prepare("update LotStatuses set orderNumber = -1 where lotStatusId = ?")
-            .run(lotStatusId);
-
-        database
-            .prepare(
-                `update LotStatuses
-                    set orderNumber = orderNumber + 1
-                    where recordDelete_timeMillis is null
-                    and orderNumber < ?`
-            )
-            .run(currentOrderNumber);
-
-        database.close();
-
-        clearLotStatusesCache();
-    }
-
-    return true;
+    const success = moveRecordUpToTop("LotStatuses", lotStatusId);
+    clearLotStatusesCache();
+    return success;
 }
 
 export default moveLotStatusUp;

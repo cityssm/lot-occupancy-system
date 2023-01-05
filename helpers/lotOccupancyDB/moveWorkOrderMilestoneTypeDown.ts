@@ -1,5 +1,4 @@
 import { clearWorkOrderMilestoneTypesCache } from "../functions.cache.js";
-
 import { moveRecordDown, moveRecordDownToBottom } from "./moveRecord.js";
 
 export function moveWorkOrderMilestoneTypeDown(workOrderMilestoneTypeId: number | string): boolean {
