@@ -19,9 +19,9 @@ declare const bulmaJS: BulmaJS;
     const workOrderFormElement = document.querySelector("#form--workOrderEdit") as HTMLFormElement;
 
     los.initializeDatePickers(
-        (
-            workOrderFormElement.querySelector("#workOrderEdit--workOrderOpenDateString") as HTMLInputElement
-        ).closest(".field") as HTMLElement
+        workOrderFormElement
+            .querySelector("#workOrderEdit--workOrderOpenDateString")!
+            .closest(".field") as HTMLElement
     );
     los.initializeUnlockFieldButtons(workOrderFormElement);
 

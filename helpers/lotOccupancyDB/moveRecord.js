@@ -1,0 +1,53 @@
+import sqlite from "better-sqlite3";
+import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+const recordIdColumns = new Map();
+recordIdColumns.set("OccupancyTypes", "occupancyTypeId");
+recordIdColumns.set("WorkOrderMilestoneTypes", "workOrderMilestoneTypeId");
+recordIdColumns.set("WorkOrderTypes", "workOrderTypeId");
+function getCurrentOrderNumber(recordTable, recordId, database) {
+    const currentOrderNumber = database
+        .prepare(`select orderNumber
+                from ${recordTable}
+                where ${recordIdColumns.get(recordTable)} = ?`)
+        .get(recordId).orderNumber;
+    return currentOrderNumber;
+}
+export function moveRecordDown(recordTable, recordId) {
+    const database = sqlite(databasePath);
+    const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
+    database
+        .prepare(`update ${recordTable}
+                set orderNumber = orderNumber - 1
+                where recordDelete_timeMillis is null
+                and orderNumber = ? + 1`)
+        .run(currentOrderNumber);
+    const result = database
+        .prepare(`update ${recordTable}
+                set orderNumber = ? + 1
+                where ${recordIdColumns.get(recordTable)} = ?`)
+        .run(currentOrderNumber, recordId);
+    database.close();
+    return result.changes > 0;
+}
+export function moveRecordDownToBottom(recordTable, recordId) {
+    const database = sqlite(databasePath);
+    const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
+    const maxOrderNumber = database
+        .prepare(`select max(orderNumber) as maxOrderNumber
+                from ${recordTable}
+                where recordDelete_timeMillis is null`)
+        .get().maxOrderNumber;
+    if (currentOrderNumber !== maxOrderNumber) {
+        database
+            .prepare(`update ${recordTable} set orderNumber = ? + 1 where ${recordIdColumns.get(recordTable)} = ?`)
+            .run(maxOrderNumber, recordId);
+        database
+            .prepare(`update ${recordTable}
+                    set orderNumber = orderNumber - 1
+                    where recordDelete_timeMillis is null
+                    and orderNumber > ?`)
+            .run(currentOrderNumber);
+    }
+    database.close();
+    return true;
+}

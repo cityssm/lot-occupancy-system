@@ -7,7 +7,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const workOrderId = document.querySelector("#workOrderEdit--workOrderId").value;
     const isCreate = workOrderId === "";
     const workOrderFormElement = document.querySelector("#form--workOrderEdit");
-    los.initializeDatePickers(workOrderFormElement.querySelector("#workOrderEdit--workOrderOpenDateString").closest(".field"));
+    los.initializeDatePickers(workOrderFormElement
+        .querySelector("#workOrderEdit--workOrderOpenDateString")
+        .closest(".field"));
     los.initializeUnlockFieldButtons(workOrderFormElement);
     workOrderFormElement.addEventListener("submit", (submitEvent) => {
         submitEvent.preventDefault();
