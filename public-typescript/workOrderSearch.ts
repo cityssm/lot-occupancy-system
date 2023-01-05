@@ -11,15 +11,11 @@ declare const cityssm: cityssmGlobal;
 
     const workOrderPrints: string[] = exports.workOrderPrints;
 
-    const searchFilterFormElement = document.querySelector(
-        "#form--searchFilters"
-    ) as HTMLFormElement;
+    const searchFilterFormElement = document.querySelector("#form--searchFilters") as HTMLFormElement;
 
     los.initializeDatePickers(searchFilterFormElement);
 
-    const searchResultsContainerElement = document.querySelector(
-        "#container--searchResults"
-    ) as HTMLElement;
+    const searchResultsContainerElement = document.querySelector("#container--searchResults") as HTMLElement;
 
     const limit = Number.parseInt(
         (document.querySelector("#searchFilter--limit") as HTMLInputElement).value,
@@ -96,9 +92,7 @@ declare const cityssm: cityssmGlobal;
                         cityssm.escapeHTML(workOrder.workOrderDescription || "") +
                         "</span>" +
                         "</td>") +
-                    ('<td class="is-nowrap"><span class="is-size-7">' +
-                        relatedHTML +
-                        "</span></td>") +
+                    ('<td class="is-nowrap"><span class="is-size-7">' + relatedHTML + "</span></td>") +
                     ('<td class="is-nowrap">' +
                         ('<span class="has-tooltip-left" data-tooltip="' +
                             los.escapedAliases.WorkOrderOpenDate +
@@ -164,22 +158,17 @@ declare const cityssm: cityssmGlobal;
 
         searchResultsContainerElement.querySelector("table")!.append(resultsTbodyElement);
 
-        if (responseJSON.offset > 0) {
-            searchResultsContainerElement
-                .querySelector("button[data-page='previous']")!
-                .addEventListener("click", previousAndGetWorkOrders);
-        }
+        searchResultsContainerElement
+            .querySelector("button[data-page='previous']")
+            ?.addEventListener("click", previousAndGetWorkOrders);
 
-        if (limit + responseJSON.offset < responseJSON.count) {
-            searchResultsContainerElement
-                .querySelector("button[data-page='next']")!
-                .addEventListener("click", nextAndGetWorkOrders);
-        }
+        searchResultsContainerElement
+            .querySelector("button[data-page='next']")
+            ?.addEventListener("click", nextAndGetWorkOrders);
     }
 
     function getWorkOrders() {
-        searchResultsContainerElement.innerHTML =
-            los.getLoadingParagraphHTML("Loading Work Orders...");
+        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML("Loading Work Orders...");
 
         cityssm.postJSON(
             los.urlPrefix + "/workOrders/doSearchWorkOrders",
@@ -194,10 +183,7 @@ declare const cityssm: cityssmGlobal;
     }
 
     function previousAndGetWorkOrders() {
-        offsetElement.value = Math.max(
-            Number.parseInt(offsetElement.value, 10) - limit,
-            0
-        ).toString();
+        offsetElement.value = Math.max(Number.parseInt(offsetElement.value, 10) - limit, 0).toString();
         getWorkOrders();
     }
 

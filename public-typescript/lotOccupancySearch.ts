@@ -10,18 +10,15 @@ declare const cityssm: cityssmGlobal;
 (() => {
     const los = exports.los as globalTypes.LOS;
 
-    const searchFilterFormElement = document.querySelector(
-        "#form--searchFilters"
-    ) as HTMLFormElement;
+    const searchFilterFormElement = document.querySelector("#form--searchFilters") as HTMLFormElement;
 
-    const searchResultsContainerElement = document.querySelector(
-        "#container--searchResults"
-    ) as HTMLElement;
+    const searchResultsContainerElement = document.querySelector("#container--searchResults") as HTMLElement;
 
     const limit = Number.parseInt(
         (document.querySelector("#searchFilter--limit") as HTMLInputElement).value,
         10
     );
+
     const offsetElement = document.querySelector("#searchFilter--offset") as HTMLInputElement;
 
     function renderLotOccupancies(responseJSON: {
@@ -51,32 +48,17 @@ declare const cityssm: cityssmGlobal;
                 (lotOccupancy.occupancyEndDateString === "" ||
                     lotOccupancy.occupancyEndDateString! >= nowDateString)
             ) {
-                occupancyTimeHTML =
-                    '<span class="has-tooltip-right" data-tooltip="Current ' +
-                    los.escapedAliases.Occupancy +
-                    '">' +
-                    ('<i class="fas fa-play" aria-label="Current ' +
-                        los.escapedAliases.Occupancy +
-                        '"></i>') +
-                    "</span>";
+                occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Current ${los.escapedAliases.Occupancy}">
+                    <i class="fas fa-play" aria-label="Current ${los.escapedAliases.Occupancy}"></i>
+                    </span>`;
             } else if (lotOccupancy.occupancyStartDateString! > nowDateString) {
-                occupancyTimeHTML =
-                    '<span class="has-tooltip-right" data-tooltip="Future ' +
-                    los.escapedAliases.Occupancy +
-                    '">' +
-                    ('<i class="fas fa-fast-forward" aria-label="Future ' +
-                        los.escapedAliases.Occupancy +
-                        '"></i>') +
-                    "</span>";
+                occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Future ${los.escapedAliases.Occupancy}">
+                    <i class="fas fa-fast-forward" aria-label="Future ${los.escapedAliases.Occupancy}"></i>
+                    </span>`;
             } else {
-                occupancyTimeHTML =
-                    '<span class="has-tooltip-right" data-tooltip="Past ' +
-                    los.escapedAliases.Occupancy +
-                    '">' +
-                    ('<i class="fas fa-stop" aria-label="Past ' +
-                        los.escapedAliases.Occupancy +
-                        '"></i>') +
-                    "</span>";
+                occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Past ${los.escapedAliases.Occupancy}">
+                    <i class="fas fa-stop" aria-label="Past ${los.escapedAliases.Occupancy}"></i>
+                    </span>`;
             }
 
             let occupantsHTML = "";
@@ -117,9 +99,7 @@ declare const cityssm: cityssmGlobal;
                               '">' +
                               cityssm.escapeHTML(lotOccupancy.lotName) +
                               "</a>"
-                            : '<span class="has-text-grey">(No ' +
-                              los.escapedAliases.Lot +
-                              ")</span>") +
+                            : '<span class="has-text-grey">(No ' + los.escapedAliases.Lot + ")</span>") +
                         "<br />" +
                         ('<span class="is-size-7">' +
                             cityssm.escapeHTML(lotOccupancy.mapName || "") +
@@ -168,17 +148,13 @@ declare const cityssm: cityssmGlobal;
             los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count)
         );
 
-        if (responseJSON.offset > 0) {
-            searchResultsContainerElement
-                .querySelector("button[data-page='previous']")!
-                .addEventListener("click", previousAndGetLotOccupancies);
-        }
+        searchResultsContainerElement
+            .querySelector("button[data-page='previous']")
+            ?.addEventListener("click", previousAndGetLotOccupancies);
 
-        if (limit + responseJSON.offset < responseJSON.count) {
-            searchResultsContainerElement
-                .querySelector("button[data-page='next']")!
-                .addEventListener("click", nextAndGetLotOccupancies);
-        }
+        searchResultsContainerElement
+            .querySelector("button[data-page='next']")
+            ?.addEventListener("click", nextAndGetLotOccupancies);
     }
 
     function getLotOccupancies() {
@@ -199,10 +175,7 @@ declare const cityssm: cityssmGlobal;
     }
 
     function previousAndGetLotOccupancies() {
-        offsetElement.value = Math.max(
-            Number.parseInt(offsetElement.value, 10) - limit,
-            0
-        ).toString();
+        offsetElement.value = Math.max(Number.parseInt(offsetElement.value, 10) - limit, 0).toString();
         getLotOccupancies();
     }
 

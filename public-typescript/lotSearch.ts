@@ -10,13 +10,9 @@ declare const cityssm: cityssmGlobal;
 (() => {
     const los = exports.los as globalTypes.LOS;
 
-    const searchFilterFormElement = document.querySelector(
-        "#form--searchFilters"
-    ) as HTMLFormElement;
+    const searchFilterFormElement = document.querySelector("#form--searchFilters") as HTMLFormElement;
 
-    const searchResultsContainerElement = document.querySelector(
-        "#container--searchResults"
-    ) as HTMLElement;
+    const searchResultsContainerElement = document.querySelector("#container--searchResults") as HTMLElement;
 
     const limit = Number.parseInt(
         (document.querySelector("#searchFilter--limit") as HTMLInputElement).value,
@@ -24,11 +20,7 @@ declare const cityssm: cityssmGlobal;
     );
     const offsetElement = document.querySelector("#searchFilter--offset") as HTMLInputElement;
 
-    function renderLots(responseJSON: {
-        count: number;
-        offset: number;
-        lots: recordTypes.Lot[];
-    }): void {
+    function renderLots(responseJSON: { count: number; offset: number; lots: recordTypes.Lot[] }): void {
         if (responseJSON.lots.length === 0) {
             searchResultsContainerElement.innerHTML =
                 '<div class="message is-info">' +
@@ -96,17 +88,13 @@ declare const cityssm: cityssmGlobal;
 
         searchResultsContainerElement.querySelector("table")!.append(resultsTbodyElement);
 
-        if (responseJSON.offset > 0) {
-            searchResultsContainerElement
-                .querySelector("button[data-page='previous']")!
-                .addEventListener("click", previousAndGetLots);
-        }
+        searchResultsContainerElement
+            .querySelector("button[data-page='previous']")
+            ?.addEventListener("click", previousAndGetLots);
 
-        if (limit + responseJSON.offset < responseJSON.count) {
-            searchResultsContainerElement
-                .querySelector("button[data-page='next']")!
-                .addEventListener("click", nextAndGetLots);
-        }
+        searchResultsContainerElement
+            .querySelector("button[data-page='next']")
+            ?.addEventListener("click", nextAndGetLots);
     }
 
     function getLots(): void {
@@ -123,10 +111,7 @@ declare const cityssm: cityssmGlobal;
     }
 
     function previousAndGetLots(): void {
-        offsetElement.value = Math.max(
-            Number.parseInt(offsetElement.value, 10) - limit,
-            0
-        ).toString();
+        offsetElement.value = Math.max(Number.parseInt(offsetElement.value, 10) - limit, 0).toString();
         getLots();
     }
 

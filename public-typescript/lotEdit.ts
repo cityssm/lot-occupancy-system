@@ -113,12 +113,9 @@ declare const bulmaJS: BulmaJS;
 
         lotTypeIdElement.addEventListener("change", () => {
             if (lotTypeIdElement.value === "") {
-                lotFieldsContainerElement.innerHTML =
-                    '<div class="message is-info">' +
-                    '<p class="message-body">Select the ' +
-                    exports.aliases.lot.toLowerCase() +
-                    " type to load the available fields.</p>" +
-                    "</div>";
+                lotFieldsContainerElement.innerHTML = `<div class="message is-info">
+                    <p class="message-body">Select the ${los.escapedAliases.lot} type to load the available fields.</p>
+                    </div>`;
 
                 return;
             }
@@ -130,12 +127,9 @@ declare const bulmaJS: BulmaJS;
                 },
                 (responseJSON: { lotTypeFields: recordTypes.LotTypeField[] }) => {
                     if (responseJSON.lotTypeFields.length === 0) {
-                        lotFieldsContainerElement.innerHTML =
-                            '<div class="message is-info">' +
-                            '<p class="message-body">There are no additional fields for this ' +
-                            exports.aliases.lot.toLowerCase() +
-                            " type.</p>" +
-                            "</div>";
+                        lotFieldsContainerElement.innerHTML = `<div class="message is-info">
+                            <p class="message-body">There are no additional fields for this ${los.escapedAliases.lot} type.</p>
+                            </div>`;
 
                         return;
                     }
@@ -153,11 +147,8 @@ declare const bulmaJS: BulmaJS;
 
                         const fieldElement = document.createElement("div");
                         fieldElement.className = "field";
-                        fieldElement.innerHTML =
-                            '<label class="label" for="' +
-                            fieldId +
-                            '"></label>' +
-                            '<div class="control"></div>';
+                        fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label>
+                            <div class="control"></div>`;
 
                         (fieldElement.querySelector("label") as HTMLLabelElement).textContent =
                             lotTypeField.lotTypeField as string;
@@ -181,18 +172,13 @@ declare const bulmaJS: BulmaJS;
                                 inputElement.pattern = lotTypeField.pattern;
                             }
 
-                            (fieldElement.querySelector(".control") as HTMLElement).append(
-                                inputElement
-                            );
+                            fieldElement.querySelector(".control")!.append(inputElement);
                         } else {
-                            (fieldElement.querySelector(".control") as HTMLElement).innerHTML =
-                                '<div class="select is-fullwidth"><select id="' +
-                                fieldId +
-                                '" name="' +
-                                fieldName +
-                                '">' +
-                                '<option value="">(Not Set)</option>' +
-                                "</select></div>";
+                            fieldElement.querySelector(
+                                ".control"
+                            )!.innerHTML = `<div class="select is-fullwidth">
+                                <select id="${fieldId}" name="${fieldName}"><option value="">(Not Set)</option></select>
+                                </div>`;
 
                             const selectElement = fieldElement.querySelector(
                                 "select"
@@ -217,9 +203,8 @@ declare const bulmaJS: BulmaJS;
 
                     lotFieldsContainerElement.insertAdjacentHTML(
                         "beforeend",
-                        '<input name="lotTypeFieldIds" type="hidden" value="' +
-                            lotTypeFieldIds.slice(1) +
-                            '" />'
+                        `<input name="lotTypeFieldIds" type="hidden"
+                            value="${lotTypeFieldIds.slice(1)}" />`
                     );
                 }
             );
@@ -231,11 +216,8 @@ declare const bulmaJS: BulmaJS;
             if (lotTypeIdElement.value !== originalLotTypeId) {
                 bulmaJS.confirm({
                     title: "Confirm Change",
-                    message:
-                        "Are you sure you want to change the " +
-                        exports.aliases.lot.toLowerCase() +
-                        " type?\n" +
-                        "This change affects the additional fields associated with this record.",
+                    message: `Are you sure you want to change the ${los.escapedAliases.lot} type?\n
+                        This change affects the additional fields associated with this record.`,
                     contextualColorName: "warning",
                     okButton: {
                         text: "Yes, Keep the Change",
@@ -304,6 +286,7 @@ declare const bulmaJS: BulmaJS;
 
                 (modalElement.querySelector("#lotCommentEdit--lotId") as HTMLInputElement).value =
                     lotId;
+
                 (
                     modalElement.querySelector("#lotCommentEdit--lotCommentId") as HTMLInputElement
                 ).value = lotCommentId.toString();
@@ -336,6 +319,7 @@ declare const bulmaJS: BulmaJS;
 
                 los.initializeDatePickers(modalElement);
                 // los.initializeTimePickers(modalElement);
+
                 (
                     modalElement.querySelector("#lotCommentEdit--lotComment") as HTMLTextAreaElement
                 ).focus();
@@ -398,23 +382,21 @@ declare const bulmaJS: BulmaJS;
         const containerElement = document.querySelector("#container--lotComments") as HTMLElement;
 
         if (lotComments.length === 0) {
-            containerElement.innerHTML =
-                '<div class="message is-info">' +
-                '<p class="message-body">There are no comments to display.</p>' +
-                "</div>";
+            containerElement.innerHTML = `<div class="message is-info">
+                <p class="message-body">There are no comments to display.</p>
+                </div>`;
             return;
         }
 
         const tableElement = document.createElement("table");
         tableElement.className = "table is-fullwidth is-striped is-hoverable";
-        tableElement.innerHTML =
-            "<thead><tr>" +
-            "<th>Commentor</th>" +
-            "<th>Comment Date</th>" +
-            "<th>Comment</th>" +
-            '<th class="is-hidden-print"><span class="is-sr-only">Options</span></th>' +
-            "</tr></thead>" +
-            "<tbody></tbody>";
+        tableElement.innerHTML = `<thead><tr>
+            <th>Commentor</th>
+            <th>Comment Date</th>
+            <th>Comment</th>
+            <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+            </tr></thead>
+            <tbody></tbody>`;
 
         for (const lotComment of lotComments) {
             const tableRowElement = document.createElement("tr");

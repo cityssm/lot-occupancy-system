@@ -25,11 +25,8 @@ declare const bulmaJS: BulmaJS;
                 if (responseJSON.success) {
                     bulmaJS.alert({
                         title: "Database Cleaned Up Successfully",
-                        message:
-                            responseJSON.inactivedRecordCount +
-                            " records inactivated, " +
-                            responseJSON.purgedRecordCount +
-                            " permanently deleted.",
+                        message: `${responseJSON.inactivedRecordCount} records inactivated,
+                            ${responseJSON.purgedRecordCount} permanently deleted.`,
                         contextualColorName: "success"
                     });
                 } else {

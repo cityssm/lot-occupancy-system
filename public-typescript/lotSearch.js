@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const limit = Number.parseInt(document.querySelector("#searchFilter--limit").value, 10);
     const offsetElement = document.querySelector("#searchFilter--offset");
     function renderLots(responseJSON) {
+        var _a, _b;
         if (responseJSON.lots.length === 0) {
             searchResultsContainerElement.innerHTML =
                 '<div class="message is-info">' +
@@ -62,16 +63,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <table>`;
         searchResultsContainerElement.insertAdjacentHTML("beforeend", los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
         searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
-        if (responseJSON.offset > 0) {
-            searchResultsContainerElement
-                .querySelector("button[data-page='previous']")
-                .addEventListener("click", previousAndGetLots);
-        }
-        if (limit + responseJSON.offset < responseJSON.count) {
-            searchResultsContainerElement
-                .querySelector("button[data-page='next']")
-                .addEventListener("click", nextAndGetLots);
-        }
+        (_a = searchResultsContainerElement
+            .querySelector("button[data-page='previous']")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", previousAndGetLots);
+        (_b = searchResultsContainerElement
+            .querySelector("button[data-page='next']")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", nextAndGetLots);
     }
     function getLots() {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Lots}...`);

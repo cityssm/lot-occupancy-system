@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const limit = Number.parseInt(document.querySelector("#searchFilter--limit").value, 10);
     const offsetElement = document.querySelector("#searchFilter--offset");
     function renderLotOccupancies(responseJSON) {
+        var _a, _b;
         if (responseJSON.lotOccupancies.length === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
                 <p class="message-body">
@@ -23,34 +24,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (lotOccupancy.occupancyStartDateString <= nowDateString &&
                 (lotOccupancy.occupancyEndDateString === "" ||
                     lotOccupancy.occupancyEndDateString >= nowDateString)) {
-                occupancyTimeHTML =
-                    '<span class="has-tooltip-right" data-tooltip="Current ' +
-                        los.escapedAliases.Occupancy +
-                        '">' +
-                        ('<i class="fas fa-play" aria-label="Current ' +
-                            los.escapedAliases.Occupancy +
-                            '"></i>') +
-                        "</span>";
+                occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Current ${los.escapedAliases.Occupancy}">
+                    <i class="fas fa-play" aria-label="Current ${los.escapedAliases.Occupancy}"></i>
+                    </span>`;
             }
             else if (lotOccupancy.occupancyStartDateString > nowDateString) {
-                occupancyTimeHTML =
-                    '<span class="has-tooltip-right" data-tooltip="Future ' +
-                        los.escapedAliases.Occupancy +
-                        '">' +
-                        ('<i class="fas fa-fast-forward" aria-label="Future ' +
-                            los.escapedAliases.Occupancy +
-                            '"></i>') +
-                        "</span>";
+                occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Future ${los.escapedAliases.Occupancy}">
+                    <i class="fas fa-fast-forward" aria-label="Future ${los.escapedAliases.Occupancy}"></i>
+                    </span>`;
             }
             else {
-                occupancyTimeHTML =
-                    '<span class="has-tooltip-right" data-tooltip="Past ' +
-                        los.escapedAliases.Occupancy +
-                        '">' +
-                        ('<i class="fas fa-stop" aria-label="Past ' +
-                            los.escapedAliases.Occupancy +
-                            '"></i>') +
-                        "</span>";
+                occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Past ${los.escapedAliases.Occupancy}">
+                    <i class="fas fa-stop" aria-label="Past ${los.escapedAliases.Occupancy}"></i>
+                    </span>`;
             }
             let occupantsHTML = "";
             for (const occupant of lotOccupancy.lotOccupancyOccupants) {
@@ -86,9 +72,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             '">' +
                             cityssm.escapeHTML(lotOccupancy.lotName) +
                             "</a>"
-                        : '<span class="has-text-grey">(No ' +
-                            los.escapedAliases.Lot +
-                            ")</span>") +
+                        : '<span class="has-text-grey">(No ' + los.escapedAliases.Lot + ")</span>") +
                     "<br />" +
                     ('<span class="is-size-7">' +
                         cityssm.escapeHTML(lotOccupancy.mapName || "") +
@@ -129,16 +113,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <table>`;
         searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
         searchResultsContainerElement.insertAdjacentHTML("beforeend", los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
-        if (responseJSON.offset > 0) {
-            searchResultsContainerElement
-                .querySelector("button[data-page='previous']")
-                .addEventListener("click", previousAndGetLotOccupancies);
-        }
-        if (limit + responseJSON.offset < responseJSON.count) {
-            searchResultsContainerElement
-                .querySelector("button[data-page='next']")
-                .addEventListener("click", nextAndGetLotOccupancies);
-        }
+        (_a = searchResultsContainerElement
+            .querySelector("button[data-page='previous']")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", previousAndGetLotOccupancies);
+        (_b = searchResultsContainerElement
+            .querySelector("button[data-page='next']")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", nextAndGetLotOccupancies);
     }
     function getLotOccupancies() {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${exports.aliases.occupancies}...`);

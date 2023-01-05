@@ -78,24 +78,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const lotFieldsContainerElement = document.querySelector("#container--lotFields");
         lotTypeIdElement.addEventListener("change", () => {
             if (lotTypeIdElement.value === "") {
-                lotFieldsContainerElement.innerHTML =
-                    '<div class="message is-info">' +
-                        '<p class="message-body">Select the ' +
-                        exports.aliases.lot.toLowerCase() +
-                        " type to load the available fields.</p>" +
-                        "</div>";
+                lotFieldsContainerElement.innerHTML = `<div class="message is-info">
+                    <p class="message-body">Select the ${los.escapedAliases.lot} type to load the available fields.</p>
+                    </div>`;
                 return;
             }
             cityssm.postJSON(los.urlPrefix + "/lots/doGetLotTypeFields", {
                 lotTypeId: lotTypeIdElement.value
             }, (responseJSON) => {
                 if (responseJSON.lotTypeFields.length === 0) {
-                    lotFieldsContainerElement.innerHTML =
-                        '<div class="message is-info">' +
-                            '<p class="message-body">There are no additional fields for this ' +
-                            exports.aliases.lot.toLowerCase() +
-                            " type.</p>" +
-                            "</div>";
+                    lotFieldsContainerElement.innerHTML = `<div class="message is-info">
+                            <p class="message-body">There are no additional fields for this ${los.escapedAliases.lot} type.</p>
+                            </div>`;
                     return;
                 }
                 lotFieldsContainerElement.innerHTML = "";
@@ -106,11 +100,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const fieldId = "lot--" + fieldName;
                     const fieldElement = document.createElement("div");
                     fieldElement.className = "field";
-                    fieldElement.innerHTML =
-                        '<label class="label" for="' +
-                            fieldId +
-                            '"></label>' +
-                            '<div class="control"></div>';
+                    fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label>
+                            <div class="control"></div>`;
                     fieldElement.querySelector("label").textContent =
                         lotTypeField.lotTypeField;
                     if (lotTypeField.lotTypeFieldValues === "") {
@@ -128,14 +119,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         fieldElement.querySelector(".control").append(inputElement);
                     }
                     else {
-                        fieldElement.querySelector(".control").innerHTML =
-                            '<div class="select is-fullwidth"><select id="' +
-                                fieldId +
-                                '" name="' +
-                                fieldName +
-                                '">' +
-                                '<option value="">(Not Set)</option>' +
-                                "</select></div>";
+                        fieldElement.querySelector(".control").innerHTML = `<div class="select is-fullwidth">
+                                <select id="${fieldId}" name="${fieldName}"><option value="">(Not Set)</option></select>
+                                </div>`;
                         const selectElement = fieldElement.querySelector("select");
                         selectElement.required = lotTypeField.isRequired;
                         const optionValues = lotTypeField.lotTypeFieldValues.split("\n");
@@ -148,9 +134,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                     lotFieldsContainerElement.append(fieldElement);
                 }
-                lotFieldsContainerElement.insertAdjacentHTML("beforeend", '<input name="lotTypeFieldIds" type="hidden" value="' +
-                    lotTypeFieldIds.slice(1) +
-                    '" />');
+                lotFieldsContainerElement.insertAdjacentHTML("beforeend", `<input name="lotTypeFieldIds" type="hidden"
+                            value="${lotTypeFieldIds.slice(1)}" />`);
             });
         });
     }
@@ -160,10 +145,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (lotTypeIdElement.value !== originalLotTypeId) {
                 bulmaJS.confirm({
                     title: "Confirm Change",
-                    message: "Are you sure you want to change the " +
-                        exports.aliases.lot.toLowerCase() +
-                        " type?\n" +
-                        "This change affects the additional fields associated with this record.",
+                    message: `Are you sure you want to change the ${los.escapedAliases.lot} type?\n
+                        This change affects the additional fields associated with this record.`,
                     contextualColorName: "warning",
                     okButton: {
                         text: "Yes, Keep the Change",
@@ -271,22 +254,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function renderLotComments() {
         const containerElement = document.querySelector("#container--lotComments");
         if (lotComments.length === 0) {
-            containerElement.innerHTML =
-                '<div class="message is-info">' +
-                    '<p class="message-body">There are no comments to display.</p>' +
-                    "</div>";
+            containerElement.innerHTML = `<div class="message is-info">
+                <p class="message-body">There are no comments to display.</p>
+                </div>`;
             return;
         }
         const tableElement = document.createElement("table");
         tableElement.className = "table is-fullwidth is-striped is-hoverable";
-        tableElement.innerHTML =
-            "<thead><tr>" +
-                "<th>Commentor</th>" +
-                "<th>Comment Date</th>" +
-                "<th>Comment</th>" +
-                '<th class="is-hidden-print"><span class="is-sr-only">Options</span></th>' +
-                "</tr></thead>" +
-                "<tbody></tbody>";
+        tableElement.innerHTML = `<thead><tr>
+            <th>Commentor</th>
+            <th>Comment Date</th>
+            <th>Comment</th>
+            <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+            </tr></thead>
+            <tbody></tbody>`;
         for (const lotComment of lotComments) {
             const tableRowElement = document.createElement("tr");
             tableRowElement.dataset.lotCommentId = lotComment.lotCommentId.toString();

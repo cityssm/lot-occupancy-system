@@ -8,10 +8,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 bulmaJS.alert({
                     title: "Database Cleaned Up Successfully",
-                    message: responseJSON.inactivedRecordCount +
-                        " records inactivated, " +
-                        responseJSON.purgedRecordCount +
-                        " permanently deleted.",
+                    message: `${responseJSON.inactivedRecordCount} records inactivated,
+                            ${responseJSON.purgedRecordCount} permanently deleted.`,
                     contextualColorName: "success"
                 });
             }

@@ -13,19 +13,16 @@ declare const bulmaJS: BulmaJS;
 (() => {
     const los = exports.los as globalTypes.LOS;
 
-    const feeCategoriesContainerElement = document.querySelector(
-        "#container--feeCategories"
-    ) as HTMLElement;
+    const feeCategoriesContainerElement = document.querySelector("#container--feeCategories") as HTMLElement;
 
     let feeCategories: recordTypes.FeeCategory[] = exports.feeCategories;
     delete exports.feeCategories;
 
     function renderFeeCategories(): void {
         if (feeCategories.length === 0) {
-            feeCategoriesContainerElement.innerHTML =
-                '<div class="message is-warning">' +
-                '<p class="message-body">There are no available fees.</p>' +
-                "</div>";
+            feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
+                <p class="message-body">There are no available fees.</p>
+                </div>`;
 
             return;
         }
@@ -37,8 +34,7 @@ declare const bulmaJS: BulmaJS;
 
             feeCategoryContainerElement.className = "panel container--feeCategory";
 
-            feeCategoryContainerElement.dataset.feeCategoryId =
-                feeCategory.feeCategoryId!.toString();
+            feeCategoryContainerElement.dataset.feeCategoryId = feeCategory.feeCategoryId!.toString();
 
             feeCategoryContainerElement.innerHTML =
                 '<div class="panel-heading">' +
@@ -119,9 +115,7 @@ declare const bulmaJS: BulmaJS;
                             "</p>" +
                             (hasTagsBlock
                                 ? '<p class="tags">' +
-                                  (fee.isRequired
-                                      ? '<span class="tag is-warning">Required</span>'
-                                      : "") +
+                                  (fee.isRequired ? '<span class="tag is-warning">Required</span>' : "") +
                                   (fee.occupancyTypeId
                                       ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
                                         cityssm.escapeHTML(exports.aliases.occupancy) +
@@ -146,10 +140,7 @@ declare const bulmaJS: BulmaJS;
                                     ? cityssm.escapeHTML(fee.feeFunction) +
                                       "<br />" +
                                       "<small>Fee Function</small>"
-                                    : "$" +
-                                      fee.feeAmount!.toFixed(2) +
-                                      "<br />" +
-                                      "<small>Fee</small>") +
+                                    : "$" + fee.feeAmount!.toFixed(2) + "<br />" + "<small>Fee</small>") +
                                 "</div>") +
                             ('<div class="column has-text-centered">' +
                                 (fee.taxPercentage
@@ -167,10 +158,7 @@ declare const bulmaJS: BulmaJS;
                             "</div>" +
                             "</div>") +
                         ('<div class="column is-narrow">' +
-                            los.getMoveUpDownButtonFieldHTML(
-                                "button--moveFeeUp",
-                                "button--moveFeeDown"
-                            ) +
+                            los.getMoveUpDownButtonFieldHTML("button--moveFeeUp", "button--moveFeeDown") +
                             "</div>" +
                             "</div>") +
                         "</div>";
@@ -198,15 +186,11 @@ declare const bulmaJS: BulmaJS;
                 .addEventListener("click", openAddFee);
 
             (
-                feeCategoryContainerElement.querySelector(
-                    ".button--moveFeeCategoryUp"
-                ) as HTMLButtonElement
+                feeCategoryContainerElement.querySelector(".button--moveFeeCategoryUp") as HTMLButtonElement
             ).addEventListener("click", moveFeeCategory);
 
             (
-                feeCategoryContainerElement.querySelector(
-                    ".button--moveFeeCategoryDown"
-                ) as HTMLButtonElement
+                feeCategoryContainerElement.querySelector(".button--moveFeeCategoryDown") as HTMLButtonElement
             ).addEventListener("click", moveFeeCategory);
 
             feeCategoriesContainerElement.append(feeCategoryContainerElement);
@@ -247,28 +231,24 @@ declare const bulmaJS: BulmaJS;
         };
 
         cityssm.openHtmlModal("adminFees-addFeeCategory", {
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
-                (
-                    modalElement.querySelector("#feeCategoryAdd--feeCategory") as HTMLInputElement
-                ).focus();
+                (modalElement.querySelector("#feeCategoryAdd--feeCategory") as HTMLInputElement).focus();
 
                 addCloseModalFunction = closeModalFunction;
                 modalElement.querySelector("form")!.addEventListener("submit", doAddFeeCategory);
             },
-            onremoved: () => {
+            onremoved() {
                 bulmaJS.toggleHtmlClipped();
+                (document.querySelector("#button--addFeeCategory") as HTMLButtonElement).focus();
             }
         });
     });
 
     function openEditFeeCategory(clickEvent: Event): void {
         const feeCategoryId = Number.parseInt(
-            (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--feeCategory"
-                ) as HTMLElement
-            ).dataset.feeCategoryId!,
+            ((clickEvent.currentTarget as HTMLElement).closest(".container--feeCategory") as HTMLElement)
+                .dataset.feeCategoryId!,
             10
         );
 
@@ -306,14 +286,10 @@ declare const bulmaJS: BulmaJS;
 
         cityssm.openHtmlModal("adminFees-editFeeCategory", {
             onshow(modalElement) {
-                (
-                    modalElement.querySelector(
-                        "#feeCategoryEdit--feeCategoryId"
-                    ) as HTMLInputElement
-                ).value = feeCategory.feeCategoryId!.toString();
-                (
-                    modalElement.querySelector("#feeCategoryEdit--feeCategory") as HTMLInputElement
-                ).value = feeCategory.feeCategory!;
+                (modalElement.querySelector("#feeCategoryEdit--feeCategoryId") as HTMLInputElement).value =
+                    feeCategory.feeCategoryId!.toString();
+                (modalElement.querySelector("#feeCategoryEdit--feeCategory") as HTMLInputElement).value =
+                    feeCategory.feeCategory!;
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
@@ -322,9 +298,7 @@ declare const bulmaJS: BulmaJS;
 
                 modalElement.querySelector("form")!.addEventListener("submit", doUpdateFeeCategory);
 
-                (
-                    modalElement.querySelector("#feeCategoryEdit--feeCategory") as HTMLInputElement
-                ).focus();
+                (modalElement.querySelector("#feeCategoryEdit--feeCategory") as HTMLInputElement).focus();
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
@@ -334,11 +308,8 @@ declare const bulmaJS: BulmaJS;
 
     function confirmDeleteFeeCategory(clickEvent: Event): void {
         const feeCategoryId = Number.parseInt(
-            (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--feeCategory"
-                ) as HTMLElement
-            ).dataset.feeCategoryId!,
+            ((clickEvent.currentTarget as HTMLElement).closest(".container--feeCategory") as HTMLElement)
+                .dataset.feeCategoryId!,
             10
         );
 
@@ -381,18 +352,13 @@ declare const bulmaJS: BulmaJS;
     function moveFeeCategory(clickEvent: MouseEvent): void {
         const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
 
-        const feeCategoryId = Number.parseInt(
-            (buttonElement.closest(".container--feeCategory") as HTMLElement).dataset
-                .feeCategoryId!,
-            10
-        );
+        const feeCategoryId = (buttonElement.closest(".container--feeCategory") as HTMLElement).dataset
+            .feeCategoryId!;
 
         cityssm.postJSON(
             los.urlPrefix +
                 "/admin/" +
-                (buttonElement.dataset.direction === "up"
-                    ? "doMoveFeeCategoryUp"
-                    : "doMoveFeeCategoryDown"),
+                (buttonElement.dataset.direction === "up" ? "doMoveFeeCategoryUp" : "doMoveFeeCategoryDown"),
             {
                 feeCategoryId,
                 moveToEnd: clickEvent.shiftKey ? "1" : "0"
@@ -422,11 +388,8 @@ declare const bulmaJS: BulmaJS;
 
     function openAddFee(clickEvent: Event): void {
         const feeCategoryId = Number.parseInt(
-            (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--feeCategory"
-                ) as HTMLElement
-            ).dataset.feeCategoryId!,
+            ((clickEvent.currentTarget as HTMLElement).closest(".container--feeCategory") as HTMLElement)
+                .dataset.feeCategoryId!,
             10
         );
 
@@ -487,9 +450,7 @@ declare const bulmaJS: BulmaJS;
                     occupancyTypeElement.append(optionElement);
                 }
 
-                const lotTypeElement = modalElement.querySelector(
-                    "#feeAdd--lotTypeId"
-                ) as HTMLSelectElement;
+                const lotTypeElement = modalElement.querySelector("#feeAdd--lotTypeId") as HTMLSelectElement;
 
                 for (const lotType of exports.lotTypes as recordTypes.LotType[]) {
                     const optionElement = document.createElement("option");
@@ -513,35 +474,36 @@ declare const bulmaJS: BulmaJS;
 
                 (modalElement.querySelector("#feeAdd--feeName") as HTMLInputElement).focus();
 
-                (
-                    modalElement.querySelector("#feeAdd--feeFunction") as HTMLInputElement
-                ).addEventListener("change", () => {
-                    const feeAmountElement = modalElement.querySelector(
-                        "#feeAdd--feeAmount"
-                    ) as HTMLInputElement;
-                    const feeFunctionElement = modalElement.querySelector(
-                        "#feeAdd--feeFunction"
-                    ) as HTMLSelectElement;
+                (modalElement.querySelector("#feeAdd--feeFunction") as HTMLInputElement).addEventListener(
+                    "change",
+                    () => {
+                        const feeAmountElement = modalElement.querySelector(
+                            "#feeAdd--feeAmount"
+                        ) as HTMLInputElement;
 
-                    if (feeFunctionElement.value === "") {
-                        feeFunctionElement.closest(".select")!.classList.remove("is-success");
+                        const feeFunctionElement = modalElement.querySelector(
+                            "#feeAdd--feeFunction"
+                        ) as HTMLSelectElement;
 
-                        feeAmountElement.classList.add("is-success");
-                        feeAmountElement.disabled = false;
-                    } else {
-                        feeFunctionElement.closest(".select")!.classList.add("is-success");
+                        if (feeFunctionElement.value === "") {
+                            feeFunctionElement.closest(".select")!.classList.remove("is-success");
 
-                        feeAmountElement.classList.remove("is-success");
-                        feeAmountElement.disabled = true;
+                            feeAmountElement.classList.add("is-success");
+                            feeAmountElement.disabled = false;
+                        } else {
+                            feeFunctionElement.closest(".select")!.classList.add("is-success");
+
+                            feeAmountElement.classList.remove("is-success");
+                            feeAmountElement.disabled = true;
+                        }
                     }
-                });
+                );
 
-                (
-                    modalElement.querySelector("#feeAdd--taxPercentage") as HTMLInputElement
-                ).addEventListener("keyup", () => {
+                modalElement.querySelector("#feeAdd--taxPercentage")!.addEventListener("keyup", () => {
                     const taxAmountElement = modalElement.querySelector(
                         "#feeAdd--taxAmount"
                     ) as HTMLInputElement;
+
                     const taxPercentageElement = modalElement.querySelector(
                         "#feeAdd--taxPercentage"
                     ) as HTMLInputElement;
@@ -559,17 +521,10 @@ declare const bulmaJS: BulmaJS;
                     }
                 });
 
-                (
-                    modalElement.querySelector("#feeAdd--includeQuantity") as HTMLSelectElement
-                ).addEventListener("change", () => {
-                    (
-                        modalElement.querySelector("#feeAdd--quantityUnit") as HTMLInputElement
-                    ).disabled =
-                        (
-                            modalElement.querySelector(
-                                "#feeAdd--includeQuantity"
-                            ) as HTMLSelectElement
-                        ).value === "";
+                modalElement.querySelector("#feeAdd--includeQuantity")!.addEventListener("change", () => {
+                    (modalElement.querySelector("#feeAdd--quantityUnit") as HTMLInputElement).disabled =
+                        (modalElement.querySelector("#feeAdd--includeQuantity") as HTMLSelectElement)
+                            .value === "";
                 });
             },
             onremoved() {
@@ -587,8 +542,7 @@ declare const bulmaJS: BulmaJS;
 
         const feeId = Number.parseInt(feeContainerElement.dataset.feeId!, 10);
         const feeCategoryId = Number.parseInt(
-            (feeContainerElement.closest(".container--feeCategory") as HTMLElement).dataset
-                .feeCategoryId!
+            (feeContainerElement.closest(".container--feeCategory") as HTMLElement).dataset.feeCategoryId!
         );
 
         const feeCategory = feeCategories.find((currentFeeCategory) => {
@@ -713,11 +667,12 @@ declare const bulmaJS: BulmaJS;
         }
 
         function toggleQuantityFields() {
-            (
-                editModalElement.querySelector("#feeEdit--quantityUnit") as HTMLInputElement
-            ).disabled =
-                (editModalElement.querySelector("#feeEdit--includeQuantity") as HTMLSelectElement)
-                    .value === "";
+            const includeQuanitityValue = (
+                editModalElement.querySelector("#feeEdit--includeQuantity") as HTMLSelectElement
+            ).value;
+
+            (editModalElement.querySelector("#feeEdit--quantityUnit") as HTMLInputElement).disabled =
+                includeQuanitityValue === "";
         }
 
         cityssm.openHtmlModal("adminFees-editFee", {
@@ -743,11 +698,9 @@ declare const bulmaJS: BulmaJS;
                     feeCategoryElement.append(optionElement);
                 }
 
-                (modalElement.querySelector("#feeEdit--feeName") as HTMLInputElement).value =
-                    fee.feeName!;
-                (
-                    modalElement.querySelector("#feeEdit--feeDescription") as HTMLTextAreaElement
-                ).value = fee.feeDescription!;
+                (modalElement.querySelector("#feeEdit--feeName") as HTMLInputElement).value = fee.feeName!;
+                (modalElement.querySelector("#feeEdit--feeDescription") as HTMLTextAreaElement).value =
+                    fee.feeDescription!;
 
                 const occupancyTypeElement = modalElement.querySelector(
                     "#feeEdit--occupancyTypeId"
@@ -765,9 +718,7 @@ declare const bulmaJS: BulmaJS;
                     occupancyTypeElement.append(optionElement);
                 }
 
-                const lotTypeElement = modalElement.querySelector(
-                    "#feeEdit--lotTypeId"
-                ) as HTMLSelectElement;
+                const lotTypeElement = modalElement.querySelector("#feeEdit--lotTypeId") as HTMLSelectElement;
 
                 for (const lotType of exports.lotTypes as recordTypes.LotType[]) {
                     const optionElement = document.createElement("option");
@@ -781,16 +732,19 @@ declare const bulmaJS: BulmaJS;
                     lotTypeElement.append(optionElement);
                 }
 
-                (modalElement.querySelector("#feeEdit--feeAmount") as HTMLInputElement).value =
-                    fee.feeAmount ? fee.feeAmount.toFixed(2) : "";
-                (
-                    modalElement.querySelector("#feeEdit--feeFunction") as HTMLSelectElement
-                ).addEventListener("change", toggleFeeFields);
+                (modalElement.querySelector("#feeEdit--feeAmount") as HTMLInputElement).value = fee.feeAmount
+                    ? fee.feeAmount.toFixed(2)
+                    : "";
+
+                modalElement
+                    .querySelector("#feeEdit--feeFunction")!
+                    .addEventListener("change", toggleFeeFields);
 
                 toggleFeeFields();
 
-                (modalElement.querySelector("#feeEdit--taxAmount") as HTMLInputElement).value =
-                    fee.taxAmount ? fee.taxAmount.toFixed(2) : "";
+                (modalElement.querySelector("#feeEdit--taxAmount") as HTMLInputElement).value = fee.taxAmount
+                    ? fee.taxAmount.toFixed(2)
+                    : "";
 
                 const taxPercentageElement = modalElement.querySelector(
                     "#feeEdit--taxPercentage"
@@ -816,9 +770,7 @@ declare const bulmaJS: BulmaJS;
                 toggleQuantityFields();
 
                 if (fee.isRequired) {
-                    (
-                        modalElement.querySelector("#feeEdit--isRequired") as HTMLSelectElement
-                    ).value = "1";
+                    (modalElement.querySelector("#feeEdit--isRequired") as HTMLSelectElement).value = "1";
                 }
 
                 los.populateAliases(modalElement);
@@ -832,9 +784,7 @@ declare const bulmaJS: BulmaJS;
 
                 bulmaJS.init(modalElement);
 
-                modalElement
-                    .querySelector(".button--deleteFee")!
-                    .addEventListener("click", confirmDeleteFee);
+                modalElement.querySelector(".button--deleteFee")!.addEventListener("click", confirmDeleteFee);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
@@ -847,7 +797,7 @@ declare const bulmaJS: BulmaJS;
 
         const feeContainerElement = buttonElement.closest(".container--fee") as HTMLElement;
 
-        const feeId = Number.parseInt(feeContainerElement.dataset.feeId!, 10);
+        const feeId = feeContainerElement.dataset.feeId!;
 
         cityssm.postJSON(
             los.urlPrefix +

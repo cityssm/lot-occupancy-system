@@ -8,18 +8,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
     delete exports.feeCategories;
     function renderFeeCategories() {
         if (feeCategories.length === 0) {
-            feeCategoriesContainerElement.innerHTML =
-                '<div class="message is-warning">' +
-                    '<p class="message-body">There are no available fees.</p>' +
-                    "</div>";
+            feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
+                <p class="message-body">There are no available fees.</p>
+                </div>`;
             return;
         }
         feeCategoriesContainerElement.innerHTML = "";
         for (const feeCategory of feeCategories) {
             const feeCategoryContainerElement = document.createElement("section");
             feeCategoryContainerElement.className = "panel container--feeCategory";
-            feeCategoryContainerElement.dataset.feeCategoryId =
-                feeCategory.feeCategoryId.toString();
+            feeCategoryContainerElement.dataset.feeCategoryId = feeCategory.feeCategoryId.toString();
             feeCategoryContainerElement.innerHTML =
                 '<div class="panel-heading">' +
                     '<div class="columns">' +
@@ -89,9 +87,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 "</p>" +
                                 (hasTagsBlock
                                     ? '<p class="tags">' +
-                                        (fee.isRequired
-                                            ? '<span class="tag is-warning">Required</span>'
-                                            : "") +
+                                        (fee.isRequired ? '<span class="tag is-warning">Required</span>' : "") +
                                         (fee.occupancyTypeId
                                             ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
                                                 cityssm.escapeHTML(exports.aliases.occupancy) +
@@ -116,10 +112,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                         ? cityssm.escapeHTML(fee.feeFunction) +
                                             "<br />" +
                                             "<small>Fee Function</small>"
-                                        : "$" +
-                                            fee.feeAmount.toFixed(2) +
-                                            "<br />" +
-                                            "<small>Fee</small>") +
+                                        : "$" + fee.feeAmount.toFixed(2) + "<br />" + "<small>Fee</small>") +
                                     "</div>") +
                                 ('<div class="column has-text-centered">' +
                                     (fee.taxPercentage
@@ -181,19 +174,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         };
         cityssm.openHtmlModal("adminFees-addFeeCategory", {
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 modalElement.querySelector("#feeCategoryAdd--feeCategory").focus();
                 addCloseModalFunction = closeModalFunction;
                 modalElement.querySelector("form").addEventListener("submit", doAddFeeCategory);
             },
-            onremoved: () => {
+            onremoved() {
                 bulmaJS.toggleHtmlClipped();
+                document.querySelector("#button--addFeeCategory").focus();
             }
         });
     });
     function openEditFeeCategory(clickEvent) {
-        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
+        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory")
+            .dataset.feeCategoryId, 10);
         const feeCategory = feeCategories.find((currentFeeCategory) => {
             return currentFeeCategory.feeCategoryId === feeCategoryId;
         });
@@ -217,8 +212,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal("adminFees-editFeeCategory", {
             onshow(modalElement) {
-                modalElement.querySelector("#feeCategoryEdit--feeCategoryId").value = feeCategory.feeCategoryId.toString();
-                modalElement.querySelector("#feeCategoryEdit--feeCategory").value = feeCategory.feeCategory;
+                modalElement.querySelector("#feeCategoryEdit--feeCategoryId").value =
+                    feeCategory.feeCategoryId.toString();
+                modalElement.querySelector("#feeCategoryEdit--feeCategory").value =
+                    feeCategory.feeCategory;
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
@@ -232,7 +229,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function confirmDeleteFeeCategory(clickEvent) {
-        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
+        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory")
+            .dataset.feeCategoryId, 10);
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + "/admin/doDeleteFeeCategory", {
                 feeCategoryId
@@ -262,13 +260,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function moveFeeCategory(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const feeCategoryId = Number.parseInt(buttonElement.closest(".container--feeCategory").dataset
-            .feeCategoryId, 10);
+        const feeCategoryId = buttonElement.closest(".container--feeCategory").dataset
+            .feeCategoryId;
         cityssm.postJSON(los.urlPrefix +
             "/admin/" +
-            (buttonElement.dataset.direction === "up"
-                ? "doMoveFeeCategoryUp"
-                : "doMoveFeeCategoryDown"), {
+            (buttonElement.dataset.direction === "up" ? "doMoveFeeCategoryUp" : "doMoveFeeCategoryDown"), {
             feeCategoryId,
             moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, (responseJSON) => {
@@ -289,7 +285,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * Fees
      */
     function openAddFee(clickEvent) {
-        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory").dataset.feeCategoryId, 10);
+        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(".container--feeCategory")
+            .dataset.feeCategoryId, 10);
         let addCloseModalFunction;
         function doAddFee(submitEvent) {
             submitEvent.preventDefault();
@@ -372,7 +369,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
                 modalElement.querySelector("#feeAdd--includeQuantity").addEventListener("change", () => {
                     modalElement.querySelector("#feeAdd--quantityUnit").disabled =
-                        modalElement.querySelector("#feeAdd--includeQuantity").value === "";
+                        modalElement.querySelector("#feeAdd--includeQuantity")
+                            .value === "";
                 });
             },
             onremoved() {
@@ -384,8 +382,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const feeContainerElement = clickEvent.currentTarget.closest(".container--fee");
         const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
-        const feeCategoryId = Number.parseInt(feeContainerElement.closest(".container--feeCategory").dataset
-            .feeCategoryId);
+        const feeCategoryId = Number.parseInt(feeContainerElement.closest(".container--feeCategory").dataset.feeCategoryId);
         const feeCategory = feeCategories.find((currentFeeCategory) => {
             return currentFeeCategory.feeCategoryId === feeCategoryId;
         });
@@ -470,9 +467,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         }
         function toggleQuantityFields() {
+            const includeQuanitityValue = editModalElement.querySelector("#feeEdit--includeQuantity").value;
             editModalElement.querySelector("#feeEdit--quantityUnit").disabled =
-                editModalElement.querySelector("#feeEdit--includeQuantity")
-                    .value === "";
+                includeQuanitityValue === "";
         }
         cityssm.openHtmlModal("adminFees-editFee", {
             onshow(modalElement) {
@@ -489,9 +486,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                     feeCategoryElement.append(optionElement);
                 }
-                modalElement.querySelector("#feeEdit--feeName").value =
-                    fee.feeName;
-                modalElement.querySelector("#feeEdit--feeDescription").value = fee.feeDescription;
+                modalElement.querySelector("#feeEdit--feeName").value = fee.feeName;
+                modalElement.querySelector("#feeEdit--feeDescription").value =
+                    fee.feeDescription;
                 const occupancyTypeElement = modalElement.querySelector("#feeEdit--occupancyTypeId");
                 for (const occupancyType of exports.occupancyTypes) {
                     const optionElement = document.createElement("option");
@@ -512,12 +509,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                     lotTypeElement.append(optionElement);
                 }
-                modalElement.querySelector("#feeEdit--feeAmount").value =
-                    fee.feeAmount ? fee.feeAmount.toFixed(2) : "";
-                modalElement.querySelector("#feeEdit--feeFunction").addEventListener("change", toggleFeeFields);
+                modalElement.querySelector("#feeEdit--feeAmount").value = fee.feeAmount
+                    ? fee.feeAmount.toFixed(2)
+                    : "";
+                modalElement
+                    .querySelector("#feeEdit--feeFunction")
+                    .addEventListener("change", toggleFeeFields);
                 toggleFeeFields();
-                modalElement.querySelector("#feeEdit--taxAmount").value =
-                    fee.taxAmount ? fee.taxAmount.toFixed(2) : "";
+                modalElement.querySelector("#feeEdit--taxAmount").value = fee.taxAmount
+                    ? fee.taxAmount.toFixed(2)
+                    : "";
                 const taxPercentageElement = modalElement.querySelector("#feeEdit--taxPercentage");
                 taxPercentageElement.value = fee.taxPercentage ? fee.taxPercentage.toString() : "";
                 taxPercentageElement.addEventListener("keyup", toggleTaxFields);
@@ -540,9 +541,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 editCloseModalFunction = closeModalFunction;
                 modalElement.querySelector("form").addEventListener("submit", doUpdateFee);
                 bulmaJS.init(modalElement);
-                modalElement
-                    .querySelector(".button--deleteFee")
-                    .addEventListener("click", confirmDeleteFee);
+                modalElement.querySelector(".button--deleteFee").addEventListener("click", confirmDeleteFee);
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
@@ -552,7 +551,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function moveFee(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const feeContainerElement = buttonElement.closest(".container--fee");
-        const feeId = Number.parseInt(feeContainerElement.dataset.feeId, 10);
+        const feeId = feeContainerElement.dataset.feeId;
         cityssm.postJSON(los.urlPrefix +
             "/admin/" +
             (buttonElement.dataset.direction === "up" ? "doMoveFeeUp" : "doMoveFeeDown"), {
