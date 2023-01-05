@@ -1,5 +1,6 @@
 "use strict";
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 let workOrderComments = exports.workOrderComments;
 delete exports.workOrderComments;
@@ -165,7 +166,7 @@ function openAddCommentModal() {
         }
     });
 }
+(_a = document.querySelector("#workOrderComments--add")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", openAddCommentModal);
 if (!isCreate) {
-    document.querySelector("#workOrderComments--add").addEventListener("click", openAddCommentModal);
     renderWorkOrderComments();
 }

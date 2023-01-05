@@ -48,7 +48,16 @@ export interface LOS {
     clearUnsavedChanges: () => void;
     hasUnsavedChanges: () => boolean;
 
-    getMoveUpDownButtonFieldHTML: (upButtonClassNames: string, downButtonClassNames: string, isSmall?: boolean) => string;
+    getMoveUpDownButtonFieldHTML: (
+        upButtonClassNames: string,
+        downButtonClassNames: string,
+        isSmall?: boolean
+    ) => string;
     getLoadingParagraphHTML: (captionText?: string) => string;
     getSearchResultsPagerHTML: (limit: number, offset: number, count: number) => string;
+
+    getMapURL: (mapId: number | string, edit?: boolean, time?: boolean) => string;
+    getLotURL: (lotId: number | string, edit?: boolean, time?: boolean) => string;
+    getLotOccupancyURL: (lotOccupancyId: number | string, edit?: boolean, time?: boolean) => string;
+    getWorkOrderURL: (workOrderId: number | string, edit?: boolean, time?: boolean) => string;
 }

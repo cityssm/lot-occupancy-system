@@ -19,6 +19,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function hasUnsavedChanges() {
         return _hasUnsavedChanges;
     }
+    /*
+     * Mapping
+     */
     function highlightMap(mapContainerElement, mapKey, contextualClass) {
         // Search for ID
         let svgId = mapKey;
@@ -272,6 +275,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         WorkOrderCloseDate: cityssm.escapeHTML(exports.aliases.workOrderCloseDate),
         workOrderCloseDate: cityssm.escapeHTML(exports.aliases.workOrderCloseDate.toLowerCase())
     });
+    /*
+     * Colours
+     */
     const hues = ["red", "green", "orange", "blue", "pink", "yellow", "purple"];
     const luminosity = ["bright", "light", "dark"];
     function getRandomColor(seedString) {
@@ -344,10 +350,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
             "</div>");
     }
     /*
+     * URLs
+     */
+    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    function getMapURL(mapId, edit = false, time = false) {
+        return urlPrefix + "/maps/" + mapId + (edit ? "/edit" : "") + (time ? "/?t=" + Date.now() : "");
+    }
+    function getLotURL(lotId, edit = false, time = false) {
+        return urlPrefix + "/lots/" + lotId + (edit ? "/edit" : "") + (time ? "/?t=" + Date.now() : "");
+    }
+    function getLotOccupancyURL(lotOccupancyId, edit = false, time = false) {
+        return (urlPrefix +
+            "/lotOccupancies/" +
+            lotOccupancyId +
+            (edit ? "/edit" : "") +
+            (time ? "/?t=" + Date.now() : ""));
+    }
+    function getWorkOrderURL(workOrderId, edit = false, time = false) {
+        return (urlPrefix +
+            "/workOrders/" +
+            workOrderId +
+            (edit ? "/edit" : "") +
+            (time ? "/?t=" + Date.now() : ""));
+    }
+    /*
      * Declare LOS
      */
     const los = {
-        urlPrefix: document.querySelector("main").dataset.urlPrefix,
+        urlPrefix,
         apiKey: document.querySelector("main").dataset.apiKey,
         highlightMap,
         initializeUnlockFieldButtons,
@@ -360,7 +390,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         hasUnsavedChanges,
         getMoveUpDownButtonFieldHTML,
         getLoadingParagraphHTML,
-        getSearchResultsPagerHTML
+        getSearchResultsPagerHTML,
+        getMapURL,
+        getLotURL,
+        getLotOccupancyURL,
+        getWorkOrderURL
     };
     exports.los = los;
 })();

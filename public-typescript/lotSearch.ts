@@ -37,18 +37,14 @@ declare const cityssm: cityssmGlobal;
                 "<tr>" +
                     ("<td>" +
                         '<a class="has-text-weight-bold" href="' +
-                        los.urlPrefix +
-                        "/lots/" +
-                        lot.lotId +
+                        los.getLotURL(lot.lotId) +
                         '">' +
                         cityssm.escapeHTML(lot.lotName || "") +
                         "</a>" +
                         "</td>") +
                     ("<td>" +
                         '<a href="' +
-                        los.urlPrefix +
-                        "/maps/" +
-                        lot.mapId +
+                        los.getMapURL(lot.mapId!) +
                         '">' +
                         (lot.mapName
                             ? cityssm.escapeHTML(lot.mapName)

@@ -50,9 +50,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             resultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
                 ("<td>" +
                     '<a class="has-text-weight-bold" href="' +
-                    los.urlPrefix +
-                    "/workOrders/" +
-                    workOrder.workOrderId +
+                    los.getWorkOrderURL(workOrder.workOrderId) +
                     '">' +
                     (workOrder.workOrderNumber.trim()
                         ? cityssm.escapeHTML(workOrder.workOrderNumber || "")

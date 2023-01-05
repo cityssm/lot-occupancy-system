@@ -62,54 +62,47 @@ declare const bulmaJS: BulmaJS;
 
     los.initializeUnlockFieldButtons(formElement);
 
-    if (!isCreate) {
-        document.querySelector("#button--deleteLot")!.addEventListener("click", (clickEvent) => {
-            clickEvent.preventDefault();
+    document.querySelector("#button--deleteLot")?.addEventListener("click", (clickEvent) => {
+        clickEvent.preventDefault();
 
-            const doDelete = () => {
-                cityssm.postJSON(
-                    los.urlPrefix + "/lots/doDeleteLot",
-                    {
-                        lotId
-                    },
-                    (responseJSON: { success: boolean; errorMessage?: string }) => {
-                        if (responseJSON.success) {
-                            cityssm.disableNavBlocker();
-                            window.location.href = los.urlPrefix + "/lots/?t=" + Date.now();
-                        } else {
-                            bulmaJS.alert({
-                                title: "Error Deleting " + exports.aliases.lot,
-                                message: responseJSON.errorMessage || "",
-                                contextualColorName: "danger"
-                            });
-                        }
+        const doDelete = () => {
+            cityssm.postJSON(
+                los.urlPrefix + "/lots/doDeleteLot",
+                {
+                    lotId
+                },
+                (responseJSON: { success: boolean; errorMessage?: string }) => {
+                    if (responseJSON.success) {
+                        cityssm.disableNavBlocker();
+                        window.location.href = los.urlPrefix + "/lots/?t=" + Date.now();
+                    } else {
+                        bulmaJS.alert({
+                            title: `Error Deleting ${los.escapedAliases.Lot}`,
+                            message: responseJSON.errorMessage || "",
+                            contextualColorName: "danger"
+                        });
                     }
-                );
-            };
-
-            bulmaJS.confirm({
-                title: "Delete " + exports.aliases.lot,
-                message:
-                    "Are you sure you want to delete this " +
-                    exports.aliases.lot.toLowerCase() +
-                    "?",
-                contextualColorName: "warning",
-                okButton: {
-                    text: "Yes, Delete " + exports.aliases.lot,
-                    callbackFunction: doDelete
                 }
-            });
+            );
+        };
+
+        bulmaJS.confirm({
+            title: "Delete " + exports.aliases.lot,
+            message: `Are you sure you want to delete this ${los.escapedAliases.lot}?`,
+            contextualColorName: "warning",
+            okButton: {
+                text: `Yes, Delete ${los.escapedAliases.Lot}`,
+                callbackFunction: doDelete
+            }
         });
-    }
+    });
 
     // Lot Type
 
     const lotTypeIdElement = document.querySelector("#lot--lotTypeId") as HTMLSelectElement;
 
     if (isCreate) {
-        const lotFieldsContainerElement = document.querySelector(
-            "#container--lotFields"
-        ) as HTMLElement;
+        const lotFieldsContainerElement = document.querySelector("#container--lotFields") as HTMLElement;
 
         lotTypeIdElement.addEventListener("change", () => {
             if (lotTypeIdElement.value === "") {
@@ -180,15 +173,11 @@ declare const bulmaJS: BulmaJS;
                                 <select id="${fieldId}" name="${fieldName}"><option value="">(Not Set)</option></select>
                                 </div>`;
 
-                            const selectElement = fieldElement.querySelector(
-                                "select"
-                            ) as HTMLSelectElement;
+                            const selectElement = fieldElement.querySelector("select") as HTMLSelectElement;
 
                             selectElement.required = lotTypeField.isRequired as boolean;
 
-                            const optionValues = (lotTypeField.lotTypeFieldValues as string).split(
-                                "\n"
-                            );
+                            const optionValues = (lotTypeField.lotTypeFieldValues as string).split("\n");
 
                             for (const optionValue of optionValues) {
                                 const optionElement = document.createElement("option");
@@ -284,16 +273,13 @@ declare const bulmaJS: BulmaJS;
             onshow: (modalElement) => {
                 los.populateAliases(modalElement);
 
-                (modalElement.querySelector("#lotCommentEdit--lotId") as HTMLInputElement).value =
-                    lotId;
+                (modalElement.querySelector("#lotCommentEdit--lotId") as HTMLInputElement).value = lotId;
 
-                (
-                    modalElement.querySelector("#lotCommentEdit--lotCommentId") as HTMLInputElement
-                ).value = lotCommentId.toString();
+                (modalElement.querySelector("#lotCommentEdit--lotCommentId") as HTMLInputElement).value =
+                    lotCommentId.toString();
 
-                (
-                    modalElement.querySelector("#lotCommentEdit--lotComment") as HTMLInputElement
-                ).value = lotComment.lotComment!;
+                (modalElement.querySelector("#lotCommentEdit--lotComment") as HTMLInputElement).value =
+                    lotComment.lotComment!;
 
                 const lotCommentDateStringElement = modalElement.querySelector(
                     "#lotCommentEdit--lotCommentDateString"
@@ -309,9 +295,7 @@ declare const bulmaJS: BulmaJS;
                         : lotComment.lotCommentDateString!;
 
                 (
-                    modalElement.querySelector(
-                        "#lotCommentEdit--lotCommentTimeString"
-                    ) as HTMLInputElement
+                    modalElement.querySelector("#lotCommentEdit--lotCommentTimeString") as HTMLInputElement
                 ).value = lotComment.lotCommentTimeString!;
             },
             onshown: (modalElement, closeModalFunction) => {
@@ -320,9 +304,7 @@ declare const bulmaJS: BulmaJS;
                 los.initializeDatePickers(modalElement);
                 // los.initializeTimePickers(modalElement);
 
-                (
-                    modalElement.querySelector("#lotCommentEdit--lotComment") as HTMLTextAreaElement
-                ).focus();
+                (modalElement.querySelector("#lotCommentEdit--lotComment") as HTMLTextAreaElement).focus();
 
                 editFormElement = modalElement.querySelector("form")!;
                 editFormElement.addEventListener("submit", editComment);
@@ -425,13 +407,9 @@ declare const bulmaJS: BulmaJS;
                     "</div>" +
                     "</td>");
 
-            tableRowElement
-                .querySelector(".button--edit")!
-                .addEventListener("click", openEditLotComment);
+            tableRowElement.querySelector(".button--edit")!.addEventListener("click", openEditLotComment);
 
-            tableRowElement
-                .querySelector(".button--delete")!
-                .addEventListener("click", deleteLotComment);
+            tableRowElement.querySelector(".button--delete")!.addEventListener("click", deleteLotComment);
 
             tableElement.querySelector("tbody")!.append(tableRowElement);
         }
@@ -462,16 +440,13 @@ declare const bulmaJS: BulmaJS;
         cityssm.openHtmlModal("lot-addComment", {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
-                (modalElement.querySelector("#lotCommentAdd--lotId") as HTMLInputElement).value =
-                    lotId;
+                (modalElement.querySelector("#lotCommentAdd--lotId") as HTMLInputElement).value = lotId;
                 modalElement.querySelector("form")!.addEventListener("submit", doAddComment);
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 addCommentCloseModalFunction = closeModalFunction;
-                (
-                    modalElement.querySelector("#lotCommentAdd--lotComment") as HTMLTextAreaElement
-                ).focus();
+                (modalElement.querySelector("#lotCommentAdd--lotComment") as HTMLTextAreaElement).focus();
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();

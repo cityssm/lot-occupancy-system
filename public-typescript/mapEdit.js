@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    var _a;
     const los = exports.los;
     const mapId = document.querySelector("#map--mapId").value;
     const isCreate = mapId === "";
@@ -12,8 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 cityssm.disableNavBlocker();
                 if (isCreate) {
-                    window.location.href =
-                        los.urlPrefix + "/maps/" + responseJSON.mapId + "/edit";
+                    window.location.href = los.urlPrefix + "/maps/" + responseJSON.mapId + "/edit";
                 }
                 else {
                     bulmaJS.alert({
@@ -36,34 +36,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
     for (const inputElement of inputElements) {
         inputElement.addEventListener("change", cityssm.enableNavBlocker);
     }
-    if (!isCreate) {
-        document.querySelector("#button--deleteMap").addEventListener("click", (clickEvent) => {
-            clickEvent.preventDefault();
-            function doDelete() {
-                cityssm.postJSON(los.urlPrefix + "/maps/doDeleteMap", {
-                    mapId
-                }, (responseJSON) => {
-                    if (responseJSON.success) {
-                        window.location.href = los.urlPrefix + "/maps?t=" + Date.now();
-                    }
-                    else {
-                        bulmaJS.alert({
-                            title: "Error Deleting " + exports.aliases.map,
-                            message: responseJSON.errorMessage || "",
-                            contextualColorName: "danger"
-                        });
-                    }
-                });
-            }
-            bulmaJS.confirm({
-                title: "Delete " + exports.aliases.map,
-                message: `Are you sure you want to delete this ${exports.aliases.map.toLowerCase()} and all related ${exports.aliases.lots.toLowerCase()}?`,
-                contextualColorName: "warning",
-                okButton: {
-                    text: `Yes, Delete ${exports.aliases.map}`,
-                    callbackFunction: doDelete
+    (_a = document.querySelector("#button--deleteMap")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", (clickEvent) => {
+        clickEvent.preventDefault();
+        function doDelete() {
+            cityssm.postJSON(los.urlPrefix + "/maps/doDeleteMap", {
+                mapId
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    window.location.href = los.urlPrefix + "/maps?t=" + Date.now();
+                }
+                else {
+                    bulmaJS.alert({
+                        title: "Error Deleting " + exports.aliases.map,
+                        message: responseJSON.errorMessage || "",
+                        contextualColorName: "danger"
+                    });
                 }
             });
+        }
+        bulmaJS.confirm({
+            title: "Delete " + exports.aliases.map,
+            message: `Are you sure you want to delete this ${exports.aliases.map.toLowerCase()} and all related ${exports.aliases.lots.toLowerCase()}?`,
+            contextualColorName: "warning",
+            okButton: {
+                text: `Yes, Delete ${exports.aliases.map}`,
+                callbackFunction: doDelete
+            }
         });
-    }
+    });
 })();

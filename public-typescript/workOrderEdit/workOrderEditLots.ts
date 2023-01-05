@@ -720,15 +720,9 @@ document.querySelector("#button--addLot")!.addEventListener("click", () => {
         onshown(modalElement) {
             bulmaJS.toggleHtmlClipped();
 
-            (modalElement.querySelector("#lotSearch--lotName") as HTMLInputElement).addEventListener(
-                "change",
-                doSearch
-            );
+            modalElement.querySelector("#lotSearch--lotName")!.addEventListener("change", doSearch);
 
-            (modalElement.querySelector("#lotSearch--lotStatusId") as HTMLSelectElement).addEventListener(
-                "change",
-                doSearch
-            );
+            modalElement.querySelector("#lotSearch--lotStatusId")!.addEventListener("change", doSearch);
 
             searchFormElement.addEventListener("submit", doSearch);
         },

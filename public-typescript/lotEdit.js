@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    var _a;
     const los = exports.los;
     const lotId = document.querySelector("#lot--lotId").value;
     const isCreate = lotId === "";
@@ -39,39 +40,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
         formInputElement.addEventListener("change", los.setUnsavedChanges);
     }
     los.initializeUnlockFieldButtons(formElement);
-    if (!isCreate) {
-        document.querySelector("#button--deleteLot").addEventListener("click", (clickEvent) => {
-            clickEvent.preventDefault();
-            const doDelete = () => {
-                cityssm.postJSON(los.urlPrefix + "/lots/doDeleteLot", {
-                    lotId
-                }, (responseJSON) => {
-                    if (responseJSON.success) {
-                        cityssm.disableNavBlocker();
-                        window.location.href = los.urlPrefix + "/lots/?t=" + Date.now();
-                    }
-                    else {
-                        bulmaJS.alert({
-                            title: "Error Deleting " + exports.aliases.lot,
-                            message: responseJSON.errorMessage || "",
-                            contextualColorName: "danger"
-                        });
-                    }
-                });
-            };
-            bulmaJS.confirm({
-                title: "Delete " + exports.aliases.lot,
-                message: "Are you sure you want to delete this " +
-                    exports.aliases.lot.toLowerCase() +
-                    "?",
-                contextualColorName: "warning",
-                okButton: {
-                    text: "Yes, Delete " + exports.aliases.lot,
-                    callbackFunction: doDelete
+    (_a = document.querySelector("#button--deleteLot")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", (clickEvent) => {
+        clickEvent.preventDefault();
+        const doDelete = () => {
+            cityssm.postJSON(los.urlPrefix + "/lots/doDeleteLot", {
+                lotId
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    cityssm.disableNavBlocker();
+                    window.location.href = los.urlPrefix + "/lots/?t=" + Date.now();
+                }
+                else {
+                    bulmaJS.alert({
+                        title: `Error Deleting ${los.escapedAliases.Lot}`,
+                        message: responseJSON.errorMessage || "",
+                        contextualColorName: "danger"
+                    });
                 }
             });
+        };
+        bulmaJS.confirm({
+            title: "Delete " + exports.aliases.lot,
+            message: `Are you sure you want to delete this ${los.escapedAliases.lot}?`,
+            contextualColorName: "warning",
+            okButton: {
+                text: `Yes, Delete ${los.escapedAliases.Lot}`,
+                callbackFunction: doDelete
+            }
         });
-    }
+    });
     // Lot Type
     const lotTypeIdElement = document.querySelector("#lot--lotTypeId");
     if (isCreate) {
@@ -194,10 +191,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.openHtmlModal("lot-editComment", {
             onshow: (modalElement) => {
                 los.populateAliases(modalElement);
-                modalElement.querySelector("#lotCommentEdit--lotId").value =
-                    lotId;
-                modalElement.querySelector("#lotCommentEdit--lotCommentId").value = lotCommentId.toString();
-                modalElement.querySelector("#lotCommentEdit--lotComment").value = lotComment.lotComment;
+                modalElement.querySelector("#lotCommentEdit--lotId").value = lotId;
+                modalElement.querySelector("#lotCommentEdit--lotCommentId").value =
+                    lotCommentId.toString();
+                modalElement.querySelector("#lotCommentEdit--lotComment").value =
+                    lotComment.lotComment;
                 const lotCommentDateStringElement = modalElement.querySelector("#lotCommentEdit--lotCommentDateString");
                 lotCommentDateStringElement.value = lotComment.lotCommentDateString;
                 const currentDateString = cityssm.dateToString(new Date());
@@ -293,12 +291,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</button>") +
                         "</div>" +
                         "</td>");
-            tableRowElement
-                .querySelector(".button--edit")
-                .addEventListener("click", openEditLotComment);
-            tableRowElement
-                .querySelector(".button--delete")
-                .addEventListener("click", deleteLotComment);
+            tableRowElement.querySelector(".button--edit").addEventListener("click", openEditLotComment);
+            tableRowElement.querySelector(".button--delete").addEventListener("click", deleteLotComment);
             tableElement.querySelector("tbody").append(tableRowElement);
         }
         containerElement.innerHTML = "";
@@ -319,8 +313,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.openHtmlModal("lot-addComment", {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
-                modalElement.querySelector("#lotCommentAdd--lotId").value =
-                    lotId;
+                modalElement.querySelector("#lotCommentAdd--lotId").value = lotId;
                 modalElement.querySelector("form").addEventListener("submit", doAddComment);
             },
             onshown(modalElement, closeModalFunction) {

@@ -31,6 +31,10 @@ declare const bulmaJS: BulmaJS;
         return _hasUnsavedChanges;
     }
 
+    /*
+     * Mapping
+     */
+
     function highlightMap(
         mapContainerElement: HTMLElement,
         mapKey: string,
@@ -88,8 +92,7 @@ declare const bulmaJS: BulmaJS;
     }
 
     function initializeUnlockFieldButtons(containerElement: HTMLElement): void {
-        const unlockFieldButtonElements =
-            containerElement.querySelectorAll(".is-unlock-field-button");
+        const unlockFieldButtonElements = containerElement.querySelectorAll(".is-unlock-field-button");
 
         for (const unlockFieldButtonElement of unlockFieldButtonElements) {
             unlockFieldButtonElement.addEventListener("click", unlockField);
@@ -265,9 +268,7 @@ declare const bulmaJS: BulmaJS;
      */
 
     function populateAliases(containerElement: HTMLElement): void {
-        const aliasElements = containerElement.querySelectorAll(
-            ".alias"
-        ) as NodeListOf<HTMLElement>;
+        const aliasElements = containerElement.querySelectorAll(".alias") as NodeListOf<HTMLElement>;
 
         for (const aliasElement of aliasElements) {
             switch (aliasElement.dataset.alias) {
@@ -329,9 +330,7 @@ declare const bulmaJS: BulmaJS;
         occupants: cityssm.escapeHTML(exports.aliases.occupants.toLowerCase()),
 
         ExternalReceiptNumber: cityssm.escapeHTML(exports.aliases.externalReceiptNumber),
-        externalReceiptNumber: cityssm.escapeHTML(
-            exports.aliases.externalReceiptNumber.toLowerCase()
-        ),
+        externalReceiptNumber: cityssm.escapeHTML(exports.aliases.externalReceiptNumber.toLowerCase()),
 
         OccupancyStartDate: cityssm.escapeHTML(exports.aliases.occupancyStartDate),
         occupancyStartDate: cityssm.escapeHTML(exports.aliases.occupancyStartDate.toLowerCase()),
@@ -342,6 +341,10 @@ declare const bulmaJS: BulmaJS;
         WorkOrderCloseDate: cityssm.escapeHTML(exports.aliases.workOrderCloseDate),
         workOrderCloseDate: cityssm.escapeHTML(exports.aliases.workOrderCloseDate.toLowerCase())
     });
+
+    /*
+     * Colours
+     */
 
     const hues = ["red", "green", "orange", "blue", "pink", "yellow", "purple"];
     const luminosity = ["bright", "light", "dark"];
@@ -357,9 +360,7 @@ declare const bulmaJS: BulmaJS;
             seed: actualSeedString + actualSeedString,
             hue: hues[actualSeedString.codePointAt(actualSeedString.length - 1)! % hues.length],
             luminosity:
-                luminosity[
-                    actualSeedString.codePointAt(actualSeedString.length - 2)! % luminosity.length
-                ]
+                luminosity[actualSeedString.codePointAt(actualSeedString.length - 2)! % luminosity.length]
         });
     }
 
@@ -432,11 +433,45 @@ declare const bulmaJS: BulmaJS;
     }
 
     /*
+     * URLs
+     */
+
+    const urlPrefix = document.querySelector("main")!.dataset.urlPrefix!;
+
+    function getMapURL(mapId: number | string, edit = false, time = false) {
+        return urlPrefix + "/maps/" + mapId + (edit ? "/edit" : "") + (time ? "/?t=" + Date.now() : "");
+    }
+
+    function getLotURL(lotId: number | string, edit = false, time = false) {
+        return urlPrefix + "/lots/" + lotId + (edit ? "/edit" : "") + (time ? "/?t=" + Date.now() : "");
+    }
+
+    function getLotOccupancyURL(lotOccupancyId: number | string, edit = false, time = false) {
+        return (
+            urlPrefix +
+            "/lotOccupancies/" +
+            lotOccupancyId +
+            (edit ? "/edit" : "") +
+            (time ? "/?t=" + Date.now() : "")
+        );
+    }
+
+    function getWorkOrderURL(workOrderId: number | string, edit = false, time = false) {
+        return (
+            urlPrefix +
+            "/workOrders/" +
+            workOrderId +
+            (edit ? "/edit" : "") +
+            (time ? "/?t=" + Date.now() : "")
+        );
+    }
+
+    /*
      * Declare LOS
      */
 
     const los: globalTypes.LOS = {
-        urlPrefix: document.querySelector("main")!.dataset.urlPrefix!,
+        urlPrefix,
         apiKey: document.querySelector("main")!.dataset.apiKey!,
         highlightMap,
         initializeUnlockFieldButtons,
@@ -453,7 +488,12 @@ declare const bulmaJS: BulmaJS;
 
         getMoveUpDownButtonFieldHTML,
         getLoadingParagraphHTML,
-        getSearchResultsPagerHTML
+        getSearchResultsPagerHTML,
+
+        getMapURL,
+        getLotURL,
+        getLotOccupancyURL,
+        getWorkOrderURL
     };
 
     exports.los = los;

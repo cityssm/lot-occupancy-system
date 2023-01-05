@@ -122,9 +122,7 @@ declare const cityssm: cityssmGlobal;
                     los.getRandomColor(milestone.workOrderNumber || "") +
                     '" aria-hidden="true"></i>' +
                     ' <a class="has-text-weight-bold" href="' +
-                    los.urlPrefix +
-                    "/workOrders/" +
-                    milestone.workOrderId +
+                    los.getWorkOrderURL(milestone.workOrderId!) +
                     '">' +
                     cityssm.escapeHTML(milestone.workOrderNumber || "") +
                     "</a><br />" +

@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const searchFilterElement = document.querySelector("#searchFilter--map");
     const searchResultsContainerElement = document.querySelector("#container--searchResults");
     function renderResults() {
-        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${exports.aliases.maps}...`);
+        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Maps}...`);
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement("tbody");
         const filterStringSplit = searchFilterElement.value.trim().toLowerCase().split(" ");

@@ -81,9 +81,7 @@ declare const cityssm: cityssmGlobal;
                     ('<td class="has-width-1">' + occupancyTimeHTML + "</td>") +
                     ("<td>" +
                         '<a class="has-text-weight-bold" href="' +
-                        los.urlPrefix +
-                        "/lotOccupancies/" +
-                        lotOccupancy.lotOccupancyId +
+                        los.getLotOccupancyURL(lotOccupancy.lotOccupancyId!) +
                         '">' +
                         cityssm.escapeHTML(lotOccupancy.occupancyType as string) +
                         "</a>" +
@@ -93,9 +91,7 @@ declare const cityssm: cityssmGlobal;
                             ? '<a class="has-tooltip-right" data-tooltip="' +
                               cityssm.escapeHTML(lotOccupancy.lotType || "") +
                               '" href="' +
-                              los.urlPrefix +
-                              "/lots/" +
-                              lotOccupancy.lotId +
+                              los.getLotURL(lotOccupancy.lotId!) +
                               '">' +
                               cityssm.escapeHTML(lotOccupancy.lotName) +
                               "</a>"

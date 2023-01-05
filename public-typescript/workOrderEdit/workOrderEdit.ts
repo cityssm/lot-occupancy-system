@@ -36,8 +36,7 @@ declare const bulmaJS: BulmaJS;
                     cityssm.disableNavBlocker();
 
                     if (isCreate) {
-                        window.location.href =
-                            los.urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
+                        window.location.href = los.getWorkOrderURL(responseJSON.workOrderId!, true);
                     } else {
                         bulmaJS.alert({
                             message: "Work Order Updated Successfully",
@@ -109,21 +108,20 @@ declare const bulmaJS: BulmaJS;
 
     let workOrderMilestones: recordTypes.WorkOrderMilestone[];
 
-    if (!isCreate) {
-        document.querySelector("#button--closeWorkOrder")!.addEventListener("click", () => {
-            const hasOpenMilestones = workOrderMilestones.some((milestone) => {
-                return !milestone.workOrderMilestoneCompletionDate;
+    document.querySelector("#button--closeWorkOrder")?.addEventListener("click", () => {
+        const hasOpenMilestones = workOrderMilestones.some((milestone) => {
+            return !milestone.workOrderMilestoneCompletionDate;
+        });
+
+        if (hasOpenMilestones) {
+            bulmaJS.alert({
+                title: "Outstanding Milestones",
+                message: `You cannot close a work order with outstanding milestones.
+                        Either complete the outstanding milestones, or remove them from the work order.`,
+                contextualColorName: "warning"
             });
 
-            if (hasOpenMilestones) {
-                bulmaJS.alert({
-                    title: "Outstanding Milestones",
-                    message: `You cannot close a work order with outstanding milestones.
-                        Either complete the outstanding milestones, or remove them from the work order.`,
-                    contextualColorName: "warning"
-                });
-
-                /*
+            /*
                     // Disable closing work orders with open milestones
                     bulmaJS.confirm({
                         title: "Close Work Order with Outstanding Milestones",
@@ -136,33 +134,32 @@ declare const bulmaJS: BulmaJS;
                         }
                     });
                 */
-            } else {
-                bulmaJS.confirm({
-                    title: "Close Work Order",
-                    message: "Are you sure you want to close this work order?",
-                    contextualColorName: "info",
-                    okButton: {
-                        text: "Yes, Close Work Order",
-                        callbackFunction: doClose
-                    }
-                });
-            }
-        });
-
-        document.querySelector("#button--deleteWorkOrder")!.addEventListener("click", (clickEvent: Event) => {
-            clickEvent.preventDefault();
-
+        } else {
             bulmaJS.confirm({
-                title: "Delete Work Order",
-                message: "Are you sure you want to delete this work order?",
-                contextualColorName: "warning",
+                title: "Close Work Order",
+                message: "Are you sure you want to close this work order?",
+                contextualColorName: "info",
                 okButton: {
-                    text: "Yes, Delete Work Order",
-                    callbackFunction: doDelete
+                    text: "Yes, Close Work Order",
+                    callbackFunction: doClose
                 }
             });
+        }
+    });
+
+    document.querySelector("#button--deleteWorkOrder")?.addEventListener("click", (clickEvent: Event) => {
+        clickEvent.preventDefault();
+
+        bulmaJS.confirm({
+            title: "Delete Work Order",
+            message: "Are you sure you want to delete this work order?",
+            contextualColorName: "warning",
+            okButton: {
+                text: "Yes, Delete Work Order",
+                callbackFunction: doDelete
+            }
         });
-    }
+    });
 
     /*
      * Related Lots

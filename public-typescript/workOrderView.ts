@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable unicorn/prefer-module, @typescript-eslint/no-non-null-assertion */
 
 import type * as globalTypes from "../types/globalTypes";
 
@@ -17,7 +17,7 @@ declare const bulmaJS: BulmaJS;
     ) as HTMLButtonElement;
 
     if (reopenWorkOrderButtonElement) {
-        const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId;
+        const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId!;
 
         reopenWorkOrderButtonElement.addEventListener("click", () => {
             function doReopen() {
@@ -29,11 +29,7 @@ declare const bulmaJS: BulmaJS;
                     (responseJSON: { success: boolean; errorMessage?: string }) => {
                         if (responseJSON.success) {
                             window.location.href =
-                                los.urlPrefix +
-                                "/workOrders/" +
-                                workOrderId +
-                                "/edit/?t=" +
-                                Date.now();
+                            los.getWorkOrderURL(workOrderId, true, true);
                         } else {
                             bulmaJS.alert({
                                 title: "Error Reopening Work Order",

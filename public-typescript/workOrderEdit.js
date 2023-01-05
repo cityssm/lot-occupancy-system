@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    var _a, _b;
     const los = exports.los;
     const workOrderId = document.querySelector("#workOrderEdit--workOrderId").value;
     const isCreate = workOrderId === "";
@@ -14,8 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 cityssm.disableNavBlocker();
                 if (isCreate) {
-                    window.location.href =
-                        los.urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
+                    window.location.href = los.getWorkOrderURL(responseJSON.workOrderId, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -73,19 +73,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     let workOrderMilestones;
-    if (!isCreate) {
-        document.querySelector("#button--closeWorkOrder").addEventListener("click", () => {
-            const hasOpenMilestones = workOrderMilestones.some((milestone) => {
-                return !milestone.workOrderMilestoneCompletionDate;
-            });
-            if (hasOpenMilestones) {
-                bulmaJS.alert({
-                    title: "Outstanding Milestones",
-                    message: `You cannot close a work order with outstanding milestones.
+    (_a = document.querySelector("#button--closeWorkOrder")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
+        const hasOpenMilestones = workOrderMilestones.some((milestone) => {
+            return !milestone.workOrderMilestoneCompletionDate;
+        });
+        if (hasOpenMilestones) {
+            bulmaJS.alert({
+                title: "Outstanding Milestones",
+                message: `You cannot close a work order with outstanding milestones.
                         Either complete the outstanding milestones, or remove them from the work order.`,
-                    contextualColorName: "warning"
-                });
-                /*
+                contextualColorName: "warning"
+            });
+            /*
                     // Disable closing work orders with open milestones
                     bulmaJS.confirm({
                         title: "Close Work Order with Outstanding Milestones",
@@ -98,32 +97,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         }
                     });
                 */
-            }
-            else {
-                bulmaJS.confirm({
-                    title: "Close Work Order",
-                    message: "Are you sure you want to close this work order?",
-                    contextualColorName: "info",
-                    okButton: {
-                        text: "Yes, Close Work Order",
-                        callbackFunction: doClose
-                    }
-                });
-            }
-        });
-        document.querySelector("#button--deleteWorkOrder").addEventListener("click", (clickEvent) => {
-            clickEvent.preventDefault();
+        }
+        else {
             bulmaJS.confirm({
-                title: "Delete Work Order",
-                message: "Are you sure you want to delete this work order?",
-                contextualColorName: "warning",
+                title: "Close Work Order",
+                message: "Are you sure you want to close this work order?",
+                contextualColorName: "info",
                 okButton: {
-                    text: "Yes, Delete Work Order",
-                    callbackFunction: doDelete
+                    text: "Yes, Close Work Order",
+                    callbackFunction: doClose
                 }
             });
+        }
+    });
+    (_b = document.querySelector("#button--deleteWorkOrder")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", (clickEvent) => {
+        clickEvent.preventDefault();
+        bulmaJS.confirm({
+            title: "Delete Work Order",
+            message: "Are you sure you want to delete this work order?",
+            contextualColorName: "warning",
+            okButton: {
+                text: "Yes, Delete Work Order",
+                callbackFunction: doDelete
+            }
         });
-    }
+    });
     /*
      * Related Lots
      */
@@ -660,6 +658,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     "use strict";
     /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+    var _a;
     Object.defineProperty(exports, "__esModule", { value: true });
     let workOrderComments = exports.workOrderComments;
     delete exports.workOrderComments;
@@ -825,8 +824,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
+    (_a = document.querySelector("#workOrderComments--add")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", openAddCommentModal);
     if (!isCreate) {
-        document.querySelector("#workOrderComments--add").addEventListener("click", openAddCommentModal);
         renderWorkOrderComments();
     }
     

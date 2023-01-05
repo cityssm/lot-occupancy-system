@@ -249,8 +249,8 @@ function openAddCommentModal() {
     });
 }
 
-if (!isCreate) {
-    document.querySelector("#workOrderComments--add")!.addEventListener("click", openAddCommentModal);
+document.querySelector("#workOrderComments--add")?.addEventListener("click", openAddCommentModal);
 
+if (!isCreate) {
     renderWorkOrderComments();
 }

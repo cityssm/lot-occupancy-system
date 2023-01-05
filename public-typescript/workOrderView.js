@@ -1,5 +1,5 @@
 "use strict";
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable unicorn/prefer-module, @typescript-eslint/no-non-null-assertion */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -13,11 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }, (responseJSON) => {
                     if (responseJSON.success) {
                         window.location.href =
-                            los.urlPrefix +
-                                "/workOrders/" +
-                                workOrderId +
-                                "/edit/?t=" +
-                                Date.now();
+                            los.getWorkOrderURL(workOrderId, true, true);
                     }
                     else {
                         bulmaJS.alert({

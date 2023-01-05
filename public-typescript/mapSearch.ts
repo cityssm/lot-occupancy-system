@@ -18,7 +18,7 @@ declare const cityssm: cityssmGlobal;
 
     function renderResults(): void {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
-            `Loading ${exports.aliases.maps}...`
+            `Loading ${los.escapedAliases.Maps}...`
         );
 
         let searchResultCount = 0;

@@ -101,7 +101,7 @@ declare const bulmaJS: BulmaJS;
             });
         } else {
             bulmaJS.confirm({
-                title: "Copy " + los.escapedAliases.Occupancy + " Record as New",
+                title: `Copy ${los.escapedAliases.Occupancy} Record as New`,
                 message: "Are you sure you want to copy this record to a new record?",
                 contextualColorName: "info",
                 okButton: {

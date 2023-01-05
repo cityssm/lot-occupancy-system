@@ -472,7 +472,7 @@ declare const bulmaJS: BulmaJS;
             containerElement.insertAdjacentHTML(
                 "afterbegin",
                 `<div class="message is-warning>
-                <p class="message-body">There are no active ${exports.aliases.lot.toLowerCase()} types.</p>
+                <p class="message-body">There are no active ${los.escapedAliases.lot} types.</p>
                 </div>`
             );
 
