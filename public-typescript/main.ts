@@ -438,32 +438,37 @@ declare const bulmaJS: BulmaJS;
 
     const urlPrefix = document.querySelector("main")!.dataset.urlPrefix!;
 
+    function getRecordURL(
+        recordTypePlural: "maps" | "lots" | "lotOccupancies" | "workOrders",
+        recordId: number | string,
+        edit: boolean,
+        time: boolean
+    ): string {
+        return (
+            urlPrefix +
+            "/" +
+            recordTypePlural +
+            "/" +
+            recordId +
+            (edit ? "/edit" : "") +
+            (time ? "/?t=" + Date.now() : "")
+        );
+    }
+
     function getMapURL(mapId: number | string, edit = false, time = false) {
-        return urlPrefix + "/maps/" + mapId + (edit ? "/edit" : "") + (time ? "/?t=" + Date.now() : "");
+        return getRecordURL("maps", mapId, edit, time);
     }
 
     function getLotURL(lotId: number | string, edit = false, time = false) {
-        return urlPrefix + "/lots/" + lotId + (edit ? "/edit" : "") + (time ? "/?t=" + Date.now() : "");
+        return getRecordURL("lots", lotId, edit, time);
     }
 
     function getLotOccupancyURL(lotOccupancyId: number | string, edit = false, time = false) {
-        return (
-            urlPrefix +
-            "/lotOccupancies/" +
-            lotOccupancyId +
-            (edit ? "/edit" : "") +
-            (time ? "/?t=" + Date.now() : "")
-        );
+        return getRecordURL("lotOccupancies", lotOccupancyId, edit, time);
     }
 
     function getWorkOrderURL(workOrderId: number | string, edit = false, time = false) {
-        return (
-            urlPrefix +
-            "/workOrders/" +
-            workOrderId +
-            (edit ? "/edit" : "") +
-            (time ? "/?t=" + Date.now() : "")
-        );
+        return getRecordURL("workOrders", workOrderId, edit, time);
     }
 
     /*

@@ -353,25 +353,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * URLs
      */
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    function getRecordURL(recordTypePlural, recordId, edit, time) {
+        return (urlPrefix +
+            "/" +
+            recordTypePlural +
+            "/" +
+            recordId +
+            (edit ? "/edit" : "") +
+            (time ? "/?t=" + Date.now() : ""));
+    }
     function getMapURL(mapId, edit = false, time = false) {
-        return urlPrefix + "/maps/" + mapId + (edit ? "/edit" : "") + (time ? "/?t=" + Date.now() : "");
+        return getRecordURL("maps", mapId, edit, time);
     }
     function getLotURL(lotId, edit = false, time = false) {
-        return urlPrefix + "/lots/" + lotId + (edit ? "/edit" : "") + (time ? "/?t=" + Date.now() : "");
+        return getRecordURL("lots", lotId, edit, time);
     }
     function getLotOccupancyURL(lotOccupancyId, edit = false, time = false) {
-        return (urlPrefix +
-            "/lotOccupancies/" +
-            lotOccupancyId +
-            (edit ? "/edit" : "") +
-            (time ? "/?t=" + Date.now() : ""));
+        return getRecordURL("lotOccupancies", lotOccupancyId, edit, time);
     }
     function getWorkOrderURL(workOrderId, edit = false, time = false) {
-        return (urlPrefix +
-            "/workOrders/" +
-            workOrderId +
-            (edit ? "/edit" : "") +
-            (time ? "/?t=" + Date.now() : ""));
+        return getRecordURL("workOrders", workOrderId, edit, time);
     }
     /*
      * Declare LOS

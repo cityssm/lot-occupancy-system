@@ -119,9 +119,7 @@ function renderRelatedOccupancies() {
                 "</td>" +
                 ("<td>" +
                     '<a class="has-text-weight-bold" href="' +
-                    cityssm.escapeHTML(los.urlPrefix) +
-                    "/lotOccupancies/" +
-                    lotOccupancy.lotOccupancyId +
+                    los.getLotOccupancyURL(lotOccupancy.lotOccupancyId) +
                     '">' +
                     cityssm.escapeHTML(lotOccupancy.occupancyType || "") +
                     "</a>" +
@@ -306,9 +304,7 @@ function renderRelatedLots() {
         rowElement.innerHTML =
             "<td>" +
                 '<a class="has-text-weight-bold" href="' +
-                cityssm.escapeHTML(los.urlPrefix) +
-                "/lots/" +
-                lot.lotId +
+                los.getLotURL(lot.lotId) +
                 '">' +
                 cityssm.escapeHTML(lot.lotName || "") +
                 "</a>" +
