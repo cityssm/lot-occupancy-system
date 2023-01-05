@@ -118,14 +118,14 @@ declare const bulmaJS: BulmaJS;
                                   (fee.isRequired ? '<span class="tag is-warning">Required</span>' : "") +
                                   (fee.occupancyTypeId
                                       ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
-                                        cityssm.escapeHTML(exports.aliases.occupancy) +
+                                        los.escapedAliases.Occupancy +
                                         ' Type Filter">' +
                                         cityssm.escapeHTML(fee.occupancyType || "") +
                                         "</span>"
                                       : "") +
                                   (fee.lotTypeId
                                       ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
-                                        cityssm.escapeHTML(exports.aliases.lot) +
+                                        los.escapedAliases.Lot +
                                         ' Type Filter">' +
                                         cityssm.escapeHTML(fee.lotType || "") +
                                         "</span>"

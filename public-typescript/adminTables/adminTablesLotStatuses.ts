@@ -30,12 +30,12 @@ const updateLotStatus = (submitEvent: SubmitEvent) => {
                 lotStatuses = responseJSON.lotStatuses!;
 
                 bulmaJS.alert({
-                    message: exports.aliases.lot + " Status Updated Successfully",
+                    message: los.escapedAliases.Lot + " Status Updated Successfully",
                     contextualColorName: "success"
                 });
             } else {
                 bulmaJS.alert({
-                    title: "Error Updating " + exports.aliases.lot + " Status",
+                    title: "Error Updating " + los.escapedAliases.Lot + " Status",
                     message: responseJSON.errorMessage || "",
                     contextualColorName: "danger"
                 });
@@ -70,12 +70,12 @@ const deleteLotStatus = (clickEvent: Event) => {
                     }
 
                     bulmaJS.alert({
-                        message: exports.aliases.lot + " Status Deleted Successfully",
+                        message: los.escapedAliases.Lot + " Status Deleted Successfully",
                         contextualColorName: "success"
                     });
                 } else {
                     bulmaJS.alert({
-                        title: "Error Deleting " + exports.aliases.lot + " Status",
+                        title: "Error Deleting " + los.escapedAliases.Lot + " Status",
                         message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });
@@ -85,12 +85,9 @@ const deleteLotStatus = (clickEvent: Event) => {
     };
 
     bulmaJS.confirm({
-        title: "Delete " + exports.aliases.lot + " Status",
-        message:
-            "Are you sure you want to delete this status?<br />" +
-            "Note that no " +
-            exports.aliases.lots.toLowerCase() +
-            " will be removed.",
+        title: `Delete ${los.escapedAliases.Lot} Status`,
+        message: `Are you sure you want to delete this status?<br />
+            Note that no ${los.escapedAliases.lot} will be removed.`,
         messageIsHtml: true,
         contextualColorName: "warning",
         okButton: {
@@ -110,9 +107,7 @@ const moveLotStatus = (clickEvent: MouseEvent) => {
     cityssm.postJSON(
         los.urlPrefix +
             "/admin/" +
-            (buttonElement.dataset.direction === "up"
-                ? "doMoveLotStatusUp"
-                : "doMoveLotStatusDown"),
+            (buttonElement.dataset.direction === "up" ? "doMoveLotStatusUp" : "doMoveLotStatusDown"),
         {
             lotStatusId,
             moveToEnd: clickEvent.shiftKey ? "1" : "0"
@@ -137,21 +132,12 @@ const moveLotStatus = (clickEvent: MouseEvent) => {
 };
 
 const renderLotStatuses = () => {
-    const containerElement = document.querySelector(
-        "#container--lotStatuses"
-    ) as HTMLTableSectionElement;
+    const containerElement = document.querySelector("#container--lotStatuses") as HTMLTableSectionElement;
 
     if (lotStatuses.length === 0) {
-        containerElement.innerHTML =
-            "<tr>" +
-            '<td colspan="2">' +
-            '<div class="message is-warning">' +
-            '<p class="message-body">There are no active ' +
-            cityssm.escapeHTML(exports.aliases.lot.toLowerCase()) +
-            " statuses.</p>" +
-            "</div>" +
-            "</td>" +
-            "</tr>";
+        containerElement.innerHTML = `<tr><td colspan="2">
+            <div class="message is-warning"><p class="message-body">There are no active ${los.escapedAliases.lot} statuses.</p></div>
+            </td></tr>`;
 
         return;
     }
@@ -185,11 +171,7 @@ const renderLotStatuses = () => {
             '<td class="is-nowrap">' +
             '<div class="field is-grouped">' +
             '<div class="control">' +
-            los.getMoveUpDownButtonFieldHTML(
-                "button--moveLotStatusUp",
-                "button--moveLotStatusDown",
-                false
-            ) +
+            los.getMoveUpDownButtonFieldHTML("button--moveLotStatusUp", "button--moveLotStatusDown", false) +
             "</div>" +
             '<div class="control">' +
             '<button class="button is-danger is-light button--deleteLotStatus" data-tooltip="Delete Status" type="button" aria-label="Delete Status">' +
@@ -201,17 +183,17 @@ const renderLotStatuses = () => {
 
         tableRowElement.querySelector("form")!.addEventListener("submit", updateLotStatus);
 
-        (
-            tableRowElement.querySelector(".button--moveLotStatusUp") as HTMLButtonElement
-        ).addEventListener("click", moveLotStatus);
+        (tableRowElement.querySelector(".button--moveLotStatusUp") as HTMLButtonElement).addEventListener(
+            "click",
+            moveLotStatus
+        );
 
-        (
-            tableRowElement.querySelector(".button--moveLotStatusDown") as HTMLButtonElement
-        ).addEventListener("click", moveLotStatus);
+        (tableRowElement.querySelector(".button--moveLotStatusDown") as HTMLButtonElement).addEventListener(
+            "click",
+            moveLotStatus
+        );
 
-        tableRowElement
-            .querySelector(".button--deleteLotStatus")!
-            .addEventListener("click", deleteLotStatus);
+        tableRowElement.querySelector(".button--deleteLotStatus")!.addEventListener("click", deleteLotStatus);
 
         containerElement.append(tableRowElement);
     }
@@ -239,7 +221,7 @@ const renderLotStatuses = () => {
                     formElement.querySelector("input")!.focus();
                 } else {
                     bulmaJS.alert({
-                        title: "Error Adding " + exports.aliases.lot + " Status",
+                        title: `Error Adding ${los.escapedAliases.Lot} Status`,
                         message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });

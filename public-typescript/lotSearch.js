@@ -10,12 +10,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function renderLots(responseJSON) {
         var _a, _b;
         if (responseJSON.lots.length === 0) {
-            searchResultsContainerElement.innerHTML =
-                '<div class="message is-info">' +
-                    '<p class="message-body">There are no ' +
-                    los.escapedAliases.lots +
-                    " that meet the search criteria.</p>" +
-                    "</div>";
+            searchResultsContainerElement.innerHTML = `<div class="message is-info">
+                <p class="message-body">There are no ${los.escapedAliases.lots} that meet the search criteria.</p>
+                </div>`;
             return;
         }
         const resultsTbodyElement = document.createElement("tbody");

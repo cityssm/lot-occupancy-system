@@ -12,13 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const searchResultsTbodyElement = document.createElement("tbody");
         const filterStringSplit = searchFilterElement.value.trim().toLowerCase().split(" ");
         for (const map of maps) {
-            const mapSearchString = (map.mapName +
-                " " +
-                map.mapDescription +
-                " " +
-                map.mapAddress1 +
-                " " +
-                map.mapAddress2).toLowerCase();
+            const mapSearchString = `${map.mapName} ${map.mapDescription} ${map.mapAddress1} ${map.mapAddress2}`.toLowerCase();
             let showMap = true;
             for (const filterStringPiece of filterStringSplit) {
                 if (!mapSearchString.includes(filterStringPiece)) {

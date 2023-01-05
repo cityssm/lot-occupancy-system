@@ -13,9 +13,8 @@ declare const bulmaJS: BulmaJS;
 (() => {
     const los = exports.los as globalTypes.LOS;
 
-    const lotOccupancyId = (
-        document.querySelector("#lotOccupancy--lotOccupancyId") as HTMLInputElement
-    ).value;
+    const lotOccupancyId = (document.querySelector("#lotOccupancy--lotOccupancyId") as HTMLInputElement)
+        .value;
     const isCreate = lotOccupancyId === "";
 
     /*
@@ -30,15 +29,9 @@ declare const bulmaJS: BulmaJS;
         formEvent.preventDefault();
 
         cityssm.postJSON(
-            los.urlPrefix +
-                "/lotOccupancies/" +
-                (isCreate ? "doCreateLotOccupancy" : "doUpdateLotOccupancy"),
+            los.urlPrefix + "/lotOccupancies/" + (isCreate ? "doCreateLotOccupancy" : "doUpdateLotOccupancy"),
             formElement,
-            (responseJSON: {
-                success: boolean;
-                lotOccupancyId?: number;
-                errorMessage?: string;
-            }) => {
+            (responseJSON: { success: boolean; lotOccupancyId?: number; errorMessage?: string }) => {
                 if (responseJSON.success) {
                     los.clearUnsavedChanges();
 
@@ -72,28 +65,69 @@ declare const bulmaJS: BulmaJS;
         formInputElement.addEventListener("change", los.setUnsavedChanges);
     }
 
-    if (!isCreate) {
-        const doCopy = () => {
+    const doCopy = () => {
+        cityssm.postJSON(
+            los.urlPrefix + "/lotOccupancies/doCopyLotOccupancy",
+            {
+                lotOccupancyId
+            },
+            (responseJSON: { success: boolean; errorMessage?: string; lotOccupancyId?: number }) => {
+                if (responseJSON.success) {
+                    cityssm.disableNavBlocker();
+                    window.location.href =
+                        los.urlPrefix +
+                        "/lotOccupancies/" +
+                        responseJSON.lotOccupancyId?.toString() +
+                        "/edit";
+                } else {
+                    bulmaJS.alert({
+                        title: "Error Copying Record",
+                        message: responseJSON.errorMessage || "",
+                        contextualColorName: "danger"
+                    });
+                }
+            }
+        );
+    };
+
+    document.querySelector("#button--copyLotOccupancy")?.addEventListener("click", (clickEvent) => {
+        clickEvent.preventDefault();
+
+        if (los.hasUnsavedChanges()) {
+            bulmaJS.alert({
+                title: "Unsaved Changes",
+                message: "Please save all unsaved changes before continuing.",
+                contextualColorName: "warning"
+            });
+        } else {
+            bulmaJS.confirm({
+                title: "Copy " + los.escapedAliases.Occupancy + " Record as New",
+                message: "Are you sure you want to copy this record to a new record?",
+                contextualColorName: "info",
+                okButton: {
+                    text: "Yes, Copy",
+                    callbackFunction: doCopy
+                }
+            });
+        }
+    });
+
+    document.querySelector("#button--deleteLotOccupancy")?.addEventListener("click", (clickEvent) => {
+        clickEvent.preventDefault();
+
+        const doDelete = () => {
             cityssm.postJSON(
-                los.urlPrefix + "/lotOccupancies/doCopyLotOccupancy",
+                los.urlPrefix + "/lotOccupancies/doDeleteLotOccupancy",
                 {
                     lotOccupancyId
                 },
-                (responseJSON: {
-                    success: boolean;
-                    errorMessage?: string;
-                    lotOccupancyId?: number;
-                }) => {
+                (responseJSON: { success: boolean; errorMessage?: string }) => {
                     if (responseJSON.success) {
                         cityssm.disableNavBlocker();
-                        window.location.href =
-                            los.urlPrefix +
-                            "/lotOccupancies/" +
-                            responseJSON.lotOccupancyId?.toString() +
-                            "/edit";
+                        window.location.href = los.urlPrefix + "/lotOccupancies?t=" + Date.now();
                     } else {
                         bulmaJS.alert({
-                            title: "Error Copying Record",
+                            title: "Error Deleting Record",
                             message: responseJSON.errorMessage || "",
                             contextualColorName: "danger"
                         });
@@ -102,157 +136,90 @@ declare const bulmaJS: BulmaJS;
             );
         };
 
-        document
-            .querySelector("#button--copyLotOccupancy")
-            ?.addEventListener("click", (clickEvent) => {
-                clickEvent.preventDefault();
+        bulmaJS.confirm({
+            title: "Delete " + exports.aliases.occupancy + " Record",
+            message: "Are you sure you want to delete this record?",
+            contextualColorName: "warning",
+            okButton: {
+                text: "Yes, Delete",
+                callbackFunction: doDelete
+            }
+        });
+    });
 
-                if (los.hasUnsavedChanges()) {
-                    bulmaJS.alert({
-                        title: "Unsaved Changes",
-                        message: "Please save all unsaved changes before continuing.",
-                        contextualColorName: "warning"
-                    });
-                } else {
-                    bulmaJS.confirm({
-                        title: "Copy " + exports.aliases.occupancy + " Record as New",
-                        message: "Are you sure you want to copy this record to a new record?",
-                        contextualColorName: "info",
-                        okButton: {
-                            text: "Yes, Copy",
-                            callbackFunction: doCopy
-                        }
-                    });
+    document.querySelector("#button--createWorkOrder")?.addEventListener("click", (clickEvent) => {
+        clickEvent.preventDefault();
+
+        let createCloseModalFunction: () => void;
+
+        const doCreate = (formEvent: SubmitEvent) => {
+            formEvent.preventDefault();
+
+            cityssm.postJSON(
+                los.urlPrefix + "/workOrders/doCreateWorkOrder",
+                formEvent.currentTarget,
+                (responseJSON: { success: boolean; errorMessage?: string; workOrderId?: number }) => {
+                    if (responseJSON.success) {
+                        createCloseModalFunction();
+
+                        bulmaJS.confirm({
+                            title: "Work Order Created Successfully",
+                            message: "Would you like to open the work order now?",
+                            contextualColorName: "success",
+                            okButton: {
+                                text: "Yes, Open the Work Order",
+                                callbackFunction: () => {
+                                    window.location.href =
+                                        los.urlPrefix + "/workOrders/" + responseJSON.workOrderId + "/edit";
+                                }
+                            }
+                        });
+                    } else {
+                        bulmaJS.alert({
+                            title: "Error Creating Work Order",
+                            message: responseJSON.errorMessage as string,
+                            contextualColorName: "danger"
+                        });
+                    }
                 }
-            });
+            );
+        };
 
-        document
-            .querySelector("#button--deleteLotOccupancy")
-            ?.addEventListener("click", (clickEvent) => {
-                clickEvent.preventDefault();
+        cityssm.openHtmlModal("lotOccupancy-createWorkOrder", {
+            onshow(modalElement) {
+                (modalElement.querySelector("#workOrderCreate--lotOccupancyId") as HTMLInputElement).value =
+                    lotOccupancyId;
 
-                const doDelete = () => {
-                    cityssm.postJSON(
-                        los.urlPrefix + "/lotOccupancies/doDeleteLotOccupancy",
-                        {
-                            lotOccupancyId
-                        },
-                        (responseJSON: { success: boolean; errorMessage?: string }) => {
-                            if (responseJSON.success) {
-                                cityssm.disableNavBlocker();
-                                window.location.href =
-                                    los.urlPrefix + "/lotOccupancies?t=" + Date.now();
-                            } else {
-                                bulmaJS.alert({
-                                    title: "Error Deleting Record",
-                                    message: responseJSON.errorMessage || "",
-                                    contextualColorName: "danger"
-                                });
-                            }
-                        }
-                    );
-                };
+                (
+                    modalElement.querySelector(
+                        "#workOrderCreate--workOrderOpenDateString"
+                    ) as HTMLInputElement
+                ).value = cityssm.dateToString(new Date());
 
-                bulmaJS.confirm({
-                    title: "Delete " + exports.aliases.occupancy + " Record",
-                    message: "Are you sure you want to delete this record?",
-                    contextualColorName: "warning",
-                    okButton: {
-                        text: "Yes, Delete",
-                        callbackFunction: doDelete
-                    }
-                });
-            });
+                const workOrderTypeSelectElement = modalElement.querySelector(
+                    "#workOrderCreate--workOrderTypeId"
+                ) as HTMLSelectElement;
 
-        document
-            .querySelector("#button--createWorkOrder")
-            ?.addEventListener("click", (clickEvent) => {
-                clickEvent.preventDefault();
+                const workOrderTypes = exports.workOrderTypes as recordTypes.WorkOrderType[];
 
-                let createCloseModalFunction: () => void;
+                if (workOrderTypes.length === 1) {
+                    workOrderTypeSelectElement.innerHTML = "";
+                }
 
-                const doCreate = (formEvent: SubmitEvent) => {
-                    formEvent.preventDefault();
+                for (const workOrderType of workOrderTypes) {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = (workOrderType.workOrderTypeId as number).toString();
+                    optionElement.textContent = workOrderType.workOrderType as string;
+                    workOrderTypeSelectElement.append(optionElement);
+                }
+            },
+            onshown(modalElement, closeModalFunction) {
+                createCloseModalFunction = closeModalFunction;
 
-                    cityssm.postJSON(
-                        los.urlPrefix + "/workOrders/doCreateWorkOrder",
-                        formEvent.currentTarget,
-                        (responseJSON: {
-                            success: boolean;
-                            errorMessage?: string;
-                            workOrderId?: number;
-                        }) => {
-                            if (responseJSON.success) {
-                                createCloseModalFunction();
-
-                                bulmaJS.confirm({
-                                    title: "Work Order Created Successfully",
-                                    message: "Would you like to open the work order now?",
-                                    contextualColorName: "success",
-                                    okButton: {
-                                        text: "Yes, Open the Work Order",
-                                        callbackFunction: () => {
-                                            window.location.href =
-                                                los.urlPrefix +
-                                                "/workOrders/" +
-                                                responseJSON.workOrderId +
-                                                "/edit";
-                                        }
-                                    }
-                                });
-                            } else {
-                                bulmaJS.alert({
-                                    title: "Error Creating Work Order",
-                                    message: responseJSON.errorMessage as string,
-                                    contextualColorName: "danger"
-                                });
-                            }
-                        }
-                    );
-                };
-
-                cityssm.openHtmlModal("lotOccupancy-createWorkOrder", {
-                    onshow: (modalElement) => {
-                        (
-                            modalElement.querySelector(
-                                "#workOrderCreate--lotOccupancyId"
-                            ) as HTMLInputElement
-                        ).value = lotOccupancyId;
-
-                        (
-                            modalElement.querySelector(
-                                "#workOrderCreate--workOrderOpenDateString"
-                            ) as HTMLInputElement
-                        ).value = cityssm.dateToString(new Date());
-
-                        const workOrderTypeSelectElement = modalElement.querySelector(
-                            "#workOrderCreate--workOrderTypeId"
-                        ) as HTMLSelectElement;
-
-                        const workOrderTypes =
-                            exports.workOrderTypes as recordTypes.WorkOrderType[];
-
-                        if (workOrderTypes.length === 1) {
-                            workOrderTypeSelectElement.innerHTML = "";
-                        }
-
-                        for (const workOrderType of workOrderTypes) {
-                            const optionElement = document.createElement("option");
-                            optionElement.value = (
-                                workOrderType.workOrderTypeId as number
-                            ).toString();
-                            optionElement.textContent = workOrderType.workOrderType as string;
-                            workOrderTypeSelectElement.append(optionElement);
-                        }
-                    },
-                    onshown: (modalElement, closeModalFunction) => {
-                        createCloseModalFunction = closeModalFunction;
-
-                        modalElement.querySelector("form")?.addEventListener("submit", doCreate);
-                    }
-                });
-            });
-    }
+                modalElement.querySelector("form")?.addEventListener("submit", doCreate);
+            }
+        });
+    });
 
     // Occupancy Type
 
@@ -267,12 +234,9 @@ declare const bulmaJS: BulmaJS;
 
         occupancyTypeIdElement.addEventListener("change", () => {
             if (occupancyTypeIdElement.value === "") {
-                lotOccupancyFieldsContainerElement.innerHTML =
-                    '<div class="message is-info">' +
-                    '<p class="message-body">Select the ' +
-                    exports.aliases.occupancy.toLowerCase() +
-                    " type to load the available fields.</p>" +
-                    "</div>";
+                lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
+                    <p class="message-body">Select the ${los.escapedAliases.occupancy} type to load the available fields.</p>
+                    </div>`;
 
                 return;
             }
@@ -284,12 +248,9 @@ declare const bulmaJS: BulmaJS;
                 },
                 (responseJSON: { occupancyTypeFields: recordTypes.OccupancyTypeField[] }) => {
                     if (responseJSON.occupancyTypeFields.length === 0) {
-                        lotOccupancyFieldsContainerElement.innerHTML =
-                            '<div class="message is-info">' +
-                            '<p class="message-body">There are no additional fields for this ' +
-                            exports.aliases.occupancy.toLowerCase() +
-                            " type.</p>" +
-                            "</div>";
+                        lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
+                            <p class="message-body">There are no additional fields for this ${los.escapedAliases.occupancy} type.</p>
+                            </div>`;
 
                         return;
                     }
@@ -301,18 +262,13 @@ declare const bulmaJS: BulmaJS;
                     for (const occupancyTypeField of responseJSON.occupancyTypeFields) {
                         occupancyTypeFieldIds += "," + occupancyTypeField.occupancyTypeFieldId;
 
-                        const fieldName =
-                            "lotOccupancyFieldValue_" + occupancyTypeField.occupancyTypeFieldId;
+                        const fieldName = "lotOccupancyFieldValue_" + occupancyTypeField.occupancyTypeFieldId;
 
                         const fieldId = "lotOccupancy--" + fieldName;
 
                         const fieldElement = document.createElement("div");
                         fieldElement.className = "field";
-                        fieldElement.innerHTML =
-                            '<label class="label" for="' +
-                            fieldId +
-                            '"></label>' +
-                            '<div class="control"></div>';
+                        fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label><div class="control"></div>`;
 
                         (fieldElement.querySelector("label") as HTMLLabelElement).textContent =
                             occupancyTypeField.occupancyTypeField as string;
@@ -336,9 +292,7 @@ declare const bulmaJS: BulmaJS;
                                 inputElement.pattern = occupancyTypeField.pattern;
                             }
 
-                            (fieldElement.querySelector(".control") as HTMLElement).append(
-                                inputElement
-                            );
+                            (fieldElement.querySelector(".control") as HTMLElement).append(inputElement);
                         } else {
                             (fieldElement.querySelector(".control") as HTMLElement).innerHTML =
                                 '<div class="select is-fullwidth"><select id="' +
@@ -349,9 +303,7 @@ declare const bulmaJS: BulmaJS;
                                 '<option value="">(Not Set)</option>' +
                                 "</select></div>";
 
-                            const selectElement = fieldElement.querySelector(
-                                "select"
-                            ) as HTMLSelectElement;
+                            const selectElement = fieldElement.querySelector("select") as HTMLSelectElement;
 
                             selectElement.required = occupancyTypeField.isRequired as boolean;
 
@@ -372,9 +324,9 @@ declare const bulmaJS: BulmaJS;
 
                     lotOccupancyFieldsContainerElement.insertAdjacentHTML(
                         "beforeend",
-                        '<input name="occupancyTypeFieldIds" type="hidden" value="' +
-                            occupancyTypeFieldIds.slice(1) +
-                            '" />'
+                        `<input name="occupancyTypeFieldIds" type="hidden" value="${occupancyTypeFieldIds.slice(
+                            1
+                        )}" />`
                     );
                 }
             );
@@ -386,11 +338,8 @@ declare const bulmaJS: BulmaJS;
             if (occupancyTypeIdElement.value !== originalOccupancyTypeId) {
                 bulmaJS.confirm({
                     title: "Confirm Change",
-                    message:
-                        "Are you sure you want to change the " +
-                        exports.aliases.occupancy.toLowerCase() +
-                        " type?\n" +
-                        "This change affects the additional fields associated with this record, and may also affect the available fees.",
+                    message: `Are you sure you want to change the ${los.escapedAliases.occupancy} type?\n
+                        This change affects the additional fields associated with this record, and may also affect the available fees.`,
                     contextualColorName: "warning",
                     okButton: {
                         text: "Yes, Keep the Change",
@@ -423,8 +372,7 @@ declare const bulmaJS: BulmaJS;
         let lotSelectResultsElement: HTMLElement;
 
         const renderSelectedLotAndClose = (lotId: number | string, lotName: string) => {
-            (document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value =
-                lotId.toString();
+            (document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value = lotId.toString();
             (document.querySelector("#lotOccupancy--lotName") as HTMLInputElement).value = lotName;
 
             los.setUnsavedChanges();
@@ -436,30 +384,20 @@ declare const bulmaJS: BulmaJS;
 
             const selectedLotElement = clickEvent.currentTarget as HTMLElement;
 
-            renderSelectedLotAndClose(
-                selectedLotElement.dataset.lotId!,
-                selectedLotElement.dataset.lotName!
-            );
+            renderSelectedLotAndClose(selectedLotElement.dataset.lotId!, selectedLotElement.dataset.lotName!);
         };
 
         const searchLots = () => {
-            lotSelectResultsElement.innerHTML =
-                '<p class="has-text-centered">' +
-                '<i class="fas fa-3x fa-pulse fa-spinner" aria-hidden="true"></i><br />' +
-                "Searching..." +
-                "</p>";
+            lotSelectResultsElement.innerHTML = los.getLoadingParagraphHTML("Searching...");
 
             cityssm.postJSON(
                 los.urlPrefix + "/lots/doSearchLots",
                 lotSelectFormElement,
                 (responseJSON: { count: number; lots: recordTypes.Lot[] }) => {
                     if (responseJSON.count === 0) {
-                        lotSelectResultsElement.innerHTML =
-                            '<div class="message is-info">' +
-                            '<p class="message-body">' +
-                            "No results." +
-                            "</p>" +
-                            "</div>";
+                        lotSelectResultsElement.innerHTML = `<div class="message is-info">
+                            <p class="message-body">No results.</p>
+                            </div>`;
 
                         return;
                     }
@@ -507,9 +445,8 @@ declare const bulmaJS: BulmaJS;
         const createLotAndSelect = (submitEvent: SubmitEvent) => {
             submitEvent.preventDefault();
 
-            const lotName = (
-                lotSelectModalElement.querySelector("#lotCreate--lotName") as HTMLInputElement
-            ).value;
+            const lotName = (lotSelectModalElement.querySelector("#lotCreate--lotName") as HTMLInputElement)
+                .value;
 
             cityssm.postJSON(
                 los.urlPrefix + "/lots/doCreateLot",
@@ -519,7 +456,7 @@ declare const bulmaJS: BulmaJS;
                         renderSelectedLotAndClose(responseJSON.lotId!, lotName);
                     } else {
                         bulmaJS.alert({
-                            title: "Error Creating " + exports.aliases.lot,
+                            title: `Error Creating ${los.escapedAliases.Lot}`,
                             message: responseJSON.errorMessage || "",
                             contextualColorName: "danger"
                         });
@@ -546,10 +483,7 @@ declare const bulmaJS: BulmaJS;
                     "#lotSelect--lotName"
                 ) as HTMLInputElement;
 
-                if (
-                    (document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value !==
-                    ""
-                ) {
+                if ((document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value !== "") {
                     lotNameFilterElement.value = currentLotName;
                 }
 
@@ -565,9 +499,7 @@ declare const bulmaJS: BulmaJS;
                     occupancyStatusFilterElement.value = "";
                 }
 
-                lotSelectFormElement = modalElement.querySelector(
-                    "#form--lotSelect"
-                ) as HTMLFormElement;
+                lotSelectFormElement = modalElement.querySelector("#form--lotSelect") as HTMLFormElement;
                 lotSelectResultsElement = modalElement.querySelector(
                     "#resultsContainer--lotSelect"
                 ) as HTMLElement;
@@ -583,9 +515,8 @@ declare const bulmaJS: BulmaJS;
                 if (exports.lotNamePattern) {
                     const regex = exports.lotNamePattern as RegExp;
 
-                    (
-                        modalElement.querySelector("#lotCreate--lotName") as HTMLInputElement
-                    ).pattern = regex.source;
+                    (modalElement.querySelector("#lotCreate--lotName") as HTMLInputElement).pattern =
+                        regex.source;
                 }
 
                 const lotTypeElement = modalElement.querySelector(
@@ -610,9 +541,7 @@ declare const bulmaJS: BulmaJS;
                     lotStatusElement.append(optionElement);
                 }
 
-                const mapElement = modalElement.querySelector(
-                    "#lotCreate--mapId"
-                ) as HTMLSelectElement;
+                const mapElement = modalElement.querySelector("#lotCreate--mapId") as HTMLSelectElement;
 
                 for (const map of exports.maps as recordTypes.Map[]) {
                     const optionElement = document.createElement("option");
@@ -621,9 +550,10 @@ declare const bulmaJS: BulmaJS;
                     mapElement.append(optionElement);
                 }
 
-                (
-                    modalElement.querySelector("#form--lotCreate") as HTMLFormElement
-                ).addEventListener("submit", createLotAndSelect);
+                (modalElement.querySelector("#form--lotCreate") as HTMLFormElement).addEventListener(
+                    "submit",
+                    createLotAndSelect
+                );
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();
@@ -638,7 +568,7 @@ declare const bulmaJS: BulmaJS;
             window.open(los.urlPrefix + "/lots/" + lotId);
         } else {
             bulmaJS.alert({
-                message: "No " + exports.aliases.lot.toLowerCase() + " selected.",
+                message: `No ${los.escapedAliases.lot} selected.`,
                 contextualColorName: "info"
             });
         }
@@ -651,7 +581,7 @@ declare const bulmaJS: BulmaJS;
                 contextualColorName: "info"
             });
         } else {
-            lotNameElement.value = "(No " + exports.aliases.lot + ")";
+            lotNameElement.value = `(No ${los.escapedAliases.Lot})`;
             (document.querySelector("#lotOccupancy--lotId") as HTMLInputElement).value = "";
             los.setUnsavedChanges();
         }
@@ -661,9 +591,7 @@ declare const bulmaJS: BulmaJS;
 
     los.initializeDatePickers(formElement);
 
-    (
-        document.querySelector("#lotOccupancy--occupancyStartDateString") as HTMLInputElement
-    ).addEventListener("change", () => {
+    document.querySelector("#lotOccupancy--occupancyStartDateString")!.addEventListener("change", () => {
         const endDatePicker = (
             document.querySelector("#lotOccupancy--occupancyEndDateString") as HTMLInputElement
         ).bulmaCalendar.datePicker;

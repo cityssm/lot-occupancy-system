@@ -39,7 +39,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     }
     function deleteLotType(clickEvent) {
-        const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--lotType").dataset.lotTypeId, 10);
+        const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--lotType").dataset
+            .lotTypeId, 10);
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + "/admin/doDeleteLotType", {
                 lotTypeId
@@ -56,7 +57,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function openEditLotType(clickEvent) {
-        const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--lotType").dataset.lotTypeId, 10);
+        const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--lotType").dataset
+            .lotTypeId, 10);
         const lotType = lotTypes.find((currentLotType) => {
             return lotTypeId === currentLotType.lotTypeId;
         });
@@ -90,7 +92,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function openAddLotTypeField(clickEvent) {
-        const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--lotType").dataset.lotTypeId, 10);
+        const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--lotType").dataset
+            .lotTypeId, 10);
         let addCloseModalFunction;
         const doAdd = (submitEvent) => {
             submitEvent.preventDefault();
@@ -107,7 +110,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             onshow(modalElement) {
                 los.populateAliases(modalElement);
                 if (lotTypeId) {
-                    modalElement.querySelector("#lotTypeFieldAdd--lotTypeId").value = lotTypeId.toString();
+                    modalElement.querySelector("#lotTypeFieldAdd--lotTypeId").value =
+                        lotTypeId.toString();
                 }
             },
             onshown(modalElement, closeModalFunction) {
@@ -123,13 +127,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function moveLotType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const lotTypeId = buttonElement.closest(".container--lotType").dataset
-            .lotTypeId;
+        const lotTypeId = buttonElement.closest(".container--lotType").dataset.lotTypeId;
         cityssm.postJSON(los.urlPrefix +
             "/admin/" +
-            (buttonElement.dataset.direction === "up"
-                ? "doMoveLotTypeUp"
-                : "doMoveLotTypeDown"), {
+            (buttonElement.dataset.direction === "up" ? "doMoveLotTypeUp" : "doMoveLotTypeDown"), {
             lotTypeId,
             moveToEnd: clickEvent.shiftKey ? "1" : "0"
         }, lotTypeResponseHandler);
@@ -194,9 +195,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.openHtmlModal("adminLotTypes-editLotTypeField", {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
-                modalElement.querySelector("#lotTypeFieldEdit--lotTypeFieldId").value = lotTypeField.lotTypeFieldId.toString();
-                modalElement.querySelector("#lotTypeFieldEdit--lotTypeField").value = lotTypeField.lotTypeField;
-                modalElement.querySelector("#lotTypeFieldEdit--isRequired").value = lotTypeField.isRequired ? "1" : "0";
+                modalElement.querySelector("#lotTypeFieldEdit--lotTypeFieldId").value =
+                    lotTypeField.lotTypeFieldId.toString();
+                modalElement.querySelector("#lotTypeFieldEdit--lotTypeField").value =
+                    lotTypeField.lotTypeField;
+                modalElement.querySelector("#lotTypeFieldEdit--isRequired").value =
+                    lotTypeField.isRequired ? "1" : "0";
                 minimumLengthElement = modalElement.querySelector("#lotTypeFieldEdit--minimumLength");
                 minimumLengthElement.value = lotTypeField.minimumLength.toString();
                 maximumLengthElement = modalElement.querySelector("#lotTypeFieldEdit--maximumLength");
@@ -228,14 +232,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function openEditLotTypeFieldByClick(clickEvent) {
         clickEvent.preventDefault();
-        const lotTypeFieldId = Number.parseInt(clickEvent.currentTarget.closest(".container--lotTypeField").dataset.lotTypeFieldId, 10);
-        const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--lotType").dataset.lotTypeId, 10);
+        const lotTypeFieldId = Number.parseInt(clickEvent.currentTarget.closest(".container--lotTypeField")
+            .dataset.lotTypeFieldId, 10);
+        const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest(".container--lotType").dataset
+            .lotTypeId, 10);
         openEditLotTypeField(lotTypeId, lotTypeFieldId);
     }
     function moveLotTypeField(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const lotTypeFieldId = buttonElement.closest(".container--lotTypeField")
-            .dataset.lotTypeFieldId;
+        const lotTypeFieldId = buttonElement.closest(".container--lotTypeField").dataset
+            .lotTypeFieldId;
         cityssm.postJSON(los.urlPrefix +
             "/admin/" +
             (buttonElement.dataset.direction === "up"
@@ -373,7 +379,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        title: "Error Adding " + exports.aliases.lot + " Type",
+                        title: `Error Adding ${los.escapedAliases.Lot} Type`,
                         message: responseJSON.errorMessage || "",
                         contextualColorName: "danger"
                     });

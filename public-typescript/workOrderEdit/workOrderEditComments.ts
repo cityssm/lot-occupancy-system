@@ -58,19 +58,14 @@ const openEditWorkOrderComment = (clickEvent: Event) => {
 
     cityssm.openHtmlModal("workOrder-editComment", {
         onshow(modalElement) {
+            (modalElement.querySelector("#workOrderCommentEdit--workOrderId") as HTMLInputElement).value =
+                workOrderId;
             (
-                modalElement.querySelector("#workOrderCommentEdit--workOrderId") as HTMLInputElement
-            ).value = workOrderId;
-            (
-                modalElement.querySelector(
-                    "#workOrderCommentEdit--workOrderCommentId"
-                ) as HTMLInputElement
+                modalElement.querySelector("#workOrderCommentEdit--workOrderCommentId") as HTMLInputElement
             ).value = workOrderCommentId.toString();
 
             (
-                modalElement.querySelector(
-                    "#workOrderCommentEdit--workOrderComment"
-                ) as HTMLInputElement
+                modalElement.querySelector("#workOrderCommentEdit--workOrderComment") as HTMLInputElement
             ).value = workOrderComment.workOrderComment!;
 
             const workOrderCommentDateStringElement = modalElement.querySelector(
@@ -99,9 +94,7 @@ const openEditWorkOrderComment = (clickEvent: Event) => {
             // los.initializeTimePickers(modalElement);
 
             (
-                modalElement.querySelector(
-                    "#workOrderCommentEdit--workOrderComment"
-                ) as HTMLTextAreaElement
+                modalElement.querySelector("#workOrderCommentEdit--workOrderComment") as HTMLTextAreaElement
             ).focus();
 
             editFormElement = modalElement.querySelector("form")!;
@@ -162,28 +155,23 @@ function renderWorkOrderComments() {
     const containerElement = document.querySelector("#container--workOrderComments") as HTMLElement;
 
     if (workOrderComments.length === 0) {
-        containerElement.innerHTML =
-            '<div class="message is-info">' +
-            '<p class="message-body">There are no comments to display.</p>' +
-            "</div>";
+        containerElement.innerHTML = `<div class="message is-info">
+            <p class="message-body">There are no comments to display.</p>
+            </div>`;
         return;
     }
 
     const tableElement = document.createElement("table");
     tableElement.className = "table is-fullwidth is-striped is-hoverable";
-    tableElement.innerHTML =
-        "<thead><tr>" +
-        "<th>Commentor</th>" +
-        "<th>Comment Date</th>" +
-        "<th>Comment</th>" +
-        '<th class="is-hidden-print"><span class="is-sr-only">Options</span></th>' +
-        "</tr></thead>" +
-        "<tbody></tbody>";
+    tableElement.innerHTML = `<thead><tr>
+        <th>Commentor</th>
+        <th>Comment Date</th>
+        <th>Comment</th>
+        <th class="is-hidden-print"><span class="is-sr-only">Options</span></th></tr></thead><tbody></tbody>`;
 
     for (const workOrderComment of workOrderComments) {
         const tableRowElement = document.createElement("tr");
-        tableRowElement.dataset.workOrderCommentId =
-            workOrderComment.workOrderCommentId!.toString();
+        tableRowElement.dataset.workOrderCommentId = workOrderComment.workOrderCommentId!.toString();
 
         tableRowElement.innerHTML =
             "<td>" +
@@ -210,13 +198,9 @@ function renderWorkOrderComments() {
                 "</div>" +
                 "</td>");
 
-        tableRowElement
-            .querySelector(".button--edit")!
-            .addEventListener("click", openEditWorkOrderComment);
+        tableRowElement.querySelector(".button--edit")!.addEventListener("click", openEditWorkOrderComment);
 
-        tableRowElement
-            .querySelector(".button--delete")!
-            .addEventListener("click", deleteWorkOrderComment);
+        tableRowElement.querySelector(".button--delete")!.addEventListener("click", deleteWorkOrderComment);
 
         tableElement.querySelector("tbody")!.append(tableRowElement);
     }
@@ -234,10 +218,7 @@ function openAddCommentModal() {
         cityssm.postJSON(
             los.urlPrefix + "/workOrders/doAddWorkOrderComment",
             formEvent.currentTarget,
-            (responseJSON: {
-                success: boolean;
-                workOrderComments?: recordTypes.WorkOrderComment[];
-            }) => {
+            (responseJSON: { success: boolean; workOrderComments?: recordTypes.WorkOrderComment[] }) => {
                 if (responseJSON.success) {
                     workOrderComments = responseJSON.workOrderComments!;
                     renderWorkOrderComments();
@@ -250,18 +231,15 @@ function openAddCommentModal() {
     cityssm.openHtmlModal("workOrder-addComment", {
         onshow(modalElement) {
             los.populateAliases(modalElement);
-            (
-                modalElement.querySelector("#workOrderCommentAdd--workOrderId") as HTMLInputElement
-            ).value = workOrderId;
+            (modalElement.querySelector("#workOrderCommentAdd--workOrderId") as HTMLInputElement).value =
+                workOrderId;
             modalElement.querySelector("form")!.addEventListener("submit", doAddComment);
         },
         onshown(modalElement, closeModalFunction) {
             bulmaJS.toggleHtmlClipped();
             addCommentCloseModalFunction = closeModalFunction;
             (
-                modalElement.querySelector(
-                    "#workOrderCommentAdd--workOrderComment"
-                ) as HTMLTextAreaElement
+                modalElement.querySelector("#workOrderCommentAdd--workOrderComment") as HTMLTextAreaElement
             ).focus();
         },
         onremoved() {
@@ -272,9 +250,7 @@ function openAddCommentModal() {
 }
 
 if (!isCreate) {
-    document
-        .querySelector("#workOrderComments--add")!
-        .addEventListener("click", openAddCommentModal);
-        
+    document.querySelector("#workOrderComments--add")!.addEventListener("click", openAddCommentModal);
+
     renderWorkOrderComments();
 }

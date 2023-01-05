@@ -86,9 +86,8 @@ const deleteWorkOrderMilestoneType = (clickEvent: Event) => {
 
     bulmaJS.confirm({
         title: "Delete Work Order Milestone Type",
-        message:
-            "Are you sure you want to delete this work order milestone type?<br />" +
-            "Note that no work orders will be removed.",
+        message: `Are you sure you want to delete this work order milestone type?<br />
+            Note that no work orders will be removed.`,
         messageIsHtml: true,
         contextualColorName: "warning",
         okButton: {
@@ -140,14 +139,9 @@ const renderWorkOrderMilestoneTypes = () => {
     ) as HTMLTableSectionElement;
 
     if (workOrderMilestoneTypes.length === 0) {
-        containerElement.innerHTML =
-            "<tr>" +
-            '<td colspan="2">' +
-            '<div class="message is-warning">' +
-            '<p class="message-body">There are no active work order milestone types.</p>' +
-            "</div>" +
-            "</td>" +
-            "</tr>";
+        containerElement.innerHTML = `<tr><td colspan="2">
+            <div class="message is-warning"><p class="message-body">There are no active work order milestone types.</p></div>
+            </td></tr>`;
 
         return;
     }
@@ -195,21 +189,14 @@ const renderWorkOrderMilestoneTypes = () => {
             "</div>" +
             "</td>";
 
-        (tableRowElement.querySelector("form") as HTMLFormElement).addEventListener(
-            "submit",
-            updateWorkOrderMilestoneType
-        );
+        tableRowElement.querySelector("form")!.addEventListener("submit", updateWorkOrderMilestoneType);
 
         (
-            tableRowElement.querySelector(
-                ".button--moveWorkOrderMilestoneTypeUp"
-            ) as HTMLButtonElement
+            tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeUp") as HTMLButtonElement
         ).addEventListener("click", moveWorkOrderMilestoneType);
 
         (
-            tableRowElement.querySelector(
-                ".button--moveWorkOrderMilestoneTypeDown"
-            ) as HTMLButtonElement
+            tableRowElement.querySelector(".button--moveWorkOrderMilestoneTypeDown") as HTMLButtonElement
         ).addEventListener("click", moveWorkOrderMilestoneType);
 
         tableRowElement

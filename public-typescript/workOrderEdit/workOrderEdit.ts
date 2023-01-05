@@ -12,8 +12,7 @@ declare const bulmaJS: BulmaJS;
 (() => {
     const los = exports.los as globalTypes.LOS;
 
-    const workOrderId = (document.querySelector("#workOrderEdit--workOrderId") as HTMLInputElement)
-        .value;
+    const workOrderId = (document.querySelector("#workOrderEdit--workOrderId") as HTMLInputElement).value;
 
     const isCreate = workOrderId === "";
 
@@ -21,9 +20,7 @@ declare const bulmaJS: BulmaJS;
 
     los.initializeDatePickers(
         (
-            workOrderFormElement.querySelector(
-                "#workOrderEdit--workOrderOpenDateString"
-            ) as HTMLInputElement
+            workOrderFormElement.querySelector("#workOrderEdit--workOrderOpenDateString") as HTMLInputElement
         ).closest(".field") as HTMLElement
     );
     los.initializeUnlockFieldButtons(workOrderFormElement);
@@ -78,8 +75,7 @@ declare const bulmaJS: BulmaJS;
             },
             (responseJSON: { success: boolean; errorMessage?: string }) => {
                 if (responseJSON.success) {
-                    window.location.href =
-                        los.urlPrefix + "/workOrders/" + encodeURIComponent(workOrderId);
+                    window.location.href = los.urlPrefix + "/workOrders/" + workOrderId;
                 } else {
                     bulmaJS.alert({
                         title: "Error Closing Work Order",
@@ -122,9 +118,8 @@ declare const bulmaJS: BulmaJS;
             if (hasOpenMilestones) {
                 bulmaJS.alert({
                     title: "Outstanding Milestones",
-                    message:
-                        "You cannot close a work order with outstanding milestones." +
-                        " Either complete the outstanding milestones, or remove them from the work order.",
+                    message: `You cannot close a work order with outstanding milestones.
+                        Either complete the outstanding milestones, or remove them from the work order.`,
                     contextualColorName: "warning"
                 });
 
@@ -154,21 +149,19 @@ declare const bulmaJS: BulmaJS;
             }
         });
 
-        document
-            .querySelector("#button--deleteWorkOrder")!
-            .addEventListener("click", (clickEvent: Event) => {
-                clickEvent.preventDefault();
+        document.querySelector("#button--deleteWorkOrder")!.addEventListener("click", (clickEvent: Event) => {
+            clickEvent.preventDefault();
 
-                bulmaJS.confirm({
-                    title: "Delete Work Order",
-                    message: "Are you sure you want to delete this work order?",
-                    contextualColorName: "warning",
-                    okButton: {
-                        text: "Yes, Delete Work Order",
-                        callbackFunction: doDelete
-                    }
-                });
+            bulmaJS.confirm({
+                title: "Delete Work Order",
+                message: "Are you sure you want to delete this work order?",
+                contextualColorName: "warning",
+                okButton: {
+                    text: "Yes, Delete Work Order",
+                    callbackFunction: doDelete
+                }
             });
+        });
     }
 
     /*
@@ -212,11 +205,8 @@ declare const bulmaJS: BulmaJS;
         const currentDateString = cityssm.dateToString(new Date());
 
         const workOrderMilestoneId = Number.parseInt(
-            (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--milestone"
-                ) as HTMLElement
-            ).dataset.workOrderMilestoneId!,
+            ((clickEvent.currentTarget as HTMLElement).closest(".container--milestone") as HTMLElement)
+                .dataset.workOrderMilestoneId!,
             10
         );
 
@@ -255,9 +245,7 @@ declare const bulmaJS: BulmaJS;
         clickEvent.preventDefault();
 
         const workOrderMilestoneId = (
-            (clickEvent.currentTarget as HTMLElement).closest(
-                ".container--milestone"
-            ) as HTMLElement
+            (clickEvent.currentTarget as HTMLElement).closest(".container--milestone") as HTMLElement
         ).dataset.workOrderMilestoneId;
 
         const doReopen = () => {
@@ -287,9 +275,7 @@ declare const bulmaJS: BulmaJS;
         clickEvent.preventDefault();
 
         const workOrderMilestoneId = (
-            (clickEvent.currentTarget as HTMLElement).closest(
-                ".container--milestone"
-            ) as HTMLElement
+            (clickEvent.currentTarget as HTMLElement).closest(".container--milestone") as HTMLElement
         ).dataset.workOrderMilestoneId;
 
         const doDelete = () => {
@@ -318,11 +304,8 @@ declare const bulmaJS: BulmaJS;
         clickEvent.preventDefault();
 
         const workOrderMilestoneId = Number.parseInt(
-            (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--milestone"
-                ) as HTMLElement
-            ).dataset.workOrderMilestoneId!,
+            ((clickEvent.currentTarget as HTMLElement).closest(".container--milestone") as HTMLElement)
+                .dataset.workOrderMilestoneId!,
             10
         );
 
@@ -352,15 +335,12 @@ declare const bulmaJS: BulmaJS;
         };
 
         cityssm.openHtmlModal("workOrder-editMilestone", {
-            onshow: (modalElement) => {
-                (
-                    modalElement.querySelector("#milestoneEdit--workOrderId") as HTMLInputElement
-                ).value = workOrderId;
+            onshow(modalElement) {
+                (modalElement.querySelector("#milestoneEdit--workOrderId") as HTMLInputElement).value =
+                    workOrderId;
 
                 (
-                    modalElement.querySelector(
-                        "#milestoneEdit--workOrderMilestoneId"
-                    ) as HTMLInputElement
+                    modalElement.querySelector("#milestoneEdit--workOrderMilestoneId") as HTMLInputElement
                 ).value = workOrderMilestone.workOrderMilestoneId!.toString();
 
                 const milestoneTypeElement = modalElement.querySelector(
@@ -376,8 +356,7 @@ declare const bulmaJS: BulmaJS;
                     optionElement.textContent = milestoneType.workOrderMilestoneType;
 
                     if (
-                        milestoneType.workOrderMilestoneTypeId ===
-                        workOrderMilestone.workOrderMilestoneTypeId
+                        milestoneType.workOrderMilestoneTypeId === workOrderMilestone.workOrderMilestoneTypeId
                     ) {
                         optionElement.selected = true;
                         milestoneTypeFound = true;
@@ -414,7 +393,7 @@ declare const bulmaJS: BulmaJS;
                     ) as HTMLTextAreaElement
                 ).value = workOrderMilestone.workOrderMilestoneDescription!;
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
                 editCloseModalFunction = closeModalFunction;
 
                 bulmaJS.toggleHtmlClipped();
@@ -423,7 +402,7 @@ declare const bulmaJS: BulmaJS;
                 // los.initializeTimePickers(modalElement);
                 modalElement.querySelector("form")!.addEventListener("submit", doEdit);
             },
-            onremoved: () => {
+            onremoved() {
                 bulmaJS.toggleHtmlClipped();
             }
         });
@@ -443,8 +422,7 @@ declare const bulmaJS: BulmaJS;
             const panelBlockElement = document.createElement("div");
             panelBlockElement.className = "panel-block is-block container--milestone";
 
-            panelBlockElement.dataset.workOrderMilestoneId =
-                milestone.workOrderMilestoneId!.toString();
+            panelBlockElement.dataset.workOrderMilestoneId = milestone.workOrderMilestoneId!.toString();
 
             panelBlockElement.innerHTML =
                 '<div class="columns is-mobile">' +
@@ -468,9 +446,7 @@ declare const bulmaJS: BulmaJS;
                           "</strong><br />"
                         : "") +
                     milestone.workOrderMilestoneDateString +
-                    (milestone.workOrderMilestoneTime
-                        ? " " + milestone.workOrderMilestoneTimeString
-                        : "") +
+                    (milestone.workOrderMilestoneTime ? " " + milestone.workOrderMilestoneTimeString : "") +
                     "<br />" +
                     '<span class="is-size-7">' +
                     cityssm.escapeHTML(milestone.workOrderMilestoneDescription || "") +
@@ -505,19 +481,16 @@ declare const bulmaJS: BulmaJS;
                     "</div>") +
                 "</div>";
 
-            if (milestone.workOrderMilestoneCompletionDate) {
-                panelBlockElement
-                    .querySelector(".button--reopenMilestone")!
-                    .addEventListener("click", reopenMilestone);
-            } else {
-                panelBlockElement
-                    .querySelector(".button--editMilestone")!
-                    .addEventListener("click", editMilestone);
+            panelBlockElement
+                .querySelector(".button--reopenMilestone")
+                ?.addEventListener("click", reopenMilestone);
+            panelBlockElement
+                .querySelector(".button--editMilestone")
+                ?.addEventListener("click", editMilestone);
 
-                panelBlockElement
-                    .querySelector(".button--completeMilestone")!
-                    .addEventListener("click", completeMilestone);
-            }
+            panelBlockElement
+                .querySelector(".button--completeMilestone")
+                ?.addEventListener("click", completeMilestone);
 
             panelBlockElement
                 .querySelector(".button--deleteMilestone")!
@@ -574,8 +547,7 @@ declare const bulmaJS: BulmaJS;
                 ) {
                     bulmaJS.confirm({
                         title: "Milestone Date in the Past",
-                        message:
-                            "Are you sure you want to create a milestone with a date in the past?",
+                        message: "Are you sure you want to create a milestone with a date in the past?",
                         contextualColorName: "warning",
                         okButton: {
                             text: "Yes, Create a Past Milestone",
@@ -589,9 +561,8 @@ declare const bulmaJS: BulmaJS;
 
             cityssm.openHtmlModal("workOrder-addMilestone", {
                 onshow(modalElement) {
-                    (
-                        modalElement.querySelector("#milestoneAdd--workOrderId") as HTMLInputElement
-                    ).value = workOrderId;
+                    (modalElement.querySelector("#milestoneAdd--workOrderId") as HTMLInputElement).value =
+                        workOrderId;
 
                     const milestoneTypeElement = modalElement.querySelector(
                         "#milestoneAdd--workOrderMilestoneTypeId"

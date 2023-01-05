@@ -7,14 +7,17 @@ import type * as globalTypes from "../../types/globalTypes";
     const los = exports.los as globalTypes.LOS;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const refreshFontAwesomeIcon = (changeEvent: Event) => {
+    function refreshFontAwesomeIcon(changeEvent: Event) {
         const inputElement = changeEvent.currentTarget as HTMLInputElement;
 
         const fontAwesomeIconClass = inputElement.value;
 
-        inputElement.closest(".field")!.querySelectorAll(".button.is-static")[1].innerHTML =
-            '<i class="fas fa-fw fa-' + fontAwesomeIconClass + '" aria-hidden="true"></i>';
-    };
+        inputElement
+            .closest(".field")!
+            .querySelectorAll(
+                ".button.is-static"
+            )[1].innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
+    }
 
     //=include adminTablesWorkOrderTypes.js
     //=include adminTablesWorkOrderMilestoneTypes.js

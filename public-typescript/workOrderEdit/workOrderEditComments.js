@@ -29,7 +29,8 @@ const openEditWorkOrderComment = (clickEvent) => {
     }
     cityssm.openHtmlModal("workOrder-editComment", {
         onshow(modalElement) {
-            modalElement.querySelector("#workOrderCommentEdit--workOrderId").value = workOrderId;
+            modalElement.querySelector("#workOrderCommentEdit--workOrderId").value =
+                workOrderId;
             modalElement.querySelector("#workOrderCommentEdit--workOrderCommentId").value = workOrderCommentId.toString();
             modalElement.querySelector("#workOrderCommentEdit--workOrderComment").value = workOrderComment.workOrderComment;
             const workOrderCommentDateStringElement = modalElement.querySelector("#workOrderCommentEdit--workOrderCommentDateString");
@@ -88,26 +89,21 @@ function deleteWorkOrderComment(clickEvent) {
 function renderWorkOrderComments() {
     const containerElement = document.querySelector("#container--workOrderComments");
     if (workOrderComments.length === 0) {
-        containerElement.innerHTML =
-            '<div class="message is-info">' +
-                '<p class="message-body">There are no comments to display.</p>' +
-                "</div>";
+        containerElement.innerHTML = `<div class="message is-info">
+            <p class="message-body">There are no comments to display.</p>
+            </div>`;
         return;
     }
     const tableElement = document.createElement("table");
     tableElement.className = "table is-fullwidth is-striped is-hoverable";
-    tableElement.innerHTML =
-        "<thead><tr>" +
-            "<th>Commentor</th>" +
-            "<th>Comment Date</th>" +
-            "<th>Comment</th>" +
-            '<th class="is-hidden-print"><span class="is-sr-only">Options</span></th>' +
-            "</tr></thead>" +
-            "<tbody></tbody>";
+    tableElement.innerHTML = `<thead><tr>
+        <th>Commentor</th>
+        <th>Comment Date</th>
+        <th>Comment</th>
+        <th class="is-hidden-print"><span class="is-sr-only">Options</span></th></tr></thead><tbody></tbody>`;
     for (const workOrderComment of workOrderComments) {
         const tableRowElement = document.createElement("tr");
-        tableRowElement.dataset.workOrderCommentId =
-            workOrderComment.workOrderCommentId.toString();
+        tableRowElement.dataset.workOrderCommentId = workOrderComment.workOrderCommentId.toString();
         tableRowElement.innerHTML =
             "<td>" +
                 cityssm.escapeHTML(workOrderComment.recordCreate_userName || "") +
@@ -132,12 +128,8 @@ function renderWorkOrderComments() {
                         "</button>") +
                     "</div>" +
                     "</td>");
-        tableRowElement
-            .querySelector(".button--edit")
-            .addEventListener("click", openEditWorkOrderComment);
-        tableRowElement
-            .querySelector(".button--delete")
-            .addEventListener("click", deleteWorkOrderComment);
+        tableRowElement.querySelector(".button--edit").addEventListener("click", openEditWorkOrderComment);
+        tableRowElement.querySelector(".button--delete").addEventListener("click", deleteWorkOrderComment);
         tableElement.querySelector("tbody").append(tableRowElement);
     }
     containerElement.innerHTML = "";
@@ -158,7 +150,8 @@ function openAddCommentModal() {
     cityssm.openHtmlModal("workOrder-addComment", {
         onshow(modalElement) {
             los.populateAliases(modalElement);
-            modalElement.querySelector("#workOrderCommentAdd--workOrderId").value = workOrderId;
+            modalElement.querySelector("#workOrderCommentAdd--workOrderId").value =
+                workOrderId;
             modalElement.querySelector("form").addEventListener("submit", doAddComment);
         },
         onshown(modalElement, closeModalFunction) {
@@ -173,8 +166,6 @@ function openAddCommentModal() {
     });
 }
 if (!isCreate) {
-    document
-        .querySelector("#workOrderComments--add")
-        .addEventListener("click", openAddCommentModal);
+    document.querySelector("#workOrderComments--add").addEventListener("click", openAddCommentModal);
     renderWorkOrderComments();
 }

@@ -9,20 +9,13 @@ const updateLotOccupantType = (submitEvent) => {
         if (responseJSON.success) {
             lotOccupantTypes = responseJSON.lotOccupantTypes;
             bulmaJS.alert({
-                message: exports.aliases.lot +
-                    " " +
-                    exports.aliases.occupant +
-                    " Type Updated Successfully",
+                message: `${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type Updated Successfully`,
                 contextualColorName: "success"
             });
         }
         else {
             bulmaJS.alert({
-                title: "Error Updating " +
-                    exports.aliases.lot +
-                    " " +
-                    exports.aliases.occupant +
-                    " Type",
+                title: `Error Updating ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
                 message: responseJSON.errorMessage || "",
                 contextualColorName: "danger"
             });
@@ -45,20 +38,13 @@ const deleteLotOccupantType = (clickEvent) => {
                     tableRowElement.remove();
                 }
                 bulmaJS.alert({
-                    message: exports.aliases.lot +
-                        " " +
-                        exports.aliases.occupant +
-                        " Type Deleted Successfully",
+                    message: `${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type Deleted Successfully`,
                     contextualColorName: "success"
                 });
             }
             else {
                 bulmaJS.alert({
-                    title: "Error Deleting " +
-                        exports.aliases.lot +
-                        " " +
-                        exports.aliases.occupant +
-                        " Type",
+                    title: `Error Deleting ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
                     message: responseJSON.errorMessage || "",
                     contextualColorName: "danger"
                 });
@@ -66,21 +52,13 @@ const deleteLotOccupantType = (clickEvent) => {
         });
     };
     bulmaJS.confirm({
-        title: "Delete " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
-        message: "Are you sure you want to delete this " +
-            exports.aliases.lot.toLowerCase() +
-            " " +
-            exports.aliases.occupant.toLowerCase() +
-            " type?<br />" +
-            "Note that no " +
-            exports.aliases.lot.toLowerCase() +
-            " " +
-            exports.aliases.occupancy.toLowerCase() +
-            " will be removed.",
+        title: `Delete ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
+        message: `Are you sure you want to delete this ${los.escapedAliases.lot} ${los.escapedAliases.occupant} type?<br />
+            Note that no ${los.escapedAliases.lot} ${los.escapedAliases.occupants} will be removed.`,
         messageIsHtml: true,
         contextualColorName: "warning",
         okButton: {
-            text: "Yes, Delete " + exports.aliases.lot + " " + exports.aliases.occupant + " Type",
+            text: `Yes, Delete ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
             callbackFunction: doDelete
         }
     });
@@ -103,11 +81,7 @@ const moveLotOccupantType = (clickEvent) => {
         }
         else {
             bulmaJS.alert({
-                title: "Error Moving " +
-                    exports.aliases.lot +
-                    " " +
-                    exports.aliases.occupant +
-                    " Type",
+                title: `Error Moving ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
                 message: responseJSON.errorMessage || "",
                 contextualColorName: "danger"
             });
@@ -117,18 +91,9 @@ const moveLotOccupantType = (clickEvent) => {
 const renderLotOccupantTypes = () => {
     const containerElement = document.querySelector("#container--lotOccupantTypes");
     if (lotOccupantTypes.length === 0) {
-        containerElement.innerHTML =
-            "<tr>" +
-                '<td colspan="3">' +
-                '<div class="message is-warning">' +
-                '<p class="message-body">There are no active ' +
-                cityssm.escapeHTML(exports.aliases.lot.toLowerCase()) +
-                " " +
-                cityssm.escapeHTML(exports.aliases.occupant.toLowerCase()) +
-                " types.</p>" +
-                "</div>" +
-                "</td>" +
-                "</tr>";
+        containerElement.innerHTML = `<tr><td colspan="3">
+            <div class="message is-warning"><p class="message-body">There are no active ${los.escapedAliases.lot} ${los.escapedAliases.occupant} types.</p></div>
+            </td></tr>`;
         return;
     }
     containerElement.innerHTML = "";
@@ -183,14 +148,14 @@ const renderLotOccupantTypes = () => {
                 '<div class="control">' +
                 '<button class="button is-danger is-light button--deleteLotOccupantType"' +
                 ' data-tooltip="Delete ' +
-                cityssm.escapeHTML(exports.aliases.lot) +
+                los.escapedAliases.Lot +
                 " " +
-                cityssm.escapeHTML(exports.aliases.occupant) +
+                los.escapedAliases.Occupant +
                 ' Type" type="button"' +
                 ' aria-label="Delete ' +
-                cityssm.escapeHTML(exports.aliases.lot) +
+                los.escapedAliases.Lot +
                 " " +
-                cityssm.escapeHTML(exports.aliases.occupant) +
+                los.escapedAliases.Occupant +
                 ' Type">' +
                 '<i class="fas fa-trash" aria-hidden="true"></i>' +
                 "</button>" +
@@ -221,11 +186,7 @@ document.querySelector("#form--addLotOccupantType").addEventListener("submit", (
         }
         else {
             bulmaJS.alert({
-                title: "Error Adding " +
-                    exports.aliases.lot +
-                    " " +
-                    exports.aliases.occupant +
-                    " Type",
+                title: `Error Adding ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
                 message: responseJSON.errorMessage || "",
                 contextualColorName: "danger"
             });

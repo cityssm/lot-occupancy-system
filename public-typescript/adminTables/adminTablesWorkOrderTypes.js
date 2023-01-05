@@ -53,8 +53,8 @@ const deleteWorkOrderType = (clickEvent) => {
     };
     bulmaJS.confirm({
         title: "Delete Work Order Type",
-        message: "Are you sure you want to delete this work order type?<br />" +
-            "Note that no work orders will be removed.",
+        message: `Are you sure you want to delete this work order type?<br />
+            Note that no work orders will be removed.`,
         messageIsHtml: true,
         contextualColorName: "warning",
         okButton: {
@@ -69,9 +69,7 @@ const moveWorkOrderType = (clickEvent) => {
     const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
     cityssm.postJSON(los.urlPrefix +
         "/admin/" +
-        (buttonElement.dataset.direction === "up"
-            ? "doMoveWorkOrderTypeUp"
-            : "doMoveWorkOrderTypeDown"), {
+        (buttonElement.dataset.direction === "up" ? "doMoveWorkOrderTypeUp" : "doMoveWorkOrderTypeDown"), {
         workOrderTypeId,
         moveToEnd: clickEvent.shiftKey ? "1" : "0"
     }, (responseJSON) => {
@@ -91,14 +89,9 @@ const moveWorkOrderType = (clickEvent) => {
 const renderWorkOrderTypes = () => {
     const containerElement = document.querySelector("#container--workOrderTypes");
     if (workOrderTypes.length === 0) {
-        containerElement.innerHTML =
-            "<tr>" +
-                '<td colspan="2">' +
-                '<div class="message is-warning">' +
-                '<p class="message-body">There are no active work order types.</p>' +
-                "</div>" +
-                "</td>" +
-                "</tr>";
+        containerElement.innerHTML = `<tr><td colspan="2">
+            <div class="message is-warning"><p class="message-body">There are no active work order types.</p></div>
+            </td></tr>`;
         return;
     }
     containerElement.innerHTML = "";

@@ -22,12 +22,9 @@ declare const cityssm: cityssmGlobal;
 
     function renderLots(responseJSON: { count: number; offset: number; lots: recordTypes.Lot[] }): void {
         if (responseJSON.lots.length === 0) {
-            searchResultsContainerElement.innerHTML =
-                '<div class="message is-info">' +
-                '<p class="message-body">There are no ' +
-                los.escapedAliases.lots +
-                " that meet the search criteria.</p>" +
-                "</div>";
+            searchResultsContainerElement.innerHTML = `<div class="message is-info">
+                <p class="message-body">There are no ${los.escapedAliases.lots} that meet the search criteria.</p>
+                </div>`;
 
             return;
         }

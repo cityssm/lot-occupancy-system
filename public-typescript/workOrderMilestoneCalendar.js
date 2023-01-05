@@ -9,10 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const milestoneCalendarContainerElement = document.querySelector("#container--milestoneCalendar");
     function renderMilestones(workOrderMilestones) {
         if (workOrderMilestones.length === 0) {
-            milestoneCalendarContainerElement.innerHTML =
-                '<div class="message is-info">' +
-                    '<p class="message-body">There are no milestones that meet the search criteria.</p>' +
-                    "</div>";
+            milestoneCalendarContainerElement.innerHTML = `<div class="message is-info">
+                <p class="message-body">There are no milestones that meet the search criteria.</p>
+                </div>`;
             return;
         }
         milestoneCalendarContainerElement.innerHTML = "";
@@ -26,8 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 currentPanelElement = document.createElement("div");
                 currentPanelElement.className = "panel";
-                currentPanelElement.innerHTML =
-                    '<h2 class="panel-heading">' + milestone.workOrderMilestoneDateString + "</h2>";
+                currentPanelElement.innerHTML = `<h2 class="panel-heading">${milestone.workOrderMilestoneDateString}</h2>`;
                 currentPanelDateString = milestone.workOrderMilestoneDateString;
             }
             const panelBlockElement = document.createElement("div");
@@ -110,8 +108,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         if (event) {
             event.preventDefault();
         }
-        milestoneCalendarContainerElement.innerHTML =
-            los.getLoadingParagraphHTML("Loading Milestones...");
+        milestoneCalendarContainerElement.innerHTML = los.getLoadingParagraphHTML("Loading Milestones...");
         cityssm.postJSON(los.urlPrefix + "/workOrders/doGetWorkOrderMilestones", workOrderSearchFiltersFormElement, (responseJSON) => {
             renderMilestones(responseJSON.workOrderMilestones);
         });

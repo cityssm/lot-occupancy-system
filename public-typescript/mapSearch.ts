@@ -14,9 +14,7 @@ declare const cityssm: cityssmGlobal;
 
     const searchFilterElement = document.querySelector("#searchFilter--map") as HTMLInputElement;
 
-    const searchResultsContainerElement = document.querySelector(
-        "#container--searchResults"
-    ) as HTMLElement;
+    const searchResultsContainerElement = document.querySelector("#container--searchResults") as HTMLElement;
 
     function renderResults(): void {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
@@ -29,15 +27,8 @@ declare const cityssm: cityssmGlobal;
         const filterStringSplit = searchFilterElement.value.trim().toLowerCase().split(" ");
 
         for (const map of maps) {
-            const mapSearchString = (
-                map.mapName +
-                " " +
-                map.mapDescription +
-                " " +
-                map.mapAddress1 +
-                " " +
-                map.mapAddress2
-            ).toLowerCase();
+            const mapSearchString =
+                `${map.mapName} ${map.mapDescription} ${map.mapAddress1} ${map.mapAddress2}`.toLowerCase();
 
             let showMap = true;
 

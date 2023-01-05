@@ -63,11 +63,8 @@ declare const bulmaJS: BulmaJS;
 
     function deleteLotType(clickEvent: Event) {
         const lotTypeId = Number.parseInt(
-            (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--lotType"
-                ) as HTMLElement
-            ).dataset.lotTypeId!,
+            ((clickEvent.currentTarget as HTMLElement).closest(".container--lotType") as HTMLElement).dataset
+                .lotTypeId!,
             10
         );
 
@@ -94,11 +91,8 @@ declare const bulmaJS: BulmaJS;
 
     function openEditLotType(clickEvent: Event) {
         const lotTypeId = Number.parseInt(
-            (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--lotType"
-                ) as HTMLElement
-            ).dataset.lotTypeId!,
+            ((clickEvent.currentTarget as HTMLElement).closest(".container--lotType") as HTMLElement).dataset
+                .lotTypeId!,
             10
         );
 
@@ -154,11 +148,8 @@ declare const bulmaJS: BulmaJS;
 
     function openAddLotTypeField(clickEvent: Event) {
         const lotTypeId = Number.parseInt(
-            (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--lotType"
-                ) as HTMLElement
-            ).dataset.lotTypeId!,
+            ((clickEvent.currentTarget as HTMLElement).closest(".container--lotType") as HTMLElement).dataset
+                .lotTypeId!,
             10
         );
 
@@ -192,19 +183,14 @@ declare const bulmaJS: BulmaJS;
                 los.populateAliases(modalElement);
 
                 if (lotTypeId) {
-                    (
-                        modalElement.querySelector(
-                            "#lotTypeFieldAdd--lotTypeId"
-                        ) as HTMLInputElement
-                    ).value = lotTypeId.toString();
+                    (modalElement.querySelector("#lotTypeFieldAdd--lotTypeId") as HTMLInputElement).value =
+                        lotTypeId.toString();
                 }
             },
             onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;
 
-                (
-                    modalElement.querySelector("#lotTypeFieldAdd--lotTypeField") as HTMLInputElement
-                ).focus();
+                (modalElement.querySelector("#lotTypeFieldAdd--lotTypeField") as HTMLInputElement).focus();
 
                 modalElement.querySelector("form")!.addEventListener("submit", doAdd);
 
@@ -219,15 +205,12 @@ declare const bulmaJS: BulmaJS;
     function moveLotType(clickEvent: MouseEvent) {
         const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
 
-        const lotTypeId = (buttonElement.closest(".container--lotType") as HTMLElement).dataset
-            .lotTypeId;
+        const lotTypeId = (buttonElement.closest(".container--lotType") as HTMLElement).dataset.lotTypeId;
 
         cityssm.postJSON(
             los.urlPrefix +
                 "/admin/" +
-                (buttonElement.dataset.direction === "up"
-                    ? "doMoveLotTypeUp"
-                    : "doMoveLotTypeDown"),
+                (buttonElement.dataset.direction === "up" ? "doMoveLotTypeUp" : "doMoveLotTypeDown"),
             {
                 lotTypeId,
                 moveToEnd: clickEvent.shiftKey ? "1" : "0"
@@ -323,21 +306,14 @@ declare const bulmaJS: BulmaJS;
             onshow(modalElement) {
                 los.populateAliases(modalElement);
 
-                (
-                    modalElement.querySelector(
-                        "#lotTypeFieldEdit--lotTypeFieldId"
-                    ) as HTMLInputElement
-                ).value = lotTypeField.lotTypeFieldId.toString();
+                (modalElement.querySelector("#lotTypeFieldEdit--lotTypeFieldId") as HTMLInputElement).value =
+                    lotTypeField.lotTypeFieldId.toString();
 
-                (
-                    modalElement.querySelector(
-                        "#lotTypeFieldEdit--lotTypeField"
-                    ) as HTMLInputElement
-                ).value = lotTypeField.lotTypeField!;
+                (modalElement.querySelector("#lotTypeFieldEdit--lotTypeField") as HTMLInputElement).value =
+                    lotTypeField.lotTypeField!;
 
-                (
-                    modalElement.querySelector("#lotTypeFieldEdit--isRequired") as HTMLSelectElement
-                ).value = lotTypeField.isRequired ? "1" : "0";
+                (modalElement.querySelector("#lotTypeFieldEdit--isRequired") as HTMLSelectElement).value =
+                    lotTypeField.isRequired ? "1" : "0";
 
                 minimumLengthElement = modalElement.querySelector(
                     "#lotTypeFieldEdit--minimumLength"
@@ -351,9 +327,7 @@ declare const bulmaJS: BulmaJS;
 
                 maximumLengthElement.value = lotTypeField.maximumLength!.toString();
 
-                patternElement = modalElement.querySelector(
-                    "#lotTypeFieldEdit--pattern"
-                ) as HTMLInputElement;
+                patternElement = modalElement.querySelector("#lotTypeFieldEdit--pattern") as HTMLInputElement;
 
                 patternElement.value = lotTypeField.pattern!;
 
@@ -394,20 +368,14 @@ declare const bulmaJS: BulmaJS;
         clickEvent.preventDefault();
 
         const lotTypeFieldId = Number.parseInt(
-            (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--lotTypeField"
-                ) as HTMLElement
-            ).dataset.lotTypeFieldId!,
+            ((clickEvent.currentTarget as HTMLElement).closest(".container--lotTypeField") as HTMLElement)
+                .dataset.lotTypeFieldId!,
             10
         );
 
         const lotTypeId = Number.parseInt(
-            (
-                (clickEvent.currentTarget as HTMLElement).closest(
-                    ".container--lotType"
-                ) as HTMLElement
-            ).dataset.lotTypeId!,
+            ((clickEvent.currentTarget as HTMLElement).closest(".container--lotType") as HTMLElement).dataset
+                .lotTypeId!,
             10
         );
 
@@ -417,8 +385,8 @@ declare const bulmaJS: BulmaJS;
     function moveLotTypeField(clickEvent: MouseEvent) {
         const buttonElement = clickEvent.currentTarget as HTMLButtonElement;
 
-        const lotTypeFieldId = (buttonElement.closest(".container--lotTypeField") as HTMLElement)
-            .dataset.lotTypeFieldId;
+        const lotTypeFieldId = (buttonElement.closest(".container--lotTypeField") as HTMLElement).dataset
+            .lotTypeFieldId;
 
         cityssm.postJSON(
             los.urlPrefix +
@@ -485,15 +453,11 @@ declare const bulmaJS: BulmaJS;
                     .addEventListener("click", openEditLotTypeFieldByClick);
 
                 (
-                    panelBlockElement.querySelector(
-                        ".button--moveLotTypeFieldUp"
-                    ) as HTMLButtonElement
+                    panelBlockElement.querySelector(".button--moveLotTypeFieldUp") as HTMLButtonElement
                 ).addEventListener("click", moveLotTypeField);
 
                 (
-                    panelBlockElement.querySelector(
-                        ".button--moveLotTypeFieldDown"
-                    ) as HTMLButtonElement
+                    panelBlockElement.querySelector(".button--moveLotTypeFieldDown") as HTMLButtonElement
                 ).addEventListener("click", moveLotTypeField);
 
                 panelElement.append(panelBlockElement);
@@ -561,10 +525,7 @@ declare const bulmaJS: BulmaJS;
                         "</button>" +
                         "</div>") +
                     ('<div class="level-item">' +
-                        los.getMoveUpDownButtonFieldHTML(
-                            "button--moveLotTypeUp",
-                            "button--moveLotTypeDown"
-                        ) +
+                        los.getMoveUpDownButtonFieldHTML("button--moveLotTypeUp", "button--moveLotTypeDown") +
                         "</div>") +
                     "</div>") +
                 "</div>" +
@@ -588,9 +549,10 @@ declare const bulmaJS: BulmaJS;
                 .querySelector(".button--addLotTypeField")!
                 .addEventListener("click", openAddLotTypeField);
 
-            (
-                lotTypeContainer.querySelector(".button--moveLotTypeUp") as HTMLButtonElement
-            ).addEventListener("click", moveLotType);
+            (lotTypeContainer.querySelector(".button--moveLotTypeUp") as HTMLButtonElement).addEventListener(
+                "click",
+                moveLotType
+            );
 
             (
                 lotTypeContainer.querySelector(".button--moveLotTypeDown") as HTMLButtonElement
@@ -620,7 +582,7 @@ declare const bulmaJS: BulmaJS;
                         renderLotTypes();
                     } else {
                         bulmaJS.alert({
-                            title: "Error Adding " + exports.aliases.lot + " Type",
+                            title: `Error Adding ${los.escapedAliases.Lot} Type`,
                             message: responseJSON.errorMessage || "",
                             contextualColorName: "danger"
                         });
