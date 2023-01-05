@@ -3,17 +3,14 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { getLotFields } from "./getLotFields.js";
 import { getLotComments } from "./getLotComments.js";
 import { getLotOccupancies } from "./getLotOccupancies.js";
-const baseSQL = "select l.lotId," +
-    " l.lotTypeId, t.lotType," +
-    " l.lotName," +
-    " l.lotStatusId, s.lotStatus," +
-    " l.mapId, m.mapName, m.mapSVG, l.mapKey," +
-    " l.lotLatitude, l.lotLongitude" +
-    " from Lots l" +
-    " left join LotTypes t on l.lotTypeId = t.lotTypeId" +
-    " left join LotStatuses s on l.lotStatusId = s.lotStatusId" +
-    " left join Maps m on l.mapId = m.mapId" +
-    " where  l.recordDelete_timeMillis is null";
+const baseSQL = `select l.lotId, l.lotTypeId, t.lotType, l.lotName, l.lotStatusId, s.lotStatus,
+    l.mapId, m.mapName, m.mapSVG, l.mapKey,
+    l.lotLatitude, l.lotLongitude
+    from Lots l
+    left join LotTypes t on l.lotTypeId = t.lotTypeId
+    left join LotStatuses s on l.lotStatusId = s.lotStatusId
+    left join Maps m on l.mapId = m.mapId
+    where l.recordDelete_timeMillis is null`;
 function _getLot(sql, lotId_or_lotName) {
     const database = sqlite(databasePath, {
         readonly: true

@@ -35,8 +35,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
     sqlWhereClause: string;
     sqlParameters: unknown[];
 } {
-    let sqlWhereClause =
-        " where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null";
+    let sqlWhereClause = " where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null";
     const sqlParameters: unknown[] = [];
 
     if (filters.workOrderId) {
@@ -49,18 +48,14 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
 
     date.setDate(
         date.getDate() -
-            configFunctions.getProperty(
-                "settings.workOrders.workOrderMilestoneDateRecentBeforeDays"
-            )
+            configFunctions.getProperty("settings.workOrders.workOrderMilestoneDateRecentBeforeDays")
     );
 
     const recentBeforeDateNumber = dateToInteger(date);
 
     date.setDate(
         date.getDate() +
-            configFunctions.getProperty(
-                "settings.workOrders.workOrderMilestoneDateRecentBeforeDays"
-            ) +
+            configFunctions.getProperty("settings.workOrders.workOrderMilestoneDateRecentBeforeDays") +
             configFunctions.getProperty("settings.workOrders.workOrderMilestoneDateRecentAfterDays")
     );
 
@@ -75,8 +70,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
         }
 
         case "recent": {
-            sqlWhereClause +=
-                " and m.workOrderMilestoneDate >= ? and m.workOrderMilestoneDate <= ?";
+            sqlWhereClause += " and m.workOrderMilestoneDate >= ? and m.workOrderMilestoneDate <= ?";
             sqlParameters.push(recentBeforeDateNumber, recentAfterDateNumber);
             break;
         }
@@ -95,8 +89,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
         filters.workOrderMilestoneTypeIds &&
         commaSeparatedNumbersRegex.test(filters.workOrderMilestoneTypeIds)
     ) {
-        sqlWhereClause +=
-            " and m.workOrderMilestoneTypeId in (" + filters.workOrderMilestoneTypeIds + ")";
+        sqlWhereClause += " and m.workOrderMilestoneTypeId in (" + filters.workOrderMilestoneTypeIds + ")";
     }
 
     return {
@@ -167,9 +160,7 @@ export function getWorkOrderMilestones(
         sqlWhereClause +
         orderByClause;
 
-    const workOrderMilestones: recordTypes.WorkOrderMilestone[] = database
-        .prepare(sql)
-        .all(sqlParameters);
+    const workOrderMilestones: recordTypes.WorkOrderMilestone[] = database.prepare(sql).all(sqlParameters);
 
     if (options.includeWorkOrders) {
         for (const workOrderMilestone of workOrderMilestones) {

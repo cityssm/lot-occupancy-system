@@ -10,18 +10,14 @@ import { getLotOccupancies } from "./getLotOccupancies.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
-const baseSQL =
-    "select l.lotId," +
-    " l.lotTypeId, t.lotType," +
-    " l.lotName," +
-    " l.lotStatusId, s.lotStatus," +
-    " l.mapId, m.mapName, m.mapSVG, l.mapKey," +
-    " l.lotLatitude, l.lotLongitude" +
-    " from Lots l" +
-    " left join LotTypes t on l.lotTypeId = t.lotTypeId" +
-    " left join LotStatuses s on l.lotStatusId = s.lotStatusId" +
-    " left join Maps m on l.mapId = m.mapId" +
-    " where  l.recordDelete_timeMillis is null";
+const baseSQL = `select l.lotId, l.lotTypeId, t.lotType, l.lotName, l.lotStatusId, s.lotStatus,
+    l.mapId, m.mapName, m.mapSVG, l.mapKey,
+    l.lotLatitude, l.lotLongitude
+    from Lots l
+    left join LotTypes t on l.lotTypeId = t.lotTypeId
+    left join LotStatuses s on l.lotStatusId = s.lotStatusId
+    left join Maps m on l.mapId = m.mapId
+    where l.recordDelete_timeMillis is null`;
 
 function _getLot(sql: string, lotId_or_lotName: number | string): recordTypes.Lot | undefined {
     const database = sqlite(databasePath, {

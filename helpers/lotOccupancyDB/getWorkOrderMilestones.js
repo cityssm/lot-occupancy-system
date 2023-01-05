@@ -29,8 +29,7 @@ function buildWhereClause(filters) {
             break;
         }
         case "recent": {
-            sqlWhereClause +=
-                " and m.workOrderMilestoneDate >= ? and m.workOrderMilestoneDate <= ?";
+            sqlWhereClause += " and m.workOrderMilestoneDate >= ? and m.workOrderMilestoneDate <= ?";
             sqlParameters.push(recentBeforeDateNumber, recentAfterDateNumber);
             break;
         }
@@ -44,8 +43,7 @@ function buildWhereClause(filters) {
     }
     if (filters.workOrderMilestoneTypeIds &&
         commaSeparatedNumbersRegex.test(filters.workOrderMilestoneTypeIds)) {
-        sqlWhereClause +=
-            " and m.workOrderMilestoneTypeId in (" + filters.workOrderMilestoneTypeIds + ")";
+        sqlWhereClause += " and m.workOrderMilestoneTypeId in (" + filters.workOrderMilestoneTypeIds + ")";
     }
     return {
         sqlWhereClause,
@@ -98,9 +96,7 @@ export function getWorkOrderMilestones(filters, options, connectedDatabase) {
         " left join WorkOrderTypes wt on w.workOrderTypeId = wt.workOrderTypeId" +
         sqlWhereClause +
         orderByClause;
-    const workOrderMilestones = database
-        .prepare(sql)
-        .all(sqlParameters);
+    const workOrderMilestones = database.prepare(sql).all(sqlParameters);
     if (options.includeWorkOrders) {
         for (const workOrderMilestone of workOrderMilestones) {
             workOrderMilestone.workOrderLots = getLots({
