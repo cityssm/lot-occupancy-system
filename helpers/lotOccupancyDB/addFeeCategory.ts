@@ -1,5 +1,4 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { addRecord } from "./addRecord.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -12,30 +11,14 @@ export function addFeeCategory(
     feeCategoryForm: AddFeeCategoryForm,
     requestSession: recordTypes.PartialSession
 ): number {
-    const database = sqlite(databasePath);
+    const feeCategoryId = addRecord(
+        "FeeCategories",
+        feeCategoryForm.feeCategory,
+        feeCategoryForm.orderNumber || -1,
+        requestSession
+    );
 
-    const rightNowMillis = Date.now();
-
-    const result = database
-        .prepare(
-            `insert into FeeCategories (
-                feeCategory, orderNumber,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?)`
-        )
-        .run(
-            feeCategoryForm.feeCategory,
-            feeCategoryForm.orderNumber || -1,
-            requestSession.user.userName,
-            rightNowMillis,
-            requestSession.user.userName,
-            rightNowMillis
-        );
-
-    database.close();
-
-    return result.lastInsertRowid as number;
+    return feeCategoryId;
 }
 
 export default addFeeCategory;

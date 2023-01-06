@@ -1,18 +1,8 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { clearLotTypesCache } from "../functions.cache.js";
+import { addRecord } from "./addRecord.js";
 export function addLotType(lotTypeForm, requestSession) {
-    const database = sqlite(databasePath);
-    const rightNowMillis = Date.now();
-    const result = database
-        .prepare(`insert into LotTypes (
-                lotType, orderNumber,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?)`)
-        .run(lotTypeForm.lotType, lotTypeForm.orderNumber || -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
-    database.close();
+    const lotTypeId = addRecord("LotTypes", lotTypeForm.lotType, lotTypeForm.orderNumber || -1, requestSession);
     clearLotTypesCache();
-    return result.lastInsertRowid;
+    return lotTypeId;
 }
 export default addLotType;
