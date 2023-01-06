@@ -1,7 +1,7 @@
-import { updateLotStatus } from "../../helpers/lotOccupancyDB/updateLotStatus.js";
+import { updateRecord } from "../../helpers/lotOccupancyDB/updateRecord.js";
 import { getLotStatuses } from "../../helpers/functions.cache.js";
 export const handler = async (request, response) => {
-    const success = updateLotStatus(request.body, request.session);
+    const success = updateRecord("LotStatuses", request.body.lotStatusId, request.body.lotStatus, request.session);
     const lotStatuses = getLotStatuses();
     response.json({
         success,

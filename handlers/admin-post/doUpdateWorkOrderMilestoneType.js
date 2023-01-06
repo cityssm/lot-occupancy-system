@@ -1,7 +1,7 @@
-import { updateWorkOrderMilestoneType } from "../../helpers/lotOccupancyDB/updateWorkOrderMilestoneType.js";
+import { updateRecord } from "../../helpers/lotOccupancyDB/updateRecord.js";
 import { getWorkOrderMilestoneTypes } from "../../helpers/functions.cache.js";
 export const handler = async (request, response) => {
-    const success = updateWorkOrderMilestoneType(request.body, request.session);
+    const success = updateRecord("WorkOrderMilestoneTypes", request.body.workOrderMilestoneTypeId, request.body.workOrderMilestoneType, request.session);
     const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
     response.json({
         success,

@@ -1,11 +1,15 @@
 import type { RequestHandler } from "express";
 
-import { updateWorkOrderType } from "../../helpers/lotOccupancyDB/updateWorkOrderType.js";
-
+import { updateRecord } from "../../helpers/lotOccupancyDB/updateRecord.js";
 import { getWorkOrderTypes } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
-    const success = updateWorkOrderType(request.body, request.session);
+    const success = updateRecord(
+        "WorkOrderTypes",
+        request.body.workOrderTypeId,
+        request.body.workOrderType,
+        request.session
+    );
 
     const workOrderTypes = getWorkOrderTypes();
 
