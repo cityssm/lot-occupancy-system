@@ -1,6 +1,6 @@
-import { deleteWorkOrder } from "../../helpers/lotOccupancyDB/deleteWorkOrder.js";
+import { deleteRecord } from "../../helpers/lotOccupancyDB/deleteRecord.js";
 export const handler = async (request, response) => {
-    const success = deleteWorkOrder(request.body.workOrderId, request.session);
+    const success = deleteRecord("WorkOrders", request.body.workOrderId, request.session);
     response.json({
         success
     });

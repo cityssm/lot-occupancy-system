@@ -1,7 +1,7 @@
-import { deleteLotOccupancyComment } from "../../helpers/lotOccupancyDB/deleteLotOccupancyComment.js";
+import { deleteRecord } from "../../helpers/lotOccupancyDB/deleteRecord.js";
 import { getLotOccupancyComments } from "../../helpers/lotOccupancyDB/getLotOccupancyComments.js";
 export const handler = async (request, response) => {
-    const success = deleteLotOccupancyComment(request.body.lotOccupancyCommentId, request.session);
+    const success = deleteRecord("LotOccupancyComments", request.body.lotOccupancyCommentId, request.session);
     const lotOccupancyComments = getLotOccupancyComments(request.body.lotOccupancyId);
     response.json({
         success,

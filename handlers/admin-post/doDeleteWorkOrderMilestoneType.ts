@@ -1,11 +1,12 @@
 import type { RequestHandler } from "express";
 
-import { deleteWorkOrderMilestoneType } from "../../helpers/lotOccupancyDB/deleteWorkOrderMilestoneType.js";
+import { deleteRecord } from "../../helpers/lotOccupancyDB/deleteRecord.js";
 
 import { getWorkOrderMilestoneTypes } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
-    const success = deleteWorkOrderMilestoneType(
+    const success = deleteRecord(
+        "WorkOrderMilestoneTypes",
         request.body.workOrderMilestoneTypeId,
         request.session
     );
