@@ -26,8 +26,8 @@ recordIdColumns.set("WorkOrderTypes", "workOrderTypeId");
 
 export function updateRecordOrderNumber(
     recordTable: RecordTable,
-    recordId: number,
-    orderNumber: number,
+    recordId: number | string,
+    orderNumber: number | string,
     connectedDatabase: sqlite.Database
 ): boolean {
     const result = connectedDatabase

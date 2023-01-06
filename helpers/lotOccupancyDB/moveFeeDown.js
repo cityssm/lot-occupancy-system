@@ -1,6 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { getFee } from "./getFee.js";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 export function moveFeeDown(feeId) {
     const database = sqlite(databasePath);
     const currentFee = getFee(feeId, database);
@@ -11,11 +12,9 @@ export function moveFeeDown(feeId) {
                 and feeCategoryId = ?
                 and orderNumber = ? + 1`)
         .run(currentFee.feeCategoryId, currentFee.orderNumber);
-    const result = database
-        .prepare("update Fees set orderNumber = ? + 1 where feeId = ?")
-        .run(currentFee.orderNumber, feeId);
+    const success = updateRecordOrderNumber("Fees", feeId, currentFee.orderNumber + 1, database);
     database.close();
-    return result.changes > 0;
+    return success;
 }
 export function moveFeeDownToBottom(feeId) {
     const database = sqlite(databasePath);
@@ -27,9 +26,7 @@ export function moveFeeDownToBottom(feeId) {
                 and feeCategoryId = ?`)
         .get(currentFee.feeCategoryId).maxOrderNumber;
     if (currentFee.orderNumber !== maxOrderNumber) {
-        database
-            .prepare("update Fees set orderNumber = ? + 1 where feeId = ?")
-            .run(maxOrderNumber, feeId);
+        updateRecordOrderNumber("Fees", feeId, maxOrderNumber + 1, database);
         database
             .prepare(`update Fees
                     set orderNumber = orderNumber - 1
