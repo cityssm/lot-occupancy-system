@@ -1,17 +1,14 @@
 import type { RequestHandler } from "express";
 
-import {
-    moveFeeCategoryDown,
-    moveFeeCategoryDownToBottom
-} from "../../helpers/lotOccupancyDB/moveFeeCategoryDown.js";
+import { moveRecordDown, moveRecordDownToBottom } from "../../helpers/lotOccupancyDB/moveRecord.js";
 
 import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.js";
 
 export const handler: RequestHandler = async (request, response) => {
     const success =
         request.body.moveToEnd === "1"
-            ? moveFeeCategoryDownToBottom(request.body.feeCategoryId)
-            : moveFeeCategoryDown(request.body.feeCategoryId);
+            ? moveRecordDownToBottom("FeeCategories", request.body.feeCategoryId)
+            : moveRecordDown("FeeCategories", request.body.feeCategoryId);
 
     const feeCategories = getFeeCategories(
         {},

@@ -2,6 +2,7 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { clearCacheByTableName } from "../functions.cache.js";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 
 type RecordTable =
     | "FeeCategories"
@@ -37,7 +38,7 @@ function getCurrentOrderNumber(
     return currentOrderNumber;
 }
 
-export function moveRecordDown(recordTable: RecordTable, recordId: number | string): boolean {
+export function moveRecordDown(recordTable: RecordTable, recordId: number): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
@@ -66,7 +67,7 @@ export function moveRecordDown(recordTable: RecordTable, recordId: number | stri
     return result.changes > 0;
 }
 
-export function moveRecordDownToBottom(recordTable: RecordTable, recordId: number | string): boolean {
+export function moveRecordDownToBottom(recordTable: RecordTable, recordId: number): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
@@ -103,7 +104,7 @@ export function moveRecordDownToBottom(recordTable: RecordTable, recordId: numbe
     return true;
 }
 
-export function moveRecordUp(recordTable: RecordTable, recordId: number | string): boolean {
+export function moveRecordUp(recordTable: RecordTable, recordId: number): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
@@ -122,22 +123,17 @@ export function moveRecordUp(recordTable: RecordTable, recordId: number | string
         )
         .run(currentOrderNumber);
 
-    const result = database
-        .prepare(
-            `update ${recordTable}
-                set orderNumber = ? - 1
-                where ${recordIdColumns.get(recordTable)} = ?`
-        )
-        .run(currentOrderNumber, recordId);
+
+    const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber - 1, database);
 
     database.close();
 
     clearCacheByTableName(recordTable);
 
-    return result.changes > 0;
+    return success;
 }
 
-export function moveRecordUpToTop(recordTable: RecordTable, recordId: number | string): boolean {
+export function moveRecordUpToTop(recordTable: RecordTable, recordId: number): boolean {
     const database = sqlite(databasePath);
 
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);

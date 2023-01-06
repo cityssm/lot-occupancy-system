@@ -1,17 +1,13 @@
 import type { RequestHandler } from "express";
 
-import {
-    moveWorkOrderTypeDown,
-    moveWorkOrderTypeDownToBottom
-} from "../../helpers/lotOccupancyDB/moveWorkOrderTypeDown.js";
-
+import { moveRecordDown, moveRecordDownToBottom } from "../../helpers/lotOccupancyDB/moveRecord.js";
 import { getWorkOrderTypes } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
     const success =
         request.body.moveToEnd === "1"
-            ? moveWorkOrderTypeDownToBottom(request.body.workOrderTypeId)
-            : moveWorkOrderTypeDown(request.body.workOrderTypeId);
+            ? moveRecordDownToBottom("WorkOrderTypes", request.body.workOrderTypeId)
+            : moveRecordDown("WorkOrderTypes", request.body.workOrderTypeId);
 
     const workOrderTypes = getWorkOrderTypes();
 

@@ -1,9 +1,9 @@
-import { moveLotOccupantTypeUp, moveLotOccupantTypeUpToTop } from "../../helpers/lotOccupancyDB/moveLotOccupantTypeUp.js";
+import { moveRecordUp, moveRecordUpToTop } from "../../helpers/lotOccupancyDB/moveRecord.js";
 import { getLotOccupantTypes } from "../../helpers/functions.cache.js";
 export const handler = async (request, response) => {
     const success = request.body.moveToEnd === "1"
-        ? moveLotOccupantTypeUpToTop(request.body.lotOccupantTypeId)
-        : moveLotOccupantTypeUp(request.body.lotOccupantTypeId);
+        ? moveRecordUpToTop("LotOccupantTypes", request.body.lotOccupantTypeId)
+        : moveRecordUp("LotOccupantTypes", request.body.lotOccupantTypeId);
     const lotOccupantTypes = getLotOccupantTypes();
     response.json({
         success,

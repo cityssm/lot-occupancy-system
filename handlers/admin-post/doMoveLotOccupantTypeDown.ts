@@ -1,17 +1,13 @@
 import type { RequestHandler } from "express";
 
-import {
-    moveLotOccupantTypeDown,
-    moveLotOccupantTypeDownToBottom
-} from "../../helpers/lotOccupancyDB/moveLotOccupantTypeDown.js";
-
+import { moveRecordDown, moveRecordDownToBottom } from "../../helpers/lotOccupancyDB/moveRecord.js";
 import { getLotOccupantTypes } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
     const success =
         request.body.moveToEnd === "1"
-            ? moveLotOccupantTypeDownToBottom(request.body.lotOccupantTypeId)
-            : moveLotOccupantTypeDown(request.body.lotOccupantTypeId);
+            ? moveRecordDownToBottom("LotOccupantTypes", request.body.lotOccupantTypeId)
+            : moveRecordDown("LotOccupantTypes", request.body.lotOccupantTypeId);
 
     const lotOccupantTypes = getLotOccupantTypes();
 

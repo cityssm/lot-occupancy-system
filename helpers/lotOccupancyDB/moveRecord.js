@@ -1,6 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { clearCacheByTableName } from "../functions.cache.js";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 const recordIdColumns = new Map();
 recordIdColumns.set("FeeCategories", "feeCategoryId");
 recordIdColumns.set("LotOccupantTypes", "lotOccupantTypeId");
@@ -71,14 +72,10 @@ export function moveRecordUp(recordTable, recordId) {
                 where recordDelete_timeMillis is null
                 and orderNumber = ? - 1`)
         .run(currentOrderNumber);
-    const result = database
-        .prepare(`update ${recordTable}
-                set orderNumber = ? - 1
-                where ${recordIdColumns.get(recordTable)} = ?`)
-        .run(currentOrderNumber, recordId);
+    const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber - 1, database);
     database.close();
     clearCacheByTableName(recordTable);
-    return result.changes > 0;
+    return success;
 }
 export function moveRecordUpToTop(recordTable, recordId) {
     const database = sqlite(databasePath);
