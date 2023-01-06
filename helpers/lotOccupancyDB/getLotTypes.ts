@@ -5,6 +5,7 @@ import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { getLotTypeFields } from "./getLotTypeFields.js";
 
 import type * as recordTypes from "../../types/recordTypes";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 
 export function getLotTypes(): recordTypes.LotType[] {
     const database = sqlite(databasePath);
@@ -24,28 +25,12 @@ export function getLotTypes(): recordTypes.LotType[] {
         expectedTypeOrderNumber += 1;
 
         if (lotType.orderNumber !== expectedTypeOrderNumber) {
-            database
-                .prepare("update LotTypes set orderNumber = ? where lotTypeId = ?")
-                .run(expectedTypeOrderNumber, lotType.lotTypeId);
+            updateRecordOrderNumber("LotTypes", lotType.lotTypeId, expectedTypeOrderNumber, database);
 
             lotType.orderNumber = expectedTypeOrderNumber;
         }
 
         lotType.lotTypeFields = getLotTypeFields(lotType.lotTypeId as number, database);
-
-        let expectedFieldOrderNumber = -1;
-
-        for (const lotTypeField of lotType.lotTypeFields) {
-            expectedFieldOrderNumber += 1;
-
-            if (lotTypeField.orderNumber !== expectedFieldOrderNumber) {
-                database
-                    .prepare(`update LotTypeFields set orderNumber = ? where lotTypeFieldId = ?`)
-                    .run(expectedFieldOrderNumber, lotTypeField.lotTypeFieldId);
-
-                lotTypeField.orderNumber = expectedFieldOrderNumber;
-            }
-        }
     }
 
     database.close();

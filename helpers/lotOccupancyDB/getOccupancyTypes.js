@@ -2,6 +2,7 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { getOccupancyTypeFields } from "./getOccupancyTypeFields.js";
 import { getOccupancyTypePrints } from "./getOccupancyTypePrints.js";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 export function getOccupancyTypes() {
     const database = sqlite(databasePath);
     const occupancyTypes = database
@@ -14,23 +15,11 @@ export function getOccupancyTypes() {
     for (const occupancyType of occupancyTypes) {
         expectedTypeOrderNumber += 1;
         if (occupancyType.orderNumber !== expectedTypeOrderNumber) {
-            database
-                .prepare("update OccupancyTypes set orderNumber = ? where occupancyTypeId = ?")
-                .run(expectedTypeOrderNumber, occupancyType.occupancyTypeId);
+            updateRecordOrderNumber("OccupancyTypes", occupancyType.occupancyTypeId, expectedTypeOrderNumber, database);
             occupancyType.orderNumber = expectedTypeOrderNumber;
         }
         occupancyType.occupancyTypeFields = getOccupancyTypeFields(occupancyType.occupancyTypeId, database);
         occupancyType.occupancyTypePrints = getOccupancyTypePrints(occupancyType.occupancyTypeId, database);
-        let expectedFieldOrderNumber = -1;
-        for (const occupancyTypeField of occupancyType.occupancyTypeFields) {
-            expectedFieldOrderNumber += 1;
-            if (occupancyTypeField.orderNumber !== expectedFieldOrderNumber) {
-                database
-                    .prepare(`update OccupancyTypeFields set orderNumber = ? where occupancyTypeFieldId = ?`)
-                    .run(expectedFieldOrderNumber, occupancyTypeField.occupancyTypeFieldId);
-                occupancyTypeField.orderNumber = expectedFieldOrderNumber;
-            }
-        }
     }
     database.close();
     return occupancyTypes;

@@ -20,10 +20,7 @@ interface UpdateFeeForm {
     isRequired: "" | "1";
 }
 
-export function updateFee(
-    feeForm: UpdateFeeForm,
-    requestSession: recordTypes.PartialSession
-): boolean {
+export function updateFee(feeForm: UpdateFeeForm, requestSession: recordTypes.PartialSession): boolean {
     const database = sqlite(databasePath);
 
     const rightNowMillis = Date.now();
@@ -67,28 +64,6 @@ export function updateFee(
         );
 
     database.close();
-
-    return result.changes > 0;
-}
-
-export function updateFeeOrderNumber(
-    feeId: number,
-    orderNumber: number,
-    connectedDatabase?: sqlite.Database
-) {
-    const database =
-        connectedDatabase ||
-        sqlite(databasePath, {
-            readonly: true
-        });
-
-    const result = database
-        .prepare("update Fees set orderNumber = ? where feeId = ?")
-        .run(orderNumber, feeId);
-
-    if (!connectedDatabase) {
-        database.close();
-    }
 
     return result.changes > 0;
 }

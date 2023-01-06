@@ -3,7 +3,7 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import { getFees } from "./getFees.js";
-import { updateFeeCategoryOrderNumber } from "./updateFeeCategory.js";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -20,8 +20,7 @@ export function getFeeCategories(
     filters: GetFeeCategoriesFilters,
     options: GetFeeCategoriesOptions
 ): recordTypes.FeeCategory[] {
-    const updateOrderNumbers =
-        !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees;
+    const updateOrderNumbers = !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees;
 
     const database = sqlite(databasePath, {
         readonly: !updateOrderNumbers
@@ -67,7 +66,8 @@ export function getFeeCategories(
             expectedFeeCategoryOrderNumber += 1;
 
             if (updateOrderNumbers && feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
-                updateFeeCategoryOrderNumber(
+                updateRecordOrderNumber(
+                    "FeeCategories",
                     feeCategory.feeCategoryId,
                     expectedFeeCategoryOrderNumber,
                     database

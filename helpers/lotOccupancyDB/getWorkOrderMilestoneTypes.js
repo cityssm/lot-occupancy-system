@@ -1,5 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 export function getWorkOrderMilestoneTypes() {
     const database = sqlite(databasePath);
     const workOrderMilestoneTypes = database
@@ -11,11 +12,7 @@ export function getWorkOrderMilestoneTypes() {
     let expectedOrderNumber = 0;
     for (const workOrderMilestoneType of workOrderMilestoneTypes) {
         if (workOrderMilestoneType.orderNumber !== expectedOrderNumber) {
-            database
-                .prepare(`update WorkOrderMilestoneTypes
-                        set orderNumber = ?
-                        where workOrderMilestoneTypeId = ?`)
-                .run(expectedOrderNumber, workOrderMilestoneType.workOrderMilestoneTypeId);
+            updateRecordOrderNumber("WorkOrderMilestoneTypes", workOrderMilestoneType.workOrderMilestoneTypeId, expectedOrderNumber, database);
             workOrderMilestoneType.orderNumber = expectedOrderNumber;
         }
         expectedOrderNumber += 1;

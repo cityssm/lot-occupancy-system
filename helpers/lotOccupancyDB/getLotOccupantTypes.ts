@@ -3,6 +3,7 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 
 export function getLotOccupantTypes(): recordTypes.LotOccupantType[] {
     const database = sqlite(databasePath);
@@ -20,13 +21,12 @@ export function getLotOccupantTypes(): recordTypes.LotOccupantType[] {
 
     for (const lotOccupantType of lotOccupantTypes) {
         if (lotOccupantType.orderNumber !== expectedOrderNumber) {
-            database
-                .prepare(
-                    `update LotOccupantTypes
-                        set orderNumber = ?
-                        where lotOccupantTypeId = ?`
-                )
-                .run(expectedOrderNumber, lotOccupantType.lotOccupantTypeId);
+            updateRecordOrderNumber(
+                "LotOccupantTypes",
+                lotOccupantType.lotOccupantTypeId,
+                expectedOrderNumber,
+                database
+            );
 
             lotOccupantType.orderNumber = expectedOrderNumber;
         }

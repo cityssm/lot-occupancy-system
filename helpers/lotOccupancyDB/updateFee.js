@@ -25,17 +25,4 @@ export function updateFee(feeForm, requestSession) {
     database.close();
     return result.changes > 0;
 }
-export function updateFeeOrderNumber(feeId, orderNumber, connectedDatabase) {
-    const database = connectedDatabase ||
-        sqlite(databasePath, {
-            readonly: true
-        });
-    const result = database
-        .prepare("update Fees set orderNumber = ? where feeId = ?")
-        .run(orderNumber, feeId);
-    if (!connectedDatabase) {
-        database.close();
-    }
-    return result.changes > 0;
-}
 export default updateFee;

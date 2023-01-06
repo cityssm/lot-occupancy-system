@@ -3,6 +3,7 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 
 export function getOccupancyTypeFields(
     occupancyTypeId?: number,
@@ -35,11 +36,12 @@ export function getOccupancyTypeFields(
         expectedFieldOrderNumber += 1;
 
         if (occupancyTypeField.orderNumber !== expectedFieldOrderNumber) {
-            database
-                .prepare(
-                    `update OccupancyTypeFields set orderNumber = ? where occupancyTypeFieldId = ?`
-                )
-                .run(expectedFieldOrderNumber, occupancyTypeField.occupancyTypeFieldId);
+            updateRecordOrderNumber(
+                "OccupancyTypeFields",
+                occupancyTypeField.occupancyTypeFieldId,
+                expectedFieldOrderNumber,
+                database
+            );
 
             occupancyTypeField.orderNumber = expectedFieldOrderNumber;
         }

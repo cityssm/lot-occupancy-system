@@ -1,5 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 export function getLotStatuses() {
     const database = sqlite(databasePath);
     const lotStatuses = database
@@ -11,11 +12,7 @@ export function getLotStatuses() {
     let expectedOrderNumber = 0;
     for (const lotStatus of lotStatuses) {
         if (lotStatus.orderNumber !== expectedOrderNumber) {
-            database
-                .prepare(`update LotStatuses
-                        set orderNumber = ?
-                        where lotStatusId = ?`)
-                .run(expectedOrderNumber, lotStatus.lotStatusId);
+            updateRecordOrderNumber("LotStatuses", lotStatus.lotStatusId, expectedOrderNumber, database);
             lotStatus.orderNumber = expectedOrderNumber;
         }
         expectedOrderNumber += 1;

@@ -1,4 +1,3 @@
-import sqlite from "better-sqlite3";
 import type * as recordTypes from "../../types/recordTypes";
 interface UpdateFeeForm {
     feeId: string;
@@ -16,5 +15,4 @@ interface UpdateFeeForm {
     isRequired: "" | "1";
 }
 export declare function updateFee(feeForm: UpdateFeeForm, requestSession: recordTypes.PartialSession): boolean;
-export declare function updateFeeOrderNumber(feeId: number, orderNumber: number, connectedDatabase?: sqlite.Database): boolean;
 export default updateFee;

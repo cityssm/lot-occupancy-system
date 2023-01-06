@@ -2,7 +2,7 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import { updateFeeOrderNumber } from "./updateFee.js";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -24,7 +24,7 @@ export function getFees(
             readonly: !updateOrderNumbers
         });
 
-    let sqlWhereClause = " where f.recordDelete_timeMillis is null" + " and f.feeCategoryId = ?";
+    let sqlWhereClause = " where f.recordDelete_timeMillis is null and f.feeCategoryId = ?";
 
     const sqlParameters: unknown[] = [feeCategoryId];
 
@@ -64,8 +64,7 @@ export function getFees(
             expectedFeeOrderNumber += 1;
 
             if (fee.orderNumber !== expectedFeeOrderNumber) {
-                updateFeeOrderNumber(fee.feeId, expectedFeeOrderNumber, database);
-
+                updateRecordOrderNumber("Fees", fee.feeId, expectedFeeOrderNumber, database);
                 fee.orderNumber = expectedFeeOrderNumber;
             }
         }

@@ -6,6 +6,7 @@ import { getOccupancyTypeFields } from "./getOccupancyTypeFields.js";
 import { getOccupancyTypePrints } from "./getOccupancyTypePrints.js";
 
 import type * as recordTypes from "../../types/recordTypes";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 
 export function getOccupancyTypes(): recordTypes.OccupancyType[] {
     const database = sqlite(databasePath);
@@ -25,38 +26,19 @@ export function getOccupancyTypes(): recordTypes.OccupancyType[] {
         expectedTypeOrderNumber += 1;
 
         if (occupancyType.orderNumber !== expectedTypeOrderNumber) {
-            database
-                .prepare("update OccupancyTypes set orderNumber = ? where occupancyTypeId = ?")
-                .run(expectedTypeOrderNumber, occupancyType.occupancyTypeId);
+            updateRecordOrderNumber(
+                "OccupancyTypes",
+                occupancyType.occupancyTypeId,
+                expectedTypeOrderNumber,
+                database
+            );
 
             occupancyType.orderNumber = expectedTypeOrderNumber;
         }
 
-        occupancyType.occupancyTypeFields = getOccupancyTypeFields(
-            occupancyType.occupancyTypeId,
-            database
-        );
+        occupancyType.occupancyTypeFields = getOccupancyTypeFields(occupancyType.occupancyTypeId, database);
 
-        occupancyType.occupancyTypePrints = getOccupancyTypePrints(
-            occupancyType.occupancyTypeId,
-            database
-        );
-
-        let expectedFieldOrderNumber = -1;
-
-        for (const occupancyTypeField of occupancyType.occupancyTypeFields) {
-            expectedFieldOrderNumber += 1;
-
-            if (occupancyTypeField.orderNumber !== expectedFieldOrderNumber) {
-                database
-                    .prepare(
-                        `update OccupancyTypeFields set orderNumber = ? where occupancyTypeFieldId = ?`
-                    )
-                    .run(expectedFieldOrderNumber, occupancyTypeField.occupancyTypeFieldId);
-
-                occupancyTypeField.orderNumber = expectedFieldOrderNumber;
-            }
-        }
+        occupancyType.occupancyTypePrints = getOccupancyTypePrints(occupancyType.occupancyTypeId, database);
     }
 
     database.close();

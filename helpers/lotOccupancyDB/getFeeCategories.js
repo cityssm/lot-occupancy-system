@@ -1,7 +1,7 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { getFees } from "./getFees.js";
-import { updateFeeCategoryOrderNumber } from "./updateFeeCategory.js";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 export function getFeeCategories(filters, options) {
     const updateOrderNumbers = !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees;
     const database = sqlite(databasePath, {
@@ -36,7 +36,7 @@ export function getFeeCategories(filters, options) {
         for (const feeCategory of feeCategories) {
             expectedFeeCategoryOrderNumber += 1;
             if (updateOrderNumbers && feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
-                updateFeeCategoryOrderNumber(feeCategory.feeCategoryId, expectedFeeCategoryOrderNumber, database);
+                updateRecordOrderNumber("FeeCategories", feeCategory.feeCategoryId, expectedFeeCategoryOrderNumber, database);
                 feeCategory.orderNumber = expectedFeeCategoryOrderNumber;
             }
             feeCategory.fees = getFees(feeCategory.feeCategoryId, filters, database);

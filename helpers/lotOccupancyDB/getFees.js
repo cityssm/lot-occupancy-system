@@ -1,13 +1,13 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { updateFeeOrderNumber } from "./updateFee.js";
+import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
 export function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
     const updateOrderNumbers = !(additionalFilters.lotTypeId || additionalFilters.occupancyTypeId);
     const database = connectedDatabase ||
         sqlite(databasePath, {
             readonly: !updateOrderNumbers
         });
-    let sqlWhereClause = " where f.recordDelete_timeMillis is null" + " and f.feeCategoryId = ?";
+    let sqlWhereClause = " where f.recordDelete_timeMillis is null and f.feeCategoryId = ?";
     const sqlParameters = [feeCategoryId];
     if (additionalFilters.occupancyTypeId) {
         sqlWhereClause += " and (f.occupancyTypeId is null or f.occupancyTypeId = ?)";
@@ -36,7 +36,7 @@ export function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
         for (const fee of fees) {
             expectedFeeOrderNumber += 1;
             if (fee.orderNumber !== expectedFeeOrderNumber) {
-                updateFeeOrderNumber(fee.feeId, expectedFeeOrderNumber, database);
+                updateRecordOrderNumber("Fees", fee.feeId, expectedFeeOrderNumber, database);
                 fee.orderNumber = expectedFeeOrderNumber;
             }
         }
