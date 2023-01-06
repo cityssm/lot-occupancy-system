@@ -1,4 +1,4 @@
-import { moveFeeUp, moveFeeUpToTop } from "../../helpers/lotOccupancyDB/moveFeeUp.js";
+import { moveFeeUp, moveFeeUpToTop } from "../../helpers/lotOccupancyDB/moveFee.js";
 import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.js";
 export const handler = async (request, response) => {
     const success = request.body.moveToEnd === "1"

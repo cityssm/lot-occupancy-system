@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 
-import { moveFeeUp, moveFeeUpToTop } from "../../helpers/lotOccupancyDB/moveFeeUp.js";
+import { moveFeeUp, moveFeeUpToTop } from "../../helpers/lotOccupancyDB/moveFee.js";
 
 import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.js";
 
