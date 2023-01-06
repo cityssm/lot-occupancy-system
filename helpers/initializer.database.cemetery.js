@@ -1,12 +1,9 @@
 import { lotOccupancyDB as databasePath } from "../data/databasePaths.js";
 import { initializeDatabase } from "./initializer.database.js";
-import { addLotType } from "./lotOccupancyDB/addLotType.js";
-import { addOccupancyType } from "./lotOccupancyDB/addOccupancyType.js";
 import { addOccupancyTypeField } from "./lotOccupancyDB/addOccupancyTypeField.js";
-import { addLotStatus } from "./lotOccupancyDB/addLotStatus.js";
 import { addLotOccupantType } from "./lotOccupancyDB/addLotOccupantType.js";
-import { addFeeCategory } from "./lotOccupancyDB/addFeeCategory.js";
 import Debug from "debug";
+import { addRecord } from "./lotOccupancyDB/addRecord.js";
 const debug = Debug("lot-occupancy-system:initialize");
 const session = {
     user: {
@@ -27,42 +24,15 @@ function initializeCemeteryDatabase() {
         return;
     }
     debug("New database file created.  Proceeding with initialization.");
-    addLotType({
-        lotType: "Casket Grave",
-        orderNumber: 1
-    }, session);
-    addLotType({
-        lotType: "Columbarium",
-        orderNumber: 2
-    }, session);
-    addLotType({
-        lotType: "Mausoleum",
-        orderNumber: 2
-    }, session);
-    addLotType({
-        lotType: "Niche Wall",
-        orderNumber: 2
-    }, session);
-    addLotType({
-        lotType: "Urn Garden",
-        orderNumber: 2
-    }, session);
-    addLotType({
-        lotType: "Crematorium",
-        orderNumber: 3
-    }, session);
-    addLotStatus({
-        lotStatus: "Available",
-        orderNumber: 1
-    }, session);
-    addLotStatus({
-        lotStatus: "Reserved",
-        orderNumber: 2
-    }, session);
-    addLotStatus({
-        lotStatus: "Taken",
-        orderNumber: 3
-    }, session);
+    addRecord("LotTypes", "Casket Grave", 1, session);
+    addRecord("LotTypes", "Columbarium", 2, session);
+    addRecord("LotTypes", "Mausoleum", 2, session);
+    addRecord("LotTypes", "Niche Wall", 2, session);
+    addRecord("LotTypes", "Urn Garden", 2, session);
+    addRecord("LotTypes", "Crematorium", 2, session);
+    addRecord("LotStatuses", "Available", 1, session);
+    addRecord("LotStatuses", "Reserved", 2, session);
+    addRecord("LotStatuses", "Taken", 3, session);
     addLotOccupantType({
         lotOccupantType: "Deceased",
         orderNumber: 1
@@ -79,18 +49,9 @@ function initializeCemeteryDatabase() {
         lotOccupantType: "Purchaser",
         orderNumber: 4
     }, session);
-    addOccupancyType({
-        occupancyType: "Preneed",
-        orderNumber: 1
-    }, session);
-    const intermentOccupancyTypeId = addOccupancyType({
-        occupancyType: "Interment",
-        orderNumber: 2
-    }, session);
-    const cremationOccupancyTypeId = addOccupancyType({
-        occupancyType: "Cremation",
-        orderNumber: 3
-    }, session);
+    addRecord("OccupancyTypes", "Preneed", 1, session);
+    const intermentOccupancyTypeId = addRecord("OccupancyTypes", "Interment", 2, session);
+    const cremationOccupancyTypeId = addRecord("OccupancyTypes", "Cremation", 3, session);
     const deathDateField = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: "Death Date",
@@ -187,25 +148,10 @@ function initializeCemeteryDatabase() {
     };
     addOccupancyTypeField(committalType, session);
     addOccupancyTypeField(Object.assign(committalType, { occupancyTypeId: cremationOccupancyTypeId }), session);
-    addFeeCategory({
-        feeCategory: "Interment Rights",
-        orderNumber: 1
-    }, session);
-    addFeeCategory({
-        feeCategory: "Cremation Services",
-        orderNumber: 2
-    }, session);
-    addFeeCategory({
-        feeCategory: "Burial Charges",
-        orderNumber: 3
-    }, session);
-    addFeeCategory({
-        feeCategory: "Disinterment of Human Remains",
-        orderNumber: 4
-    }, session);
-    addFeeCategory({
-        feeCategory: "Additional Services",
-        orderNumber: 5
-    }, session);
+    addRecord("FeeCategories", "Interment Rights", 1, session);
+    addRecord("FeeCategories", "Cremation Services", 2, session);
+    addRecord("FeeCategories", "Burial Charges", 3, session);
+    addRecord("FeeCategories", "Disinterment of Human Remains", 4, session);
+    addRecord("FeeCategories", "Additional Services", 4, session);
 }
 initializeCemeteryDatabase();
