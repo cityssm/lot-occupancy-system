@@ -1,19 +1,8 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 import { clearWorkOrderMilestoneTypesCache } from "../functions.cache.js";
+import { updateRecord } from "./updateRecord.js";
 export function updateWorkOrderMilestoneType(workOrderMilestoneTypeForm, requestSession) {
-    const database = sqlite(databasePath);
-    const rightNowMillis = Date.now();
-    const result = database
-        .prepare(`update WorkOrderMilestoneTypes
-                set workOrderMilestoneType = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where workOrderMilestoneTypeId = ?
-                and recordDelete_timeMillis is null`)
-        .run(workOrderMilestoneTypeForm.workOrderMilestoneType, requestSession.user.userName, rightNowMillis, workOrderMilestoneTypeForm.workOrderMilestoneTypeId);
-    database.close();
+    const success = updateRecord("WorkOrderMilestoneTypes", workOrderMilestoneTypeForm.workOrderMilestoneTypeId, workOrderMilestoneTypeForm.workOrderMilestoneType, requestSession);
     clearWorkOrderMilestoneTypesCache();
-    return result.changes > 0;
+    return success;
 }
 export default updateWorkOrderMilestoneType;
