@@ -23,21 +23,21 @@ export function getLotTypeFields(
         )
         .all(lotTypeId);
 
-    let expectedFieldOrderNumber = -1;
+    let expectedOrderNumber = 0;
 
     for (const lotTypeField of lotTypeFields) {
-        expectedFieldOrderNumber += 1;
-
-        if (lotTypeField.orderNumber !== expectedFieldOrderNumber) {
+        if (lotTypeField.orderNumber !== expectedOrderNumber) {
             updateRecordOrderNumber(
                 "LotTypeFields",
                 lotTypeField.lotTypeFieldId,
-                expectedFieldOrderNumber,
+                expectedOrderNumber,
                 database
             );
 
-            lotTypeField.orderNumber = expectedFieldOrderNumber;
+            lotTypeField.orderNumber = expectedOrderNumber;
         }
+
+        expectedOrderNumber += 1;
     }
 
     if (!connectedDatabase) {

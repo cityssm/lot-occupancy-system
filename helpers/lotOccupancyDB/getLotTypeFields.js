@@ -12,13 +12,13 @@ export function getLotTypeFields(lotTypeId, connectedDatabase) {
                 and lotTypeId = ?
                 order by orderNumber, lotTypeField`)
         .all(lotTypeId);
-    let expectedFieldOrderNumber = -1;
+    let expectedOrderNumber = 0;
     for (const lotTypeField of lotTypeFields) {
-        expectedFieldOrderNumber += 1;
-        if (lotTypeField.orderNumber !== expectedFieldOrderNumber) {
-            updateRecordOrderNumber("LotTypeFields", lotTypeField.lotTypeFieldId, expectedFieldOrderNumber, database);
-            lotTypeField.orderNumber = expectedFieldOrderNumber;
+        if (lotTypeField.orderNumber !== expectedOrderNumber) {
+            updateRecordOrderNumber("LotTypeFields", lotTypeField.lotTypeFieldId, expectedOrderNumber, database);
+            lotTypeField.orderNumber = expectedOrderNumber;
         }
+        expectedOrderNumber += 1;
     }
     if (!connectedDatabase) {
         database.close();

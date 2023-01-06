@@ -60,21 +60,21 @@ export function getFeeCategories(
         .all(sqlParameters);
 
     if (options.includeFees) {
-        let expectedFeeCategoryOrderNumber = -1;
+        let expectedOrderNumber = 0;
 
         for (const feeCategory of feeCategories) {
-            expectedFeeCategoryOrderNumber += 1;
-
-            if (updateOrderNumbers && feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
+            if (updateOrderNumbers && feeCategory.orderNumber !== expectedOrderNumber) {
                 updateRecordOrderNumber(
                     "FeeCategories",
                     feeCategory.feeCategoryId,
-                    expectedFeeCategoryOrderNumber,
+                    expectedOrderNumber,
                     database
                 );
 
-                feeCategory.orderNumber = expectedFeeCategoryOrderNumber;
+                feeCategory.orderNumber = expectedOrderNumber;
             }
+
+            expectedOrderNumber += 1;
 
             feeCategory.fees = getFees(feeCategory.feeCategoryId, filters, database);
         }

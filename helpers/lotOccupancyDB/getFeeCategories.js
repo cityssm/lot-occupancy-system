@@ -32,13 +32,13 @@ export function getFeeCategories(filters, options) {
         " order by orderNumber, feeCategory")
         .all(sqlParameters);
     if (options.includeFees) {
-        let expectedFeeCategoryOrderNumber = -1;
+        let expectedOrderNumber = 0;
         for (const feeCategory of feeCategories) {
-            expectedFeeCategoryOrderNumber += 1;
-            if (updateOrderNumbers && feeCategory.orderNumber !== expectedFeeCategoryOrderNumber) {
-                updateRecordOrderNumber("FeeCategories", feeCategory.feeCategoryId, expectedFeeCategoryOrderNumber, database);
-                feeCategory.orderNumber = expectedFeeCategoryOrderNumber;
+            if (updateOrderNumbers && feeCategory.orderNumber !== expectedOrderNumber) {
+                updateRecordOrderNumber("FeeCategories", feeCategory.feeCategoryId, expectedOrderNumber, database);
+                feeCategory.orderNumber = expectedOrderNumber;
             }
+            expectedOrderNumber += 1;
             feeCategory.fees = getFees(feeCategory.feeCategoryId, filters, database);
         }
     }

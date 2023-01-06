@@ -2,8 +2,9 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import type * as recordTypes from "../../types/recordTypes";
 import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
+
+import type * as recordTypes from "../../types/recordTypes";
 
 export function getWorkOrderTypes(): recordTypes.WorkOrderType[] {
     const database = sqlite(databasePath);

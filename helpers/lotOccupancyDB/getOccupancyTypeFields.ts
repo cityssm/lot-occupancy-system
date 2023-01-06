@@ -30,21 +30,21 @@ export function getOccupancyTypeFields(
         )
         .all(sqlParameters);
 
-    let expectedFieldOrderNumber = -1;
+    let expectedOrderNumber = 0;
 
     for (const occupancyTypeField of occupancyTypeFields) {
-        expectedFieldOrderNumber += 1;
-
-        if (occupancyTypeField.orderNumber !== expectedFieldOrderNumber) {
+        if (occupancyTypeField.orderNumber !== expectedOrderNumber) {
             updateRecordOrderNumber(
                 "OccupancyTypeFields",
                 occupancyTypeField.occupancyTypeFieldId,
-                expectedFieldOrderNumber,
+                expectedOrderNumber,
                 database
             );
 
-            occupancyTypeField.orderNumber = expectedFieldOrderNumber;
+            occupancyTypeField.orderNumber = expectedOrderNumber;
         }
+
+        expectedOrderNumber += 1;
     }
 
     if (!connectedDatabase) {

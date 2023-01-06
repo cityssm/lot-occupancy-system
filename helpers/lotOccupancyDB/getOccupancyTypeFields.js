@@ -17,13 +17,13 @@ export function getOccupancyTypeFields(occupancyTypeId, connectedDatabase) {
         (occupancyTypeId ? " and occupancyTypeId = ?" : " and occupancyTypeId is null") +
         " order by orderNumber, occupancyTypeField")
         .all(sqlParameters);
-    let expectedFieldOrderNumber = -1;
+    let expectedOrderNumber = 0;
     for (const occupancyTypeField of occupancyTypeFields) {
-        expectedFieldOrderNumber += 1;
-        if (occupancyTypeField.orderNumber !== expectedFieldOrderNumber) {
-            updateRecordOrderNumber("OccupancyTypeFields", occupancyTypeField.occupancyTypeFieldId, expectedFieldOrderNumber, database);
-            occupancyTypeField.orderNumber = expectedFieldOrderNumber;
+        if (occupancyTypeField.orderNumber !== expectedOrderNumber) {
+            updateRecordOrderNumber("OccupancyTypeFields", occupancyTypeField.occupancyTypeFieldId, expectedOrderNumber, database);
+            occupancyTypeField.orderNumber = expectedOrderNumber;
         }
+        expectedOrderNumber += 1;
     }
     if (!connectedDatabase) {
         database.close();
