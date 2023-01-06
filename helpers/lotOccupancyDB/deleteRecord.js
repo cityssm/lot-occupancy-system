@@ -1,6 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import * as cacheFunctions from "../functions.cache.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 const recordIdColumns = new Map();
 recordIdColumns.set("FeeCategories", "feeCategoryId");
 recordIdColumns.set("Fees", "feeId");
@@ -33,15 +33,6 @@ relatedTables.set("WorkOrders", [
     "WorkOrderLotOccupancies",
     "WorkOrderComments"
 ]);
-const clearCacheFunctions = new Map();
-clearCacheFunctions.set("LotOccupantTypes", cacheFunctions.clearLotOccupantTypesCache);
-clearCacheFunctions.set("LotStatuses", cacheFunctions.clearLotStatusesCache);
-clearCacheFunctions.set("LotTypes", cacheFunctions.clearLotTypesCache);
-clearCacheFunctions.set("LotTypeFields", cacheFunctions.clearLotTypesCache);
-clearCacheFunctions.set("OccupancyTypes", cacheFunctions.clearOccupancyTypesCache);
-clearCacheFunctions.set("OccupancyTypeFields", cacheFunctions.clearOccupancyTypesCache);
-clearCacheFunctions.set("WorkOrderMilestoneTypes", cacheFunctions.clearWorkOrderMilestoneTypesCache);
-clearCacheFunctions.set("WorkOrderTypes", cacheFunctions.clearWorkOrderTypesCache);
 export function deleteRecord(recordTable, recordId, requestSession) {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
@@ -62,8 +53,6 @@ export function deleteRecord(recordTable, recordId, requestSession) {
             .run(requestSession.user.userName, rightNowMillis, recordId);
     }
     database.close();
-    if (clearCacheFunctions.has(recordTable)) {
-        clearCacheFunctions.get(recordTable)();
-    }
+    clearCacheByTableName(recordTable);
     return result.changes > 0;
 }

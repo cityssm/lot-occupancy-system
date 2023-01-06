@@ -1,6 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearLotOccupantTypesCache } from "../functions.cache.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 export function updateLotOccupantType(lotOccupantTypeForm, requestSession) {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
@@ -14,7 +14,7 @@ export function updateLotOccupantType(lotOccupantTypeForm, requestSession) {
                 and recordDelete_timeMillis is null`)
         .run(lotOccupantTypeForm.lotOccupantType, lotOccupantTypeForm.fontAwesomeIconClass || "", requestSession.user.userName, rightNowMillis, lotOccupantTypeForm.lotOccupantTypeId);
     database.close();
-    clearLotOccupantTypesCache();
+    clearCacheByTableName("LotOccupantTypes");
     return result.changes > 0;
 }
 export default updateLotOccupantType;

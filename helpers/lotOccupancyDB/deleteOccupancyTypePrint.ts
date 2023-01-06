@@ -2,7 +2,7 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import { clearOccupancyTypesCache } from "../functions.cache.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -27,7 +27,7 @@ export function deleteOccupancyTypePrint(
 
     database.close();
 
-    clearOccupancyTypesCache();
+    clearCacheByTableName("OccupancyTypePrints");
 
     return result.changes > 0;
 }

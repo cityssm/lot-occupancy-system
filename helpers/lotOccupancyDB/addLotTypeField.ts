@@ -2,8 +2,9 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
+import { clearCacheByTableName } from "../functions.cache.js";
+
 import type * as recordTypes from "../../types/recordTypes";
-import { clearLotTypesCache } from "../functions.cache.js";
 
 interface AddLotTypeFieldForm {
     lotTypeId: string | number;
@@ -52,7 +53,7 @@ export function addLotTypeField(
 
     database.close();
 
-    clearLotTypesCache();
+    clearCacheByTableName("LotTypeFields");
 
     return result.lastInsertRowid as number;
 }

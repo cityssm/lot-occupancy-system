@@ -2,7 +2,7 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import * as cacheFunctions from "../functions.cache.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -60,16 +60,6 @@ relatedTables.set("WorkOrders", [
     "WorkOrderComments"
 ]);
 
-const clearCacheFunctions: Map<RecordTable, () => void> = new Map();
-clearCacheFunctions.set("LotOccupantTypes", cacheFunctions.clearLotOccupantTypesCache);
-clearCacheFunctions.set("LotStatuses", cacheFunctions.clearLotStatusesCache);
-clearCacheFunctions.set("LotTypes", cacheFunctions.clearLotTypesCache);
-clearCacheFunctions.set("LotTypeFields", cacheFunctions.clearLotTypesCache);
-clearCacheFunctions.set("OccupancyTypes", cacheFunctions.clearOccupancyTypesCache);
-clearCacheFunctions.set("OccupancyTypeFields", cacheFunctions.clearOccupancyTypesCache);
-clearCacheFunctions.set("WorkOrderMilestoneTypes", cacheFunctions.clearWorkOrderMilestoneTypesCache);
-clearCacheFunctions.set("WorkOrderTypes", cacheFunctions.clearWorkOrderTypesCache);
-
 export function deleteRecord(
     recordTable: RecordTable,
     recordId: number | string,
@@ -103,9 +93,7 @@ export function deleteRecord(
 
     database.close();
 
-    if (clearCacheFunctions.has(recordTable)) {
-        clearCacheFunctions.get(recordTable)();
-    }
+    clearCacheByTableName(recordTable);
 
     return result.changes > 0;
 }

@@ -1,15 +1,12 @@
-import { clearWorkOrderMilestoneTypesCache } from "../functions.cache.js";
 import { moveRecordUp, moveRecordUpToTop } from "./moveRecord.js";
 
 export function moveWorkOrderMilestoneTypeUp(workOrderMilestoneTypeId: number | string): boolean {
     const success = moveRecordUp("WorkOrderMilestoneTypes", workOrderMilestoneTypeId);
-    clearWorkOrderMilestoneTypesCache();
     return success;
 }
 
 export function moveWorkOrderMilestoneTypeUpToTop(workOrderMilestoneTypeId: number | string): boolean {
     const success = moveRecordUpToTop("WorkOrderMilestoneTypes", workOrderMilestoneTypeId);
-    clearWorkOrderMilestoneTypesCache();
     return success;
 }
 

@@ -2,7 +2,7 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import { clearOccupancyTypesCache } from "../functions.cache.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 
 export function moveOccupancyTypePrintUp(
     occupancyTypeId: number | string,
@@ -39,7 +39,7 @@ export function moveOccupancyTypePrintUp(
 
     database.close();
 
-    clearOccupancyTypesCache();
+    clearCacheByTableName("OccupancyTypePrints");
 
     return result.changes > 0;
 }
@@ -79,7 +79,7 @@ export function moveOccupancyTypePrintUpToTop(
 
     database.close();
 
-    clearOccupancyTypesCache();
+    clearCacheByTableName("OccupancyTypePrints");
 
     return true;
 }

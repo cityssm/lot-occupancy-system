@@ -1,6 +1,7 @@
 import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 
 type RecordTable =
     | "FeeCategories"
@@ -60,6 +61,8 @@ export function moveRecordDown(recordTable: RecordTable, recordId: number | stri
 
     database.close();
 
+    clearCacheByTableName(recordTable);
+
     return result.changes > 0;
 }
 
@@ -95,6 +98,8 @@ export function moveRecordDownToBottom(recordTable: RecordTable, recordId: numbe
 
     database.close();
 
+    clearCacheByTableName(recordTable);
+
     return true;
 }
 
@@ -127,6 +132,8 @@ export function moveRecordUp(recordTable: RecordTable, recordId: number | string
 
     database.close();
 
+    clearCacheByTableName(recordTable);
+
     return result.changes > 0;
 }
 
@@ -153,6 +160,8 @@ export function moveRecordUpToTop(recordTable: RecordTable, recordId: number | s
     }
 
     database.close();
+
+    clearCacheByTableName(recordTable);
 
     return true;
 }

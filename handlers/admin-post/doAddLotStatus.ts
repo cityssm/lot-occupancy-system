@@ -1,11 +1,15 @@
 import type { RequestHandler } from "express";
 
-import { addLotStatus } from "../../helpers/lotOccupancyDB/addLotStatus.js";
-
+import { addRecord } from "../../helpers/lotOccupancyDB/addRecord.js";
 import { getLotStatuses } from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
-    const lotStatusId = addLotStatus(request.body, request.session);
+    const lotStatusId = addRecord(
+        "LotStatuses",
+        request.body.lotStatus,
+        request.body.orderNumber || -1,
+        request.session
+    );
 
     const lotStatuses = getLotStatuses();
 

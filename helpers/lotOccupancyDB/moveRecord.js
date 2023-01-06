@@ -1,5 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 const recordIdColumns = new Map();
 recordIdColumns.set("FeeCategories", "feeCategoryId");
 recordIdColumns.set("LotOccupantTypes", "lotOccupantTypeId");
@@ -31,6 +32,7 @@ export function moveRecordDown(recordTable, recordId) {
                 where ${recordIdColumns.get(recordTable)} = ?`)
         .run(currentOrderNumber, recordId);
     database.close();
+    clearCacheByTableName(recordTable);
     return result.changes > 0;
 }
 export function moveRecordDownToBottom(recordTable, recordId) {
@@ -53,6 +55,7 @@ export function moveRecordDownToBottom(recordTable, recordId) {
             .run(currentOrderNumber);
     }
     database.close();
+    clearCacheByTableName(recordTable);
     return true;
 }
 export function moveRecordUp(recordTable, recordId) {
@@ -74,6 +77,7 @@ export function moveRecordUp(recordTable, recordId) {
                 where ${recordIdColumns.get(recordTable)} = ?`)
         .run(currentOrderNumber, recordId);
     database.close();
+    clearCacheByTableName(recordTable);
     return result.changes > 0;
 }
 export function moveRecordUpToTop(recordTable, recordId) {
@@ -91,5 +95,6 @@ export function moveRecordUpToTop(recordTable, recordId) {
             .run(currentOrderNumber);
     }
     database.close();
+    clearCacheByTableName(recordTable);
     return true;
 }

@@ -1,7 +1,7 @@
-import { addLotType } from "../../helpers/lotOccupancyDB/addLotType.js";
+import { addRecord } from "../../helpers/lotOccupancyDB/addRecord.js";
 import { getLotTypes } from "../../helpers/functions.cache.js";
 export const handler = async (request, response) => {
-    const lotTypeId = addLotType(request.body, request.session);
+    const lotTypeId = addRecord("LotTypes", request.body.lotType, request.body.orderNumber || -1, request.session);
     const lotTypes = getLotTypes();
     response.json({
         success: true,

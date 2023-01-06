@@ -3,6 +3,7 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
+import { clearCacheByTableName } from "../functions.cache.js";
 
 type RecordTable =
     | "FeeCategories"
@@ -48,6 +49,8 @@ export function addRecord(
         );
 
     database.close();
+
+    clearCacheByTableName(recordTable);
 
     return result.lastInsertRowid as number;
 }

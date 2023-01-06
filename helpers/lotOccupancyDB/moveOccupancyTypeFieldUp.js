@@ -1,6 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearOccupancyTypesCache } from "../functions.cache.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 export function moveOccupancyTypeFieldUp(occupancyTypeFieldId) {
     const database = sqlite(databasePath);
     const currentField = database
@@ -23,7 +23,7 @@ export function moveOccupancyTypeFieldUp(occupancyTypeFieldId) {
         .prepare(`update OccupancyTypeFields set orderNumber = ? - 1 where occupancyTypeFieldId = ?`)
         .run(currentField.orderNumber, occupancyTypeFieldId);
     database.close();
-    clearOccupancyTypesCache();
+    clearCacheByTableName("OccupancyTypeFields");
     return result.changes > 0;
 }
 export function moveOccupancyTypeFieldUpToTop(occupancyTypeFieldId) {
@@ -51,7 +51,7 @@ export function moveOccupancyTypeFieldUpToTop(occupancyTypeFieldId) {
             .run(occupancyTypeParameters);
     }
     database.close();
-    clearOccupancyTypesCache();
+    clearCacheByTableName("OccupancyTypeFields");
     return true;
 }
 export default moveOccupancyTypeFieldUp;

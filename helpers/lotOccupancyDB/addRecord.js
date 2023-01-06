@@ -1,5 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 const recordNameColumns = new Map();
 recordNameColumns.set("FeeCategories", "feeCategory");
 recordNameColumns.set("LotStatuses", "lotStatus");
@@ -18,5 +19,6 @@ export function addRecord(recordTable, recordName, orderNumber, requestSession) 
                 values (?, ?, ?, ?, ?, ?)`)
         .run(recordName, orderNumber, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     database.close();
+    clearCacheByTableName(recordTable);
     return result.lastInsertRowid;
 }

@@ -1,6 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearOccupancyTypesCache } from "../functions.cache.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 export function moveOccupancyTypePrintUp(occupancyTypeId, printEJS) {
     const database = sqlite(databasePath);
     const currentOrderNumber = database
@@ -21,7 +21,7 @@ export function moveOccupancyTypePrintUp(occupancyTypeId, printEJS) {
         .prepare(`update OccupancyTypePrints set orderNumber = ? - 1 where occupancyTypeId = ? and printEJS = ?`)
         .run(currentOrderNumber, occupancyTypeId, printEJS);
     database.close();
-    clearOccupancyTypesCache();
+    clearCacheByTableName("OccupancyTypePrints");
     return result.changes > 0;
 }
 export function moveOccupancyTypePrintUpToTop(occupancyTypeId, printEJS) {
@@ -45,7 +45,7 @@ export function moveOccupancyTypePrintUpToTop(occupancyTypeId, printEJS) {
             .run(occupancyTypeId, currentOrderNumber);
     }
     database.close();
-    clearOccupancyTypesCache();
+    clearCacheByTableName("OccupancyTypePrints");
     return true;
 }
 export default moveOccupancyTypePrintUp;

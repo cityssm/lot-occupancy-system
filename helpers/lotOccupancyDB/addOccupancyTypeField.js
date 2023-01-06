@@ -1,6 +1,6 @@
 import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearOccupancyTypesCache } from "../functions.cache.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 export function addOccupancyTypeField(occupancyTypeFieldForm, requestSession) {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
@@ -15,7 +15,7 @@ export function addOccupancyTypeField(occupancyTypeFieldForm, requestSession) {
                 values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(occupancyTypeFieldForm.occupancyTypeId || undefined, occupancyTypeFieldForm.occupancyTypeField, occupancyTypeFieldForm.occupancyTypeFieldValues || "", occupancyTypeFieldForm.isRequired ? 1 : 0, occupancyTypeFieldForm.pattern || "", occupancyTypeFieldForm.minimumLength || 0, occupancyTypeFieldForm.maximumLength || 100, occupancyTypeFieldForm.orderNumber || -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     database.close();
-    clearOccupancyTypesCache();
+    clearCacheByTableName("OccupancyTypeFields");
     return result.lastInsertRowid;
 }
 export default addOccupancyTypeField;

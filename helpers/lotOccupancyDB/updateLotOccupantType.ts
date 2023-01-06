@@ -2,7 +2,7 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import { clearLotOccupantTypesCache } from "../functions.cache.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -40,7 +40,7 @@ export function updateLotOccupantType(
 
     database.close();
 
-    clearLotOccupantTypesCache();
+    clearCacheByTableName("LotOccupantTypes");
 
     return result.changes > 0;
 }

@@ -1,7 +1,7 @@
-import { addFeeCategory } from "../../helpers/lotOccupancyDB/addFeeCategory.js";
+import { addRecord } from "../../helpers/lotOccupancyDB/addRecord.js";
 import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.js";
 export const handler = async (request, response) => {
-    const feeCategoryId = addFeeCategory(request.body, request.session);
+    const feeCategoryId = addRecord("FeeCategories", request.body.feeCategory, request.body.orderNumber || -1, request.session);
     const feeCategories = getFeeCategories({}, {
         includeFees: true
     });

@@ -26,7 +26,7 @@ export function getLotOccupantTypeByLotOccupantType(lotOccupantType) {
         return currentLotOccupantType.lotOccupantType.toLowerCase() === lotOccupantTypeLowerCase;
     });
 }
-export function clearLotOccupantTypesCache() {
+function clearLotOccupantTypesCache() {
     lotOccupantTypes = undefined;
 }
 let lotStatuses;
@@ -49,7 +49,7 @@ export function getLotStatusByLotStatus(lotStatus) {
         return currentLotStatus.lotStatus.toLowerCase() === lotStatusLowerCase;
     });
 }
-export function clearLotStatusesCache() {
+function clearLotStatusesCache() {
     lotStatuses = undefined;
 }
 let lotTypes;
@@ -72,7 +72,7 @@ export function getLotTypesByLotType(lotType) {
         return currentLotType.lotType.toLowerCase() === lotTypeLowerCase;
     });
 }
-export function clearLotTypesCache() {
+function clearLotTypesCache() {
     lotTypes = undefined;
 }
 let occupancyTypes;
@@ -112,7 +112,7 @@ export function getOccupancyTypePrintsById(occupancyTypeId) {
     }
     return occupancyType.occupancyTypePrints;
 }
-export function clearOccupancyTypesCache() {
+function clearOccupancyTypesCache() {
     occupancyTypes = undefined;
     allOccupancyTypeFields = undefined;
 }
@@ -129,7 +129,7 @@ export function getWorkOrderTypeById(workOrderTypeId) {
         return currentWorkOrderType.workOrderTypeId === workOrderTypeId;
     });
 }
-export function clearWorkOrderTypesCache() {
+function clearWorkOrderTypesCache() {
     workOrderTypes = undefined;
 }
 let workOrderMilestoneTypes;
@@ -153,6 +153,37 @@ export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMiles
             workOrderMilestoneTypeLowerCase);
     });
 }
-export function clearWorkOrderMilestoneTypesCache() {
+function clearWorkOrderMilestoneTypesCache() {
     workOrderMilestoneTypes = undefined;
+}
+export function clearCacheByTableName(tableName) {
+    switch (tableName) {
+        case "LotOccupantTypes": {
+            clearLotOccupantTypesCache();
+            break;
+        }
+        case "LotStatuses": {
+            clearLotStatusesCache();
+            break;
+        }
+        case "LotTypes":
+        case "LotTypeFields": {
+            clearLotTypesCache();
+            break;
+        }
+        case "OccupancyTypes":
+        case "OccupancyTypeFields":
+        case "OccupancyTypePrints": {
+            clearOccupancyTypesCache();
+            break;
+        }
+        case "WorkOrderMilestoneTypes": {
+            clearWorkOrderMilestoneTypesCache();
+            break;
+        }
+        case "WorkOrderTypes": {
+            clearWorkOrderTypesCache();
+            break;
+        }
+    }
 }

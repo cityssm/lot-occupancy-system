@@ -47,7 +47,7 @@ export function getLotOccupantTypeByLotOccupantType(lotOccupantType: string) {
     });
 }
 
-export function clearLotOccupantTypesCache() {
+function clearLotOccupantTypesCache() {
     lotOccupantTypes = undefined;
 }
 
@@ -83,7 +83,7 @@ export function getLotStatusByLotStatus(lotStatus: string) {
     });
 }
 
-export function clearLotStatusesCache() {
+function clearLotStatusesCache() {
     lotStatuses = undefined;
 }
 
@@ -119,7 +119,7 @@ export function getLotTypesByLotType(lotType: string) {
     });
 }
 
-export function clearLotTypesCache() {
+function clearLotTypesCache() {
     lotTypes = undefined;
 }
 
@@ -177,7 +177,7 @@ export function getOccupancyTypePrintsById(occupancyTypeId: number): string[] {
     return occupancyType.occupancyTypePrints;
 }
 
-export function clearOccupancyTypesCache() {
+function clearOccupancyTypesCache() {
     occupancyTypes = undefined;
     allOccupancyTypeFields = undefined;
 }
@@ -204,7 +204,7 @@ export function getWorkOrderTypeById(workOrderTypeId: number) {
     });
 }
 
-export function clearWorkOrderTypesCache() {
+function clearWorkOrderTypesCache() {
     workOrderTypes = undefined;
 }
 
@@ -222,9 +222,7 @@ export function getWorkOrderMilestoneTypes() {
     return workOrderMilestoneTypes;
 }
 
-export function getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(
-    workOrderMilestoneTypeId: number
-) {
+export function getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(workOrderMilestoneTypeId: number) {
     const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
 
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => {
@@ -232,9 +230,7 @@ export function getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(
     });
 }
 
-export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
-    workOrderMilestoneTypeString: string
-) {
+export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString: string) {
     const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
 
     const workOrderMilestoneTypeLowerCase = workOrderMilestoneTypeString.toLowerCase();
@@ -247,6 +243,43 @@ export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     });
 }
 
-export function clearWorkOrderMilestoneTypesCache() {
+function clearWorkOrderMilestoneTypesCache() {
     workOrderMilestoneTypes = undefined;
+}
+
+export function clearCacheByTableName(tableName: string) {
+    switch (tableName) {
+        case "LotOccupantTypes": {
+            clearLotOccupantTypesCache();
+            break;
+        }
+
+        case "LotStatuses": {
+            clearLotStatusesCache();
+            break;
+        }
+
+        case "LotTypes":
+        case "LotTypeFields": {
+            clearLotTypesCache();
+            break;
+        }
+
+        case "OccupancyTypes":
+        case "OccupancyTypeFields":
+        case "OccupancyTypePrints": {
+            clearOccupancyTypesCache();
+            break;
+        }
+
+        case "WorkOrderMilestoneTypes": {
+            clearWorkOrderMilestoneTypesCache();
+            break;
+        }
+
+        case "WorkOrderTypes": {
+            clearWorkOrderTypesCache();
+            break;
+        }
+    }
 }

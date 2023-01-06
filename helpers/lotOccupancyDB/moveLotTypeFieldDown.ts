@@ -2,7 +2,7 @@ import sqlite from "better-sqlite3";
 
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
-import { clearLotTypesCache } from "../functions.cache.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 
 export function moveLotTypeFieldDown(lotTypeFieldId: number | string): boolean {
     const database = sqlite(databasePath);
@@ -26,7 +26,7 @@ export function moveLotTypeFieldDown(lotTypeFieldId: number | string): boolean {
 
     database.close();
 
-    clearLotTypesCache();
+    clearCacheByTableName("LotTypeFields");
 
     return result.changes > 0;
 }
@@ -65,7 +65,7 @@ export function moveLotTypeFieldDownToBottom(lotTypeFieldId: number | string): b
 
     database.close();
 
-    clearLotTypesCache();
+    clearCacheByTableName("LotTypeFields");
 
     return true;
 }

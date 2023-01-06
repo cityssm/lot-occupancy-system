@@ -3,7 +3,7 @@ import sqlite from "better-sqlite3";
 import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
 
 import type * as recordTypes from "../../types/recordTypes";
-import { clearLotOccupantTypesCache } from "../functions.cache.js";
+import { clearCacheByTableName } from "../functions.cache.js";
 
 interface AddLotOccupantTypeForm {
     lotOccupantType: string;
@@ -39,7 +39,7 @@ export function addLotOccupantType(
 
     database.close();
 
-    clearLotOccupantTypesCache();
+    clearCacheByTableName("LotOccupantTypes");
 
     return result.lastInsertRowid as number;
 }
