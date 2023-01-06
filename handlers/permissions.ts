@@ -1,4 +1,4 @@
-import type { RequestHandler, Response } from "express";
+import type { RequestHandler } from "express";
 
 import * as configFunctions from "../helpers/functions.config.js";
 
@@ -6,19 +6,21 @@ import * as userFunctions from "../helpers/functions.user.js";
 
 const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
 
-export const forbiddenJSON = (response: Response): Response => {
-    return response.status(403).json({
-        success: false,
-        message: "Forbidden"
-    });
+const forbiddenStatus = 403;
+
+const forbiddenJSON = {
+    success: false,
+    message: "Forbidden"
 };
+
+const forbiddenRedirectURL = urlPrefix + "/dashboard/?error=accessDenied";
 
 export const adminGetHandler: RequestHandler = (request, response, next) => {
     if (userFunctions.userIsAdmin(request)) {
         return next();
     }
 
-    return response.redirect(urlPrefix + "/dashboard/?error=accessDenied");
+    return response.redirect(forbiddenRedirectURL);
 };
 
 export const adminPostHandler: RequestHandler = (request, response, next) => {
@@ -26,7 +28,7 @@ export const adminPostHandler: RequestHandler = (request, response, next) => {
         return next();
     }
 
-    return response.json(forbiddenJSON);
+    return response.status(forbiddenStatus).json(forbiddenJSON);
 };
 
 export const updateGetHandler: RequestHandler = (request, response, next) => {
@@ -34,7 +36,7 @@ export const updateGetHandler: RequestHandler = (request, response, next) => {
         return next();
     }
 
-    return response.redirect(urlPrefix + "/dashboard/?error=accessDenied");
+    return response.redirect(forbiddenRedirectURL);
 };
 
 export const updatePostHandler: RequestHandler = (request, response, next) => {
@@ -42,7 +44,7 @@ export const updatePostHandler: RequestHandler = (request, response, next) => {
         return next();
     }
 
-    return response.json(forbiddenJSON);
+    return response.status(forbiddenStatus).json(forbiddenJSON);
 };
 
 export const apiGetHandler: RequestHandler = async (request, response, next) => {
