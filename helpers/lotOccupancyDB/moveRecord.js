@@ -27,14 +27,10 @@ export function moveRecordDown(recordTable, recordId) {
                 where recordDelete_timeMillis is null
                 and orderNumber = ? + 1`)
         .run(currentOrderNumber);
-    const result = database
-        .prepare(`update ${recordTable}
-                set orderNumber = ? + 1
-                where ${recordIdColumns.get(recordTable)} = ?`)
-        .run(currentOrderNumber, recordId);
+    const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber + 1, database);
     database.close();
     clearCacheByTableName(recordTable);
-    return result.changes > 0;
+    return success;
 }
 export function moveRecordDownToBottom(recordTable, recordId) {
     const database = sqlite(databasePath);
@@ -45,9 +41,7 @@ export function moveRecordDownToBottom(recordTable, recordId) {
                 where recordDelete_timeMillis is null`)
         .get().maxOrderNumber;
     if (currentOrderNumber !== maxOrderNumber) {
-        database
-            .prepare(`update ${recordTable} set orderNumber = ? + 1 where ${recordIdColumns.get(recordTable)} = ?`)
-            .run(maxOrderNumber, recordId);
+        updateRecordOrderNumber(recordTable, recordId, maxOrderNumber + 1, database);
         database
             .prepare(`update ${recordTable}
                     set orderNumber = orderNumber - 1
@@ -81,9 +75,7 @@ export function moveRecordUpToTop(recordTable, recordId) {
     const database = sqlite(databasePath);
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     if (currentOrderNumber > 0) {
-        database
-            .prepare(`update ${recordTable} set orderNumber = -1 where ${recordIdColumns.get(recordTable)} = ?`)
-            .run(recordId);
+        updateRecordOrderNumber(recordTable, recordId, -1, database);
         database
             .prepare(`update ${recordTable}
                     set orderNumber = orderNumber + 1

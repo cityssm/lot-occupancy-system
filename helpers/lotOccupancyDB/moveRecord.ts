@@ -52,19 +52,13 @@ export function moveRecordDown(recordTable: RecordTable, recordId: number): bool
         )
         .run(currentOrderNumber);
 
-    const result = database
-        .prepare(
-            `update ${recordTable}
-                set orderNumber = ? + 1
-                where ${recordIdColumns.get(recordTable)} = ?`
-        )
-        .run(currentOrderNumber, recordId);
+    const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber + 1, database);
 
     database.close();
 
     clearCacheByTableName(recordTable);
 
-    return result.changes > 0;
+    return success;
 }
 
 export function moveRecordDownToBottom(recordTable: RecordTable, recordId: number): boolean {
@@ -81,11 +75,7 @@ export function moveRecordDownToBottom(recordTable: RecordTable, recordId: numbe
         .get().maxOrderNumber;
 
     if (currentOrderNumber !== maxOrderNumber) {
-        database
-            .prepare(
-                `update ${recordTable} set orderNumber = ? + 1 where ${recordIdColumns.get(recordTable)} = ?`
-            )
-            .run(maxOrderNumber, recordId);
+        updateRecordOrderNumber(recordTable, recordId, maxOrderNumber + 1, database);
 
         database
             .prepare(
@@ -123,7 +113,6 @@ export function moveRecordUp(recordTable: RecordTable, recordId: number): boolea
         )
         .run(currentOrderNumber);
 
-
     const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber - 1, database);
 
     database.close();
@@ -139,11 +128,7 @@ export function moveRecordUpToTop(recordTable: RecordTable, recordId: number): b
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
 
     if (currentOrderNumber > 0) {
-        database
-            .prepare(
-                `update ${recordTable} set orderNumber = -1 where ${recordIdColumns.get(recordTable)} = ?`
-            )
-            .run(recordId);
+        updateRecordOrderNumber(recordTable, recordId, -1, database);
 
         database
             .prepare(
