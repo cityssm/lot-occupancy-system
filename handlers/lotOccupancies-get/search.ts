@@ -12,7 +12,7 @@ export const handler: RequestHandler = (request, response) => {
     const occupancyTypes = getOccupancyTypes();
 
     response.render("lotOccupancy-search", {
-        headTitle: configFunctions.getProperty("aliases.lot") + " Occupancy Search",
+        headTitle: configFunctions.getProperty("aliases.occupancy") + " Search",
         maps,
         lotTypes,
         occupancyTypes,

@@ -18,11 +18,7 @@ export const handler: RequestHandler = (request, response) => {
     const occupancyTypePrints = getOccupancyTypePrintsById(lotOccupancy.occupancyTypeId);
 
     return response.render("lotOccupancy-view", {
-        headTitle:
-            configFunctions.getProperty("aliases.lot") +
-            " " +
-            configFunctions.getProperty("aliases.occupancy") +
-            " View",
+        headTitle: `${configFunctions.getProperty("aliases.occupancy")} View`,
         lotOccupancy,
         occupancyTypePrints
     });

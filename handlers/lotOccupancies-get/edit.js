@@ -16,10 +16,7 @@ export const handler = (request, response) => {
     const maps = getMaps();
     const workOrderTypes = getWorkOrderTypes();
     return response.render("lotOccupancy-edit", {
-        headTitle: configFunctions.getProperty("aliases.lot") +
-            " " +
-            configFunctions.getProperty("aliases.occupancy") +
-            "  Update",
+        headTitle: `${configFunctions.getProperty("aliases.occupancy")} Update`,
         lotOccupancy,
         occupancyTypePrints,
         occupancyTypes,
