@@ -90,9 +90,7 @@ export function getWorkOrders(filters, options, connectedDatabase) {
             .all(sqlParameters);
     }
     if (options &&
-        (options.includeComments ||
-            options.includeLotsAndLotOccupancies ||
-            options.includeMilestones)) {
+        (options.includeComments || options.includeLotsAndLotOccupancies || options.includeMilestones)) {
         for (const workOrder of workOrders) {
             if (options.includeComments) {
                 workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId, database);

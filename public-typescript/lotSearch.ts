@@ -1,130 +1,155 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
-import type * as globalTypes from "../types/globalTypes";
-import type * as recordTypes from "../types/recordTypes";
+import type * as globalTypes from '../types/globalTypes'
+import type * as recordTypes from '../types/recordTypes'
 
-import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
 
-declare const cityssm: cityssmGlobal;
+declare const cityssm: cityssmGlobal
 
-(() => {
-    const los = exports.los as globalTypes.LOS;
+;(() => {
+  const los = exports.los as globalTypes.LOS
 
-    const searchFilterFormElement = document.querySelector("#form--searchFilters") as HTMLFormElement;
+  const searchFilterFormElement = document.querySelector(
+    '#form--searchFilters'
+  ) as HTMLFormElement
 
-    const searchResultsContainerElement = document.querySelector("#container--searchResults") as HTMLElement;
+  const searchResultsContainerElement = document.querySelector(
+    '#container--searchResults'
+  ) as HTMLElement
 
-    const limit = Number.parseInt(
-        (document.querySelector("#searchFilter--limit") as HTMLInputElement).value,
-        10
-    );
-    const offsetElement = document.querySelector("#searchFilter--offset") as HTMLInputElement;
+  const limit = Number.parseInt(
+    (document.querySelector('#searchFilter--limit') as HTMLInputElement).value,
+    10
+  )
+  const offsetElement = document.querySelector(
+    '#searchFilter--offset'
+  ) as HTMLInputElement
 
-    function renderLots(responseJSON: { count: number; offset: number; lots: recordTypes.Lot[] }): void {
-        if (responseJSON.lots.length === 0) {
-            searchResultsContainerElement.innerHTML = `<div class="message is-info">
+  function renderLots(responseJSON: {
+    count: number
+    offset: number
+    lots: recordTypes.Lot[]
+  }): void {
+    if (responseJSON.lots.length === 0) {
+      searchResultsContainerElement.innerHTML = `<div class="message is-info">
                 <p class="message-body">There are no ${los.escapedAliases.lots} that meet the search criteria.</p>
-                </div>`;
+                </div>`
 
-            return;
-        }
+      return
+    }
 
-        const resultsTbodyElement = document.createElement("tbody");
+    const resultsTbodyElement = document.createElement('tbody')
 
-        for (const lot of responseJSON.lots) {
-            resultsTbodyElement.insertAdjacentHTML(
-                "beforeend",
-                "<tr>" +
-                    ("<td>" +
-                        '<a class="has-text-weight-bold" href="' +
-                        los.getLotURL(lot.lotId) +
-                        '">' +
-                        cityssm.escapeHTML(lot.lotName || "") +
-                        "</a>" +
-                        "</td>") +
-                    ("<td>" +
-                        '<a href="' +
-                        los.getMapURL(lot.mapId!) +
-                        '">' +
-                        (lot.mapName
-                            ? cityssm.escapeHTML(lot.mapName)
-                            : '<span class="has-text-grey">(No Name)</span>') +
-                        "</a>" +
-                        "</td>") +
-                    ("<td>" + cityssm.escapeHTML(lot.lotType || "") + "</td>") +
-                    ("<td>" +
-                        (lot.lotStatusId
-                            ? cityssm.escapeHTML(lot.lotStatus || "")
-                            : '<span class="has-text-grey">(No Status)</span>') +
-                        "<br />" +
-                        (lot.lotOccupancyCount! > 0
-                            ? '<span class="is-size-7">Currently Occupied</span>'
-                            : "") +
-                        "</td>") +
-                    "</tr>"
-            );
-        }
+    for (const lot of responseJSON.lots) {
+      resultsTbodyElement.insertAdjacentHTML(
+        'beforeend',
+        '<tr>' +
+          ('<td>' +
+            '<a class="has-text-weight-bold" href="' +
+            los.getLotURL(lot.lotId) +
+            '">' +
+            cityssm.escapeHTML(lot.lotName || '') +
+            '</a>' +
+            '</td>') +
+          ('<td>' +
+            '<a href="' +
+            los.getMapURL(lot.mapId!) +
+            '">' +
+            (lot.mapName
+              ? cityssm.escapeHTML(lot.mapName)
+              : '<span class="has-text-grey">(No Name)</span>') +
+            '</a>' +
+            '</td>') +
+          ('<td>' + cityssm.escapeHTML(lot.lotType || '') + '</td>') +
+          ('<td>' +
+            (lot.lotStatusId
+              ? cityssm.escapeHTML(lot.lotStatus || '')
+              : '<span class="has-text-grey">(No Status)</span>') +
+            '<br />' +
+            (lot.lotOccupancyCount! > 0
+              ? '<span class="is-size-7">Currently Occupied</span>'
+              : '') +
+            '</td>') +
+          '</tr>'
+      )
+    }
 
-        searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+    searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
             <thead><tr>
             <th>${los.escapedAliases.Lot}</th>
             <th>${los.escapedAliases.Map}</th>
             <th>${los.escapedAliases.Lot} Type</th>
             <th>Status</th>
             </tr></thead>
-            <table>`;
+            <table>`
 
-        searchResultsContainerElement.insertAdjacentHTML(
-            "beforeend",
-            los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count)
-        );
+    searchResultsContainerElement.insertAdjacentHTML(
+      'beforeend',
+      los.getSearchResultsPagerHTML(
+        limit,
+        responseJSON.offset,
+        responseJSON.count
+      )
+    )
 
-        searchResultsContainerElement.querySelector("table")!.append(resultsTbodyElement);
+    searchResultsContainerElement
+      .querySelector('table')!
+      .append(resultsTbodyElement)
 
-        searchResultsContainerElement
-            .querySelector("button[data-page='previous']")
-            ?.addEventListener("click", previousAndGetLots);
+    searchResultsContainerElement
+      .querySelector("button[data-page='previous']")
+      ?.addEventListener('click', previousAndGetLots)
 
-        searchResultsContainerElement
-            .querySelector("button[data-page='next']")
-            ?.addEventListener("click", nextAndGetLots);
-    }
+    searchResultsContainerElement
+      .querySelector("button[data-page='next']")
+      ?.addEventListener('click', nextAndGetLots)
+  }
 
-    function getLots(): void {
-        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
-            `Loading ${los.escapedAliases.Lots}...`
-        );
+  function getLots(): void {
+    searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
+      `Loading ${los.escapedAliases.Lots}...`
+    )
 
-        cityssm.postJSON(los.urlPrefix + "/lots/doSearchLots", searchFilterFormElement, renderLots);
-    }
+    cityssm.postJSON(
+      los.urlPrefix + '/lots/doSearchLots',
+      searchFilterFormElement,
+      renderLots
+    )
+  }
 
-    function resetOffsetAndGetLots(): void {
-        offsetElement.value = "0";
-        getLots();
-    }
+  function resetOffsetAndGetLots(): void {
+    offsetElement.value = '0'
+    getLots()
+  }
 
-    function previousAndGetLots(): void {
-        offsetElement.value = Math.max(Number.parseInt(offsetElement.value, 10) - limit, 0).toString();
-        getLots();
-    }
+  function previousAndGetLots(): void {
+    offsetElement.value = Math.max(
+      Number.parseInt(offsetElement.value, 10) - limit,
+      0
+    ).toString()
+    getLots()
+  }
 
-    function nextAndGetLots(): void {
-        offsetElement.value = (Number.parseInt(offsetElement.value, 10) + limit).toString();
-        getLots();
-    }
+  function nextAndGetLots(): void {
+    offsetElement.value = (
+      Number.parseInt(offsetElement.value, 10) + limit
+    ).toString()
+    getLots()
+  }
 
-    const filterElements = searchFilterFormElement.querySelectorAll("input, select") as NodeListOf<
-        HTMLInputElement | HTMLSelectElement
-    >;
+  const filterElements = searchFilterFormElement.querySelectorAll(
+    'input, select'
+  ) as NodeListOf<HTMLInputElement | HTMLSelectElement>
 
-    for (const filterElement of filterElements) {
-        filterElement.addEventListener("change", resetOffsetAndGetLots);
-    }
+  for (const filterElement of filterElements) {
+    filterElement.addEventListener('change', resetOffsetAndGetLots)
+  }
 
-    searchFilterFormElement.addEventListener("submit", (formEvent) => {
-        formEvent.preventDefault();
-        resetOffsetAndGetLots();
-    });
+  searchFilterFormElement.addEventListener('submit', (formEvent) => {
+    formEvent.preventDefault()
+    resetOffsetAndGetLots()
+  })
 
-    getLots();
-})();
+  getLots()
+})()

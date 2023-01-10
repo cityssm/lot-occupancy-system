@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 
-import { completeWorkOrderMilestone } from "../../helpers/lotOccupancyDB/completeWorkOrderMiletstone.js";
+import { completeWorkOrderMilestone } from "../../helpers/lotOccupancyDB/completeWorkOrderMilestone.js";
 
 import { getWorkOrderMilestones } from "../../helpers/lotOccupancyDB/getWorkOrderMilestones.js";
 

@@ -1,9 +1,9 @@
-import { defineConfig } from "cypress";
+import { defineConfig } from 'cypress';
 export default defineConfig({
     e2e: {
-        baseUrl: "http://localhost:7000",
-        specPattern: "cypress/e2e/**/*.cy.ts",
+        baseUrl: 'http://localhost:7000',
+        specPattern: 'cypress/e2e/**/*.cy.ts',
         supportFile: false,
-        projectId: "xya1fn"
+        projectId: 'xya1fn'
     }
 });

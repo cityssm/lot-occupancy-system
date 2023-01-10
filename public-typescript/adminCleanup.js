@@ -4,30 +4,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
     const doCleanup = () => {
-        cityssm.postJSON(los.urlPrefix + "/admin/doCleanupDatabase", {}, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/admin/doCleanupDatabase', {}, (responseJSON) => {
             if (responseJSON.success) {
                 bulmaJS.alert({
-                    title: "Database Cleaned Up Successfully",
+                    title: 'Database Cleaned Up Successfully',
                     message: `${responseJSON.inactivedRecordCount} records inactivated,
                             ${responseJSON.purgedRecordCount} permanently deleted.`,
-                    contextualColorName: "success"
+                    contextualColorName: 'success'
                 });
             }
             else {
                 bulmaJS.alert({
-                    title: "Error Cleaning Database",
-                    message: responseJSON.errorMessage || "",
-                    contextualColorName: "danger"
+                    title: 'Error Cleaning Database',
+                    message: responseJSON.errorMessage || '',
+                    contextualColorName: 'danger'
                 });
             }
         });
     };
-    document.querySelector("#button--cleanupDatabase").addEventListener("click", () => {
+    document
+        .querySelector('#button--cleanupDatabase')
+        .addEventListener('click', () => {
         bulmaJS.confirm({
-            title: "Cleanup Database",
-            message: "Are you sure you want to cleanup up the database?",
+            title: 'Cleanup Database',
+            message: 'Are you sure you want to cleanup up the database?',
             okButton: {
-                text: "Yes, Cleanup Database",
+                text: 'Yes, Cleanup Database',
                 callbackFunction: doCleanup
             }
         });

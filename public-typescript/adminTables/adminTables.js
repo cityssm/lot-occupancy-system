@@ -9,8 +9,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const inputElement = changeEvent.currentTarget;
         const fontAwesomeIconClass = inputElement.value;
         inputElement
-            .closest(".field")
-            .querySelectorAll(".button.is-static")[1].innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
+            .closest('.field')
+            .querySelectorAll('.button.is-static')[1].innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
     }
     //=include adminTablesWorkOrderTypes.js
     //=include adminTablesWorkOrderMilestoneTypes.js

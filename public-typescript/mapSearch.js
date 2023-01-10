@@ -4,13 +4,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
     const maps = exports.maps;
-    const searchFilterElement = document.querySelector("#searchFilter--map");
-    const searchResultsContainerElement = document.querySelector("#container--searchResults");
+    const searchFilterElement = document.querySelector('#searchFilter--map');
+    const searchResultsContainerElement = document.querySelector('#container--searchResults');
     function renderResults() {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Maps}...`);
         let searchResultCount = 0;
-        const searchResultsTbodyElement = document.createElement("tbody");
-        const filterStringSplit = searchFilterElement.value.trim().toLowerCase().split(" ");
+        const searchResultsTbodyElement = document.createElement('tbody');
+        const filterStringSplit = searchFilterElement.value
+            .trim()
+            .toLowerCase()
+            .split(' ');
         for (const map of maps) {
             const mapSearchString = `${map.mapName} ${map.mapDescription} ${map.mapAddress1} ${map.mapAddress2}`.toLowerCase();
             let showMap = true;
@@ -24,62 +27,66 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 continue;
             }
             searchResultCount += 1;
-            searchResultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
-                ("<td>" +
+            searchResultsTbodyElement.insertAdjacentHTML('beforeend', '<tr>' +
+                ('<td>' +
                     '<a class="has-text-weight-bold" href="' +
                     los.urlPrefix +
-                    "/maps/" +
+                    '/maps/' +
                     map.mapId +
                     '">' +
-                    cityssm.escapeHTML(map.mapName || "(No Name)") +
-                    "</a><br />" +
+                    cityssm.escapeHTML(map.mapName || '(No Name)') +
+                    '</a><br />' +
                     '<span class="is-size-7">' +
-                    cityssm.escapeHTML(map.mapDescription || "") +
-                    "</span>" +
-                    "</td>") +
-                ("<td>" +
-                    (map.mapAddress1 ? cityssm.escapeHTML(map.mapAddress1) + "<br />" : "") +
-                    (map.mapAddress2 ? cityssm.escapeHTML(map.mapAddress2) + "<br />" : "") +
+                    cityssm.escapeHTML(map.mapDescription || '') +
+                    '</span>' +
+                    '</td>') +
+                ('<td>' +
+                    (map.mapAddress1
+                        ? cityssm.escapeHTML(map.mapAddress1) + '<br />'
+                        : '') +
+                    (map.mapAddress2
+                        ? cityssm.escapeHTML(map.mapAddress2) + '<br />'
+                        : '') +
                     (map.mapCity || map.mapProvince
-                        ? cityssm.escapeHTML(map.mapCity || "") +
-                            ", " +
-                            cityssm.escapeHTML(map.mapProvince || "") +
-                            "<br />"
-                        : "") +
-                    (map.mapPostalCode ? cityssm.escapeHTML(map.mapPostalCode) : "") +
-                    "</td>") +
-                ("<td>" + cityssm.escapeHTML(map.mapPhoneNumber || "") + "</td>") +
+                        ? cityssm.escapeHTML(map.mapCity || '') +
+                            ', ' +
+                            cityssm.escapeHTML(map.mapProvince || '') +
+                            '<br />'
+                        : '') +
+                    (map.mapPostalCode ? cityssm.escapeHTML(map.mapPostalCode) : '') +
+                    '</td>') +
+                ('<td>' + cityssm.escapeHTML(map.mapPhoneNumber || '') + '</td>') +
                 '<td class="has-text-centered">' +
                 (map.mapLatitude && map.mapLongitude
                     ? '<span data-tooltip="Has Geographic Coordinates"><i class="fas fa-map-marker-alt" aria-label="Has Geographic Coordinates"></i></span>'
-                    : "") +
-                "</td>" +
+                    : '') +
+                '</td>' +
                 '<td class="has-text-centered">' +
                 (map.mapSVG
                     ? '<span data-tooltip="Has Image"><i class="fas fa-image" aria-label="Has Image"></i></span>'
-                    : "") +
-                "</td>" +
+                    : '') +
+                '</td>' +
                 ('<td class="has-text-right">' +
                     '<a href="' +
                     los.urlPrefix +
-                    "/lots?mapId=" +
+                    '/lots?mapId=' +
                     map.mapId +
                     '">' +
                     map.lotCount +
-                    "</a>" +
-                    "</td>") +
-                "</tr>");
+                    '</a>' +
+                    '</td>') +
+                '</tr>');
         }
-        searchResultsContainerElement.innerHTML = "";
+        searchResultsContainerElement.innerHTML = '';
         if (searchResultCount === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
                 <p class="message-body">There are no ${los.escapedAliases.maps} that meet the search criteria.</p>
                 </div>`;
         }
         else {
-            const searchResultsTableElement = document.createElement("table");
+            const searchResultsTableElement = document.createElement('table');
             searchResultsTableElement.className =
-                "table is-fullwidth is-striped is-hoverable has-sticky-header";
+                'table is-fullwidth is-striped is-hoverable has-sticky-header';
             searchResultsTableElement.innerHTML = `<thead><tr>
                 <th>${los.escapedAliases.Map}</th>
                 <th>Address</th>
@@ -92,8 +99,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             searchResultsContainerElement.append(searchResultsTableElement);
         }
     }
-    searchFilterElement.addEventListener("keyup", renderResults);
-    document.querySelector("#form--searchFilters").addEventListener("submit", (formEvent) => {
+    searchFilterElement.addEventListener('keyup', renderResults);
+    document
+        .querySelector('#form--searchFilters')
+        .addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
         renderResults();
     });

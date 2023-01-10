@@ -3,10 +3,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
-    const searchFilterFormElement = document.querySelector("#form--searchFilters");
-    const searchResultsContainerElement = document.querySelector("#container--searchResults");
-    const limit = Number.parseInt(document.querySelector("#searchFilter--limit").value, 10);
-    const offsetElement = document.querySelector("#searchFilter--offset");
+    const searchFilterFormElement = document.querySelector('#form--searchFilters');
+    const searchResultsContainerElement = document.querySelector('#container--searchResults');
+    const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
+    const offsetElement = document.querySelector('#searchFilter--offset');
     function renderLots(responseJSON) {
         var _a, _b;
         if (responseJSON.lots.length === 0) {
@@ -15,36 +15,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 </div>`;
             return;
         }
-        const resultsTbodyElement = document.createElement("tbody");
+        const resultsTbodyElement = document.createElement('tbody');
         for (const lot of responseJSON.lots) {
-            resultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
-                ("<td>" +
+            resultsTbodyElement.insertAdjacentHTML('beforeend', '<tr>' +
+                ('<td>' +
                     '<a class="has-text-weight-bold" href="' +
                     los.getLotURL(lot.lotId) +
                     '">' +
-                    cityssm.escapeHTML(lot.lotName || "") +
-                    "</a>" +
-                    "</td>") +
-                ("<td>" +
+                    cityssm.escapeHTML(lot.lotName || '') +
+                    '</a>' +
+                    '</td>') +
+                ('<td>' +
                     '<a href="' +
                     los.getMapURL(lot.mapId) +
                     '">' +
                     (lot.mapName
                         ? cityssm.escapeHTML(lot.mapName)
                         : '<span class="has-text-grey">(No Name)</span>') +
-                    "</a>" +
-                    "</td>") +
-                ("<td>" + cityssm.escapeHTML(lot.lotType || "") + "</td>") +
-                ("<td>" +
+                    '</a>' +
+                    '</td>') +
+                ('<td>' + cityssm.escapeHTML(lot.lotType || '') + '</td>') +
+                ('<td>' +
                     (lot.lotStatusId
-                        ? cityssm.escapeHTML(lot.lotStatus || "")
+                        ? cityssm.escapeHTML(lot.lotStatus || '')
                         : '<span class="has-text-grey">(No Status)</span>') +
-                    "<br />" +
+                    '<br />' +
                     (lot.lotOccupancyCount > 0
                         ? '<span class="is-size-7">Currently Occupied</span>'
-                        : "") +
-                    "</td>") +
-                "</tr>");
+                        : '') +
+                    '</td>') +
+                '</tr>');
         }
         searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
             <thead><tr>
@@ -54,19 +54,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <th>Status</th>
             </tr></thead>
             <table>`;
-        searchResultsContainerElement.insertAdjacentHTML("beforeend", los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
-        searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement
+            .querySelector('table')
+            .append(resultsTbodyElement);
         (_a = searchResultsContainerElement
-            .querySelector("button[data-page='previous']")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", previousAndGetLots);
+            .querySelector("button[data-page='previous']")) === null || _a === void 0 ? void 0 : _a.addEventListener('click', previousAndGetLots);
         (_b = searchResultsContainerElement
-            .querySelector("button[data-page='next']")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", nextAndGetLots);
+            .querySelector("button[data-page='next']")) === null || _b === void 0 ? void 0 : _b.addEventListener('click', nextAndGetLots);
     }
     function getLots() {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Lots}...`);
-        cityssm.postJSON(los.urlPrefix + "/lots/doSearchLots", searchFilterFormElement, renderLots);
+        cityssm.postJSON(los.urlPrefix + '/lots/doSearchLots', searchFilterFormElement, renderLots);
     }
     function resetOffsetAndGetLots() {
-        offsetElement.value = "0";
+        offsetElement.value = '0';
         getLots();
     }
     function previousAndGetLots() {
@@ -77,11 +79,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         offsetElement.value = (Number.parseInt(offsetElement.value, 10) + limit).toString();
         getLots();
     }
-    const filterElements = searchFilterFormElement.querySelectorAll("input, select");
+    const filterElements = searchFilterFormElement.querySelectorAll('input, select');
     for (const filterElement of filterElements) {
-        filterElement.addEventListener("change", resetOffsetAndGetLots);
+        filterElement.addEventListener('change', resetOffsetAndGetLots);
     }
-    searchFilterFormElement.addEventListener("submit", (formEvent) => {
+    searchFilterFormElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
         resetOffsetAndGetLots();
     });

@@ -28,33 +28,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let svgElementToHighlight;
         // eslint-disable-next-line no-constant-condition
         while (true) {
-            svgElementToHighlight = mapContainerElement.querySelector("#" + svgId);
-            if (svgElementToHighlight || !svgId.includes("-")) {
+            svgElementToHighlight = mapContainerElement.querySelector('#' + svgId);
+            if (svgElementToHighlight || !svgId.includes('-')) {
                 break;
             }
-            svgId = svgId.slice(0, Math.max(0, svgId.lastIndexOf("-")));
+            svgId = svgId.slice(0, Math.max(0, svgId.lastIndexOf('-')));
         }
         if (svgElementToHighlight) {
             // eslint-disable-next-line unicorn/no-null
-            svgElementToHighlight.style.fill = "";
-            svgElementToHighlight.classList.add("highlight", "is-" + contextualClass);
-            const childPathElements = svgElementToHighlight.querySelectorAll("path");
+            svgElementToHighlight.style.fill = '';
+            svgElementToHighlight.classList.add('highlight', 'is-' + contextualClass);
+            const childPathElements = svgElementToHighlight.querySelectorAll('path');
             for (const pathElement of childPathElements) {
                 // eslint-disable-next-line unicorn/no-null
-                pathElement.style.fill = "";
+                pathElement.style.fill = '';
             }
         }
     }
     function unlockField(clickEvent) {
-        const fieldElement = clickEvent.currentTarget.closest(".field");
-        const inputOrSelectElement = fieldElement.querySelector("input, select");
-        inputOrSelectElement.classList.remove("is-readonly");
-        if (inputOrSelectElement.tagName === "INPUT") {
+        const fieldElement = clickEvent.currentTarget.closest('.field');
+        const inputOrSelectElement = fieldElement.querySelector('input, select');
+        inputOrSelectElement.classList.remove('is-readonly');
+        if (inputOrSelectElement.tagName === 'INPUT') {
+            ;
             inputOrSelectElement.readOnly = false;
             inputOrSelectElement.disabled = false;
         }
         else {
-            const optionElements = inputOrSelectElement.querySelectorAll("option");
+            const optionElements = inputOrSelectElement.querySelectorAll('option');
             for (const optionElement of optionElements) {
                 optionElement.disabled = false;
             }
@@ -62,20 +63,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
         inputOrSelectElement.focus();
     }
     function initializeUnlockFieldButtons(containerElement) {
-        const unlockFieldButtonElements = containerElement.querySelectorAll(".is-unlock-field-button");
+        const unlockFieldButtonElements = containerElement.querySelectorAll('.is-unlock-field-button');
         for (const unlockFieldButtonElement of unlockFieldButtonElements) {
-            unlockFieldButtonElement.addEventListener("click", unlockField);
+            unlockFieldButtonElement.addEventListener('click', unlockField);
         }
     }
     /*
      * Date Pickers
      */
     const datePickerBaseOptions = {
-        type: "date",
-        dateFormat: "yyyy-MM-dd",
+        type: 'date',
+        dateFormat: 'yyyy-MM-dd',
         showFooter: false,
-        color: "info",
-        displayMode: "dialog"
+        color: 'info',
+        displayMode: 'dialog'
     };
     function initializeDatePickers(containerElement) {
         const dateElements = containerElement.querySelectorAll("input[type='date']");
@@ -94,35 +95,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             const cal = exports.bulmaCalendar.attach(dateElement, datePickerOptions)[0];
             // trigger change event on original element
-            cal.on("save", () => {
+            cal.on('save', () => {
                 dateElement.value = cal.value();
-                dateElement.dispatchEvent(new Event("change"));
+                dateElement.dispatchEvent(new Event('change'));
             });
             // Disable html scrolling when calendar is open
-            cal.on("show", () => {
-                document.querySelector("html").classList.add("is-clipped");
+            cal.on('show', () => {
+                document.querySelector('html').classList.add('is-clipped');
             });
             // Reenable scrolling, if a modal window is not open
-            cal.on("hide", () => {
+            cal.on('hide', () => {
                 bulmaJS.toggleHtmlClipped();
             });
             // Get the datepicker container element
-            const datepickerElement = containerElement.querySelector("#" + cal._id);
+            const datepickerElement = containerElement.querySelector('#' + cal._id);
             // Override the previous and next month button styles
-            const datePickerNavButtonElements = datepickerElement.querySelectorAll(".datepicker-nav button.is-text");
+            const datePickerNavButtonElements = datepickerElement.querySelectorAll('.datepicker-nav button.is-text');
             for (const datePickerNavButtonElement of datePickerNavButtonElements) {
-                datePickerNavButtonElement.classList.add("is-" + datePickerBaseOptions.color);
-                datePickerNavButtonElement.classList.remove("is-text");
+                datePickerNavButtonElement.classList.add('is-' + datePickerBaseOptions.color);
+                datePickerNavButtonElement.classList.remove('is-text');
             }
             // Override the clear button style
-            const clearButtonElement = datepickerElement.querySelector(".datetimepicker-clear-button");
+            const clearButtonElement = datepickerElement.querySelector('.datetimepicker-clear-button');
             if (clearButtonElement) {
                 if (dateElement.required) {
                     clearButtonElement.remove();
                 }
                 else {
-                    clearButtonElement.dataset.tooltip = "Clear";
-                    clearButtonElement.ariaLabel = "Clear";
+                    clearButtonElement.dataset.tooltip = 'Clear';
+                    clearButtonElement.ariaLabel = 'Clear';
                     clearButtonElement.innerHTML =
                         '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
                 }
@@ -130,119 +131,118 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // Apply a label
             const labelElement = document.querySelector("label[for='" + dateElement.id + "']");
             if (labelElement) {
-                datepickerElement.querySelector(".datetimepicker-dummy-input").ariaLabel =
-                    labelElement.textContent;
+                datepickerElement.querySelector('.datetimepicker-dummy-input').ariaLabel = labelElement.textContent;
             }
         }
     }
     /*
-    const timePickerBaseOptions: BulmaCalendarOptions = {
-        type: "time",
-        timeFormat: "hh:mm",
-        color: "info",
-        displayMode: "dialog",
-        validateLabel: "Set Time",
-        minuteSteps: 1
-    };
-
-    const initializeTimePickers = (containerElement: HTMLElement) => {
-
-        const timeElements = containerElement.querySelectorAll(
-            "input[type='time']"
-        ) as NodeListOf<HTMLInputElement>;
-
-        for (const timeElement of timeElements) {
-            const timePickerOptions = Object.assign({}, timePickerBaseOptions);
-
-            if (timeElement.required) {
-                timePickerOptions.showClearButton = false;
-            }
-
-            const cal = exports.bulmaCalendar.attach(timeElement, timePickerOptions)[0];
-
-            // trigger change event on original element
-            cal.on("save", () => {
-                timeElement.value = cal.value();
-                timeElement.dispatchEvent(new Event("change"));
-            });
-
-            // Disable html scrolling when calendar is open
-            cal.on("show", () => {
-                document.querySelector("html")!.classList.add("is-clipped");
-            });
-
-            // Reenable scrolling, if a modal window is not open
-            cal.on("hide", () => {
-                bulmaJS.toggleHtmlClipped();
-            });
-
-            // Get the datepicker container element
-            const timePickerElement = containerElement.querySelector("#" + cal._id) as HTMLElement;
-
-            // Remove "cancel" button
-
-            const timePickerCancelButtonElement = timePickerElement.querySelector(
-                ".datetimepicker-footer-cancel"
-            );
-
-            if (timePickerCancelButtonElement) {
-                timePickerCancelButtonElement.remove();
-            }
-
-            // Override the clear button style
-
-            const clearButtonElement = timePickerElement.querySelector(
-                ".datetimepicker-clear-button"
-            ) as HTMLElement;
-
-            if (clearButtonElement) {
-                if (timeElement.required) {
-                    clearButtonElement.remove();
-                } else {
-                    clearButtonElement.dataset.tooltip = "Clear";
-                    clearButtonElement.innerHTML =
-                        '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
-                }
-            }
-        }
-    };
-    */
+      const timePickerBaseOptions: BulmaCalendarOptions = {
+          type: "time",
+          timeFormat: "hh:mm",
+          color: "info",
+          displayMode: "dialog",
+          validateLabel: "Set Time",
+          minuteSteps: 1
+      };
+  
+      const initializeTimePickers = (containerElement: HTMLElement) => {
+  
+          const timeElements = containerElement.querySelectorAll(
+              "input[type='time']"
+          ) as NodeListOf<HTMLInputElement>;
+  
+          for (const timeElement of timeElements) {
+              const timePickerOptions = Object.assign({}, timePickerBaseOptions);
+  
+              if (timeElement.required) {
+                  timePickerOptions.showClearButton = false;
+              }
+  
+              const cal = exports.bulmaCalendar.attach(timeElement, timePickerOptions)[0];
+  
+              // trigger change event on original element
+              cal.on("save", () => {
+                  timeElement.value = cal.value();
+                  timeElement.dispatchEvent(new Event("change"));
+              });
+  
+              // Disable html scrolling when calendar is open
+              cal.on("show", () => {
+                  document.querySelector("html")!.classList.add("is-clipped");
+              });
+  
+              // Reenable scrolling, if a modal window is not open
+              cal.on("hide", () => {
+                  bulmaJS.toggleHtmlClipped();
+              });
+  
+              // Get the datepicker container element
+              const timePickerElement = containerElement.querySelector("#" + cal._id) as HTMLElement;
+  
+              // Remove "cancel" button
+  
+              const timePickerCancelButtonElement = timePickerElement.querySelector(
+                  ".datetimepicker-footer-cancel"
+              );
+  
+              if (timePickerCancelButtonElement) {
+                  timePickerCancelButtonElement.remove();
+              }
+  
+              // Override the clear button style
+  
+              const clearButtonElement = timePickerElement.querySelector(
+                  ".datetimepicker-clear-button"
+              ) as HTMLElement;
+  
+              if (clearButtonElement) {
+                  if (timeElement.required) {
+                      clearButtonElement.remove();
+                  } else {
+                      clearButtonElement.dataset.tooltip = "Clear";
+                      clearButtonElement.innerHTML =
+                          '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
+                  }
+              }
+          }
+      };
+      */
     /*
      * Aliases
      */
     function populateAliases(containerElement) {
-        const aliasElements = containerElement.querySelectorAll(".alias");
+        const aliasElements = containerElement.querySelectorAll('.alias');
         for (const aliasElement of aliasElements) {
             switch (aliasElement.dataset.alias) {
-                case "Map": {
+                case 'Map': {
                     aliasElement.textContent = exports.aliases.map;
                     break;
                 }
-                case "Lot": {
+                case 'Lot': {
                     aliasElement.textContent = exports.aliases.lot;
                     break;
                 }
-                case "lot": {
+                case 'lot': {
                     aliasElement.textContent = exports.aliases.lot.toLowerCase();
                     break;
                 }
-                case "Occupancy": {
+                case 'Occupancy': {
                     aliasElement.textContent = exports.aliases.occupancy;
                     break;
                 }
-                case "occupancy": {
+                case 'occupancy': {
                     aliasElement.textContent = exports.aliases.occupancy.toLowerCase();
                     break;
                 }
-                case "Occupant": {
+                case 'Occupant': {
                     aliasElement.textContent = exports.aliases.occupant;
                     break;
                 }
-                case "occupant": {
+                case 'occupant': {
                     aliasElement.textContent = exports.aliases.occupant.toLowerCase();
                     break;
                 }
-                case "ExternalReceiptNumber": {
+                case 'ExternalReceiptNumber': {
                     aliasElement.textContent = exports.aliases.externalReceiptNumber;
                     break;
                 }
@@ -278,17 +278,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * Colours
      */
-    const hues = ["red", "green", "orange", "blue", "pink", "yellow", "purple"];
-    const luminosity = ["bright", "light", "dark"];
+    const hues = ['red', 'green', 'orange', 'blue', 'pink', 'yellow', 'purple'];
+    const luminosity = ['bright', 'light', 'dark'];
     function getRandomColor(seedString) {
         let actualSeedString = seedString;
         if (actualSeedString.length < 2) {
-            actualSeedString = actualSeedString + "a1";
+            actualSeedString = actualSeedString + 'a1';
         }
         return exports.randomColor({
             seed: actualSeedString + actualSeedString,
             hue: hues[actualSeedString.codePointAt(actualSeedString.length - 1) % hues.length],
-            luminosity: luminosity[actualSeedString.codePointAt(actualSeedString.length - 2) % luminosity.length]
+            luminosity: luminosity[actualSeedString.codePointAt(actualSeedString.length - 2) %
+                luminosity.length]
         });
     }
     /*
@@ -298,21 +299,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
         return `<div class="field has-addons">
             <div class="control">
             <button
-                class="button ${isSmall ? "is-small" : ""} ${upButtonClassNames}"
+                class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
                 data-tooltip="Move Up" data-direction="up" type="button" aria-label="Move Up">
             <i class="fas fa-arrow-up" aria-hidden="true"></i>
             </button>
             </div>
             <div class="control">
             <button
-                class="button ${isSmall ? "is-small" : ""} ${downButtonClassNames}"
+                class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
                 data-tooltip="Move Down" data-direction="down" type="button" aria-label="Move Down">
             <i class="fas fa-arrow-down" aria-hidden="true"></i>
             </button>
             </div>
             </div>`;
     }
-    function getLoadingParagraphHTML(captionText = "Loading...") {
+    function getLoadingParagraphHTML(captionText = 'Loading...') {
         return `<p class="has-text-centered has-text-grey">
             <i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />
             ${cityssm.escapeHTML(captionText)}
@@ -322,63 +323,63 @@ Object.defineProperty(exports, "__esModule", { value: true });
         return ('<div class="level">' +
             ('<div class="level-left">' +
                 '<div class="level-item has-text-weight-bold">' +
-                "Displaying " +
+                'Displaying ' +
                 (offset + 1).toString() +
-                " to " +
+                ' to ' +
                 Math.min(count, limit + offset) +
-                " of " +
+                ' of ' +
                 count +
-                "</div>" +
-                "</div>") +
+                '</div>' +
+                '</div>') +
             ('<div class="level-right">' +
                 (offset > 0
                     ? '<div class="level-item">' +
                         '<button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">' +
                         '<i class="fas fa-arrow-left" aria-hidden="true"></i>' +
-                        "</button>" +
-                        "</div>"
-                    : "") +
+                        '</button>' +
+                        '</div>'
+                    : '') +
                 (limit + offset < count
                     ? '<div class="level-item">' +
                         '<button class="button is-rounded is-link" data-page="next" type="button" title="Next">' +
-                        "<span>Next</span>" +
+                        '<span>Next</span>' +
                         '<span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>' +
-                        "</button>" +
-                        "</div>"
-                    : "") +
-                "</div>") +
-            "</div>");
+                        '</button>' +
+                        '</div>'
+                    : '') +
+                '</div>') +
+            '</div>');
     }
     /*
      * URLs
      */
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const urlPrefix = document.querySelector('main').dataset.urlPrefix;
     function getRecordURL(recordTypePlural, recordId, edit, time) {
         return (urlPrefix +
-            "/" +
+            '/' +
             recordTypePlural +
-            (recordId ? "/" + recordId : "") +
-            (recordId && edit ? "/edit" : "") +
-            (time ? "/?t=" + Date.now() : ""));
+            (recordId ? '/' + recordId : '') +
+            (recordId && edit ? '/edit' : '') +
+            (time ? '/?t=' + Date.now() : ''));
     }
-    function getMapURL(mapId = "", edit = false, time = false) {
-        return getRecordURL("maps", mapId, edit, time);
+    function getMapURL(mapId = '', edit = false, time = false) {
+        return getRecordURL('maps', mapId, edit, time);
     }
-    function getLotURL(lotId = "", edit = false, time = false) {
-        return getRecordURL("lots", lotId, edit, time);
+    function getLotURL(lotId = '', edit = false, time = false) {
+        return getRecordURL('lots', lotId, edit, time);
     }
-    function getLotOccupancyURL(lotOccupancyId = "", edit = false, time = false) {
-        return getRecordURL("lotOccupancies", lotOccupancyId, edit, time);
+    function getLotOccupancyURL(lotOccupancyId = '', edit = false, time = false) {
+        return getRecordURL('lotOccupancies', lotOccupancyId, edit, time);
     }
-    function getWorkOrderURL(workOrderId = "", edit = false, time = false) {
-        return getRecordURL("workOrders", workOrderId, edit, time);
+    function getWorkOrderURL(workOrderId = '', edit = false, time = false) {
+        return getRecordURL('workOrders', workOrderId, edit, time);
     }
     /*
      * Declare LOS
      */
     const los = {
         urlPrefix,
-        apiKey: document.querySelector("main").dataset.apiKey,
+        apiKey: document.querySelector('main').dataset.apiKey,
         highlightMap,
         initializeUnlockFieldButtons,
         initializeDatePickers,

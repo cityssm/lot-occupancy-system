@@ -7,15 +7,19 @@ $white: #fff;
 $black: #000;
 
 .is-linethrough {
-    text-decoration: line-through;
+  text-decoration: line-through;
 }
 
 .has-width-10 {
-    width: 10px;
+  width: 10px;
+}
+
+.has-width-900 {
+  width: 900px;
 }
 
 .has-min-page-height {
-    min-height: 100vh;
+  min-height: 100vh;
 }
 
 /*
@@ -26,21 +30,21 @@ $black: #000;
 .has-status-loading .is-hidden-status-loading,
 .has-status-view .is-hidden-status-view,
 fieldset:enabled .is-hidden-enabled {
-    display: none;
+  display: none;
 }
 
 .has-status-view .is-noninteractive-status-view {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 /* to fix page titles inside level components, set on .level-left */
 
 .has-flex-shrink-1 {
-    flex-shrink: 1;
+  flex-shrink: 1;
 }
 
 .has-border-radius-3 {
-    border-radius: 3px;
+  border-radius: 3px;
 }
 
 /*
@@ -48,28 +52,28 @@ fieldset:enabled .is-hidden-enabled {
  */
 
 .tab-content {
-    display: none;
+  display: none;
 
-    &.is-active {
-        display: block;
-    }
+  &.is-active {
+    display: block;
+  }
 }
 
 #is-login-page {
-    overflow: auto;
-    background-position: top center;
-    background-size: cover;
+  overflow: auto;
+  background-position: top center;
+  background-size: cover;
 
-    body > .columns {
-        min-height: 100vh;
-    }
+  body > .columns {
+    min-height: 100vh;
+  }
 }
 
 .button.is-xsmall {
-    height: 2em;
-    padding-top: 0;
-    padding-bottom: 0;
-    font-size: 0.75rem;
+  height: 2em;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-size: 0.75rem;
 }
 
 /*
@@ -77,17 +81,17 @@ fieldset:enabled .is-hidden-enabled {
  */
 
 .container.is-page {
-    width: 8.5in;
-    padding: 10px 20px 20px;
-    margin: 20px auto;
-    background-color: $white;
-    border: 1px solid $black;
+  width: 8.5in;
+  padding: 10px 20px 20px;
+  margin: 20px auto;
+  background-color: $white;
+  border: 1px solid $black;
 
-    @media print {
-        width: 100%;
-        padding: 0;
-        border: 0;
-    }
+  @media print {
+    width: 100%;
+    padding: 0;
+    border: 0;
+  }
 }
 
 /*
@@ -95,26 +99,26 @@ fieldset:enabled .is-hidden-enabled {
  */
 
 .image svg {
-    display: block;
-    height: auto;
-    width: 100%;
+  display: block;
+  height: auto;
+  width: 100%;
 
-    .highlight,
-    .highlight path {
-        &.is-danger {
-            stroke: $danger-dark !important;
-            fill: rgba($danger-light, 0.6);
-        }
-
-        &.is-success {
-            stroke: $success-dark !important;
-            fill: rgba($success, 0.6);
-        }
+  .highlight,
+  .highlight path {
+    &.is-danger {
+      stroke: $danger-dark !important;
+      fill: rgba($danger-light, 0.6);
     }
 
-    text {
-        user-select: none;
+    &.is-success {
+      stroke: $success-dark !important;
+      fill: rgba($success, 0.6);
     }
+  }
+
+  text {
+    user-select: none;
+  }
 }
 
 /*
@@ -122,7 +126,7 @@ fieldset:enabled .is-hidden-enabled {
  */
 
 .select option:disabled {
-    display: none;
+  display: none;
 }
 
 /*
@@ -130,7 +134,7 @@ fieldset:enabled .is-hidden-enabled {
   */
 
 .modal-card {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 /*
@@ -141,7 +145,7 @@ $black-ter: hsl(0, 0%, 14%);
 
 .control .button.is-static,
 .menu .menu-label {
-    color: $black-ter;
+  color: $black-ter;
 }
 
 /*
@@ -149,11 +153,11 @@ $black-ter: hsl(0, 0%, 14%);
  */
 
 .navbar.is-fixed-top {
-    z-index: 1100;
+  z-index: 1100;
 }
 
 .modal {
-    z-index: 1200;
+  z-index: 1200;
 }
 
 /*
@@ -161,8 +165,8 @@ $black-ter: hsl(0, 0%, 14%);
  */
 
 span.button.is-static {
-    pointer-events: all;
-    cursor: default;
+  pointer-events: all;
+  cursor: default;
 }
 
 /*
@@ -170,25 +174,25 @@ span.button.is-static {
  */
 
 .datetimepicker-dummy {
-    .datetimepicker-dummy-wrapper::before {
-        mask: unset;
-        -webkit-mask: unset;
-        background-color: transparent !important;
-    }
+  .datetimepicker-dummy-wrapper::before {
+    mask: unset;
+    -webkit-mask: unset;
+    background-color: transparent !important;
+  }
 
-    /* fix left icon */
-    .datetimepicker-dummy-wrapper .datetimepicker-dummy-input:first-child {
-        text-indent: 2rem;
-    }
+  /* fix left icon */
+  .datetimepicker-dummy-wrapper .datetimepicker-dummy-input:first-child {
+    text-indent: 2rem;
+  }
 
-    /* center the button */
-    .datetimepicker-clear-button {
-        transform: none;
-        margin-right: 0.25rem;
-        margin-top: 0.15rem;
-    }
+  /* center the button */
+  .datetimepicker-clear-button {
+    transform: none;
+    margin-right: 0.25rem;
+    margin-top: 0.15rem;
+  }
 }
 
 .datetimepicker.is-active {
-    z-index: 10;
+  z-index: 10;
 }

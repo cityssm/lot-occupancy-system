@@ -68,6 +68,7 @@ export function getLots(filters, options, connectedDatabase) {
     let lots = [];
     if (options.limit === -1 || count > 0) {
         database.function("userFn_lotNameSortName", configFunctions.getProperty("settings.lot.lotNameSortNameFunction"));
+        sqlParameters.unshift(currentDate, currentDate);
         lots = database
             .prepare("select l.lotId, l.lotName," +
             " t.lotType," +
@@ -82,16 +83,13 @@ export function getLots(filters, options, connectedDatabase) {
                 "select lotId, count(lotOccupancyId) as lotOccupancyCount" +
                 " from LotOccupancies" +
                 " where recordDelete_timeMillis is null" +
-                " and occupancyStartDate <= " +
-                currentDate +
-                " and (occupancyEndDate is null or occupancyEndDate >= " +
-                currentDate +
-                ")" +
+                " and occupancyStartDate <= ?" +
+                " and (occupancyEndDate is null or occupancyEndDate >= ?)" +
                 " group by lotId" +
                 ") o on l.lotId = o.lotId") +
             sqlWhereClause +
             " order by userFn_lotNameSortName(l.lotName), l.lotId" +
-            (options ? " limit " + options.limit + " offset " + options.offset : ""))
+            (options ? ` limit ${options.limit} offset ${options.offset}` : ""))
             .all(sqlParameters);
         if (options.limit === -1) {
             count = lots.length;

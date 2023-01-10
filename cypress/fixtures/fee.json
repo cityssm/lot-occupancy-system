@@ -2,6 +2,6 @@
     "feeCategory": "Cypress Test - Fee Category",
     "feeName": "Cypress Test - Fee Name",
     "feeDescription": "Test Description",
-    "feeAmount": 10.50,
+    "feeAmount": 10.5,
     "quantityUnit": "units"
 }

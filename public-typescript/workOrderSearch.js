@@ -4,67 +4,69 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
     const workOrderPrints = exports.workOrderPrints;
-    const searchFilterFormElement = document.querySelector("#form--searchFilters");
+    const searchFilterFormElement = document.querySelector('#form--searchFilters');
     los.initializeDatePickers(searchFilterFormElement);
-    const searchResultsContainerElement = document.querySelector("#container--searchResults");
-    const limit = Number.parseInt(document.querySelector("#searchFilter--limit").value, 10);
-    const offsetElement = document.querySelector("#searchFilter--offset");
+    const searchResultsContainerElement = document.querySelector('#container--searchResults');
+    const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
+    const offsetElement = document.querySelector('#searchFilter--offset');
     function renderWorkOrders(responseJSON) {
         var _a, _b;
         if (responseJSON.workOrders.length === 0) {
             searchResultsContainerElement.innerHTML =
                 '<div class="message is-info">' +
                     '<p class="message-body">There are no work orders that meet the search criteria.</p>' +
-                    "</div>";
+                    '</div>';
             return;
         }
-        const resultsTbodyElement = document.createElement("tbody");
+        const resultsTbodyElement = document.createElement('tbody');
         for (const workOrder of responseJSON.workOrders) {
-            let relatedHTML = "";
+            let relatedHTML = '';
             for (const lot of workOrder.workOrderLots) {
                 relatedHTML +=
                     '<span class="has-tooltip-left" data-tooltip="' +
-                        cityssm.escapeHTML(lot.mapName || "") +
+                        cityssm.escapeHTML(lot.mapName || '') +
                         '">' +
                         '<i class="fas fa-fw fa-vector-square" aria-label="' +
                         los.escapedAliases.Lot +
                         '"></i> ' +
-                        cityssm.escapeHTML(lot.lotName || "(No " + exports.aliases.Lot + " Name)") +
-                        "</span><br />";
+                        cityssm.escapeHTML(lot.lotName || '(No ' + exports.aliases.Lot + ' Name)') +
+                        '</span><br />';
             }
             for (const occupancy of workOrder.workOrderLotOccupancies) {
                 for (const occupant of occupancy.lotOccupancyOccupants) {
                     relatedHTML +=
                         '<span class="has-tooltip-left" data-tooltip="' +
-                            cityssm.escapeHTML(occupant.lotOccupantType || "") +
+                            cityssm.escapeHTML(occupant.lotOccupantType || '') +
                             '">' +
                             '<i class="fas fa-fw fa-' +
-                            cityssm.escapeHTML(occupant.fontAwesomeIconClass || "user") +
+                            cityssm.escapeHTML(occupant.fontAwesomeIconClass || 'user') +
                             '" aria-label="' +
                             los.escapedAliases.occupant +
                             '"></i> ' +
-                            cityssm.escapeHTML(occupant.occupantName || "(No Name)") +
-                            "</span><br />";
+                            cityssm.escapeHTML(occupant.occupantName || '(No Name)') +
+                            '</span><br />';
                 }
             }
-            resultsTbodyElement.insertAdjacentHTML("beforeend", "<tr>" +
-                ("<td>" +
+            resultsTbodyElement.insertAdjacentHTML('beforeend', '<tr>' +
+                ('<td>' +
                     '<a class="has-text-weight-bold" href="' +
                     los.getWorkOrderURL(workOrder.workOrderId) +
                     '">' +
                     (workOrder.workOrderNumber.trim()
-                        ? cityssm.escapeHTML(workOrder.workOrderNumber || "")
-                        : "(No Number)") +
-                    "</a>" +
-                    "</td>") +
-                ("<td>" +
-                    cityssm.escapeHTML(workOrder.workOrderType || "") +
-                    "<br />" +
+                        ? cityssm.escapeHTML(workOrder.workOrderNumber || '')
+                        : '(No Number)') +
+                    '</a>' +
+                    '</td>') +
+                ('<td>' +
+                    cityssm.escapeHTML(workOrder.workOrderType || '') +
+                    '<br />' +
                     '<span class="is-size-7">' +
-                    cityssm.escapeHTML(workOrder.workOrderDescription || "") +
-                    "</span>" +
-                    "</td>") +
-                ('<td class="is-nowrap"><span class="is-size-7">' + relatedHTML + "</span></td>") +
+                    cityssm.escapeHTML(workOrder.workOrderDescription || '') +
+                    '</span>' +
+                    '</td>') +
+                ('<td class="is-nowrap"><span class="is-size-7">' +
+                    relatedHTML +
+                    '</span></td>') +
                 ('<td class="is-nowrap">' +
                     ('<span class="has-tooltip-left" data-tooltip="' +
                         los.escapedAliases.WorkOrderOpenDate +
@@ -73,7 +75,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         los.escapedAliases.WorkOrderOpenDate +
                         '"></i> ' +
                         workOrder.workOrderOpenDateString +
-                        "</span><br />") +
+                        '</span><br />') +
                     ('<span class="has-tooltip-left" data-tooltip="' +
                         los.escapedAliases.WorkOrderCloseDate +
                         '">' +
@@ -84,55 +86,57 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             ? workOrder.workOrderCloseDateString
                             : '<span class="has-text-grey">(No ' +
                                 los.escapedAliases.WorkOrderCloseDate +
-                                ")</span>") +
-                        "</span>") +
-                    "</td>") +
-                ("<td>" +
+                                ')</span>') +
+                        '</span>') +
+                    '</td>') +
+                ('<td>' +
                     (workOrder.workOrderMilestoneCount === 0
-                        ? "-"
+                        ? '-'
                         : workOrder.workOrderMilestoneCompletionCount +
-                            " / " +
+                            ' / ' +
                             workOrder.workOrderMilestoneCount) +
-                    "</td>") +
+                    '</td>') +
                 (workOrderPrints.length > 0
-                    ? "<td>" +
+                    ? '<td>' +
                         '<a class="button is-small" data-tooltip="Print" href="' +
                         los.urlPrefix +
-                        "/print/" +
+                        '/print/' +
                         workOrderPrints[0] +
-                        "/?workOrderId=" +
+                        '/?workOrderId=' +
                         workOrder.workOrderId +
                         '" target="_blank">' +
                         '<i class="fas fa-print" aria-label="Print"></i>' +
-                        "</a>" +
-                        "</td>"
-                    : "") +
-                "</tr>");
+                        '</a>' +
+                        '</td>'
+                    : '') +
+                '</tr>');
         }
         searchResultsContainerElement.innerHTML =
             '<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">' +
-                "<thead><tr>" +
-                "<th>Work Order Number</th>" +
-                "<th>Description</th>" +
-                "<th>Related</th>" +
-                "<th>Date</th>" +
+                '<thead><tr>' +
+                '<th>Work Order Number</th>' +
+                '<th>Description</th>' +
+                '<th>Related</th>' +
+                '<th>Date</th>' +
                 '<th class="has-tooltip-bottom" data-tooltip="Completed / Total Milestones">Progress</th>' +
-                (workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : "") +
-                "</tr></thead>" +
-                "<table>";
-        searchResultsContainerElement.insertAdjacentHTML("beforeend", los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
-        searchResultsContainerElement.querySelector("table").append(resultsTbodyElement);
+                (workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : '') +
+                '</tr></thead>' +
+                '<table>';
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement
+            .querySelector('table')
+            .append(resultsTbodyElement);
         (_a = searchResultsContainerElement
-            .querySelector("button[data-page='previous']")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", previousAndGetWorkOrders);
+            .querySelector("button[data-page='previous']")) === null || _a === void 0 ? void 0 : _a.addEventListener('click', previousAndGetWorkOrders);
         (_b = searchResultsContainerElement
-            .querySelector("button[data-page='next']")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", nextAndGetWorkOrders);
+            .querySelector("button[data-page='next']")) === null || _b === void 0 ? void 0 : _b.addEventListener('click', nextAndGetWorkOrders);
     }
     function getWorkOrders() {
-        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML("Loading Work Orders...");
-        cityssm.postJSON(los.urlPrefix + "/workOrders/doSearchWorkOrders", searchFilterFormElement, renderWorkOrders);
+        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML('Loading Work Orders...');
+        cityssm.postJSON(los.urlPrefix + '/workOrders/doSearchWorkOrders', searchFilterFormElement, renderWorkOrders);
     }
     function resetOffsetAndGetWorkOrders() {
-        offsetElement.value = "0";
+        offsetElement.value = '0';
         getWorkOrders();
     }
     function previousAndGetWorkOrders() {
@@ -143,42 +147,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
         offsetElement.value = (Number.parseInt(offsetElement.value, 10) + limit).toString();
         getWorkOrders();
     }
-    const filterElements = searchFilterFormElement.querySelectorAll("input, select");
+    const filterElements = searchFilterFormElement.querySelectorAll('input, select');
     for (const filterElement of filterElements) {
-        filterElement.addEventListener("change", resetOffsetAndGetWorkOrders);
+        filterElement.addEventListener('change', resetOffsetAndGetWorkOrders);
     }
-    searchFilterFormElement.addEventListener("submit", (formEvent) => {
+    searchFilterFormElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
         resetOffsetAndGetWorkOrders();
     });
     /*
-    const workOrderOpenDateStringElement = document.querySelector("#searchFilter--workOrderOpenDateString") as HTMLInputElement;
-
-    document.querySelector("#button--workOrderOpenDateString-previous").addEventListener("click", () => {
-
-        if (workOrderOpenDateStringElement.value === "") {
-            workOrderOpenDateStringElement.valueAsDate = new Date();
-        } else {
-            const openDate = workOrderOpenDateStringElement.valueAsDate;
-            openDate.setDate(openDate.getDate() - 1);
-            workOrderOpenDateStringElement.valueAsDate = openDate;
-        }
-
-        resetOffsetAndGetWorkOrders();
-    });
-
-    document.querySelector("#button--workOrderOpenDateString-next").addEventListener("click", () => {
-
-        if (workOrderOpenDateStringElement.value === "") {
-            workOrderOpenDateStringElement.valueAsDate = new Date();
-        } else {
-            const openDate = workOrderOpenDateStringElement.valueAsDate;
-            openDate.setDate(openDate.getDate() + 1);
-            workOrderOpenDateStringElement.valueAsDate = openDate;
-        }
-
-        resetOffsetAndGetWorkOrders();
-    });
-    */
+      const workOrderOpenDateStringElement = document.querySelector("#searchFilter--workOrderOpenDateString") as HTMLInputElement;
+  
+      document.querySelector("#button--workOrderOpenDateString-previous").addEventListener("click", () => {
+  
+          if (workOrderOpenDateStringElement.value === "") {
+              workOrderOpenDateStringElement.valueAsDate = new Date();
+          } else {
+              const openDate = workOrderOpenDateStringElement.valueAsDate;
+              openDate.setDate(openDate.getDate() - 1);
+              workOrderOpenDateStringElement.valueAsDate = openDate;
+          }
+  
+          resetOffsetAndGetWorkOrders();
+      });
+  
+      document.querySelector("#button--workOrderOpenDateString-next").addEventListener("click", () => {
+  
+          if (workOrderOpenDateStringElement.value === "") {
+              workOrderOpenDateStringElement.valueAsDate = new Date();
+          } else {
+              const openDate = workOrderOpenDateStringElement.valueAsDate;
+              openDate.setDate(openDate.getDate() + 1);
+              workOrderOpenDateStringElement.valueAsDate = openDate;
+          }
+  
+          resetOffsetAndGetWorkOrders();
+      });
+      */
     getWorkOrders();
 })();
