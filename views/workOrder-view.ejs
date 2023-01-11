@@ -1,78 +1,88 @@
 <%- include('_header'); -%>
 
 <nav class="breadcrumb">
-    <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-        <li>
-            <a href="<%= urlPrefix %>/workOrders">
-                <span class="icon is-small"><i class="fas fa-hard-hat" aria-hidden="true"></i></span>
-                <span>Work Orders</span>
-            </a>
-        </li>
-        <li class="is-active">
-            <a href="#" aria-current="page">
-                Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
-            </a>
-        </li>
-    </ul>
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+      <a href="<%= urlPrefix %>/workOrders">
+        <span class="icon is-small"><i class="fas fa-hard-hat" aria-hidden="true"></i></span>
+        <span>Work Orders</span>
+      </a>
+    </li>
+    <li class="is-active">
+      <a href="#" aria-current="page">
+        Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
+      </a>
+    </li>
+  </ul>
 </nav>
 
-<div class="level">
-    <div class="level-left">
-        <div class="level-item is-justify-content-left">
-            <h1 class="title is-1">
-                Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
-            </h1>
-        </div>
-    </div>
-    <% if (configFunctions.getProperty("settings.workOrders.prints").length > 0) { %>
-        <div class="level-right is-hidden-print">
-            <div class="level-item is-justify-content-right">
-                <% if (configFunctions.getProperty("settings.workOrders.prints").length === 1) { %>
-                <a class="button is-link" href="<%= urlPrefix %>/print/<%= configFunctions.getProperty("settings.workOrders.prints")[0] %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
-                    <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
-                    <span>Print</span>
-                </a>
-                <% } else { %>
-                <div class="dropdown is-right">
-                    <div class="dropdown-trigger">
-                        <button class="button is-link" type="button">
-                            <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
-                            <span>Print</span>
-                            <span class="icon is-small"><i class="fas fa-caret-down" aria-hidden="true"></i></span>
-                        </button>
-                    </div>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-content">
-                            <% for (const printName of configFunctions.getProperty("settings.workOrders.prints")) { %>
-                                <% const printConfig = printFunctions.getPrintConfig(printName); %>
-                                <% if (printConfig) { %>
-                                    <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
-                                        <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
-                                        <span><%= printConfig.title %></span>
-                                    </a>
-                                <% } %>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>
-                <% } %>
-            </div>
-        </div>
-    <% } %>
-</div>
+<h1 class="title is-1">
+  Work Order
+  #<%= workOrder.workOrderNumber || "(No Number)" %>
+</h1>
 
-<% if (user.userProperties.canUpdate && !workOrder.workOrderCloseDate) { %>
-    <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-        <a class="button is-circle is-primary has-tooltip-left"
-            data-tooltip="Update Work Order"
+<div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
+  <div class="level-left">
+    <span class="level-item has-text-weight-bold">
+      Work Order
+      #<%= workOrder.workOrderNumber || "(No Number)" %>
+    </span>
+  </div>
+  <div class="level-right">
+    <% if (configFunctions.getProperty("settings.workOrders.prints").length > 0) { %>
+      <% if (configFunctions.getProperty("settings.workOrders.prints").length === 1) { %>
+        <div class="level-item">
+          <a href="<%= urlPrefix %>/print/<%= configFunctions.getProperty("settings.workOrders.prints")[0] %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
+            <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+            <span>Print</span>
+          </a>
+        </div>
+      <% } else { %>
+        <div class="level-item">
+          <div class="dropdown is-right is-up">
+            <div class="dropdown-trigger">
+              <button class="button" type="button">
+                <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+                <span>Print</span>
+                <span class="icon"><i class="fas fa-angle-up" aria-hidden="true"></i></span>
+              </button>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content">
+                <% for (const printName of configFunctions.getProperty("settings.workOrders.prints")) { %>
+                  <% const printConfig = printFunctions.getPrintConfig(printName); %>
+                  <% if (printConfig) { %>
+                    <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
+                      <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+                      <span><%= printConfig.title %></span>
+                    </a>
+                  <% } %>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    <% } %>
+    <% if (user.userProperties.canUpdate) { %>
+      <div class="level-item">
+        <% if (workOrder.workOrderCloseDate) { %>
+          <button class="button is-warning" id="button--reopenWorkOrder" data-work-order-id="<%= workOrder.workOrderId %>" type="button">
+            Reopen Work Order
+        </button>
+        <% } else { %>
+          <a class="button is-primary"
             href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>/edit"
             accesskey="e">
-            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-            <span class="sr-only">Update Work Order</span>
-        </a>
-    </div>
-<% } %>
+            <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+            <span>Switch to Edit Mode</span>
+          </a>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+</div>
 
 <div class="columns is-desktop">
     <div class="column">
@@ -109,13 +119,6 @@
                     </div>
                 </div>
             </div>
-            <% if (user.userProperties.canUpdate && workOrder.workOrderCloseDate) { %>
-                <div class="panel-block is-justify-content-flex-end">
-                    <button class="button is-warning" id="button--reopenWorkOrder" data-work-order-id="<%= workOrder.workOrderId %>" type="button">
-                        Reopen Work Order
-                    </button>
-                </div>
-            <% } %>
         </div>
 
         <div class="panel">

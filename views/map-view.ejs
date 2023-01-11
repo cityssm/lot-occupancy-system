@@ -1,20 +1,20 @@
 <%- include('_header'); -%>
 
 <nav class="breadcrumb">
-    <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-        <li>
-            <a href="<%= urlPrefix %>/maps">
-                <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
-                <span><%= configFunctions.getProperty("aliases.maps") %></span>
-            </a>
-        </li>
-        <li class="is-active">
-            <a href="#" aria-current="page">
-                <%= map.mapName || "(No Name)" %>
-            </a>
-        </li>
-    </ul>
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+        <a href="<%= urlPrefix %>/maps">
+            <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
+            <span><%= configFunctions.getProperty("aliases.maps") %></span>
+        </a>
+    </li>
+    <li class="is-active">
+        <a href="#" aria-current="page">
+            <%= map.mapName || "(No Name)" %>
+        </a>
+    </li>
+  </ul>
 </nav>
 
 <h1 class="title is-1">
@@ -22,15 +22,23 @@
 </h1>
 
 <% if (user.userProperties.canUpdate) { %>
-    <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-        <a class="button is-circle is-primary has-tooltip-left"
-            data-tooltip="Update <%= configFunctions.getProperty("aliases.map") %>"
+  <div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
+    <div class="level-left">
+      <span class="level-item has-text-weight-bold">
+        <%= map.mapName || "(No Name)" %>
+      </span>
+    </div>
+    <div class="level-right">
+      <div class="level-item">
+        <a class="button is-primary"
             href="<%= urlPrefix %>/maps/<%= map.mapId %>/edit"
             accesskey="e">
-            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-            <span class="sr-only">Update <%= configFunctions.getProperty("aliases.map") %></span>
+            <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+            <span>Switch to Edit Mode</span>
         </a>
+      </div>
     </div>
+  </div>
 <% } %>
 
 <div class="panel">

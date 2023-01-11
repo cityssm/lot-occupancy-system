@@ -1,7 +1,7 @@
-@import "@cityssm/bulma-webapp-css/cityssm";
-@import "bulma/sass/utilities/derived-variables";
-@import "bulma-calendar/src/sass/index";
-@import "@cityssm/fa-glow/fa-glow";
+@import '@cityssm/bulma-webapp-css/cityssm';
+@import 'bulma/sass/utilities/derived-variables';
+@import 'bulma-calendar/src/sass/index';
+@import '@cityssm/fa-glow/fa-glow';
 
 $white: #fff;
 $black: #000;
@@ -195,4 +195,25 @@ span.button.is-static {
 
 .datetimepicker.is-active {
   z-index: 10;
+}
+
+/*
+ * Fixed Level
+ */
+
+.level {
+  &.is-fixed-bottom {
+    z-index: 1100;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    margin: 0;
+
+    &.has-shadow {
+      box-shadow: 0 -2px 0 0 #f5f5f5;
+    }
+  }
+
 }

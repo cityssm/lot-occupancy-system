@@ -22,71 +22,76 @@
     </ul>
 </nav>
 
-<div class="level">
-    <div class="level-left">
-        <div class="level-item is-justify-content-left">
-            <h1 class="title is-1">
-                <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
-            </h1>
-        </div>
-    </div>
-    <% if (occupancyTypePrints.length > 0) { %>
-        <div class="level-right is-hidden-print">
-            <div class="level-item is-justify-content-right">
-                <% if (occupancyTypePrints.length === 1) { %>
-                <a class="button is-link" href="<%= urlPrefix %>/print/<%= occupancyTypePrints[0] %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
-                    <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
-                    <span>Print</span>
-                </a>
-                <% } else { %>
-                <div class="dropdown is-right">
-                    <div class="dropdown-trigger">
-                        <button class="button is-link" type="button">
-                            <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
-                            <span>Print</span>
-                            <span class="icon is-small"><i class="fas fa-caret-down" aria-hidden="true"></i></span>
-                        </button>
-                    </div>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-content">
-                            <% for (const printName of occupancyTypePrints) { %>
-                                <% const printConfig = printFunctions.getPrintConfig(printName); %>
-                                <% if (printConfig) { %>
-                                    <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
-                                        <span class="icon is-small"><i class="fas fa-print" aria-hidden="true"></i></span>
-                                        <span><%= printConfig.title %></span>
-                                    </a>
-                                <% } %>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>
-                <% } %>
-            </div>
-        </div>
-    <% } %>
-</div>
+<h1 class="title is-1">
+  <%= configFunctions.getProperty("aliases.occupancy") %>
+  #<%= lotOccupancy.lotOccupancyId %>:
+  <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
+</h1>
 
-<% if (user.userProperties.canUpdate) { %>
-<div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-    <a class="button is-circle has-tooltip-left <%= (lotOccupancy.occupancyEndDate ? "is-warning" : "is-primary") %>"
-        data-tooltip="Update <%= configFunctions.getProperty("aliases.occupancy") %>"
-        href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>/edit"
-        accesskey="e">
-        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-        <span class="sr-only">Update <%= configFunctions.getProperty("aliases.occupancy") %></span>
-    </a>
+<div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
+  <div class="level-left">
+    <span class="level-item has-text-weight-bold">
+      <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>:
+      <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
+    </span>
+  </div>
+  <div class="level-right">
+    <% if (occupancyTypePrints.length > 0) { %>
+      <% if (occupancyTypePrints.length === 1) { %>
+        <div class="level-item">
+          <a href="<%= urlPrefix %>/print/<%= occupancyTypePrints[0] %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
+            <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+            <span>Print</span>
+          </a>
+        </div>
+      <% } else { %>
+        <div class="level-item">
+          <div class="dropdown is-right is-up">
+            <div class="dropdown-trigger">
+              <button class="button" type="button">
+                <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+                <span>Print</span>
+                <span class="icon"><i class="fas fa-angle-up" aria-hidden="true"></i></span>
+              </a>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content">
+                <% for (const printName of occupancyTypePrints) { %>
+                  <% const printConfig = printFunctions.getPrintConfig(printName); %>
+                  <% if (printConfig) { %>
+                    <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
+                      <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+                      <span><%= printConfig.title %></span>
+                    </a>
+                  <% } %>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    <% } %>
+    <% if (user.userProperties.canUpdate) { %>
+      <div class="level-item">
+        <a class="button <%= (lotOccupancy.occupancyEndDate ? "is-warning" : "is-primary") %>"
+          href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>/edit"
+          accesskey="e">
+          <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+          <span>Switch to Edit Mode</span>
+        </a>
+      </div>
+    <% } %>
+  </div>
 </div>
-<% } %>
 
 <div class="panel">
     <div class="panel-block is-block">
         <div class="columns">
             <div class="column">
-                <p>
-                    <strong><%= configFunctions.getProperty("aliases.occupancy") %> Type</strong><br />
-                    <%= lotOccupancy.occupancyType %>
-                </p>
+              <p>
+                <strong><%= configFunctions.getProperty("aliases.occupancy") %> Type</strong><br />
+                <%= lotOccupancy.occupancyType %>
+              </p>
             </div>
             <div class="column">
                 <p class="mb-2">
