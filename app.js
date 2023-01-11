@@ -28,6 +28,7 @@ import * as databaseInitializer from './helpers/initializer.database.js';
 import { apiGetHandler } from './handlers/permissions.js';
 import { getSafeRedirectURL } from './helpers/functions.authentication.js';
 import debug from 'debug';
+import { useTestDatabases } from './data/databasePaths.js';
 const debugApp = debug('lot-occupancy-system:app');
 databaseInitializer.initializeDatabase();
 const _dirname = '.';
@@ -55,7 +56,7 @@ app.use(csurf({
 }));
 app.use(rateLimit({
     windowMs: 10000,
-    max: 200
+    max: useTestDatabases ? 1000000 : 200
 }));
 const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
 if (urlPrefix !== '') {

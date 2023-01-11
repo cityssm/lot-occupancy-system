@@ -36,6 +36,7 @@ import { apiGetHandler } from './handlers/permissions.js'
 import { getSafeRedirectURL } from './helpers/functions.authentication.js'
 
 import debug from 'debug'
+import { useTestDatabases } from './data/databasePaths.js'
 const debugApp = debug('lot-occupancy-system:app')
 
 /*
@@ -93,7 +94,7 @@ app.use(
 app.use(
   rateLimit({
     windowMs: 10_000,
-    max: 200
+    max: useTestDatabases ? 1_000_000 : 200
   })
 )
 
