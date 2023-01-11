@@ -1,31 +1,36 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes'
 
 export function deleteLotOccupancyOccupant(
-    lotOccupancyId: number | string,
-    lotOccupantIndex: number | string,
-    requestSession: recordTypes.PartialSession
+  lotOccupancyId: number | string,
+  lotOccupantIndex: number | string,
+  requestSession: recordTypes.PartialSession
 ): boolean {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const rightNowMillis = Date.now();
+  const rightNowMillis = Date.now()
 
-    const result = database
-        .prepare(
-            `update LotOccupancyOccupants
-                set recordDelete_userName = ?,
-                recordDelete_timeMillis = ?
-                where lotOccupancyId = ?
-                and lotOccupantIndex = ?`
-        )
-        .run(requestSession.user.userName, rightNowMillis, lotOccupancyId, lotOccupantIndex);
+  const result = database
+    .prepare(
+      `update LotOccupancyOccupants
+        set recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+        where lotOccupancyId = ?
+        and lotOccupantIndex = ?`
+    )
+    .run(
+      requestSession.user!.userName,
+      rightNowMillis,
+      lotOccupancyId,
+      lotOccupantIndex
+    )
 
-    database.close();
+  database.close()
 
-    return result.changes > 0;
+  return result.changes > 0
 }
 
-export default deleteLotOccupancyOccupant;
+export default deleteLotOccupancyOccupant

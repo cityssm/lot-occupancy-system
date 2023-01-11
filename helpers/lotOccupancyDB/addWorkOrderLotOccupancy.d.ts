@@ -1,5 +1,5 @@
-import sqlite from "better-sqlite3";
-import type * as recordTypes from "../../types/recordTypes";
+import sqlite from 'better-sqlite3';
+import type * as recordTypes from '../../types/recordTypes';
 interface AddWorkOrderLotOccupancyForm {
     workOrderId: number | string;
     lotOccupancyId: number | string;

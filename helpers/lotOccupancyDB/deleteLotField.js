@@ -1,7 +1,7 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
 export function deleteLotField(lotId, lotTypeFieldId, requestSession, connectedDatabase) {
-    const database = connectedDatabase || sqlite(databasePath);
+    const database = connectedDatabase ?? sqlite(databasePath);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update LotFields

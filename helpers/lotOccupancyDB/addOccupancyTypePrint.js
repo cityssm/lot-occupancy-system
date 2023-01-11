@@ -1,6 +1,6 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearCacheByTableName } from "../functions.cache.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { clearCacheByTableName } from '../functions.cache.js';
 export function addOccupancyTypePrint(occupancyTypePrintForm, requestSession) {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
@@ -20,10 +20,10 @@ export function addOccupancyTypePrint(occupancyTypePrintForm, requestSession) {
                     recordCreate_userName, recordCreate_timeMillis,
                     recordUpdate_userName, recordUpdate_timeMillis)
                     values (?, ?, ?, ?, ?, ?, ?)`)
-            .run(occupancyTypePrintForm.occupancyTypeId, occupancyTypePrintForm.printEJS, occupancyTypePrintForm.orderNumber || -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+            .run(occupancyTypePrintForm.occupancyTypeId, occupancyTypePrintForm.printEJS, occupancyTypePrintForm.orderNumber ?? -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     }
     database.close();
-    clearCacheByTableName("OccupancyTypePrints");
+    clearCacheByTableName('OccupancyTypePrints');
     return result.changes > 0;
 }
 export default addOccupancyTypePrint;

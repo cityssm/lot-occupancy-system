@@ -1,32 +1,32 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import type * as recordTypes from "../../types/recordTypes";
-import { clearCacheByTableName } from "../functions.cache.js";
+import type * as recordTypes from '../../types/recordTypes'
+import { clearCacheByTableName } from '../functions.cache.js'
 
 interface AddOccupancyTypeFieldForm {
-    occupancyTypeId?: string | number;
-    occupancyTypeField: string;
-    occupancyTypeFieldValues?: string;
-    isRequired?: string;
-    pattern?: string;
-    minimumLength: string | number;
-    maximumLength: string | number;
-    orderNumber?: number;
+  occupancyTypeId?: string | number
+  occupancyTypeField: string
+  occupancyTypeFieldValues?: string
+  isRequired?: string
+  pattern?: string
+  minimumLength: string | number
+  maximumLength: string | number
+  orderNumber?: number
 }
 
 export function addOccupancyTypeField(
-    occupancyTypeFieldForm: AddOccupancyTypeFieldForm,
-    requestSession: recordTypes.PartialSession
+  occupancyTypeFieldForm: AddOccupancyTypeFieldForm,
+  requestSession: recordTypes.PartialSession
 ): number {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const rightNowMillis = Date.now();
+  const rightNowMillis = Date.now()
 
-    const result = database
-        .prepare(
-            `insert into OccupancyTypeFields (
+  const result = database
+    .prepare(
+      `insert into OccupancyTypeFields (
                 occupancyTypeId, occupancyTypeField,
                 occupancyTypeFieldValues, isRequired, pattern,
                 minimumLength, maximumLength,
@@ -34,27 +34,27 @@ export function addOccupancyTypeField(
                 recordCreate_userName, recordCreate_timeMillis,
                 recordUpdate_userName, recordUpdate_timeMillis)
                 values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-        )
-        .run(
-            occupancyTypeFieldForm.occupancyTypeId || undefined,
-            occupancyTypeFieldForm.occupancyTypeField,
-            occupancyTypeFieldForm.occupancyTypeFieldValues || "",
-            occupancyTypeFieldForm.isRequired ? 1 : 0,
-            occupancyTypeFieldForm.pattern || "",
-            occupancyTypeFieldForm.minimumLength || 0,
-            occupancyTypeFieldForm.maximumLength || 100,
-            occupancyTypeFieldForm.orderNumber || -1,
-            requestSession.user.userName,
-            rightNowMillis,
-            requestSession.user.userName,
-            rightNowMillis
-        );
+    )
+    .run(
+      occupancyTypeFieldForm.occupancyTypeId ?? undefined,
+      occupancyTypeFieldForm.occupancyTypeField,
+      occupancyTypeFieldForm.occupancyTypeFieldValues ?? '',
+      occupancyTypeFieldForm.isRequired === '' ? 0 : 1,
+      occupancyTypeFieldForm.pattern ?? '',
+      occupancyTypeFieldForm.minimumLength ?? 0,
+      occupancyTypeFieldForm.maximumLength ?? 100,
+      occupancyTypeFieldForm.orderNumber ?? -1,
+      requestSession.user!.userName,
+      rightNowMillis,
+      requestSession.user!.userName,
+      rightNowMillis
+    )
 
-    database.close();
+  database.close()
 
-    clearCacheByTableName("OccupancyTypeFields");
+  clearCacheByTableName('OccupancyTypeFields')
 
-    return result.lastInsertRowid as number;
+  return result.lastInsertRowid as number
 }
 
-export default addOccupancyTypeField;
+export default addOccupancyTypeField

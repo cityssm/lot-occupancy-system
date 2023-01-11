@@ -1,54 +1,60 @@
-import sqlite from "better-sqlite3";
+/* eslint-disable @typescript-eslint/indent */
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
+
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
 import {
-    dateStringToInteger,
-    dateToInteger,
-    dateToTimeInteger,
-    timeStringToInteger
-} from "@cityssm/expressjs-server-js/dateTimeFns.js";
+  dateStringToInteger,
+  dateToInteger,
+  dateToTimeInteger,
+  timeStringToInteger
+} from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes'
 
 interface CompleteWorkOrderMilestoneForm {
-    workOrderMilestoneId: string | number;
-    workOrderMilestoneCompletionDateString?: string;
-    workOrderMilestoneCompletionTimeString?: string;
+  workOrderMilestoneId: string | number
+  workOrderMilestoneCompletionDateString?: string
+  workOrderMilestoneCompletionTimeString?: string
 }
 
 export function completeWorkOrderMilestone(
-    milestoneForm: CompleteWorkOrderMilestoneForm,
-    requestSession: recordTypes.PartialSession
+  milestoneForm: CompleteWorkOrderMilestoneForm,
+  requestSession: recordTypes.PartialSession
 ): boolean {
-    const rightNow = new Date();
+  const rightNow = new Date()
 
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const result = database
-        .prepare(
-            `update WorkOrderMilestones
+  const result = database
+    .prepare(
+      `update WorkOrderMilestones
                 set workOrderMilestoneCompletionDate = ?,
                 workOrderMilestoneCompletionTime = ?,
                 recordUpdate_userName = ?,
                 recordUpdate_timeMillis = ?
                 where workOrderMilestoneId = ?`
-        )
-        .run(
+    )
+    .run(
+      milestoneForm.workOrderMilestoneCompletionDateString
+        ? dateStringToInteger(
             milestoneForm.workOrderMilestoneCompletionDateString
-                ? dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString)
-                : dateToInteger(rightNow),
+          )
+        : dateToInteger(rightNow),
+      milestoneForm.workOrderMilestoneCompletionTimeString
+        ? timeStringToInteger(
             milestoneForm.workOrderMilestoneCompletionTimeString
-                ? timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString)
-                : dateToTimeInteger(rightNow),
-            requestSession.user.userName,
-            rightNow.getTime(),
-            milestoneForm.workOrderMilestoneId
-        );
+          )
+        : dateToTimeInteger(rightNow),
+      requestSession.user!.userName,
+      rightNow.getTime(),
+      milestoneForm.workOrderMilestoneId
+    )
 
-    database.close();
+  database.close()
 
-    return result.changes > 0;
+  return result.changes > 0
 }
 
-export default completeWorkOrderMilestone;
+export default completeWorkOrderMilestone

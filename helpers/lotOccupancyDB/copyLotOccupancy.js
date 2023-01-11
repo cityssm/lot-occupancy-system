@@ -1,20 +1,20 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { getLotOccupancy } from "./getLotOccupancy.js";
-import { addLotOccupancy } from "./addLotOccupancy.js";
-import { addLotOccupancyOccupant } from "./addLotOccupancyOccupant.js";
-import { dateToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { getLotOccupancy } from './getLotOccupancy.js';
+import { addLotOccupancy } from './addLotOccupancy.js';
+import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js';
+import { dateToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
 export function copyLotOccupancy(oldLotOccupancyId, requestSession) {
     const database = sqlite(databasePath);
     const oldLotOccupancy = getLotOccupancy(oldLotOccupancyId, database);
     const newLotOccupancyId = addLotOccupancy({
-        lotId: oldLotOccupancy.lotId || "",
+        lotId: oldLotOccupancy.lotId ?? '',
         occupancyTypeId: oldLotOccupancy.occupancyTypeId,
         occupancyStartDateString: dateToString(new Date()),
-        occupancyEndDateString: ""
+        occupancyEndDateString: ''
     }, requestSession, database);
     const rightNowMillis = Date.now();
-    for (const occupancyField of oldLotOccupancy.lotOccupancyFields) {
+    for (const occupancyField of oldLotOccupancy.lotOccupancyFields ?? []) {
         database
             .prepare(`insert into LotOccupancyFields (
                     lotOccupancyId, occupancyTypeFieldId, lotOccupancyFieldValue,
@@ -23,7 +23,7 @@ export function copyLotOccupancy(oldLotOccupancyId, requestSession) {
                     values (?, ?, ?, ?, ?, ?, ?)`)
             .run(newLotOccupancyId, occupancyField.occupancyTypeFieldId, occupancyField.lotOccupancyFieldValue, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     }
-    for (const occupant of oldLotOccupancy.lotOccupancyOccupants) {
+    for (const occupant of oldLotOccupancy.lotOccupancyOccupants ?? []) {
         addLotOccupancyOccupant({
             lotOccupancyId: newLotOccupancyId,
             lotOccupantTypeId: occupant.lotOccupantTypeId,

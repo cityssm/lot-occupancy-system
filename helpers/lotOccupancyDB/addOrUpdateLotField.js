@@ -1,17 +1,17 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
 export function addOrUpdateLotField(lotFieldForm, requestSession, connectedDatabase) {
-    const database = connectedDatabase || sqlite(databasePath);
+    const database = connectedDatabase ?? sqlite(databasePath);
     const rightNowMillis = Date.now();
     let result = database
         .prepare(`update LotFields
-                set lotFieldValue = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?,
-                recordDelete_userName = null,
-                recordDelete_timeMillis = null
-                where lotId = ?
-                and lotTypeFieldId = ?`)
+        set lotFieldValue = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?,
+        recordDelete_userName = null,
+        recordDelete_timeMillis = null
+        where lotId = ?
+        and lotTypeFieldId = ?`)
         .run(lotFieldForm.lotFieldValue, requestSession.user.userName, rightNowMillis, lotFieldForm.lotId, lotFieldForm.lotTypeFieldId);
     if (result.changes === 0) {
         result = database

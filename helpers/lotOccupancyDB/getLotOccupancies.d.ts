@@ -1,14 +1,14 @@
-import sqlite from "better-sqlite3";
-import type * as recordTypes from "../../types/recordTypes";
+import sqlite from 'better-sqlite3';
+import type * as recordTypes from '../../types/recordTypes';
 interface GetLotOccupanciesFilters {
     lotId?: number | string;
-    occupancyTime?: "" | "past" | "current" | "future";
+    occupancyTime?: '' | 'past' | 'current' | 'future';
     occupancyStartDateString?: string;
     occupancyEffectiveDateString?: string;
     occupantName?: string;
     occupancyTypeId?: number | string;
     mapId?: number | string;
-    lotNameSearchType?: "" | "startsWith" | "endsWith";
+    lotNameSearchType?: '' | 'startsWith' | 'endsWith';
     lotName?: string;
     lotTypeId?: number | string;
     workOrderId?: number | string;
