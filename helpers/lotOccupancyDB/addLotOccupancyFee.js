@@ -1,8 +1,8 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { calculateFeeAmount, calculateTaxAmount } from "../functions.fee.js";
-import { getFee } from "./getFee.js";
-import { getLotOccupancy } from "./getLotOccupancy.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { calculateFeeAmount, calculateTaxAmount } from '../functions.fee.js';
+import { getFee } from './getFee.js';
+import { getLotOccupancy } from './getLotOccupancy.js';
 export function addLotOccupancyFee(lotOccupancyFeeForm, requestSession) {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
@@ -10,13 +10,13 @@ export function addLotOccupancyFee(lotOccupancyFeeForm, requestSession) {
     let taxAmount;
     if (lotOccupancyFeeForm.feeAmount) {
         feeAmount =
-            typeof lotOccupancyFeeForm.feeAmount === "string"
+            typeof lotOccupancyFeeForm.feeAmount === 'string'
                 ? Number.parseFloat(lotOccupancyFeeForm.feeAmount)
-                : feeAmount;
+                : 0;
         taxAmount =
-            typeof lotOccupancyFeeForm.taxAmount === "string"
+            typeof lotOccupancyFeeForm.taxAmount === 'string'
                 ? Number.parseFloat(lotOccupancyFeeForm.taxAmount)
-                : taxAmount;
+                : 0;
     }
     else {
         const lotOccupancy = getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId);
@@ -39,7 +39,8 @@ export function addLotOccupancyFee(lotOccupancyFeeForm, requestSession) {
                         and feeId = ?`)
                 .run(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
         }
-        else if (record.feeAmount === feeAmount && record.taxAmount === taxAmount) {
+        else if (record.feeAmount === feeAmount &&
+            record.taxAmount === taxAmount) {
             database
                 .prepare(`update LotOccupancyFees
                         set quantity = quantity + ?,
@@ -52,18 +53,18 @@ export function addLotOccupancyFee(lotOccupancyFeeForm, requestSession) {
             return true;
         }
         else {
-            const quantity = typeof lotOccupancyFeeForm.quantity === "string"
+            const quantity = typeof lotOccupancyFeeForm.quantity === 'string'
                 ? Number.parseFloat(lotOccupancyFeeForm.quantity)
                 : lotOccupancyFeeForm.quantity;
             database
                 .prepare(`update LotOccupancyFees
-                        set feeAmount = (feeAmount * quantity) + ?,
-                        taxAmount = (taxAmount * quantity) + ?,
-                        quantity = 1,
-                        recordUpdate_userName = ?,
-                        recordUpdate_timeMillis = ?
-                        where lotOccupancyId = ?
-                        and feeId = ?`)
+            set feeAmount = (feeAmount * quantity) + ?,
+            taxAmount = (taxAmount * quantity) + ?,
+            quantity = 1,
+            recordUpdate_userName = ?,
+            recordUpdate_timeMillis = ?
+            where lotOccupancyId = ?
+            and feeId = ?`)
                 .run(feeAmount * quantity, taxAmount * quantity, requestSession.user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
             database.close();
             return true;

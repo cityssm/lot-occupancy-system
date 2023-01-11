@@ -1,18 +1,18 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { dateIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
-import { getLotOccupancyOccupants } from "./getLotOccupancyOccupants.js";
-import { getLotOccupancyComments } from "./getLotOccupancyComments.js";
-import { getLotOccupancyFields } from "./getLotOccupancyFields.js";
-import { getLotOccupancyFees } from "./getLotOccupancyFees.js";
-import { getLotOccupancyTransactions } from "./getLotOccupancyTransactions.js";
-import { getWorkOrders } from "./getWorkOrders.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { dateIntegerToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js';
+import { getLotOccupancyComments } from './getLotOccupancyComments.js';
+import { getLotOccupancyFields } from './getLotOccupancyFields.js';
+import { getLotOccupancyFees } from './getLotOccupancyFees.js';
+import { getLotOccupancyTransactions } from './getLotOccupancyTransactions.js';
+import { getWorkOrders } from './getWorkOrders.js';
 export function getLotOccupancy(lotOccupancyId, connectedDatabase) {
-    const database = connectedDatabase ||
+    const database = connectedDatabase ??
         sqlite(databasePath, {
             readonly: true
         });
-    database.function("userFn_dateIntegerToString", dateIntegerToString);
+    database.function('userFn_dateIntegerToString', dateIntegerToString);
     const lotOccupancy = database
         .prepare(`select o.lotOccupancyId,
                 o.occupancyTypeId, t.occupancyType,

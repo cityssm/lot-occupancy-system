@@ -1,11 +1,11 @@
-import * as configFunctions from "./functions.config.js";
-import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from "./lotOccupancyDB/getLotOccupantTypes.js";
-import { getLotStatuses as getLotStatusesFromDatabase } from "./lotOccupancyDB/getLotStatuses.js";
-import { getLotTypes as getLotTypesFromDatabase } from "./lotOccupancyDB/getLotTypes.js";
-import { getOccupancyTypes as getOccupancyTypesFromDatabase } from "./lotOccupancyDB/getOccupancyTypes.js";
-import { getOccupancyTypeFields as getOccupancyTypeFieldsFromDatabase } from "./lotOccupancyDB/getOccupancyTypeFields.js";
-import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from "./lotOccupancyDB/getWorkOrderTypes.js";
-import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from "./lotOccupancyDB/getWorkOrderMilestoneTypes.js";
+import * as configFunctions from './functions.config.js';
+import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from './lotOccupancyDB/getLotOccupantTypes.js';
+import { getLotStatuses as getLotStatusesFromDatabase } from './lotOccupancyDB/getLotStatuses.js';
+import { getLotTypes as getLotTypesFromDatabase } from './lotOccupancyDB/getLotTypes.js';
+import { getOccupancyTypes as getOccupancyTypesFromDatabase } from './lotOccupancyDB/getOccupancyTypes.js';
+import { getOccupancyTypeFields as getOccupancyTypeFieldsFromDatabase } from './lotOccupancyDB/getOccupancyTypeFields.js';
+import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from './lotOccupancyDB/getWorkOrderTypes.js';
+import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from './lotOccupancyDB/getWorkOrderMilestoneTypes.js';
 let lotOccupantTypes;
 export function getLotOccupantTypes() {
     if (!lotOccupantTypes) {
@@ -23,7 +23,8 @@ export function getLotOccupantTypeByLotOccupantType(lotOccupantType) {
     const cachedLotOccupantTypes = getLotOccupantTypes();
     const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase();
     return cachedLotOccupantTypes.find((currentLotOccupantType) => {
-        return currentLotOccupantType.lotOccupantType.toLowerCase() === lotOccupantTypeLowerCase;
+        return (currentLotOccupantType.lotOccupantType.toLowerCase() ===
+            lotOccupantTypeLowerCase);
     });
 }
 function clearLotOccupantTypesCache() {
@@ -99,16 +100,18 @@ export function getOccupancyTypeByOccupancyType(occupancyTypeString) {
     const cachedOccupancyTypes = getOccupancyTypes();
     const occupancyTypeLowerCase = occupancyTypeString.toLowerCase();
     return cachedOccupancyTypes.find((currentOccupancyType) => {
-        return currentOccupancyType.occupancyType.toLowerCase() === occupancyTypeLowerCase;
+        return (currentOccupancyType.occupancyType.toLowerCase() ===
+            occupancyTypeLowerCase);
     });
 }
 export function getOccupancyTypePrintsById(occupancyTypeId) {
     const occupancyType = getOccupancyTypeById(occupancyTypeId);
-    if (!occupancyType || occupancyType.occupancyTypePrints.length === 0) {
+    if (!occupancyType ||
+        (occupancyType.occupancyTypePrints ?? []).length === 0) {
         return [];
     }
-    if (occupancyType.occupancyTypePrints.includes("*")) {
-        return configFunctions.getProperty("settings.lotOccupancy.prints");
+    if (occupancyType.occupancyTypePrints.includes('*')) {
+        return configFunctions.getProperty('settings.lotOccupancy.prints');
     }
     return occupancyType.occupancyTypePrints;
 }
@@ -142,7 +145,8 @@ export function getWorkOrderMilestoneTypes() {
 export function getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(workOrderMilestoneTypeId) {
     const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => {
-        return currentWorkOrderMilestoneType.workOrderMilestoneTypeId === workOrderMilestoneTypeId;
+        return (currentWorkOrderMilestoneType.workOrderMilestoneTypeId ===
+            workOrderMilestoneTypeId);
     });
 }
 export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString) {
@@ -158,30 +162,30 @@ function clearWorkOrderMilestoneTypesCache() {
 }
 export function clearCacheByTableName(tableName) {
     switch (tableName) {
-        case "LotOccupantTypes": {
+        case 'LotOccupantTypes': {
             clearLotOccupantTypesCache();
             break;
         }
-        case "LotStatuses": {
+        case 'LotStatuses': {
             clearLotStatusesCache();
             break;
         }
-        case "LotTypes":
-        case "LotTypeFields": {
+        case 'LotTypes':
+        case 'LotTypeFields': {
             clearLotTypesCache();
             break;
         }
-        case "OccupancyTypes":
-        case "OccupancyTypeFields":
-        case "OccupancyTypePrints": {
+        case 'OccupancyTypes':
+        case 'OccupancyTypeFields':
+        case 'OccupancyTypePrints': {
             clearOccupancyTypesCache();
             break;
         }
-        case "WorkOrderMilestoneTypes": {
+        case 'WorkOrderMilestoneTypes': {
             clearWorkOrderMilestoneTypesCache();
             break;
         }
-        case "WorkOrderTypes": {
+        case 'WorkOrderTypes': {
             clearWorkOrderTypesCache();
             break;
         }

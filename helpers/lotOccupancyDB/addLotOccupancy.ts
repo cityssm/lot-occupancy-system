@@ -1,122 +1,127 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
-import { addOrUpdateLotOccupancyField } from "./addOrUpdateLotOccupancyField.js";
-import { addLotOccupancyOccupant } from "./addLotOccupancyOccupant.js";
+import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js'
+import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes'
 
 interface AddLotOccupancyForm {
-    occupancyTypeId: string | number;
-    lotId: string | number;
+  occupancyTypeId: string | number
+  lotId: string | number
 
-    occupancyStartDateString: string;
-    occupancyEndDateString: string;
+  occupancyStartDateString: string
+  occupancyEndDateString: string
 
-    occupancyTypeFieldIds?: string;
-    [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown;
+  occupancyTypeFieldIds?: string
+  [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown
 
-    lotOccupantTypeId?: string;
-    occupantName?: string;
-    occupantAddress1?: string;
-    occupantAddress2?: string;
-    occupantCity?: string;
-    occupantProvince?: string;
-    occupantPostalCode?: string;
-    occupantPhoneNumber?: string;
-    occupantEmailAddress?: string;
-    occupantComment?: string;
+  lotOccupantTypeId?: string
+  occupantName?: string
+  occupantAddress1?: string
+  occupantAddress2?: string
+  occupantCity?: string
+  occupantProvince?: string
+  occupantPostalCode?: string
+  occupantPhoneNumber?: string
+  occupantEmailAddress?: string
+  occupantComment?: string
 }
 
 export function addLotOccupancy(
-    lotOccupancyForm: AddLotOccupancyForm,
-    requestSession: recordTypes.PartialSession,
-    connectedDatabase?: sqlite.Database
+  lotOccupancyForm: AddLotOccupancyForm,
+  requestSession: recordTypes.PartialSession,
+  connectedDatabase?: sqlite.Database
 ): number {
-    const database = connectedDatabase || sqlite(databasePath);
+  const database = connectedDatabase ?? sqlite(databasePath)
 
-    const rightNowMillis = Date.now();
+  const rightNowMillis = Date.now()
 
-    const occupancyStartDate = dateTimeFunctions.dateStringToInteger(
-        lotOccupancyForm.occupancyStartDateString
-    );
+  const occupancyStartDate = dateTimeFunctions.dateStringToInteger(
+    lotOccupancyForm.occupancyStartDateString
+  )
 
-    if (occupancyStartDate <= 0) {
-        console.error(lotOccupancyForm);
+  if (occupancyStartDate <= 0) {
+    console.error(lotOccupancyForm)
+  }
+
+  /* eslint-disable @typescript-eslint/indent */
+  const result = database
+    .prepare(
+      `insert into LotOccupancies (
+        occupancyTypeId, lotId,
+        occupancyStartDate, occupancyEndDate,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?, ?)`
+    )
+    .run(
+      lotOccupancyForm.occupancyTypeId,
+      lotOccupancyForm.lotId === '' ? undefined : lotOccupancyForm.lotId,
+      occupancyStartDate,
+      lotOccupancyForm.occupancyEndDateString === ''
+        ? undefined
+        : dateTimeFunctions.dateStringToInteger(
+            lotOccupancyForm.occupancyEndDateString
+          ),
+      requestSession.user!.userName,
+      rightNowMillis,
+      requestSession.user!.userName,
+      rightNowMillis
+    )
+
+  const lotOccupancyId = result.lastInsertRowid as number
+
+  const occupancyTypeFieldIds = (
+    lotOccupancyForm.occupancyTypeFieldIds ?? ''
+  ).split(',')
+
+  for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
+    const lotOccupancyFieldValue = lotOccupancyForm[
+      'lotOccupancyFieldValue_' + occupancyTypeFieldId
+    ] as string
+
+    if (lotOccupancyFieldValue && lotOccupancyFieldValue !== '') {
+      addOrUpdateLotOccupancyField(
+        {
+          lotOccupancyId,
+          occupancyTypeFieldId,
+          lotOccupancyFieldValue
+        },
+        requestSession,
+        database
+      )
     }
+  }
 
-    const result = database
-        .prepare(
-            `insert into LotOccupancies (
-                occupancyTypeId, lotId,
-                occupancyStartDate, occupancyEndDate,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?, ?, ?)`
-        )
-        .run(
-            lotOccupancyForm.occupancyTypeId,
-            lotOccupancyForm.lotId === "" ? undefined : lotOccupancyForm.lotId,
-            occupancyStartDate,
-            lotOccupancyForm.occupancyEndDateString === ""
-                ? undefined
-                : dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyEndDateString),
-            requestSession.user.userName,
-            rightNowMillis,
-            requestSession.user.userName,
-            rightNowMillis
-        );
+  if (lotOccupancyForm.lotOccupantTypeId) {
+    addLotOccupancyOccupant(
+      {
+        lotOccupancyId,
+        lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId,
+        occupantName: lotOccupancyForm.occupantName!,
+        occupantAddress1: lotOccupancyForm.occupantAddress1!,
+        occupantAddress2: lotOccupancyForm.occupantAddress2!,
+        occupantCity: lotOccupancyForm.occupantCity!,
+        occupantProvince: lotOccupancyForm.occupantProvince!,
+        occupantPostalCode: lotOccupancyForm.occupantPostalCode!,
+        occupantPhoneNumber: lotOccupancyForm.occupantPhoneNumber!,
+        occupantEmailAddress: lotOccupancyForm.occupantEmailAddress!,
+        occupantComment: lotOccupancyForm.occupantComment!
+      },
+      requestSession,
+      database
+    )
+  }
 
-    const lotOccupancyId = result.lastInsertRowid as number;
+  if (!connectedDatabase) {
+    database.close()
+  }
 
-    const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds || "").split(",");
-
-    for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
-        const lotOccupancyFieldValue = lotOccupancyForm[
-            "lotOccupancyFieldValue_" + occupancyTypeFieldId
-        ] as string;
-
-        if (lotOccupancyFieldValue && lotOccupancyFieldValue !== "") {
-            addOrUpdateLotOccupancyField(
-                {
-                    lotOccupancyId,
-                    occupancyTypeFieldId,
-                    lotOccupancyFieldValue
-                },
-                requestSession,
-                database
-            );
-        }
-    }
-
-    if (lotOccupancyForm.lotOccupantTypeId) {
-        addLotOccupancyOccupant(
-            {
-                lotOccupancyId,
-                lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId,
-                occupantName: lotOccupancyForm.occupantName,
-                occupantAddress1: lotOccupancyForm.occupantAddress1,
-                occupantAddress2: lotOccupancyForm.occupantAddress2,
-                occupantCity: lotOccupancyForm.occupantCity,
-                occupantProvince: lotOccupancyForm.occupantProvince,
-                occupantPostalCode: lotOccupancyForm.occupantPostalCode,
-                occupantPhoneNumber: lotOccupancyForm.occupantPhoneNumber,
-                occupantEmailAddress: lotOccupancyForm.occupantEmailAddress,
-                occupantComment: lotOccupancyForm.occupantComment
-            },
-            requestSession,
-            database
-        );
-    }
-
-    if (!connectedDatabase) {
-        database.close();
-    }
-
-    return lotOccupancyId;
+  return lotOccupancyId
 }
 
-export default addLotOccupancy;
+export default addLotOccupancy

@@ -1,38 +1,41 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
-import { getReportData, ReportParameters } from "../../helpers/lotOccupancyDB/getReportData.js";
+import {
+  getReportData,
+  ReportParameters
+} from '../../helpers/lotOccupancyDB/getReportData.js'
 
-import papaparse from "papaparse";
+import papaparse from 'papaparse'
 
 export const handler: RequestHandler = (request, response) => {
-    const reportName = request.params.reportName;
+  const reportName = request.params.reportName
 
-    let rows: unknown[];
+  let rows: unknown[] | undefined
 
-    switch (reportName) {
-        default: {
-            rows = getReportData(reportName, request.query as ReportParameters);
-            break;
-        }
+  switch (reportName) {
+    default: {
+      rows = getReportData(reportName, request.query as ReportParameters)
+      break
     }
+  }
 
-    if (!rows) {
-        return response.status(404).json({
-            success: false,
-            message: "Report Not Found"
-        });
-    }
+  if (!rows) {
+    return response.status(404).json({
+      success: false,
+      message: 'Report Not Found'
+    })
+  }
 
-    const csv = papaparse.unparse(rows);
+  const csv = papaparse.unparse(rows)
 
-    response.setHeader(
-        "Content-Disposition",
-        "attachment; filename=" + reportName + "-" + Date.now().toString() + ".csv"
-    );
+  response.setHeader(
+    'Content-Disposition',
+    'attachment; filename=' + reportName + '-' + Date.now().toString() + '.csv'
+  )
 
-    response.setHeader("Content-Type", "text/csv");
+  response.setHeader('Content-Type', 'text/csv')
 
-    response.send(csv);
-};
+  response.send(csv)
+}
 
-export default handler;
+export default handler

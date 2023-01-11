@@ -1,16 +1,16 @@
 export interface Record {
-    recordCreate_userName?: string;
-    recordCreate_timeMillis?: number;
-    recordCreate_dateString?: string;
+  recordCreate_userName?: string
+  recordCreate_timeMillis?: number
+  recordCreate_dateString?: string
 
-    recordUpdate_userName?: string;
-    recordUpdate_timeMillis?: number;
-    recordUpdate_dateString?: string;
-    recordUpdate_timeString?: string;
+  recordUpdate_userName?: string
+  recordUpdate_timeMillis?: number
+  recordUpdate_dateString?: string
+  recordUpdate_timeString?: string
 
-    recordDelete_userName?: string;
-    recordDelete_timeMillis?: number;
-    recordDelete_dateString?: string;
+  recordDelete_userName?: string
+  recordDelete_timeMillis?: number
+  recordDelete_dateString?: string
 }
 
 /*
@@ -18,248 +18,248 @@ export interface Record {
  */
 
 export interface Map extends Record {
-    mapId?: number;
-    mapName?: string;
-    mapDescription?: string;
+  mapId?: number
+  mapName?: string
+  mapDescription?: string
 
-    mapLatitude?: number;
-    mapLongitude?: number;
-    mapSVG?: string;
+  mapLatitude?: number
+  mapLongitude?: number
+  mapSVG?: string
 
-    mapAddress1?: string;
-    mapAddress2?: string;
-    mapCity?: string;
-    mapProvince?: string;
-    mapPostalCode?: string;
-    mapPhoneNumber?: string;
+  mapAddress1?: string
+  mapAddress2?: string
+  mapCity?: string
+  mapProvince?: string
+  mapPostalCode?: string
+  mapPhoneNumber?: string
 
-    lotCount?: number;
+  lotCount?: number
 }
 
 export interface LotType extends Record {
-    lotTypeId: number;
-    lotType: string;
-    orderNumber?: number;
-    lotTypeFields?: LotTypeField[];
+  lotTypeId: number
+  lotType: string
+  orderNumber?: number
+  lotTypeFields?: LotTypeField[]
 }
 
 export interface LotTypeField extends Record {
-    lotTypeFieldId: number;
-    lotTypeField?: string;
+  lotTypeFieldId: number
+  lotTypeField?: string
 
-    lotTypeId?: number;
-    lotType: LotType;
+  lotTypeId?: number
+  lotType: LotType
 
-    lotTypeFieldValues?: string;
-    isRequired?: boolean;
-    pattern?: string;
-    minimumLength?: number;
-    maximumLength?: number;
+  lotTypeFieldValues?: string
+  isRequired?: boolean
+  pattern?: string
+  minimumLength?: number
+  maximumLength?: number
 
-    orderNumber?: number;
+  orderNumber?: number
 }
 
 export interface LotStatus extends Record {
-    lotStatusId: number;
-    lotStatus: string;
-    orderNumber?: number;
+  lotStatusId: number
+  lotStatus: string
+  orderNumber?: number
 }
 
 export interface Lot extends Record {
-    lotId: number;
-    lotName?: string;
+  lotId: number
+  lotName?: string
 
-    lotTypeId?: number;
-    lotType?: string;
+  lotTypeId?: number
+  lotType?: string
 
-    mapId?: number;
-    mapName?: string;
-    map?: Map;
-    mapSVG?: string;
-    mapKey?: string;
+  mapId?: number
+  mapName?: string
+  map?: Map
+  mapSVG?: string
+  mapKey?: string
 
-    lotLatitude?: number;
-    lotLongitude?: number;
+  lotLatitude?: number
+  lotLongitude?: number
 
-    lotStatusId?: number;
-    lotStatus?: string;
+  lotStatusId?: number
+  lotStatus?: string
 
-    lotFields?: LotField[];
+  lotFields?: LotField[]
 
-    lotOccupancyCount?: number;
-    lotOccupancies?: LotOccupancy[];
+  lotOccupancyCount?: number
+  lotOccupancies?: LotOccupancy[]
 
-    lotComments?: LotComment[];
+  lotComments?: LotComment[]
 }
 
 export interface LotComment extends Record {
-    lotCommentId?: number;
-    lotId?: number;
+  lotCommentId?: number
+  lotId?: number
 
-    lotCommentDate?: number;
-    lotCommentDateString?: string;
+  lotCommentDate?: number
+  lotCommentDateString?: string
 
-    lotCommentTime?: number;
-    lotCommentTimeString?: string;
+  lotCommentTime?: number
+  lotCommentTimeString?: string
 
-    lotComment?: string;
+  lotComment?: string
 }
 
 export interface LotField extends LotTypeField, Record {
-    lotId?: number;
-    lotFieldValue?: string;
+  lotId?: number
+  lotFieldValue?: string
 }
 
 export interface OccupancyType extends Record {
-    occupancyTypeId: number;
-    occupancyType: string;
-    orderNumber?: number;
-    occupancyTypeFields?: OccupancyTypeField[];
-    occupancyTypePrints?: string[];
+  occupancyTypeId: number
+  occupancyType: string
+  orderNumber?: number
+  occupancyTypeFields?: OccupancyTypeField[]
+  occupancyTypePrints?: string[]
 }
 
 export interface OccupancyTypeField {
-    occupancyTypeFieldId?: number;
-    occupancyTypeId?: number;
-    occupancyTypeField?: string;
-    occupancyTypeFieldValues?: string;
-    isRequired?: boolean;
-    pattern?: string;
-    minimumLength?: number;
-    maximumLength?: number;
-    orderNumber?: number;
+  occupancyTypeFieldId?: number
+  occupancyTypeId?: number
+  occupancyTypeField?: string
+  occupancyTypeFieldValues?: string
+  isRequired?: boolean
+  pattern?: string
+  minimumLength?: number
+  maximumLength?: number
+  orderNumber?: number
 }
 
 export interface LotOccupantType extends Record {
-    lotOccupantTypeId: number;
-    lotOccupantType: string;
-    fontAwesomeIconClass: string;
-    orderNumber?: number;
+  lotOccupantTypeId: number
+  lotOccupantType: string
+  fontAwesomeIconClass: string
+  orderNumber?: number
 }
 
 export interface FeeCategory extends Record {
-    feeCategoryId: number;
-    feeCategory: string;
-    fees: Fee[];
-    orderNumber?: number;
+  feeCategoryId: number
+  feeCategory: string
+  fees: Fee[]
+  orderNumber?: number
 }
 
 export interface Fee extends Record {
-    feeId: number;
+  feeId: number
 
-    feeCategoryId?: number;
-    feeCategory?: string;
+  feeCategoryId?: number
+  feeCategory?: string
 
-    feeName?: string;
-    feeDescription?: string;
+  feeName?: string
+  feeDescription?: string
 
-    occupancyTypeId?: number;
-    occupancyType?: string;
+  occupancyTypeId?: number
+  occupancyType?: string
 
-    lotTypeId?: number;
-    lotType?: string;
+  lotTypeId?: number
+  lotType?: string
 
-    includeQuantity?: boolean;
-    quantityUnit?: string;
+  includeQuantity?: boolean
+  quantityUnit?: string
 
-    feeAmount?: number;
-    feeFunction?: string;
+  feeAmount?: number
+  feeFunction?: string
 
-    taxAmount?: number;
-    taxPercentage?: number;
+  taxAmount?: number
+  taxPercentage?: number
 
-    isRequired?: boolean;
+  isRequired?: boolean
 
-    orderNumber?: number;
+  orderNumber?: number
 }
 
 export interface LotOccupancyFee extends Fee, Record {
-    lotOccupancyId?: number;
-    quantity?: number;
+  lotOccupancyId?: number
+  quantity?: number
 }
 
 export interface LotOccupancyTransaction extends Record {
-    lotOccupancyId?: number;
-    transactionIndex?: number;
-    transactionDate?: number;
-    transactionDateString?: string;
-    transactionTime?: number;
-    transactionTimeString?: string;
-    transactionAmount: number;
-    externalReceiptNumber?: string;
-    transactionNote?: string;
+  lotOccupancyId?: number
+  transactionIndex?: number
+  transactionDate?: number
+  transactionDateString?: string
+  transactionTime?: number
+  transactionTimeString?: string
+  transactionAmount: number
+  externalReceiptNumber?: string
+  transactionNote?: string
 }
 
 export interface LotOccupancyOccupant extends Record {
-    lotOccupancyId?: number;
-    lotOccupantIndex?: number;
+  lotOccupancyId?: number
+  lotOccupantIndex?: number
 
-    lotOccupantTypeId?: number;
-    lotOccupantType?: string;
-    fontAwesomeIconClass?: string;
-    
-    occupantName?: string;
-    occupantAddress1?: string;
-    occupantAddress2?: string;
-    occupantCity?: string;
-    occupantProvince?: string;
-    occupantPostalCode?: string;
+  lotOccupantTypeId?: number
+  lotOccupantType?: string
+  fontAwesomeIconClass?: string
 
-    occupantPhoneNumber?: string;
-    occupantEmailAddress?: string;
+  occupantName?: string
+  occupantAddress1?: string
+  occupantAddress2?: string
+  occupantCity?: string
+  occupantProvince?: string
+  occupantPostalCode?: string
 
-    occupantComment?: string;
-    
-    lotOccupancyIdCount?: number;
-    recordUpdate_timeMillisMax?: number;
+  occupantPhoneNumber?: string
+  occupantEmailAddress?: string
+
+  occupantComment?: string
+
+  lotOccupancyIdCount?: number
+  recordUpdate_timeMillisMax?: number
 }
 
 export interface LotOccupancyComment extends Record {
-    lotOccupancyCommentId?: number;
-    lotOccupancyId?: number;
+  lotOccupancyCommentId?: number
+  lotOccupancyId?: number
 
-    lotOccupancyCommentDate?: number;
-    lotOccupancyCommentDateString?: string;
+  lotOccupancyCommentDate?: number
+  lotOccupancyCommentDateString?: string
 
-    lotOccupancyCommentTime?: number;
-    lotOccupancyCommentTimeString?: string;
+  lotOccupancyCommentTime?: number
+  lotOccupancyCommentTimeString?: string
 
-    lotOccupancyComment?: string;
+  lotOccupancyComment?: string
 }
 
 export interface LotOccupancyField extends OccupancyTypeField, Record {
-    lotOccupancyId?: number;
-    occupancyTypeFieldId?: number;
-    lotOccupancyFieldValue?: string;
+  lotOccupancyId?: number
+  occupancyTypeFieldId?: number
+  lotOccupancyFieldValue?: string
 }
 
 export interface LotOccupancy extends Record {
-    lotOccupancyId?: number;
+  lotOccupancyId?: number
 
-    occupancyTypeId?: number;
-    occupancyType?: string;
-    printEJS?: string;
+  occupancyTypeId?: number
+  occupancyType?: string
+  printEJS?: string
 
-    lotId?: number;
-    lotTypeId?: number;
-    lotType?: string;
-    lotName?: string;
+  lotId?: number
+  lotTypeId?: number
+  lotType?: string
+  lotName?: string
 
-    mapId?: number;
-    mapName?: string;
+  mapId?: number
+  mapName?: string
 
-    occupancyStartDate?: number;
-    occupancyStartDateString?: string;
+  occupancyStartDate?: number
+  occupancyStartDateString?: string
 
-    occupancyEndDate?: number;
-    occupancyEndDateString?: string;
+  occupancyEndDate?: number
+  occupancyEndDateString?: string
 
-    lotOccupancyFields?: LotOccupancyField[];
-    lotOccupancyComments?: LotOccupancyComment[];
-    lotOccupancyOccupants?: LotOccupancyOccupant[];
-    lotOccupancyFees?: LotOccupancyFee[];
-    lotOccupancyTransactions?: LotOccupancyTransaction[];
-    workOrders?: WorkOrder[];
+  lotOccupancyFields?: LotOccupancyField[]
+  lotOccupancyComments?: LotOccupancyComment[]
+  lotOccupancyOccupants?: LotOccupancyOccupant[]
+  lotOccupancyFees?: LotOccupancyFee[]
+  lotOccupancyTransactions?: LotOccupancyTransaction[]
+  workOrders?: WorkOrder[]
 }
 
 /*
@@ -267,75 +267,75 @@ export interface LotOccupancy extends Record {
  */
 
 export interface WorkOrderType extends Record {
-    workOrderTypeId?: number;
-    workOrderType?: string;
-    orderNumber?: number;
+  workOrderTypeId?: number
+  workOrderType?: string
+  orderNumber?: number
 }
 
 export interface WorkOrderMilestoneType extends Record {
-    workOrderMilestoneTypeId: number;
-    workOrderMilestoneType: string;
-    orderNumber?: number;
+  workOrderMilestoneTypeId: number
+  workOrderMilestoneType: string
+  orderNumber?: number
 }
 
 export interface WorkOrderComment extends Record {
-    workOrderCommentId?: number;
-    workOrderId?: number;
+  workOrderCommentId?: number
+  workOrderId?: number
 
-    workOrderCommentDate?: number;
-    workOrderCommentDateString?: string;
+  workOrderCommentDate?: number
+  workOrderCommentDateString?: string
 
-    workOrderCommentTime?: number;
-    workOrderCommentTimeString?: string;
+  workOrderCommentTime?: number
+  workOrderCommentTimeString?: string
 
-    workOrderComment?: string;
+  workOrderComment?: string
 }
 
 export interface WorkOrderMilestone extends Record, WorkOrder {
-    workOrderMilestoneId?: number;
+  workOrderMilestoneId?: number
 
-    workOrderMilestoneTypeId?: number;
-    workOrderMilestoneType?: string;
+  workOrderMilestoneTypeId?: number
+  workOrderMilestoneType?: string
 
-    workOrderMilestoneDate?: number;
-    workOrderMilestoneDateString?: string;
+  workOrderMilestoneDate?: number
+  workOrderMilestoneDateString?: string
 
-    workOrderMilestoneTime?: number;
-    workOrderMilestoneTimeString?: string;
+  workOrderMilestoneTime?: number
+  workOrderMilestoneTimeString?: string
 
-    workOrderMilestoneDescription?: string;
+  workOrderMilestoneDescription?: string
 
-    workOrderMilestoneCompletionDate?: number;
-    workOrderMilestoneCompletionDateString?: string;
+  workOrderMilestoneCompletionDate?: number
+  workOrderMilestoneCompletionDateString?: string
 
-    workOrderMilestoneCompletionTime?: number;
-    workOrderMilestoneCompletionTimeString?: string;
+  workOrderMilestoneCompletionTime?: number
+  workOrderMilestoneCompletionTimeString?: string
 
-    workOrderRecordUpdate_timeMillis?: number;
+  workOrderRecordUpdate_timeMillis?: number
 }
 
 export interface WorkOrder extends Record {
-    workOrderId?: number;
+  workOrderId?: number
 
-    workOrderTypeId?: number;
-    workOrderType?: string;
+  workOrderTypeId?: number
+  workOrderType?: string
 
-    workOrderNumber?: string;
-    workOrderDescription?: string;
+  workOrderNumber?: string
+  workOrderDescription?: string
 
-    workOrderOpenDate?: number;
-    workOrderOpenDateString?: string;
+  workOrderOpenDate?: number
+  workOrderOpenDateString?: string
 
-    workOrderCloseDate?: number;
-    workOrderCloseDateString?: string;
+  workOrderCloseDate?: number
+  workOrderCloseDateString?: string
 
-    workOrderMilestones?: WorkOrderMilestone[];
-    workOrderMilestoneCount?: number;
-    workOrderMilestoneCompletionCount?: number;
+  workOrderMilestones?: WorkOrderMilestone[]
+  workOrderMilestoneCount?: number
+  workOrderMilestoneCompletionCount?: number
 
-    workOrderComments?: WorkOrderComment[];
-    workOrderLots?: Lot[];
-    workOrderLotOccupancies?: LotOccupancy[];
+  workOrderComments?: WorkOrderComment[]
+  workOrderLots?: Lot[]
+  workOrderLotOccupancies?: LotOccupancy[]
 }
 
 /*
@@ -343,22 +343,22 @@ export interface WorkOrder extends Record {
  */
 
 export interface User {
-    userName: string;
-    userProperties?: UserProperties;
+  userName: string
+  userProperties?: UserProperties
 }
 
 export interface UserProperties {
-    canUpdate: boolean;
-    isAdmin: boolean;
-    apiKey: string;
+  canUpdate: boolean
+  isAdmin: boolean
+  apiKey: string
 }
 
-declare module "express-session" {
-    interface Session {
-        user: User;
-    }
+declare module 'express-session' {
+  interface Session {
+    user?: User
+  }
 }
 
 export interface PartialSession {
-    user: User;
+  user?: User
 }

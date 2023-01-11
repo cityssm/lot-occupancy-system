@@ -1,6 +1,6 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearCacheByTableName } from "../functions.cache.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { clearCacheByTableName } from '../functions.cache.js';
 export function addLotTypeField(lotTypeFieldForm, requestSession) {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
@@ -13,9 +13,9 @@ export function addLotTypeField(lotTypeFieldForm, requestSession) {
                 recordCreate_userName, recordCreate_timeMillis,
                 recordUpdate_userName, recordUpdate_timeMillis)
                 values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(lotTypeFieldForm.lotTypeId, lotTypeFieldForm.lotTypeField, lotTypeFieldForm.lotTypeFieldValues || "", lotTypeFieldForm.isRequired ? 1 : 0, lotTypeFieldForm.pattern || "", lotTypeFieldForm.minimumLength || 0, lotTypeFieldForm.maximumLength || 100, lotTypeFieldForm.orderNumber || -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(lotTypeFieldForm.lotTypeId, lotTypeFieldForm.lotTypeField, lotTypeFieldForm.lotTypeFieldValues ?? '', lotTypeFieldForm.isRequired === '' ? 0 : 1, lotTypeFieldForm.pattern ?? '', lotTypeFieldForm.minimumLength ?? 0, lotTypeFieldForm.maximumLength ?? 100, lotTypeFieldForm.orderNumber ?? -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     database.close();
-    clearCacheByTableName("LotTypeFields");
+    clearCacheByTableName('LotTypeFields');
     return result.lastInsertRowid;
 }
 export default addLotTypeField;

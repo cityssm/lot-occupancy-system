@@ -30,13 +30,13 @@ import { getSafeRedirectURL } from './helpers/functions.authentication.js';
 import debug from 'debug';
 const debugApp = debug('lot-occupancy-system:app');
 databaseInitializer.initializeDatabase();
-const __dirname = '.';
+const _dirname = '.';
 export const app = express();
 app.disable('X-Powered-By');
 if (!configFunctions.getProperty('reverseProxy.disableEtag')) {
     app.set('etag', false);
 }
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(_dirname, 'views'));
 app.set('view engine', 'ejs');
 if (!configFunctions.getProperty('reverseProxy.disableCompression')) {
     app.use(compression());
@@ -87,17 +87,20 @@ app.use(session({
     }
 }));
 app.use((request, response, next) => {
-    if (request.cookies[sessionCookieName] && !request.session.user) {
+    if (Object.hasOwn(request.cookies, sessionCookieName) &&
+        !Object.hasOwn(request.session, 'user')) {
         response.clearCookie(sessionCookieName);
     }
     next();
 });
 const sessionChecker = (request, response, next) => {
-    if (request.session.user && request.cookies[sessionCookieName]) {
-        return next();
+    if (Object.hasOwn(request.session, 'user') &&
+        Object.hasOwn(request.cookies, sessionCookieName)) {
+        next();
+        return;
     }
     const redirectUrl = getSafeRedirectURL(request.originalUrl);
-    return response.redirect(`${urlPrefix}/login?redirect=${encodeURIComponent(redirectUrl)}`);
+    response.redirect(`${urlPrefix}/login?redirect=${encodeURIComponent(redirectUrl)}`);
 };
 app.use((request, response, next) => {
     response.locals.buildNumber = version;
@@ -128,7 +131,8 @@ app.all(urlPrefix + '/keepAlive', (_request, response) => {
 });
 app.use(urlPrefix + '/login', routerLogin);
 app.get(urlPrefix + '/logout', (request, response) => {
-    if (request.session.user && request.cookies[sessionCookieName]) {
+    if (Object.hasOwn(request.session, 'user') &&
+        Object.hasOwn(request.cookies, sessionCookieName)) {
         request.session.destroy(() => {
             response.clearCookie(sessionCookieName);
             response.redirect(urlPrefix + '/');

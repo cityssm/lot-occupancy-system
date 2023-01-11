@@ -48,7 +48,7 @@ databaseInitializer.initializeDatabase()
  * INITIALIZE APP
  */
 
-const __dirname = '.'
+const _dirname = '.'
 
 export const app = express()
 
@@ -59,7 +59,7 @@ if (!configFunctions.getProperty('reverseProxy.disableEtag')) {
 }
 
 // View engine setup
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.join(_dirname, 'views'))
 app.set('view engine', 'ejs')
 
 if (!configFunctions.getProperty('reverseProxy.disableCompression')) {
@@ -124,17 +124,27 @@ app.use(
   express.static(path.join('node_modules', '@cityssm', 'bulma-webapp-js'))
 )
 
-app.use(urlPrefix + '/lib/fa', express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free')))
+app.use(
+  urlPrefix + '/lib/fa',
+  express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free'))
+)
 
-app.use(urlPrefix + '/lib/leaflet', express.static(path.join('node_modules', 'leaflet', 'dist')))
+app.use(
+  urlPrefix + '/lib/leaflet',
+  express.static(path.join('node_modules', 'leaflet', 'dist'))
+)
 
-app.use(urlPrefix + '/lib/randomcolor', express.static(path.join('node_modules', 'randomcolor')))
+app.use(
+  urlPrefix + '/lib/randomcolor',
+  express.static(path.join('node_modules', 'randomcolor'))
+)
 
 /*
  * SESSION MANAGEMENT
  */
 
-const sessionCookieName: string = configFunctions.getProperty('session.cookieName')
+const sessionCookieName: string =
+  configFunctions.getProperty('session.cookieName')
 
 const FileStoreSession = FileStore(session)
 
@@ -160,7 +170,10 @@ app.use(
 
 // Clear cookie if no corresponding session
 app.use((request, response, next) => {
-  if (request.cookies[sessionCookieName] && !request.session.user) {
+  if (
+    Object.hasOwn(request.cookies, sessionCookieName) &&
+    !Object.hasOwn(request.session, 'user')
+  ) {
     response.clearCookie(sessionCookieName)
   }
 
@@ -168,14 +181,24 @@ app.use((request, response, next) => {
 })
 
 // Redirect logged in users
-const sessionChecker = (request: express.Request, response: express.Response, next: express.NextFunction) => {
-  if (request.session.user && request.cookies[sessionCookieName]) {
-    return next()
+const sessionChecker = (
+  request: express.Request,
+  response: express.Response,
+  next: express.NextFunction
+): void => {
+  if (
+    Object.hasOwn(request.session, 'user') &&
+    Object.hasOwn(request.cookies, sessionCookieName)
+  ) {
+    next()
+    return
   }
 
   const redirectUrl = getSafeRedirectURL(request.originalUrl)
 
-  return response.redirect(`${urlPrefix}/login?redirect=${encodeURIComponent(redirectUrl)}`)
+  response.redirect(
+    `${urlPrefix}/login?redirect=${encodeURIComponent(redirectUrl)}`
+  )
 }
 
 /*
@@ -196,7 +219,9 @@ app.use((request, response, next) => {
   response.locals.stringFunctions = stringFns
   response.locals.htmlFunctions = htmlFns
 
-  response.locals.urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix')
+  response.locals.urlPrefix = configFunctions.getProperty(
+    'reverseProxy.urlPrefix'
+  )
 
   next()
 })
@@ -216,7 +241,12 @@ app.use(urlPrefix + '/lotOccupancies', sessionChecker, routerLotOccupancies)
 app.use(urlPrefix + '/workOrders', sessionChecker, routerWorkOrders)
 
 app.use(urlPrefix + '/reports', sessionChecker, routerReports)
-app.use(urlPrefix + '/admin', sessionChecker, permissionHandlers.adminGetHandler, routerAdmin)
+app.use(
+  urlPrefix + '/admin',
+  sessionChecker,
+  permissionHandlers.adminGetHandler,
+  routerAdmin
+)
 
 app.all(urlPrefix + '/keepAlive', (_request, response) => {
   response.json(true)
@@ -225,7 +255,10 @@ app.all(urlPrefix + '/keepAlive', (_request, response) => {
 app.use(urlPrefix + '/login', routerLogin)
 
 app.get(urlPrefix + '/logout', (request, response) => {
-  if (request.session.user && request.cookies[sessionCookieName]) {
+  if (
+    Object.hasOwn(request.session, 'user') &&
+    Object.hasOwn(request.cookies, sessionCookieName)
+  ) {
     request.session.destroy(() => {
       response.clearCookie(sessionCookieName)
       response.redirect(urlPrefix + '/')

@@ -1,6 +1,6 @@
-import { getLotStatuses, getWorkOrderMilestoneTypes, getWorkOrderTypes } from "../../helpers/functions.cache.js";
-import * as configFunctions from "../../helpers/functions.config.js";
-import { getWorkOrder } from "../../helpers/lotOccupancyDB/getWorkOrder.js";
+import { getLotStatuses, getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
+import * as configFunctions from '../../helpers/functions.config.js';
+import { getWorkOrder } from '../../helpers/lotOccupancyDB/getWorkOrder.js';
 export const handler = (request, response) => {
     const workOrder = getWorkOrder(request.params.workOrderId, {
         includeLotsAndLotOccupancies: true,
@@ -8,20 +8,22 @@ export const handler = (request, response) => {
         includeMilestones: true
     });
     if (!workOrder) {
-        return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") +
-            "/workOrders/?error=workOrderIdNotFound");
+        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
+            '/workOrders/?error=workOrderIdNotFound');
+        return;
     }
     if (workOrder.workOrderCloseDate) {
-        return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") +
-            "/workOrders/" +
+        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
+            '/workOrders/' +
             workOrder.workOrderId.toString() +
-            "/?error=workOrderIsClosed");
+            '/?error=workOrderIsClosed');
+        return;
     }
     const workOrderTypes = getWorkOrderTypes();
     const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
     const lotStatuses = getLotStatuses();
-    response.render("workOrder-edit", {
-        headTitle: "Work Order #" + workOrder.workOrderNumber,
+    response.render('workOrder-edit', {
+        headTitle: `Work Order #${workOrder.workOrderNumber}`,
         workOrder,
         isCreate: false,
         workOrderTypes,

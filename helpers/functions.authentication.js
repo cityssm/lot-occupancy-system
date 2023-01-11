@@ -13,7 +13,7 @@ async function authenticateViaActiveDirectory(userName, password) {
                 resolve(auth);
             });
         }
-        catch (_a) {
+        catch {
             resolve(false);
         }
     });

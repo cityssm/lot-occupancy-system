@@ -16,7 +16,7 @@ describe("lot-occupancy-system", () => {
         try {
             httpServer.close();
         }
-        catch (_a) {
+        catch {
         }
     });
     it("Ensure server starts on port " + portNumber.toString(), () => {

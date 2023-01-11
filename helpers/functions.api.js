@@ -1,12 +1,12 @@
-import fs from "node:fs/promises";
-import { v4 as uuidv4 } from "uuid";
-import Debug from "debug";
-const debug = Debug("lot-occupancy-system:functions.api");
-const apiKeyPath = "data/apiKeys.json";
+import fs from 'node:fs/promises';
+import { v4 as uuidv4 } from 'uuid';
+import Debug from 'debug';
+const debug = Debug('lot-occupancy-system:functions.api');
+const apiKeyPath = 'data/apiKeys.json';
 let apiKeys;
 async function loadApiKeys() {
     try {
-        const fileData = await fs.readFile(apiKeyPath, "utf8");
+        const fileData = await fs.readFile(apiKeyPath, 'utf8');
         apiKeys = JSON.parse(fileData);
     }
     catch (error) {
@@ -16,14 +16,14 @@ async function loadApiKeys() {
 }
 async function saveApiKeys() {
     try {
-        await fs.writeFile(apiKeyPath, JSON.stringify(apiKeys), "utf8");
+        await fs.writeFile(apiKeyPath, JSON.stringify(apiKeys), 'utf8');
     }
     catch (error) {
         debug(error);
     }
 }
 function generateApiKey(apiKeyPrefix) {
-    return apiKeyPrefix + "-" + uuidv4() + "-" + Date.now();
+    return apiKeyPrefix + '-' + uuidv4() + '-' + Date.now();
 }
 export async function regenerateApiKey(userName) {
     apiKeys[userName] = generateApiKey(userName);

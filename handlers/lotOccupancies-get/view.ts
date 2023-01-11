@@ -1,27 +1,30 @@
-import type { RequestHandler } from "express";
-import { getOccupancyTypePrintsById } from "../../helpers/functions.cache.js";
+import type { RequestHandler } from 'express'
+import { getOccupancyTypePrintsById } from '../../helpers/functions.cache.js'
 
-import * as configFunctions from "../../helpers/functions.config.js";
+import * as configFunctions from '../../helpers/functions.config.js'
 
-import { getLotOccupancy } from "../../helpers/lotOccupancyDB/getLotOccupancy.js";
+import { getLotOccupancy } from '../../helpers/lotOccupancyDB/getLotOccupancy.js'
 
 export const handler: RequestHandler = (request, response) => {
-    const lotOccupancy = getLotOccupancy(request.params.lotOccupancyId);
+  const lotOccupancy = getLotOccupancy(request.params.lotOccupancyId)
 
-    if (!lotOccupancy) {
-        return response.redirect(
-            configFunctions.getProperty("reverseProxy.urlPrefix") +
-                "/lotOccupancies/?error=lotOccupancyIdNotFound"
-        );
-    }
+  if (!lotOccupancy) {
+    response.redirect(
+      configFunctions.getProperty('reverseProxy.urlPrefix') +
+        '/lotOccupancies/?error=lotOccupancyIdNotFound'
+    )
+    return
+  }
 
-    const occupancyTypePrints = getOccupancyTypePrintsById(lotOccupancy.occupancyTypeId);
+  const occupancyTypePrints = getOccupancyTypePrintsById(
+    lotOccupancy.occupancyTypeId!
+  )
 
-    return response.render("lotOccupancy-view", {
-        headTitle: `${configFunctions.getProperty("aliases.occupancy")} View`,
-        lotOccupancy,
-        occupancyTypePrints
-    });
-};
+  response.render('lotOccupancy-view', {
+    headTitle: `${configFunctions.getProperty('aliases.occupancy')} View`,
+    lotOccupancy,
+    occupancyTypePrints
+  })
+}
 
-export default handler;
+export default handler

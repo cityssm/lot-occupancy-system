@@ -1,52 +1,56 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
 import {
-    getLotOccupantTypes,
-    getLotStatuses,
-    getLotTypes,
-    getOccupancyTypePrintsById,
-    getOccupancyTypes,
-    getWorkOrderTypes
-} from "../../helpers/functions.cache.js";
+  getLotOccupantTypes,
+  getLotStatuses,
+  getLotTypes,
+  getOccupancyTypePrintsById,
+  getOccupancyTypes,
+  getWorkOrderTypes
+} from '../../helpers/functions.cache.js'
 
-import * as configFunctions from "../../helpers/functions.config.js";
+import * as configFunctions from '../../helpers/functions.config.js'
 
-import { getLotOccupancy } from "../../helpers/lotOccupancyDB/getLotOccupancy.js";
-import { getMaps } from "../../helpers/lotOccupancyDB/getMaps.js";
+import { getLotOccupancy } from '../../helpers/lotOccupancyDB/getLotOccupancy.js'
+import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 
 export const handler: RequestHandler = (request, response) => {
-    const lotOccupancy = getLotOccupancy(request.params.lotOccupancyId);
+  const lotOccupancy = getLotOccupancy(request.params.lotOccupancyId)
 
-    if (!lotOccupancy) {
-        return response.redirect(
-            configFunctions.getProperty("reverseProxy.urlPrefix") +
-                "/lotOccupancies/?error=lotOccupancyIdNotFound"
-        );
-    }
+  if (!lotOccupancy) {
+    response.redirect(
+      `${configFunctions.getProperty(
+        'reverseProxy.urlPrefix'
+      )}/lotOccupancies/?error=lotOccupancyIdNotFound`
+    )
+    return
+  }
 
-    const occupancyTypePrints = getOccupancyTypePrintsById(lotOccupancy.occupancyTypeId);
+  const occupancyTypePrints = getOccupancyTypePrintsById(
+    lotOccupancy.occupancyTypeId!
+  )
 
-    const occupancyTypes = getOccupancyTypes();
-    const lotOccupantTypes = getLotOccupantTypes();
-    const lotTypes = getLotTypes();
-    const lotStatuses = getLotStatuses();
-    const maps = getMaps();
-    const workOrderTypes = getWorkOrderTypes();
+  const occupancyTypes = getOccupancyTypes()
+  const lotOccupantTypes = getLotOccupantTypes()
+  const lotTypes = getLotTypes()
+  const lotStatuses = getLotStatuses()
+  const maps = getMaps()
+  const workOrderTypes = getWorkOrderTypes()
 
-    return response.render("lotOccupancy-edit", {
-        headTitle: `${configFunctions.getProperty("aliases.occupancy")} Update`,
-        lotOccupancy,
-        occupancyTypePrints,
+  response.render('lotOccupancy-edit', {
+    headTitle: `${configFunctions.getProperty('aliases.occupancy')} Update`,
+    lotOccupancy,
+    occupancyTypePrints,
 
-        occupancyTypes,
-        lotOccupantTypes,
-        lotTypes,
-        lotStatuses,
-        maps,
-        workOrderTypes,
+    occupancyTypes,
+    lotOccupantTypes,
+    lotTypes,
+    lotStatuses,
+    maps,
+    workOrderTypes,
 
-        isCreate: false
-    });
-};
+    isCreate: false
+  })
+}
 
-export default handler;
+export default handler

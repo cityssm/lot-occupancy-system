@@ -1,5 +1,5 @@
-import { getLotOccupancy } from "../../helpers/lotOccupancyDB/getLotOccupancy.js";
-import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.js";
+import { getLotOccupancy } from '../../helpers/lotOccupancyDB/getLotOccupancy.js';
+import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js';
 export const handler = (request, response) => {
     const lotOccupancyId = request.body.lotOccupancyId;
     const lotOccupancy = getLotOccupancy(lotOccupancyId);

@@ -1,12 +1,12 @@
-import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypePrintsById, getOccupancyTypes, getWorkOrderTypes } from "../../helpers/functions.cache.js";
-import * as configFunctions from "../../helpers/functions.config.js";
-import { getLotOccupancy } from "../../helpers/lotOccupancyDB/getLotOccupancy.js";
-import { getMaps } from "../../helpers/lotOccupancyDB/getMaps.js";
+import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypePrintsById, getOccupancyTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
+import * as configFunctions from '../../helpers/functions.config.js';
+import { getLotOccupancy } from '../../helpers/lotOccupancyDB/getLotOccupancy.js';
+import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js';
 export const handler = (request, response) => {
     const lotOccupancy = getLotOccupancy(request.params.lotOccupancyId);
     if (!lotOccupancy) {
-        return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") +
-            "/lotOccupancies/?error=lotOccupancyIdNotFound");
+        response.redirect(`${configFunctions.getProperty('reverseProxy.urlPrefix')}/lotOccupancies/?error=lotOccupancyIdNotFound`);
+        return;
     }
     const occupancyTypePrints = getOccupancyTypePrintsById(lotOccupancy.occupancyTypeId);
     const occupancyTypes = getOccupancyTypes();
@@ -15,8 +15,8 @@ export const handler = (request, response) => {
     const lotStatuses = getLotStatuses();
     const maps = getMaps();
     const workOrderTypes = getWorkOrderTypes();
-    return response.render("lotOccupancy-edit", {
-        headTitle: `${configFunctions.getProperty("aliases.occupancy")} Update`,
+    response.render('lotOccupancy-edit', {
+        headTitle: `${configFunctions.getProperty('aliases.occupancy')} Update`,
         lotOccupancy,
         occupancyTypePrints,
         occupancyTypes,

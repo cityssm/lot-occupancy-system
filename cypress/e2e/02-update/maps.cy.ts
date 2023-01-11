@@ -1,97 +1,124 @@
-import { testUpdate } from "../../../test/_globals.js";
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { logout, login } from "../../support/index.js";
+import { testUpdate } from '../../../test/_globals.js'
 
-import * as configFunctions from "../../../helpers/functions.config.js";
+import { logout, login } from '../../support/index.js'
 
-import type * as recordTypes from "../../../types/recordTypes";
+import * as configFunctions from '../../../helpers/functions.config.js'
 
-describe("Update - Maps", () => {
-    beforeEach("Loads page", () => {
-        logout();
-        login(testUpdate);
-    });
+import type * as recordTypes from '../../../types/recordTypes'
 
-    afterEach(logout);
+describe('Update - Maps', () => {
+  beforeEach('Loads page', () => {
+    logout()
+    login(testUpdate)
+  })
 
-    it('Has a "Create" link on the Map Search', () => {
-        cy.visit("/maps");
-        cy.location("pathname").should("equal", "/maps");
-        cy.get("a[href$='/maps/new']").should("exist");
-    });
+  afterEach(logout)
 
-    it("Creates a new map", () => {
-        cy.visit("/maps/new");
+  it('Has a "Create" link on the Map Search', () => {
+    cy.visit('/maps')
+    cy.location('pathname').should('equal', '/maps')
+    cy.get("a[href$='/maps/new']").should('exist')
+  })
 
-        cy.log("Check the accessibility");
+  it('Creates a new map', () => {
+    cy.visit('/maps/new')
 
-        cy.injectAxe();
-        cy.checkA11y();
+    cy.log('Check the accessibility')
 
-        cy.log("Populate the fields");
+    cy.injectAxe()
+    cy.checkA11y()
 
-        // eslint-disable-next-line promise/catch-or-return, promise/always-return
-        cy.fixture("map.json").then((mapJSON: recordTypes.Map) => {
-            cy.get("input[name='mapName']").clear().type(mapJSON.mapName);
-            cy.get("textarea[name='mapDescription']").clear().type(mapJSON.mapDescription);
+    cy.log('Populate the fields')
 
-            cy.get("input[name='mapAddress1']").clear().type(mapJSON.mapAddress1);
-            cy.get("input[name='mapAddress2']").clear().type(mapJSON.mapAddress2);
-            cy.get("input[name='mapPostalCode']").clear().type(mapJSON.mapPostalCode);
-            cy.get("input[name='mapPhoneNumber']").clear().type(mapJSON.mapPhoneNumber);
+    // eslint-disable-next-line promise/catch-or-return, promise/always-return
+    cy.fixture('map.json').then((mapJSON: recordTypes.Map) => {
+      cy.get("input[name='mapName']").clear().type(mapJSON.mapName!)
+      cy.get("textarea[name='mapDescription']")
+        .clear()
+        .type(mapJSON.mapDescription!)
 
-            cy.get("input[name='mapLatitude']").clear().type(mapJSON.mapLatitude.toString());
-            cy.get("input[name='mapLongitude']").clear().type(mapJSON.mapLongitude.toString());
-        });
+      cy.get("input[name='mapAddress1']").clear().type(mapJSON.mapAddress1!)
+      cy.get("input[name='mapAddress2']").clear().type(mapJSON.mapAddress2!)
+      cy.get("input[name='mapPostalCode']").clear().type(mapJSON.mapPostalCode!)
+      cy.get("input[name='mapPhoneNumber']")
+        .clear()
+        .type(mapJSON.mapPhoneNumber!)
 
-        cy.log("Ensure the default city and province are used");
+      cy.get("input[name='mapLatitude']")
+        .clear()
+        .type(mapJSON.mapLatitude!.toString())
+      cy.get("input[name='mapLongitude']")
+        .clear()
+        .type(mapJSON.mapLongitude!.toString())
+    })
 
-        cy.get("input[name='mapCity']").should(
-            "have.value",
-            configFunctions.getProperty("settings.map.mapCityDefault")
-        );
+    cy.log('Ensure the default city and province are used')
 
-        cy.get("input[name='mapProvince']").should(
-            "have.value",
-            configFunctions.getProperty("settings.map.mapProvinceDefault")
-        );
+    cy.get("input[name='mapCity']").should(
+      'have.value',
+      configFunctions.getProperty('settings.map.mapCityDefault')
+    )
 
-        cy.log("Submit the form");
+    cy.get("input[name='mapProvince']").should(
+      'have.value',
+      configFunctions.getProperty('settings.map.mapProvinceDefault')
+    )
 
-        cy.get("#form--map").submit();
+    cy.log('Submit the form')
 
-        cy.wait(1000);
+    cy.get('#form--map').submit()
 
-        cy.location("pathname").should("not.contain", "/new").should("contain", "/edit");
+    cy.wait(1000)
 
-        // eslint-disable-next-line promise/catch-or-return, promise/always-return
-        cy.fixture("map.json").then((mapJSON: recordTypes.Map) => {
-            cy.get("input[name='mapName']").should("have.value", mapJSON.mapName);
-            cy.get("textarea[name='mapDescription']").should("have.value", mapJSON.mapDescription);
+    cy.location('pathname')
+      .should('not.contain', '/new')
+      .should('contain', '/edit')
 
-            cy.get("input[name='mapAddress1']").should("have.value", mapJSON.mapAddress1);
-            cy.get("input[name='mapAddress2']").should("have.value", mapJSON.mapAddress2);
+    // eslint-disable-next-line promise/catch-or-return, promise/always-return
+    cy.fixture('map.json').then((mapJSON: recordTypes.Map) => {
+      cy.get("input[name='mapName']").should('have.value', mapJSON.mapName)
+      cy.get("textarea[name='mapDescription']").should(
+        'have.value',
+        mapJSON.mapDescription
+      )
 
-            cy.get("input[name='mapCity']").should(
-                "have.value",
-                configFunctions.getProperty("settings.map.mapCityDefault")
-            );
-            cy.get("input[name='mapProvince']").should(
-                "have.value",
-                configFunctions.getProperty("settings.map.mapProvinceDefault")
-            );
+      cy.get("input[name='mapAddress1']").should(
+        'have.value',
+        mapJSON.mapAddress1
+      )
+      cy.get("input[name='mapAddress2']").should(
+        'have.value',
+        mapJSON.mapAddress2
+      )
 
-            cy.get("input[name='mapPostalCode']").should("have.value", mapJSON.mapPostalCode);
-            cy.get("input[name='mapPhoneNumber']").should("have.value", mapJSON.mapPhoneNumber);
+      cy.get("input[name='mapCity']").should(
+        'have.value',
+        configFunctions.getProperty('settings.map.mapCityDefault')
+      )
+      cy.get("input[name='mapProvince']").should(
+        'have.value',
+        configFunctions.getProperty('settings.map.mapProvinceDefault')
+      )
 
-            cy.get("input[name='mapLatitude']").should(
-                "have.value",
-                mapJSON.mapLatitude.toString()
-            );
-            cy.get("input[name='mapLongitude']").should(
-                "have.value",
-                mapJSON.mapLongitude.toString()
-            );
-        });
-    });
-});
+      cy.get("input[name='mapPostalCode']").should(
+        'have.value',
+        mapJSON.mapPostalCode
+      )
+      cy.get("input[name='mapPhoneNumber']").should(
+        'have.value',
+        mapJSON.mapPhoneNumber
+      )
+
+      cy.get("input[name='mapLatitude']").should(
+        'have.value',
+        mapJSON.mapLatitude!.toString()
+      )
+      cy.get("input[name='mapLongitude']").should(
+        'have.value',
+        mapJSON.mapLongitude!.toString()
+      )
+    })
+  })
+})

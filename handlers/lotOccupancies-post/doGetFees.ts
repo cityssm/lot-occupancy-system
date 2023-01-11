@@ -1,27 +1,27 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
-import { getLotOccupancy } from "../../helpers/lotOccupancyDB/getLotOccupancy.js";
+import { getLotOccupancy } from '../../helpers/lotOccupancyDB/getLotOccupancy.js'
 
-import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.js";
+import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js'
 
 export const handler: RequestHandler = (request, response) => {
-    const lotOccupancyId = request.body.lotOccupancyId;
+  const lotOccupancyId = request.body.lotOccupancyId
 
-    const lotOccupancy = getLotOccupancy(lotOccupancyId);
+  const lotOccupancy = getLotOccupancy(lotOccupancyId)!
 
-    const feeCategories = getFeeCategories(
-        {
-            occupancyTypeId: lotOccupancy.occupancyTypeId,
-            lotTypeId: lotOccupancy.lotTypeId
-        },
-        {
-            includeFees: true
-        }
-    );
+  const feeCategories = getFeeCategories(
+    {
+      occupancyTypeId: lotOccupancy.occupancyTypeId,
+      lotTypeId: lotOccupancy.lotTypeId
+    },
+    {
+      includeFees: true
+    }
+  )
 
-    response.json({
-        feeCategories
-    });
-};
+  response.json({
+    feeCategories
+  })
+}
 
-export default handler;
+export default handler

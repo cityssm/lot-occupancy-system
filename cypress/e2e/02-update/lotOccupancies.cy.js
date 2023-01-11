@@ -1,7 +1,7 @@
 import { testUpdate } from "../../../test/_globals.js";
 import { logout, login } from "../../support/index.js";
 describe("Update - Lot Occupancies", () => {
-    beforeEach("Loads page", () => {
+    beforeEach(() => {
         logout();
         login(testUpdate);
     });

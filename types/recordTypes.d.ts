@@ -258,11 +258,11 @@ export interface UserProperties {
     isAdmin: boolean;
     apiKey: string;
 }
-declare module "express-session" {
+declare module 'express-session' {
     interface Session {
-        user: User;
+        user?: User;
     }
 }
 export interface PartialSession {
-    user: User;
+    user?: User;
 }

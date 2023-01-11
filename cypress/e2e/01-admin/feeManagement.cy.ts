@@ -1,88 +1,91 @@
-/* eslint-disable unicorn/filename-case, promise/catch-or-return, promise/always-return */
+/* eslint-disable unicorn/filename-case, promise/catch-or-return, promise/always-return, @typescript-eslint/no-non-null-assertion */
 
-import { testAdmin } from "../../../test/_globals.js";
+import { testAdmin } from '../../../test/_globals.js'
 
-import { logout, login, ajaxDelayMillis } from "../../support/index.js";
+import { logout, login, ajaxDelayMillis } from '../../support/index.js'
 
-import * as configFunctions from "../../../helpers/functions.config.js";
+import * as configFunctions from '../../../helpers/functions.config.js'
 
-import type * as recordTypes from "../../../types/recordTypes";
+import type * as recordTypes from '../../../types/recordTypes'
 
-describe("Admin - Fee Management", () => {
-    
-    beforeEach("Loads page", () => {
-        logout();
-        login(testAdmin);
-        cy.visit("/admin/fees");
-        cy.location("pathname").should("equal", "/admin/fees");
-    });
-    
-    afterEach(logout);
+describe('Admin - Fee Management', () => {
+  beforeEach('Loads page', () => {
+    logout()
+    login(testAdmin)
+    cy.visit('/admin/fees')
+    cy.location('pathname').should('equal', '/admin/fees')
+  })
 
-    it("Has no detectable accessibility issues", () => {
-        cy.injectAxe();
-        cy.checkA11y();
-    });
+  afterEach(logout)
 
-    it("Creates a new fee category", () => {
-        cy.get("[data-cy='addFeeCategory']").click();
+  it('Has no detectable accessibility issues', () => {
+    cy.injectAxe()
+    cy.checkA11y()
+  })
 
-        cy.get(".modal").should("be.visible");
+  it('Creates a new fee category', () => {
+    cy.get("[data-cy='addFeeCategory']").click()
 
-        cy.injectAxe();
-        cy.checkA11y();
+    cy.get('.modal').should('be.visible')
 
-        cy.fixture("fee.json").then((fee: recordTypes.Fee) => {
-            cy.get(".modal input[name='feeCategory']").type(fee.feeCategory);
+    cy.injectAxe()
+    cy.checkA11y()
 
-            cy.get(".modal button[type='submit']").click();
+    cy.fixture('fee.json').then((fee: recordTypes.Fee) => {
+      cy.get(".modal input[name='feeCategory']").type(fee.feeCategory!)
 
-            cy.wait(ajaxDelayMillis);
+      cy.get(".modal button[type='submit']").click()
 
-            cy.get(".container--feeCategory .panel-heading .title").should(
-                "contain.text",
-                fee.feeCategory
-            );
-        });
-    });
+      cy.wait(ajaxDelayMillis)
 
-    it("Creates a new fee", () => {
-        cy.get("[data-cy='addFee']").first().click();
+      cy.get('.container--feeCategory .panel-heading .title').should(
+        'contain.text',
+        fee.feeCategory
+      )
+    })
+  })
 
-        cy.get(".modal").should("be.visible");
+  it('Creates a new fee', () => {
+    cy.get("[data-cy='addFee']").first().click()
 
-        cy.injectAxe();
-        cy.checkA11y();
+    cy.get('.modal').should('be.visible')
 
-        cy.fixture("fee.json").then((fee: recordTypes.Fee) => {
-            cy.get(".modal input[name='feeName']").type(fee.feeName);
+    cy.injectAxe()
+    cy.checkA11y()
 
-            cy.get(".modal textarea[name='feeDescription']").type(fee.feeDescription);
+    cy.fixture('fee.json').then((fee: recordTypes.Fee) => {
+      cy.get(".modal input[name='feeName']").type(fee.feeName!)
 
-            cy.get(".modal input[name='feeAmount']").clear().type(fee.feeAmount.toString());
+      cy.get(".modal textarea[name='feeDescription']").type(fee.feeDescription!)
 
-            cy.get(".modal input[name='taxAmount']").should("be.disabled");
+      cy.get(".modal input[name='feeAmount']")
+        .clear()
+        .type(fee.feeAmount!.toString())
 
-            cy.get(".modal input[name='taxPercentage']")
-                .invoke("val")
-                .should(
-                    "equal",
-                    configFunctions.getProperty("settings.fees.taxPercentageDefault").toString()
-                );
+      cy.get(".modal input[name='taxAmount']").should('be.disabled')
 
-            cy.get(".modal input[name='quantityUnit']").should("be.disabled");
+      cy.get(".modal input[name='taxPercentage']")
+        .invoke('val')
+        .should(
+          'equal',
+          configFunctions
+            .getProperty('settings.fees.taxPercentageDefault')
+            .toString()
+        )
 
-            cy.get(".modal select[name='includeQuantity']").select("1");
+      cy.get(".modal input[name='quantityUnit']").should('be.disabled')
 
-            cy.get(".modal input[name='quantityUnit']")
-                .should("not.be.disabled")
-                .type(fee.quantityUnit);
+      cy.get(".modal select[name='includeQuantity']").select('1')
 
-            cy.get(".modal button[type='submit']").click();
+      cy.get(".modal input[name='quantityUnit']")
+        .should('not.be.disabled')
+        .type(fee.quantityUnit!)
 
-            cy.wait(ajaxDelayMillis);
+      cy.get(".modal button[type='submit']").click()
 
-            cy.get(".container--fee a").should("contain.text", fee.feeName);
-        });
-    });
-});
+      cy.wait(ajaxDelayMillis)
+
+      cy.get('.container--fee a').should('contain.text', fee.feeName)
+    })
+  })
+})

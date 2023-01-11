@@ -1,52 +1,54 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
 import {
-    getLotStatuses,
-    getWorkOrderMilestoneTypes,
-    getWorkOrderTypes
-} from "../../helpers/functions.cache.js";
+  getLotStatuses,
+  getWorkOrderMilestoneTypes,
+  getWorkOrderTypes
+} from '../../helpers/functions.cache.js'
 
-import * as configFunctions from "../../helpers/functions.config.js";
+import * as configFunctions from '../../helpers/functions.config.js'
 
-import { getWorkOrder } from "../../helpers/lotOccupancyDB/getWorkOrder.js";
+import { getWorkOrder } from '../../helpers/lotOccupancyDB/getWorkOrder.js'
 
 export const handler: RequestHandler = (request, response) => {
-    const workOrder = getWorkOrder(request.params.workOrderId, {
-        includeLotsAndLotOccupancies: true,
-        includeComments: true,
-        includeMilestones: true
-    });
+  const workOrder = getWorkOrder(request.params.workOrderId, {
+    includeLotsAndLotOccupancies: true,
+    includeComments: true,
+    includeMilestones: true
+  })
 
-    if (!workOrder) {
-        return response.redirect(
-            configFunctions.getProperty("reverseProxy.urlPrefix") +
-                "/workOrders/?error=workOrderIdNotFound"
-        );
-    }
+  if (!workOrder) {
+    response.redirect(
+      configFunctions.getProperty('reverseProxy.urlPrefix') +
+        '/workOrders/?error=workOrderIdNotFound'
+    )
+    return
+  }
 
-    if (workOrder.workOrderCloseDate) {
-        return response.redirect(
-            configFunctions.getProperty("reverseProxy.urlPrefix") +
-                "/workOrders/" +
-                workOrder.workOrderId.toString() +
-                "/?error=workOrderIsClosed"
-        );
-    }
+  if (workOrder.workOrderCloseDate) {
+    response.redirect(
+      configFunctions.getProperty('reverseProxy.urlPrefix') +
+        '/workOrders/' +
+        workOrder.workOrderId!.toString() +
+        '/?error=workOrderIsClosed'
+    )
+    return
+  }
 
-    const workOrderTypes = getWorkOrderTypes();
+  const workOrderTypes = getWorkOrderTypes()
 
-    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes()
 
-    const lotStatuses = getLotStatuses();
+  const lotStatuses = getLotStatuses()
 
-    response.render("workOrder-edit", {
-        headTitle: "Work Order #" + workOrder.workOrderNumber,
-        workOrder,
-        isCreate: false,
-        workOrderTypes,
-        workOrderMilestoneTypes,
-        lotStatuses
-    });
-};
+  response.render('workOrder-edit', {
+    headTitle: `Work Order #${workOrder.workOrderNumber!}`,
+    workOrder,
+    isCreate: false,
+    workOrderTypes,
+    workOrderMilestoneTypes,
+    lotStatuses
+  })
+}
 
-export default handler;
+export default handler

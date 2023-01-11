@@ -26,13 +26,13 @@ async function importMaps() {
             });
         }
     }
-    catch (_a) {
+    catch {
     }
     finally {
         try {
             pool.close();
         }
-        catch (_b) {
+        catch {
         }
     }
 }

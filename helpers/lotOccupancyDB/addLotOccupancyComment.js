@@ -1,13 +1,13 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
 export function addLotOccupancyComment(commentForm, requestSession) {
     const rightNow = new Date();
     let lotOccupancyCommentDate;
     let lotOccupancyCommentTime;
     if (commentForm.lotOccupancyCommentDateString) {
         lotOccupancyCommentDate = dateStringToInteger(commentForm.lotOccupancyCommentDateString);
-        lotOccupancyCommentTime = timeStringToInteger(commentForm.lotOccupancyCommentTimeString);
+        lotOccupancyCommentTime = timeStringToInteger(commentForm.lotOccupancyCommentTimeString ?? '');
     }
     else {
         lotOccupancyCommentDate = dateToInteger(rightNow);
