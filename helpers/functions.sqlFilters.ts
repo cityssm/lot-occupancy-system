@@ -8,7 +8,7 @@ interface WhereClauseReturn {
 }
 
 export function getLotNameWhereClause(
-  lotName: string,
+  lotName = '',
   lotNameSearchType: LotNameSearchType,
   lotsTableAlias = 'l'
 ): WhereClauseReturn {
@@ -93,7 +93,7 @@ export function getOccupancyTimeWhereClause(
 }
 
 export function getOccupantNameWhereClause(
-  occupantName: string,
+  occupantName = '',
   tableAlias = 'o'
 ): WhereClauseReturn {
   let sqlWhereClause = ''

@@ -1,5 +1,5 @@
 import { dateToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
-export function getLotNameWhereClause(lotName, lotNameSearchType, lotsTableAlias = 'l') {
+export function getLotNameWhereClause(lotName = '', lotNameSearchType, lotsTableAlias = 'l') {
     let sqlWhereClause = '';
     const sqlParameters = [];
     if (lotName !== '') {
@@ -66,7 +66,7 @@ export function getOccupancyTimeWhereClause(occupancyTime, lotOccupanciesTableAl
         sqlParameters
     };
 }
-export function getOccupantNameWhereClause(occupantName, tableAlias = 'o') {
+export function getOccupantNameWhereClause(occupantName = '', tableAlias = 'o') {
     let sqlWhereClause = '';
     const sqlParameters = [];
     if (occupantName !== '') {
