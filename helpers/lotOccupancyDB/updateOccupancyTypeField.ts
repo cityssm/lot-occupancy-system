@@ -27,16 +27,16 @@ export function updateOccupancyTypeField(
   const result = database
     .prepare(
       `update OccupancyTypeFields
-                set occupancyTypeField = ?,
-                isRequired = ?,
-                minimumLength = ?,
-                maximumLength = ?,
-                pattern = ?,
-                occupancyTypeFieldValues = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where occupancyTypeFieldId = ?
-                and recordDelete_timeMillis is null`
+        set occupancyTypeField = ?,
+        isRequired = ?,
+        minimumLength = ?,
+        maximumLength = ?,
+        pattern = ?,
+        occupancyTypeFieldValues = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where occupancyTypeFieldId = ?
+        and recordDelete_timeMillis is null`
     )
     .run(
       occupancyTypeFieldForm.occupancyTypeField,

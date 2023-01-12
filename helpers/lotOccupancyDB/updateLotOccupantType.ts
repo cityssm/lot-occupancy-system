@@ -23,12 +23,12 @@ export function updateLotOccupantType(
   const result = database
     .prepare(
       `update LotOccupantTypes
-                set lotOccupantType = ?,
-                fontAwesomeIconClass = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where lotOccupantTypeId = ?
-                and recordDelete_timeMillis is null`
+        set lotOccupantType = ?,
+        fontAwesomeIconClass = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where lotOccupantTypeId = ?
+        and recordDelete_timeMillis is null`
     )
     .run(
       lotOccupantTypeForm.lotOccupantType,

@@ -33,14 +33,14 @@ export function updateLotOccupancy(
   const result = database
     .prepare(
       `update LotOccupancies
-                set occupancyTypeId = ?,
-                lotId = ?,
-                occupancyStartDate = ?,
-                occupancyEndDate = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where lotOccupancyId = ?
-                and recordDelete_timeMillis is null`
+        set occupancyTypeId = ?,
+        lotId = ?,
+        occupancyStartDate = ?,
+        occupancyEndDate = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where lotOccupancyId = ?
+        and recordDelete_timeMillis is null`
     )
     .run(
       lotOccupancyForm.occupancyTypeId,

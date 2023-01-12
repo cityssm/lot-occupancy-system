@@ -6,13 +6,13 @@ export function updateWorkOrderComment(commentForm, requestSession) {
     const database = sqlite(databasePath);
     const result = database
         .prepare(`update WorkOrderComments
-                set workOrderCommentDate = ?,
-                workOrderCommentTime = ?,
-                workOrderComment = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where recordDelete_timeMillis is null
-                and workOrderCommentId = ?`)
+        set workOrderCommentDate = ?,
+        workOrderCommentTime = ?,
+        workOrderComment = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where recordDelete_timeMillis is null
+        and workOrderCommentId = ?`)
         .run(dateStringToInteger(commentForm.workOrderCommentDateString), timeStringToInteger(commentForm.workOrderCommentTimeString), commentForm.workOrderComment, requestSession.user.userName, rightNowMillis, commentForm.workOrderCommentId);
     database.close();
     return result.changes > 0;

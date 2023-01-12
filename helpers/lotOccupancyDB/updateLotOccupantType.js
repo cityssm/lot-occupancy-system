@@ -6,12 +6,12 @@ export function updateLotOccupantType(lotOccupantTypeForm, requestSession) {
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update LotOccupantTypes
-                set lotOccupantType = ?,
-                fontAwesomeIconClass = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where lotOccupantTypeId = ?
-                and recordDelete_timeMillis is null`)
+        set lotOccupantType = ?,
+        fontAwesomeIconClass = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where lotOccupantTypeId = ?
+        and recordDelete_timeMillis is null`)
         .run(lotOccupantTypeForm.lotOccupantType, lotOccupantTypeForm.fontAwesomeIconClass ?? '', requestSession.user.userName, rightNowMillis, lotOccupantTypeForm.lotOccupantTypeId);
     database.close();
     clearCacheByTableName('LotOccupantTypes');

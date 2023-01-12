@@ -5,9 +5,9 @@ export function getWorkOrderMilestoneTypes() {
     const database = sqlite(databasePath);
     const workOrderMilestoneTypes = database
         .prepare(`select workOrderMilestoneTypeId, workOrderMilestoneType, orderNumber
-                from WorkOrderMilestoneTypes
-                where recordDelete_timeMillis is null
-                order by orderNumber, workOrderMilestoneType`)
+        from WorkOrderMilestoneTypes
+        where recordDelete_timeMillis is null
+        order by orderNumber, workOrderMilestoneType`)
         .all();
     let expectedOrderNumber = 0;
     for (const workOrderMilestoneType of workOrderMilestoneTypes) {

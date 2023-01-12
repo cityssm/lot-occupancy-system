@@ -27,13 +27,13 @@ export function updateWorkOrderComment(
   const result = database
     .prepare(
       `update WorkOrderComments
-                set workOrderCommentDate = ?,
-                workOrderCommentTime = ?,
-                workOrderComment = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where recordDelete_timeMillis is null
-                and workOrderCommentId = ?`
+        set workOrderCommentDate = ?,
+        workOrderCommentTime = ?,
+        workOrderComment = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where recordDelete_timeMillis is null
+        and workOrderCommentId = ?`
     )
     .run(
       dateStringToInteger(commentForm.workOrderCommentDateString),

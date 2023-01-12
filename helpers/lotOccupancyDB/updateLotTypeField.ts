@@ -27,16 +27,16 @@ export function updateLotTypeField(
   const result = database
     .prepare(
       `update LotTypeFields
-                set lotTypeField = ?,
-                isRequired = ?,
-                minimumLength = ?,
-                maximumLength = ?,
-                pattern = ?,
-                lotTypeFieldValues = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where lotTypeFieldId = ?
-                and recordDelete_timeMillis is null`
+        set lotTypeField = ?,
+        isRequired = ?,
+        minimumLength = ?,
+        maximumLength = ?,
+        pattern = ?,
+        lotTypeFieldValues = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where lotTypeFieldId = ?
+        and recordDelete_timeMillis is null`
     )
     .run(
       lotTypeFieldForm.lotTypeField,

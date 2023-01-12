@@ -12,9 +12,9 @@ export function getWorkOrderMilestoneTypes(): recordTypes.WorkOrderMilestoneType
   const workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[] = database
     .prepare(
       `select workOrderMilestoneTypeId, workOrderMilestoneType, orderNumber
-                from WorkOrderMilestoneTypes
-                where recordDelete_timeMillis is null
-                order by orderNumber, workOrderMilestoneType`
+        from WorkOrderMilestoneTypes
+        where recordDelete_timeMillis is null
+        order by orderNumber, workOrderMilestoneType`
     )
     .all()
 
