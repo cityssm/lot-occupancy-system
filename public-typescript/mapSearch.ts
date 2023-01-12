@@ -93,15 +93,9 @@ declare const cityssm: cityssmGlobal
             ? '<span data-tooltip="Has Image"><i class="fas fa-image" aria-label="Has Image"></i></span>'
             : '') +
           '</td>' +
-          ('<td class="has-text-right">' +
-            '<a href="' +
-            los.urlPrefix +
-            '/lots?mapId=' +
-            map.mapId +
-            '">' +
-            map.lotCount +
-            '</a>' +
-            '</td>') +
+          (`<td class="has-text-right">
+            <a href="${los.urlPrefix}/lots?mapId=${map.mapId!}">${map.lotCount!}</a>
+            </td>`) +
           '</tr>'
       )
     }

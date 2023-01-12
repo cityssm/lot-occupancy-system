@@ -45,7 +45,7 @@ function deleteLotOccupancy(clickEvent: Event): void {
         } else {
           bulmaJS.alert({
             title: 'Error Deleting Relationship',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -84,8 +84,8 @@ function addLot(
         renderRelatedLotsAndOccupancies()
       } else {
         bulmaJS.alert({
-          title: 'Error Adding ' + los.escapedAliases.Lot,
-          message: responseJSON.errorMessage || '',
+          title: `Error Adding ${los.escapedAliases.Lot}`,
+          message: responseJSON.errorMessage ?? '',
           contextualColorName: 'danger'
         })
       }
@@ -118,7 +118,7 @@ function addLotOccupancy(
       } else {
         bulmaJS.alert({
           title: 'Error Adding ' + los.escapedAliases.Occupancy,
-          message: responseJSON.errorMessage || '',
+          message: responseJSON.errorMessage ?? '',
           contextualColorName: 'danger'
         })
       }
@@ -156,9 +156,12 @@ function renderRelatedOccupancies(): void {
 
   occupanciesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
         <thead><tr>
-        <th class="has-width-1"></th><th>${los.escapedAliases.Occupancy} Type</th>
-        <th>${los.escapedAliases.Lot}</th><th>${los.escapedAliases.OccupancyStartDate}</th>
-        <th>End Date</th><th>${los.escapedAliases.Occupants}</th>
+        <th class="has-width-1"></th>
+        <th>${los.escapedAliases.Occupancy} Type</th>
+        <th>${los.escapedAliases.Lot}</th>
+        <th>${los.escapedAliases.OccupancyStartDate}</th>
+        <th>End Date</th>
+        <th>${los.escapedAliases.Occupants}</th>
         <th class="has-width-1"></th>
         </tr></thead>
         <tbody></tbody>
@@ -194,9 +197,9 @@ function renderRelatedOccupancies(): void {
       '</td>' +
       ('<td>' +
         '<a class="has-text-weight-bold" href="' +
-        los.getLotOccupancyURL(lotOccupancy.lotOccupancyId!) +
+        los.getLotOccupancyURL(lotOccupancy.lotOccupancyId) +
         '">' +
-        cityssm.escapeHTML(lotOccupancy.occupancyType || '') +
+        cityssm.escapeHTML(lotOccupancy.occupancyType ?? '') +
         '</a>' +
         '</td>')
 
@@ -204,7 +207,7 @@ function renderRelatedOccupancies(): void {
       rowElement.insertAdjacentHTML(
         'beforeend',
         '<td>' +
-          cityssm.escapeHTML(lotOccupancy.lotName || '') +
+          cityssm.escapeHTML(lotOccupancy.lotName ?? '') +
           (hasLotRecord
             ? ''
             : ' <button class="button is-small is-light is-success button--addLot"' +
@@ -250,7 +253,11 @@ function renderRelatedOccupancies(): void {
                   cityssm.escapeHTML(occupant.lotOccupantType!) +
                   '">' +
                   '<i class="fas fa-fw fa-' +
-                  cityssm.escapeHTML(occupant.fontAwesomeIconClass || 'user') +
+                  cityssm.escapeHTML(
+                    (occupant.fontAwesomeIconClass ?? '') === ''
+                      ? 'user'
+                      : occupant.fontAwesomeIconClass!
+                  ) +
                   '" aria-label="' +
                   los.escapedAliases.Occupant +
                   '"></i> ' +
@@ -294,7 +301,7 @@ function openEditLotStatus(clickEvent: Event): void {
 
   let editCloseModalFunction: () => void
 
-  function doUpdateLotStatus(submitEvent: SubmitEvent) {
+  function doUpdateLotStatus(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
@@ -312,7 +319,7 @@ function openEditLotStatus(clickEvent: Event): void {
         } else {
           bulmaJS.alert({
             title: 'Error Deleting Relationship',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -323,11 +330,9 @@ function openEditLotStatus(clickEvent: Event): void {
   cityssm.openHtmlModal('lot-editLotStatus', {
     onshow(modalElement) {
       los.populateAliases(modalElement)
-
       ;(
         modalElement.querySelector('#lotStatusEdit--lotId') as HTMLInputElement
       ).value = lotId.toString()
-
       ;(
         modalElement.querySelector(
           '#lotStatusEdit--lotName'
@@ -410,7 +415,7 @@ function deleteLot(clickEvent: Event): void {
         } else {
           bulmaJS.alert({
             title: 'Error Deleting Relationship',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -470,14 +475,14 @@ function renderRelatedLots(): void {
       '<a class="has-text-weight-bold" href="' +
       los.getLotURL(lot.lotId) +
       '">' +
-      cityssm.escapeHTML(lot.lotName || '') +
+      cityssm.escapeHTML(lot.lotName ?? '') +
       '</a>' +
       '</td>' +
-      ('<td>' + cityssm.escapeHTML(lot.mapName || '') + '</td>') +
-      ('<td>' + cityssm.escapeHTML(lot.lotType || '') + '</td>') +
+      ('<td>' + cityssm.escapeHTML(lot.mapName ?? '') + '</td>') +
+      ('<td>' + cityssm.escapeHTML(lot.lotType ?? '') + '</td>') +
       ('<td>' +
         (lot.lotStatusId
-          ? cityssm.escapeHTML(lot.lotStatus || '')
+          ? cityssm.escapeHTML(lot.lotStatus ?? '')
           : '<span class="has-text-grey">(No Status)</span>') +
         '</td>') +
       ('<td class="is-nowrap">' +
@@ -508,7 +513,7 @@ function renderRelatedLotsAndOccupancies(): void {
 
 renderRelatedLotsAndOccupancies()
 
-function doAddLotOccupancy(clickEvent: Event) {
+function doAddLotOccupancy(clickEvent: Event): void {
   const rowElement = (clickEvent.currentTarget as HTMLElement).closest('tr')!
 
   const lotOccupancyId = rowElement.dataset.lotOccupancyId!
@@ -526,7 +531,7 @@ document
     let searchFormElement: HTMLFormElement
     let searchResultsContainerElement: HTMLElement
 
-    function doSearch(event?: Event) {
+    function doSearch(event?: Event): void {
       if (event) {
         event.preventDefault()
       }
@@ -547,16 +552,16 @@ document
           }
 
           searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-                        <thead><tr>
-                        <th class="has-width-1"></th>
-                        <th>${los.escapedAliases.Occupancy} Type</th>
-                        <th>${los.escapedAliases.Lot}</th>
-                        <th>${los.escapedAliases.OccupancyStartDate}</th>
-                        <th>End Date</th>
-                        <th>${los.escapedAliases.Occupants}</th>
-                        </tr></thead>
-                        <tbody></tbody>
-                        </table>`
+            <thead><tr>
+            <th class="has-width-1"></th>
+            <th>${los.escapedAliases.Occupancy} Type</th>
+            <th>${los.escapedAliases.Lot}</th>
+            <th>${los.escapedAliases.OccupancyStartDate}</th>
+            <th>End Date</th>
+            <th>${los.escapedAliases.Occupants}</th>
+            </tr></thead>
+            <tbody></tbody>
+            </table>`
 
           for (const lotOccupancy of responseJSON.lotOccupancies) {
             const rowElement = document.createElement('tr')
@@ -571,14 +576,14 @@ document
               '</button>' +
               '</td>' +
               ('<td class="has-text-weight-bold">' +
-                cityssm.escapeHTML(lotOccupancy.occupancyType || '') +
+                cityssm.escapeHTML(lotOccupancy.occupancyType ?? '') +
                 '</td>')
 
             if (lotOccupancy.lotId) {
               rowElement.insertAdjacentHTML(
                 'beforeend',
                 '<td>' +
-                  cityssm.escapeHTML(lotOccupancy.lotName || '') +
+                  cityssm.escapeHTML(lotOccupancy.lotName ?? '') +
                   '</td>'
               )
             } else {
@@ -601,7 +606,7 @@ document
                 ('<td>' +
                   (lotOccupancy.lotOccupancyOccupants!.length === 0
                     ? '<span class="has-text-grey">(No ' +
-                      cityssm.escapeHTML(exports.aliases.occupants) +
+                      cityssm.escapeHTML(los.escapedAliases.Occupants) +
                       ')</span>'
                     : cityssm.escapeHTML(
                         lotOccupancy.lotOccupancyOccupants![0].occupantName!
@@ -634,13 +639,11 @@ document
         searchResultsContainerElement = modalElement.querySelector(
           '#resultsContainer--lotOccupancyAdd'
         ) as HTMLElement
-
         ;(
           modalElement.querySelector(
             '#lotOccupancySearch--notWorkOrderId'
           ) as HTMLInputElement
         ).value = workOrderId
-
         ;(
           modalElement.querySelector(
             '#lotOccupancySearch--occupancyEffectiveDateString'
@@ -655,13 +658,11 @@ document
       },
       onshown(modalElement) {
         bulmaJS.toggleHtmlClipped()
-
         ;(
           modalElement.querySelector(
             '#lotOccupancySearch--occupantName'
           ) as HTMLInputElement
         ).addEventListener('change', doSearch)
-
         ;(
           modalElement.querySelector(
             '#lotOccupancySearch--lotName'
@@ -692,7 +693,7 @@ document.querySelector('#button--addLot')!.addEventListener('click', () => {
   let searchFormElement: HTMLFormElement
   let searchResultsContainerElement: HTMLElement
 
-  function doSearch(event?: Event) {
+  function doSearch(event?: Event): void {
     if (event) {
       event.preventDefault()
     }
@@ -714,15 +715,15 @@ document.querySelector('#button--addLot')!.addEventListener('click', () => {
         }
 
         searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-                    <thead><tr>
-                    <th class="has-width-1"></th>
-                    <th>${los.escapedAliases.Lot}</th>
-                    <th>${los.escapedAliases.Map}</th>
-                    <th>${los.escapedAliases.Lot} Type</th>
-                    <th>Status</th>
-                    </tr></thead>
-                    <tbody></tbody>
-                    </table>`
+          <thead><tr>
+          <th class="has-width-1"></th>
+          <th>${los.escapedAliases.Lot}</th>
+          <th>${los.escapedAliases.Map}</th>
+          <th>${los.escapedAliases.Lot} Type</th>
+          <th>Status</th>
+          </tr></thead>
+          <tbody></tbody>
+          </table>`
 
         for (const lot of responseJSON.lots) {
           const rowElement = document.createElement('tr')
@@ -736,13 +737,13 @@ document.querySelector('#button--addLot')!.addEventListener('click', () => {
             '</button>' +
             '</td>' +
             ('<td class="has-text-weight-bold">' +
-              cityssm.escapeHTML(lot.lotName || '') +
+              cityssm.escapeHTML(lot.lotName ?? '') +
               '</td>') +
             '<td>' +
-            cityssm.escapeHTML(lot.mapName || '') +
+            cityssm.escapeHTML(lot.mapName ?? '') +
             '</td>' +
-            ('<td>' + cityssm.escapeHTML(lot.lotType || '') + '</td>') +
-            ('<td>' + cityssm.escapeHTML(lot.lotStatus || '') + '</td>')
+            ('<td>' + cityssm.escapeHTML(lot.lotType ?? '') + '</td>') +
+            ('<td>' + cityssm.escapeHTML(lot.lotStatus ?? '') + '</td>')
 
           rowElement
             .querySelector('.button--addLot')!
@@ -765,7 +766,6 @@ document.querySelector('#button--addLot')!.addEventListener('click', () => {
       searchResultsContainerElement = modalElement.querySelector(
         '#resultsContainer--lotAdd'
       ) as HTMLElement
-
       ;(
         modalElement.querySelector(
           '#lotSearch--notWorkOrderId'

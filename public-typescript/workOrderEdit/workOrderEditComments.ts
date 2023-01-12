@@ -18,7 +18,7 @@ let workOrderComments: recordTypes.WorkOrderComment[] =
   exports.workOrderComments
 delete exports.workOrderComments
 
-const openEditWorkOrderComment = (clickEvent: Event) => {
+function openEditWorkOrderComment(clickEvent: Event): void {
   const workOrderCommentId = Number.parseInt(
     (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
       .workOrderCommentId!,
@@ -50,7 +50,7 @@ const openEditWorkOrderComment = (clickEvent: Event) => {
         } else {
           bulmaJS.alert({
             title: 'Error Updating Comment',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -70,7 +70,6 @@ const openEditWorkOrderComment = (clickEvent: Event) => {
           '#workOrderCommentEdit--workOrderCommentId'
         ) as HTMLInputElement
       ).value = workOrderCommentId.toString()
-
       ;(
         modalElement.querySelector(
           '#workOrderCommentEdit--workOrderComment'
@@ -90,7 +89,6 @@ const openEditWorkOrderComment = (clickEvent: Event) => {
         workOrderComment.workOrderCommentDateString! <= currentDateString
           ? currentDateString
           : workOrderComment.workOrderCommentDateString!
-
       ;(
         modalElement.querySelector(
           '#workOrderCommentEdit--workOrderCommentTimeString'
@@ -101,8 +99,6 @@ const openEditWorkOrderComment = (clickEvent: Event) => {
       bulmaJS.toggleHtmlClipped()
 
       los.initializeDatePickers(modalElement)
-      // los.initializeTimePickers(modalElement);
-
       ;(
         modalElement.querySelector(
           '#workOrderCommentEdit--workOrderComment'
@@ -127,7 +123,7 @@ function deleteWorkOrderComment(clickEvent: Event): void {
     10
   )
 
-  function doDelete() {
+  function doDelete(): void {
     cityssm.postJSON(
       los.urlPrefix + '/workOrders/doDeleteWorkOrderComment',
       {
@@ -145,7 +141,7 @@ function deleteWorkOrderComment(clickEvent: Event): void {
         } else {
           bulmaJS.alert({
             title: 'Error Removing Comment',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -164,7 +160,7 @@ function deleteWorkOrderComment(clickEvent: Event): void {
   })
 }
 
-function renderWorkOrderComments() {
+function renderWorkOrderComments(): void {
   const containerElement = document.querySelector(
     '#container--workOrderComments'
   ) as HTMLElement
@@ -191,7 +187,7 @@ function renderWorkOrderComments() {
 
     tableRowElement.innerHTML =
       '<td>' +
-      cityssm.escapeHTML(workOrderComment.recordCreate_userName || '') +
+      cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '') +
       '</td>' +
       '<td>' +
       workOrderComment.workOrderCommentDateString +
@@ -200,7 +196,7 @@ function renderWorkOrderComments() {
         : ' ' + workOrderComment.workOrderCommentTimeString) +
       '</td>' +
       '<td>' +
-      cityssm.escapeHTML(workOrderComment.workOrderComment || '') +
+      cityssm.escapeHTML(workOrderComment.workOrderComment ?? '') +
       '</td>' +
       ('<td class="is-hidden-print">' +
         '<div class="buttons are-small is-justify-content-end">' +
@@ -229,10 +225,10 @@ function renderWorkOrderComments() {
   containerElement.append(tableElement)
 }
 
-function openAddCommentModal() {
+function openAddCommentModal(): void {
   let addCommentCloseModalFunction: () => void
 
-  function doAddComment(formEvent: SubmitEvent) {
+  function doAddComment(formEvent: SubmitEvent): void {
     formEvent.preventDefault()
 
     cityssm.postJSON(

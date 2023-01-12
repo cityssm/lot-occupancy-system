@@ -3,25 +3,26 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
-    const doCleanup = () => {
+    function doCleanup() {
         cityssm.postJSON(los.urlPrefix + '/admin/doCleanupDatabase', {}, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 bulmaJS.alert({
                     title: 'Database Cleaned Up Successfully',
                     message: `${responseJSON.inactivedRecordCount} records inactivated,
-                            ${responseJSON.purgedRecordCount} permanently deleted.`,
+              ${responseJSON.purgedRecordCount} permanently deleted.`,
                     contextualColorName: 'success'
                 });
             }
             else {
                 bulmaJS.alert({
                     title: 'Error Cleaning Database',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
         });
-    };
+    }
     document
         .querySelector('#button--cleanupDatabase')
         .addEventListener('click', () => {

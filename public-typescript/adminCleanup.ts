@@ -8,11 +8,10 @@ import type { BulmaJS } from '@cityssm/bulma-js/types'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
-  const doCleanup = () => {
+  function doCleanup(): void {
     cityssm.postJSON(
       los.urlPrefix + '/admin/doCleanupDatabase',
       {},
@@ -26,13 +25,13 @@ declare const bulmaJS: BulmaJS
           bulmaJS.alert({
             title: 'Database Cleaned Up Successfully',
             message: `${responseJSON.inactivedRecordCount} records inactivated,
-                            ${responseJSON.purgedRecordCount} permanently deleted.`,
+              ${responseJSON.purgedRecordCount} permanently deleted.`,
             contextualColorName: 'success'
           })
         } else {
           bulmaJS.alert({
             title: 'Error Cleaning Database',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }

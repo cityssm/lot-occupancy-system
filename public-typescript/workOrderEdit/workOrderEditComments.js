@@ -4,7 +4,7 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 let workOrderComments = exports.workOrderComments;
 delete exports.workOrderComments;
-const openEditWorkOrderComment = (clickEvent) => {
+function openEditWorkOrderComment(clickEvent) {
     const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr').dataset
         .workOrderCommentId, 10);
     const workOrderComment = workOrderComments.find((currentComment) => {
@@ -15,6 +15,7 @@ const openEditWorkOrderComment = (clickEvent) => {
     function editComment(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix + '/workOrders/doUpdateWorkOrderComment', editFormElement, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 workOrderComments = responseJSON.workOrderComments;
                 editCloseModalFunction();
@@ -23,7 +24,7 @@ const openEditWorkOrderComment = (clickEvent) => {
             else {
                 bulmaJS.alert({
                     title: 'Error Updating Comment',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -57,7 +58,7 @@ const openEditWorkOrderComment = (clickEvent) => {
             bulmaJS.toggleHtmlClipped();
         }
     });
-};
+}
 function deleteWorkOrderComment(clickEvent) {
     const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr').dataset
         .workOrderCommentId, 10);
@@ -66,6 +67,7 @@ function deleteWorkOrderComment(clickEvent) {
             workOrderId,
             workOrderCommentId
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 workOrderComments = responseJSON.workOrderComments;
                 renderWorkOrderComments();
@@ -73,7 +75,7 @@ function deleteWorkOrderComment(clickEvent) {
             else {
                 bulmaJS.alert({
                     title: 'Error Removing Comment',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -90,6 +92,7 @@ function deleteWorkOrderComment(clickEvent) {
     });
 }
 function renderWorkOrderComments() {
+    var _a, _b;
     const containerElement = document.querySelector('#container--workOrderComments');
     if (workOrderComments.length === 0) {
         containerElement.innerHTML = `<div class="message is-info">
@@ -110,7 +113,7 @@ function renderWorkOrderComments() {
             workOrderComment.workOrderCommentId.toString();
         tableRowElement.innerHTML =
             '<td>' +
-                cityssm.escapeHTML(workOrderComment.recordCreate_userName || '') +
+                cityssm.escapeHTML((_a = workOrderComment.recordCreate_userName) !== null && _a !== void 0 ? _a : '') +
                 '</td>' +
                 '<td>' +
                 workOrderComment.workOrderCommentDateString +
@@ -119,7 +122,7 @@ function renderWorkOrderComments() {
                     : ' ' + workOrderComment.workOrderCommentTimeString) +
                 '</td>' +
                 '<td>' +
-                cityssm.escapeHTML(workOrderComment.workOrderComment || '') +
+                cityssm.escapeHTML((_b = workOrderComment.workOrderComment) !== null && _b !== void 0 ? _b : '') +
                 '</td>' +
                 ('<td class="is-hidden-print">' +
                     '<div class="buttons are-small is-justify-content-end">' +

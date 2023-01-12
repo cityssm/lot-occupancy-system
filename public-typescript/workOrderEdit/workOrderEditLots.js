@@ -12,6 +12,7 @@ function deleteLotOccupancy(clickEvent) {
             workOrderId,
             lotOccupancyId
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 workOrderLotOccupancies = responseJSON.workOrderLotOccupancies;
                 renderRelatedLotsAndOccupancies();
@@ -19,7 +20,7 @@ function deleteLotOccupancy(clickEvent) {
             else {
                 bulmaJS.alert({
                     title: 'Error Deleting Relationship',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -40,14 +41,15 @@ function addLot(lotId, callbackFunction) {
         workOrderId,
         lotId
     }, (responseJSON) => {
+        var _a;
         if (responseJSON.success) {
             workOrderLots = responseJSON.workOrderLots;
             renderRelatedLotsAndOccupancies();
         }
         else {
             bulmaJS.alert({
-                title: 'Error Adding ' + los.escapedAliases.Lot,
-                message: responseJSON.errorMessage || '',
+                title: `Error Adding ${los.escapedAliases.Lot}`,
+                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                 contextualColorName: 'danger'
             });
         }
@@ -61,6 +63,7 @@ function addLotOccupancy(lotOccupancyId, callbackFunction) {
         workOrderId,
         lotOccupancyId
     }, (responseJSON) => {
+        var _a;
         if (responseJSON.success) {
             workOrderLotOccupancies = responseJSON.workOrderLotOccupancies;
             renderRelatedLotsAndOccupancies();
@@ -68,7 +71,7 @@ function addLotOccupancy(lotOccupancyId, callbackFunction) {
         else {
             bulmaJS.alert({
                 title: 'Error Adding ' + los.escapedAliases.Occupancy,
-                message: responseJSON.errorMessage || '',
+                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                 contextualColorName: 'danger'
             });
         }
@@ -82,7 +85,7 @@ function addLotFromLotOccupancy(clickEvent) {
     addLot(lotId);
 }
 function renderRelatedOccupancies() {
-    var _a, _b;
+    var _a, _b, _c, _d;
     const occupanciesContainerElement = document.querySelector('#container--lotOccupancies');
     document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent = workOrderLotOccupancies.length.toString();
     if (workOrderLotOccupancies.length === 0) {
@@ -93,9 +96,12 @@ function renderRelatedOccupancies() {
     }
     occupanciesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
         <thead><tr>
-        <th class="has-width-1"></th><th>${los.escapedAliases.Occupancy} Type</th>
-        <th>${los.escapedAliases.Lot}</th><th>${los.escapedAliases.OccupancyStartDate}</th>
-        <th>End Date</th><th>${los.escapedAliases.Occupants}</th>
+        <th class="has-width-1"></th>
+        <th>${los.escapedAliases.Occupancy} Type</th>
+        <th>${los.escapedAliases.Lot}</th>
+        <th>${los.escapedAliases.OccupancyStartDate}</th>
+        <th>End Date</th>
+        <th>${los.escapedAliases.Occupants}</th>
         <th class="has-width-1"></th>
         </tr></thead>
         <tbody></tbody>
@@ -125,12 +131,12 @@ function renderRelatedOccupancies() {
                     '<a class="has-text-weight-bold" href="' +
                     los.getLotOccupancyURL(lotOccupancy.lotOccupancyId) +
                     '">' +
-                    cityssm.escapeHTML(lotOccupancy.occupancyType || '') +
+                    cityssm.escapeHTML((_a = lotOccupancy.occupancyType) !== null && _a !== void 0 ? _a : '') +
                     '</a>' +
                     '</td>');
         if (lotOccupancy.lotId) {
             rowElement.insertAdjacentHTML('beforeend', '<td>' +
-                cityssm.escapeHTML(lotOccupancy.lotName || '') +
+                cityssm.escapeHTML((_b = lotOccupancy.lotName) !== null && _b !== void 0 ? _b : '') +
                 (hasLotRecord
                     ? ''
                     : ' <button class="button is-small is-light is-success button--addLot"' +
@@ -163,13 +169,16 @@ function renderRelatedOccupancies() {
                     ? '<span class="has-text-grey">(No ' +
                         los.escapedAliases.Occupants +
                         ')</span>'
-                    : (_a = lotOccupancy.lotOccupancyOccupants) === null || _a === void 0 ? void 0 : _a.reduce((soFar, occupant) => {
+                    : (_c = lotOccupancy.lotOccupancyOccupants) === null || _c === void 0 ? void 0 : _c.reduce((soFar, occupant) => {
+                        var _a;
                         return (soFar +
                             '<span class="has-tooltip-left" data-tooltip="' +
                             cityssm.escapeHTML(occupant.lotOccupantType) +
                             '">' +
                             '<i class="fas fa-fw fa-' +
-                            cityssm.escapeHTML(occupant.fontAwesomeIconClass || 'user') +
+                            cityssm.escapeHTML(((_a = occupant.fontAwesomeIconClass) !== null && _a !== void 0 ? _a : '') === ''
+                                ? 'user'
+                                : occupant.fontAwesomeIconClass) +
                             '" aria-label="' +
                             los.escapedAliases.Occupant +
                             '"></i> ' +
@@ -182,8 +191,8 @@ function renderRelatedOccupancies() {
                 '<i class="fas fa-trash" aria-hidden="true"></i>' +
                 '</button>' +
                 '</td>'));
-        (_b = rowElement
-            .querySelector('.button--addLot')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', addLotFromLotOccupancy);
+        (_d = rowElement
+            .querySelector('.button--addLot')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', addLotFromLotOccupancy);
         rowElement
             .querySelector('.button--deleteLotOccupancy')
             .addEventListener('click', deleteLotOccupancy);
@@ -199,6 +208,7 @@ function openEditLotStatus(clickEvent) {
     function doUpdateLotStatus(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix + '/workOrders/doUpdateLotStatus', submitEvent.currentTarget, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 workOrderLots = responseJSON.workOrderLots;
                 renderRelatedLotsAndOccupancies();
@@ -207,7 +217,7 @@ function openEditLotStatus(clickEvent) {
             else {
                 bulmaJS.alert({
                     title: 'Error Deleting Relationship',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -261,6 +271,7 @@ function deleteLot(clickEvent) {
             workOrderId,
             lotId
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 workOrderLots = responseJSON.workOrderLots;
                 renderRelatedLotsAndOccupancies();
@@ -268,7 +279,7 @@ function deleteLot(clickEvent) {
             else {
                 bulmaJS.alert({
                     title: 'Error Deleting Relationship',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -285,6 +296,7 @@ function deleteLot(clickEvent) {
     });
 }
 function renderRelatedLots() {
+    var _a, _b, _c, _d;
     const lotsContainerElement = document.querySelector('#container--lots');
     document.querySelector(".tabs a[href='#relatedTab--lots'] .tag").textContent = workOrderLots.length.toString();
     if (workOrderLots.length === 0) {
@@ -312,14 +324,14 @@ function renderRelatedLots() {
                 '<a class="has-text-weight-bold" href="' +
                 los.getLotURL(lot.lotId) +
                 '">' +
-                cityssm.escapeHTML(lot.lotName || '') +
+                cityssm.escapeHTML((_a = lot.lotName) !== null && _a !== void 0 ? _a : '') +
                 '</a>' +
                 '</td>' +
-                ('<td>' + cityssm.escapeHTML(lot.mapName || '') + '</td>') +
-                ('<td>' + cityssm.escapeHTML(lot.lotType || '') + '</td>') +
+                ('<td>' + cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '') + '</td>') +
+                ('<td>' + cityssm.escapeHTML((_c = lot.lotType) !== null && _c !== void 0 ? _c : '') + '</td>') +
                 ('<td>' +
                     (lot.lotStatusId
-                        ? cityssm.escapeHTML(lot.lotStatus || '')
+                        ? cityssm.escapeHTML((_d = lot.lotStatus) !== null && _d !== void 0 ? _d : '')
                         : '<span class="has-text-grey">(No Status)</span>') +
                     '</td>') +
                 ('<td class="is-nowrap">' +
@@ -365,6 +377,7 @@ document
         searchResultsContainerElement.innerHTML =
             los.getLoadingParagraphHTML('Searching...');
         cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doSearchLotOccupancies', searchFormElement, (responseJSON) => {
+            var _a, _b;
             if (responseJSON.lotOccupancies.length === 0) {
                 searchResultsContainerElement.innerHTML = `<div class="message is-info">
                         <p class="message-body">There are no records that meet the search criteria.</p>
@@ -372,16 +385,16 @@ document
                 return;
             }
             searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-                        <thead><tr>
-                        <th class="has-width-1"></th>
-                        <th>${los.escapedAliases.Occupancy} Type</th>
-                        <th>${los.escapedAliases.Lot}</th>
-                        <th>${los.escapedAliases.OccupancyStartDate}</th>
-                        <th>End Date</th>
-                        <th>${los.escapedAliases.Occupants}</th>
-                        </tr></thead>
-                        <tbody></tbody>
-                        </table>`;
+            <thead><tr>
+            <th class="has-width-1"></th>
+            <th>${los.escapedAliases.Occupancy} Type</th>
+            <th>${los.escapedAliases.Lot}</th>
+            <th>${los.escapedAliases.OccupancyStartDate}</th>
+            <th>End Date</th>
+            <th>${los.escapedAliases.Occupants}</th>
+            </tr></thead>
+            <tbody></tbody>
+            </table>`;
             for (const lotOccupancy of responseJSON.lotOccupancies) {
                 const rowElement = document.createElement('tr');
                 rowElement.className = 'container--lotOccupancy';
@@ -394,11 +407,11 @@ document
                         '</button>' +
                         '</td>' +
                         ('<td class="has-text-weight-bold">' +
-                            cityssm.escapeHTML(lotOccupancy.occupancyType || '') +
+                            cityssm.escapeHTML((_a = lotOccupancy.occupancyType) !== null && _a !== void 0 ? _a : '') +
                             '</td>');
                 if (lotOccupancy.lotId) {
                     rowElement.insertAdjacentHTML('beforeend', '<td>' +
-                        cityssm.escapeHTML(lotOccupancy.lotName || '') +
+                        cityssm.escapeHTML((_b = lotOccupancy.lotName) !== null && _b !== void 0 ? _b : '') +
                         '</td>');
                 }
                 else {
@@ -415,7 +428,7 @@ document
                     ('<td>' +
                         (lotOccupancy.lotOccupancyOccupants.length === 0
                             ? '<span class="has-text-grey">(No ' +
-                                cityssm.escapeHTML(exports.aliases.occupants) +
+                                cityssm.escapeHTML(los.escapedAliases.Occupants) +
                                 ')</span>'
                             : cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0].occupantName) +
                                 (lotOccupancy.lotOccupancyOccupants.length > 1
@@ -471,6 +484,7 @@ document.querySelector('#button--addLot').addEventListener('click', () => {
         searchResultsContainerElement.innerHTML =
             los.getLoadingParagraphHTML('Searching...');
         cityssm.postJSON(los.urlPrefix + '/lots/doSearchLots', searchFormElement, (responseJSON) => {
+            var _a, _b, _c, _d;
             if (responseJSON.lots.length === 0) {
                 searchResultsContainerElement.innerHTML =
                     '<div class="message is-info">' +
@@ -479,15 +493,15 @@ document.querySelector('#button--addLot').addEventListener('click', () => {
                 return;
             }
             searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-                    <thead><tr>
-                    <th class="has-width-1"></th>
-                    <th>${los.escapedAliases.Lot}</th>
-                    <th>${los.escapedAliases.Map}</th>
-                    <th>${los.escapedAliases.Lot} Type</th>
-                    <th>Status</th>
-                    </tr></thead>
-                    <tbody></tbody>
-                    </table>`;
+          <thead><tr>
+          <th class="has-width-1"></th>
+          <th>${los.escapedAliases.Lot}</th>
+          <th>${los.escapedAliases.Map}</th>
+          <th>${los.escapedAliases.Lot} Type</th>
+          <th>Status</th>
+          </tr></thead>
+          <tbody></tbody>
+          </table>`;
             for (const lot of responseJSON.lots) {
                 const rowElement = document.createElement('tr');
                 rowElement.className = 'container--lot';
@@ -499,13 +513,13 @@ document.querySelector('#button--addLot').addEventListener('click', () => {
                         '</button>' +
                         '</td>' +
                         ('<td class="has-text-weight-bold">' +
-                            cityssm.escapeHTML(lot.lotName || '') +
+                            cityssm.escapeHTML((_a = lot.lotName) !== null && _a !== void 0 ? _a : '') +
                             '</td>') +
                         '<td>' +
-                        cityssm.escapeHTML(lot.mapName || '') +
+                        cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '') +
                         '</td>' +
-                        ('<td>' + cityssm.escapeHTML(lot.lotType || '') + '</td>') +
-                        ('<td>' + cityssm.escapeHTML(lot.lotStatus || '') + '</td>');
+                        ('<td>' + cityssm.escapeHTML((_c = lot.lotType) !== null && _c !== void 0 ? _c : '') + '</td>') +
+                        ('<td>' + cityssm.escapeHTML((_d = lot.lotStatus) !== null && _d !== void 0 ? _d : '') + '</td>');
                 rowElement
                     .querySelector('.button--addLot')
                     .addEventListener('click', doAddLot);
