@@ -9,13 +9,6 @@ checks:
   method-lines:
     config:
       threshold: 500
-plugins:
-  eslint:
-    enabled: true
-    channel: "eslint-8"
-    config:
-      extensions:
-      - .ts
 exclude_patterns:
 - "cypress/"
 - "**/node_modules/"
