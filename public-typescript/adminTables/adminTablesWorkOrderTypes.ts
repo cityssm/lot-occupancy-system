@@ -15,7 +15,7 @@ declare const los: globalTypes.LOS
 let workOrderTypes: recordTypes.WorkOrderType[] = exports.workOrderTypes
 delete exports.workOrderTypes
 
-const updateWorkOrderType = (submitEvent: SubmitEvent) => {
+function updateWorkOrderType(submitEvent: SubmitEvent): void {
   submitEvent.preventDefault()
 
   cityssm.postJSON(
@@ -36,7 +36,7 @@ const updateWorkOrderType = (submitEvent: SubmitEvent) => {
       } else {
         bulmaJS.alert({
           title: 'Error Updating Work Order Type',
-          message: responseJSON.errorMessage || '',
+          message: responseJSON.errorMessage ?? '',
           contextualColorName: 'danger'
         })
       }
@@ -44,12 +44,12 @@ const updateWorkOrderType = (submitEvent: SubmitEvent) => {
   )
 }
 
-const deleteWorkOrderType = (clickEvent: Event) => {
+const deleteWorkOrderType = (clickEvent: Event): void => {
   const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest('tr')!
 
   const workOrderTypeId = tableRowElement.dataset.workOrderTypeId
 
-  const doDelete = () => {
+  function doDelete(): void {
     cityssm.postJSON(
       los.urlPrefix + '/admin/doDeleteWorkOrderType',
       {
@@ -76,7 +76,7 @@ const deleteWorkOrderType = (clickEvent: Event) => {
         } else {
           bulmaJS.alert({
             title: 'Error Deleting Work Order Type',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -97,7 +97,7 @@ const deleteWorkOrderType = (clickEvent: Event) => {
   })
 }
 
-const moveWorkOrderType = (clickEvent: MouseEvent) => {
+function moveWorkOrderType(clickEvent: MouseEvent): void {
   const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
   const tableRowElement = buttonElement.closest('tr')!
@@ -106,8 +106,8 @@ const moveWorkOrderType = (clickEvent: MouseEvent) => {
 
   cityssm.postJSON(
     los.urlPrefix +
-      '/admin/' +
-      (buttonElement.dataset.direction === 'up' ? 'doMoveWorkOrderTypeUp' : 'doMoveWorkOrderTypeDown'),
+    '/admin/' +
+    (buttonElement.dataset.direction === 'up' ? 'doMoveWorkOrderTypeUp' : 'doMoveWorkOrderTypeDown'),
     {
       workOrderTypeId,
       moveToEnd: clickEvent.shiftKey ? '1' : '0'
@@ -123,7 +123,7 @@ const moveWorkOrderType = (clickEvent: MouseEvent) => {
       } else {
         bulmaJS.alert({
           title: 'Error Moving Work Order Type',
-          message: responseJSON.errorMessage || '',
+          message: responseJSON.errorMessage ?? '',
           contextualColorName: 'danger'
         })
       }
@@ -131,7 +131,7 @@ const moveWorkOrderType = (clickEvent: MouseEvent) => {
   )
 }
 
-const renderWorkOrderTypes = () => {
+function renderWorkOrderTypes(): void {
   const containerElement = document.querySelector('#container--workOrderTypes') as HTMLTableSectionElement
 
   if (workOrderTypes.length === 0) {
@@ -158,7 +158,7 @@ const renderWorkOrderTypes = () => {
       ('<div class="field has-addons">' +
         '<div class="control">' +
         '<input class="input" name="workOrderType" type="text" value="' +
-        cityssm.escapeHTML(workOrderType.workOrderType || '') +
+        cityssm.escapeHTML(workOrderType.workOrderType ?? '') +
         '" maxlength="100" aria-label="Work Order Type" required />' +
         '</div>' +
         '<div class="control">' +
@@ -184,14 +184,10 @@ const renderWorkOrderTypes = () => {
       '</div>' +
       '</td>'
 
-    tableRowElement.querySelector('form')!.addEventListener('submit', updateWorkOrderType)
-
-    ;(tableRowElement.querySelector('.button--moveWorkOrderTypeUp') as HTMLButtonElement).addEventListener(
+    tableRowElement.querySelector('form')!.addEventListener('submit', updateWorkOrderType); (tableRowElement.querySelector('.button--moveWorkOrderTypeUp') as HTMLButtonElement).addEventListener(
       'click',
       moveWorkOrderType
-    )
-
-    ;(tableRowElement.querySelector('.button--moveWorkOrderTypeDown') as HTMLButtonElement).addEventListener(
+    ); (tableRowElement.querySelector('.button--moveWorkOrderTypeDown') as HTMLButtonElement).addEventListener(
       'click',
       moveWorkOrderType
     )
@@ -202,9 +198,7 @@ const renderWorkOrderTypes = () => {
 
     containerElement.append(tableRowElement)
   }
-}
-
-;(document.querySelector('#form--addWorkOrderType') as HTMLFormElement).addEventListener(
+}(document.querySelector('#form--addWorkOrderType') as HTMLFormElement).addEventListener(
   'submit',
   (submitEvent: SubmitEvent) => {
     submitEvent.preventDefault()
@@ -227,7 +221,7 @@ const renderWorkOrderTypes = () => {
         } else {
           bulmaJS.alert({
             title: 'Error Adding Work Order Type',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }

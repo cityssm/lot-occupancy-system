@@ -7,6 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const searchFilterElement = document.querySelector('#searchFilter--map');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     function renderResults() {
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Maps}...`);
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');
@@ -15,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .toLowerCase()
             .split(' ');
         for (const map of maps) {
-            const mapSearchString = `${map.mapName} ${map.mapDescription} ${map.mapAddress1} ${map.mapAddress2}`.toLowerCase();
+            const mapSearchString = `${(_a = map.mapName) !== null && _a !== void 0 ? _a : ''} ${(_b = map.mapDescription) !== null && _b !== void 0 ? _b : ''} ${(_c = map.mapAddress1) !== null && _c !== void 0 ? _c : ''} ${(_d = map.mapAddress2) !== null && _d !== void 0 ? _d : ''}`.toLowerCase();
             let showMap = true;
             for (const filterStringPiece of filterStringSplit) {
                 if (!mapSearchString.includes(filterStringPiece)) {
@@ -30,14 +31,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             searchResultsTbodyElement.insertAdjacentHTML('beforeend', '<tr>' +
                 ('<td>' +
                     '<a class="has-text-weight-bold" href="' +
-                    los.urlPrefix +
-                    '/maps/' +
-                    map.mapId +
+                    los.getMapURL(map.mapId) +
                     '">' +
-                    cityssm.escapeHTML(map.mapName || '(No Name)') +
+                    cityssm.escapeHTML(map.mapName === '' ? '(No Name)' : map.mapName) +
                     '</a><br />' +
                     '<span class="is-size-7">' +
-                    cityssm.escapeHTML(map.mapDescription || '') +
+                    cityssm.escapeHTML((_e = map.mapDescription) !== null && _e !== void 0 ? _e : '') +
                     '</span>' +
                     '</td>') +
                 ('<td>' +
@@ -48,14 +47,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         ? cityssm.escapeHTML(map.mapAddress2) + '<br />'
                         : '') +
                     (map.mapCity || map.mapProvince
-                        ? cityssm.escapeHTML(map.mapCity || '') +
+                        ? cityssm.escapeHTML((_f = map.mapCity) !== null && _f !== void 0 ? _f : '') +
                             ', ' +
-                            cityssm.escapeHTML(map.mapProvince || '') +
+                            cityssm.escapeHTML((_g = map.mapProvince) !== null && _g !== void 0 ? _g : '') +
                             '<br />'
                         : '') +
                     (map.mapPostalCode ? cityssm.escapeHTML(map.mapPostalCode) : '') +
                     '</td>') +
-                ('<td>' + cityssm.escapeHTML(map.mapPhoneNumber || '') + '</td>') +
+                ('<td>' + cityssm.escapeHTML((_h = map.mapPhoneNumber) !== null && _h !== void 0 ? _h : '') + '</td>') +
                 '<td class="has-text-centered">' +
                 (map.mapLatitude && map.mapLongitude
                     ? '<span data-tooltip="Has Geographic Coordinates"><i class="fas fa-map-marker-alt" aria-label="Has Geographic Coordinates"></i></span>'
@@ -80,21 +79,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
         searchResultsContainerElement.innerHTML = '';
         if (searchResultCount === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                <p class="message-body">There are no ${los.escapedAliases.maps} that meet the search criteria.</p>
-                </div>`;
+        <p class="message-body">There are no ${los.escapedAliases.maps} that meet the search criteria.</p>
+        </div>`;
         }
         else {
             const searchResultsTableElement = document.createElement('table');
             searchResultsTableElement.className =
                 'table is-fullwidth is-striped is-hoverable has-sticky-header';
             searchResultsTableElement.innerHTML = `<thead><tr>
-                <th>${los.escapedAliases.Map}</th>
-                <th>Address</th>
-                <th>Phone Number</th>
-                <th class="has-text-centered">Coordinates</th>
-                <th class="has-text-centered">Image</th>
-                <th class="has-text-right">${los.escapedAliases.Lot} Count</th>
-                </tr></thead>`;
+        <th>${los.escapedAliases.Map}</th>
+        <th>Address</th>
+        <th>Phone Number</th>
+        <th class="has-text-centered">Coordinates</th>
+        <th class="has-text-centered">Image</th>
+        <th class="has-text-right">${los.escapedAliases.Lot} Count</th>
+        </tr></thead>`;
             searchResultsTableElement.append(searchResultsTbodyElement);
             searchResultsContainerElement.append(searchResultsTableElement);
         }

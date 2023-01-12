@@ -16,7 +16,7 @@ declare const refreshFontAwesomeIcon: (changeEvent: Event) => void
 let lotOccupantTypes: recordTypes.LotOccupantType[] = exports.lotOccupantTypes
 delete exports.lotOccupantTypes
 
-const updateLotOccupantType = (submitEvent: SubmitEvent) => {
+function updateLotOccupantType(submitEvent: SubmitEvent): void {
   submitEvent.preventDefault()
 
   cityssm.postJSON(
@@ -37,7 +37,7 @@ const updateLotOccupantType = (submitEvent: SubmitEvent) => {
       } else {
         bulmaJS.alert({
           title: `Error Updating ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-          message: responseJSON.errorMessage || '',
+          message: responseJSON.errorMessage ?? '',
           contextualColorName: 'danger'
         })
       }
@@ -45,12 +45,14 @@ const updateLotOccupantType = (submitEvent: SubmitEvent) => {
   )
 }
 
-const deleteLotOccupantType = (clickEvent: Event) => {
-  const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest('tr')!
+function deleteLotOccupantType(clickEvent: Event): void {
+  const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest(
+    'tr'
+  )!
 
   const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId
 
-  const doDelete = () => {
+  function doDelete(): void {
     cityssm.postJSON(
       los.urlPrefix + '/admin/doDeleteLotOccupantType',
       {
@@ -77,7 +79,7 @@ const deleteLotOccupantType = (clickEvent: Event) => {
         } else {
           bulmaJS.alert({
             title: `Error Deleting ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -98,7 +100,7 @@ const deleteLotOccupantType = (clickEvent: Event) => {
   })
 }
 
-const moveLotOccupantType = (clickEvent: MouseEvent) => {
+function moveLotOccupantType(clickEvent: MouseEvent): void {
   const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
   const tableRowElement = buttonElement.closest('tr')!
@@ -108,7 +110,9 @@ const moveLotOccupantType = (clickEvent: MouseEvent) => {
   cityssm.postJSON(
     los.urlPrefix +
       '/admin/' +
-      (buttonElement.dataset.direction === 'up' ? 'doMoveLotOccupantTypeUp' : 'doMoveLotOccupantTypeDown'),
+      (buttonElement.dataset.direction === 'up'
+        ? 'doMoveLotOccupantTypeUp'
+        : 'doMoveLotOccupantTypeDown'),
     {
       lotOccupantTypeId,
       moveToEnd: clickEvent.shiftKey ? '1' : '0'
@@ -124,7 +128,7 @@ const moveLotOccupantType = (clickEvent: MouseEvent) => {
       } else {
         bulmaJS.alert({
           title: `Error Moving ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-          message: responseJSON.errorMessage || '',
+          message: responseJSON.errorMessage ?? '',
           contextualColorName: 'danger'
         })
       }
@@ -132,8 +136,10 @@ const moveLotOccupantType = (clickEvent: MouseEvent) => {
   )
 }
 
-const renderLotOccupantTypes = () => {
-  const containerElement = document.querySelector('#container--lotOccupantTypes') as HTMLTableSectionElement
+function renderLotOccupantTypes(): void {
+  const containerElement = document.querySelector(
+    '#container--lotOccupantTypes'
+  ) as HTMLTableSectionElement
 
   if (lotOccupantTypes.length === 0) {
     containerElement.innerHTML = `<tr><td colspan="3">
@@ -148,19 +154,25 @@ const renderLotOccupantTypes = () => {
   for (const lotOccupantType of lotOccupantTypes) {
     const tableRowElement = document.createElement('tr')
 
-    tableRowElement.dataset.lotOccupantTypeId = lotOccupantType.lotOccupantTypeId.toString()
+    tableRowElement.dataset.lotOccupantTypeId =
+      lotOccupantType.lotOccupantTypeId.toString()
 
-    const formId = 'form--lotOccupantType-' + lotOccupantType.lotOccupantTypeId
+    const formId =
+      'form--lotOccupantType-' + lotOccupantType.lotOccupantTypeId.toString()
 
     tableRowElement.innerHTML =
       '<td>' +
       ('<div class="field">' +
         '<div class="control">' +
         '<input class="input" name="lotOccupantType" type="text"' +
-        (' value="' + cityssm.escapeHTML(lotOccupantType.lotOccupantType) + '"') +
+        (' value="' +
+          cityssm.escapeHTML(lotOccupantType.lotOccupantType) +
+          '"') +
         (' form="' + formId + '"') +
         (' aria-label="' +
-          cityssm.escapeHTML(exports.aliases.lot + ' ' + exports.aliases.occupant) +
+          los.escapedAliases.Lot +
+          ' ' +
+          los.escapedAliases.Occupant +
           ' Type"') +
         ' maxlength="100" required />' +
         '</div>' +
@@ -171,7 +183,9 @@ const renderLotOccupantTypes = () => {
         '<div class="control"><span class="button is-static">fa-</span></div>' +
         '<div class="control">' +
         '<input class="input" name="fontAwesomeIconClass" type="text"' +
-        (' value="' + cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass) + '"') +
+        (' value="' +
+          cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass) +
+          '"') +
         (' form="' + formId + '"') +
         ' list="datalist--fontAwesomeIconClass"' +
         ' aria-label="Icon Name"' +
@@ -218,20 +232,25 @@ const renderLotOccupantTypes = () => {
       '</div>' +
       '</td>'
 
-    const fontAwesomeInputElement = tableRowElement.querySelector("input[name='fontAwesomeIconClass']")!
+    const fontAwesomeInputElement = tableRowElement.querySelector(
+      "input[name='fontAwesomeIconClass']"
+    )!
 
     fontAwesomeInputElement.addEventListener('keyup', refreshFontAwesomeIcon)
     fontAwesomeInputElement.addEventListener('change', refreshFontAwesomeIcon)
 
-    tableRowElement.querySelector('form')!.addEventListener('submit', updateLotOccupantType)
-
-    ;(tableRowElement.querySelector('.button--moveLotOccupantTypeUp') as HTMLButtonElement).addEventListener(
-      'click',
-      moveLotOccupantType
-    )
-
+    tableRowElement
+      .querySelector('form')!
+      .addEventListener('submit', updateLotOccupantType)
     ;(
-      tableRowElement.querySelector('.button--moveLotOccupantTypeDown') as HTMLButtonElement
+      tableRowElement.querySelector(
+        '.button--moveLotOccupantTypeUp'
+      ) as HTMLButtonElement
+    ).addEventListener('click', moveLotOccupantType)
+    ;(
+      tableRowElement.querySelector(
+        '.button--moveLotOccupantTypeDown'
+      ) as HTMLButtonElement
     ).addEventListener('click', moveLotOccupantType)
 
     tableRowElement
@@ -241,37 +260,35 @@ const renderLotOccupantTypes = () => {
     containerElement.append(tableRowElement)
   }
 }
+;(
+  document.querySelector('#form--addLotOccupantType') as HTMLFormElement
+).addEventListener('submit', (submitEvent: SubmitEvent) => {
+  submitEvent.preventDefault()
 
-;(document.querySelector('#form--addLotOccupantType') as HTMLFormElement).addEventListener(
-  'submit',
-  (submitEvent: SubmitEvent) => {
-    submitEvent.preventDefault()
+  const formElement = submitEvent.currentTarget as HTMLFormElement
 
-    const formElement = submitEvent.currentTarget as HTMLFormElement
-
-    cityssm.postJSON(
-      los.urlPrefix + '/admin/doAddLotOccupantType',
-      formElement,
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        lotOccupantTypes?: recordTypes.LotOccupantType[]
-      }) => {
-        if (responseJSON.success) {
-          lotOccupantTypes = responseJSON.lotOccupantTypes!
-          renderLotOccupantTypes()
-          formElement.reset()
-          formElement.querySelector('input')!.focus()
-        } else {
-          bulmaJS.alert({
-            title: `Error Adding ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-            message: responseJSON.errorMessage || '',
-            contextualColorName: 'danger'
-          })
-        }
+  cityssm.postJSON(
+    los.urlPrefix + '/admin/doAddLotOccupantType',
+    formElement,
+    (responseJSON: {
+      success: boolean
+      errorMessage?: string
+      lotOccupantTypes?: recordTypes.LotOccupantType[]
+    }) => {
+      if (responseJSON.success) {
+        lotOccupantTypes = responseJSON.lotOccupantTypes!
+        renderLotOccupantTypes()
+        formElement.reset()
+        formElement.querySelector('input')!.focus()
+      } else {
+        bulmaJS.alert({
+          title: `Error Adding ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
+          message: responseJSON.errorMessage ?? '',
+          contextualColorName: 'danger'
+        })
       }
-    )
-  }
-)
+    }
+  )
+})
 
 renderLotOccupantTypes()

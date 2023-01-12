@@ -6,7 +6,6 @@ import type * as recordTypes from '../types/recordTypes'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
 
 declare const cityssm: cityssmGlobal
-
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -34,8 +33,9 @@ declare const cityssm: cityssmGlobal
       .split(' ')
 
     for (const map of maps) {
-      const mapSearchString =
-        `${map.mapName} ${map.mapDescription} ${map.mapAddress1} ${map.mapAddress2}`.toLowerCase()
+      const mapSearchString = `${map.mapName ?? ''} ${
+        map.mapDescription ?? ''
+      } ${map.mapAddress1 ?? ''} ${map.mapAddress2 ?? ''}`.toLowerCase()
 
       let showMap = true
 
@@ -57,14 +57,14 @@ declare const cityssm: cityssmGlobal
         '<tr>' +
           ('<td>' +
             '<a class="has-text-weight-bold" href="' +
-            los.urlPrefix +
-            '/maps/' +
-            map.mapId +
+            los.getMapURL(map.mapId) +
             '">' +
-            cityssm.escapeHTML(map.mapName || '(No Name)') +
+            cityssm.escapeHTML(
+              map.mapName! === '' ? '(No Name)' : map.mapName!
+            ) +
             '</a><br />' +
             '<span class="is-size-7">' +
-            cityssm.escapeHTML(map.mapDescription || '') +
+            cityssm.escapeHTML(map.mapDescription ?? '') +
             '</span>' +
             '</td>') +
           ('<td>' +
@@ -75,14 +75,14 @@ declare const cityssm: cityssmGlobal
               ? cityssm.escapeHTML(map.mapAddress2) + '<br />'
               : '') +
             (map.mapCity || map.mapProvince
-              ? cityssm.escapeHTML(map.mapCity || '') +
+              ? cityssm.escapeHTML(map.mapCity ?? '') +
                 ', ' +
-                cityssm.escapeHTML(map.mapProvince || '') +
+                cityssm.escapeHTML(map.mapProvince ?? '') +
                 '<br />'
               : '') +
             (map.mapPostalCode ? cityssm.escapeHTML(map.mapPostalCode) : '') +
             '</td>') +
-          ('<td>' + cityssm.escapeHTML(map.mapPhoneNumber || '') + '</td>') +
+          ('<td>' + cityssm.escapeHTML(map.mapPhoneNumber ?? '') + '</td>') +
           '<td class="has-text-centered">' +
           (map.mapLatitude && map.mapLongitude
             ? '<span data-tooltip="Has Geographic Coordinates"><i class="fas fa-map-marker-alt" aria-label="Has Geographic Coordinates"></i></span>'
@@ -110,8 +110,8 @@ declare const cityssm: cityssmGlobal
 
     if (searchResultCount === 0) {
       searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                <p class="message-body">There are no ${los.escapedAliases.maps} that meet the search criteria.</p>
-                </div>`
+        <p class="message-body">There are no ${los.escapedAliases.maps} that meet the search criteria.</p>
+        </div>`
     } else {
       const searchResultsTableElement = document.createElement('table')
 
@@ -119,13 +119,13 @@ declare const cityssm: cityssmGlobal
         'table is-fullwidth is-striped is-hoverable has-sticky-header'
 
       searchResultsTableElement.innerHTML = `<thead><tr>
-                <th>${los.escapedAliases.Map}</th>
-                <th>Address</th>
-                <th>Phone Number</th>
-                <th class="has-text-centered">Coordinates</th>
-                <th class="has-text-centered">Image</th>
-                <th class="has-text-right">${los.escapedAliases.Lot} Count</th>
-                </tr></thead>`
+        <th>${los.escapedAliases.Map}</th>
+        <th>Address</th>
+        <th>Phone Number</th>
+        <th class="has-text-centered">Coordinates</th>
+        <th class="has-text-centered">Image</th>
+        <th class="has-text-right">${los.escapedAliases.Lot} Count</th>
+        </tr></thead>`
 
       searchResultsTableElement.append(searchResultsTbodyElement)
 

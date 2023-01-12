@@ -18,7 +18,7 @@ let lotOccupancyComments: recordTypes.LotOccupancyComment[] =
   exports.lotOccupancyComments
 delete exports.lotOccupancyComments
 
-const openEditLotOccupancyComment = (clickEvent: Event) => {
+function openEditLotOccupancyComment(clickEvent: Event): void {
   const lotOccupancyCommentId = Number.parseInt(
     (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
       .lotOccupancyCommentId!,
@@ -37,7 +37,7 @@ const openEditLotOccupancyComment = (clickEvent: Event) => {
   let editFormElement: HTMLFormElement
   let editCloseModalFunction: () => void
 
-  const editComment = (submitEvent: SubmitEvent) => {
+  function editComment(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
@@ -55,7 +55,7 @@ const openEditLotOccupancyComment = (clickEvent: Event) => {
         } else {
           bulmaJS.alert({
             title: 'Error Updating Comment',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -66,7 +66,6 @@ const openEditLotOccupancyComment = (clickEvent: Event) => {
   cityssm.openHtmlModal('lotOccupancy-editComment', {
     onshow: (modalElement) => {
       los.populateAliases(modalElement)
-
       ;(
         modalElement.querySelector(
           '#lotOccupancyCommentEdit--lotOccupancyId'
@@ -77,7 +76,6 @@ const openEditLotOccupancyComment = (clickEvent: Event) => {
           '#lotOccupancyCommentEdit--lotOccupancyCommentId'
         ) as HTMLInputElement
       ).value = lotOccupancyCommentId.toString()
-
       ;(
         modalElement.querySelector(
           '#lotOccupancyCommentEdit--lotOccupancyComment'
@@ -97,7 +95,6 @@ const openEditLotOccupancyComment = (clickEvent: Event) => {
         lotOccupancyComment.lotOccupancyCommentDateString! <= currentDateString
           ? currentDateString
           : lotOccupancyComment.lotOccupancyCommentDateString!
-
       ;(
         modalElement.querySelector(
           '#lotOccupancyCommentEdit--lotOccupancyCommentTimeString'
@@ -108,8 +105,6 @@ const openEditLotOccupancyComment = (clickEvent: Event) => {
       bulmaJS.toggleHtmlClipped()
 
       los.initializeDatePickers(modalElement)
-      // los.initializeTimePickers(modalElement);
-
       ;(
         modalElement.querySelector(
           '#lotOccupancyCommentEdit--lotOccupancyComment'
@@ -127,14 +122,14 @@ const openEditLotOccupancyComment = (clickEvent: Event) => {
   })
 }
 
-const deleteLotOccupancyComment = (clickEvent: Event) => {
+function deleteLotOccupancyComment(clickEvent: Event): void {
   const lotOccupancyCommentId = Number.parseInt(
     (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
       .lotOccupancyCommentId!,
     10
   )
 
-  const doDelete = () => {
+  function doDelete(): void {
     cityssm.postJSON(
       los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancyComment',
       {
@@ -152,7 +147,7 @@ const deleteLotOccupancyComment = (clickEvent: Event) => {
         } else {
           bulmaJS.alert({
             title: 'Error Removing Comment',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -171,7 +166,7 @@ const deleteLotOccupancyComment = (clickEvent: Event) => {
   })
 }
 
-const renderLotOccupancyComments = () => {
+function renderLotOccupancyComments(): void {
   const containerElement = document.querySelector(
     '#container--lotOccupancyComments'
   ) as HTMLElement
@@ -202,7 +197,7 @@ const renderLotOccupancyComments = () => {
 
     tableRowElement.innerHTML =
       '<td>' +
-      cityssm.escapeHTML(lotOccupancyComment.recordCreate_userName || '') +
+      cityssm.escapeHTML(lotOccupancyComment.recordCreate_userName ?? '') +
       '</td>' +
       '<td>' +
       lotOccupancyComment.lotOccupancyCommentDateString +
@@ -211,7 +206,7 @@ const renderLotOccupancyComments = () => {
         : ' ' + lotOccupancyComment.lotOccupancyCommentTimeString) +
       '</td>' +
       '<td>' +
-      cityssm.escapeHTML(lotOccupancyComment.lotOccupancyComment || '') +
+      cityssm.escapeHTML(lotOccupancyComment.lotOccupancyComment ?? '') +
       '</td>' +
       ('<td class="is-hidden-print">' +
         '<div class="buttons are-small is-justify-content-end">' +
@@ -244,7 +239,7 @@ document.querySelector('#button--addComment')!.addEventListener('click', () => {
   let addFormElement: HTMLFormElement
   let addCloseModalFunction: () => void
 
-  const addComment = (submitEvent: SubmitEvent) => {
+  function addComment(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
@@ -262,7 +257,7 @@ document.querySelector('#button--addComment')!.addEventListener('click', () => {
         } else {
           bulmaJS.alert({
             title: 'Error Adding Comment',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -273,7 +268,6 @@ document.querySelector('#button--addComment')!.addEventListener('click', () => {
   cityssm.openHtmlModal('lotOccupancy-addComment', {
     onshow: (modalElement) => {
       los.populateAliases(modalElement)
-
       ;(
         modalElement.querySelector(
           '#lotOccupancyCommentAdd--lotOccupancyId'
@@ -282,7 +276,6 @@ document.querySelector('#button--addComment')!.addEventListener('click', () => {
     },
     onshown: (modalElement, closeModalFunction) => {
       bulmaJS.toggleHtmlClipped()
-
       ;(
         modalElement.querySelector(
           '#lotOccupancyCommentAdd--lotOccupancyComment'

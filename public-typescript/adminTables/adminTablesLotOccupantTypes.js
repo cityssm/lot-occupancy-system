@@ -3,9 +3,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 let lotOccupantTypes = exports.lotOccupantTypes;
 delete exports.lotOccupantTypes;
-const updateLotOccupantType = (submitEvent) => {
+function updateLotOccupantType(submitEvent) {
     submitEvent.preventDefault();
     cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotOccupantType', submitEvent.currentTarget, (responseJSON) => {
+        var _a;
         if (responseJSON.success) {
             lotOccupantTypes = responseJSON.lotOccupantTypes;
             bulmaJS.alert({
@@ -16,19 +17,20 @@ const updateLotOccupantType = (submitEvent) => {
         else {
             bulmaJS.alert({
                 title: `Error Updating ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                message: responseJSON.errorMessage || '',
+                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                 contextualColorName: 'danger'
             });
         }
     });
-};
-const deleteLotOccupantType = (clickEvent) => {
+}
+function deleteLotOccupantType(clickEvent) {
     const tableRowElement = clickEvent.currentTarget.closest('tr');
     const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
-    const doDelete = () => {
+    function doDelete() {
         cityssm.postJSON(los.urlPrefix + '/admin/doDeleteLotOccupantType', {
             lotOccupantTypeId
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
                 if (lotOccupantTypes.length === 0) {
@@ -45,12 +47,12 @@ const deleteLotOccupantType = (clickEvent) => {
             else {
                 bulmaJS.alert({
                     title: `Error Deleting ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
         });
-    };
+    }
     bulmaJS.confirm({
         title: `Delete ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
         message: `Are you sure you want to delete this ${los.escapedAliases.lot} ${los.escapedAliases.occupant} type?<br />
@@ -62,17 +64,20 @@ const deleteLotOccupantType = (clickEvent) => {
             callbackFunction: doDelete
         }
     });
-};
-const moveLotOccupantType = (clickEvent) => {
+}
+function moveLotOccupantType(clickEvent) {
     const buttonElement = clickEvent.currentTarget;
     const tableRowElement = buttonElement.closest('tr');
     const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
     cityssm.postJSON(los.urlPrefix +
         '/admin/' +
-        (buttonElement.dataset.direction === 'up' ? 'doMoveLotOccupantTypeUp' : 'doMoveLotOccupantTypeDown'), {
+        (buttonElement.dataset.direction === 'up'
+            ? 'doMoveLotOccupantTypeUp'
+            : 'doMoveLotOccupantTypeDown'), {
         lotOccupantTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
     }, (responseJSON) => {
+        var _a;
         if (responseJSON.success) {
             lotOccupantTypes = responseJSON.lotOccupantTypes;
             renderLotOccupantTypes();
@@ -80,13 +85,13 @@ const moveLotOccupantType = (clickEvent) => {
         else {
             bulmaJS.alert({
                 title: `Error Moving ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                message: responseJSON.errorMessage || '',
+                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                 contextualColorName: 'danger'
             });
         }
     });
-};
-const renderLotOccupantTypes = () => {
+}
+function renderLotOccupantTypes() {
     const containerElement = document.querySelector('#container--lotOccupantTypes');
     if (lotOccupantTypes.length === 0) {
         containerElement.innerHTML = `<tr><td colspan="3">
@@ -97,17 +102,22 @@ const renderLotOccupantTypes = () => {
     containerElement.innerHTML = '';
     for (const lotOccupantType of lotOccupantTypes) {
         const tableRowElement = document.createElement('tr');
-        tableRowElement.dataset.lotOccupantTypeId = lotOccupantType.lotOccupantTypeId.toString();
-        const formId = 'form--lotOccupantType-' + lotOccupantType.lotOccupantTypeId;
+        tableRowElement.dataset.lotOccupantTypeId =
+            lotOccupantType.lotOccupantTypeId.toString();
+        const formId = 'form--lotOccupantType-' + lotOccupantType.lotOccupantTypeId.toString();
         tableRowElement.innerHTML =
             '<td>' +
                 ('<div class="field">' +
                     '<div class="control">' +
                     '<input class="input" name="lotOccupantType" type="text"' +
-                    (' value="' + cityssm.escapeHTML(lotOccupantType.lotOccupantType) + '"') +
+                    (' value="' +
+                        cityssm.escapeHTML(lotOccupantType.lotOccupantType) +
+                        '"') +
                     (' form="' + formId + '"') +
                     (' aria-label="' +
-                        cityssm.escapeHTML(exports.aliases.lot + ' ' + exports.aliases.occupant) +
+                        los.escapedAliases.Lot +
+                        ' ' +
+                        los.escapedAliases.Occupant +
                         ' Type"') +
                     ' maxlength="100" required />' +
                     '</div>' +
@@ -118,7 +128,9 @@ const renderLotOccupantTypes = () => {
                     '<div class="control"><span class="button is-static">fa-</span></div>' +
                     '<div class="control">' +
                     '<input class="input" name="fontAwesomeIconClass" type="text"' +
-                    (' value="' + cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass) + '"') +
+                    (' value="' +
+                        cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass) +
+                        '"') +
                     (' form="' + formId + '"') +
                     ' list="datalist--fontAwesomeIconClass"' +
                     ' aria-label="Icon Name"' +
@@ -163,7 +175,9 @@ const renderLotOccupantTypes = () => {
         const fontAwesomeInputElement = tableRowElement.querySelector("input[name='fontAwesomeIconClass']");
         fontAwesomeInputElement.addEventListener('keyup', refreshFontAwesomeIcon);
         fontAwesomeInputElement.addEventListener('change', refreshFontAwesomeIcon);
-        tableRowElement.querySelector('form').addEventListener('submit', updateLotOccupantType);
+        tableRowElement
+            .querySelector('form')
+            .addEventListener('submit', updateLotOccupantType);
         tableRowElement.querySelector('.button--moveLotOccupantTypeUp').addEventListener('click', moveLotOccupantType);
         tableRowElement.querySelector('.button--moveLotOccupantTypeDown').addEventListener('click', moveLotOccupantType);
         tableRowElement
@@ -171,11 +185,13 @@ const renderLotOccupantTypes = () => {
             .addEventListener('click', deleteLotOccupantType);
         containerElement.append(tableRowElement);
     }
-};
+}
+;
 document.querySelector('#form--addLotOccupantType').addEventListener('submit', (submitEvent) => {
     submitEvent.preventDefault();
     const formElement = submitEvent.currentTarget;
     cityssm.postJSON(los.urlPrefix + '/admin/doAddLotOccupantType', formElement, (responseJSON) => {
+        var _a;
         if (responseJSON.success) {
             lotOccupantTypes = responseJSON.lotOccupantTypes;
             renderLotOccupantTypes();
@@ -185,7 +201,7 @@ document.querySelector('#form--addLotOccupantType').addEventListener('submit', (
         else {
             bulmaJS.alert({
                 title: `Error Adding ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                message: responseJSON.errorMessage || '',
+                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                 contextualColorName: 'danger'
             });
         }

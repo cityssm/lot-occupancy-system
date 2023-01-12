@@ -47,6 +47,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function unlockField(clickEvent) {
         const fieldElement = clickEvent.currentTarget.closest('.field');
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
         const inputOrSelectElement = fieldElement.querySelector('input, select');
         inputOrSelectElement.classList.remove('is-readonly');
         if (inputOrSelectElement.tagName === 'INPUT') {

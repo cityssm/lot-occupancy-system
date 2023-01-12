@@ -11,23 +11,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function updateMap(formEvent) {
         formEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix + '/maps/' + (isCreate ? 'doCreateMap' : 'doUpdateMap'), mapForm, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 cityssm.disableNavBlocker();
                 if (isCreate) {
-                    window.location.href =
-                        los.urlPrefix + '/maps/' + responseJSON.mapId + '/edit';
+                    window.location.href = los.getMapURL(responseJSON.mapId, true);
                 }
                 else {
                     bulmaJS.alert({
-                        message: exports.aliases.map + ' Updated Successfully',
+                        message: los.escapedAliases.Map + ' Updated Successfully',
                         contextualColorName: 'success'
                     });
                 }
             }
             else {
                 bulmaJS.alert({
-                    title: 'Error Updating ' + exports.aliases.map,
-                    message: responseJSON.errorMessage || '',
+                    title: 'Error Updating ' + los.escapedAliases.Map,
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -45,24 +45,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(los.urlPrefix + '/maps/doDeleteMap', {
                 mapId
             }, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     window.location.href = los.getMapURL();
                 }
                 else {
                     bulmaJS.alert({
-                        title: 'Error Deleting ' + exports.aliases.map,
-                        message: responseJSON.errorMessage || '',
+                        title: 'Error Deleting ' + los.escapedAliases.Map,
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
         }
         bulmaJS.confirm({
-            title: 'Delete ' + exports.aliases.map,
-            message: `Are you sure you want to delete this ${exports.aliases.map.toLowerCase()} and all related ${exports.aliases.lots.toLowerCase()}?`,
+            title: 'Delete ' + los.escapedAliases.Map,
+            message: `Are you sure you want to delete this ${los.escapedAliases.map} and all related ${los.escapedAliases.lots}?`,
             contextualColorName: 'warning',
             okButton: {
-                text: `Yes, Delete ${exports.aliases.map}`,
+                text: `Yes, Delete ${los.escapedAliases.Map}`,
                 callbackFunction: doDelete
             }
         });

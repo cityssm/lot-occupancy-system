@@ -1,5 +1,5 @@
 "use strict";
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -12,10 +12,11 @@ declare const bulmaJS: BulmaJS
 
 declare const los: globalTypes.LOS
 
-let workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[] = exports.workOrderMilestoneTypes
+let workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[] =
+  exports.workOrderMilestoneTypes
 delete exports.workOrderMilestoneTypes
 
-const updateWorkOrderMilestoneType = (submitEvent: SubmitEvent) => {
+function updateWorkOrderMilestoneType(submitEvent: SubmitEvent): void {
   submitEvent.preventDefault()
 
   cityssm.postJSON(
@@ -36,7 +37,7 @@ const updateWorkOrderMilestoneType = (submitEvent: SubmitEvent) => {
       } else {
         bulmaJS.alert({
           title: 'Error Updating Work Order Milestone Type',
-          message: responseJSON.errorMessage || '',
+          message: responseJSON.errorMessage ?? '',
           contextualColorName: 'danger'
         })
       }
@@ -44,12 +45,15 @@ const updateWorkOrderMilestoneType = (submitEvent: SubmitEvent) => {
   )
 }
 
-const deleteWorkOrderMilestoneType = (clickEvent: Event) => {
-  const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest('tr')!
+function deleteWorkOrderMilestoneType(clickEvent: Event): void {
+  const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest(
+    'tr'
+  )!
 
-  const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId
+  const workOrderMilestoneTypeId =
+    tableRowElement.dataset.workOrderMilestoneTypeId
 
-  const doDelete = () => {
+  function doDelete(): void {
     cityssm.postJSON(
       los.urlPrefix + '/admin/doDeleteWorkOrderMilestoneType',
       {
@@ -76,7 +80,7 @@ const deleteWorkOrderMilestoneType = (clickEvent: Event) => {
         } else {
           bulmaJS.alert({
             title: 'Error Deleting Work Order Milestone Type',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -97,12 +101,13 @@ const deleteWorkOrderMilestoneType = (clickEvent: Event) => {
   })
 }
 
-const moveWorkOrderMilestoneType = (clickEvent: MouseEvent) => {
+function moveWorkOrderMilestoneType(clickEvent: MouseEvent): void {
   const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
   const tableRowElement = buttonElement.closest('tr')!
 
-  const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId
+  const workOrderMilestoneTypeId =
+    tableRowElement.dataset.workOrderMilestoneTypeId
 
   cityssm.postJSON(
     los.urlPrefix +
@@ -125,7 +130,7 @@ const moveWorkOrderMilestoneType = (clickEvent: MouseEvent) => {
       } else {
         bulmaJS.alert({
           title: 'Error Moving Work Order Milestone Type',
-          message: responseJSON.errorMessage || '',
+          message: responseJSON.errorMessage ?? '',
           contextualColorName: 'danger'
         })
       }
@@ -133,7 +138,7 @@ const moveWorkOrderMilestoneType = (clickEvent: MouseEvent) => {
   )
 }
 
-const renderWorkOrderMilestoneTypes = () => {
+function renderWorkOrderMilestoneTypes(): void {
   const containerElement = document.querySelector(
     '#container--workOrderMilestoneTypes'
   ) as HTMLTableSectionElement
@@ -189,14 +194,18 @@ const renderWorkOrderMilestoneTypes = () => {
       '</div>' +
       '</td>'
 
-    tableRowElement.querySelector('form')!.addEventListener('submit', updateWorkOrderMilestoneType)
-
+    tableRowElement
+      .querySelector('form')!
+      .addEventListener('submit', updateWorkOrderMilestoneType)
     ;(
-      tableRowElement.querySelector('.button--moveWorkOrderMilestoneTypeUp') as HTMLButtonElement
+      tableRowElement.querySelector(
+        '.button--moveWorkOrderMilestoneTypeUp'
+      ) as HTMLButtonElement
     ).addEventListener('click', moveWorkOrderMilestoneType)
-
     ;(
-      tableRowElement.querySelector('.button--moveWorkOrderMilestoneTypeDown') as HTMLButtonElement
+      tableRowElement.querySelector(
+        '.button--moveWorkOrderMilestoneTypeDown'
+      ) as HTMLButtonElement
     ).addEventListener('click', moveWorkOrderMilestoneType)
 
     tableRowElement
@@ -206,37 +215,35 @@ const renderWorkOrderMilestoneTypes = () => {
     containerElement.append(tableRowElement)
   }
 }
+;(
+  document.querySelector('#form--addWorkOrderMilestoneType') as HTMLFormElement
+).addEventListener('submit', (submitEvent: SubmitEvent) => {
+  submitEvent.preventDefault()
 
-;(document.querySelector('#form--addWorkOrderMilestoneType') as HTMLFormElement).addEventListener(
-  'submit',
-  (submitEvent: SubmitEvent) => {
-    submitEvent.preventDefault()
+  const formElement = submitEvent.currentTarget as HTMLFormElement
 
-    const formElement = submitEvent.currentTarget as HTMLFormElement
-
-    cityssm.postJSON(
-      los.urlPrefix + '/admin/doAddWorkOrderMilestoneType',
-      formElement,
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        workOrderMilestoneTypes?: recordTypes.WorkOrderMilestoneType[]
-      }) => {
-        if (responseJSON.success) {
-          workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes!
-          renderWorkOrderMilestoneTypes()
-          formElement.reset()
-          formElement.querySelector('input')!.focus()
-        } else {
-          bulmaJS.alert({
-            title: 'Error Adding Work Order Milestone Type',
-            message: responseJSON.errorMessage || '',
-            contextualColorName: 'danger'
-          })
-        }
+  cityssm.postJSON(
+    los.urlPrefix + '/admin/doAddWorkOrderMilestoneType',
+    formElement,
+    (responseJSON: {
+      success: boolean
+      errorMessage?: string
+      workOrderMilestoneTypes?: recordTypes.WorkOrderMilestoneType[]
+    }) => {
+      if (responseJSON.success) {
+        workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes!
+        renderWorkOrderMilestoneTypes()
+        formElement.reset()
+        formElement.querySelector('input')!.focus()
+      } else {
+        bulmaJS.alert({
+          title: 'Error Adding Work Order Milestone Type',
+          message: responseJSON.errorMessage ?? '',
+          contextualColorName: 'danger'
+        })
       }
-    )
-  }
-)
+    }
+  )
+})
 
 renderWorkOrderMilestoneTypes()

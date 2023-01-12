@@ -1,8 +1,8 @@
 "use strict";
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a, _b, _c;
+    var _a;
     const los = exports.los;
     const lotOccupancyId = document.querySelector('#lotOccupancy--lotOccupancyId').value;
     const isCreate = lotOccupancyId === '';
@@ -16,6 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.postJSON(los.urlPrefix +
             '/lotOccupancies/' +
             (isCreate ? 'doCreateLotOccupancy' : 'doUpdateLotOccupancy'), formElement, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 los.clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
@@ -30,8 +31,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
-                    title: 'Error Saving ' + exports.aliases.occupancy,
-                    message: responseJSON.errorMessage || '',
+                    title: 'Error Saving ' + los.escapedAliases.Occupancy,
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -41,10 +42,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
     for (const formInputElement of formInputElements) {
         formInputElement.addEventListener('change', los.setUnsavedChanges);
     }
-    const doCopy = () => {
+    function doCopy() {
         cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doCopyLotOccupancy', {
             lotOccupancyId
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 cityssm.disableNavBlocker();
                 window.location.href = los.getLotOccupancyURL(responseJSON.lotOccupancyId, true);
@@ -52,12 +54,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Copying Record',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
         });
-    };
+    }
     (_a = document
         .querySelector('#button--copyLotOccupancy')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
@@ -80,13 +82,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
     });
-    (_b = document
-        .querySelector('#button--deleteLotOccupancy')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', (clickEvent) => {
+    document
+        .querySelector('#button--deleteLotOccupancy')
+        .addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
-        const doDelete = () => {
+        function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancy', {
                 lotOccupancyId
             }, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     cityssm.disableNavBlocker();
                     window.location.href = los.getLotOccupancyURL();
@@ -94,14 +98,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Deleting Record',
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
-        };
+        }
         bulmaJS.confirm({
-            title: 'Delete ' + exports.aliases.occupancy + ' Record',
+            title: `Delete ${los.escapedAliases.Occupancy} Record`,
             message: 'Are you sure you want to delete this record?',
             contextualColorName: 'warning',
             okButton: {
@@ -110,11 +114,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    (_c = document
-        .querySelector('#button--createWorkOrder')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', (clickEvent) => {
+    document
+        .querySelector('#button--createWorkOrder')
+        .addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         let createCloseModalFunction;
-        const doCreate = (formEvent) => {
+        function doCreate(formEvent) {
             formEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + '/workOrders/doCreateWorkOrder', formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
@@ -126,11 +131,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         okButton: {
                             text: 'Yes, Open the Work Order',
                             callbackFunction: () => {
-                                window.location.href =
-                                    los.urlPrefix +
-                                        '/workOrders/' +
-                                        responseJSON.workOrderId +
-                                        '/edit';
+                                window.location.href = los.getWorkOrderURL(responseJSON.workOrderId, true);
                             }
                         }
                     });
@@ -143,7 +144,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     });
                 }
             });
-        };
+        }
         cityssm.openHtmlModal('lotOccupancy-createWorkOrder', {
             onshow(modalElement) {
                 ;
@@ -278,26 +279,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let lotSelectModalElement;
         let lotSelectFormElement;
         let lotSelectResultsElement;
-        const renderSelectedLotAndClose = (lotId, lotName) => {
+        function renderSelectedLotAndClose(lotId, lotName) {
             ;
             document.querySelector('#lotOccupancy--lotId').value = lotId.toString();
             document.querySelector('#lotOccupancy--lotName').value = lotName;
             los.setUnsavedChanges();
             lotSelectCloseModalFunction();
-        };
-        const selectExistingLot = (clickEvent) => {
+        }
+        function selectExistingLot(clickEvent) {
             clickEvent.preventDefault();
             const selectedLotElement = clickEvent.currentTarget;
             renderSelectedLotAndClose(selectedLotElement.dataset.lotId, selectedLotElement.dataset.lotName);
-        };
-        const searchLots = () => {
+        }
+        function searchLots() {
             lotSelectResultsElement.innerHTML =
                 los.getLoadingParagraphHTML('Searching...');
             cityssm.postJSON(los.urlPrefix + '/lots/doSearchLots', lotSelectFormElement, (responseJSON) => {
+                var _a, _b;
                 if (responseJSON.count === 0) {
                     lotSelectResultsElement.innerHTML = `<div class="message is-info">
-                            <p class="message-body">No results.</p>
-                            </div>`;
+              <p class="message-body">No results.</p>
+              </div>`;
                     return;
                 }
                 const panelElement = document.createElement('div');
@@ -311,10 +313,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     panelBlockElement.innerHTML =
                         '<div class="columns">' +
                             ('<div class="column">' +
-                                cityssm.escapeHTML(lot.lotName || '') +
+                                cityssm.escapeHTML((_a = lot.lotName) !== null && _a !== void 0 ? _a : '') +
                                 '<br />' +
                                 '<span class="is-size-7">' +
-                                cityssm.escapeHTML(lot.mapName || '') +
+                                cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '') +
                                 '</span>' +
                                 '</div>') +
                             ('<div class="column">' +
@@ -331,28 +333,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 lotSelectResultsElement.innerHTML = '';
                 lotSelectResultsElement.append(panelElement);
             });
-        };
-        const createLotAndSelect = (submitEvent) => {
+        }
+        function createLotAndSelect(submitEvent) {
             submitEvent.preventDefault();
             const lotName = lotSelectModalElement.querySelector('#lotCreate--lotName').value;
             cityssm.postJSON(los.urlPrefix + '/lots/doCreateLot', submitEvent.currentTarget, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     renderSelectedLotAndClose(responseJSON.lotId, lotName);
                 }
                 else {
                     bulmaJS.alert({
                         title: `Error Creating ${los.escapedAliases.Lot}`,
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
-        };
+        }
         cityssm.openHtmlModal('lotOccupancy-selectLot', {
             onshow: (modalElement) => {
                 los.populateAliases(modalElement);
             },
             onshown: (modalElement, closeModalFunction) => {
+                var _a;
                 bulmaJS.toggleHtmlClipped();
                 lotSelectModalElement = modalElement;
                 lotSelectCloseModalFunction = closeModalFunction;
@@ -399,7 +403,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 for (const map of exports.maps) {
                     const optionElement = document.createElement('option');
                     optionElement.value = map.mapId.toString();
-                    optionElement.textContent = map.mapName || '(No Name)';
+                    optionElement.textContent =
+                        ((_a = map.mapName) !== null && _a !== void 0 ? _a : '') === '' ? '(No Name)' : map.mapName;
                     mapElement.append(optionElement);
                 }
                 ;
@@ -811,7 +816,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         Object.defineProperty(exports, "__esModule", { value: true });
         let lotOccupancyComments = exports.lotOccupancyComments;
         delete exports.lotOccupancyComments;
-        const openEditLotOccupancyComment = (clickEvent) => {
+        function openEditLotOccupancyComment(clickEvent) {
             const lotOccupancyCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr').dataset
                 .lotOccupancyCommentId, 10);
             const lotOccupancyComment = lotOccupancyComments.find((currentLotOccupancyComment) => {
@@ -820,9 +825,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
             let editFormElement;
             let editCloseModalFunction;
-            const editComment = (submitEvent) => {
+            function editComment(submitEvent) {
                 submitEvent.preventDefault();
                 cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doUpdateLotOccupancyComment', editFormElement, (responseJSON) => {
+                    var _a;
                     if (responseJSON.success) {
                         lotOccupancyComments = responseJSON.lotOccupancyComments;
                         editCloseModalFunction();
@@ -831,12 +837,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: 'Error Updating Comment',
-                            message: responseJSON.errorMessage || '',
+                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                             contextualColorName: 'danger'
                         });
                     }
                 });
-            };
+            }
             cityssm.openHtmlModal('lotOccupancy-editComment', {
                 onshow: (modalElement) => {
                     los.populateAliases(modalElement);
@@ -865,15 +871,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     bulmaJS.toggleHtmlClipped();
                 }
             });
-        };
-        const deleteLotOccupancyComment = (clickEvent) => {
+        }
+        function deleteLotOccupancyComment(clickEvent) {
             const lotOccupancyCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr').dataset
                 .lotOccupancyCommentId, 10);
-            const doDelete = () => {
+            function doDelete() {
                 cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancyComment', {
                     lotOccupancyId,
                     lotOccupancyCommentId
                 }, (responseJSON) => {
+                    var _a;
                     if (responseJSON.success) {
                         lotOccupancyComments = responseJSON.lotOccupancyComments;
                         renderLotOccupancyComments();
@@ -881,12 +888,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: 'Error Removing Comment',
-                            message: responseJSON.errorMessage || '',
+                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                             contextualColorName: 'danger'
                         });
                     }
                 });
-            };
+            }
             bulmaJS.confirm({
                 title: 'Remove Comment?',
                 message: 'Are you sure you want to remove this comment?',
@@ -896,8 +903,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 contextualColorName: 'warning'
             });
-        };
-        const renderLotOccupancyComments = () => {
+        }
+        function renderLotOccupancyComments() {
+            var _a, _b;
             const containerElement = document.querySelector('#container--lotOccupancyComments');
             if (lotOccupancyComments.length === 0) {
                 containerElement.innerHTML =
@@ -922,7 +930,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     lotOccupancyComment.lotOccupancyCommentId.toString();
                 tableRowElement.innerHTML =
                     '<td>' +
-                        cityssm.escapeHTML(lotOccupancyComment.recordCreate_userName || '') +
+                        cityssm.escapeHTML((_a = lotOccupancyComment.recordCreate_userName) !== null && _a !== void 0 ? _a : '') +
                         '</td>' +
                         '<td>' +
                         lotOccupancyComment.lotOccupancyCommentDateString +
@@ -931,7 +939,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             : ' ' + lotOccupancyComment.lotOccupancyCommentTimeString) +
                         '</td>' +
                         '<td>' +
-                        cityssm.escapeHTML(lotOccupancyComment.lotOccupancyComment || '') +
+                        cityssm.escapeHTML((_b = lotOccupancyComment.lotOccupancyComment) !== null && _b !== void 0 ? _b : '') +
                         '</td>' +
                         ('<td class="is-hidden-print">' +
                             '<div class="buttons are-small is-justify-content-end">' +
@@ -954,13 +962,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             containerElement.innerHTML = '';
             containerElement.append(tableElement);
-        };
+        }
         document.querySelector('#button--addComment').addEventListener('click', () => {
             let addFormElement;
             let addCloseModalFunction;
-            const addComment = (submitEvent) => {
+            function addComment(submitEvent) {
                 submitEvent.preventDefault();
                 cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doAddLotOccupancyComment', addFormElement, (responseJSON) => {
+                    var _a;
                     if (responseJSON.success) {
                         lotOccupancyComments = responseJSON.lotOccupancyComments;
                         addCloseModalFunction();
@@ -969,12 +978,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: 'Error Adding Comment',
-                            message: responseJSON.errorMessage || '',
+                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                             contextualColorName: 'danger'
                         });
                     }
                 });
-            };
+            }
             cityssm.openHtmlModal('lotOccupancy-addComment', {
                 onshow: (modalElement) => {
                     los.populateAliases(modalElement);

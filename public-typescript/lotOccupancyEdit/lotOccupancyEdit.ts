@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from '../../types/globalTypes'
 import type * as recordTypes from '../../types/recordTypes'
@@ -57,8 +57,8 @@ declare const bulmaJS: BulmaJS
           }
         } else {
           bulmaJS.alert({
-            title: 'Error Saving ' + exports.aliases.occupancy,
-            message: responseJSON.errorMessage || '',
+            title: 'Error Saving ' + los.escapedAliases.Occupancy,
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -72,7 +72,7 @@ declare const bulmaJS: BulmaJS
     formInputElement.addEventListener('change', los.setUnsavedChanges)
   }
 
-  const doCopy = () => {
+  function doCopy(): void {
     cityssm.postJSON(
       los.urlPrefix + '/lotOccupancies/doCopyLotOccupancy',
       {
@@ -92,7 +92,7 @@ declare const bulmaJS: BulmaJS
         } else {
           bulmaJS.alert({
             title: 'Error Copying Record',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -125,11 +125,11 @@ declare const bulmaJS: BulmaJS
     })
 
   document
-    .querySelector('#button--deleteLotOccupancy')
-    ?.addEventListener('click', (clickEvent) => {
+    .querySelector('#button--deleteLotOccupancy')!
+    .addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()
 
-      const doDelete = () => {
+      function doDelete(): void {
         cityssm.postJSON(
           los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancy',
           {
@@ -142,7 +142,7 @@ declare const bulmaJS: BulmaJS
             } else {
               bulmaJS.alert({
                 title: 'Error Deleting Record',
-                message: responseJSON.errorMessage || '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
             }
@@ -151,7 +151,7 @@ declare const bulmaJS: BulmaJS
       }
 
       bulmaJS.confirm({
-        title: 'Delete ' + exports.aliases.occupancy + ' Record',
+        title: `Delete ${los.escapedAliases.Occupancy} Record`,
         message: 'Are you sure you want to delete this record?',
         contextualColorName: 'warning',
         okButton: {
@@ -162,13 +162,13 @@ declare const bulmaJS: BulmaJS
     })
 
   document
-    .querySelector('#button--createWorkOrder')
-    ?.addEventListener('click', (clickEvent) => {
+    .querySelector('#button--createWorkOrder')!
+    .addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()
 
       let createCloseModalFunction: () => void
 
-      const doCreate = (formEvent: SubmitEvent) => {
+      function doCreate(formEvent: SubmitEvent): void {
         formEvent.preventDefault()
 
         cityssm.postJSON(
@@ -189,11 +189,10 @@ declare const bulmaJS: BulmaJS
                 okButton: {
                   text: 'Yes, Open the Work Order',
                   callbackFunction: () => {
-                    window.location.href =
-                      los.urlPrefix +
-                      '/workOrders/' +
-                      responseJSON.workOrderId +
-                      '/edit'
+                    window.location.href = los.getWorkOrderURL(
+                      responseJSON.workOrderId,
+                      true
+                    )
                   }
                 }
               })
@@ -419,10 +418,10 @@ declare const bulmaJS: BulmaJS
     let lotSelectFormElement: HTMLFormElement
     let lotSelectResultsElement: HTMLElement
 
-    const renderSelectedLotAndClose = (
+    function renderSelectedLotAndClose(
       lotId: number | string,
       lotName: string
-    ) => {
+    ): void {
       ;(
         document.querySelector('#lotOccupancy--lotId') as HTMLInputElement
       ).value = lotId.toString()
@@ -434,7 +433,7 @@ declare const bulmaJS: BulmaJS
       lotSelectCloseModalFunction()
     }
 
-    const selectExistingLot = (clickEvent: Event) => {
+    function selectExistingLot(clickEvent: Event): void {
       clickEvent.preventDefault()
 
       const selectedLotElement = clickEvent.currentTarget as HTMLElement
@@ -445,7 +444,7 @@ declare const bulmaJS: BulmaJS
       )
     }
 
-    const searchLots = () => {
+    function searchLots(): void {
       lotSelectResultsElement.innerHTML =
         los.getLoadingParagraphHTML('Searching...')
 
@@ -455,8 +454,8 @@ declare const bulmaJS: BulmaJS
         (responseJSON: { count: number; lots: recordTypes.Lot[] }) => {
           if (responseJSON.count === 0) {
             lotSelectResultsElement.innerHTML = `<div class="message is-info">
-                            <p class="message-body">No results.</p>
-                            </div>`
+              <p class="message-body">No results.</p>
+              </div>`
 
             return
           }
@@ -475,10 +474,10 @@ declare const bulmaJS: BulmaJS
             panelBlockElement.innerHTML =
               '<div class="columns">' +
               ('<div class="column">' +
-                cityssm.escapeHTML(lot.lotName || '') +
+                cityssm.escapeHTML(lot.lotName ?? '') +
                 '<br />' +
                 '<span class="is-size-7">' +
-                cityssm.escapeHTML(lot.mapName || '') +
+                cityssm.escapeHTML(lot.mapName ?? '') +
                 '</span>' +
                 '</div>') +
               ('<div class="column">' +
@@ -501,7 +500,7 @@ declare const bulmaJS: BulmaJS
       )
     }
 
-    const createLotAndSelect = (submitEvent: SubmitEvent) => {
+    function createLotAndSelect(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()
 
       const lotName = (
@@ -523,7 +522,7 @@ declare const bulmaJS: BulmaJS
           } else {
             bulmaJS.alert({
               title: `Error Creating ${los.escapedAliases.Lot}`,
-              message: responseJSON.errorMessage || '',
+              message: responseJSON.errorMessage ?? '',
               contextualColorName: 'danger'
             })
           }
@@ -622,7 +621,8 @@ declare const bulmaJS: BulmaJS
         for (const map of exports.maps as recordTypes.Map[]) {
           const optionElement = document.createElement('option')
           optionElement.value = map.mapId!.toString()
-          optionElement.textContent = map.mapName || '(No Name)'
+          optionElement.textContent =
+            (map.mapName ?? '') === '' ? '(No Name)' : map.mapName!
           mapElement.append(optionElement)
         }
 

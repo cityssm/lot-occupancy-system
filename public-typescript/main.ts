@@ -7,7 +7,6 @@ import type { BulmaJS } from '@cityssm/bulma-js/types'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-
 ;(() => {
   /*
    * Unsaved Changes
@@ -15,19 +14,19 @@ declare const bulmaJS: BulmaJS
 
   let _hasUnsavedChanges = false
 
-  function setUnsavedChanges() {
+  function setUnsavedChanges(): void {
     if (!hasUnsavedChanges()) {
       _hasUnsavedChanges = true
       cityssm.enableNavBlocker()
     }
   }
 
-  function clearUnsavedChanges() {
+  function clearUnsavedChanges(): void {
     _hasUnsavedChanges = false
     cityssm.disableNavBlocker()
   }
 
-  function hasUnsavedChanges() {
+  function hasUnsavedChanges(): boolean {
     return _hasUnsavedChanges
   }
 
@@ -74,9 +73,10 @@ declare const bulmaJS: BulmaJS
       '.field'
     )!
 
-    const inputOrSelectElement = fieldElement.querySelector('input, select') as
-      | HTMLInputElement
-      | HTMLSelectElement
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    const inputOrSelectElement = fieldElement.querySelector(
+      'input, select'
+    ) as HTMLElement
 
     inputOrSelectElement.classList.remove('is-readonly')
 
@@ -116,9 +116,8 @@ declare const bulmaJS: BulmaJS
   }
 
   function initializeDatePickers(containerElement: HTMLElement): void {
-    const dateElements = containerElement.querySelectorAll(
-      "input[type='date']"
-    ) as NodeListOf<HTMLInputElement>
+    const dateElements: NodeListOf<HTMLInputElement> =
+      containerElement.querySelectorAll("input[type='date']")
 
     for (const dateElement of dateElements) {
       const datePickerOptions = Object.assign({}, datePickerBaseOptions)
@@ -159,9 +158,8 @@ declare const bulmaJS: BulmaJS
       })
 
       // Get the datepicker container element
-      const datepickerElement = containerElement.querySelector(
-        '#' + cal._id
-      ) as HTMLElement
+      const datepickerElement: HTMLElement | null =
+        containerElement.querySelector('#' + cal._id)!
 
       // Override the previous and next month button styles
       const datePickerNavButtonElements = datepickerElement.querySelectorAll(
@@ -176,9 +174,8 @@ declare const bulmaJS: BulmaJS
       }
 
       // Override the clear button style
-      const clearButtonElement = datepickerElement.querySelector(
-        '.datetimepicker-clear-button'
-      ) as HTMLElement
+      const clearButtonElement: HTMLElement | null =
+        datepickerElement.querySelector('.datetimepicker-clear-button')
 
       if (clearButtonElement) {
         if (dateElement.required) {
@@ -282,9 +279,8 @@ declare const bulmaJS: BulmaJS
    */
 
   function populateAliases(containerElement: HTMLElement): void {
-    const aliasElements = containerElement.querySelectorAll(
-      '.alias'
-    ) as NodeListOf<HTMLElement>
+    const aliasElements: NodeListOf<HTMLElement> =
+      containerElement.querySelectorAll('.alias')
 
     for (const aliasElement of aliasElements) {
       switch (aliasElement.dataset.alias) {
@@ -375,7 +371,7 @@ declare const bulmaJS: BulmaJS
   const hues = ['red', 'green', 'orange', 'blue', 'pink', 'yellow', 'purple']
   const luminosity = ['bright', 'light', 'dark']
 
-  function getRandomColor(seedString: string) {
+  function getRandomColor(seedString: string): string {
     let actualSeedString = seedString
 
     if (actualSeedString.length < 2) {
@@ -437,7 +433,7 @@ declare const bulmaJS: BulmaJS
     limit: number,
     offset: number,
     count: number
-  ) {
+  ): string {
     return (
       '<div class="level">' +
       ('<div class="level-left">' +
@@ -493,11 +489,19 @@ declare const bulmaJS: BulmaJS
     )
   }
 
-  function getMapURL(mapId: number | string = '', edit = false, time = false) {
+  function getMapURL(
+    mapId: number | string = '',
+    edit = false,
+    time = false
+  ): string {
     return getRecordURL('maps', mapId, edit, time)
   }
 
-  function getLotURL(lotId: number | string = '', edit = false, time = false) {
+  function getLotURL(
+    lotId: number | string = '',
+    edit = false,
+    time = false
+  ): string {
     return getRecordURL('lots', lotId, edit, time)
   }
 
@@ -505,7 +509,7 @@ declare const bulmaJS: BulmaJS
     lotOccupancyId: number | string = '',
     edit = false,
     time = false
-  ) {
+  ): string {
     return getRecordURL('lotOccupancies', lotOccupancyId, edit, time)
   }
 
@@ -513,7 +517,7 @@ declare const bulmaJS: BulmaJS
     workOrderId: number | string = '',
     edit = false,
     time = false
-  ) {
+  ): string {
     return getRecordURL('workOrders', workOrderId, edit, time)
   }
 

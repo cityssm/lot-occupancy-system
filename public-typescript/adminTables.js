@@ -1,5 +1,5 @@
 "use strict";
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -17,9 +17,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
     Object.defineProperty(exports, "__esModule", { value: true });
     let workOrderTypes = exports.workOrderTypes;
     delete exports.workOrderTypes;
-    const updateWorkOrderType = (submitEvent) => {
+    function updateWorkOrderType(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix + '/admin/doUpdateWorkOrderType', submitEvent.currentTarget, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 bulmaJS.alert({
@@ -30,19 +31,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Updating Work Order Type',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
         });
-    };
+    }
     const deleteWorkOrderType = (clickEvent) => {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
         const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
-        const doDelete = () => {
+        function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/admin/doDeleteWorkOrderType', {
                 workOrderTypeId
             }, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     workOrderTypes = responseJSON.workOrderTypes;
                     if (workOrderTypes.length === 0) {
@@ -59,12 +61,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Deleting Work Order Type',
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
-        };
+        }
         bulmaJS.confirm({
             title: 'Delete Work Order Type',
             message: `Are you sure you want to delete this work order type?<br />
@@ -77,7 +79,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     };
-    const moveWorkOrderType = (clickEvent) => {
+    function moveWorkOrderType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
         const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
@@ -87,6 +89,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             workOrderTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 renderWorkOrderTypes();
@@ -94,13 +97,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Moving Work Order Type',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
         });
-    };
-    const renderWorkOrderTypes = () => {
+    }
+    function renderWorkOrderTypes() {
+        var _a;
         const containerElement = document.querySelector('#container--workOrderTypes');
         if (workOrderTypes.length === 0) {
             containerElement.innerHTML = `<tr><td colspan="2">
@@ -121,7 +125,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     ('<div class="field has-addons">' +
                         '<div class="control">' +
                         '<input class="input" name="workOrderType" type="text" value="' +
-                        cityssm.escapeHTML(workOrderType.workOrderType || '') +
+                        cityssm.escapeHTML((_a = workOrderType.workOrderType) !== null && _a !== void 0 ? _a : '') +
                         '" maxlength="100" aria-label="Work Order Type" required />' +
                         '</div>' +
                         '<div class="control">' +
@@ -150,11 +154,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 .addEventListener('click', deleteWorkOrderType);
             containerElement.append(tableRowElement);
         }
-    };
+    }
     document.querySelector('#form--addWorkOrderType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(los.urlPrefix + '/admin/doAddWorkOrderType', formElement, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 renderWorkOrderTypes();
@@ -164,7 +169,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Adding Work Order Type',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -177,9 +182,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
     Object.defineProperty(exports, "__esModule", { value: true });
     let workOrderMilestoneTypes = exports.workOrderMilestoneTypes;
     delete exports.workOrderMilestoneTypes;
-    const updateWorkOrderMilestoneType = (submitEvent) => {
+    function updateWorkOrderMilestoneType(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix + '/admin/doUpdateWorkOrderMilestoneType', submitEvent.currentTarget, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 bulmaJS.alert({
@@ -190,19 +196,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Updating Work Order Milestone Type',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
         });
-    };
-    const deleteWorkOrderMilestoneType = (clickEvent) => {
+    }
+    function deleteWorkOrderMilestoneType(clickEvent) {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
         const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
-        const doDelete = () => {
+        function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/admin/doDeleteWorkOrderMilestoneType', {
                 workOrderMilestoneTypeId
             }, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                     if (workOrderMilestoneTypes.length === 0) {
@@ -219,12 +226,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Deleting Work Order Milestone Type',
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
-        };
+        }
         bulmaJS.confirm({
             title: 'Delete Work Order Milestone Type',
             message: `Are you sure you want to delete this work order milestone type?<br />
@@ -236,8 +243,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 callbackFunction: doDelete
             }
         });
-    };
-    const moveWorkOrderMilestoneType = (clickEvent) => {
+    }
+    function moveWorkOrderMilestoneType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
         const workOrderMilestoneTypeId = tableRowElement.dataset.workOrderMilestoneTypeId;
@@ -249,6 +256,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             workOrderMilestoneTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 renderWorkOrderMilestoneTypes();
@@ -256,13 +264,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Moving Work Order Milestone Type',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
         });
-    };
-    const renderWorkOrderMilestoneTypes = () => {
+    }
+    function renderWorkOrderMilestoneTypes() {
         const containerElement = document.querySelector('#container--workOrderMilestoneTypes');
         if (workOrderMilestoneTypes.length === 0) {
             containerElement.innerHTML = `<tr><td colspan="2">
@@ -305,7 +313,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '</div>' +
                     '</div>' +
                     '</td>';
-            tableRowElement.querySelector('form').addEventListener('submit', updateWorkOrderMilestoneType);
+            tableRowElement
+                .querySelector('form')
+                .addEventListener('submit', updateWorkOrderMilestoneType);
             tableRowElement.querySelector('.button--moveWorkOrderMilestoneTypeUp').addEventListener('click', moveWorkOrderMilestoneType);
             tableRowElement.querySelector('.button--moveWorkOrderMilestoneTypeDown').addEventListener('click', moveWorkOrderMilestoneType);
             tableRowElement
@@ -313,11 +323,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 .addEventListener('click', deleteWorkOrderMilestoneType);
             containerElement.append(tableRowElement);
         }
-    };
+    }
+    ;
     document.querySelector('#form--addWorkOrderMilestoneType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(los.urlPrefix + '/admin/doAddWorkOrderMilestoneType', formElement, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 renderWorkOrderMilestoneTypes();
@@ -327,7 +339,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Adding Work Order Milestone Type',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -340,9 +352,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
     Object.defineProperty(exports, "__esModule", { value: true });
     let lotStatuses = exports.lotStatuses;
     delete exports.lotStatuses;
-    const updateLotStatus = (submitEvent) => {
+    function updateLotStatus(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotStatus', submitEvent.currentTarget, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 lotStatuses = responseJSON.lotStatuses;
                 bulmaJS.alert({
@@ -353,19 +366,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Updating ' + los.escapedAliases.Lot + ' Status',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
         });
-    };
-    const deleteLotStatus = (clickEvent) => {
+    }
+    function deleteLotStatus(clickEvent) {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
         const lotStatusId = tableRowElement.dataset.lotStatusId;
-        const doDelete = () => {
+        function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/admin/doDeleteLotStatus', {
                 lotStatusId
             }, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     lotStatuses = responseJSON.lotStatuses;
                     if (lotStatuses.length === 0) {
@@ -381,13 +395,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        title: 'Error Deleting ' + los.escapedAliases.Lot + ' Status',
-                        message: responseJSON.errorMessage || '',
+                        title: `Error Deleting ${los.escapedAliases.Lot} Status`,
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
-        };
+        }
         bulmaJS.confirm({
             title: `Delete ${los.escapedAliases.Lot} Status`,
             message: `Are you sure you want to delete this status?<br />
@@ -399,31 +413,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 callbackFunction: doDelete
             }
         });
-    };
-    const moveLotStatus = (clickEvent) => {
+    }
+    function moveLotStatus(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
         const lotStatusId = tableRowElement.dataset.lotStatusId;
         cityssm.postJSON(los.urlPrefix +
             '/admin/' +
-            (buttonElement.dataset.direction === 'up' ? 'doMoveLotStatusUp' : 'doMoveLotStatusDown'), {
+            (buttonElement.dataset.direction === 'up'
+                ? 'doMoveLotStatusUp'
+                : 'doMoveLotStatusDown'), {
             lotStatusId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 lotStatuses = responseJSON.lotStatuses;
                 renderLotStatuses();
             }
             else {
                 bulmaJS.alert({
-                    title: 'Error Moving ' + exports.aliases.lot + ' Status',
-                    message: responseJSON.errorMessage || '',
+                    title: 'Error Moving ' + los.escapedAliases.Lot + ' Status',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
         });
-    };
-    const renderLotStatuses = () => {
+    }
+    function renderLotStatuses() {
         const containerElement = document.querySelector('#container--lotStatuses');
         if (lotStatuses.length === 0) {
             containerElement.innerHTML = `<tr><td colspan="2">
@@ -445,7 +462,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<div class="control">' +
                         '<input class="input" name="lotStatus" type="text"' +
                         (' value="' + cityssm.escapeHTML(lotStatus.lotStatus) + '"') +
-                        (' aria-label="' + cityssm.escapeHTML(exports.aliases.lot) + ' Status"') +
+                        (' aria-label="' +
+                            cityssm.escapeHTML(exports.aliases.lot) +
+                            ' Status"') +
                         ' maxlength="100" required />' +
                         '</div>' +
                         '<div class="control">' +
@@ -466,17 +485,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '</div>' +
                     '</div>' +
                     '</td>';
-            tableRowElement.querySelector('form').addEventListener('submit', updateLotStatus);
+            tableRowElement
+                .querySelector('form')
+                .addEventListener('submit', updateLotStatus);
             tableRowElement.querySelector('.button--moveLotStatusUp').addEventListener('click', moveLotStatus);
             tableRowElement.querySelector('.button--moveLotStatusDown').addEventListener('click', moveLotStatus);
-            tableRowElement.querySelector('.button--deleteLotStatus').addEventListener('click', deleteLotStatus);
+            tableRowElement
+                .querySelector('.button--deleteLotStatus')
+                .addEventListener('click', deleteLotStatus);
             containerElement.append(tableRowElement);
         }
-    };
+    }
+    ;
     document.querySelector('#form--addLotStatus').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(los.urlPrefix + '/admin/doAddLotStatus', formElement, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 lotStatuses = responseJSON.lotStatuses;
                 renderLotStatuses();
@@ -486,7 +511,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: `Error Adding ${los.escapedAliases.Lot} Status`,
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -499,9 +524,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
     Object.defineProperty(exports, "__esModule", { value: true });
     let lotOccupantTypes = exports.lotOccupantTypes;
     delete exports.lotOccupantTypes;
-    const updateLotOccupantType = (submitEvent) => {
+    function updateLotOccupantType(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotOccupantType', submitEvent.currentTarget, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
                 bulmaJS.alert({
@@ -512,19 +538,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: `Error Updating ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
         });
-    };
-    const deleteLotOccupantType = (clickEvent) => {
+    }
+    function deleteLotOccupantType(clickEvent) {
         const tableRowElement = clickEvent.currentTarget.closest('tr');
         const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
-        const doDelete = () => {
+        function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/admin/doDeleteLotOccupantType', {
                 lotOccupantTypeId
             }, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     lotOccupantTypes = responseJSON.lotOccupantTypes;
                     if (lotOccupantTypes.length === 0) {
@@ -541,12 +568,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: `Error Deleting ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
-        };
+        }
         bulmaJS.confirm({
             title: `Delete ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
             message: `Are you sure you want to delete this ${los.escapedAliases.lot} ${los.escapedAliases.occupant} type?<br />
@@ -558,17 +585,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 callbackFunction: doDelete
             }
         });
-    };
-    const moveLotOccupantType = (clickEvent) => {
+    }
+    function moveLotOccupantType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const tableRowElement = buttonElement.closest('tr');
         const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId;
         cityssm.postJSON(los.urlPrefix +
             '/admin/' +
-            (buttonElement.dataset.direction === 'up' ? 'doMoveLotOccupantTypeUp' : 'doMoveLotOccupantTypeDown'), {
+            (buttonElement.dataset.direction === 'up'
+                ? 'doMoveLotOccupantTypeUp'
+                : 'doMoveLotOccupantTypeDown'), {
             lotOccupantTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
                 renderLotOccupantTypes();
@@ -576,13 +606,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: `Error Moving ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
         });
-    };
-    const renderLotOccupantTypes = () => {
+    }
+    function renderLotOccupantTypes() {
         const containerElement = document.querySelector('#container--lotOccupantTypes');
         if (lotOccupantTypes.length === 0) {
             containerElement.innerHTML = `<tr><td colspan="3">
@@ -593,17 +623,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
         containerElement.innerHTML = '';
         for (const lotOccupantType of lotOccupantTypes) {
             const tableRowElement = document.createElement('tr');
-            tableRowElement.dataset.lotOccupantTypeId = lotOccupantType.lotOccupantTypeId.toString();
-            const formId = 'form--lotOccupantType-' + lotOccupantType.lotOccupantTypeId;
+            tableRowElement.dataset.lotOccupantTypeId =
+                lotOccupantType.lotOccupantTypeId.toString();
+            const formId = 'form--lotOccupantType-' + lotOccupantType.lotOccupantTypeId.toString();
             tableRowElement.innerHTML =
                 '<td>' +
                     ('<div class="field">' +
                         '<div class="control">' +
                         '<input class="input" name="lotOccupantType" type="text"' +
-                        (' value="' + cityssm.escapeHTML(lotOccupantType.lotOccupantType) + '"') +
+                        (' value="' +
+                            cityssm.escapeHTML(lotOccupantType.lotOccupantType) +
+                            '"') +
                         (' form="' + formId + '"') +
                         (' aria-label="' +
-                            cityssm.escapeHTML(exports.aliases.lot + ' ' + exports.aliases.occupant) +
+                            los.escapedAliases.Lot +
+                            ' ' +
+                            los.escapedAliases.Occupant +
                             ' Type"') +
                         ' maxlength="100" required />' +
                         '</div>' +
@@ -614,7 +649,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<div class="control"><span class="button is-static">fa-</span></div>' +
                         '<div class="control">' +
                         '<input class="input" name="fontAwesomeIconClass" type="text"' +
-                        (' value="' + cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass) + '"') +
+                        (' value="' +
+                            cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass) +
+                            '"') +
                         (' form="' + formId + '"') +
                         ' list="datalist--fontAwesomeIconClass"' +
                         ' aria-label="Icon Name"' +
@@ -659,7 +696,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const fontAwesomeInputElement = tableRowElement.querySelector("input[name='fontAwesomeIconClass']");
             fontAwesomeInputElement.addEventListener('keyup', refreshFontAwesomeIcon);
             fontAwesomeInputElement.addEventListener('change', refreshFontAwesomeIcon);
-            tableRowElement.querySelector('form').addEventListener('submit', updateLotOccupantType);
+            tableRowElement
+                .querySelector('form')
+                .addEventListener('submit', updateLotOccupantType);
             tableRowElement.querySelector('.button--moveLotOccupantTypeUp').addEventListener('click', moveLotOccupantType);
             tableRowElement.querySelector('.button--moveLotOccupantTypeDown').addEventListener('click', moveLotOccupantType);
             tableRowElement
@@ -667,11 +706,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 .addEventListener('click', deleteLotOccupantType);
             containerElement.append(tableRowElement);
         }
-    };
+    }
+    ;
     document.querySelector('#form--addLotOccupantType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(los.urlPrefix + '/admin/doAddLotOccupantType', formElement, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
                 renderLotOccupantTypes();
@@ -681,7 +722,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: `Error Adding ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }

@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from '../../types/globalTypes'
-
 ;(() => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const los = exports.los as globalTypes.LOS
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function refreshFontAwesomeIcon(changeEvent: Event) {
+  function refreshFontAwesomeIcon(changeEvent: Event): void {
     const inputElement = changeEvent.currentTarget as HTMLInputElement
 
     const fontAwesomeIconClass = inputElement.value

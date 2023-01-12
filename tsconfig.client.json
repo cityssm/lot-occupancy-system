@@ -7,7 +7,8 @@
         "declaration": true,
         "noImplicitAny": false,
         "removeComments": false,
-        "allowUnreachableCode": false
+        "allowUnreachableCode": false,
+        "strictNullChecks": true
     },
     "files": [
         "public-typescript/adminCleanup.ts",
