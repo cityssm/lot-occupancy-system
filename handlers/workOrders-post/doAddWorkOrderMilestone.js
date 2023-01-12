@@ -1,11 +1,11 @@
-import { addWorkOrderMilestone } from "../../helpers/lotOccupancyDB/addWorkOrderMilestone.js";
-import { getWorkOrderMilestones } from "../../helpers/lotOccupancyDB/getWorkOrderMilestones.js";
-export const handler = async (request, response) => {
+import { addWorkOrderMilestone } from '../../helpers/lotOccupancyDB/addWorkOrderMilestone.js';
+import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js';
+export const handler = (request, response) => {
     const success = addWorkOrderMilestone(request.body, request.session);
     const workOrderMilestones = getWorkOrderMilestones({
         workOrderId: request.body.workOrderId
     }, {
-        orderBy: "completion"
+        orderBy: 'completion'
     });
     response.json({
         success,

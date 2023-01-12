@@ -1,6 +1,6 @@
-import { updateLotStatus } from "../../helpers/lotOccupancyDB/updateLot.js";
-import { getLots } from "../../helpers/lotOccupancyDB/getLots.js";
-export const handler = async (request, response) => {
+import { updateLotStatus } from '../../helpers/lotOccupancyDB/updateLot.js';
+import { getLots } from '../../helpers/lotOccupancyDB/getLots.js';
+export const handler = (request, response) => {
     const success = updateLotStatus(request.body.lotId, request.body.lotStatusId, request.session);
     const workOrderLots = getLots({
         workOrderId: request.body.workOrderId

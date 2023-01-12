@@ -1,11 +1,11 @@
-import { deleteRecord } from "../../helpers/lotOccupancyDB/deleteRecord.js";
-import { getWorkOrderMilestones } from "../../helpers/lotOccupancyDB/getWorkOrderMilestones.js";
-export const handler = async (request, response) => {
-    const success = deleteRecord("WorkOrderMilestones", request.body.workOrderMilestoneId, request.session);
+import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js';
+import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js';
+export const handler = (request, response) => {
+    const success = deleteRecord('WorkOrderMilestones', request.body.workOrderMilestoneId, request.session);
     const workOrderMilestones = getWorkOrderMilestones({
         workOrderId: request.body.workOrderId
     }, {
-        orderBy: "completion"
+        orderBy: 'completion'
     });
     response.json({
         success,

@@ -1,25 +1,29 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
-import { deleteRecord } from "../../helpers/lotOccupancyDB/deleteRecord.js";
+import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js'
 
-import { getWorkOrderMilestones } from "../../helpers/lotOccupancyDB/getWorkOrderMilestones.js";
+import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
 
-export const handler: RequestHandler = async (request, response) => {
-    const success = deleteRecord("WorkOrderMilestones", request.body.workOrderMilestoneId, request.session);
+export const handler: RequestHandler = (request, response) => {
+  const success = deleteRecord(
+    'WorkOrderMilestones',
+    request.body.workOrderMilestoneId,
+    request.session
+  )
 
-    const workOrderMilestones = getWorkOrderMilestones(
-        {
-            workOrderId: request.body.workOrderId
-        },
-        {
-            orderBy: "completion"
-        }
-    );
+  const workOrderMilestones = getWorkOrderMilestones(
+    {
+      workOrderId: request.body.workOrderId
+    },
+    {
+      orderBy: 'completion'
+    }
+  )
 
-    response.json({
-        success,
-        workOrderMilestones
-    });
-};
+  response.json({
+    success,
+    workOrderMilestones
+  })
+}
 
-export default handler;
+export default handler

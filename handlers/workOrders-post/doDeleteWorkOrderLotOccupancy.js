@@ -1,6 +1,6 @@
-import { deleteWorkOrderLotOccupancy } from "../../helpers/lotOccupancyDB/deleteWorkOrderLotOccupancy.js";
-import { getLotOccupancies } from "../../helpers/lotOccupancyDB/getLotOccupancies.js";
-export const handler = async (request, response) => {
+import { deleteWorkOrderLotOccupancy } from '../../helpers/lotOccupancyDB/deleteWorkOrderLotOccupancy.js';
+import { getLotOccupancies } from '../../helpers/lotOccupancyDB/getLotOccupancies.js';
+export const handler = (request, response) => {
     const success = deleteWorkOrderLotOccupancy(request.body.workOrderId, request.body.lotOccupancyId, request.session);
     const workOrderLotOccupancies = getLotOccupancies({
         workOrderId: request.body.workOrderId

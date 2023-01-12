@@ -1,28 +1,28 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
-import { reopenWorkOrderMilestone } from "../../helpers/lotOccupancyDB/reopenWorkOrderMilestone.js";
+import { reopenWorkOrderMilestone } from '../../helpers/lotOccupancyDB/reopenWorkOrderMilestone.js'
 
-import { getWorkOrderMilestones } from "../../helpers/lotOccupancyDB/getWorkOrderMilestones.js";
+import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
 
-export const handler: RequestHandler = async (request, response) => {
-    const success = reopenWorkOrderMilestone(
-        request.body.workOrderMilestoneId,
-        request.session
-    );
+export const handler: RequestHandler = (request, response) => {
+  const success = reopenWorkOrderMilestone(
+    request.body.workOrderMilestoneId,
+    request.session
+  )
 
-    const workOrderMilestones = getWorkOrderMilestones(
-        {
-            workOrderId: request.body.workOrderId
-        },
-        {
-            orderBy: "completion"
-        }
-    );
+  const workOrderMilestones = getWorkOrderMilestones(
+    {
+      workOrderId: request.body.workOrderId
+    },
+    {
+      orderBy: 'completion'
+    }
+  )
 
-    response.json({
-        success,
-        workOrderMilestones
-    });
-};
+  response.json({
+    success,
+    workOrderMilestones
+  })
+}
 
-export default handler;
+export default handler

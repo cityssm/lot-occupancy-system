@@ -1,18 +1,18 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
-import { addWorkOrderComment } from "../../helpers/lotOccupancyDB/addWorkOrderComment.js";
+import { addWorkOrderComment } from '../../helpers/lotOccupancyDB/addWorkOrderComment.js'
 
-import { getWorkOrderComments } from "../../helpers/lotOccupancyDB/getWorkOrderComments.js";
+import { getWorkOrderComments } from '../../helpers/lotOccupancyDB/getWorkOrderComments.js'
 
-export const handler: RequestHandler = async (request, response) => {
-    addWorkOrderComment(request.body, request.session);
+export const handler: RequestHandler = (request, response) => {
+  addWorkOrderComment(request.body, request.session)
 
-    const workOrderComments = getWorkOrderComments(request.body.workOrderId);
+  const workOrderComments = getWorkOrderComments(request.body.workOrderId)
 
-    response.json({
-        success: true,
-        workOrderComments
-    });
-};
+  response.json({
+    success: true,
+    workOrderComments
+  })
+}
 
-export default handler;
+export default handler

@@ -1,5 +1,5 @@
-import * as configFunctions from "../../helpers/functions.config.js";
-import { getWorkOrder } from "../../helpers/lotOccupancyDB/getWorkOrder.js";
+import * as configFunctions from '../../helpers/functions.config.js';
+import { getWorkOrder } from '../../helpers/lotOccupancyDB/getWorkOrder.js';
 export const handler = (request, response) => {
     const workOrder = getWorkOrder(request.params.workOrderId, {
         includeLotsAndLotOccupancies: true,
@@ -7,11 +7,12 @@ export const handler = (request, response) => {
         includeMilestones: true
     });
     if (!workOrder) {
-        return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") +
-            "/workOrders/?error=workOrderIdNotFound");
+        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
+            '/workOrders/?error=workOrderIdNotFound');
+        return;
     }
-    response.render("workOrder-view", {
-        headTitle: "Work Order #" + workOrder.workOrderNumber,
+    response.render('workOrder-view', {
+        headTitle: `Work Order #${workOrder.workOrderNumber}`,
         workOrder
     });
 };

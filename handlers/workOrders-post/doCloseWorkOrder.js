@@ -1,5 +1,5 @@
-import { closeWorkOrder } from "../../helpers/lotOccupancyDB/closeWorkOrder.js";
-export const handler = async (request, response) => {
+import { closeWorkOrder } from '../../helpers/lotOccupancyDB/closeWorkOrder.js';
+export const handler = (request, response) => {
     const success = closeWorkOrder(request.body, request.session);
     response.json({
         success

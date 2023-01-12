@@ -1,5 +1,5 @@
-import { updateWorkOrder } from "../../helpers/lotOccupancyDB/updateWorkOrder.js";
-export const handler = async (request, response) => {
+import { updateWorkOrder } from '../../helpers/lotOccupancyDB/updateWorkOrder.js';
+export const handler = (request, response) => {
     const success = updateWorkOrder(request.body, request.session);
     response.json({
         success,

@@ -1,16 +1,13 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
-import { closeWorkOrder } from "../../helpers/lotOccupancyDB/closeWorkOrder.js";
+import { closeWorkOrder } from '../../helpers/lotOccupancyDB/closeWorkOrder.js'
 
-export const handler: RequestHandler = async (request, response) => {
-    const success = closeWorkOrder(
-        request.body,
-        request.session
-    );
+export const handler: RequestHandler = (request, response) => {
+  const success = closeWorkOrder(request.body, request.session)
 
-    response.json({
-        success
-    });
-};
+  response.json({
+    success
+  })
+}
 
-export default handler;
+export default handler
