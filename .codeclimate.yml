@@ -12,6 +12,7 @@ checks:
 plugins:
   eslint:
     enabled: true
+    channel: "eslint-8"
 exclude_patterns:
 - "cypress/"
 - "**/node_modules/"
