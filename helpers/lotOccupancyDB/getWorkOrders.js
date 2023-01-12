@@ -9,11 +9,11 @@ import { getLotNameWhereClause, getOccupantNameWhereClause } from '../functions.
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where w.recordDelete_timeMillis is null';
     const sqlParameters = [];
-    if (filters.workOrderTypeId) {
+    if ((filters.workOrderTypeId ?? '') !== '') {
         sqlWhereClause += ' and w.workOrderTypeId = ?';
         sqlParameters.push(filters.workOrderTypeId);
     }
-    if (filters.workOrderOpenStatus) {
+    if ((filters.workOrderOpenStatus ?? '') !== '') {
         if (filters.workOrderOpenStatus === 'open') {
             sqlWhereClause += ' and w.workOrderCloseDate is null';
         }
@@ -21,7 +21,7 @@ function buildWhereClause(filters) {
             sqlWhereClause += ' and w.workOrderCloseDate is not null';
         }
     }
-    if (filters.workOrderOpenDateString) {
+    if ((filters.workOrderOpenDateString ?? '') !== '') {
         sqlWhereClause += ' and w.workOrderOpenDate = ?';
         sqlParameters.push(dateStringToInteger(filters.workOrderOpenDateString));
     }

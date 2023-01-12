@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function updateLot(formEvent) {
         formEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix + '/lots/' + (isCreate ? 'doCreateLot' : 'doUpdateLot'), formElement, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 los.clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
@@ -20,15 +21,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        message: exports.aliases.lot + ' Updated Successfully',
+                        message: los.escapedAliases.Lot + ' Updated Successfully',
                         contextualColorName: 'success'
                     });
                 }
             }
             else {
                 bulmaJS.alert({
-                    title: 'Error Updating ' + exports.aliases.lot,
-                    message: responseJSON.errorMessage || '',
+                    title: 'Error Updating ' + los.escapedAliases.Lot,
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -43,10 +44,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
     (_a = document
         .querySelector('#button--deleteLot')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
-        const doDelete = () => {
+        function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/lots/doDeleteLot', {
                 lotId
             }, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     cityssm.disableNavBlocker();
                     window.location.href = los.getLotURL();
@@ -54,14 +56,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: `Error Deleting ${los.escapedAliases.Lot}`,
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
-        };
+        }
         bulmaJS.confirm({
-            title: 'Delete ' + exports.aliases.lot,
+            title: 'Delete ' + los.escapedAliases.Lot,
             message: `Are you sure you want to delete this ${los.escapedAliases.lot}?`,
             contextualColorName: 'warning',
             okButton: {
@@ -77,8 +79,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         lotTypeIdElement.addEventListener('change', () => {
             if (lotTypeIdElement.value === '') {
                 lotFieldsContainerElement.innerHTML = `<div class="message is-info">
-                    <p class="message-body">Select the ${los.escapedAliases.lot} type to load the available fields.</p>
-                    </div>`;
+          <p class="message-body">Select the ${los.escapedAliases.lot} type to load the available fields.</p>
+          </div>`;
                 return;
             }
             cityssm.postJSON(los.urlPrefix + '/lots/doGetLotTypeFields', {
@@ -172,9 +174,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
         let editFormElement;
         let editCloseModalFunction;
-        const editComment = (submitEvent) => {
+        function editComment(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + '/lots/doUpdateLotComment', editFormElement, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     lotComments = responseJSON.lotComments;
                     editCloseModalFunction();
@@ -183,12 +186,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Updating Comment',
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
-        };
+        }
         cityssm.openHtmlModal('lot-editComment', {
             onshow: (modalElement) => {
                 los.populateAliases(modalElement);
@@ -220,11 +223,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function deleteLotComment(clickEvent) {
         const lotCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr').dataset
             .lotCommentId, 10);
-        const doDelete = () => {
+        function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/lots/doDeleteLotComment', {
                 lotId,
                 lotCommentId
             }, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     lotComments = responseJSON.lotComments;
                     renderLotComments();
@@ -232,12 +236,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Removing Comment',
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
-        };
+        }
         bulmaJS.confirm({
             title: 'Remove Comment?',
             message: 'Are you sure you want to remove this comment?',
@@ -249,6 +253,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function renderLotComments() {
+        var _a, _b;
         const containerElement = document.querySelector('#container--lotComments');
         if (lotComments.length === 0) {
             containerElement.innerHTML = `<div class="message is-info">
@@ -270,7 +275,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             tableRowElement.dataset.lotCommentId = lotComment.lotCommentId.toString();
             tableRowElement.innerHTML =
                 '<td>' +
-                    cityssm.escapeHTML(lotComment.recordCreate_userName || '') +
+                    cityssm.escapeHTML((_a = lotComment.recordCreate_userName) !== null && _a !== void 0 ? _a : '') +
                     '</td>' +
                     '<td>' +
                     lotComment.lotCommentDateString +
@@ -279,7 +284,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         : ' ' + lotComment.lotCommentTimeString) +
                     '</td>' +
                     '<td>' +
-                    cityssm.escapeHTML(lotComment.lotComment || '') +
+                    cityssm.escapeHTML((_b = lotComment.lotComment) !== null && _b !== void 0 ? _b : '') +
                     '</td>' +
                     ('<td class="is-hidden-print">' +
                         '<div class="buttons are-small is-justify-content-end">' +
@@ -305,7 +310,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function openAddCommentModal() {
         let addCommentCloseModalFunction;
-        const doAddComment = (formEvent) => {
+        function doAddComment(formEvent) {
             formEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + '/lots/doAddLotComment', formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
@@ -314,7 +319,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     addCommentCloseModalFunction();
                 }
             });
-        };
+        }
         cityssm.openHtmlModal('lot-addComment', {
             onshow(modalElement) {
                 los.populateAliases(modalElement);

@@ -9,7 +9,6 @@ import type { BulmaJS } from '@cityssm/bulma-js/types'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -23,7 +22,7 @@ declare const bulmaJS: BulmaJS
 
   const formElement = document.querySelector('#form--lot') as HTMLFormElement
 
-  function updateLot(formEvent: SubmitEvent) {
+  function updateLot(formEvent: SubmitEvent): void {
     formEvent.preventDefault()
 
     cityssm.postJSON(
@@ -41,14 +40,14 @@ declare const bulmaJS: BulmaJS
             window.location.href = los.getLotURL(responseJSON.lotId, true, true)
           } else {
             bulmaJS.alert({
-              message: exports.aliases.lot + ' Updated Successfully',
+              message: los.escapedAliases.Lot + ' Updated Successfully',
               contextualColorName: 'success'
             })
           }
         } else {
           bulmaJS.alert({
-            title: 'Error Updating ' + exports.aliases.lot,
-            message: responseJSON.errorMessage || '',
+            title: 'Error Updating ' + los.escapedAliases.Lot,
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -71,7 +70,7 @@ declare const bulmaJS: BulmaJS
     ?.addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()
 
-      const doDelete = () => {
+      function doDelete(): void {
         cityssm.postJSON(
           los.urlPrefix + '/lots/doDeleteLot',
           {
@@ -84,7 +83,7 @@ declare const bulmaJS: BulmaJS
             } else {
               bulmaJS.alert({
                 title: `Error Deleting ${los.escapedAliases.Lot}`,
-                message: responseJSON.errorMessage || '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
             }
@@ -93,7 +92,7 @@ declare const bulmaJS: BulmaJS
       }
 
       bulmaJS.confirm({
-        title: 'Delete ' + exports.aliases.lot,
+        title: 'Delete ' + los.escapedAliases.Lot,
         message: `Are you sure you want to delete this ${los.escapedAliases.lot}?`,
         contextualColorName: 'warning',
         okButton: {
@@ -117,8 +116,8 @@ declare const bulmaJS: BulmaJS
     lotTypeIdElement.addEventListener('change', () => {
       if (lotTypeIdElement.value === '') {
         lotFieldsContainerElement.innerHTML = `<div class="message is-info">
-                    <p class="message-body">Select the ${los.escapedAliases.lot} type to load the available fields.</p>
-                    </div>`
+          <p class="message-body">Select the ${los.escapedAliases.lot} type to load the available fields.</p>
+          </div>`
 
         return
       }
@@ -152,7 +151,6 @@ declare const bulmaJS: BulmaJS
             fieldElement.className = 'field'
             fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label>
                             <div class="control"></div>`
-
             ;(
               fieldElement.querySelector('label') as HTMLLabelElement
             ).textContent = lotTypeField.lotTypeField as string
@@ -245,7 +243,7 @@ declare const bulmaJS: BulmaJS
   let lotComments: recordTypes.LotComment[] = exports.lotComments
   delete exports.lotComments
 
-  function openEditLotComment(clickEvent: Event) {
+  function openEditLotComment(clickEvent: Event): void {
     const lotCommentId = Number.parseInt(
       (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
         .lotCommentId!,
@@ -259,7 +257,7 @@ declare const bulmaJS: BulmaJS
     let editFormElement: HTMLFormElement
     let editCloseModalFunction: () => void
 
-    const editComment = (submitEvent: SubmitEvent) => {
+    function editComment(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()
 
       cityssm.postJSON(
@@ -277,7 +275,7 @@ declare const bulmaJS: BulmaJS
           } else {
             bulmaJS.alert({
               title: 'Error Updating Comment',
-              message: responseJSON.errorMessage || '',
+              message: responseJSON.errorMessage ?? '',
               contextualColorName: 'danger'
             })
           }
@@ -288,19 +286,16 @@ declare const bulmaJS: BulmaJS
     cityssm.openHtmlModal('lot-editComment', {
       onshow: (modalElement) => {
         los.populateAliases(modalElement)
-
         ;(
           modalElement.querySelector(
             '#lotCommentEdit--lotId'
           ) as HTMLInputElement
         ).value = lotId
-
         ;(
           modalElement.querySelector(
             '#lotCommentEdit--lotCommentId'
           ) as HTMLInputElement
         ).value = lotCommentId.toString()
-
         ;(
           modalElement.querySelector(
             '#lotCommentEdit--lotComment'
@@ -319,7 +314,6 @@ declare const bulmaJS: BulmaJS
           lotComment.lotCommentDateString! <= currentDateString
             ? currentDateString
             : lotComment.lotCommentDateString!
-
         ;(
           modalElement.querySelector(
             '#lotCommentEdit--lotCommentTimeString'
@@ -331,7 +325,6 @@ declare const bulmaJS: BulmaJS
 
         los.initializeDatePickers(modalElement)
         // los.initializeTimePickers(modalElement);
-
         ;(
           modalElement.querySelector(
             '#lotCommentEdit--lotComment'
@@ -349,14 +342,14 @@ declare const bulmaJS: BulmaJS
     })
   }
 
-  function deleteLotComment(clickEvent: Event) {
+  function deleteLotComment(clickEvent: Event): void {
     const lotCommentId = Number.parseInt(
       (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
         .lotCommentId!,
       10
     )
 
-    const doDelete = () => {
+    function doDelete(): void {
       cityssm.postJSON(
         los.urlPrefix + '/lots/doDeleteLotComment',
         {
@@ -374,7 +367,7 @@ declare const bulmaJS: BulmaJS
           } else {
             bulmaJS.alert({
               title: 'Error Removing Comment',
-              message: responseJSON.errorMessage || '',
+              message: responseJSON.errorMessage ?? '',
               contextualColorName: 'danger'
             })
           }
@@ -393,7 +386,7 @@ declare const bulmaJS: BulmaJS
     })
   }
 
-  function renderLotComments() {
+  function renderLotComments(): void {
     const containerElement = document.querySelector(
       '#container--lotComments'
     ) as HTMLElement
@@ -421,7 +414,7 @@ declare const bulmaJS: BulmaJS
 
       tableRowElement.innerHTML =
         '<td>' +
-        cityssm.escapeHTML(lotComment.recordCreate_userName || '') +
+        cityssm.escapeHTML(lotComment.recordCreate_userName ?? '') +
         '</td>' +
         '<td>' +
         lotComment.lotCommentDateString +
@@ -430,7 +423,7 @@ declare const bulmaJS: BulmaJS
           : ' ' + lotComment.lotCommentTimeString) +
         '</td>' +
         '<td>' +
-        cityssm.escapeHTML(lotComment.lotComment || '') +
+        cityssm.escapeHTML(lotComment.lotComment ?? '') +
         '</td>' +
         ('<td class="is-hidden-print">' +
           '<div class="buttons are-small is-justify-content-end">' +
@@ -459,10 +452,10 @@ declare const bulmaJS: BulmaJS
     containerElement.append(tableElement)
   }
 
-  function openAddCommentModal() {
+  function openAddCommentModal(): void {
     let addCommentCloseModalFunction: () => void
 
-    const doAddComment = (formEvent: SubmitEvent) => {
+    function doAddComment(formEvent: SubmitEvent): void {
       formEvent.preventDefault()
 
       cityssm.postJSON(

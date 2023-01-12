@@ -2,7 +2,8 @@
 
 import * as globalTypes from '../types/globalTypes'
 ;(() => {
-  const mapContainerElement = document.querySelector('#lot--map') as HTMLElement
+  const mapContainerElement: HTMLElement | null =
+    document.querySelector('#lot--map')
 
   if (mapContainerElement) {
     ;(exports.los as globalTypes.LOS).highlightMap(
