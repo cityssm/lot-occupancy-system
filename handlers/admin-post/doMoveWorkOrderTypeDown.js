@@ -1,9 +1,9 @@
-import { moveRecordDown, moveRecordDownToBottom } from "../../helpers/lotOccupancyDB/moveRecord.js";
-import { getWorkOrderTypes } from "../../helpers/functions.cache.js";
-export const handler = async (request, response) => {
-    const success = request.body.moveToEnd === "1"
-        ? moveRecordDownToBottom("WorkOrderTypes", request.body.workOrderTypeId)
-        : moveRecordDown("WorkOrderTypes", request.body.workOrderTypeId);
+import { moveRecordDown, moveRecordDownToBottom } from '../../helpers/lotOccupancyDB/moveRecord.js';
+import { getWorkOrderTypes } from '../../helpers/functions.cache.js';
+export const handler = (request, response) => {
+    const success = request.body.moveToEnd === '1'
+        ? moveRecordDownToBottom('WorkOrderTypes', request.body.workOrderTypeId)
+        : moveRecordDown('WorkOrderTypes', request.body.workOrderTypeId);
     const workOrderTypes = getWorkOrderTypes();
     response.json({
         success,

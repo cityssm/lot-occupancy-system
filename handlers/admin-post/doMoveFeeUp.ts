@@ -1,26 +1,29 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
-import { moveFeeUp, moveFeeUpToTop } from "../../helpers/lotOccupancyDB/moveFee.js";
+import {
+  moveFeeUp,
+  moveFeeUpToTop
+} from '../../helpers/lotOccupancyDB/moveFee.js'
 
-import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.js";
+import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js'
 
-export const handler: RequestHandler = async (request, response) => {
-    const success =
-        request.body.moveToEnd === "1"
-            ? moveFeeUpToTop(request.body.feeId)
-            : moveFeeUp(request.body.feeId);
+export const handler: RequestHandler = (request, response) => {
+  const success =
+    request.body.moveToEnd === '1'
+      ? moveFeeUpToTop(request.body.feeId)
+      : moveFeeUp(request.body.feeId)
 
-    const feeCategories = getFeeCategories(
-        {},
-        {
-            includeFees: true
-        }
-    );
+  const feeCategories = getFeeCategories(
+    {},
+    {
+      includeFees: true
+    }
+  )
 
-    response.json({
-        success,
-        feeCategories
-    });
-};
+  response.json({
+    success,
+    feeCategories
+  })
+}
 
-export default handler;
+export default handler

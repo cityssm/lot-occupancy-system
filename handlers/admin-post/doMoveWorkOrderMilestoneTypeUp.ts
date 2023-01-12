@@ -1,20 +1,31 @@
-import type { RequestHandler } from "express";
+/* eslint-disable @typescript-eslint/indent */
 
-import { moveRecordUp, moveRecordUpToTop } from "../../helpers/lotOccupancyDB/moveRecord.js";
-import { getWorkOrderMilestoneTypes } from "../../helpers/functions.cache.js";
+import type { RequestHandler } from 'express'
 
-export const handler: RequestHandler = async (request, response) => {
-    const success =
-        request.body.moveToEnd === "1"
-            ? moveRecordUpToTop("WorkOrderMilestoneTypes", request.body.workOrderMilestoneTypeId)
-            : moveRecordUp("WorkOrderMilestoneTypes", request.body.workOrderMilestoneTypeId);
+import {
+  moveRecordUp,
+  moveRecordUpToTop
+} from '../../helpers/lotOccupancyDB/moveRecord.js'
+import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
 
-    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+export const handler: RequestHandler = (request, response) => {
+  const success =
+    request.body.moveToEnd === '1'
+      ? moveRecordUpToTop(
+          'WorkOrderMilestoneTypes',
+          request.body.workOrderMilestoneTypeId
+        )
+      : moveRecordUp(
+          'WorkOrderMilestoneTypes',
+          request.body.workOrderMilestoneTypeId
+        )
 
-    response.json({
-        success,
-        workOrderMilestoneTypes
-    });
-};
+  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes()
 
-export default handler;
+  response.json({
+    success,
+    workOrderMilestoneTypes
+  })
+}
+
+export default handler

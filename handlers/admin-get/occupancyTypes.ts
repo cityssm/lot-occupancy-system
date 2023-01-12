@@ -1,32 +1,38 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
-import * as configFunctions from "../../helpers/functions.config.js";
-import * as printFunctions from "../../helpers/functions.print.js";
+import * as configFunctions from '../../helpers/functions.config.js'
+import * as printFunctions from '../../helpers/functions.print.js'
 
-import { getAllOccupancyTypeFields, getOccupancyTypes } from "../../helpers/functions.cache.js";
+import {
+  getAllOccupancyTypeFields,
+  getOccupancyTypes
+} from '../../helpers/functions.cache.js'
 
 export const handler: RequestHandler = (_request, response) => {
-    const occupancyTypes = getOccupancyTypes();
-    const allOccupancyTypeFields = getAllOccupancyTypeFields();
+  const occupancyTypes = getOccupancyTypes()
+  const allOccupancyTypeFields = getAllOccupancyTypeFields()
 
-    const occupancyTypePrints = configFunctions.getProperty("settings.lotOccupancy.prints");
+  const occupancyTypePrints = configFunctions.getProperty(
+    'settings.lotOccupancy.prints'
+  )
 
-    const occupancyTypePrintTitles = {};
+  const occupancyTypePrintTitles = {}
 
-    for (const printEJS of occupancyTypePrints) {
-        const printConfig = printFunctions.getPrintConfig(printEJS);
+  for (const printEJS of occupancyTypePrints) {
+    const printConfig = printFunctions.getPrintConfig(printEJS)
 
-        if (printConfig) {
-            occupancyTypePrintTitles[printEJS] = printConfig.title;
-        }
+    if (printConfig) {
+      occupancyTypePrintTitles[printEJS] = printConfig.title
     }
+  }
 
-    response.render("admin-occupancyTypes", {
-        headTitle: configFunctions.getProperty("aliases.occupancy") + " Type Management",
-        occupancyTypes,
-        allOccupancyTypeFields,
-        occupancyTypePrintTitles
-    });
-};
+  response.render('admin-occupancyTypes', {
+    headTitle:
+      configFunctions.getProperty('aliases.occupancy') + ' Type Management',
+    occupancyTypes,
+    allOccupancyTypeFields,
+    occupancyTypePrintTitles
+  })
+}
 
-export default handler;
+export default handler

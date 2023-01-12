@@ -105,7 +105,7 @@ export function getProperty(
 ): boolean
 export function getProperty(
   propertyName: 'application.ntfyStartup'
-): configTypes.ConfigNtfyStartup
+): configTypes.ConfigNtfyStartup | undefined
 
 export function getProperty(
   propertyName: 'activeDirectory'

@@ -1,26 +1,37 @@
-import type { RequestHandler } from "express";
+/* eslint-disable @typescript-eslint/indent */
+
+import type { RequestHandler } from 'express'
 
 import {
-    moveOccupancyTypePrintDown,
-    moveOccupancyTypePrintDownToBottom
-} from "../../helpers/lotOccupancyDB/moveOccupancyTypePrintDown.js";
+  moveOccupancyTypePrintDown,
+  moveOccupancyTypePrintDownToBottom
+} from '../../helpers/lotOccupancyDB/moveOccupancyTypePrintDown.js'
 
-import { getAllOccupancyTypeFields, getOccupancyTypes } from "../../helpers/functions.cache.js";
+import {
+  getAllOccupancyTypeFields,
+  getOccupancyTypes
+} from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = async (request, response) => {
-    const success =
-        request.body.moveToEnd === "1"
-            ? moveOccupancyTypePrintDownToBottom(request.body.occupancyTypeId, request.body.printEJS)
-            : moveOccupancyTypePrintDown(request.body.occupancyTypeId, request.body.printEJS);
+export const handler: RequestHandler = (request, response) => {
+  const success =
+    request.body.moveToEnd === '1'
+      ? moveOccupancyTypePrintDownToBottom(
+          request.body.occupancyTypeId,
+          request.body.printEJS
+        )
+      : moveOccupancyTypePrintDown(
+          request.body.occupancyTypeId,
+          request.body.printEJS
+        )
 
-    const occupancyTypes = getOccupancyTypes();
-    const allOccupancyTypeFields = getAllOccupancyTypeFields();
+  const occupancyTypes = getOccupancyTypes()
+  const allOccupancyTypeFields = getAllOccupancyTypeFields()
 
-    response.json({
-        success,
-        occupancyTypes,
-        allOccupancyTypeFields
-    });
-};
+  response.json({
+    success,
+    occupancyTypes,
+    allOccupancyTypeFields
+  })
+}
 
-export default handler;
+export default handler

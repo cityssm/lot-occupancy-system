@@ -1,6 +1,6 @@
-import { updateFeeCategory } from "../../helpers/lotOccupancyDB/updateFeeCategory.js";
-import { getFeeCategories } from "../../helpers/lotOccupancyDB/getFeeCategories.js";
-export const handler = async (request, response) => {
+import { updateFeeCategory } from '../../helpers/lotOccupancyDB/updateFeeCategory.js';
+import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js';
+export const handler = (request, response) => {
     const success = updateFeeCategory(request.body, request.session);
     const feeCategories = getFeeCategories({}, {
         includeFees: true

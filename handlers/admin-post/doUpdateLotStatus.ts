@@ -1,22 +1,22 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
-import { updateRecord } from "../../helpers/lotOccupancyDB/updateRecord.js";
-import { getLotStatuses } from "../../helpers/functions.cache.js";
+import { updateRecord } from '../../helpers/lotOccupancyDB/updateRecord.js'
+import { getLotStatuses } from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = async (request, response) => {
-    const success = updateRecord(
-        "LotStatuses",
-        request.body.lotStatusId,
-        request.body.lotStatus,
-        request.session
-    );
+export const handler: RequestHandler = (request, response) => {
+  const success = updateRecord(
+    'LotStatuses',
+    request.body.lotStatusId,
+    request.body.lotStatus,
+    request.session
+  )
 
-    const lotStatuses = getLotStatuses();
+  const lotStatuses = getLotStatuses()
 
-    response.json({
-        success,
-        lotStatuses
-    });
-};
+  response.json({
+    success,
+    lotStatuses
+  })
+}
 
-export default handler;
+export default handler
