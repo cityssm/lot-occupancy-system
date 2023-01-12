@@ -1,19 +1,19 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
-import { addLotTypeField } from "../../helpers/lotOccupancyDB/addLotTypeField.js";
+import { addLotTypeField } from '../../helpers/lotOccupancyDB/addLotTypeField.js'
 
-import { getLotTypes } from "../../helpers/functions.cache.js";
+import { getLotTypes } from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = async (request, response) => {
-    const lotTypeFieldId = addLotTypeField(request.body, request.session);
+export const handler: RequestHandler = (request, response) => {
+  const lotTypeFieldId = addLotTypeField(request.body, request.session)
 
-    const lotTypes = getLotTypes();
+  const lotTypes = getLotTypes()
 
-    response.json({
-        success: true,
-        lotTypeFieldId,
-        lotTypes
-    });
-};
+  response.json({
+    success: true,
+    lotTypeFieldId,
+    lotTypes
+  })
+}
 
-export default handler;
+export default handler

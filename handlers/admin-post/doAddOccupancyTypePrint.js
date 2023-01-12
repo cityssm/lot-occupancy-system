@@ -1,6 +1,6 @@
-import { addOccupancyTypePrint } from "../../helpers/lotOccupancyDB/addOccupancyTypePrint.js";
-import { getAllOccupancyTypeFields, getOccupancyTypes } from "../../helpers/functions.cache.js";
-export const handler = async (request, response) => {
+import { addOccupancyTypePrint } from '../../helpers/lotOccupancyDB/addOccupancyTypePrint.js';
+import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
+export const handler = (request, response) => {
     const success = addOccupancyTypePrint(request.body, request.session);
     const occupancyTypes = getOccupancyTypes();
     const allOccupancyTypeFields = getAllOccupancyTypeFields();

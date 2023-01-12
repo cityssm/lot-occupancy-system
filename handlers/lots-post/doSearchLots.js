@@ -1,5 +1,5 @@
 import { getLots } from '../../helpers/lotOccupancyDB/getLots.js';
-export const handler = async (request, response) => {
+export const handler = (request, response) => {
     const result = getLots(request.body, {
         limit: request.body.limit,
         offset: request.body.offset

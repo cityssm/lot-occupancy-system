@@ -17,7 +17,7 @@ export function addRecord(recordTable, recordName, orderNumber, requestSession) 
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?)`)
-        .run(recordName, orderNumber, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(recordName, orderNumber === '' ? -1 : orderNumber, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     database.close();
     clearCacheByTableName(recordTable);
     return result.lastInsertRowid;

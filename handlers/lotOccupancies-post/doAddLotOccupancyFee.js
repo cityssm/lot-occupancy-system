@@ -1,6 +1,6 @@
-import { addLotOccupancyFee } from "../../helpers/lotOccupancyDB/addLotOccupancyFee.js";
-import { getLotOccupancyFees } from "../../helpers/lotOccupancyDB/getLotOccupancyFees.js";
-export const handler = async (request, response) => {
+import { addLotOccupancyFee } from '../../helpers/lotOccupancyDB/addLotOccupancyFee.js';
+import { getLotOccupancyFees } from '../../helpers/lotOccupancyDB/getLotOccupancyFees.js';
+export const handler = (request, response) => {
     addLotOccupancyFee(request.body, request.session);
     const lotOccupancyFees = getLotOccupancyFees(request.body.lotOccupancyId);
     response.json({

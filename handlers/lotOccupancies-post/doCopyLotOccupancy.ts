@@ -1,14 +1,17 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from 'express'
 
-import { copyLotOccupancy } from "../../helpers/lotOccupancyDB/copyLotOccupancy.js";
+import { copyLotOccupancy } from '../../helpers/lotOccupancyDB/copyLotOccupancy.js'
 
-export const handler: RequestHandler = async (request, response) => {
-    const lotOccupancyId = copyLotOccupancy(request.body.lotOccupancyId, request.session);
+export const handler: RequestHandler = (request, response) => {
+  const lotOccupancyId = copyLotOccupancy(
+    request.body.lotOccupancyId,
+    request.session
+  )
 
-    response.json({
-        success: true,
-        lotOccupancyId
-    });
-};
+  response.json({
+    success: true,
+    lotOccupancyId
+  })
+}
 
-export default handler;
+export default handler

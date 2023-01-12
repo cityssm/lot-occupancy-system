@@ -1,6 +1,6 @@
-import { addLotOccupantType } from "../../helpers/lotOccupancyDB/addLotOccupantType.js";
-import { getLotOccupantTypes } from "../../helpers/functions.cache.js";
-export const handler = async (request, response) => {
+import { addLotOccupantType } from '../../helpers/lotOccupancyDB/addLotOccupantType.js';
+import { getLotOccupantTypes } from '../../helpers/functions.cache.js';
+export const handler = (request, response) => {
     const lotOccupantTypeId = addLotOccupantType(request.body, request.session);
     const lotOccupantTypes = getLotOccupantTypes();
     response.json({

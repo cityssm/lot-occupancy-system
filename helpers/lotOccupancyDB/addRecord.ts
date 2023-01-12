@@ -24,7 +24,7 @@ recordNameColumns.set('WorkOrderTypes', 'workOrderType')
 export function addRecord(
   recordTable: RecordTable,
   recordName: string,
-  orderNumber: number,
+  orderNumber: number | string,
   requestSession: recordTypes.PartialSession
 ): number {
   const database = sqlite(databasePath)
@@ -41,7 +41,7 @@ export function addRecord(
     )
     .run(
       recordName,
-      orderNumber,
+      orderNumber === '' ? -1 : orderNumber,
       requestSession.user!.userName,
       rightNowMillis,
       requestSession.user!.userName,

@@ -1,5 +1,5 @@
-import { updateLot } from "../../helpers/lotOccupancyDB/updateLot.js";
-export const handler = async (request, response) => {
+import { updateLot } from '../../helpers/lotOccupancyDB/updateLot.js';
+export const handler = (request, response) => {
     const success = updateLot(request.body, request.session);
     response.json({
         success,
