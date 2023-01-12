@@ -9,6 +9,9 @@ checks:
   method-lines:
     config:
       threshold: 500
+plugins:
+  eslint:
+    enabled: true
 exclude_patterns:
 - "cypress/"
 - "**/node_modules/"
