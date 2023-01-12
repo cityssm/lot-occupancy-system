@@ -1,13 +1,16 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearCacheByTableName } from "../functions.cache.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { clearCacheByTableName } from '../functions.cache.js';
 const recordNameIdColumns = new Map();
-recordNameIdColumns.set("FeeCategories", ["feeCategory", "feeCategoryId"]);
-recordNameIdColumns.set("LotStatuses", ["lotStatus", "lotStatusId"]);
-recordNameIdColumns.set("LotTypes", ["lotType", "lotTypeId"]);
-recordNameIdColumns.set("OccupancyTypes", ["occupancyType", "occupancyTypeId"]);
-recordNameIdColumns.set("WorkOrderMilestoneTypes", ["workOrderMilestoneType", "workOrderMilestoneTypeId"]);
-recordNameIdColumns.set("WorkOrderTypes", ["workOrderType", "workOrderTypeId"]);
+recordNameIdColumns.set('FeeCategories', ['feeCategory', 'feeCategoryId']);
+recordNameIdColumns.set('LotStatuses', ['lotStatus', 'lotStatusId']);
+recordNameIdColumns.set('LotTypes', ['lotType', 'lotTypeId']);
+recordNameIdColumns.set('OccupancyTypes', ['occupancyType', 'occupancyTypeId']);
+recordNameIdColumns.set('WorkOrderMilestoneTypes', [
+    'workOrderMilestoneType',
+    'workOrderMilestoneTypeId'
+]);
+recordNameIdColumns.set('WorkOrderTypes', ['workOrderType', 'workOrderTypeId']);
 export function updateRecord(recordTable, recordId, recordName, requestSession) {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();

@@ -1,43 +1,43 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
+import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes'
 
 export function getWorkOrderTypes(): recordTypes.WorkOrderType[] {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const workOrderTypes: recordTypes.WorkOrderType[] = database
-        .prepare(
-            `select workOrderTypeId, workOrderType, orderNumber
-                from WorkOrderTypes
-                where recordDelete_timeMillis is null
-                order by orderNumber, workOrderType`
-        )
-        .all();
+  const workOrderTypes: recordTypes.WorkOrderType[] = database
+    .prepare(
+      `select workOrderTypeId, workOrderType, orderNumber
+        from WorkOrderTypes
+        where recordDelete_timeMillis is null
+        order by orderNumber, workOrderType`
+    )
+    .all()
 
-    let expectedOrderNumber = 0;
+  let expectedOrderNumber = 0
 
-    for (const workOrderType of workOrderTypes) {
-        if (workOrderType.orderNumber !== expectedOrderNumber) {
-            updateRecordOrderNumber(
-                "WorkOrderTypes",
-                workOrderType.workOrderTypeId,
-                expectedOrderNumber,
-                database
-            );
+  for (const workOrderType of workOrderTypes) {
+    if (workOrderType.orderNumber !== expectedOrderNumber) {
+      updateRecordOrderNumber(
+        'WorkOrderTypes',
+        workOrderType.workOrderTypeId!,
+        expectedOrderNumber,
+        database
+      )
 
-            workOrderType.orderNumber = expectedOrderNumber;
-        }
-
-        expectedOrderNumber += 1;
+      workOrderType.orderNumber = expectedOrderNumber
     }
 
-    database.close();
+    expectedOrderNumber += 1
+  }
 
-    return workOrderTypes;
+  database.close()
+
+  return workOrderTypes
 }
 
-export default getWorkOrderTypes;
+export default getWorkOrderTypes

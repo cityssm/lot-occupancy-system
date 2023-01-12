@@ -1,12 +1,12 @@
-import sqlite from "better-sqlite3";
-import type * as recordTypes from "../../types/recordTypes";
+import sqlite from 'better-sqlite3';
+import type * as recordTypes from '../../types/recordTypes';
 interface GetLotsFilters {
-    lotNameSearchType?: "" | "startsWith" | "endsWith";
+    lotNameSearchType?: '' | 'startsWith' | 'endsWith';
     lotName?: string;
     mapId?: number | string;
     lotTypeId?: number | string;
     lotStatusId?: number | string;
-    occupancyStatus?: "" | "occupied" | "unoccupied";
+    occupancyStatus?: '' | 'occupied' | 'unoccupied';
     workOrderId?: number | string;
 }
 interface GetLotsOptions {

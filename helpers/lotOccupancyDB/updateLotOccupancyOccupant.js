@@ -1,5 +1,5 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
 export function updateLotOccupancyOccupant(lotOccupancyOccupantForm, requestSession) {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();

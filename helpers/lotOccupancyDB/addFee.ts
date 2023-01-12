@@ -9,10 +9,10 @@ interface AddFeeForm {
   feeCategoryId: string
   feeName: string
   feeDescription: string
-  occupancyTypeId?: string
-  lotTypeId?: string
+  occupancyTypeId: string
+  lotTypeId: string
   feeAmount?: string
-  feeFunction?: string
+  feeFunction: string
   taxAmount?: string
   taxPercentage?: string
   includeQuantity: '' | '1'
@@ -47,8 +47,8 @@ export function addFee(
       feeForm.feeCategoryId,
       feeForm.feeName,
       feeForm.feeDescription,
-      feeForm.occupancyTypeId ?? undefined,
-      feeForm.lotTypeId ?? undefined,
+      feeForm.occupancyTypeId === '' ? undefined : feeForm.occupancyTypeId,
+      feeForm.lotTypeId === '' ? undefined : feeForm.lotTypeId,
       feeForm.feeAmount ?? undefined,
       feeForm.feeFunction ?? undefined,
       feeForm.taxAmount ?? undefined,

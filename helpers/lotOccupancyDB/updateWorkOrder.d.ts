@@ -1,4 +1,4 @@
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes';
 interface UpdateWorkOrderForm {
     workOrderId: string;
     workOrderNumber: string;

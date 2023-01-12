@@ -1,65 +1,65 @@
 /* eslint-disable unicorn/filename-case */
 
-import * as assert from "assert";
+import * as assert from 'node:assert'
 
-import { portNumber } from "./_globals.js";
+import { portNumber } from './_globals.js'
 
-import { exec } from "node:child_process";
+import { exec } from 'node:child_process'
 
-import * as http from "node:http";
-import { app } from "../app.js";
+import * as http from 'node:http'
+import { app } from '../app.js'
 
-describe("lot-occupancy-system", () => {
-    const httpServer = http.createServer(app);
+describe('lot-occupancy-system', () => {
+  const httpServer = http.createServer(app)
 
-    let serverStarted = false;
+  let serverStarted = false
 
-    before(() => {
-        httpServer.listen(portNumber);
+  before(() => {
+    httpServer.listen(portNumber)
 
-        httpServer.on("listening", () => {
-            serverStarted = true;
-        });
-    });
+    httpServer.on('listening', () => {
+      serverStarted = true
+    })
+  })
 
-    after(() => {
-        try {
-            httpServer.close();
-        } catch {
-            // ignore
-        }
-    });
+  after(() => {
+    try {
+      httpServer.close()
+    } catch {
+      // ignore
+    }
+  })
 
-    it("Ensure server starts on port " + portNumber.toString(), () => {
-        assert.ok(serverStarted);
-    });
+  it('Ensure server starts on port ' + portNumber.toString(), () => {
+    assert.ok(serverStarted)
+  })
 
-    describe("Cypress tests", () => {
-        it("should run Cypress tests", (done) => {
-            let cypressCommand =
-                "cypress run --config-file cypress.config.ts --browser chrome";
+  describe('Cypress tests', () => {
+    it('should run Cypress tests', (done) => {
+      let cypressCommand =
+        'cypress run --config-file cypress.config.ts --browser chrome'
 
-            if (
-                process.env.CYPRESS_RECORD_KEY &&
-                process.env.CYPRESS_RECORD_KEY !== ""
-            ) {
-                cypressCommand += " --record";
-            }
+      if (
+        process.env.CYPRESS_RECORD_KEY &&
+        process.env.CYPRESS_RECORD_KEY !== ''
+      ) {
+        cypressCommand += ' --record'
+      }
 
-            const childProcess = exec(cypressCommand);
+      const childProcess = exec(cypressCommand)
 
-            childProcess.stdout.on("data", (data) => {
-                console.log(data);
-            });
+      childProcess.stdout.on('data', (data) => {
+        console.log(data)
+      })
 
-            childProcess.stderr.on("data", (data) => {
-                console.error(data);
-            });
+      childProcess.stderr.on('data', (data) => {
+        console.error(data)
+      })
 
-            childProcess.on("exit", (code) => {
-                assert.ok(code === 0);
-                done();
-            });
-        }).timeout(30 * 60 * 60 * 1000);
-    });
-});
+      childProcess.on('exit', (code) => {
+        assert.ok(code === 0)
+        done()
+      })
+    }).timeout(30 * 60 * 60 * 1000)
+  })
+})

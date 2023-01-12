@@ -32,7 +32,7 @@ export function getLotNameWhereClause(lotName = '', lotNameSearchType, lotsTable
 export function getOccupancyTimeWhereClause(occupancyTime, lotOccupanciesTableAlias = 'o') {
     let sqlWhereClause = '';
     const sqlParameters = [];
-    if (occupancyTime !== '') {
+    if (occupancyTime) {
         const currentDateString = dateToInteger(new Date());
         switch (occupancyTime) {
             case 'current': {

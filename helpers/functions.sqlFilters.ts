@@ -9,7 +9,7 @@ interface WhereClauseReturn {
 
 export function getLotNameWhereClause(
   lotName = '',
-  lotNameSearchType: LotNameSearchType,
+  lotNameSearchType: LotNameSearchType | undefined,
   lotsTableAlias = 'l'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
@@ -47,13 +47,13 @@ export function getLotNameWhereClause(
 type OccupancyTime = '' | 'current' | 'past' | 'future'
 
 export function getOccupancyTimeWhereClause(
-  occupancyTime: OccupancyTime,
+  occupancyTime: OccupancyTime | undefined,
   lotOccupanciesTableAlias = 'o'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
   const sqlParameters: unknown[] = []
 
-  if (occupancyTime !== '') {
+  if (occupancyTime) {
     const currentDateString = dateToInteger(new Date())
 
     switch (occupancyTime) {

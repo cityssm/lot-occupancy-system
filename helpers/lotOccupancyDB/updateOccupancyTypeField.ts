@@ -1,32 +1,32 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import { clearCacheByTableName } from "../functions.cache.js";
+import { clearCacheByTableName } from '../functions.cache.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes'
 
 interface UpdateOccupancyTypeFieldForm {
-    occupancyTypeFieldId: number | string;
-    occupancyTypeField: string;
-    isRequired: "0" | "1";
-    minimumLength?: string;
-    maximumLength?: string;
-    pattern?: string;
-    occupancyTypeFieldValues: string;
+  occupancyTypeFieldId: number | string
+  occupancyTypeField: string
+  isRequired: '0' | '1'
+  minimumLength?: string
+  maximumLength?: string
+  pattern?: string
+  occupancyTypeFieldValues: string
 }
 
 export function updateOccupancyTypeField(
-    occupancyTypeFieldForm: UpdateOccupancyTypeFieldForm,
-    requestSession: recordTypes.PartialSession
+  occupancyTypeFieldForm: UpdateOccupancyTypeFieldForm,
+  requestSession: recordTypes.PartialSession
 ): boolean {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const rightNowMillis = Date.now();
+  const rightNowMillis = Date.now()
 
-    const result = database
-        .prepare(
-            `update OccupancyTypeFields
+  const result = database
+    .prepare(
+      `update OccupancyTypeFields
                 set occupancyTypeField = ?,
                 isRequired = ?,
                 minimumLength = ?,
@@ -37,24 +37,24 @@ export function updateOccupancyTypeField(
                 recordUpdate_timeMillis = ?
                 where occupancyTypeFieldId = ?
                 and recordDelete_timeMillis is null`
-        )
-        .run(
-            occupancyTypeFieldForm.occupancyTypeField,
-            Number.parseInt(occupancyTypeFieldForm.isRequired, 10),
-            occupancyTypeFieldForm.minimumLength || 0,
-            occupancyTypeFieldForm.maximumLength || 100,
-            occupancyTypeFieldForm.pattern || "",
-            occupancyTypeFieldForm.occupancyTypeFieldValues,
-            requestSession.user.userName,
-            rightNowMillis,
-            occupancyTypeFieldForm.occupancyTypeFieldId
-        );
+    )
+    .run(
+      occupancyTypeFieldForm.occupancyTypeField,
+      Number.parseInt(occupancyTypeFieldForm.isRequired, 10),
+      occupancyTypeFieldForm.minimumLength ?? 0,
+      occupancyTypeFieldForm.maximumLength ?? 100,
+      occupancyTypeFieldForm.pattern ?? '',
+      occupancyTypeFieldForm.occupancyTypeFieldValues,
+      requestSession.user!.userName,
+      rightNowMillis,
+      occupancyTypeFieldForm.occupancyTypeFieldId
+    )
 
-    database.close();
+  database.close()
 
-    clearCacheByTableName("OccupancyTypeFields");
+  clearCacheByTableName('OccupancyTypeFields')
 
-    return result.changes > 0;
+  return result.changes > 0
 }
 
-export default updateOccupancyTypeField;
+export default updateOccupancyTypeField

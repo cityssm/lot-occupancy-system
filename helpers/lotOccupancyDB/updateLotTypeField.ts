@@ -1,32 +1,32 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import { clearCacheByTableName } from "../functions.cache.js";
+import { clearCacheByTableName } from '../functions.cache.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes'
 
 interface UpdateLotTypeFieldForm {
-    lotTypeFieldId: number | string;
-    lotTypeField: string;
-    isRequired: "0" | "1";
-    minimumLength?: string;
-    maximumLength?: string;
-    pattern?: string;
-    lotTypeFieldValues: string;
+  lotTypeFieldId: number | string
+  lotTypeField: string
+  isRequired: '0' | '1'
+  minimumLength?: string
+  maximumLength?: string
+  pattern?: string
+  lotTypeFieldValues: string
 }
 
 export function updateLotTypeField(
-    lotTypeFieldForm: UpdateLotTypeFieldForm,
-    requestSession: recordTypes.PartialSession
+  lotTypeFieldForm: UpdateLotTypeFieldForm,
+  requestSession: recordTypes.PartialSession
 ): boolean {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const rightNowMillis = Date.now();
+  const rightNowMillis = Date.now()
 
-    const result = database
-        .prepare(
-            `update LotTypeFields
+  const result = database
+    .prepare(
+      `update LotTypeFields
                 set lotTypeField = ?,
                 isRequired = ?,
                 minimumLength = ?,
@@ -37,24 +37,24 @@ export function updateLotTypeField(
                 recordUpdate_timeMillis = ?
                 where lotTypeFieldId = ?
                 and recordDelete_timeMillis is null`
-        )
-        .run(
-            lotTypeFieldForm.lotTypeField,
-            Number.parseInt(lotTypeFieldForm.isRequired, 10),
-            lotTypeFieldForm.minimumLength || 0,
-            lotTypeFieldForm.maximumLength || 100,
-            lotTypeFieldForm.pattern || "",
-            lotTypeFieldForm.lotTypeFieldValues,
-            requestSession.user.userName,
-            rightNowMillis,
-            lotTypeFieldForm.lotTypeFieldId
-        );
+    )
+    .run(
+      lotTypeFieldForm.lotTypeField,
+      Number.parseInt(lotTypeFieldForm.isRequired, 10),
+      lotTypeFieldForm.minimumLength ?? 0,
+      lotTypeFieldForm.maximumLength ?? 100,
+      lotTypeFieldForm.pattern ?? '',
+      lotTypeFieldForm.lotTypeFieldValues,
+      requestSession.user!.userName,
+      rightNowMillis,
+      lotTypeFieldForm.lotTypeFieldId
+    )
 
-    database.close();
+  database.close()
 
-    clearCacheByTableName("LotTypeFields");
+  clearCacheByTableName('LotTypeFields')
 
-    return result.changes > 0;
+  return result.changes > 0
 }
 
-export default updateLotTypeField;
+export default updateLotTypeField

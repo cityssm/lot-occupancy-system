@@ -1,32 +1,32 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
 import {
-    dateStringToInteger,
-    timeStringToInteger
-} from "@cityssm/expressjs-server-js/dateTimeFns.js";
+  dateStringToInteger,
+  timeStringToInteger
+} from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes'
 
 interface UpdateLotOccupancyCommentForm {
-    lotOccupancyCommentId: string | number;
-    lotOccupancyCommentDateString: string;
-    lotOccupancyCommentTimeString: string;
-    lotOccupancyComment: string;
+  lotOccupancyCommentId: string | number
+  lotOccupancyCommentDateString: string
+  lotOccupancyCommentTimeString: string
+  lotOccupancyComment: string
 }
 
 export function updateLotOccupancyComment(
-    commentForm: UpdateLotOccupancyCommentForm,
-    requestSession: recordTypes.PartialSession
+  commentForm: UpdateLotOccupancyCommentForm,
+  requestSession: recordTypes.PartialSession
 ): boolean {
-    const rightNowMillis = Date.now();
+  const rightNowMillis = Date.now()
 
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const result = database
-        .prepare(
-            `update LotOccupancyComments
+  const result = database
+    .prepare(
+      `update LotOccupancyComments
                 set lotOccupancyCommentDate = ?,
                 lotOccupancyCommentTime = ?,
                 lotOccupancyComment = ?,
@@ -34,19 +34,19 @@ export function updateLotOccupancyComment(
                 recordUpdate_timeMillis = ?
                 where recordDelete_timeMillis is null
                 and lotOccupancyCommentId = ?`
-        )
-        .run(
-            dateStringToInteger(commentForm.lotOccupancyCommentDateString),
-            timeStringToInteger(commentForm.lotOccupancyCommentTimeString),
-            commentForm.lotOccupancyComment,
-            requestSession.user.userName,
-            rightNowMillis,
-            commentForm.lotOccupancyCommentId
-        );
+    )
+    .run(
+      dateStringToInteger(commentForm.lotOccupancyCommentDateString),
+      timeStringToInteger(commentForm.lotOccupancyCommentTimeString),
+      commentForm.lotOccupancyComment,
+      requestSession.user!.userName,
+      rightNowMillis,
+      commentForm.lotOccupancyCommentId
+    )
 
-    database.close();
+  database.close()
 
-    return result.changes > 0;
+  return result.changes > 0
 }
 
-export default updateLotOccupancyComment;
+export default updateLotOccupancyComment

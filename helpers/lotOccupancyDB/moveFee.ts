@@ -1,113 +1,123 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import { getFee } from "./getFee.js";
-import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
+import { getFee } from './getFee.js'
+import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export function moveFeeDown(feeId: number | string): boolean {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const currentFee = getFee(feeId, database);
+  const currentFee = getFee(feeId, database)
 
+  database
+    .prepare(
+      `update Fees
+        set orderNumber = orderNumber - 1
+        where recordDelete_timeMillis is null
+        and feeCategoryId = ?
+        and orderNumber = ? + 1`
+    )
+    .run(currentFee.feeCategoryId, currentFee.orderNumber)
+
+  const success = updateRecordOrderNumber(
+    'Fees',
+    feeId,
+    currentFee.orderNumber! + 1,
     database
-        .prepare(
-            `update Fees
-                set orderNumber = orderNumber - 1
-                where recordDelete_timeMillis is null
-                and feeCategoryId = ?
-                and orderNumber = ? + 1`
-        )
-        .run(currentFee.feeCategoryId, currentFee.orderNumber);
+  )
 
-    const success = updateRecordOrderNumber("Fees", feeId, currentFee.orderNumber + 1, database);
+  database.close()
 
-    database.close();
-
-    return success;
+  return success
 }
 
 export function moveFeeDownToBottom(feeId: number | string): boolean {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const currentFee = getFee(feeId, database);
+  const currentFee = getFee(feeId, database)
 
-    const maxOrderNumber: number = database
-        .prepare(
-            `select max(orderNumber) as maxOrderNumber
+  const maxOrderNumber: number = database
+    .prepare(
+      `select max(orderNumber) as maxOrderNumber
                 from Fees
                 where recordDelete_timeMillis is null
                 and feeCategoryId = ?`
-        )
-        .get(currentFee.feeCategoryId).maxOrderNumber;
+    )
+    .get(currentFee.feeCategoryId).maxOrderNumber
 
-    if (currentFee.orderNumber !== maxOrderNumber) {
-        updateRecordOrderNumber("Fees", feeId, maxOrderNumber + 1, database);
+  if (currentFee.orderNumber !== maxOrderNumber) {
+    updateRecordOrderNumber('Fees', feeId, maxOrderNumber + 1, database)
 
-        database
-            .prepare(
-                `update Fees
+    database
+      .prepare(
+        `update Fees
                     set orderNumber = orderNumber - 1
                     where recordDelete_timeMillis is null
                     and feeCategoryId = ? and orderNumber > ?`
-            )
-            .run(currentFee.feeCategoryId, currentFee.orderNumber);
-    }
+      )
+      .run(currentFee.feeCategoryId, currentFee.orderNumber)
+  }
 
-    database.close();
+  database.close()
 
-    return true;
+  return true
 }
 
 export function moveFeeUp(feeId: number): boolean {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const currentFee = getFee(feeId, database);
+  const currentFee = getFee(feeId, database)
 
-    if (currentFee.orderNumber <= 0) {
-        database.close();
-        return true;
-    }
+  if (currentFee.orderNumber! <= 0) {
+    database.close()
+    return true
+  }
 
-    database
-        .prepare(
-            `update Fees
+  database
+    .prepare(
+      `update Fees
                 set orderNumber = orderNumber + 1
                 where recordDelete_timeMillis is null
                 and feeCategoryId = ?
                 and orderNumber = ? - 1`
-        )
-        .run(currentFee.feeCategoryId, currentFee.orderNumber);
+    )
+    .run(currentFee.feeCategoryId, currentFee.orderNumber)
 
-    const success = updateRecordOrderNumber("Fees", feeId, currentFee.orderNumber - 1, database);
+  const success = updateRecordOrderNumber(
+    'Fees',
+    feeId,
+    currentFee.orderNumber! - 1,
+    database
+  )
 
-    database.close();
+  database.close()
 
-    return success;
+  return success
 }
 
 export function moveFeeUpToTop(feeId: number | string): boolean {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const currentFee = getFee(feeId, database);
+  const currentFee = getFee(feeId, database)
 
-    if (currentFee.orderNumber > 0) {
-        updateRecordOrderNumber("Fees", feeId, -1, database);
+  if (currentFee.orderNumber! > 0) {
+    updateRecordOrderNumber('Fees', feeId, -1, database)
 
-        database
-            .prepare(
-                `update Fees
-                    set orderNumber = orderNumber + 1
-                    where recordDelete_timeMillis is null
-                    and feeCategoryId = ?
-                    and orderNumber < ?`
-            )
-            .run(currentFee.feeCategoryId, currentFee.orderNumber);
-    }
+    database
+      .prepare(
+        `update Fees
+            set orderNumber = orderNumber + 1
+            where recordDelete_timeMillis is null
+            and feeCategoryId = ?
+            and orderNumber < ?`
+      )
+      .run(currentFee.feeCategoryId, currentFee.orderNumber)
+  }
 
-    database.close();
+  database.close()
 
-    return true;
+  return true
 }
 
-export default moveFeeUp;
+export default moveFeeUp

@@ -1,167 +1,190 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import { clearCacheByTableName } from "../functions.cache.js";
-import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
+import { clearCacheByTableName } from '../functions.cache.js'
+import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 function getCurrentField(
-    occupancyTypeFieldId: number,
-    connectedDatabase: sqlite.Database
+  occupancyTypeFieldId: number,
+  connectedDatabase: sqlite.Database
 ): { occupancyTypeId?: number; orderNumber: number } {
-    const currentField: { occupancyTypeId?: number; orderNumber: number } = connectedDatabase
-        .prepare(
-            `select occupancyTypeId, orderNumber from OccupancyTypeFields where occupancyTypeFieldId = ?`
-        )
-        .get(occupancyTypeFieldId);
+  const currentField: { occupancyTypeId?: number; orderNumber: number } =
+    connectedDatabase
+      .prepare(
+        `select occupancyTypeId, orderNumber
+          from OccupancyTypeFields
+          where occupancyTypeFieldId = ?`
+      )
+      .get(occupancyTypeFieldId)
 
-    return currentField;
+  return currentField
 }
 
-export function moveOccupancyTypeFieldDown(occupancyTypeFieldId: number): boolean {
-    const database = sqlite(databasePath);
+export function moveOccupancyTypeFieldDown(
+  occupancyTypeFieldId: number
+): boolean {
+  const database = sqlite(databasePath)
 
-    const currentField = getCurrentField(occupancyTypeFieldId, database);
+  const currentField = getCurrentField(occupancyTypeFieldId, database)
+
+  database
+    .prepare(
+      'update OccupancyTypeFields' +
+        ' set orderNumber = orderNumber - 1' +
+        ' where recordDelete_timeMillis is null' +
+        (currentField.occupancyTypeId
+          ? " and occupancyTypeId = '" + currentField.occupancyTypeId + "'"
+          : ' and occupancyTypeId is null') +
+        ' and orderNumber = ? + 1'
+    )
+    .run(currentField.orderNumber)
+
+  const success = updateRecordOrderNumber(
+    'OccupancyTypeFields',
+    occupancyTypeFieldId,
+    currentField.orderNumber + 1,
+    database
+  )
+
+  database.close()
+
+  clearCacheByTableName('OccupancyTypeFields')
+
+  return success
+}
+
+export function moveOccupancyTypeFieldDownToBottom(
+  occupancyTypeFieldId: number
+): boolean {
+  const database = sqlite(databasePath)
+
+  const currentField = getCurrentField(occupancyTypeFieldId, database)
+
+  const occupancyTypeParameters: unknown[] = []
+
+  if (currentField.occupancyTypeId) {
+    occupancyTypeParameters.push(currentField.occupancyTypeId)
+  }
+
+  const maxOrderNumber: number = database
+    .prepare(
+      'select max(orderNumber) as maxOrderNumber' +
+        ' from OccupancyTypeFields' +
+        ' where recordDelete_timeMillis is null' +
+        (currentField.occupancyTypeId
+          ? ' and occupancyTypeId = ?'
+          : ' and occupancyTypeId is null')
+    )
+    .get(occupancyTypeParameters).maxOrderNumber
+
+  if (currentField.orderNumber !== maxOrderNumber) {
+    updateRecordOrderNumber(
+      'OccupancyTypeFields',
+      occupancyTypeFieldId,
+      maxOrderNumber + 1,
+      database
+    )
+
+    occupancyTypeParameters.push(currentField.orderNumber)
 
     database
-        .prepare(
-            "update OccupancyTypeFields" +
-                " set orderNumber = orderNumber - 1" +
-                " where recordDelete_timeMillis is null" +
-                (currentField.occupancyTypeId
-                    ? " and occupancyTypeId = '" + currentField.occupancyTypeId + "'"
-                    : " and occupancyTypeId is null") +
-                " and orderNumber = ? + 1"
-        )
-        .run(currentField.orderNumber);
+      .prepare(
+        'update OccupancyTypeFields' +
+          ' set orderNumber = orderNumber - 1' +
+          ' where recordDelete_timeMillis is null' +
+          (currentField.occupancyTypeId
+            ? ' and occupancyTypeId = ?'
+            : ' and occupancyTypeId is null') +
+          ' and orderNumber > ?'
+      )
+      .run(occupancyTypeParameters)
+  }
 
-    const success = updateRecordOrderNumber(
-        "OccupancyTypeFields",
-        occupancyTypeFieldId,
-        currentField.orderNumber + 1,
-        database
-    );
+  database.close()
 
-    database.close();
+  clearCacheByTableName('OccupancyTypeFields')
 
-    clearCacheByTableName("OccupancyTypeFields");
-
-    return success;
+  return true
 }
 
-export function moveOccupancyTypeFieldDownToBottom(occupancyTypeFieldId: number): boolean {
-    const database = sqlite(databasePath);
+export function moveOccupancyTypeFieldUp(
+  occupancyTypeFieldId: number
+): boolean {
+  const database = sqlite(databasePath)
 
-    const currentField = getCurrentField(occupancyTypeFieldId, database);
+  const currentField = getCurrentField(occupancyTypeFieldId, database)
 
-    const occupancyTypeParameters = [];
+  if (currentField.orderNumber <= 0) {
+    database.close()
+    return true
+  }
+
+  database
+    .prepare(
+      'update OccupancyTypeFields' +
+        ' set orderNumber = orderNumber + 1' +
+        ' where recordDelete_timeMillis is null' +
+        (currentField.occupancyTypeId
+          ? " and occupancyTypeId = '" + currentField.occupancyTypeId + "'"
+          : ' and occupancyTypeId is null') +
+        ' and orderNumber = ? - 1'
+    )
+    .run(currentField.orderNumber)
+
+  const success = updateRecordOrderNumber(
+    'OccupancyTypeFields',
+    occupancyTypeFieldId,
+    currentField.orderNumber - 1,
+    database
+  )
+
+  database.close()
+
+  clearCacheByTableName('OccupancyTypeFields')
+
+  return success
+}
+
+export function moveOccupancyTypeFieldUpToTop(
+  occupancyTypeFieldId: number
+): boolean {
+  const database = sqlite(databasePath)
+
+  const currentField = getCurrentField(occupancyTypeFieldId, database)
+
+  if (currentField.orderNumber > 0) {
+    updateRecordOrderNumber(
+      'OccupancyTypeFields',
+      occupancyTypeFieldId,
+      -1,
+      database
+    )
+
+    const occupancyTypeParameters: unknown[] = []
 
     if (currentField.occupancyTypeId) {
-        occupancyTypeParameters.push(currentField.occupancyTypeId);
+      occupancyTypeParameters.push(currentField.occupancyTypeId)
     }
 
-    const maxOrderNumber: number = database
-        .prepare(
-            "select max(orderNumber) as maxOrderNumber" +
-                " from OccupancyTypeFields" +
-                " where recordDelete_timeMillis is null" +
-                (currentField.occupancyTypeId ? " and occupancyTypeId = ?" : " and occupancyTypeId is null")
-        )
-        .get(occupancyTypeParameters).maxOrderNumber;
-
-    if (currentField.orderNumber !== maxOrderNumber) {
-        updateRecordOrderNumber("OccupancyTypeFields", occupancyTypeFieldId, maxOrderNumber + 1, database);
-
-        occupancyTypeParameters.push(currentField.orderNumber);
-
-        database
-            .prepare(
-                "update OccupancyTypeFields" +
-                    " set orderNumber = orderNumber - 1" +
-                    " where recordDelete_timeMillis is null" +
-                    (currentField.occupancyTypeId
-                        ? " and occupancyTypeId = ?"
-                        : " and occupancyTypeId is null") +
-                    " and orderNumber > ?"
-            )
-            .run(occupancyTypeParameters);
-    }
-
-    database.close();
-
-    clearCacheByTableName("OccupancyTypeFields");
-
-    return true;
-}
-
-export function moveOccupancyTypeFieldUp(occupancyTypeFieldId: number): boolean {
-    const database = sqlite(databasePath);
-
-    const currentField = getCurrentField(occupancyTypeFieldId, database);
-
-    if (currentField.orderNumber <= 0) {
-        database.close();
-        return true;
-    }
+    occupancyTypeParameters.push(currentField.orderNumber)
 
     database
-        .prepare(
-            "update OccupancyTypeFields" +
-                " set orderNumber = orderNumber + 1" +
-                " where recordDelete_timeMillis is null" +
-                (currentField.occupancyTypeId
-                    ? " and occupancyTypeId = '" + currentField.occupancyTypeId + "'"
-                    : " and occupancyTypeId is null") +
-                " and orderNumber = ? - 1"
-        )
-        .run(currentField.orderNumber);
+      .prepare(
+        'update OccupancyTypeFields' +
+          ' set orderNumber = orderNumber + 1' +
+          ' where recordDelete_timeMillis is null' +
+          (currentField.occupancyTypeId
+            ? ' and occupancyTypeId = ?'
+            : ' and occupancyTypeId is null') +
+          ' and orderNumber < ?'
+      )
+      .run(occupancyTypeParameters)
+  }
 
-    const success = updateRecordOrderNumber(
-        "OccupancyTypeFields",
-        occupancyTypeFieldId,
-        currentField.orderNumber - 1,
-        database
-    );
+  database.close()
 
-    database.close();
+  clearCacheByTableName('OccupancyTypeFields')
 
-    clearCacheByTableName("OccupancyTypeFields");
-
-    return success;
-}
-
-export function moveOccupancyTypeFieldUpToTop(occupancyTypeFieldId: number): boolean {
-    const database = sqlite(databasePath);
-
-    const currentField = getCurrentField(occupancyTypeFieldId, database);
-
-    if (currentField.orderNumber > 0) {
-        updateRecordOrderNumber("OccupancyTypeFields", occupancyTypeFieldId, -1, database);
-
-        const occupancyTypeParameters = [];
-
-        if (currentField.occupancyTypeId) {
-            occupancyTypeParameters.push(currentField.occupancyTypeId);
-        }
-
-        occupancyTypeParameters.push(currentField.orderNumber);
-
-        database
-            .prepare(
-                "update OccupancyTypeFields" +
-                    " set orderNumber = orderNumber + 1" +
-                    " where recordDelete_timeMillis is null" +
-                    (currentField.occupancyTypeId
-                        ? " and occupancyTypeId = ?"
-                        : " and occupancyTypeId is null") +
-                    " and orderNumber < ?"
-            )
-            .run(occupancyTypeParameters);
-    }
-
-    database.close();
-
-    clearCacheByTableName("OccupancyTypeFields");
-
-    return true;
+  return true
 }

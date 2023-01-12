@@ -3,10 +3,10 @@ interface AddFeeForm {
     feeCategoryId: string;
     feeName: string;
     feeDescription: string;
-    occupancyTypeId?: string;
-    lotTypeId?: string;
+    occupancyTypeId: string;
+    lotTypeId: string;
     feeAmount?: string;
-    feeFunction?: string;
+    feeFunction: string;
     taxAmount?: string;
     taxPercentage?: string;
     includeQuantity: '' | '1';

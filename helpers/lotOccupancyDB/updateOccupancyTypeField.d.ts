@@ -1,8 +1,8 @@
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes';
 interface UpdateOccupancyTypeFieldForm {
     occupancyTypeFieldId: number | string;
     occupancyTypeField: string;
-    isRequired: "0" | "1";
+    isRequired: '0' | '1';
     minimumLength?: string;
     maximumLength?: string;
     pattern?: string;

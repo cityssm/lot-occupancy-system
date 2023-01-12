@@ -1,57 +1,59 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import type * as recordTypes from "../../types/recordTypes";
-import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
+import type * as recordTypes from '../../types/recordTypes'
+import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export function getOccupancyTypeFields(
-    occupancyTypeId?: number,
-    connectedDatabase?: sqlite.Database
+  occupancyTypeId?: number,
+  connectedDatabase?: sqlite.Database
 ): recordTypes.OccupancyTypeField[] {
-    const database = connectedDatabase || sqlite(databasePath);
+  const database = connectedDatabase ?? sqlite(databasePath)
 
-    const sqlParameters: unknown[] = [];
+  const sqlParameters: unknown[] = []
 
-    if (occupancyTypeId) {
-        sqlParameters.push(occupancyTypeId);
+  if (occupancyTypeId) {
+    sqlParameters.push(occupancyTypeId)
+  }
+
+  const occupancyTypeFields: recordTypes.OccupancyTypeField[] = database
+    .prepare(
+      'select occupancyTypeFieldId,' +
+        ' occupancyTypeField, occupancyTypeFieldValues, isRequired, pattern,' +
+        ' minimumLength, maximumLength,' +
+        ' orderNumber' +
+        ' from OccupancyTypeFields' +
+        ' where recordDelete_timeMillis is null' +
+        (occupancyTypeId
+          ? ' and occupancyTypeId = ?'
+          : ' and occupancyTypeId is null') +
+        ' order by orderNumber, occupancyTypeField'
+    )
+    .all(sqlParameters)
+
+  let expectedOrderNumber = 0
+
+  for (const occupancyTypeField of occupancyTypeFields) {
+    if (occupancyTypeField.orderNumber !== expectedOrderNumber) {
+      updateRecordOrderNumber(
+        'OccupancyTypeFields',
+        occupancyTypeField.occupancyTypeFieldId!,
+        expectedOrderNumber,
+        database
+      )
+
+      occupancyTypeField.orderNumber = expectedOrderNumber
     }
 
-    const occupancyTypeFields: recordTypes.OccupancyTypeField[] = database
-        .prepare(
-            "select occupancyTypeFieldId," +
-                " occupancyTypeField, occupancyTypeFieldValues, isRequired, pattern," +
-                " minimumLength, maximumLength," +
-                " orderNumber" +
-                " from OccupancyTypeFields" +
-                " where recordDelete_timeMillis is null" +
-                (occupancyTypeId ? " and occupancyTypeId = ?" : " and occupancyTypeId is null") +
-                " order by orderNumber, occupancyTypeField"
-        )
-        .all(sqlParameters);
+    expectedOrderNumber += 1
+  }
 
-    let expectedOrderNumber = 0;
+  if (!connectedDatabase) {
+    database.close()
+  }
 
-    for (const occupancyTypeField of occupancyTypeFields) {
-        if (occupancyTypeField.orderNumber !== expectedOrderNumber) {
-            updateRecordOrderNumber(
-                "OccupancyTypeFields",
-                occupancyTypeField.occupancyTypeFieldId,
-                expectedOrderNumber,
-                database
-            );
-
-            occupancyTypeField.orderNumber = expectedOrderNumber;
-        }
-
-        expectedOrderNumber += 1;
-    }
-
-    if (!connectedDatabase) {
-        database.close();
-    }
-
-    return occupancyTypeFields;
+  return occupancyTypeFields
 }
 
-export default getOccupancyTypeFields;
+export default getOccupancyTypeFields

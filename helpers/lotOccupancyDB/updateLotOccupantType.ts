@@ -1,48 +1,48 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import { clearCacheByTableName } from "../functions.cache.js";
+import { clearCacheByTableName } from '../functions.cache.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes'
 
 interface UpdateLotOccupantTypeForm {
-    lotOccupantTypeId: number | string;
-    lotOccupantType: string;
-    fontAwesomeIconClass?: string;
+  lotOccupantTypeId: number | string
+  lotOccupantType: string
+  fontAwesomeIconClass?: string
 }
 
 export function updateLotOccupantType(
-    lotOccupantTypeForm: UpdateLotOccupantTypeForm,
-    requestSession: recordTypes.PartialSession
+  lotOccupantTypeForm: UpdateLotOccupantTypeForm,
+  requestSession: recordTypes.PartialSession
 ): boolean {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const rightNowMillis = Date.now();
+  const rightNowMillis = Date.now()
 
-    const result = database
-        .prepare(
-            `update LotOccupantTypes
+  const result = database
+    .prepare(
+      `update LotOccupantTypes
                 set lotOccupantType = ?,
                 fontAwesomeIconClass = ?,
                 recordUpdate_userName = ?,
                 recordUpdate_timeMillis = ?
                 where lotOccupantTypeId = ?
                 and recordDelete_timeMillis is null`
-        )
-        .run(
-            lotOccupantTypeForm.lotOccupantType,
-            lotOccupantTypeForm.fontAwesomeIconClass || "",
-            requestSession.user.userName,
-            rightNowMillis,
-            lotOccupantTypeForm.lotOccupantTypeId
-        );
+    )
+    .run(
+      lotOccupantTypeForm.lotOccupantType,
+      lotOccupantTypeForm.fontAwesomeIconClass ?? '',
+      requestSession.user!.userName,
+      rightNowMillis,
+      lotOccupantTypeForm.lotOccupantTypeId
+    )
 
-    database.close();
+  database.close()
 
-    clearCacheByTableName("LotOccupantTypes");
+  clearCacheByTableName('LotOccupantTypes')
 
-    return result.changes > 0;
+  return result.changes > 0
 }
 
-export default updateLotOccupantType;
+export default updateLotOccupantType
