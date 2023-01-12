@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const workOrderMilestoneDateStringElement = workOrderSearchFiltersFormElement.querySelector('#searchFilter--workOrderMilestoneDateString');
     const milestoneCalendarContainerElement = document.querySelector('#container--milestoneCalendar');
     function renderMilestones(workOrderMilestones) {
+        var _a, _b, _c, _d, _e, _f, _g;
         if (workOrderMilestones.length === 0) {
             milestoneCalendarContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no milestones that meet the search criteria.</p>
@@ -38,12 +39,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             for (const lot of milestone.workOrderLots) {
                 lotOccupancyHTML +=
                     '<span class="has-tooltip-left" data-tooltip="' +
-                        cityssm.escapeHTML(lot.mapName || '') +
+                        cityssm.escapeHTML((_a = lot.mapName) !== null && _a !== void 0 ? _a : '') +
                         '">' +
                         '<i class="fas fa-vector-square" aria-label="' +
                         los.escapedAliases.Lot +
                         '"></i> ' +
-                        cityssm.escapeHTML(lot.lotName || '') +
+                        cityssm.escapeHTML((_b = lot.lotName) !== null && _b !== void 0 ? _b : '') +
                         '</span>' +
                         '<br />';
             }
@@ -51,12 +52,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 for (const occupant of lotOccupancy.lotOccupancyOccupants) {
                     lotOccupancyHTML +=
                         '<span class="has-tooltip-left" data-tooltip="' +
-                            cityssm.escapeHTML(occupant.lotOccupantType || '') +
+                            cityssm.escapeHTML((_c = occupant.lotOccupantType) !== null && _c !== void 0 ? _c : '') +
                             '">' +
                             '<i class="fas fa-user" aria-label="' +
                             los.escapedAliases.Occupancy +
                             '"></i> ' +
-                            cityssm.escapeHTML(occupant.occupantName || '') +
+                            cityssm.escapeHTML((_d = occupant.occupantName) !== null && _d !== void 0 ? _d : '') +
                             '</span>' +
                             '<br />';
                 }
@@ -85,15 +86,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '</div>') +
                     ('<div class="column">' +
                         '<i class="fas fa-circle" style="color:' +
-                        los.getRandomColor(milestone.workOrderNumber || '') +
+                        los.getRandomColor((_e = milestone.workOrderNumber) !== null && _e !== void 0 ? _e : '') +
                         '" aria-hidden="true"></i>' +
                         ' <a class="has-text-weight-bold" href="' +
                         los.getWorkOrderURL(milestone.workOrderId) +
                         '">' +
-                        cityssm.escapeHTML(milestone.workOrderNumber || '') +
+                        cityssm.escapeHTML((_f = milestone.workOrderNumber) !== null && _f !== void 0 ? _f : '') +
                         '</a><br />' +
                         '<span class="is-size-7">' +
-                        cityssm.escapeHTML(milestone.workOrderDescription || '') +
+                        cityssm.escapeHTML((_g = milestone.workOrderDescription) !== null && _g !== void 0 ? _g : '') +
                         '</span>' +
                         '</div>') +
                     ('<div class="column is-size-7">' + lotOccupancyHTML + '</div>') +

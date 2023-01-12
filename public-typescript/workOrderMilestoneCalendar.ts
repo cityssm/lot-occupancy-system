@@ -28,7 +28,7 @@ declare const cityssm: cityssmGlobal
 
   function renderMilestones(
     workOrderMilestones: recordTypes.WorkOrderMilestone[]
-  ) {
+  ): void {
     if (workOrderMilestones.length === 0) {
       milestoneCalendarContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no milestones that meet the search criteria.</p>
@@ -52,7 +52,7 @@ declare const cityssm: cityssmGlobal
         currentPanelElement = document.createElement('div')
         currentPanelElement.className = 'panel'
 
-        currentPanelElement.innerHTML = `<h2 class="panel-heading">${milestone.workOrderMilestoneDateString}</h2>`
+        currentPanelElement.innerHTML = `<h2 class="panel-heading">${milestone.workOrderMilestoneDateString!}</h2>`
 
         currentPanelDateString = milestone.workOrderMilestoneDateString!
       }
@@ -73,12 +73,12 @@ declare const cityssm: cityssmGlobal
       for (const lot of milestone.workOrderLots!) {
         lotOccupancyHTML +=
           '<span class="has-tooltip-left" data-tooltip="' +
-          cityssm.escapeHTML(lot.mapName || '') +
+          cityssm.escapeHTML(lot.mapName ?? '') +
           '">' +
           '<i class="fas fa-vector-square" aria-label="' +
           los.escapedAliases.Lot +
           '"></i> ' +
-          cityssm.escapeHTML(lot.lotName || '') +
+          cityssm.escapeHTML(lot.lotName ?? '') +
           '</span>' +
           '<br />'
       }
@@ -87,12 +87,12 @@ declare const cityssm: cityssmGlobal
         for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
           lotOccupancyHTML +=
             '<span class="has-tooltip-left" data-tooltip="' +
-            cityssm.escapeHTML(occupant.lotOccupantType || '') +
+            cityssm.escapeHTML(occupant.lotOccupantType ?? '') +
             '">' +
             '<i class="fas fa-user" aria-label="' +
             los.escapedAliases.Occupancy +
             '"></i> ' +
-            cityssm.escapeHTML(occupant.occupantName || '') +
+            cityssm.escapeHTML(occupant.occupantName ?? '') +
             '</span>' +
             '<br />'
         }
@@ -122,15 +122,15 @@ declare const cityssm: cityssmGlobal
           '</div>') +
         ('<div class="column">' +
           '<i class="fas fa-circle" style="color:' +
-          los.getRandomColor(milestone.workOrderNumber || '') +
+          los.getRandomColor(milestone.workOrderNumber ?? '') +
           '" aria-hidden="true"></i>' +
           ' <a class="has-text-weight-bold" href="' +
-          los.getWorkOrderURL(milestone.workOrderId!) +
+          los.getWorkOrderURL(milestone.workOrderId) +
           '">' +
-          cityssm.escapeHTML(milestone.workOrderNumber || '') +
+          cityssm.escapeHTML(milestone.workOrderNumber ?? '') +
           '</a><br />' +
           '<span class="is-size-7">' +
-          cityssm.escapeHTML(milestone.workOrderDescription || '') +
+          cityssm.escapeHTML(milestone.workOrderDescription ?? '') +
           '</span>' +
           '</div>') +
         ('<div class="column is-size-7">' + lotOccupancyHTML + '</div>') +
@@ -141,7 +141,7 @@ declare const cityssm: cityssmGlobal
     milestoneCalendarContainerElement.append(currentPanelElement!)
   }
 
-  function getMilestones(event?: Event) {
+  function getMilestones(event?: Event): void {
     if (event) {
       event.preventDefault()
     }

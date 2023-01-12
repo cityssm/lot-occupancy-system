@@ -1,168 +1,168 @@
 * {
-    font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-    margin: 20px;
+  margin: 20px;
 }
 
 /* Elements */
 
 .box {
-    border: 1px solid black;
-    padding: 10px;
+  border: 1px solid black;
+  padding: 10px;
 }
 
 .checkbox {
-    height: 1.5em;
-    width: 1.5em;
-    display: inline-block;
-    border: 1px solid black;
-    text-align: center;
+  height: 1.5em;
+  width: 1.5em;
+  display: inline-block;
+  border: 1px solid black;
+  text-align: center;
 }
 
 .checkbox::before {
-    content: ' ';
+  content: ' ';
 }
 
 .checkbox.is-checked::before {
-    content: '\2714';
+  content: '\2714';
 }
 
 .field {
-    border-bottom: 1px solid black;
-    display: inline-block;
-    width: 100px;
-    padding: 10px 0;
+  border-bottom: 1px solid black;
+  display: inline-block;
+  width: 100px;
+  padding: 10px 0;
 }
 
 /* Data Table */
 
 .data-table {
-    width: 100%;
+  width: 100%;
 }
 
 .data-table thead th,
 .data-table tfoot th {
-    padding: 5px;
-    text-align: left;
+  padding: 5px;
+  text-align: left;
 }
 
 .data-table tbody td,
 .data-table tfoot td {
-    padding: 5px;
-    text-align: left;
-    border-top: 1px solid black;
-    vertical-align: top;
+  padding: 5px;
+  text-align: left;
+  border-top: 1px solid black;
+  vertical-align: top;
 }
 
 /* Layout Table */
 
 .layout-table {
-    width: 100%;
-    border: 0;
-    margin: 0;
-    padding: 0;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .layout-table td {
-    vertical-align: top;
+  vertical-align: top;
 }
 
 /* Table Helpers */
 
 td.is-vcentered {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 td.is-width-1 {
-    width: 1px;
+  width: 1px;
 }
 
 td.has-border-bottom {
-    border-bottom: 1px solid black;
+  border-bottom: 1px solid black;
 }
 
 /* Padding / Margins */
 
 .m-0 {
-    margin: 0;
+  margin: 0;
 }
 
 .mt-1 {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .mt-2 {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .mt-4 {
-    margin-top: 40px;
+  margin-top: 40px;
 }
 
 .mt-6 {
-    margin-top: 60px;
+  margin-top: 60px;
 }
 
 .mb-0 {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .mb-1 {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .mb-2 {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .mb-4 {
-    margin-bottom: 40px;
+  margin-bottom: 40px;
 }
 
 .p-0 {
-    padding: 0;
+  padding: 0;
 }
 
 .pl-1 {
-    padding-left: 10px;
+  padding-left: 10px;
 }
 
 /* Text Utilities */
 
 .is-8pt {
-    font-size: 8pt !important;
+  font-size: 8pt !important;
 }
 
 .is-10pt {
-    font-size: 10pt !important;
+  font-size: 10pt !important;
 }
 
 .is-12pt {
-    font-size: 12pt !important;
+  font-size: 12pt !important;
 }
 
 .has-text-left {
-    text-align: left;
+  text-align: left;
 }
 
 .has-text-right {
-    text-align: right !important;
+  text-align: right !important;
 }
 
 .has-text-centered {
-    text-align: center;
+  text-align: center;
 }
 
 .is-capitalized {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .is-italic {
-    font-style: italic;
+  font-style: italic;
 }
 
 .has-text-nowrap {
-    white-space: nowrap;
+  white-space: nowrap;
 }

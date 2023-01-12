@@ -18,7 +18,7 @@ declare const formElement: HTMLFormElement
 
 let lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[]
 
-const openEditLotOccupancyOccupant = (clickEvent: Event) => {
+function openEditLotOccupancyOccupant(clickEvent: Event): void {
   const lotOccupantIndex = Number.parseInt(
     (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
       .lotOccupantIndex!,
@@ -34,7 +34,7 @@ const openEditLotOccupancyOccupant = (clickEvent: Event) => {
   let editFormElement: HTMLFormElement
   let editCloseModalFunction: () => void
 
-  const editOccupant = (submitEvent: SubmitEvent) => {
+  function editOccupant(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
@@ -51,8 +51,8 @@ const openEditLotOccupancyOccupant = (clickEvent: Event) => {
           renderLotOccupancyOccupants()
         } else {
           bulmaJS.alert({
-            title: 'Error Updating ' + exports.aliases.occupant,
-            message: responseJSON.errorMessage || '',
+            title: 'Error Updating ' + los.escapedAliases.Occupant,
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -63,7 +63,6 @@ const openEditLotOccupancyOccupant = (clickEvent: Event) => {
   cityssm.openHtmlModal('lotOccupancy-editOccupant', {
     onshow: (modalElement) => {
       los.populateAliases(modalElement)
-
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--lotOccupancyId'
@@ -133,25 +132,21 @@ const openEditLotOccupancyOccupant = (clickEvent: Event) => {
           '#lotOccupancyOccupantEdit--occupantProvince'
         ) as HTMLInputElement
       ).value = lotOccupancyOccupant.occupantProvince!
-
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantPostalCode'
         ) as HTMLInputElement
       ).value = lotOccupancyOccupant.occupantPostalCode!
-
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantPhoneNumber'
         ) as HTMLInputElement
       ).value = lotOccupancyOccupant.occupantPhoneNumber!
-
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantEmailAddress'
         ) as HTMLInputElement
       ).value = lotOccupancyOccupant.occupantEmailAddress!
-
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantComment'
@@ -160,7 +155,6 @@ const openEditLotOccupancyOccupant = (clickEvent: Event) => {
     },
     onshown: (modalElement, closeModalFunction) => {
       bulmaJS.toggleHtmlClipped()
-
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--lotOccupantTypeId'
@@ -178,12 +172,12 @@ const openEditLotOccupancyOccupant = (clickEvent: Event) => {
   })
 }
 
-const deleteLotOccupancyOccupant = (clickEvent: Event) => {
+function deleteLotOccupancyOccupant(clickEvent: Event): void {
   const lotOccupantIndex = (clickEvent.currentTarget as HTMLElement).closest(
     'tr'
   )!.dataset.lotOccupantIndex
 
-  const doDelete = () => {
+  function doDelete(): void {
     cityssm.postJSON(
       los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancyOccupant',
       {
@@ -200,8 +194,8 @@ const deleteLotOccupancyOccupant = (clickEvent: Event) => {
           renderLotOccupancyOccupants()
         } else {
           bulmaJS.alert({
-            title: 'Error Removing ' + exports.aliases.occupant,
-            message: responseJSON.errorMessage || '',
+            title: 'Error Removing ' + los.escapedAliases.Occupant,
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -210,20 +204,17 @@ const deleteLotOccupancyOccupant = (clickEvent: Event) => {
   }
 
   bulmaJS.confirm({
-    title: 'Remove ' + exports.aliases.occupant + '?',
-    message:
-      'Are you sure you want to remove this ' +
-      exports.aliases.occupant.toLowerCase() +
-      '?',
+    title: `Remove ${los.escapedAliases.Occupant}?`,
+    message: `Are you sure you want to remove this ${los.escapedAliases.occupant}?`,
     okButton: {
-      text: 'Yes, Remove ' + exports.aliases.occupant,
+      text: 'Yes, Remove ' + los.escapedAliases.Occupant,
       callbackFunction: doDelete
     },
     contextualColorName: 'warning'
   })
 }
 
-const renderLotOccupancyOccupants = () => {
+function renderLotOccupancyOccupants(): void {
   const occupantsContainer = document.querySelector(
     '#container--lotOccupancyOccupants'
   ) as HTMLElement
@@ -231,12 +222,9 @@ const renderLotOccupancyOccupants = () => {
   cityssm.clearElement(occupantsContainer)
 
   if (lotOccupancyOccupants.length === 0) {
-    occupantsContainer.innerHTML =
-      '<div class="message is-warning">' +
-      '<p class="message-body">There are no ' +
-      exports.aliases.occupants.toLowerCase() +
-      ' associated with this record.</p>' +
-      '</div>'
+    occupantsContainer.innerHTML = `<div class="message is-warning">
+        <p class="message-body">There are no ${los.escapedAliases.occupants} associated with this record.</p>
+        </div>`
 
     return
   }
@@ -244,15 +232,14 @@ const renderLotOccupancyOccupants = () => {
   const tableElement = document.createElement('table')
   tableElement.className = 'table is-fullwidth is-striped is-hoverable'
 
-  tableElement.innerHTML =
-    '<thead><tr>' +
-    ('<th>' + exports.aliases.occupant + '</th>') +
-    '<th>Address</th>' +
-    '<th>Other Contact</th>' +
-    '<th>Comment</th>' +
-    '<th class="is-hidden-print"><span class="is-sr-only">Options</span></th>' +
-    '</tr></thead>' +
-    '<tbody></tbody>'
+  tableElement.innerHTML = `<thead><tr>
+      <th>${los.escapedAliases.Occupant}</th>
+      <th>Address</th>
+      <th>Other Contact</th>
+      <th>Comment</th>
+      <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+      </tr></thead>
+      <tbody></tbody>`
 
   for (const lotOccupancyOccupant of lotOccupancyOccupants) {
     const tableRowElement = document.createElement('tr')
@@ -261,7 +248,11 @@ const renderLotOccupancyOccupants = () => {
 
     tableRowElement.innerHTML =
       '<td>' +
-      cityssm.escapeHTML(lotOccupancyOccupant.occupantName || '(No Name)') +
+      cityssm.escapeHTML(
+        (lotOccupancyOccupant.occupantName ?? '') === ''
+          ? '(No Name)'
+          : lotOccupancyOccupant.occupantName!
+      ) +
       '<br />' +
       ('<span class="tag">' +
         '<i class="fas fa-fw fa-' +
@@ -282,9 +273,9 @@ const renderLotOccupancyOccupants = () => {
         (lotOccupancyOccupant.occupantCity
           ? cityssm.escapeHTML(lotOccupancyOccupant.occupantCity) + ', '
           : '') +
-        cityssm.escapeHTML(lotOccupancyOccupant.occupantProvince || '') +
+        cityssm.escapeHTML(lotOccupancyOccupant.occupantProvince ?? '') +
         '<br />' +
-        cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode || '') +
+        cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode ?? '') +
         '</td>') +
       ('<td>' +
         (lotOccupancyOccupant.occupantPhoneNumber
@@ -332,9 +323,8 @@ if (isCreate) {
   ) as HTMLSelectElement
 
   lotOccupantTypeIdElement.addEventListener('change', () => {
-    const occupantFields = formElement.querySelectorAll(
-      "[data-table='LotOccupancyOccupant']"
-    ) as NodeListOf<HTMLInputElement | HTMLTextAreaElement>
+    const occupantFields: NodeListOf<HTMLInputElement | HTMLTextAreaElement> =
+      formElement.querySelectorAll("[data-table='LotOccupancyOccupant']")
 
     for (const occupantField of occupantFields) {
       occupantField.disabled = lotOccupantTypeIdElement.value === ''
@@ -354,9 +344,9 @@ if (isCreate) {
       let searchFormElement: HTMLFormElement
       let searchResultsElement: HTMLElement
 
-      const addOccupant = (
+      function addOccupant(
         formOrObject: HTMLFormElement | recordTypes.LotOccupancyOccupant
-      ) => {
+      ): void {
         cityssm.postJSON(
           los.urlPrefix + '/lotOccupancies/doAddLotOccupancyOccupant',
           formOrObject,
@@ -371,8 +361,8 @@ if (isCreate) {
               renderLotOccupancyOccupants()
             } else {
               bulmaJS.alert({
-                title: 'Error Adding ' + exports.aliases.occupant,
-                message: responseJSON.errorMessage || '',
+                title: `Error Adding ${los.escapedAliases.Occupant}`,
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
             }
@@ -380,14 +370,14 @@ if (isCreate) {
         )
       }
 
-      const addOccupantFromForm = (submitEvent: SubmitEvent) => {
+      function addOccupantFromForm(submitEvent: SubmitEvent): void {
         submitEvent.preventDefault()
         addOccupant(addFormElement)
       }
 
       let pastOccupantSearchResults: recordTypes.LotOccupancyOccupant[] = []
 
-      const addOccupantFromCopy = (clickEvent: MouseEvent) => {
+      function addOccupantFromCopy(clickEvent: MouseEvent): void {
         clickEvent.preventDefault()
 
         const panelBlockElement = clickEvent.currentTarget as HTMLElement
@@ -407,11 +397,8 @@ if (isCreate) {
 
         if (lotOccupantTypeId === '') {
           bulmaJS.alert({
-            title: 'No ' + exports.aliases.occupant + ' Type Selected',
-            message:
-              'Select a type to apply to the newly added ' +
-              exports.aliases.occupant.toLowerCase() +
-              '.',
+            title: `No ${los.escapedAliases.Occupant} Type Selected`,
+            message: `Select a type to apply to the newly added ${los.escapedAliases.occupant}.`,
             contextualColorName: 'warning'
           })
         } else {
@@ -421,7 +408,7 @@ if (isCreate) {
         }
       }
 
-      const searchOccupants = (event: Event) => {
+      function searchOccupants(event: Event): void {
         event.preventDefault()
 
         if (
@@ -461,28 +448,28 @@ if (isCreate) {
 
               panelBlockElement.innerHTML =
                 '<strong>' +
-                cityssm.escapeHTML(occupant.occupantName || '') +
+                cityssm.escapeHTML(occupant.occupantName ?? '') +
                 '</strong>' +
                 '<br />' +
                 '<div class="columns">' +
                 ('<div class="column">' +
-                  cityssm.escapeHTML(occupant.occupantAddress1 || '') +
+                  cityssm.escapeHTML(occupant.occupantAddress1 ?? '') +
                   '<br />' +
                   (occupant.occupantAddress2
                     ? cityssm.escapeHTML(occupant.occupantAddress2) + '<br />'
                     : '') +
-                  cityssm.escapeHTML(occupant.occupantCity || '') +
+                  cityssm.escapeHTML(occupant.occupantCity ?? '') +
                   ', ' +
-                  cityssm.escapeHTML(occupant.occupantProvince || '') +
+                  cityssm.escapeHTML(occupant.occupantProvince ?? '') +
                   '<br />' +
-                  cityssm.escapeHTML(occupant.occupantPostalCode || '') +
+                  cityssm.escapeHTML(occupant.occupantPostalCode ?? '') +
                   '</div>') +
                 ('<div class="column">' +
                   (occupant.occupantPhoneNumber
                     ? cityssm.escapeHTML(occupant.occupantPhoneNumber) +
                       '<br />'
                     : '') +
-                  cityssm.escapeHTML(occupant.occupantEmailAddress || '') +
+                  cityssm.escapeHTML(occupant.occupantEmailAddress ?? '') +
                   '<br />' +
                   '</div>') +
                 '</div>'
@@ -501,7 +488,6 @@ if (isCreate) {
       cityssm.openHtmlModal('lotOccupancy-addOccupant', {
         onshow: (modalElement) => {
           los.populateAliases(modalElement)
-
           ;(
             modalElement.querySelector(
               '#lotOccupancyOccupantAdd--lotOccupancyId'
@@ -533,7 +519,6 @@ if (isCreate) {
               '#lotOccupancyOccupantAdd--occupantCity'
             ) as HTMLInputElement
           ).value = exports.occupantCityDefault
-
           ;(
             modalElement.querySelector(
               '#lotOccupancyOccupantAdd--occupantProvince'
@@ -543,7 +528,6 @@ if (isCreate) {
         onshown: (modalElement, closeModalFunction) => {
           bulmaJS.toggleHtmlClipped()
           bulmaJS.init(modalElement)
-
           ;(
             modalElement.querySelector(
               '#lotOccupancyOccupantAdd--lotOccupantTypeId'
@@ -565,7 +549,6 @@ if (isCreate) {
           searchFormElement.addEventListener('submit', (formEvent) => {
             formEvent.preventDefault()
           })
-
           ;(
             modalElement.querySelector(
               '#lotOccupancyOccupantCopy--searchFilter'

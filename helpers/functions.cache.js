@@ -8,7 +8,7 @@ import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from './lotOccupan
 import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from './lotOccupancyDB/getWorkOrderMilestoneTypes.js';
 let lotOccupantTypes;
 export function getLotOccupantTypes() {
-    if (!lotOccupantTypes) {
+    if (lotOccupantTypes === undefined) {
         lotOccupantTypes = getLotOccupantTypesFromDatabase();
     }
     return lotOccupantTypes;
@@ -32,7 +32,7 @@ function clearLotOccupantTypesCache() {
 }
 let lotStatuses;
 export function getLotStatuses() {
-    if (!lotStatuses) {
+    if (lotStatuses === undefined) {
         lotStatuses = getLotStatusesFromDatabase();
     }
     return lotStatuses;
@@ -55,7 +55,7 @@ function clearLotStatusesCache() {
 }
 let lotTypes;
 export function getLotTypes() {
-    if (!lotTypes) {
+    if (lotTypes === undefined) {
         lotTypes = getLotTypesFromDatabase();
     }
     return lotTypes;
@@ -79,13 +79,13 @@ function clearLotTypesCache() {
 let occupancyTypes;
 let allOccupancyTypeFields;
 export function getOccupancyTypes() {
-    if (!occupancyTypes) {
+    if (occupancyTypes === undefined) {
         occupancyTypes = getOccupancyTypesFromDatabase();
     }
     return occupancyTypes;
 }
 export function getAllOccupancyTypeFields() {
-    if (!allOccupancyTypeFields) {
+    if (allOccupancyTypeFields === undefined) {
         allOccupancyTypeFields = getOccupancyTypeFieldsFromDatabase();
     }
     return allOccupancyTypeFields;
@@ -106,7 +106,7 @@ export function getOccupancyTypeByOccupancyType(occupancyTypeString) {
 }
 export function getOccupancyTypePrintsById(occupancyTypeId) {
     const occupancyType = getOccupancyTypeById(occupancyTypeId);
-    if (!occupancyType ||
+    if (occupancyType === undefined ||
         (occupancyType.occupancyTypePrints ?? []).length === 0) {
         return [];
     }
@@ -121,7 +121,7 @@ function clearOccupancyTypesCache() {
 }
 let workOrderTypes;
 export function getWorkOrderTypes() {
-    if (!workOrderTypes) {
+    if (workOrderTypes === undefined) {
         workOrderTypes = getWorkOrderTypesFromDatabase();
     }
     return workOrderTypes;
@@ -137,7 +137,7 @@ function clearWorkOrderTypesCache() {
 }
 let workOrderMilestoneTypes;
 export function getWorkOrderMilestoneTypes() {
-    if (!workOrderMilestoneTypes) {
+    if (workOrderMilestoneTypes === undefined) {
         workOrderMilestoneTypes = getWorkOrderMilestoneTypesFromDatabase();
     }
     return workOrderMilestoneTypes;

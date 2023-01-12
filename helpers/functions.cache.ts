@@ -22,7 +22,7 @@ import type * as recordTypes from '../types/recordTypes'
 let lotOccupantTypes: recordTypes.LotOccupantType[] | undefined
 
 export function getLotOccupantTypes(): recordTypes.LotOccupantType[] {
-  if (!lotOccupantTypes) {
+  if (lotOccupantTypes === undefined) {
     lotOccupantTypes = getLotOccupantTypesFromDatabase()
   }
 
@@ -65,7 +65,7 @@ function clearLotOccupantTypesCache(): void {
 let lotStatuses: recordTypes.LotStatus[] | undefined
 
 export function getLotStatuses(): recordTypes.LotStatus[] {
-  if (!lotStatuses) {
+  if (lotStatuses === undefined) {
     lotStatuses = getLotStatusesFromDatabase()
   }
 
@@ -105,7 +105,7 @@ function clearLotStatusesCache(): void {
 let lotTypes: recordTypes.LotType[] | undefined
 
 export function getLotTypes(): recordTypes.LotType[] {
-  if (!lotTypes) {
+  if (lotTypes === undefined) {
     lotTypes = getLotTypesFromDatabase()
   }
 
@@ -146,7 +146,7 @@ let occupancyTypes: recordTypes.OccupancyType[] | undefined
 let allOccupancyTypeFields: recordTypes.OccupancyTypeField[] | undefined
 
 export function getOccupancyTypes(): recordTypes.OccupancyType[] {
-  if (!occupancyTypes) {
+  if (occupancyTypes === undefined) {
     occupancyTypes = getOccupancyTypesFromDatabase()
   }
 
@@ -154,7 +154,7 @@ export function getOccupancyTypes(): recordTypes.OccupancyType[] {
 }
 
 export function getAllOccupancyTypeFields(): recordTypes.OccupancyTypeField[] {
-  if (!allOccupancyTypeFields) {
+  if (allOccupancyTypeFields === undefined) {
     allOccupancyTypeFields = getOccupancyTypeFieldsFromDatabase()
   }
   return allOccupancyTypeFields
@@ -189,7 +189,7 @@ export function getOccupancyTypePrintsById(occupancyTypeId: number): string[] {
   const occupancyType = getOccupancyTypeById(occupancyTypeId)
 
   if (
-    !occupancyType ||
+    occupancyType === undefined ||
     (occupancyType.occupancyTypePrints ?? []).length === 0
   ) {
     return []
@@ -214,7 +214,7 @@ function clearOccupancyTypesCache(): void {
 let workOrderTypes: recordTypes.WorkOrderType[] | undefined
 
 export function getWorkOrderTypes(): recordTypes.WorkOrderType[] {
-  if (!workOrderTypes) {
+  if (workOrderTypes === undefined) {
     workOrderTypes = getWorkOrderTypesFromDatabase()
   }
 
@@ -242,7 +242,7 @@ function clearWorkOrderTypesCache(): void {
 let workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[] | undefined
 
 export function getWorkOrderMilestoneTypes(): recordTypes.WorkOrderMilestoneType[] {
-  if (!workOrderMilestoneTypes) {
+  if (workOrderMilestoneTypes === undefined) {
     workOrderMilestoneTypes = getWorkOrderMilestoneTypesFromDatabase()
   }
 

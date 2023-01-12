@@ -210,9 +210,7 @@ export function getProperty(propertyName: string): unknown {
   let currentObject = config
 
   for (const propertyNamePiece of propertyNameSplit) {
-    if (
-      Object.prototype.hasOwnProperty.call(currentObject, propertyNamePiece)
-    ) {
+    if (Object.hasOwn(currentObject, propertyNamePiece)) {
       currentObject = currentObject[propertyNamePiece]
       continue
     }

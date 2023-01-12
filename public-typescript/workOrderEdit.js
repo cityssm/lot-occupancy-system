@@ -1,5 +1,5 @@
 "use strict";
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     var _a, _b;
@@ -16,6 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.postJSON(los.urlPrefix +
             '/workOrders/' +
             (isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'), submitEvent.currentTarget, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 cityssm.disableNavBlocker();
                 if (isCreate) {
@@ -31,7 +32,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Updating Work Order',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -48,13 +49,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.postJSON(los.urlPrefix + '/workOrders/doCloseWorkOrder', {
             workOrderId
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 window.location.href = los.urlPrefix + '/workOrders/' + workOrderId;
             }
             else {
                 bulmaJS.alert({
                     title: 'Error Closing Work Order',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -64,13 +66,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.postJSON(los.urlPrefix + '/workOrders/doDeleteWorkOrder', {
             workOrderId
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 window.location.href = los.urlPrefix + '/workOrders';
             }
             else {
                 bulmaJS.alert({
                     title: 'Error Deleting Work Order',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -90,18 +93,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 contextualColorName: 'warning'
             });
             /*
-                        // Disable closing work orders with open milestones
-                        bulmaJS.confirm({
-                            title: "Close Work Order with Outstanding Milestones",
-                            message:
-                                "Are you sure you want to close this work order with outstanding milestones?",
-                            contextualColorName: "danger",
-                            okButton: {
-                                text: "Yes, Close Work Order",
-                                callbackFunction: doClose
-                            }
-                        });
-                    */
+              // Disable closing work orders with open milestones
+              bulmaJS.confirm({
+                  title: "Close Work Order with Outstanding Milestones",
+                  message:
+                      "Are you sure you want to close this work order with outstanding milestones?",
+                  contextualColorName: "danger",
+                  okButton: {
+                      text: "Yes, Close Work Order",
+                      callbackFunction: doClose
+                  }
+              });
+          */
         }
         else {
             bulmaJS.confirm({
@@ -870,6 +873,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * Milestones
      */
     function processMilestoneResponse(responseJSON) {
+        var _a;
         if (responseJSON.success) {
             workOrderMilestones = responseJSON.workOrderMilestones;
             renderMilestones();
@@ -877,7 +881,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         else {
             bulmaJS.alert({
                 title: 'Error Reopening Milestone',
-                message: responseJSON.errorMessage || '',
+                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                 contextualColorName: 'danger'
             });
         }
@@ -889,12 +893,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
             return currentMilestone.workOrderMilestoneId === workOrderMilestoneId;
         });
-        const doComplete = () => {
+        function doComplete() {
             cityssm.postJSON(los.urlPrefix + '/workOrders/doCompleteWorkOrderMilestone', {
                 workOrderId,
                 workOrderMilestoneId
             }, processMilestoneResponse);
-        };
+        }
         bulmaJS.confirm({
             title: 'Complete Milestone',
             message: 'Are you sure you want to complete this milestone?' +
@@ -912,12 +916,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function reopenMilestone(clickEvent) {
         clickEvent.preventDefault();
         const workOrderMilestoneId = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId;
-        const doReopen = () => {
+        function doReopen() {
             cityssm.postJSON(los.urlPrefix + '/workOrders/doReopenWorkOrderMilestone', {
                 workOrderId,
                 workOrderMilestoneId
             }, processMilestoneResponse);
-        };
+        }
         bulmaJS.confirm({
             title: 'Reopen Milestone',
             message: 'Are you sure you want to remove the completion status from this milestone, and reopen it?',
@@ -931,12 +935,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function deleteMilestone(clickEvent) {
         clickEvent.preventDefault();
         const workOrderMilestoneId = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId;
-        const doDelete = () => {
+        function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/workOrders/doDeleteWorkOrderMilestone', {
                 workOrderMilestoneId,
                 workOrderId
             }, processMilestoneResponse);
-        };
+        }
         bulmaJS.confirm({
             title: 'Delete Milestone',
             message: 'Are you sure you want to delete this milestone?',
@@ -954,7 +958,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             return currentMilestone.workOrderMilestoneId === workOrderMilestoneId;
         });
         let editCloseModalFunction;
-        const doEdit = (submitEvent) => {
+        function doEdit(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + '/workOrders/doUpdateWorkOrderMilestone', submitEvent.currentTarget, (responseJSON) => {
                 processMilestoneResponse(responseJSON);
@@ -962,7 +966,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     editCloseModalFunction();
                 }
             });
-        };
+        }
         cityssm.openHtmlModal('workOrder-editMilestone', {
             onshow(modalElement) {
                 ;
@@ -1013,7 +1017,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function renderMilestones() {
-        var _a, _b, _c;
+        var _a, _b, _c, _d, _e;
         // Clear milestones panel
         const milestonesPanelElement = document.querySelector('#panel--milestones');
         const panelBlockElementsToDelete = milestonesPanelElement.querySelectorAll('.panel-block');
@@ -1043,7 +1047,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     ('<div class="column">' +
                         (milestone.workOrderMilestoneTypeId
                             ? '<strong>' +
-                                cityssm.escapeHTML(milestone.workOrderMilestoneType || '') +
+                                cityssm.escapeHTML((_a = milestone.workOrderMilestoneType) !== null && _a !== void 0 ? _a : '') +
                                 '</strong><br />'
                             : '') +
                         milestone.workOrderMilestoneDateString +
@@ -1052,7 +1056,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             : '') +
                         '<br />' +
                         '<span class="is-size-7">' +
-                        cityssm.escapeHTML(milestone.workOrderMilestoneDescription || '') +
+                        cityssm.escapeHTML((_b = milestone.workOrderMilestoneDescription) !== null && _b !== void 0 ? _b : '') +
                         '</span>' +
                         '</div>') +
                     ('<div class="column is-narrow">' +
@@ -1083,12 +1087,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '</div>' +
                         '</div>') +
                     '</div>';
-            (_a = panelBlockElement
-                .querySelector('.button--reopenMilestone')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', reopenMilestone);
-            (_b = panelBlockElement
-                .querySelector('.button--editMilestone')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', editMilestone);
             (_c = panelBlockElement
-                .querySelector('.button--completeMilestone')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', completeMilestone);
+                .querySelector('.button--reopenMilestone')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', reopenMilestone);
+            (_d = panelBlockElement
+                .querySelector('.button--editMilestone')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', editMilestone);
+            (_e = panelBlockElement
+                .querySelector('.button--completeMilestone')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', completeMilestone);
             panelBlockElement
                 .querySelector('.button--deleteMilestone')
                 .addEventListener('click', deleteMilestone);
@@ -1107,7 +1111,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             let addModalElement;
             let addFormElement;
             let addCloseModalFunction;
-            const doAdd = (submitEvent) => {
+            function doAdd(submitEvent) {
                 if (submitEvent) {
                     submitEvent.preventDefault();
                 }
@@ -1134,7 +1138,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     _doAdd();
                 }
-            };
+            }
             cityssm.openHtmlModal('workOrder-addMilestone', {
                 onshow(modalElement) {
                     ;

@@ -4,10 +4,7 @@ import { getLotOccupancy } from './lotOccupancyDB/getLotOccupancy.js';
 import { getWorkOrder } from './lotOccupancyDB/getWorkOrder.js';
 const screenPrintConfigs = {
     lotOccupancy: {
-        title: configFunctions.getProperty('aliases.lot') +
-            ' ' +
-            configFunctions.getProperty('aliases.occupancy') +
-            ' Print',
+        title: `${configFunctions.getProperty('aliases.lot')} ${configFunctions.getProperty('aliases.occupancy')} Print`,
         params: ['lotOccupancyId']
     }
 };

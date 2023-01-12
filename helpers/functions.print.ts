@@ -11,11 +11,9 @@ interface PrintConfig {
 
 const screenPrintConfigs: Record<string, PrintConfig> = {
   lotOccupancy: {
-    title:
-      configFunctions.getProperty('aliases.lot') +
-      ' ' +
-      configFunctions.getProperty('aliases.occupancy') +
-      ' Print',
+    title: `${configFunctions.getProperty(
+      'aliases.lot'
+    )} ${configFunctions.getProperty('aliases.occupancy')} Print`,
     params: ['lotOccupancyId']
   }
 }

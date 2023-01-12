@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
 import type { BulmaJS } from '@cityssm/bulma-js/types'
@@ -8,7 +8,6 @@ import type * as recordTypes from '../../types/recordTypes'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -47,7 +46,7 @@ declare const bulmaJS: BulmaJS
 
           if (isCreate) {
             window.location.href = los.getWorkOrderURL(
-              responseJSON.workOrderId!,
+              responseJSON.workOrderId,
               true
             )
           } else {
@@ -59,7 +58,7 @@ declare const bulmaJS: BulmaJS
         } else {
           bulmaJS.alert({
             title: 'Error Updating Work Order',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -67,9 +66,8 @@ declare const bulmaJS: BulmaJS
     )
   })
 
-  const inputElements = workOrderFormElement.querySelectorAll(
-    'input, select'
-  ) as NodeListOf<HTMLInputElement | HTMLSelectElement>
+  const inputElements: NodeListOf<HTMLInputElement | HTMLSelectElement> =
+    workOrderFormElement.querySelectorAll('input, select')
 
   for (const inputElement of inputElements) {
     inputElement.addEventListener('change', cityssm.enableNavBlocker)
@@ -79,7 +77,7 @@ declare const bulmaJS: BulmaJS
    * Work Order Options
    */
 
-  function doClose() {
+  function doClose(): void {
     cityssm.postJSON(
       los.urlPrefix + '/workOrders/doCloseWorkOrder',
       {
@@ -91,7 +89,7 @@ declare const bulmaJS: BulmaJS
         } else {
           bulmaJS.alert({
             title: 'Error Closing Work Order',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -99,7 +97,7 @@ declare const bulmaJS: BulmaJS
     )
   }
 
-  function doDelete() {
+  function doDelete(): void {
     cityssm.postJSON(
       los.urlPrefix + '/workOrders/doDeleteWorkOrder',
       {
@@ -111,7 +109,7 @@ declare const bulmaJS: BulmaJS
         } else {
           bulmaJS.alert({
             title: 'Error Deleting Work Order',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -137,18 +135,18 @@ declare const bulmaJS: BulmaJS
         })
 
         /*
-                    // Disable closing work orders with open milestones
-                    bulmaJS.confirm({
-                        title: "Close Work Order with Outstanding Milestones",
-                        message:
-                            "Are you sure you want to close this work order with outstanding milestones?",
-                        contextualColorName: "danger",
-                        okButton: {
-                            text: "Yes, Close Work Order",
-                            callbackFunction: doClose
-                        }
-                    });
-                */
+          // Disable closing work orders with open milestones
+          bulmaJS.confirm({
+              title: "Close Work Order with Outstanding Milestones",
+              message:
+                  "Are you sure you want to close this work order with outstanding milestones?",
+              contextualColorName: "danger",
+              okButton: {
+                  text: "Yes, Close Work Order",
+                  callbackFunction: doClose
+              }
+          });
+      */
       } else {
         bulmaJS.confirm({
           title: 'Close Work Order',
@@ -200,20 +198,20 @@ declare const bulmaJS: BulmaJS
     success: boolean
     errorMessage?: string
     workOrderMilestones?: recordTypes.WorkOrderMilestone[]
-  }) {
+  }): void {
     if (responseJSON.success) {
       workOrderMilestones = responseJSON.workOrderMilestones!
       renderMilestones()
     } else {
       bulmaJS.alert({
         title: 'Error Reopening Milestone',
-        message: responseJSON.errorMessage || '',
+        message: responseJSON.errorMessage ?? '',
         contextualColorName: 'danger'
       })
     }
   }
 
-  function completeMilestone(clickEvent: Event) {
+  function completeMilestone(clickEvent: Event): void {
     clickEvent.preventDefault()
 
     const currentDateString = cityssm.dateToString(new Date())
@@ -231,7 +229,7 @@ declare const bulmaJS: BulmaJS
       return currentMilestone.workOrderMilestoneId === workOrderMilestoneId
     })!
 
-    const doComplete = () => {
+    function doComplete(): void {
       cityssm.postJSON(
         los.urlPrefix + '/workOrders/doCompleteWorkOrderMilestone',
         {
@@ -258,7 +256,7 @@ declare const bulmaJS: BulmaJS
     })
   }
 
-  function reopenMilestone(clickEvent: Event) {
+  function reopenMilestone(clickEvent: Event): void {
     clickEvent.preventDefault()
 
     const workOrderMilestoneId = (
@@ -267,7 +265,7 @@ declare const bulmaJS: BulmaJS
       ) as HTMLElement
     ).dataset.workOrderMilestoneId
 
-    const doReopen = () => {
+    function doReopen(): void {
       cityssm.postJSON(
         los.urlPrefix + '/workOrders/doReopenWorkOrderMilestone',
         {
@@ -290,7 +288,7 @@ declare const bulmaJS: BulmaJS
     })
   }
 
-  function deleteMilestone(clickEvent: Event) {
+  function deleteMilestone(clickEvent: Event): void {
     clickEvent.preventDefault()
 
     const workOrderMilestoneId = (
@@ -299,7 +297,7 @@ declare const bulmaJS: BulmaJS
       ) as HTMLElement
     ).dataset.workOrderMilestoneId
 
-    const doDelete = () => {
+    function doDelete(): void {
       cityssm.postJSON(
         los.urlPrefix + '/workOrders/doDeleteWorkOrderMilestone',
         {
@@ -321,7 +319,7 @@ declare const bulmaJS: BulmaJS
     })
   }
 
-  function editMilestone(clickEvent: Event) {
+  function editMilestone(clickEvent: Event): void {
     clickEvent.preventDefault()
 
     const workOrderMilestoneId = Number.parseInt(
@@ -339,7 +337,7 @@ declare const bulmaJS: BulmaJS
 
     let editCloseModalFunction: () => void
 
-    const doEdit = (submitEvent: SubmitEvent) => {
+    function doEdit(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()
 
       cityssm.postJSON(
@@ -365,7 +363,6 @@ declare const bulmaJS: BulmaJS
             '#milestoneEdit--workOrderId'
           ) as HTMLInputElement
         ).value = workOrderId
-
         ;(
           modalElement.querySelector(
             '#milestoneEdit--workOrderMilestoneId'
@@ -443,7 +440,7 @@ declare const bulmaJS: BulmaJS
     })
   }
 
-  function renderMilestones() {
+  function renderMilestones(): void {
     // Clear milestones panel
     const milestonesPanelElement = document.querySelector(
       '#panel--milestones'
@@ -481,7 +478,7 @@ declare const bulmaJS: BulmaJS
         ('<div class="column">' +
           (milestone.workOrderMilestoneTypeId
             ? '<strong>' +
-              cityssm.escapeHTML(milestone.workOrderMilestoneType || '') +
+              cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '') +
               '</strong><br />'
             : '') +
           milestone.workOrderMilestoneDateString +
@@ -490,7 +487,7 @@ declare const bulmaJS: BulmaJS
             : '') +
           '<br />' +
           '<span class="is-size-7">' +
-          cityssm.escapeHTML(milestone.workOrderMilestoneDescription || '') +
+          cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '') +
           '</span>' +
           '</div>') +
         ('<div class="column is-narrow">' +
@@ -557,14 +554,14 @@ declare const bulmaJS: BulmaJS
         let addFormElement: HTMLFormElement
         let addCloseModalFunction: () => void
 
-        const doAdd = (submitEvent: SubmitEvent) => {
+        function doAdd(submitEvent: SubmitEvent): void {
           if (submitEvent) {
             submitEvent.preventDefault()
           }
 
           const currentDateString = cityssm.dateToString(new Date())
 
-          function _doAdd() {
+          function _doAdd(): void {
             cityssm.postJSON(
               los.urlPrefix + '/workOrders/doAddWorkOrderMilestone',
               addFormElement,
@@ -582,17 +579,14 @@ declare const bulmaJS: BulmaJS
             )
           }
 
-          if (
-            (
-              addModalElement.querySelector(
-                '#milestoneAdd--workOrderMilestoneDateString'
-              ) as HTMLInputElement
-            ).value < currentDateString
-          ) {
+          if ((
+            addModalElement.querySelector(
+              '#milestoneAdd--workOrderMilestoneDateString'
+            ) as HTMLInputElement
+          ).value < currentDateString) {
             bulmaJS.confirm({
               title: 'Milestone Date in the Past',
-              message:
-                'Are you sure you want to create a milestone with a date in the past?',
+              message: 'Are you sure you want to create a milestone with a date in the past?',
               contextualColorName: 'warning',
               okButton: {
                 text: 'Yes, Create a Past Milestone',
