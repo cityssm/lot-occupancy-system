@@ -1,22 +1,22 @@
-import { testUpdate } from "../../../test/_globals.js";
-import { logout, login } from "../../support/index.js";
-describe("Update User", () => {
-    beforeEach("Loads page", () => {
+import { testUpdate } from '../../../test/_globals.js';
+import { logout, login } from '../../support/index.js';
+describe('Update User', () => {
+    beforeEach('Loads page', () => {
         logout();
         login(testUpdate);
     });
     afterEach(logout);
-    it("Has an Update User dashboard", () => {
-        cy.visit("/dashboard");
-        cy.log("Has no detectable accessibility issues");
+    it('Has an Update User dashboard', () => {
+        cy.visit('/dashboard');
+        cy.log('Has no detectable accessibility issues');
         cy.injectAxe();
         cy.checkA11y();
-        cy.log("Has no links to admin areas");
-        cy.get("a[href*='/admin']").should("not.exist");
+        cy.log('Has no links to admin areas');
+        cy.get("a[href*='/admin']").should('not.exist');
     });
-    it("Redirects to Dashboard when attempting to access admin area", () => {
-        cy.visit("/admin/cleanup");
+    it('Redirects to Dashboard when attempting to access admin area', () => {
+        cy.visit('/admin/cleanup');
         cy.wait(200);
-        cy.location("pathname").should("equal", "/dashboard/");
+        cy.location('pathname').should('equal', '/dashboard/');
     });
 });

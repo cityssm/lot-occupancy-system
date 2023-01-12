@@ -58,7 +58,7 @@ export interface Config {
             recordDeleteAgeDays?: number;
         };
         printPdf: {
-            contentDisposition?: "attachment" | "inline";
+            contentDisposition?: 'attachment' | 'inline';
         };
     };
 }

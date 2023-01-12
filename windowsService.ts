@@ -1,11 +1,11 @@
-import path from "path";
-import type { ServiceConfig } from "node-windows";
+import path from 'node:path'
+import type { ServiceConfig } from 'node-windows'
 
-const __dirname = ".";
+const _dirname = '.'
 
 export const serviceConfig: ServiceConfig = {
-    name: "Lot Occupancy Manager",
-    description:
-        "A system for managing the occupancy of lots. (i.e. Cemetery management)",
-    script: path.join(__dirname, "bin", "www.js")
-};
+  name: 'Lot Occupancy Manager',
+  description:
+    'A system for managing the occupancy of lots. (i.e. Cemetery management)',
+  script: path.join(_dirname, 'bin', 'www.js')
+}

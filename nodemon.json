@@ -1,3 +1,8 @@
 {
-    "ignore": ["cypress/*", "data/sessions/*", "public/javascripts/*", "public-typescript/*"]
+  "ignore": [
+    "cypress/*",
+    "data/sessions/*",
+    "public/javascripts/*",
+    "public-typescript/*"
+  ]
 }

@@ -1,25 +1,18 @@
-import fs from "node:fs";
-import * as sql from "@cityssm/mssql-multi-pool";
-import { soMSSQL } from "./config.js";
+import fs from 'node:fs';
+import * as sql from '@cityssm/mssql-multi-pool';
+import { soMSSQL } from './config.js';
 async function importMaps() {
     let pool;
     try {
         pool = await sql.connect(soMSSQL);
-        const result = await pool.query("select m.ID as mapId, m.Name as mapName," +
-            " l.ID as layerId, l.Name as layerName, l.Image as layerImage" +
-            " from Legacy_Maps m" +
-            " left join Legacy_Layers l on m.ID = l.Map_ID");
+        const result = await pool.query('select m.ID as mapId, m.Name as mapName,' +
+            ' l.ID as layerId, l.Name as layerName, l.Image as layerImage' +
+            ' from Legacy_Maps m' +
+            ' left join Legacy_Layers l on m.ID = l.Map_ID');
         for (const layer of result.recordset) {
             const imageBuffer = layer.layerImage;
-            const fileName = layer.mapName +
-                " - " +
-                layer.layerName +
-                " (" +
-                layer.mapId +
-                ", " +
-                layer.layerId +
-                ").wmf";
-            fs.writeFile("./temp/wmf/" + fileName, imageBuffer, (error) => {
+            const fileName = `${layer.mapName} - ${layer.layerName} (${layer.mapId}, ${layer.layerId}).wmf`;
+            fs.writeFile('./temp/wmf/' + fileName, imageBuffer, (error) => {
                 if (error) {
                     console.log(error);
                 }
