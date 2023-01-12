@@ -125,8 +125,8 @@ declare const bulmaJS: BulmaJS
     })
 
   document
-    .querySelector('#button--deleteLotOccupancy')!
-    .addEventListener('click', (clickEvent) => {
+    .querySelector('#button--deleteLotOccupancy')
+    ?.addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()
 
       function doDelete(): void {
@@ -162,8 +162,8 @@ declare const bulmaJS: BulmaJS
     })
 
   document
-    .querySelector('#button--createWorkOrder')!
-    .addEventListener('click', (clickEvent) => {
+    .querySelector('#button--createWorkOrder')
+    ?.addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()
 
       let createCloseModalFunction: () => void

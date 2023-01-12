@@ -2,7 +2,7 @@
 /* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a;
+    var _a, _b, _c;
     const los = exports.los;
     const lotOccupancyId = document.querySelector('#lotOccupancy--lotOccupancyId').value;
     const isCreate = lotOccupancyId === '';
@@ -82,9 +82,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
     });
-    document
-        .querySelector('#button--deleteLotOccupancy')
-        .addEventListener('click', (clickEvent) => {
+    (_b = document
+        .querySelector('#button--deleteLotOccupancy')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancy', {
@@ -114,9 +113,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    document
-        .querySelector('#button--createWorkOrder')
-        .addEventListener('click', (clickEvent) => {
+    (_c = document
+        .querySelector('#button--createWorkOrder')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         let createCloseModalFunction;
         function doCreate(formEvent) {
