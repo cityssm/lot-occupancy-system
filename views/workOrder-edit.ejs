@@ -41,14 +41,14 @@
 <% } %>
 
 <div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
-  <% if (!isCreate) { %>
-    <div class="level-left">
+  <div class="level-left">
+    <% if (!isCreate) { %>
       <span class="level-item has-text-weight-bold">
         Work Order
         #<%= workOrder.workOrderNumber || "(No Number)" %>
       </span>
-    </div>
-  <% } %>
+    <% } %>
+  </div>
   <div class="level-right">
     <% if (!isCreate && configFunctions.getProperty("settings.workOrders.prints").length > 0) { %>
       <% if (configFunctions.getProperty("settings.workOrders.prints").length === 1) { %>

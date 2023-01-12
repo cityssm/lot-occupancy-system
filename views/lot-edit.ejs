@@ -29,21 +29,21 @@
 </nav>
 
 <h1 class="title is-1">
-    <% if (isCreate) { %>
-        Create a New <%= configFunctions.getProperty("aliases.lot") %>
-    <% } else { %>
-        <%= lot.lotName %>
-    <% } %>
+  <% if (isCreate) { %>
+    Create a New <%= configFunctions.getProperty("aliases.lot") %>
+  <% } else { %>
+    <%= lot.lotName %>
+  <% } %>
 </h1>
 
 <div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
-  <% if (!isCreate) { %>
-    <div class="level-left">
+  <div class="level-left">
+    <% if (!isCreate) { %>
       <span class="level-item has-text-weight-bold">
         <%= lot.lotName %>
       </span>
-    </div>
-  <% } %>
+    <% } %>
+  </div>
   <div class="level-right">
     <% if (!isCreate) { %>
       <div class="level-item">

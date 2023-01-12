@@ -37,13 +37,13 @@
 </h1>
 
 <div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
-  <% if (!isCreate) { %>
-    <div class="level-left">
+  <div class="level-left">
+    <% if (!isCreate) { %>
       <span class="level-item has-text-weight-bold">
         <%= map.mapName || "(No Name)" %>
       </span>
-    </div>
-  <% } %>
+    <% } %>
+  </div>
   <div class="level-right">
     <% if (!isCreate) { %>
       <div class="level-item">

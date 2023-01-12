@@ -1,408 +1,408 @@
 <%- include('_header'); -%>
 
 <nav class="breadcrumb">
-    <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-        <li>
-            <a href="<%= urlPrefix %>/lotOccupancies">
-                <span class="icon is-small">
-                    <span class="fa-layers fa-fw" aria-hidden="true">
-                        <i class="fas fa-vector-square"></i>
-                        <i class="fas fa-user" data-fa-transform="shrink-10"></i>
-                    </span>
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+        <a href="<%= urlPrefix %>/lotOccupancies">
+            <span class="icon is-small">
+                <span class="fa-layers fa-fw" aria-hidden="true">
+                    <i class="fas fa-vector-square"></i>
+                    <i class="fas fa-user" data-fa-transform="shrink-10"></i>
                 </span>
-                <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
-            </a>
-        </li>
-        <% if (!isCreate) { %>
-        <li>
-            <a href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>" accesskey="v">
-                <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
-            </a>
-        </li>
-        <% } %>
-        <li class="is-active">
-            <a href="#" aria-current="page">
-                <% if (isCreate) { %>
-                    Create a New <%= configFunctions.getProperty("aliases.occupancy") %> Record
-                <% } else { %>
-                    Update <%= configFunctions.getProperty("aliases.occupancy") %>
-                <% } %>
-            </a>
-        </li>
-    </ul>
+            </span>
+            <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
+        </a>
+    </li>
+    <% if (!isCreate) { %>
+    <li>
+        <a href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>" accesskey="v">
+            <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
+        </a>
+    </li>
+    <% } %>
+    <li class="is-active">
+        <a href="#" aria-current="page">
+            <% if (isCreate) { %>
+                Create a New <%= configFunctions.getProperty("aliases.occupancy") %> Record
+            <% } else { %>
+                Update <%= configFunctions.getProperty("aliases.occupancy") %>
+            <% } %>
+        </a>
+    </li>
+  </ul>
 </nav>
 
 <% if (isCreate) { %>
-    <h1 class="title is-1">
-        Create a New <%= configFunctions.getProperty("aliases.occupancy") %> Record
-    </h1>
+  <h1 class="title is-1">
+      Create a New <%= configFunctions.getProperty("aliases.occupancy") %> Record
+  </h1>
 <% } else { %>
-    <h1 class="title is-1">
-        Update <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>
-    </h1>
+  <h1 class="title is-1">
+      Update <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>
+  </h1>
 <% } %>
 
-<form id="form--lotOccupancy">
-    <input id="lotOccupancy--lotOccupancyId" name="lotOccupancyId" type="hidden" value="<%= lotOccupancy.lotOccupancyId %>" />
-    
-    <div class="panel">
-        <div class="panel-block is-block">
-            <div class="columns">
-                <div class="column">
-                    <label class="label" for="lotOccupancy--occupancyTypeId">
-                        <%= configFunctions.getProperty("aliases.occupancy") %> Type
-                    </label>
-                    <div class="field has-addons">
-                        <div class="control is-expanded">
-                            <div class="select is-fullwidth">
-                                <select
-                                    <% if (!isCreate) { %>
-                                        class="is-readonly" 
-                                    <% } %>
-                                    id="lotOccupancy--occupancyTypeId" name="occupancyTypeId"
-                                    required accesskey="f"
-                                    <%= (isCreate ? " autofocus" : "") %>>
-                                    <% if (isCreate) { %>
-                                        <option value="">(No Type)</option>
-                                    <% } %>
-                                    <% let typeIsFound = false; %>
-                                    <% for (const occupancyType of occupancyTypes) { %>
-                                        <%
-                                            if (lotOccupancy.occupancyTypeId === occupancyType.occupancyTypeId) { 
-                                                typeIsFound = true;
-                                            }
-                                        %>
-                                        <option value="<%= occupancyType.occupancyTypeId %>"
-                                            <%= (lotOccupancy.occupancyTypeId === occupancyType.occupancyTypeId ? " selected" : "") %>
-                                            <%= (!isCreate && lotOccupancy.occupancyTypeId !== occupancyType.occupancyTypeId ? " disabled" : "") %>>
-                                            <%= occupancyType.occupancyType %>
-                                        </option>
-                                    <% } %>
-                                    <% if (lotOccupancy.occupancyTypeId && !typeIsFound) { %>
-                                        <option value="<%= lotOccupancy.occupancyTypeId %>" selected>
-                                            <%= lotOccupancy.occupancyType %>
-                                        </option>
-                                    <% } %>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="control is-hidden-print">
-                            <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock <%= configFunctions.getProperty("aliases.occupancy") %> Type Field">
-                                <i class="fas fa-unlock" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <input id="lotOccupancy--lotId" name="lotId" type="hidden" value="<%= lotOccupancy.lotId %>" />
-                    <label class="label" for="lotOccupancy--lotName">
-                        <%= configFunctions.getProperty("aliases.lot") %>
-                    </label>
-                    <div class="field has-addons">
-                        <div class="control is-expanded">
-                            <input class="input is-clickable has-text-left <%= (isCreate ? "" : " is-readonly") %>" id="lotOccupancy--lotName" type="button" value="<%= lotOccupancy.lotName || "(No " + configFunctions.getProperty("aliases.lot") + ")" %>"
-                            <%= (configFunctions.getProperty("settings.lotOccupancy.lotIdIsRequired") ? " required" : "") %>
-                            <%= (isCreate ? "" : " disabled readonly") %> />
-                        </div>
-                        <div class="control is-hidden-print">
-                            <button class="button is-clear-lot-button" data-tooltip="Clear" type="button" aria-label="Clear <%= configFunctions.getProperty("aliases.lot") %></button> Field">
-                                <i class="fas fa-eraser" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div class="control is-hidden-print">
-                            <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock <%= configFunctions.getProperty("aliases.lot") %></button> Field">
-                                <i class="fas fa-unlock" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div class="control is-hidden-print">
-                            <button class="button is-lot-view-button" data-tooltip="Open <%= configFunctions.getProperty("aliases.lot") %>" type="button" aria-label="Open <%= configFunctions.getProperty("aliases.lot") %>">
-                                <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="column is-3">
-                    <div class="field">
-                        <label class="label" for="lotOccupancy--occupancyStartDateString"><%= configFunctions.getProperty("aliases.occupancyStartDate") %></label>
-                        <div class="control has-icons-left">
-                            <input class="input" id="lotOccupancy--occupancyStartDateString" name="occupancyStartDateString" type="date"
-                            value="<%= lotOccupancy.occupancyStartDateString %>" required />
-                            <span class="icon is-left">
-                                <i class="fas fa-calendar" aria-hidden="true"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label" for="lotOccupancy--occupancyEndDateString">End Date</label>
-                        <div class="control has-icons-left">
-                            <input class="input" id="lotOccupancy--occupancyEndDateString" name="occupancyEndDateString" type="date" 
-                                value="<%= lotOccupancy.occupancyEndDateString %>"
-                                min="<%= lotOccupancy.occupancyStartDateString %>"
-                                <%= (configFunctions.getProperty("settings.lotOccupancy.occupancyEndDateIsRequired") ? " required" : "") %> />
-                            <span class="icon is-left">
-                                <i class="fas fa-calendar" aria-hidden="true"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div id="container--lotOccupancyFields">
-                        <% if (isCreate) { %>
-                            <div class="message is-info">
-                                <p class="message-body">
-                                    Select the <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> type to load the available fields.
-                                </p>
-                            </div>
-                        <% } else if (lotOccupancy.lotOccupancyFields.length === 0) { %>
-                            <div class="message is-info">
-                                <p class="message-body">
-                                    The current <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> type has no additional fields.
-                                </p>
-                            </div>
-                        <% } else { %>
-                            <% let occupancyTypeFieldIds = ""; %>
-                            <% for (const lotOccupancyField of lotOccupancy.lotOccupancyFields) { %>
-                                <% occupancyTypeFieldIds += "," + lotOccupancyField.occupancyTypeFieldId; %>
-                                <div class="field">
-                                    <label class="label" for="lotOccupancy--lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>">
-                                        <%= lotOccupancyField.occupancyTypeField %>
-                                    </label>
-                                    <div class="control">
-                                        <% if (!lotOccupancyField.occupancyTypeFieldValues || lotOccupancyField.occupancyTypeFieldValues === "") { %>
-                                            <input class="input"
-                                                id="lotOccupancy--lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
-                                                name="lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
-                                                type="text"
-                                                value="<%= lotOccupancyField.lotOccupancyFieldValue %>"
-                                                <% if (lotOccupancyField.pattern !== "") { %>
-                                                    pattern="<%= lotOccupancyField.pattern %>"
-                                                <% } %>
-                                                minlength="<%= lotOccupancyField.minimumLength %>"
-                                                maxlength="<%= lotOccupancyField.maximumLength %>"
-                                                <%= lotOccupancyField.isRequired ? " required" : "" %> />
-                                        <% } else { %>
-                                            <%
-                                                const fieldValues = lotOccupancyField.occupancyTypeFieldValues.split("\n");
-                                                let valueFound = false;
-                                            %>
-                                            <div class="select is-fullwidth">
-                                                <select id="lotOccupancy--lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
-                                                    name="lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>">
-                                                    <% if (!lotOccupancyField.isRequired || lotOccupancyField.lotOccupancyFieldValue === "") { %>
-                                                        <option value="">(Not Set)</option>
-                                                    <% } %>
-                                                    <% for (const fieldValue of fieldValues) { %>
-                                                        <% 
-                                                            if (fieldValue === lotOccupancyField.lotOccupancyFieldValue) {
-                                                                valueFound = true;
-                                                            }
-                                                        %>
-                                                        <option value="<%= fieldValue %>"
-                                                            <%= (fieldValue === lotOccupancyField.lotOccupancyFieldValue ? " selected" : "") %>>
-                                                            <%= fieldValue %>
-                                                        </option>
-                                                    <% } %>
-                                                    <% if (!valueFound && lotOccupancyField.lotOccupancyFieldValue !== "") { %>
-                                                        <option value="<%= lotOccupancyField.lotOccupancyFieldValue %>" selected>
-                                                            <%= lotOccupancyField.lotOccupancyFieldValue %>
-                                                        </option>
-                                                    <% } %>
-                                                </select>
-                                            </div>
-                                        <% } %>
-                                    </div>
-                                </div>
-                            <% } %>
-                            <input id="lotOccupancy--occupancyTypeFieldIds" name="occupancyTypeFieldIds" type="hidden" value="<%= occupancyTypeFieldIds.slice(1) %>" />
-                        <% } %>
-                    </div>
-                </div>
-            </div>
+<div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
+  <div class="level-left">
+    <% if (!isCreate) { %>
+      <span class="level-item has-text-weight-bold">
+        <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>:
+        <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
+      </span>
+    <% } %>
+  </div>
+  <div class="level-right">
+    <% if (!isCreate && occupancyTypePrints.length > 0) { %>
+      <% if (occupancyTypePrints.length === 1) { %>
+        <div class="level-item">
+          <a href="<%= urlPrefix %>/print/<%= occupancyTypePrints[0] %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
+            <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+            <span>Print</span>
+          </a>
         </div>
-        <% if (isCreate) { %>
-            <div class="panel-block is-block">
-                <h2 class="title is-4"><%= configFunctions.getProperty("aliases.occupant") %></h2>
-                <div class="columns">
-                    <div class="column">
-                        <div class="field">
-                            <label class="label" for="lotOccupancy--lotOccupantTypeId">
-                                <%= configFunctions.getProperty("aliases.occupant") %> Type
-                            </label>
-                            <div class="control">
-                                <div class="select is-fullwidth">
-                                    <select id="lotOccupancy--lotOccupantTypeId" name="lotOccupantTypeId">
-                                        <option value="">(Select a Type to Create a <%= configFunctions.getProperty("aliases.occupant") %>)</option>
-                                        <% for (const lotOccupantType of lotOccupantTypes) { %>
-                                            <option value="<%= lotOccupantType.lotOccupantTypeId %>"><%= lotOccupantType.lotOccupantType %></option>
-                                        <% } %>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label" for="lotOccupancy--occupantName">
-                                <%= configFunctions.getProperty("aliases.occupant") %> Name
-                            </label>
-                            <div class="control">
-                                <input class="input" id="lotOccupancy--occupantName" data-table="LotOccupancyOccupant" name="occupantName" type="text" maxlength="200" autocomplete="off" required disabled />
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label" for="lotOccupancy--occupantAddress1">Address</label>
-                            <div class="control">
-                                <input class="input" id="lotOccupancy--occupantAddress1" data-table="LotOccupancyOccupant" name="occupantAddress1" type="text" maxlength="50" placeholder="Line 1" autocomplete="off" disabled />
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="control">
-                                <input class="input" id="lotOccupancy--occupantAddress2" data-table="LotOccupancyOccupant" name="occupantAddress2" type="text" maxlength="50" placeholder="Line 2" autocomplete="off" aria-label="Address Line 2" disabled />
-                            </div>
-                        </div>
-                        <div class="columns">
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="lotOccupancy--occupantCity">City</label>
-                                    <div class="control">
-                                        <input class="input" id="lotOccupancy--occupantCity" data-table="LotOccupancyOccupant" name="occupantCity" type="text" maxlength="20" value="<%= configFunctions.getProperty("settings.lotOccupancy.occupantCityDefault") %>" disabled />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="lotOccupancy--occupantProvince">Province</label>
-                                    <div class="control">
-                                        <input class="input" id="lotOccupancy--occupantProvince" data-table="LotOccupancyOccupant" name="occupantProvince" type="text" maxlength="2" value="<%= configFunctions.getProperty("settings.lotOccupancy.occupantProvinceDefault") %>" disabled />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="lotOccupancy--occupantPostalCode">Postal Code</label>
-                                    <div class="control">
-                                        <input class="input" id="lotOccupancy--occupantPostalCode" data-table="LotOccupancyOccupant" name="occupantPostalCode" type="text" maxlength="7" autocomplete="off" disabled />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="columns">
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="lotOccupancy--occupantPhoneNumber">Phone Number</label>
-                                    <div class="control">
-                                        <input class="input" id="lotOccupancy--occupantPhoneNumber" data-table="LotOccupancyOccupant" name="occupantPhoneNumber" type="text" maxlength="30" autocomplete="off" disabled />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="lotOccupancy--occupantEmailAddress">Email Address</label>
-                                    <div class="control">
-                                        <input class="input" id="lotOccupancy--occupantEmailAddress" data-table="LotOccupancyOccupant" name="occupantEmailAddress" type="email" maxlength="200" autocomplete="off" disabled />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label" for="lotOccupancy--occupantComment">Comment</label>
-                            <div class="control">
-                                <textarea class="textarea" id="lotOccupancy--occupantComment" data-table="LotOccupancyOccupant" name="occupantComment" disabled></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="message is-info">
-                            <p class="message-body">Additional <%= configFunctions.getProperty("aliases.occupants").toLowerCase() %> can be added after the record has been created.</p>
-                        </div>
-                    </div>
-                </div>
-               
+      <% } else { %>
+        <div class="level-item">
+          <div class="dropdown is-right is-up">
+            <div class="dropdown-trigger">
+              <button class="button" type="button">
+                <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+                <span>Print</span>
+                <span class="icon"><i class="fas fa-angle-up" aria-hidden="true"></i></span>
+              </a>
             </div>
-        <% } %>
-    </div>
-    
-    <div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
-        <% if (!isCreate) { %>
-          <div class="level-left">
-            <span class="level-item has-text-weight-bold">
-              <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>:
-              <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
-            </span>
-          </div>
-        <% } %>
-        <div class="level-right">
-          <% if (!isCreate && occupancyTypePrints.length > 0) { %>
-            <% if (occupancyTypePrints.length === 1) { %>
-              <div class="level-item">
-                <a href="<%= urlPrefix %>/print/<%= occupancyTypePrints[0] %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
-                  <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
-                  <span>Print</span>
-                </a>
-              </div>
-            <% } else { %>
-              <div class="level-item">
-                <div class="dropdown is-right is-up">
-                  <div class="dropdown-trigger">
-                    <button class="button" type="button">
+            <div class="dropdown-menu">
+              <div class="dropdown-content">
+                <% for (const printName of occupancyTypePrints) { %>
+                  <% const printConfig = printFunctions.getPrintConfig(printName); %>
+                  <% if (printConfig) { %>
+                    <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
                       <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
-                      <span>Print</span>
-                      <span class="icon"><i class="fas fa-angle-up" aria-hidden="true"></i></span>
+                      <span><%= printConfig.title %></span>
                     </a>
-                  </div>
-                  <div class="dropdown-menu">
-                    <div class="dropdown-content">
-                      <% for (const printName of occupancyTypePrints) { %>
-                        <% const printConfig = printFunctions.getPrintConfig(printName); %>
-                        <% if (printConfig) { %>
-                          <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>" target="_blank">
-                            <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
-                            <span><%= printConfig.title %></span>
-                          </a>
-                        <% } %>
-                      <% } %>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <% } %>
-          <% } %>
-          <% if (!isCreate) { %>
-            <div class="level-item">
-              <div class="dropdown is-right is-up">
-                <div class="dropdown-trigger">
-                  <button class="button" type="button">
-                    <span>More Options</span>
-                    <span class="icon">
-                      <i class="fas fa-angle-up" aria-hidden="true"></i>
-                    </span>
-                  </button>
-                </div>
-                <div class="dropdown-menu">
-                  <div class="dropdown-content">
-                    <a class="dropdown-item" id="button--copyLotOccupancy" href="#">
-                      <span class="icon"><i class="far fa-copy" aria-hidden="true"></i></span>
-                      <span>Copy <%= configFunctions.getProperty("aliases.occupancy") %> Record as New</span>
-                    </a>
-                    <a class="dropdown-item" id="button--deleteLotOccupancy" href="#">
-                      <span class="icon"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
-                      <span>Delete <%= configFunctions.getProperty("aliases.occupancy") %> Record</span>
-                    </a>
-                  </div>
-                </div>
+                  <% } %>
+                <% } %>
               </div>
             </div>
-          <% } %>
-          <div class="level-item">
-            <button class="button is-success" type="submit">
-                <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
-                <span>
-                    <%= (isCreate ? "Create" : "Update") %>
-                    <%= configFunctions.getProperty("aliases.occupancy") %>
-                    Record
-                </span>
+          </div>
+        </div>
+      <% } %>
+    <% } %>
+    <% if (!isCreate) { %>
+      <div class="level-item">
+        <div class="dropdown is-right is-up">
+          <div class="dropdown-trigger">
+            <button class="button" type="button">
+              <span>More Options</span>
+              <span class="icon">
+                <i class="fas fa-angle-up" aria-hidden="true"></i>
+              </span>
             </button>
           </div>
+          <div class="dropdown-menu">
+            <div class="dropdown-content">
+              <a class="dropdown-item" id="button--copyLotOccupancy" href="#">
+                <span class="icon"><i class="far fa-copy" aria-hidden="true"></i></span>
+                <span>Copy <%= configFunctions.getProperty("aliases.occupancy") %> Record as New</span>
+              </a>
+              <a class="dropdown-item" id="button--deleteLotOccupancy" href="#">
+                <span class="icon"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
+                <span>Delete <%= configFunctions.getProperty("aliases.occupancy") %> Record</span>
+              </a>
+            </div>
+          </div>
         </div>
+      </div>
+    <% } %>
+    <div class="level-item">
+      <button class="button is-success" type="submit" form="form--lotOccupancy">
+        <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
+        <span>
+            <%= (isCreate ? "Create" : "Update") %>
+            <%= configFunctions.getProperty("aliases.occupancy") %>
+            Record
+        </span>
+      </button>
     </div>
+  </div>
+</div>
+
+<form id="form--lotOccupancy">
+  <input id="lotOccupancy--lotOccupancyId" name="lotOccupancyId" type="hidden" value="<%= lotOccupancy.lotOccupancyId %>" />
+  
+  <div class="panel">
+      <div class="panel-block is-block">
+          <div class="columns">
+              <div class="column">
+                  <label class="label" for="lotOccupancy--occupancyTypeId">
+                      <%= configFunctions.getProperty("aliases.occupancy") %> Type
+                  </label>
+                  <div class="field has-addons">
+                      <div class="control is-expanded">
+                          <div class="select is-fullwidth">
+                              <select
+                                  <% if (!isCreate) { %>
+                                      class="is-readonly" 
+                                  <% } %>
+                                  id="lotOccupancy--occupancyTypeId" name="occupancyTypeId"
+                                  required accesskey="f"
+                                  <%= (isCreate ? " autofocus" : "") %>>
+                                  <% if (isCreate) { %>
+                                      <option value="">(No Type)</option>
+                                  <% } %>
+                                  <% let typeIsFound = false; %>
+                                  <% for (const occupancyType of occupancyTypes) { %>
+                                      <%
+                                          if (lotOccupancy.occupancyTypeId === occupancyType.occupancyTypeId) { 
+                                              typeIsFound = true;
+                                          }
+                                      %>
+                                      <option value="<%= occupancyType.occupancyTypeId %>"
+                                          <%= (lotOccupancy.occupancyTypeId === occupancyType.occupancyTypeId ? " selected" : "") %>
+                                          <%= (!isCreate && lotOccupancy.occupancyTypeId !== occupancyType.occupancyTypeId ? " disabled" : "") %>>
+                                          <%= occupancyType.occupancyType %>
+                                      </option>
+                                  <% } %>
+                                  <% if (lotOccupancy.occupancyTypeId && !typeIsFound) { %>
+                                      <option value="<%= lotOccupancy.occupancyTypeId %>" selected>
+                                          <%= lotOccupancy.occupancyType %>
+                                      </option>
+                                  <% } %>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="control is-hidden-print">
+                          <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock <%= configFunctions.getProperty("aliases.occupancy") %> Type Field">
+                              <i class="fas fa-unlock" aria-hidden="true"></i>
+                          </button>
+                      </div>
+                  </div>
+
+                  <input id="lotOccupancy--lotId" name="lotId" type="hidden" value="<%= lotOccupancy.lotId %>" />
+                  <label class="label" for="lotOccupancy--lotName">
+                      <%= configFunctions.getProperty("aliases.lot") %>
+                  </label>
+                  <div class="field has-addons">
+                      <div class="control is-expanded">
+                          <input class="input is-clickable has-text-left <%= (isCreate ? "" : " is-readonly") %>" id="lotOccupancy--lotName" type="button" value="<%= lotOccupancy.lotName || "(No " + configFunctions.getProperty("aliases.lot") + ")" %>"
+                          <%= (configFunctions.getProperty("settings.lotOccupancy.lotIdIsRequired") ? " required" : "") %>
+                          <%= (isCreate ? "" : " disabled readonly") %> />
+                      </div>
+                      <div class="control is-hidden-print">
+                          <button class="button is-clear-lot-button" data-tooltip="Clear" type="button" aria-label="Clear <%= configFunctions.getProperty("aliases.lot") %></button> Field">
+                              <i class="fas fa-eraser" aria-hidden="true"></i>
+                          </button>
+                      </div>
+                      <div class="control is-hidden-print">
+                          <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock <%= configFunctions.getProperty("aliases.lot") %></button> Field">
+                              <i class="fas fa-unlock" aria-hidden="true"></i>
+                          </button>
+                      </div>
+                      <div class="control is-hidden-print">
+                          <button class="button is-lot-view-button" data-tooltip="Open <%= configFunctions.getProperty("aliases.lot") %>" type="button" aria-label="Open <%= configFunctions.getProperty("aliases.lot") %>">
+                              <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                          </button>
+                      </div>
+                  </div>
+              </div>
+              <div class="column is-3">
+                  <div class="field">
+                      <label class="label" for="lotOccupancy--occupancyStartDateString"><%= configFunctions.getProperty("aliases.occupancyStartDate") %></label>
+                      <div class="control has-icons-left">
+                          <input class="input" id="lotOccupancy--occupancyStartDateString" name="occupancyStartDateString" type="date"
+                          value="<%= lotOccupancy.occupancyStartDateString %>" required />
+                          <span class="icon is-left">
+                              <i class="fas fa-calendar" aria-hidden="true"></i>
+                          </span>
+                      </div>
+                  </div>
+                  <div class="field">
+                      <label class="label" for="lotOccupancy--occupancyEndDateString">End Date</label>
+                      <div class="control has-icons-left">
+                          <input class="input" id="lotOccupancy--occupancyEndDateString" name="occupancyEndDateString" type="date" 
+                              value="<%= lotOccupancy.occupancyEndDateString %>"
+                              min="<%= lotOccupancy.occupancyStartDateString %>"
+                              <%= (configFunctions.getProperty("settings.lotOccupancy.occupancyEndDateIsRequired") ? " required" : "") %> />
+                          <span class="icon is-left">
+                              <i class="fas fa-calendar" aria-hidden="true"></i>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+              <div class="column">
+                  <div id="container--lotOccupancyFields">
+                      <% if (isCreate) { %>
+                          <div class="message is-info">
+                              <p class="message-body">
+                                  Select the <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> type to load the available fields.
+                              </p>
+                          </div>
+                      <% } else if (lotOccupancy.lotOccupancyFields.length === 0) { %>
+                          <div class="message is-info">
+                              <p class="message-body">
+                                  The current <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> type has no additional fields.
+                              </p>
+                          </div>
+                      <% } else { %>
+                          <% let occupancyTypeFieldIds = ""; %>
+                          <% for (const lotOccupancyField of lotOccupancy.lotOccupancyFields) { %>
+                              <% occupancyTypeFieldIds += "," + lotOccupancyField.occupancyTypeFieldId; %>
+                              <div class="field">
+                                  <label class="label" for="lotOccupancy--lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>">
+                                      <%= lotOccupancyField.occupancyTypeField %>
+                                  </label>
+                                  <div class="control">
+                                      <% if (!lotOccupancyField.occupancyTypeFieldValues || lotOccupancyField.occupancyTypeFieldValues === "") { %>
+                                          <input class="input"
+                                              id="lotOccupancy--lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
+                                              name="lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
+                                              type="text"
+                                              value="<%= lotOccupancyField.lotOccupancyFieldValue %>"
+                                              <% if (lotOccupancyField.pattern !== "") { %>
+                                                  pattern="<%= lotOccupancyField.pattern %>"
+                                              <% } %>
+                                              minlength="<%= lotOccupancyField.minimumLength %>"
+                                              maxlength="<%= lotOccupancyField.maximumLength %>"
+                                              <%= lotOccupancyField.isRequired ? " required" : "" %> />
+                                      <% } else { %>
+                                          <%
+                                              const fieldValues = lotOccupancyField.occupancyTypeFieldValues.split("\n");
+                                              let valueFound = false;
+                                          %>
+                                          <div class="select is-fullwidth">
+                                              <select id="lotOccupancy--lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>"
+                                                  name="lotOccupancyFieldValue_<%= lotOccupancyField.occupancyTypeFieldId %>">
+                                                  <% if (!lotOccupancyField.isRequired || lotOccupancyField.lotOccupancyFieldValue === "") { %>
+                                                      <option value="">(Not Set)</option>
+                                                  <% } %>
+                                                  <% for (const fieldValue of fieldValues) { %>
+                                                      <% 
+                                                          if (fieldValue === lotOccupancyField.lotOccupancyFieldValue) {
+                                                              valueFound = true;
+                                                          }
+                                                      %>
+                                                      <option value="<%= fieldValue %>"
+                                                          <%= (fieldValue === lotOccupancyField.lotOccupancyFieldValue ? " selected" : "") %>>
+                                                          <%= fieldValue %>
+                                                      </option>
+                                                  <% } %>
+                                                  <% if (!valueFound && lotOccupancyField.lotOccupancyFieldValue !== "") { %>
+                                                      <option value="<%= lotOccupancyField.lotOccupancyFieldValue %>" selected>
+                                                          <%= lotOccupancyField.lotOccupancyFieldValue %>
+                                                      </option>
+                                                  <% } %>
+                                              </select>
+                                          </div>
+                                      <% } %>
+                                  </div>
+                              </div>
+                          <% } %>
+                          <input id="lotOccupancy--occupancyTypeFieldIds" name="occupancyTypeFieldIds" type="hidden" value="<%= occupancyTypeFieldIds.slice(1) %>" />
+                      <% } %>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <% if (isCreate) { %>
+          <div class="panel-block is-block">
+              <h2 class="title is-4"><%= configFunctions.getProperty("aliases.occupant") %></h2>
+              <div class="columns">
+                  <div class="column">
+                      <div class="field">
+                          <label class="label" for="lotOccupancy--lotOccupantTypeId">
+                              <%= configFunctions.getProperty("aliases.occupant") %> Type
+                          </label>
+                          <div class="control">
+                              <div class="select is-fullwidth">
+                                  <select id="lotOccupancy--lotOccupantTypeId" name="lotOccupantTypeId">
+                                      <option value="">(Select a Type to Create a <%= configFunctions.getProperty("aliases.occupant") %>)</option>
+                                      <% for (const lotOccupantType of lotOccupantTypes) { %>
+                                          <option value="<%= lotOccupantType.lotOccupantTypeId %>"><%= lotOccupantType.lotOccupantType %></option>
+                                      <% } %>
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="field">
+                          <label class="label" for="lotOccupancy--occupantName">
+                              <%= configFunctions.getProperty("aliases.occupant") %> Name
+                          </label>
+                          <div class="control">
+                              <input class="input" id="lotOccupancy--occupantName" data-table="LotOccupancyOccupant" name="occupantName" type="text" maxlength="200" autocomplete="off" required disabled />
+                          </div>
+                      </div>
+                      <div class="field">
+                          <label class="label" for="lotOccupancy--occupantAddress1">Address</label>
+                          <div class="control">
+                              <input class="input" id="lotOccupancy--occupantAddress1" data-table="LotOccupancyOccupant" name="occupantAddress1" type="text" maxlength="50" placeholder="Line 1" autocomplete="off" disabled />
+                          </div>
+                      </div>
+                      <div class="field">
+                          <div class="control">
+                              <input class="input" id="lotOccupancy--occupantAddress2" data-table="LotOccupancyOccupant" name="occupantAddress2" type="text" maxlength="50" placeholder="Line 2" autocomplete="off" aria-label="Address Line 2" disabled />
+                          </div>
+                      </div>
+                      <div class="columns">
+                          <div class="column">
+                              <div class="field">
+                                  <label class="label" for="lotOccupancy--occupantCity">City</label>
+                                  <div class="control">
+                                      <input class="input" id="lotOccupancy--occupantCity" data-table="LotOccupancyOccupant" name="occupantCity" type="text" maxlength="20" value="<%= configFunctions.getProperty("settings.lotOccupancy.occupantCityDefault") %>" disabled />
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="column">
+                              <div class="field">
+                                  <label class="label" for="lotOccupancy--occupantProvince">Province</label>
+                                  <div class="control">
+                                      <input class="input" id="lotOccupancy--occupantProvince" data-table="LotOccupancyOccupant" name="occupantProvince" type="text" maxlength="2" value="<%= configFunctions.getProperty("settings.lotOccupancy.occupantProvinceDefault") %>" disabled />
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="column">
+                              <div class="field">
+                                  <label class="label" for="lotOccupancy--occupantPostalCode">Postal Code</label>
+                                  <div class="control">
+                                      <input class="input" id="lotOccupancy--occupantPostalCode" data-table="LotOccupancyOccupant" name="occupantPostalCode" type="text" maxlength="7" autocomplete="off" disabled />
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="columns">
+                          <div class="column">
+                              <div class="field">
+                                  <label class="label" for="lotOccupancy--occupantPhoneNumber">Phone Number</label>
+                                  <div class="control">
+                                      <input class="input" id="lotOccupancy--occupantPhoneNumber" data-table="LotOccupancyOccupant" name="occupantPhoneNumber" type="text" maxlength="30" autocomplete="off" disabled />
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="column">
+                              <div class="field">
+                                  <label class="label" for="lotOccupancy--occupantEmailAddress">Email Address</label>
+                                  <div class="control">
+                                      <input class="input" id="lotOccupancy--occupantEmailAddress" data-table="LotOccupancyOccupant" name="occupantEmailAddress" type="email" maxlength="200" autocomplete="off" disabled />
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="field">
+                          <label class="label" for="lotOccupancy--occupantComment">Comment</label>
+                          <div class="control">
+                              <textarea class="textarea" id="lotOccupancy--occupantComment" data-table="LotOccupancyOccupant" name="occupantComment" disabled></textarea>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="column">
+                      <div class="message is-info">
+                          <p class="message-body">Additional <%= configFunctions.getProperty("aliases.occupants").toLowerCase() %> can be added after the record has been created.</p>
+                      </div>
+                  </div>
+              </div>
+              
+          </div>
+      <% } %>
+  </div>
 </form>
 
 <% if (!isCreate) { %>
