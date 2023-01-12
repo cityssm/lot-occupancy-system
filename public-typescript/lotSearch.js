@@ -8,7 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
     function renderLots(responseJSON) {
-        var _a, _b;
+        var _a, _b, _c, _d;
         if (responseJSON.lots.length === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
                 <p class="message-body">There are no ${los.escapedAliases.lots} that meet the search criteria.</p>
@@ -22,7 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '<a class="has-text-weight-bold" href="' +
                     los.getLotURL(lot.lotId) +
                     '">' +
-                    cityssm.escapeHTML(lot.lotName || '') +
+                    cityssm.escapeHTML((_a = lot.lotName) !== null && _a !== void 0 ? _a : '') +
                     '</a>' +
                     '</td>') +
                 ('<td>' +
@@ -34,10 +34,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         : '<span class="has-text-grey">(No Name)</span>') +
                     '</a>' +
                     '</td>') +
-                ('<td>' + cityssm.escapeHTML(lot.lotType || '') + '</td>') +
+                ('<td>' + cityssm.escapeHTML((_b = lot.lotType) !== null && _b !== void 0 ? _b : '') + '</td>') +
                 ('<td>' +
                     (lot.lotStatusId
-                        ? cityssm.escapeHTML(lot.lotStatus || '')
+                        ? cityssm.escapeHTML(lot.lotStatus)
                         : '<span class="has-text-grey">(No Status)</span>') +
                     '<br />' +
                     (lot.lotOccupancyCount > 0
@@ -58,10 +58,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         searchResultsContainerElement
             .querySelector('table')
             .append(resultsTbodyElement);
-        (_a = searchResultsContainerElement
-            .querySelector("button[data-page='previous']")) === null || _a === void 0 ? void 0 : _a.addEventListener('click', previousAndGetLots);
-        (_b = searchResultsContainerElement
-            .querySelector("button[data-page='next']")) === null || _b === void 0 ? void 0 : _b.addEventListener('click', nextAndGetLots);
+        (_c = searchResultsContainerElement
+            .querySelector("button[data-page='previous']")) === null || _c === void 0 ? void 0 : _c.addEventListener('click', previousAndGetLots);
+        (_d = searchResultsContainerElement
+            .querySelector("button[data-page='next']")) === null || _d === void 0 ? void 0 : _d.addEventListener('click', nextAndGetLots);
     }
     function getLots() {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Lots}...`);

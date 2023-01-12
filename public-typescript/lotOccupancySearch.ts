@@ -6,7 +6,6 @@ import type * as recordTypes from '../types/recordTypes'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
 
 declare const cityssm: cityssmGlobal
-
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -31,13 +30,13 @@ declare const cityssm: cityssmGlobal
     count: number
     offset: number
     lotOccupancies: recordTypes.LotOccupancy[]
-  }) {
+  }): void {
     if (responseJSON.lotOccupancies.length === 0) {
       searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                <p class="message-body">
-                There are no ${los.escapedAliases.occupancy} records that meet the search criteria.
-                </p>
-                </div>`
+        <p class="message-body">
+        There are no ${los.escapedAliases.occupancy} records that meet the search criteria.
+        </p>
+        </div>`
 
       return
     }
@@ -55,16 +54,16 @@ declare const cityssm: cityssmGlobal
           lotOccupancy.occupancyEndDateString! >= nowDateString)
       ) {
         occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Current ${los.escapedAliases.Occupancy}">
-                    <i class="fas fa-play" aria-label="Current ${los.escapedAliases.Occupancy}"></i>
-                    </span>`
+          <i class="fas fa-play" aria-label="Current ${los.escapedAliases.Occupancy}"></i>
+          </span>`
       } else if (lotOccupancy.occupancyStartDateString! > nowDateString) {
         occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Future ${los.escapedAliases.Occupancy}">
-                    <i class="fas fa-fast-forward" aria-label="Future ${los.escapedAliases.Occupancy}"></i>
-                    </span>`
+          <i class="fas fa-fast-forward" aria-label="Future ${los.escapedAliases.Occupancy}"></i>
+          </span>`
       } else {
         occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Past ${los.escapedAliases.Occupancy}">
-                    <i class="fas fa-stop" aria-label="Past ${los.escapedAliases.Occupancy}"></i>
-                    </span>`
+          <i class="fas fa-stop" aria-label="Past ${los.escapedAliases.Occupancy}"></i>
+          </span>`
       }
 
       let occupantsHTML = ''
@@ -72,12 +71,16 @@ declare const cityssm: cityssmGlobal
       for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
         occupantsHTML +=
           '<span class="has-tooltip-left" data-tooltip="' +
-          cityssm.escapeHTML(occupant.lotOccupantType || '') +
+          cityssm.escapeHTML(occupant.lotOccupantType ?? '') +
           '">' +
           ('<i class="fas fa-fw fa-' +
-            cityssm.escapeHTML(occupant.fontAwesomeIconClass || 'user') +
+            cityssm.escapeHTML(
+              (occupant.fontAwesomeIconClass ?? '') === ''
+                ? 'user'
+                : occupant.fontAwesomeIconClass!
+            ) +
             '" aria-hidden="true"></i> ') +
-          cityssm.escapeHTML(occupant.occupantName || '') +
+          cityssm.escapeHTML(occupant.occupantName ?? '') +
           '</span><br />'
       }
 
@@ -87,7 +90,7 @@ declare const cityssm: cityssmGlobal
           ('<td class="has-width-1">' + occupancyTimeHTML + '</td>') +
           ('<td>' +
             '<a class="has-text-weight-bold" href="' +
-            los.getLotOccupancyURL(lotOccupancy.lotOccupancyId!) +
+            los.getLotOccupancyURL(lotOccupancy.lotOccupancyId) +
             '">' +
             cityssm.escapeHTML(lotOccupancy.occupancyType as string) +
             '</a>' +
@@ -95,9 +98,9 @@ declare const cityssm: cityssmGlobal
           ('<td>' +
             (lotOccupancy.lotName
               ? '<a class="has-tooltip-right" data-tooltip="' +
-                cityssm.escapeHTML(lotOccupancy.lotType || '') +
+                cityssm.escapeHTML(lotOccupancy.lotType ?? '') +
                 '" href="' +
-                los.getLotURL(lotOccupancy.lotId!) +
+                los.getLotURL(lotOccupancy.lotId) +
                 '">' +
                 cityssm.escapeHTML(lotOccupancy.lotName) +
                 '</a>'
@@ -106,7 +109,7 @@ declare const cityssm: cityssmGlobal
                 ')</span>') +
             '<br />' +
             ('<span class="is-size-7">' +
-              cityssm.escapeHTML(lotOccupancy.mapName || '') +
+              cityssm.escapeHTML(lotOccupancy.mapName ?? '') +
               '</span>') +
             '</td>') +
           ('<td>' + lotOccupancy.occupancyStartDateString + '</td>') +
@@ -167,9 +170,9 @@ declare const cityssm: cityssmGlobal
       ?.addEventListener('click', nextAndGetLotOccupancies)
   }
 
-  function getLotOccupancies() {
+  function getLotOccupancies(): void {
     searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
-      `Loading ${exports.aliases.occupancies}...`
+      `Loading ${los.escapedAliases.Occupancies}...`
     )
 
     cityssm.postJSON(
@@ -179,12 +182,12 @@ declare const cityssm: cityssmGlobal
     )
   }
 
-  function resetOffsetAndGetLotOccupancies() {
+  function resetOffsetAndGetLotOccupancies(): void {
     offsetElement.value = '0'
     getLotOccupancies()
   }
 
-  function previousAndGetLotOccupancies() {
+  function previousAndGetLotOccupancies(): void {
     offsetElement.value = Math.max(
       Number.parseInt(offsetElement.value, 10) - limit,
       0
@@ -192,16 +195,15 @@ declare const cityssm: cityssmGlobal
     getLotOccupancies()
   }
 
-  function nextAndGetLotOccupancies() {
+  function nextAndGetLotOccupancies(): void {
     offsetElement.value = (
       Number.parseInt(offsetElement.value, 10) + limit
     ).toString()
     getLotOccupancies()
   }
 
-  const filterElements = searchFilterFormElement.querySelectorAll(
-    'input, select'
-  ) as NodeListOf<HTMLInputElement | HTMLSelectElement>
+  const filterElements =
+    searchFilterFormElement.querySelectorAll('input, select')
 
   for (const filterElement of filterElements) {
     filterElement.addEventListener('change', resetOffsetAndGetLotOccupancies)

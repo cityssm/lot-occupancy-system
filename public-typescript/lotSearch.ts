@@ -6,7 +6,6 @@ import type * as recordTypes from '../types/recordTypes'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
 
 declare const cityssm: cityssmGlobal
-
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -49,22 +48,22 @@ declare const cityssm: cityssmGlobal
             '<a class="has-text-weight-bold" href="' +
             los.getLotURL(lot.lotId) +
             '">' +
-            cityssm.escapeHTML(lot.lotName || '') +
+            cityssm.escapeHTML(lot.lotName ?? '') +
             '</a>' +
             '</td>') +
           ('<td>' +
             '<a href="' +
-            los.getMapURL(lot.mapId!) +
+            los.getMapURL(lot.mapId) +
             '">' +
             (lot.mapName
               ? cityssm.escapeHTML(lot.mapName)
               : '<span class="has-text-grey">(No Name)</span>') +
             '</a>' +
             '</td>') +
-          ('<td>' + cityssm.escapeHTML(lot.lotType || '') + '</td>') +
+          ('<td>' + cityssm.escapeHTML(lot.lotType ?? '') + '</td>') +
           ('<td>' +
             (lot.lotStatusId
-              ? cityssm.escapeHTML(lot.lotStatus || '')
+              ? cityssm.escapeHTML(lot.lotStatus!)
               : '<span class="has-text-grey">(No Status)</span>') +
             '<br />' +
             (lot.lotOccupancyCount! > 0
@@ -138,9 +137,8 @@ declare const cityssm: cityssmGlobal
     getLots()
   }
 
-  const filterElements = searchFilterFormElement.querySelectorAll(
-    'input, select'
-  ) as NodeListOf<HTMLInputElement | HTMLSelectElement>
+  const filterElements =
+    searchFilterFormElement.querySelectorAll('input, select')
 
   for (const filterElement of filterElements) {
     filterElement.addEventListener('change', resetOffsetAndGetLots)
