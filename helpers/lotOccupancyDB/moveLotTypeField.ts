@@ -1,140 +1,152 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import { clearCacheByTableName } from "../functions.cache.js";
-import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
+import { clearCacheByTableName } from '../functions.cache.js'
+import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 function getCurrentField(
-    lotTypeFieldId: number | string,
-    connectedDatabase: sqlite.Database
+  lotTypeFieldId: number | string,
+  connectedDatabase: sqlite.Database
 ): { lotTypeId?: number; orderNumber: number } {
-    const currentField: { lotTypeId?: number; orderNumber: number } = connectedDatabase
-        .prepare("select lotTypeId, orderNumber from LotTypeFields where lotTypeFieldId = ?")
-        .get(lotTypeFieldId);
+  const currentField: { lotTypeId?: number; orderNumber: number } =
+    connectedDatabase
+      .prepare(
+        'select lotTypeId, orderNumber from LotTypeFields where lotTypeFieldId = ?'
+      )
+      .get(lotTypeFieldId)
 
-    return currentField;
+  return currentField
 }
 
 export function moveLotTypeFieldDown(lotTypeFieldId: number | string): boolean {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const currentField = getCurrentField(lotTypeFieldId, database);
+  const currentField = getCurrentField(lotTypeFieldId, database)
 
+  database
+    .prepare(
+      `update LotTypeFields
+        set orderNumber = orderNumber - 1
+        where recordDelete_timeMillis is null
+        and lotTypeId = ? and orderNumber = ? + 1`
+    )
+    .run(currentField.lotTypeId, currentField.orderNumber)
+
+  const success = updateRecordOrderNumber(
+    'LotTypeFields',
+    lotTypeFieldId,
+    currentField.orderNumber + 1,
     database
-        .prepare(
-            `update LotTypeFields
-                set orderNumber = orderNumber - 1
-                where recordDelete_timeMillis is null
-                and lotTypeId = ? and orderNumber = ? + 1`
-        )
-        .run(currentField.lotTypeId, currentField.orderNumber);
+  )
 
-    const success = updateRecordOrderNumber(
-        "LotTypeFields",
-        lotTypeFieldId,
-        currentField.orderNumber + 1,
-        database
-    );
+  database.close()
 
-    database.close();
+  clearCacheByTableName('LotTypeFields')
 
-    clearCacheByTableName("LotTypeFields");
-
-    return success;
+  return success
 }
 
-export function moveLotTypeFieldDownToBottom(lotTypeFieldId: number | string): boolean {
-    const database = sqlite(databasePath);
+export function moveLotTypeFieldDownToBottom(
+  lotTypeFieldId: number | string
+): boolean {
+  const database = sqlite(databasePath)
 
-    const currentField = getCurrentField(lotTypeFieldId, database);
+  const currentField = getCurrentField(lotTypeFieldId, database)
 
-    const maxOrderNumber: number = database
-        .prepare(
-            `select max(orderNumber) as maxOrderNumber
-                from LotTypeFields
-                where recordDelete_timeMillis is null
-                and lotTypeId = ?`
-        )
-        .get(currentField.lotTypeId).maxOrderNumber;
+  const maxOrderNumber: number = database
+    .prepare(
+      `select max(orderNumber) as maxOrderNumber
+        from LotTypeFields
+        where recordDelete_timeMillis is null
+        and lotTypeId = ?`
+    )
+    .get(currentField.lotTypeId).maxOrderNumber
 
-    if (currentField.orderNumber !== maxOrderNumber) {
-        updateRecordOrderNumber("LotTypeFields", lotTypeFieldId, maxOrderNumber + 1, database);
+  if (currentField.orderNumber !== maxOrderNumber) {
+    updateRecordOrderNumber(
+      'LotTypeFields',
+      lotTypeFieldId,
+      maxOrderNumber + 1,
+      database
+    )
 
-        database
-            .prepare(
-                `update LotTypeFields
-                    set orderNumber = orderNumber - 1
-                    where recordDelete_timeMillis is null
-                    and lotTypeId = ?
-                    and orderNumber > ?`
-            )
-            .run(currentField.lotTypeId, currentField.orderNumber);
-    }
+    database
+      .prepare(
+        `update LotTypeFields
+            set orderNumber = orderNumber - 1
+            where recordDelete_timeMillis is null
+            and lotTypeId = ?
+            and orderNumber > ?`
+      )
+      .run(currentField.lotTypeId, currentField.orderNumber)
+  }
 
-    database.close();
+  database.close()
 
-    clearCacheByTableName("LotTypeFields");
+  clearCacheByTableName('LotTypeFields')
 
-    return true;
+  return true
 }
 
 export function moveLotTypeFieldUp(lotTypeFieldId: number | string): boolean {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const currentField = getCurrentField(lotTypeFieldId, database);
+  const currentField = getCurrentField(lotTypeFieldId, database)
 
-    if (currentField.orderNumber <= 0) {
-        database.close();
-        return true;
-    }
+  if (currentField.orderNumber <= 0) {
+    database.close()
+    return true
+  }
 
+  database
+    .prepare(
+      `update LotTypeFields
+        set orderNumber = orderNumber + 1
+        where recordDelete_timeMillis is null
+        and lotTypeId = ?
+        and orderNumber = ? - 1`
+    )
+    .run(currentField.lotTypeId, currentField.orderNumber)
+
+  const success = updateRecordOrderNumber(
+    'LotTypeFields',
+    lotTypeFieldId,
+    currentField.orderNumber - 1,
     database
-        .prepare(
-            `update LotTypeFields
-                set orderNumber = orderNumber + 1
-                where recordDelete_timeMillis is null
-                and lotTypeId = ?
-                and orderNumber = ? - 1`
-        )
-        .run(currentField.lotTypeId, currentField.orderNumber);
+  )
 
-    const success = updateRecordOrderNumber(
-        "LotTypeFields",
-        lotTypeFieldId,
-        currentField.orderNumber - 1,
-        database
-    );
+  database.close()
 
-    database.close();
+  clearCacheByTableName('LotTypeFields')
 
-    clearCacheByTableName("LotTypeFields");
-
-    return success;
+  return success
 }
 
-export function moveLotTypeFieldUpToTop(lotTypeFieldId: number | string): boolean {
-    const database = sqlite(databasePath);
+export function moveLotTypeFieldUpToTop(
+  lotTypeFieldId: number | string
+): boolean {
+  const database = sqlite(databasePath)
 
-    const currentField = getCurrentField(lotTypeFieldId, database);
+  const currentField = getCurrentField(lotTypeFieldId, database)
 
-    if (currentField.orderNumber > 0) {
-        updateRecordOrderNumber("LotTypeFields", lotTypeFieldId, -1, database);
+  if (currentField.orderNumber > 0) {
+    updateRecordOrderNumber('LotTypeFields', lotTypeFieldId, -1, database)
 
-        database
-            .prepare(
-                `update LotTypeFields
-                    set orderNumber = orderNumber + 1
-                    where recordDelete_timeMillis is null
-                    and lotTypeId = ?
-                    and orderNumber < ?`
-            )
-            .run(currentField.lotTypeId, currentField.orderNumber);
-    }
+    database
+      .prepare(
+        `update LotTypeFields
+            set orderNumber = orderNumber + 1
+            where recordDelete_timeMillis is null
+            and lotTypeId = ?
+            and orderNumber < ?`
+      )
+      .run(currentField.lotTypeId, currentField.orderNumber)
+  }
 
-    database.close();
+  database.close()
 
-    clearCacheByTableName("LotTypeFields");
+  clearCacheByTableName('LotTypeFields')
 
-    return true;
+  return true
 }

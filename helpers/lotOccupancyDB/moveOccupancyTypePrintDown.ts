@@ -1,91 +1,91 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import { clearCacheByTableName } from "../functions.cache.js";
+import { clearCacheByTableName } from '../functions.cache.js'
 
 export function moveOccupancyTypePrintDown(
-    occupancyTypeId: number | string,
-    printEJS: string
+  occupancyTypeId: number | string,
+  printEJS: string
 ): boolean {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const currentOrderNumber = database
-        .prepare(
-            `select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?`
-        )
-        .get(occupancyTypeId, printEJS).orderNumber;
+  const currentOrderNumber = database
+    .prepare(
+      'select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?'
+    )
+    .get(occupancyTypeId, printEJS).orderNumber
 
-    database
-        .prepare(
-            `update OccupancyTypePrints
-                set orderNumber = orderNumber - 1
-                where recordDelete_timeMillis is null
-                and occupancyTypeId = ?
-                and orderNumber = ? + 1`
-        )
-        .run(occupancyTypeId, currentOrderNumber);
+  database
+    .prepare(
+      `update OccupancyTypePrints
+        set orderNumber = orderNumber - 1
+        where recordDelete_timeMillis is null
+        and occupancyTypeId = ?
+        and orderNumber = ? + 1`
+    )
+    .run(occupancyTypeId, currentOrderNumber)
 
-    const result = database
-        .prepare(
-            `update OccupancyTypePrints set orderNumber = ? + 1 where occupancyTypeId = ? and printEJS = ?`
-        )
-        .run(currentOrderNumber, occupancyTypeId, printEJS);
+  const result = database
+    .prepare(
+      'update OccupancyTypePrints set orderNumber = ? + 1 where occupancyTypeId = ? and printEJS = ?'
+    )
+    .run(currentOrderNumber, occupancyTypeId, printEJS)
 
-    database.close();
+  database.close()
 
-    clearCacheByTableName("OccupancyTypePrints");
+  clearCacheByTableName('OccupancyTypePrints')
 
-    return result.changes > 0;
+  return result.changes > 0
 }
 
 export function moveOccupancyTypePrintDownToBottom(
-    occupancyTypeId: number | string,
-    printEJS: string
+  occupancyTypeId: number | string,
+  printEJS: string
 ): boolean {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const currentOrderNumber = database
-        .prepare(
-            `select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?`
-        )
-        .get(occupancyTypeId, printEJS).orderNumber;
+  const currentOrderNumber = database
+    .prepare(
+      'select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?'
+    )
+    .get(occupancyTypeId, printEJS).orderNumber
 
-    const maxOrderNumber: number = database
-        .prepare(
-            `select max(orderNumber) as maxOrderNumber
+  const maxOrderNumber: number = database
+    .prepare(
+      `select max(orderNumber) as maxOrderNumber
                 from OccupancyTypePrints
                 where recordDelete_timeMillis is null
                 and occupancyTypeId = ?`
-        )
-        .get(occupancyTypeId).maxOrderNumber;
+    )
+    .get(occupancyTypeId).maxOrderNumber
 
-    if (currentOrderNumber !== maxOrderNumber) {
-        database
-            .prepare(
-                `update OccupancyTypePrints
-                    set orderNumber = ? + 1
-                    where occupancyTypeId = ?
-                    and printEJS = ?`
-            )
-            .run(maxOrderNumber, occupancyTypeId, printEJS);
+  if (currentOrderNumber !== maxOrderNumber) {
+    database
+      .prepare(
+        `update OccupancyTypePrints
+            set orderNumber = ? + 1
+            where occupancyTypeId = ?
+            and printEJS = ?`
+      )
+      .run(maxOrderNumber, occupancyTypeId, printEJS)
 
-        database
-            .prepare(
-                `update OccupancyTypeFields
-                    set orderNumber = orderNumber - 1
-                    where recordDelete_timeMillis is null
-                    and occupancyTypeId = ?
-                    and orderNumber > ?`
-            )
-            .run(occupancyTypeId, currentOrderNumber);
-    }
+    database
+      .prepare(
+        `update OccupancyTypeFields
+            set orderNumber = orderNumber - 1
+            where recordDelete_timeMillis is null
+            and occupancyTypeId = ?
+            and orderNumber > ?`
+      )
+      .run(occupancyTypeId, currentOrderNumber)
+  }
 
-    database.close();
+  database.close()
 
-    clearCacheByTableName("OccupancyTypePrints");
+  clearCacheByTableName('OccupancyTypePrints')
 
-    return true;
+  return true
 }
 
-export default moveOccupancyTypePrintDown;
+export default moveOccupancyTypePrintDown

@@ -17,10 +17,10 @@ export function deleteLotField(
   const result = database
     .prepare(
       `update LotFields
-                set recordDelete_userName = ?,
-                recordDelete_timeMillis = ?
-                where lotId = ?
-                and lotTypeFieldId = ?`
+        set recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+        where lotId = ?
+        and lotTypeFieldId = ?`
     )
     .run(requestSession.user!.userName, rightNowMillis, lotId, lotTypeFieldId)
 

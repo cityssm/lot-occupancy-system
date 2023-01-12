@@ -1,8 +1,8 @@
-import sqlite from "better-sqlite3";
-import type * as recordTypes from "../../types/recordTypes";
+import sqlite from 'better-sqlite3';
+import type * as recordTypes from '../../types/recordTypes';
 interface GetWorkOrdersFilters {
     workOrderTypeId?: number | string;
-    workOrderOpenStatus?: "" | "open" | "closed";
+    workOrderOpenStatus?: '' | 'open' | 'closed';
     workOrderOpenDateString?: string;
     occupantName?: string;
     lotName?: string;

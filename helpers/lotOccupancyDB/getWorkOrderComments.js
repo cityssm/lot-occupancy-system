@@ -1,13 +1,13 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { dateIntegerToString, timeIntegerToString } from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { dateIntegerToString, timeIntegerToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
 export function getWorkOrderComments(workOrderId, connectedDatabase) {
-    const database = connectedDatabase ||
+    const database = connectedDatabase ??
         sqlite(databasePath, {
             readonly: true
         });
-    database.function("userFn_dateIntegerToString", dateIntegerToString);
-    database.function("userFn_timeIntegerToString", timeIntegerToString);
+    database.function('userFn_dateIntegerToString', dateIntegerToString);
+    database.function('userFn_timeIntegerToString', timeIntegerToString);
     const workOrderComments = database
         .prepare(`select workOrderCommentId,
                 workOrderCommentDate, userFn_dateIntegerToString(workOrderCommentDate) as workOrderCommentDateString,

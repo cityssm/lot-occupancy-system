@@ -1,15 +1,15 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearCacheByTableName } from "../functions.cache.js";
-import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { clearCacheByTableName } from '../functions.cache.js';
+import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 const recordIdColumns = new Map();
-recordIdColumns.set("FeeCategories", "feeCategoryId");
-recordIdColumns.set("LotOccupantTypes", "lotOccupantTypeId");
-recordIdColumns.set("LotStatuses", "lotStatusId");
-recordIdColumns.set("LotTypes", "lotTypeId");
-recordIdColumns.set("OccupancyTypes", "occupancyTypeId");
-recordIdColumns.set("WorkOrderMilestoneTypes", "workOrderMilestoneTypeId");
-recordIdColumns.set("WorkOrderTypes", "workOrderTypeId");
+recordIdColumns.set('FeeCategories', 'feeCategoryId');
+recordIdColumns.set('LotOccupantTypes', 'lotOccupantTypeId');
+recordIdColumns.set('LotStatuses', 'lotStatusId');
+recordIdColumns.set('LotTypes', 'lotTypeId');
+recordIdColumns.set('OccupancyTypes', 'occupancyTypeId');
+recordIdColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId');
+recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId');
 function getCurrentOrderNumber(recordTable, recordId, database) {
     const currentOrderNumber = database
         .prepare(`select orderNumber
@@ -23,9 +23,9 @@ export function moveRecordDown(recordTable, recordId) {
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     database
         .prepare(`update ${recordTable}
-                set orderNumber = orderNumber - 1
-                where recordDelete_timeMillis is null
-                and orderNumber = ? + 1`)
+        set orderNumber = orderNumber - 1
+        where recordDelete_timeMillis is null
+        and orderNumber = ? + 1`)
         .run(currentOrderNumber);
     const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber + 1, database);
     database.close();
@@ -37,16 +37,16 @@ export function moveRecordDownToBottom(recordTable, recordId) {
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
-                from ${recordTable}
-                where recordDelete_timeMillis is null`)
+        from ${recordTable}
+        where recordDelete_timeMillis is null`)
         .get().maxOrderNumber;
     if (currentOrderNumber !== maxOrderNumber) {
         updateRecordOrderNumber(recordTable, recordId, maxOrderNumber + 1, database);
         database
             .prepare(`update ${recordTable}
-                    set orderNumber = orderNumber - 1
-                    where recordDelete_timeMillis is null
-                    and orderNumber > ?`)
+            set orderNumber = orderNumber - 1
+            where recordDelete_timeMillis is null
+            and orderNumber > ?`)
             .run(currentOrderNumber);
     }
     database.close();
@@ -62,9 +62,9 @@ export function moveRecordUp(recordTable, recordId) {
     }
     database
         .prepare(`update ${recordTable}
-                set orderNumber = orderNumber + 1
-                where recordDelete_timeMillis is null
-                and orderNumber = ? - 1`)
+        set orderNumber = orderNumber + 1
+        where recordDelete_timeMillis is null
+        and orderNumber = ? - 1`)
         .run(currentOrderNumber);
     const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber - 1, database);
     database.close();
@@ -78,9 +78,9 @@ export function moveRecordUpToTop(recordTable, recordId) {
         updateRecordOrderNumber(recordTable, recordId, -1, database);
         database
             .prepare(`update ${recordTable}
-                    set orderNumber = orderNumber + 1
-                    where recordDelete_timeMillis is null
-                    and orderNumber < ?`)
+            set orderNumber = orderNumber + 1
+            where recordDelete_timeMillis is null
+            and orderNumber < ?`)
             .run(currentOrderNumber);
     }
     database.close();

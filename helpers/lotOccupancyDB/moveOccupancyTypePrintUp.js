@@ -1,10 +1,10 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
-import { clearCacheByTableName } from "../functions.cache.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { clearCacheByTableName } from '../functions.cache.js';
 export function moveOccupancyTypePrintUp(occupancyTypeId, printEJS) {
     const database = sqlite(databasePath);
     const currentOrderNumber = database
-        .prepare(`select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?`)
+        .prepare('select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?')
         .get(occupancyTypeId, printEJS).orderNumber;
     if (currentOrderNumber <= 0) {
         database.close();
@@ -12,22 +12,22 @@ export function moveOccupancyTypePrintUp(occupancyTypeId, printEJS) {
     }
     database
         .prepare(`update OccupancyTypePrints
-                set orderNumber = orderNumber + 1
-                where recordDelete_timeMillis is null
-                and occupancyTypeId = ?
-                and orderNumber = ? - 1`)
+        set orderNumber = orderNumber + 1
+        where recordDelete_timeMillis is null
+        and occupancyTypeId = ?
+        and orderNumber = ? - 1`)
         .run(occupancyTypeId, currentOrderNumber);
     const result = database
-        .prepare(`update OccupancyTypePrints set orderNumber = ? - 1 where occupancyTypeId = ? and printEJS = ?`)
+        .prepare('update OccupancyTypePrints set orderNumber = ? - 1 where occupancyTypeId = ? and printEJS = ?')
         .run(currentOrderNumber, occupancyTypeId, printEJS);
     database.close();
-    clearCacheByTableName("OccupancyTypePrints");
+    clearCacheByTableName('OccupancyTypePrints');
     return result.changes > 0;
 }
 export function moveOccupancyTypePrintUpToTop(occupancyTypeId, printEJS) {
     const database = sqlite(databasePath);
     const currentOrderNumber = database
-        .prepare(`select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?`)
+        .prepare('select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?')
         .get(occupancyTypeId, printEJS).orderNumber;
     if (currentOrderNumber > 0) {
         database
@@ -45,7 +45,7 @@ export function moveOccupancyTypePrintUpToTop(occupancyTypeId, printEJS) {
             .run(occupancyTypeId, currentOrderNumber);
     }
     database.close();
-    clearCacheByTableName("OccupancyTypePrints");
+    clearCacheByTableName('OccupancyTypePrints');
     return true;
 }
 export default moveOccupancyTypePrintUp;
