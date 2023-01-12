@@ -26,14 +26,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     }
     function lotTypeResponseHandler(responseJSON) {
+        var _a;
         if (responseJSON.success) {
             lotTypes = responseJSON.lotTypes;
             renderLotTypes();
         }
         else {
             bulmaJS.alert({
-                title: `Error Updating ${exports.aliases.lot} Type`,
-                message: responseJSON.errorMessage || '',
+                title: `Error Updating ${los.escapedAliases.Lot} Type`,
+                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                 contextualColorName: 'danger'
             });
         }
@@ -46,11 +47,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, lotTypeResponseHandler);
         }
         bulmaJS.confirm({
-            title: `Delete ${exports.aliases.lot} Type`,
-            message: `Are you sure you want to delete this ${exports.aliases.lot.toLowerCase()} type?`,
+            title: `Delete ${los.escapedAliases.Lot} Type`,
+            message: `Are you sure you want to delete this ${los.escapedAliases.lot} type?`,
             contextualColorName: 'warning',
             okButton: {
-                text: `Yes, Delete ${exports.aliases.lot} Type`,
+                text: `Yes, Delete ${los.escapedAliases.Lot} Type`,
                 callbackFunction: doDelete
             }
         });
@@ -61,7 +62,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             return lotTypeId === currentLotType.lotTypeId;
         });
         let editCloseModalFunction;
-        const doEdit = (submitEvent) => {
+        function doEdit(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotType', submitEvent.currentTarget, (responseJSON) => {
                 lotTypeResponseHandler(responseJSON);
@@ -69,7 +70,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     editCloseModalFunction();
                 }
             });
-        };
+        }
         cityssm.openHtmlModal('adminLotTypes-editLotType', {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
@@ -90,7 +91,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function openAddLotTypeField(clickEvent) {
         const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.lotTypeId, 10);
         let addCloseModalFunction;
-        const doAdd = (submitEvent) => {
+        function doAdd(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + '/admin/doAddLotTypeField', submitEvent.currentTarget, (responseJSON) => {
                 expandedLotTypes.add(lotTypeId);
@@ -100,7 +101,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     openEditLotTypeField(lotTypeId, responseJSON.lotTypeFieldId);
                 }
             });
-        };
+        }
         cityssm.openHtmlModal('adminLotTypes-addLotTypeField', {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
@@ -243,6 +244,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }, lotTypeResponseHandler);
     }
     function renderLotTypeFields(panelElement, lotTypeId, lotTypeFields) {
+        var _a;
         if (lotTypeFields.length === 0) {
             panelElement.insertAdjacentHTML('beforeend', '<div class="panel-block is-block' +
                 (expandedLotTypes.has(lotTypeId) ? '' : ' is-hidden') +
@@ -267,7 +269,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<div class="level-left">' +
                         ('<div class="level-item">' +
                             '<a class="has-text-weight-bold button--editLotTypeField" href="#">' +
-                            cityssm.escapeHTML(lotTypeField.lotTypeField || '') +
+                            cityssm.escapeHTML((_a = lotTypeField.lotTypeField) !== null && _a !== void 0 ? _a : '') +
                             '</a>' +
                             '</div>') +
                         '</div>' +
@@ -326,7 +328,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             '<button class="button is-primary is-small button--editLotType" type="button">' +
                             '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
                             '<span>Edit ' +
-                            exports.aliases.lot +
+                            los.escapedAliases.Lot +
                             ' Type</span>' +
                             '</button>' +
                             '</div>') +
@@ -367,6 +369,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + '/admin/doAddLotType', submitEvent.currentTarget, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     addCloseModalFunction();
                     lotTypes = responseJSON.lotTypes;
@@ -375,7 +378,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: `Error Adding ${los.escapedAliases.Lot} Type`,
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }

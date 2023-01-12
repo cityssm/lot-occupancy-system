@@ -9,7 +9,6 @@ import type { BulmaJS } from '@cityssm/bulma-js/types'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -23,8 +22,8 @@ declare const bulmaJS: BulmaJS
   function renderFeeCategories(): void {
     if (feeCategories.length === 0) {
       feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
-                <p class="message-body">There are no available fees.</p>
-                </div>`
+        <p class="message-body">There are no available fees.</p>
+        </div>`
 
       return
     }
@@ -37,19 +36,19 @@ declare const bulmaJS: BulmaJS
       feeCategoryContainerElement.className = 'panel container--feeCategory'
 
       feeCategoryContainerElement.dataset.feeCategoryId =
-        feeCategory.feeCategoryId!.toString()
+        feeCategory.feeCategoryId.toString()
 
       feeCategoryContainerElement.innerHTML =
         '<div class="panel-heading">' +
         '<div class="columns">' +
         ('<div class="column">' +
           '<h2 class="title is-4">' +
-          cityssm.escapeHTML(feeCategory.feeCategory || '') +
+          cityssm.escapeHTML(feeCategory.feeCategory ?? '') +
           '</h2>' +
           '</div>') +
         ('<div class="column is-narrow">' +
           '<div class="field is-grouped is-justify-content-end">' +
-          (feeCategory.fees!.length === 0
+          (feeCategory.fees.length === 0
             ? '<div class="control">' +
               '<button class="button is-small is-danger button--deleteFeeCategory" type="button">' +
               '<span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>' +
@@ -83,16 +82,16 @@ declare const bulmaJS: BulmaJS
         feeCategoryContainerElement.insertAdjacentHTML(
           'beforeend',
           `<div class="panel-block is-block">
-                        <div class="message is-info">
-                        <p class="message-body">
-                            There are no fees in the
-                            "${cityssm.escapeHTML(
-                              feeCategory.feeCategory || ''
-                            )}"
-                            category.
-                        </p>
-                        </div>
-                    </div>`
+            <div class="message is-info">
+              <p class="message-body">
+                  There are no fees in the
+                  "${cityssm.escapeHTML(
+                    feeCategory.feeCategory || ''
+                  )}"
+                  category.
+              </p>
+            </div>
+            </div>`
         )
 
         feeCategoryContainerElement
@@ -103,7 +102,7 @@ declare const bulmaJS: BulmaJS
           const panelBlockElement = document.createElement('div')
 
           panelBlockElement.className = 'panel-block is-block container--fee'
-          panelBlockElement.dataset.feeId = fee.feeId!.toString()
+          panelBlockElement.dataset.feeId = fee.feeId.toString()
 
           const hasTagsBlock =
             fee.isRequired || fee.occupancyTypeId || fee.lotTypeId
@@ -113,11 +112,11 @@ declare const bulmaJS: BulmaJS
             ('<div class="column is-half">' +
               '<p>' +
               '<a class="has-text-weight-bold" href="#">' +
-              cityssm.escapeHTML(fee.feeName || '') +
+              cityssm.escapeHTML(fee.feeName ?? '') +
               '</a><br />' +
               '<small>' +
               cityssm
-                .escapeHTML(fee.feeDescription || '')
+                .escapeHTML(fee.feeDescription ?? '')
                 .replace(/\n/g, '<br />') +
               '</small>' +
               '</p>' +
@@ -130,14 +129,14 @@ declare const bulmaJS: BulmaJS
                     ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
                       los.escapedAliases.Occupancy +
                       ' Type Filter">' +
-                      cityssm.escapeHTML(fee.occupancyType || '') +
+                      cityssm.escapeHTML(fee.occupancyType ?? '') +
                       '</span>'
                     : '') +
                   (fee.lotTypeId
                     ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
                       los.escapedAliases.Lot +
                       ' Type Filter">' +
-                      cityssm.escapeHTML(fee.lotType || '') +
+                      cityssm.escapeHTML(fee.lotType ?? '') +
                       '</span>'
                     : '') +
                   '</p>'
@@ -163,7 +162,7 @@ declare const bulmaJS: BulmaJS
                 '</div>') +
               ('<div class="column has-text-centered">' +
                 (fee.includeQuantity
-                  ? cityssm.escapeHTML(fee.quantityUnit || '') +
+                  ? cityssm.escapeHTML(fee.quantityUnit ?? '') +
                     '<br />' +
                     '<small>Quantity</small>'
                   : '') +
@@ -182,13 +181,11 @@ declare const bulmaJS: BulmaJS
           panelBlockElement
             .querySelector('a')!
             .addEventListener('click', openEditFee)
-
           ;(
             panelBlockElement.querySelector(
               '.button--moveFeeUp'
             ) as HTMLButtonElement
           ).addEventListener('click', moveFee)
-
           ;(
             panelBlockElement.querySelector(
               '.button--moveFeeDown'
@@ -206,13 +203,11 @@ declare const bulmaJS: BulmaJS
       feeCategoryContainerElement
         .querySelector('.button--addFee')!
         .addEventListener('click', openAddFee)
-
       ;(
         feeCategoryContainerElement.querySelector(
           '.button--moveFeeCategoryUp'
         ) as HTMLButtonElement
       ).addEventListener('click', moveFeeCategory)
-
       ;(
         feeCategoryContainerElement.querySelector(
           '.button--moveFeeCategoryDown'
@@ -232,7 +227,7 @@ declare const bulmaJS: BulmaJS
     .addEventListener('click', () => {
       let addCloseModalFunction: () => void
 
-      const doAddFeeCategory = (submitEvent: SubmitEvent) => {
+      function doAddFeeCategory(submitEvent: SubmitEvent): void {
         submitEvent.preventDefault()
 
         cityssm.postJSON(
@@ -250,7 +245,7 @@ declare const bulmaJS: BulmaJS
             } else {
               bulmaJS.alert({
                 title: 'Error Creating Fee Category',
-                message: responseJSON.errorMessage || '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
             }
@@ -299,7 +294,7 @@ declare const bulmaJS: BulmaJS
 
     let editCloseModalFunction: () => void
 
-    function doUpdateFeeCategory(submitEvent: SubmitEvent) {
+    function doUpdateFeeCategory(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()
 
       cityssm.postJSON(
@@ -317,7 +312,7 @@ declare const bulmaJS: BulmaJS
           } else {
             bulmaJS.alert({
               title: 'Error Updating Fee Category',
-              message: responseJSON.errorMessage || '',
+              message: responseJSON.errorMessage ?? '',
               contextualColorName: 'danger'
             })
           }
@@ -331,7 +326,7 @@ declare const bulmaJS: BulmaJS
           modalElement.querySelector(
             '#feeCategoryEdit--feeCategoryId'
           ) as HTMLInputElement
-        ).value = feeCategory.feeCategoryId!.toString()
+        ).value = feeCategory.feeCategoryId.toString()
         ;(
           modalElement.querySelector(
             '#feeCategoryEdit--feeCategory'
@@ -346,7 +341,6 @@ declare const bulmaJS: BulmaJS
         modalElement
           .querySelector('form')!
           .addEventListener('submit', doUpdateFeeCategory)
-
         ;(
           modalElement.querySelector(
             '#feeCategoryEdit--feeCategory'
@@ -369,7 +363,7 @@ declare const bulmaJS: BulmaJS
       10
     )
 
-    function doDelete() {
+    function doDelete(): void {
       cityssm.postJSON(
         los.urlPrefix + '/admin/doDeleteFeeCategory',
         {
@@ -386,7 +380,7 @@ declare const bulmaJS: BulmaJS
           } else {
             bulmaJS.alert({
               title: 'Error Updating Fee Category',
-              message: responseJSON.errorMessage || '',
+              message: responseJSON.errorMessage ?? '',
               contextualColorName: 'danger'
             })
           }
@@ -433,7 +427,7 @@ declare const bulmaJS: BulmaJS
         } else {
           bulmaJS.alert({
             title: 'Error Moving Fee Category',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }
@@ -457,7 +451,7 @@ declare const bulmaJS: BulmaJS
 
     let addCloseModalFunction: () => void
 
-    function doAddFee(submitEvent: SubmitEvent) {
+    function doAddFee(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()
 
       cityssm.postJSON(
@@ -475,7 +469,7 @@ declare const bulmaJS: BulmaJS
           } else {
             bulmaJS.alert({
               title: 'Error Adding Fee',
-              message: responseJSON.errorMessage || '',
+              message: responseJSON.errorMessage ?? '',
               contextualColorName: 'danger'
             })
           }
@@ -537,11 +531,9 @@ declare const bulmaJS: BulmaJS
         addCloseModalFunction = closeModalFunction
 
         modalElement.querySelector('form')!.addEventListener('submit', doAddFee)
-
         ;(
           modalElement.querySelector('#feeAdd--feeName') as HTMLInputElement
         ).focus()
-
         ;(
           modalElement.querySelector('#feeAdd--feeFunction') as HTMLInputElement
         ).addEventListener('change', () => {
@@ -637,7 +629,7 @@ declare const bulmaJS: BulmaJS
     let editCloseModalFunction: () => void
     let editModalElement: HTMLElement
 
-    function doUpdateFee(submitEvent: SubmitEvent) {
+    function doUpdateFee(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()
 
       cityssm.postJSON(
@@ -655,7 +647,7 @@ declare const bulmaJS: BulmaJS
           } else {
             bulmaJS.alert({
               title: 'Error Updating Fee',
-              message: responseJSON.errorMessage || '',
+              message: responseJSON.errorMessage ?? '',
               contextualColorName: 'danger'
             })
           }
@@ -663,10 +655,10 @@ declare const bulmaJS: BulmaJS
       )
     }
 
-    function confirmDeleteFee(clickEvent: Event) {
+    function confirmDeleteFee(clickEvent: Event): void {
       clickEvent.preventDefault()
 
-      const doDelete = () => {
+      function doDelete(): void {
         cityssm.postJSON(
           los.urlPrefix + '/admin/doDeleteFee',
           {
@@ -684,7 +676,7 @@ declare const bulmaJS: BulmaJS
             } else {
               bulmaJS.alert({
                 title: 'Error Deleting Fee',
-                message: responseJSON.errorMessage || '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
             }
@@ -703,7 +695,7 @@ declare const bulmaJS: BulmaJS
       })
     }
 
-    function toggleFeeFields() {
+    function toggleFeeFields(): void {
       const feeAmountElement = editModalElement.querySelector(
         '#feeEdit--feeAmount'
       ) as HTMLInputElement
@@ -725,7 +717,7 @@ declare const bulmaJS: BulmaJS
       }
     }
 
-    function toggleTaxFields() {
+    function toggleTaxFields(): void {
       const taxAmountElement = editModalElement.querySelector(
         '#feeEdit--taxAmount'
       ) as HTMLInputElement
@@ -747,7 +739,7 @@ declare const bulmaJS: BulmaJS
       }
     }
 
-    function toggleQuantityFields() {
+    function toggleQuantityFields(): void {
       const includeQuanitityValue = (
         editModalElement.querySelector(
           '#feeEdit--includeQuantity'
@@ -764,7 +756,6 @@ declare const bulmaJS: BulmaJS
     cityssm.openHtmlModal('adminFees-editFee', {
       onshow(modalElement) {
         editModalElement = modalElement
-
         ;(
           modalElement.querySelector('#feeEdit--feeId') as HTMLInputElement
         ).value = fee.feeId.toString()
@@ -835,7 +826,6 @@ declare const bulmaJS: BulmaJS
           .addEventListener('change', toggleFeeFields)
 
         toggleFeeFields()
-
         ;(
           modalElement.querySelector('#feeEdit--taxAmount') as HTMLInputElement
         ).value = fee.taxAmount ? fee.taxAmount.toFixed(2) : ''
@@ -859,12 +849,11 @@ declare const bulmaJS: BulmaJS
         }
 
         includeQuantityElement.addEventListener('change', toggleQuantityFields)
-
         ;(
           modalElement.querySelector(
             '#feeEdit--quantityUnit'
           ) as HTMLInputElement
-        ).value = fee.quantityUnit || ''
+        ).value = fee.quantityUnit ?? ''
 
         toggleQuantityFields()
 
@@ -929,7 +918,7 @@ declare const bulmaJS: BulmaJS
         } else {
           bulmaJS.alert({
             title: 'Error Moving Fee',
-            message: responseJSON.errorMessage || '',
+            message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
         }

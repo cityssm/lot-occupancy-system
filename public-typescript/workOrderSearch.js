@@ -10,7 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
     function renderWorkOrders(responseJSON) {
-        var _a, _b;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
         if (responseJSON.workOrders.length === 0) {
             searchResultsContainerElement.innerHTML =
                 '<div class="message is-info">' +
@@ -24,26 +24,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
             for (const lot of workOrder.workOrderLots) {
                 relatedHTML +=
                     '<span class="has-tooltip-left" data-tooltip="' +
-                        cityssm.escapeHTML(lot.mapName || '') +
+                        cityssm.escapeHTML((_a = lot.mapName) !== null && _a !== void 0 ? _a : '') +
                         '">' +
                         '<i class="fas fa-fw fa-vector-square" aria-label="' +
                         los.escapedAliases.Lot +
                         '"></i> ' +
-                        cityssm.escapeHTML(lot.lotName || '(No ' + exports.aliases.Lot + ' Name)') +
+                        cityssm.escapeHTML(((_b = lot.lotName) !== null && _b !== void 0 ? _b : '') === ''
+                            ? '(No ' + los.escapedAliases.Lot + ' Name)'
+                            : lot.lotName) +
                         '</span><br />';
             }
             for (const occupancy of workOrder.workOrderLotOccupancies) {
                 for (const occupant of occupancy.lotOccupancyOccupants) {
                     relatedHTML +=
                         '<span class="has-tooltip-left" data-tooltip="' +
-                            cityssm.escapeHTML(occupant.lotOccupantType || '') +
+                            cityssm.escapeHTML((_c = occupant.lotOccupantType) !== null && _c !== void 0 ? _c : '') +
                             '">' +
                             '<i class="fas fa-fw fa-' +
-                            cityssm.escapeHTML(occupant.fontAwesomeIconClass || 'user') +
+                            cityssm.escapeHTML(((_d = occupant.fontAwesomeIconClass) !== null && _d !== void 0 ? _d : '') === ''
+                                ? 'user'
+                                : occupant.fontAwesomeIconClass) +
                             '" aria-label="' +
                             los.escapedAliases.occupant +
                             '"></i> ' +
-                            cityssm.escapeHTML(occupant.occupantName || '(No Name)') +
+                            cityssm.escapeHTML(((_e = occupant.occupantName) !== null && _e !== void 0 ? _e : '') === ''
+                                ? '(No Name)'
+                                : occupant.occupantName) +
                             '</span><br />';
                 }
             }
@@ -53,15 +59,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     los.getWorkOrderURL(workOrder.workOrderId) +
                     '">' +
                     (workOrder.workOrderNumber.trim()
-                        ? cityssm.escapeHTML(workOrder.workOrderNumber || '')
+                        ? cityssm.escapeHTML((_f = workOrder.workOrderNumber) !== null && _f !== void 0 ? _f : '')
                         : '(No Number)') +
                     '</a>' +
                     '</td>') +
                 ('<td>' +
-                    cityssm.escapeHTML(workOrder.workOrderType || '') +
+                    cityssm.escapeHTML((_g = workOrder.workOrderType) !== null && _g !== void 0 ? _g : '') +
                     '<br />' +
                     '<span class="is-size-7">' +
-                    cityssm.escapeHTML(workOrder.workOrderDescription || '') +
+                    cityssm.escapeHTML((_h = workOrder.workOrderDescription) !== null && _h !== void 0 ? _h : '') +
                     '</span>' +
                     '</td>') +
                 ('<td class="is-nowrap"><span class="is-size-7">' +
@@ -126,10 +132,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         searchResultsContainerElement
             .querySelector('table')
             .append(resultsTbodyElement);
-        (_a = searchResultsContainerElement
-            .querySelector("button[data-page='previous']")) === null || _a === void 0 ? void 0 : _a.addEventListener('click', previousAndGetWorkOrders);
-        (_b = searchResultsContainerElement
-            .querySelector("button[data-page='next']")) === null || _b === void 0 ? void 0 : _b.addEventListener('click', nextAndGetWorkOrders);
+        (_j = searchResultsContainerElement
+            .querySelector("button[data-page='previous']")) === null || _j === void 0 ? void 0 : _j.addEventListener('click', previousAndGetWorkOrders);
+        (_k = searchResultsContainerElement
+            .querySelector("button[data-page='next']")) === null || _k === void 0 ? void 0 : _k.addEventListener('click', nextAndGetWorkOrders);
     }
     function getWorkOrders() {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML('Loading Work Orders...');

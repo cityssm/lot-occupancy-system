@@ -9,7 +9,6 @@ import type { BulmaJS } from '@cityssm/bulma-js/types'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -22,7 +21,7 @@ declare const bulmaJS: BulmaJS
 
   const expandedLotTypes = new Set<number>()
 
-  function toggleLotTypeFields(clickEvent: Event) {
+  function toggleLotTypeFields(clickEvent: Event): void {
     const toggleButtonElement = clickEvent.currentTarget as HTMLButtonElement
 
     const lotTypeElement = toggleButtonElement.closest(
@@ -52,20 +51,20 @@ declare const bulmaJS: BulmaJS
     success: boolean
     errorMessage?: string
     lotTypes?: recordTypes.LotType[]
-  }) {
+  }): void {
     if (responseJSON.success) {
       lotTypes = responseJSON.lotTypes!
       renderLotTypes()
     } else {
       bulmaJS.alert({
-        title: `Error Updating ${exports.aliases.lot} Type`,
-        message: responseJSON.errorMessage || '',
+        title: `Error Updating ${los.escapedAliases.Lot} Type`,
+        message: responseJSON.errorMessage ?? '',
         contextualColorName: 'danger'
       })
     }
   }
 
-  function deleteLotType(clickEvent: Event) {
+  function deleteLotType(clickEvent: Event): void {
     const lotTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
@@ -75,7 +74,7 @@ declare const bulmaJS: BulmaJS
       10
     )
 
-    function doDelete() {
+    function doDelete(): void {
       cityssm.postJSON(
         los.urlPrefix + '/admin/doDeleteLotType',
         {
@@ -86,17 +85,17 @@ declare const bulmaJS: BulmaJS
     }
 
     bulmaJS.confirm({
-      title: `Delete ${exports.aliases.lot} Type`,
-      message: `Are you sure you want to delete this ${exports.aliases.lot.toLowerCase()} type?`,
+      title: `Delete ${los.escapedAliases.Lot} Type`,
+      message: `Are you sure you want to delete this ${los.escapedAliases.lot} type?`,
       contextualColorName: 'warning',
       okButton: {
-        text: `Yes, Delete ${exports.aliases.lot} Type`,
+        text: `Yes, Delete ${los.escapedAliases.Lot} Type`,
         callbackFunction: doDelete
       }
     })
   }
 
-  function openEditLotType(clickEvent: Event) {
+  function openEditLotType(clickEvent: Event): void {
     const lotTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
@@ -112,7 +111,7 @@ declare const bulmaJS: BulmaJS
 
     let editCloseModalFunction: () => void
 
-    const doEdit = (submitEvent: SubmitEvent) => {
+    function doEdit(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()
 
       cityssm.postJSON(
@@ -134,13 +133,11 @@ declare const bulmaJS: BulmaJS
     cityssm.openHtmlModal('adminLotTypes-editLotType', {
       onshow(modalElement) {
         los.populateAliases(modalElement)
-
         ;(
           modalElement.querySelector(
             '#lotTypeEdit--lotTypeId'
           ) as HTMLInputElement
         ).value = lotTypeId.toString()
-
         ;(
           modalElement.querySelector(
             '#lotTypeEdit--lotType'
@@ -149,7 +146,6 @@ declare const bulmaJS: BulmaJS
       },
       onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
-
         ;(
           modalElement.querySelector(
             '#lotTypeEdit--lotType'
@@ -166,7 +162,7 @@ declare const bulmaJS: BulmaJS
     })
   }
 
-  function openAddLotTypeField(clickEvent: Event) {
+  function openAddLotTypeField(clickEvent: Event): void {
     const lotTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
@@ -178,7 +174,7 @@ declare const bulmaJS: BulmaJS
 
     let addCloseModalFunction: () => void
 
-    const doAdd = (submitEvent: SubmitEvent) => {
+    function doAdd(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()
 
       cityssm.postJSON(
@@ -215,7 +211,6 @@ declare const bulmaJS: BulmaJS
       },
       onshown(modalElement, closeModalFunction) {
         addCloseModalFunction = closeModalFunction
-
         ;(
           modalElement.querySelector(
             '#lotTypeFieldAdd--lotTypeField'
@@ -232,7 +227,7 @@ declare const bulmaJS: BulmaJS
     })
   }
 
-  function moveLotType(clickEvent: MouseEvent) {
+  function moveLotType(clickEvent: MouseEvent): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
     const lotTypeId = (
@@ -253,7 +248,10 @@ declare const bulmaJS: BulmaJS
     )
   }
 
-  function openEditLotTypeField(lotTypeId: number, lotTypeFieldId: number) {
+  function openEditLotTypeField(
+    lotTypeId: number,
+    lotTypeFieldId: number
+  ): void {
     const lotType = lotTypes.find((currentLotType) => {
       return currentLotType.lotTypeId === lotTypeId
     })!
@@ -269,11 +267,11 @@ declare const bulmaJS: BulmaJS
 
     let editCloseModalFunction: () => void
 
-    function updateMaximumLengthMin() {
+    function updateMaximumLengthMin(): void {
       maximumLengthElement.min = minimumLengthElement.value
     }
 
-    function toggleInputFields() {
+    function toggleInputFields(): void {
       if (lotTypeFieldValuesElement.value === '') {
         minimumLengthElement.disabled = false
         maximumLengthElement.disabled = false
@@ -285,7 +283,7 @@ declare const bulmaJS: BulmaJS
       }
     }
 
-    function doUpdate(submitEvent: SubmitEvent) {
+    function doUpdate(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()
 
       cityssm.postJSON(
@@ -304,7 +302,7 @@ declare const bulmaJS: BulmaJS
       )
     }
 
-    function doDelete() {
+    function doDelete(): void {
       cityssm.postJSON(
         los.urlPrefix + '/admin/doDeleteLotTypeField',
         {
@@ -323,7 +321,7 @@ declare const bulmaJS: BulmaJS
       )
     }
 
-    function confirmDoDelete() {
+    function confirmDoDelete(): void {
       bulmaJS.confirm({
         title: 'Delete Field',
         message:
@@ -339,19 +337,16 @@ declare const bulmaJS: BulmaJS
     cityssm.openHtmlModal('adminLotTypes-editLotTypeField', {
       onshow(modalElement) {
         los.populateAliases(modalElement)
-
         ;(
           modalElement.querySelector(
             '#lotTypeFieldEdit--lotTypeFieldId'
           ) as HTMLInputElement
         ).value = lotTypeField.lotTypeFieldId.toString()
-
         ;(
           modalElement.querySelector(
             '#lotTypeFieldEdit--lotTypeField'
           ) as HTMLInputElement
         ).value = lotTypeField.lotTypeField!
-
         ;(
           modalElement.querySelector(
             '#lotTypeFieldEdit--isRequired'
@@ -409,7 +404,7 @@ declare const bulmaJS: BulmaJS
     })
   }
 
-  function openEditLotTypeFieldByClick(clickEvent: Event) {
+  function openEditLotTypeFieldByClick(clickEvent: Event): void {
     clickEvent.preventDefault()
 
     const lotTypeFieldId = Number.parseInt(
@@ -433,7 +428,7 @@ declare const bulmaJS: BulmaJS
     openEditLotTypeField(lotTypeId, lotTypeFieldId)
   }
 
-  function moveLotTypeField(clickEvent: MouseEvent) {
+  function moveLotTypeField(clickEvent: MouseEvent): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
     const lotTypeFieldId = (
@@ -458,7 +453,7 @@ declare const bulmaJS: BulmaJS
     panelElement: HTMLElement,
     lotTypeId: number,
     lotTypeFields: recordTypes.LotTypeField[]
-  ) {
+  ): void {
     if (lotTypeFields.length === 0) {
       panelElement.insertAdjacentHTML(
         'beforeend',
@@ -488,7 +483,7 @@ declare const bulmaJS: BulmaJS
           '<div class="level-left">' +
           ('<div class="level-item">' +
             '<a class="has-text-weight-bold button--editLotTypeField" href="#">' +
-            cityssm.escapeHTML(lotTypeField.lotTypeField || '') +
+            cityssm.escapeHTML(lotTypeField.lotTypeField ?? '') +
             '</a>' +
             '</div>') +
           '</div>' +
@@ -505,13 +500,11 @@ declare const bulmaJS: BulmaJS
         panelBlockElement
           .querySelector('.button--editLotTypeField')!
           .addEventListener('click', openEditLotTypeFieldByClick)
-
         ;(
           panelBlockElement.querySelector(
             '.button--moveLotTypeFieldUp'
           ) as HTMLButtonElement
         ).addEventListener('click', moveLotTypeField)
-
         ;(
           panelBlockElement.querySelector(
             '.button--moveLotTypeFieldDown'
@@ -523,7 +516,7 @@ declare const bulmaJS: BulmaJS
     }
   }
 
-  function renderLotTypes() {
+  function renderLotTypes(): void {
     containerElement.innerHTML = ''
 
     if (lotTypes.length === 0) {
@@ -572,7 +565,7 @@ declare const bulmaJS: BulmaJS
             '<button class="button is-primary is-small button--editLotType" type="button">' +
             '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
             '<span>Edit ' +
-            exports.aliases.lot +
+            los.escapedAliases.Lot +
             ' Type</span>' +
             '</button>' +
             '</div>') +
@@ -613,13 +606,11 @@ declare const bulmaJS: BulmaJS
       lotTypeContainer
         .querySelector('.button--addLotTypeField')!
         .addEventListener('click', openAddLotTypeField)
-
       ;(
         lotTypeContainer.querySelector(
           '.button--moveLotTypeUp'
         ) as HTMLButtonElement
       ).addEventListener('click', moveLotType)
-
       ;(
         lotTypeContainer.querySelector(
           '.button--moveLotTypeDown'
@@ -653,7 +644,7 @@ declare const bulmaJS: BulmaJS
             } else {
               bulmaJS.alert({
                 title: `Error Adding ${los.escapedAliases.Lot} Type`,
-                message: responseJSON.errorMessage || '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
             }
@@ -667,7 +658,6 @@ declare const bulmaJS: BulmaJS
         },
         onshown(modalElement, closeModalFunction) {
           addCloseModalFunction = closeModalFunction
-
           ;(
             modalElement.querySelector(
               '#lotTypeAdd--lotType'

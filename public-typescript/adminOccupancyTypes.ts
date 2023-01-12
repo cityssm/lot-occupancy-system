@@ -9,7 +9,6 @@ import type { BulmaJS } from '@cityssm/bulma-js/types'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -65,21 +64,21 @@ declare const bulmaJS: BulmaJS
     errorMessage?: string
     occupancyTypes?: recordTypes.OccupancyType[]
     allOccupancyTypeFields?: recordTypes.OccupancyTypeField[]
-  }) {
+  }): void {
     if (responseJSON.success) {
       occupancyTypes = responseJSON.occupancyTypes!
       allOccupancyTypeFields = responseJSON.allOccupancyTypeFields!
       renderOccupancyTypes()
     } else {
       bulmaJS.alert({
-        title: 'Error Updating ' + exports.aliases.occupancy + ' Type',
-        message: responseJSON.errorMessage || '',
+        title: 'Error Updating ' + los.escapedAliases.Occupancy + ' Type',
+        message: responseJSON.errorMessage ?? '',
         contextualColorName: 'danger'
       })
     }
   }
 
-  function deleteOccupancyType(clickEvent: Event) {
+  function deleteOccupancyType(clickEvent: Event): void {
     const occupancyTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
@@ -100,11 +99,11 @@ declare const bulmaJS: BulmaJS
     }
 
     bulmaJS.confirm({
-      title: `Delete ${exports.aliases.occupancy} Type`,
-      message: `Are you sure you want to delete this ${exports.aliases.occupancy.toLowerCase()} type?`,
+      title: `Delete ${los.escapedAliases.Occupancy} Type`,
+      message: `Are you sure you want to delete this ${los.escapedAliases.occupancy} type?`,
       contextualColorName: 'warning',
       okButton: {
-        text: `Yes, Delete ${exports.aliases.occupancy} Type`,
+        text: `Yes, Delete ${los.escapedAliases.Occupancy} Type`,
         callbackFunction: doDelete
       }
     })
@@ -149,13 +148,11 @@ declare const bulmaJS: BulmaJS
     cityssm.openHtmlModal('adminOccupancyTypes-editOccupancyType', {
       onshow(modalElement): void {
         los.populateAliases(modalElement)
-
         ;(
           modalElement.querySelector(
             '#occupancyTypeEdit--occupancyTypeId'
           ) as HTMLInputElement
         ).value = occupancyTypeId.toString()
-
         ;(
           modalElement.querySelector(
             '#occupancyTypeEdit--occupancyType'
@@ -164,7 +161,6 @@ declare const bulmaJS: BulmaJS
       },
       onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
-
         ;(
           modalElement.querySelector(
             '#occupancyTypeEdit--occupancyType'
@@ -181,7 +177,7 @@ declare const bulmaJS: BulmaJS
     })
   }
 
-  function openAddOccupancyTypeField(clickEvent: Event) {
+  function openAddOccupancyTypeField(clickEvent: Event): void {
     const occupancyTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
@@ -193,7 +189,7 @@ declare const bulmaJS: BulmaJS
 
     let addCloseModalFunction: () => void
 
-    function doAdd(submitEvent: SubmitEvent) {
+    function doAdd(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()
 
       cityssm.postJSON(
@@ -234,7 +230,6 @@ declare const bulmaJS: BulmaJS
       },
       onshown(modalElement, closeModalFunction) {
         addCloseModalFunction = closeModalFunction
-
         ;(
           modalElement.querySelector(
             '#occupancyTypeFieldAdd--occupancyTypeField'
@@ -251,7 +246,7 @@ declare const bulmaJS: BulmaJS
     })
   }
 
-  function moveOccupancyType(clickEvent: MouseEvent) {
+  function moveOccupancyType(clickEvent: MouseEvent): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
     const occupancyTypeId = (
@@ -277,7 +272,7 @@ declare const bulmaJS: BulmaJS
   function openEditOccupancyTypeField(
     occupancyTypeId: number,
     occupancyTypeFieldId: number
-  ) {
+  ): void {
     let occupancyType: recordTypes.OccupancyType | undefined
 
     if (occupancyTypeId) {
@@ -338,7 +333,7 @@ declare const bulmaJS: BulmaJS
       )
     }
 
-    function doDelete() {
+    function doDelete(): void {
       cityssm.postJSON(
         los.urlPrefix + '/admin/doDeleteOccupancyTypeField',
         {
@@ -357,7 +352,7 @@ declare const bulmaJS: BulmaJS
       )
     }
 
-    function confirmDoDelete() {
+    function confirmDoDelete(): void {
       bulmaJS.confirm({
         title: 'Delete Field',
         message:
@@ -373,19 +368,16 @@ declare const bulmaJS: BulmaJS
     cityssm.openHtmlModal('adminOccupancyTypes-editOccupancyTypeField', {
       onshow: (modalElement) => {
         los.populateAliases(modalElement)
-
         ;(
           modalElement.querySelector(
             '#occupancyTypeFieldEdit--occupancyTypeFieldId'
           ) as HTMLInputElement
         ).value = occupancyTypeField.occupancyTypeFieldId!.toString()
-
         ;(
           modalElement.querySelector(
             '#occupancyTypeFieldEdit--occupancyTypeField'
           ) as HTMLInputElement
         ).value = occupancyTypeField.occupancyTypeField!
-
         ;(
           modalElement.querySelector(
             '#occupancyTypeFieldEdit--isRequired'
@@ -449,7 +441,7 @@ declare const bulmaJS: BulmaJS
     })
   }
 
-  function openEditOccupancyTypeFieldByClick(clickEvent: Event) {
+  function openEditOccupancyTypeFieldByClick(clickEvent: Event): void {
     clickEvent.preventDefault()
 
     const occupancyTypeFieldId = Number.parseInt(
@@ -473,7 +465,7 @@ declare const bulmaJS: BulmaJS
     openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId)
   }
 
-  function moveOccupancyTypeField(clickEvent: MouseEvent) {
+  function moveOccupancyTypeField(clickEvent: MouseEvent): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
     const occupancyTypeFieldId = (
@@ -500,7 +492,7 @@ declare const bulmaJS: BulmaJS
     panelElement: HTMLElement,
     occupancyTypeId: number | undefined,
     occupancyTypeFields: recordTypes.OccupancyTypeField[]
-  ) {
+  ): void {
     if (occupancyTypeFields.length === 0) {
       panelElement.insertAdjacentHTML(
         'beforeend',
@@ -532,7 +524,7 @@ declare const bulmaJS: BulmaJS
           '<div class="level-left">' +
           ('<div class="level-item">' +
             '<a class="has-text-weight-bold button--editOccupancyTypeField" href="#">' +
-            cityssm.escapeHTML(occupancyTypeField.occupancyTypeField || '') +
+            cityssm.escapeHTML(occupancyTypeField.occupancyTypeField ?? '') +
             '</a>' +
             '</div>') +
           '</div>' +
@@ -549,13 +541,11 @@ declare const bulmaJS: BulmaJS
         panelBlockElement
           .querySelector('.button--editOccupancyTypeField')!
           .addEventListener('click', openEditOccupancyTypeFieldByClick)
-
         ;(
           panelBlockElement.querySelector(
             '.button--moveOccupancyTypeFieldUp'
           ) as HTMLButtonElement
         ).addEventListener('click', moveOccupancyTypeField)
-
         ;(
           panelBlockElement.querySelector(
             '.button--moveOccupancyTypeFieldDown'
@@ -576,7 +566,7 @@ declare const bulmaJS: BulmaJS
 
     let closeAddModalFunction: () => void
 
-    function doAdd(formEvent: SubmitEvent) {
+    function doAdd(formEvent: SubmitEvent): void {
       formEvent.preventDefault()
 
       cityssm.postJSON(
@@ -600,7 +590,6 @@ declare const bulmaJS: BulmaJS
     cityssm.openHtmlModal('adminOccupancyTypes-addOccupancyTypePrint', {
       onshow(modalElement) {
         los.populateAliases(modalElement)
-
         ;(
           modalElement.querySelector(
             '#occupancyTypePrintAdd--occupancyTypeId'
@@ -669,7 +658,7 @@ declare const bulmaJS: BulmaJS
       ) as HTMLElement
     ).dataset.occupancyTypeId
 
-    function doDelete() {
+    function doDelete(): void {
       cityssm.postJSON(
         los.urlPrefix + '/admin/doDeleteOccupancyTypePrint',
         {
@@ -753,13 +742,11 @@ declare const bulmaJS: BulmaJS
             '</div>') +
           '</div>' +
           '</div>'
-
         ;(
           panelBlockElement.querySelector(
             '.button--moveOccupancyTypePrintUp'
           ) as HTMLButtonElement
         ).addEventListener('click', moveOccupancyTypePrint)
-
         ;(
           panelBlockElement.querySelector(
             '.button--moveOccupancyTypePrintDown'
@@ -869,7 +856,7 @@ declare const bulmaJS: BulmaJS
               '<button class="button is-primary is-small button--editOccupancyType" type="button">' +
               '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
               '<span>Edit ' +
-              exports.aliases.occupancy +
+              los.escapedAliases.Occupancy +
               ' Type</span>' +
               '</button>' +
               '</div>') +
@@ -910,13 +897,11 @@ declare const bulmaJS: BulmaJS
         occupancyTypeContainer
           .querySelector('.button--addOccupancyTypeField')!
           .addEventListener('click', openAddOccupancyTypeField)
-
         ;(
           occupancyTypeContainer.querySelector(
             '.button--moveOccupancyTypeUp'
           ) as HTMLButtonElement
         ).addEventListener('click', moveOccupancyType)
-
         ;(
           occupancyTypeContainer.querySelector(
             '.button--moveOccupancyTypeDown'
@@ -977,7 +962,7 @@ declare const bulmaJS: BulmaJS
     .addEventListener('click', () => {
       let addCloseModalFunction: () => void
 
-      const doAdd = (submitEvent: SubmitEvent) => {
+      function doAdd(submitEvent: SubmitEvent): void {
         submitEvent.preventDefault()
 
         cityssm.postJSON(
@@ -994,8 +979,8 @@ declare const bulmaJS: BulmaJS
               renderOccupancyTypes()
             } else {
               bulmaJS.alert({
-                title: 'Error Adding ' + exports.aliases.occupancy + ' Type',
-                message: responseJSON.errorMessage || '',
+                title: `Error Adding ${los.escapedAliases.Occupancy} Type`,
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
             }
@@ -1009,7 +994,6 @@ declare const bulmaJS: BulmaJS
         },
         onshown: (modalElement, closeModalFunction) => {
           addCloseModalFunction = closeModalFunction
-
           ;(
             modalElement.querySelector(
               '#occupancyTypeAdd--occupancyType'

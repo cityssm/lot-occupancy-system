@@ -29,6 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     }
     function occupancyTypeResponseHandler(responseJSON) {
+        var _a;
         if (responseJSON.success) {
             occupancyTypes = responseJSON.occupancyTypes;
             allOccupancyTypeFields = responseJSON.allOccupancyTypeFields;
@@ -36,8 +37,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         else {
             bulmaJS.alert({
-                title: 'Error Updating ' + exports.aliases.occupancy + ' Type',
-                message: responseJSON.errorMessage || '',
+                title: 'Error Updating ' + los.escapedAliases.Occupancy + ' Type',
+                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                 contextualColorName: 'danger'
             });
         }
@@ -50,11 +51,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, occupancyTypeResponseHandler);
         }
         bulmaJS.confirm({
-            title: `Delete ${exports.aliases.occupancy} Type`,
-            message: `Are you sure you want to delete this ${exports.aliases.occupancy.toLowerCase()} type?`,
+            title: `Delete ${los.escapedAliases.Occupancy} Type`,
+            message: `Are you sure you want to delete this ${los.escapedAliases.occupancy} type?`,
             contextualColorName: 'warning',
             okButton: {
-                text: `Yes, Delete ${exports.aliases.occupancy} Type`,
+                text: `Yes, Delete ${los.escapedAliases.Occupancy} Type`,
                 callbackFunction: doDelete
             }
         });
@@ -255,6 +256,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }, occupancyTypeResponseHandler);
     }
     function renderOccupancyTypeFields(panelElement, occupancyTypeId, occupancyTypeFields) {
+        var _a;
         if (occupancyTypeFields.length === 0) {
             panelElement.insertAdjacentHTML('beforeend', '<div class="panel-block is-block' +
                 (!occupancyTypeId || expandedOccupancyTypes.has(occupancyTypeId)
@@ -281,7 +283,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<div class="level-left">' +
                         ('<div class="level-item">' +
                             '<a class="has-text-weight-bold button--editOccupancyTypeField" href="#">' +
-                            cityssm.escapeHTML(occupancyTypeField.occupancyTypeField || '') +
+                            cityssm.escapeHTML((_a = occupancyTypeField.occupancyTypeField) !== null && _a !== void 0 ? _a : '') +
                             '</a>' +
                             '</div>') +
                         '</div>' +
@@ -494,7 +496,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 '<button class="button is-primary is-small button--editOccupancyType" type="button">' +
                                 '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
                                 '<span>Edit ' +
-                                exports.aliases.occupancy +
+                                los.escapedAliases.Occupancy +
                                 ' Type</span>' +
                                 '</button>' +
                                 '</div>') +
@@ -566,9 +568,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         .querySelector('#button--addOccupancyType')
         .addEventListener('click', () => {
         let addCloseModalFunction;
-        const doAdd = (submitEvent) => {
+        function doAdd(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + '/admin/doAddOccupancyType', submitEvent.currentTarget, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     addCloseModalFunction();
                     occupancyTypes = responseJSON.occupancyTypes;
@@ -576,13 +579,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        title: 'Error Adding ' + exports.aliases.occupancy + ' Type',
-                        message: responseJSON.errorMessage || '',
+                        title: `Error Adding ${los.escapedAliases.Occupancy} Type`,
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
-        };
+        }
         cityssm.openHtmlModal('adminOccupancyTypes-addOccupancyType', {
             onshow: (modalElement) => {
                 los.populateAliases(modalElement);

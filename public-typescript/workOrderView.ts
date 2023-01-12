@@ -8,7 +8,6 @@ import type { BulmaJS } from '@cityssm/bulma-js/types'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -20,7 +19,7 @@ declare const bulmaJS: BulmaJS
     const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId!
 
     reopenWorkOrderButtonElement.addEventListener('click', () => {
-      function doReopen() {
+      function doReopen(): void {
         cityssm.postJSON(
           los.urlPrefix + '/workOrders/doReopenWorkOrder',
           {
@@ -36,7 +35,7 @@ declare const bulmaJS: BulmaJS
             } else {
               bulmaJS.alert({
                 title: 'Error Reopening Work Order',
-                message: responseJSON.errorMessage || '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
             }

@@ -11,13 +11,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 cityssm.postJSON(los.urlPrefix + '/workOrders/doReopenWorkOrder', {
                     workOrderId
                 }, (responseJSON) => {
+                    var _a;
                     if (responseJSON.success) {
                         window.location.href = los.getWorkOrderURL(workOrderId, true, true);
                     }
                     else {
                         bulmaJS.alert({
                             title: 'Error Reopening Work Order',
-                            message: responseJSON.errorMessage || '',
+                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                             contextualColorName: 'danger'
                         });
                     }

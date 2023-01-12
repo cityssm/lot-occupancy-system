@@ -7,10 +7,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
     let feeCategories = exports.feeCategories;
     delete exports.feeCategories;
     function renderFeeCategories() {
+        var _a, _b, _c, _d, _e, _f;
         if (feeCategories.length === 0) {
             feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
-                <p class="message-body">There are no available fees.</p>
-                </div>`;
+        <p class="message-body">There are no available fees.</p>
+        </div>`;
             return;
         }
         feeCategoriesContainerElement.innerHTML = '';
@@ -24,7 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '<div class="columns">' +
                     ('<div class="column">' +
                         '<h2 class="title is-4">' +
-                        cityssm.escapeHTML(feeCategory.feeCategory || '') +
+                        cityssm.escapeHTML((_a = feeCategory.feeCategory) !== null && _a !== void 0 ? _a : '') +
                         '</h2>' +
                         '</div>') +
                     ('<div class="column is-narrow">' +
@@ -57,14 +58,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '</div>';
             if (feeCategory.fees.length === 0) {
                 feeCategoryContainerElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
-                        <div class="message is-info">
-                        <p class="message-body">
-                            There are no fees in the
-                            "${cityssm.escapeHTML(feeCategory.feeCategory || '')}"
-                            category.
-                        </p>
-                        </div>
-                    </div>`);
+            <div class="message is-info">
+              <p class="message-body">
+                  There are no fees in the
+                  "${cityssm.escapeHTML(feeCategory.feeCategory || '')}"
+                  category.
+              </p>
+            </div>
+            </div>`);
                 feeCategoryContainerElement
                     .querySelector('.button--deleteFeeCategory')
                     .addEventListener('click', confirmDeleteFeeCategory);
@@ -80,11 +81,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             ('<div class="column is-half">' +
                                 '<p>' +
                                 '<a class="has-text-weight-bold" href="#">' +
-                                cityssm.escapeHTML(fee.feeName || '') +
+                                cityssm.escapeHTML((_b = fee.feeName) !== null && _b !== void 0 ? _b : '') +
                                 '</a><br />' +
                                 '<small>' +
                                 cityssm
-                                    .escapeHTML(fee.feeDescription || '')
+                                    .escapeHTML((_c = fee.feeDescription) !== null && _c !== void 0 ? _c : '')
                                     .replace(/\n/g, '<br />') +
                                 '</small>' +
                                 '</p>' +
@@ -97,14 +98,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                             ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
                                                 los.escapedAliases.Occupancy +
                                                 ' Type Filter">' +
-                                                cityssm.escapeHTML(fee.occupancyType || '') +
+                                                cityssm.escapeHTML((_d = fee.occupancyType) !== null && _d !== void 0 ? _d : '') +
                                                 '</span>'
                                             : '') +
                                         (fee.lotTypeId
                                             ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
                                                 los.escapedAliases.Lot +
                                                 ' Type Filter">' +
-                                                cityssm.escapeHTML(fee.lotType || '') +
+                                                cityssm.escapeHTML((_e = fee.lotType) !== null && _e !== void 0 ? _e : '') +
                                                 '</span>'
                                             : '') +
                                         '</p>'
@@ -130,7 +131,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                     '</div>') +
                                 ('<div class="column has-text-centered">' +
                                     (fee.includeQuantity
-                                        ? cityssm.escapeHTML(fee.quantityUnit || '') +
+                                        ? cityssm.escapeHTML((_f = fee.quantityUnit) !== null && _f !== void 0 ? _f : '') +
                                             '<br />' +
                                             '<small>Quantity</small>'
                                         : '') +
@@ -168,9 +169,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         .querySelector('#button--addFeeCategory')
         .addEventListener('click', () => {
         let addCloseModalFunction;
-        const doAddFeeCategory = (submitEvent) => {
+        function doAddFeeCategory(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + '/admin/doAddFeeCategory', submitEvent.currentTarget, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     addCloseModalFunction();
@@ -179,12 +181,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Creating Fee Category',
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
-        };
+        }
         cityssm.openHtmlModal('adminFees-addFeeCategory', {
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
@@ -209,6 +211,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doUpdateFeeCategory(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + '/admin/doUpdateFeeCategory', submitEvent.currentTarget, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     editCloseModalFunction();
@@ -217,7 +220,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Updating Fee Category',
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -248,6 +251,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(los.urlPrefix + '/admin/doDeleteFeeCategory', {
                 feeCategoryId
             }, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     renderFeeCategories();
@@ -255,7 +259,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Updating Fee Category',
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -282,6 +286,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             feeCategoryId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 feeCategories = responseJSON.feeCategories;
                 renderFeeCategories();
@@ -289,7 +294,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Moving Fee Category',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }
@@ -304,6 +309,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doAddFee(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + '/admin/doAddFee', submitEvent.currentTarget, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     addCloseModalFunction();
@@ -312,7 +318,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Adding Fee',
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -415,6 +421,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doUpdateFee(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(los.urlPrefix + '/admin/doUpdateFee', submitEvent.currentTarget, (responseJSON) => {
+                var _a;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     editCloseModalFunction();
@@ -423,7 +430,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Updating Fee',
-                        message: responseJSON.errorMessage || '',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -431,10 +438,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         function confirmDeleteFee(clickEvent) {
             clickEvent.preventDefault();
-            const doDelete = () => {
+            function doDelete() {
                 cityssm.postJSON(los.urlPrefix + '/admin/doDeleteFee', {
                     feeId
                 }, (responseJSON) => {
+                    var _a;
                     if (responseJSON.success) {
                         feeCategories = responseJSON.feeCategories;
                         editCloseModalFunction();
@@ -443,12 +451,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: 'Error Deleting Fee',
-                            message: responseJSON.errorMessage || '',
+                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                             contextualColorName: 'danger'
                         });
                     }
                 });
-            };
+            }
             bulmaJS.confirm({
                 title: 'Delete Fee?',
                 message: 'Are you sure you want to delete this fee?',
@@ -493,6 +501,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('adminFees-editFee', {
             onshow(modalElement) {
+                var _a;
                 editModalElement = modalElement;
                 modalElement.querySelector('#feeEdit--feeId').value = fee.feeId.toString();
                 const feeCategoryElement = modalElement.querySelector('#feeEdit--feeCategoryId');
@@ -546,7 +555,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     includeQuantityElement.value = '1';
                 }
                 includeQuantityElement.addEventListener('change', toggleQuantityFields);
-                modalElement.querySelector('#feeEdit--quantityUnit').value = fee.quantityUnit || '';
+                modalElement.querySelector('#feeEdit--quantityUnit').value = (_a = fee.quantityUnit) !== null && _a !== void 0 ? _a : '';
                 toggleQuantityFields();
                 if (fee.isRequired) {
                     ;
@@ -582,6 +591,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             feeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, (responseJSON) => {
+            var _a;
             if (responseJSON.success) {
                 feeCategories = responseJSON.feeCategories;
                 renderFeeCategories();
@@ -589,7 +599,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Moving Fee',
-                    message: responseJSON.errorMessage || '',
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
             }

@@ -1,15 +1,13 @@
 /* eslint-disable unicorn/prefer-module */
 
 ;(() => {
-  const menuTabElements = document.querySelectorAll(
-    '.menu a'
-  ) as NodeListOf<HTMLAnchorElement>
+  const menuTabElements: NodeListOf<HTMLAnchorElement> =
+    document.querySelectorAll('.menu a')
 
-  const tabContainerElements = document.querySelectorAll(
-    '.tabs-container > div'
-  ) as NodeListOf<HTMLElement>
+  const tabContainerElements: NodeListOf<HTMLElement> =
+    document.querySelectorAll('.tabs-container > div')
 
-  function selectTab(clickEvent: Event) {
+  function selectTab(clickEvent: Event): void {
     clickEvent.preventDefault()
 
     // Remove .is-active from all tabs

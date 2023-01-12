@@ -5,7 +5,6 @@ import type * as globalTypes from '../types/globalTypes'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
 
 declare const cityssm: cityssmGlobal
-
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -34,7 +33,7 @@ declare const cityssm: cityssmGlobal
     count: number
     offset: number
     workOrders: recordTypes.WorkOrder[]
-  }) {
+  }): void {
     if (responseJSON.workOrders.length === 0) {
       searchResultsContainerElement.innerHTML =
         '<div class="message is-info">' +
@@ -52,13 +51,15 @@ declare const cityssm: cityssmGlobal
       for (const lot of workOrder.workOrderLots!) {
         relatedHTML +=
           '<span class="has-tooltip-left" data-tooltip="' +
-          cityssm.escapeHTML(lot.mapName || '') +
+          cityssm.escapeHTML(lot.mapName ?? '') +
           '">' +
           '<i class="fas fa-fw fa-vector-square" aria-label="' +
           los.escapedAliases.Lot +
           '"></i> ' +
           cityssm.escapeHTML(
-            lot.lotName || '(No ' + exports.aliases.Lot + ' Name)'
+            (lot.lotName ?? '') === ''
+              ? '(No ' + los.escapedAliases.Lot + ' Name)'
+              : lot.lotName!
           ) +
           '</span><br />'
       }
@@ -67,14 +68,22 @@ declare const cityssm: cityssmGlobal
         for (const occupant of occupancy.lotOccupancyOccupants!) {
           relatedHTML +=
             '<span class="has-tooltip-left" data-tooltip="' +
-            cityssm.escapeHTML(occupant.lotOccupantType || '') +
+            cityssm.escapeHTML(occupant.lotOccupantType ?? '') +
             '">' +
             '<i class="fas fa-fw fa-' +
-            cityssm.escapeHTML(occupant.fontAwesomeIconClass || 'user') +
+            cityssm.escapeHTML(
+              (occupant.fontAwesomeIconClass ?? '') === ''
+                ? 'user'
+                : occupant.fontAwesomeIconClass!
+            ) +
             '" aria-label="' +
             los.escapedAliases.occupant +
             '"></i> ' +
-            cityssm.escapeHTML(occupant.occupantName || '(No Name)') +
+            cityssm.escapeHTML(
+              (occupant.occupantName ?? '') === ''
+                ? '(No Name)'
+                : occupant.occupantName!
+            ) +
             '</span><br />'
         }
       }
@@ -84,18 +93,18 @@ declare const cityssm: cityssmGlobal
         '<tr>' +
           ('<td>' +
             '<a class="has-text-weight-bold" href="' +
-            los.getWorkOrderURL(workOrder.workOrderId!) +
+            los.getWorkOrderURL(workOrder.workOrderId) +
             '">' +
             (workOrder.workOrderNumber!.trim()
-              ? cityssm.escapeHTML(workOrder.workOrderNumber || '')
+              ? cityssm.escapeHTML(workOrder.workOrderNumber ?? '')
               : '(No Number)') +
             '</a>' +
             '</td>') +
           ('<td>' +
-            cityssm.escapeHTML(workOrder.workOrderType || '') +
+            cityssm.escapeHTML(workOrder.workOrderType ?? '') +
             '<br />' +
             '<span class="is-size-7">' +
-            cityssm.escapeHTML(workOrder.workOrderDescription || '') +
+            cityssm.escapeHTML(workOrder.workOrderDescription ?? '') +
             '</span>' +
             '</td>') +
           ('<td class="is-nowrap"><span class="is-size-7">' +
@@ -181,7 +190,7 @@ declare const cityssm: cityssmGlobal
       ?.addEventListener('click', nextAndGetWorkOrders)
   }
 
-  function getWorkOrders() {
+  function getWorkOrders(): void {
     searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
       'Loading Work Orders...'
     )
@@ -193,12 +202,12 @@ declare const cityssm: cityssmGlobal
     )
   }
 
-  function resetOffsetAndGetWorkOrders() {
+  function resetOffsetAndGetWorkOrders(): void {
     offsetElement.value = '0'
     getWorkOrders()
   }
 
-  function previousAndGetWorkOrders() {
+  function previousAndGetWorkOrders(): void {
     offsetElement.value = Math.max(
       Number.parseInt(offsetElement.value, 10) - limit,
       0
@@ -206,16 +215,15 @@ declare const cityssm: cityssmGlobal
     getWorkOrders()
   }
 
-  function nextAndGetWorkOrders() {
+  function nextAndGetWorkOrders(): void {
     offsetElement.value = (
       Number.parseInt(offsetElement.value, 10) + limit
     ).toString()
     getWorkOrders()
   }
 
-  const filterElements = searchFilterFormElement.querySelectorAll(
-    'input, select'
-  ) as NodeListOf<HTMLInputElement | HTMLSelectElement>
+  const filterElements =
+    searchFilterFormElement.querySelectorAll('input, select')
 
   for (const filterElement of filterElements) {
     filterElement.addEventListener('change', resetOffsetAndGetWorkOrders)
