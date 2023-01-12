@@ -1,22 +1,22 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes'
 
 export function getLotOccupancyOccupants(
-    lotOccupancyId: number | string,
-    connectedDatabase?: sqlite.Database
+  lotOccupancyId: number | string,
+  connectedDatabase?: sqlite.Database
 ): recordTypes.LotOccupancyOccupant[] {
-    const database =
-        connectedDatabase ||
-        sqlite(databasePath, {
-            readonly: true
-        });
+  const database =
+    connectedDatabase ??
+    sqlite(databasePath, {
+      readonly: true
+    })
 
-    const lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[] = database
-        .prepare(
-            `select o.lotOccupancyId, o.lotOccupantIndex,
+  const lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[] = database
+    .prepare(
+      `select o.lotOccupancyId, o.lotOccupantIndex,
                 o.occupantName,
                 o.occupantAddress1, o.occupantAddress2,
                 o.occupantCity, o.occupantProvince, o.occupantPostalCode,
@@ -29,14 +29,14 @@ export function getLotOccupancyOccupants(
                 where o.recordDelete_timeMillis is null
                 and o.lotOccupancyId = ?
                 order by t.orderNumber, t.lotOccupantType, o.occupantName, o.lotOccupantIndex`
-        )
-        .all(lotOccupancyId);
+    )
+    .all(lotOccupancyId)
 
-    if (!connectedDatabase) {
-        database.close();
-    }
+  if (!connectedDatabase) {
+    database.close()
+  }
 
-    return lotOccupancyOccupants;
+  return lotOccupancyOccupants
 }
 
-export default getLotOccupancyOccupants;
+export default getLotOccupancyOccupants

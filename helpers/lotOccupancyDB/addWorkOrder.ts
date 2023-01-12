@@ -38,11 +38,11 @@ export function addWorkOrder(
   const result = database
     .prepare(
       `insert into WorkOrders (
-                workOrderTypeId, workOrderNumber, workOrderDescription,
-                workOrderOpenDate, workOrderCloseDate,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        workOrderTypeId, workOrderNumber, workOrderDescription,
+        workOrderOpenDate, workOrderCloseDate,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       workOrderForm.workOrderTypeId,

@@ -1,50 +1,50 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import type * as recordTypes from "../../types/recordTypes";
-import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
+import type * as recordTypes from '../../types/recordTypes'
+import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export function getLotTypeFields(
-    lotTypeId: number,
-    connectedDatabase?: sqlite.Database
+  lotTypeId: number,
+  connectedDatabase?: sqlite.Database
 ): recordTypes.LotTypeField[] {
-    const database = connectedDatabase || sqlite(databasePath);
+  const database = connectedDatabase ?? sqlite(databasePath)
 
-    const lotTypeFields: recordTypes.LotTypeField[] = database
-        .prepare(
-            `select lotTypeFieldId,
-                lotTypeField, lotTypeFieldValues,
-                isRequired, pattern, minimumLength, maximumLength, orderNumber
-                from LotTypeFields
-                where recordDelete_timeMillis is null
-                and lotTypeId = ?
-                order by orderNumber, lotTypeField`
-        )
-        .all(lotTypeId);
+  const lotTypeFields: recordTypes.LotTypeField[] = database
+    .prepare(
+      `select lotTypeFieldId,
+        lotTypeField, lotTypeFieldValues,
+        isRequired, pattern, minimumLength, maximumLength, orderNumber
+        from LotTypeFields
+        where recordDelete_timeMillis is null
+        and lotTypeId = ?
+        order by orderNumber, lotTypeField`
+    )
+    .all(lotTypeId)
 
-    let expectedOrderNumber = 0;
+  let expectedOrderNumber = 0
 
-    for (const lotTypeField of lotTypeFields) {
-        if (lotTypeField.orderNumber !== expectedOrderNumber) {
-            updateRecordOrderNumber(
-                "LotTypeFields",
-                lotTypeField.lotTypeFieldId,
-                expectedOrderNumber,
-                database
-            );
+  for (const lotTypeField of lotTypeFields) {
+    if (lotTypeField.orderNumber !== expectedOrderNumber) {
+      updateRecordOrderNumber(
+        'LotTypeFields',
+        lotTypeField.lotTypeFieldId,
+        expectedOrderNumber,
+        database
+      )
 
-            lotTypeField.orderNumber = expectedOrderNumber;
-        }
-
-        expectedOrderNumber += 1;
+      lotTypeField.orderNumber = expectedOrderNumber
     }
 
-    if (!connectedDatabase) {
-        database.close();
-    }
+    expectedOrderNumber += 1
+  }
 
-    return lotTypeFields;
+  if (!connectedDatabase) {
+    database.close()
+  }
+
+  return lotTypeFields
 }
 
-export default getLotTypeFields;
+export default getLotTypeFields

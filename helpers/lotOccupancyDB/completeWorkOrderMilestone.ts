@@ -30,11 +30,11 @@ export function completeWorkOrderMilestone(
   const result = database
     .prepare(
       `update WorkOrderMilestones
-                set workOrderMilestoneCompletionDate = ?,
-                workOrderMilestoneCompletionTime = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where workOrderMilestoneId = ?`
+        set workOrderMilestoneCompletionDate = ?,
+        workOrderMilestoneCompletionTime = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where workOrderMilestoneId = ?`
     )
     .run(
       milestoneForm.workOrderMilestoneCompletionDateString

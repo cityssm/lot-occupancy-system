@@ -1,7 +1,7 @@
-import sqlite from "better-sqlite3";
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3';
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
 export function getLotOccupancyOccupants(lotOccupancyId, connectedDatabase) {
-    const database = connectedDatabase ||
+    const database = connectedDatabase ??
         sqlite(databasePath, {
             readonly: true
         });

@@ -16,10 +16,10 @@ export function deleteWorkOrderLotOccupancy(
   const result = database
     .prepare(
       `update WorkOrderLotOccupancies
-                set recordDelete_userName = ?,
-                recordDelete_timeMillis = ?
-                where workOrderId = ?
-                and lotOccupancyId = ?`
+        set recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+        where workOrderId = ?
+        and lotOccupancyId = ?`
     )
     .run(
       requestSession.user!.userName,

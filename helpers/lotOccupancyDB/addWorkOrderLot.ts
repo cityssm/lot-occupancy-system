@@ -20,9 +20,9 @@ export function addWorkOrderLot(
   const row: { recordDelete_timeMillis?: number } = database
     .prepare(
       `select recordDelete_timeMillis
-                from WorkOrderLots
-                where workOrderId = ?
-                and lotId = ?`
+        from WorkOrderLots
+        where workOrderId = ?
+        and lotId = ?`
     )
     .get(workOrderLotForm.workOrderId, workOrderLotForm.lotId)
 
@@ -31,14 +31,14 @@ export function addWorkOrderLot(
       database
         .prepare(
           `update WorkOrderLots
-                        set recordCreate_userName = ?,
-                        recordCreate_timeMillis = ?,
-                        recordUpdate_userName = ?,
-                        recordUpdate_timeMillis = ?,
-                        recordDelete_userName = null,
-                        recordDelete_timeMillis = null
-                        where workOrderId = ?
-                        and lotId = ?`
+            set recordCreate_userName = ?,
+            recordCreate_timeMillis = ?,
+            recordUpdate_userName = ?,
+            recordUpdate_timeMillis = ?,
+            recordDelete_userName = null,
+            recordDelete_timeMillis = null
+            where workOrderId = ?
+            and lotId = ?`
         )
         .run(
           requestSession.user!.userName,

@@ -5,22 +5,22 @@ export function addWorkOrderLot(workOrderLotForm, requestSession) {
     const rightNowMillis = Date.now();
     const row = database
         .prepare(`select recordDelete_timeMillis
-                from WorkOrderLots
-                where workOrderId = ?
-                and lotId = ?`)
+        from WorkOrderLots
+        where workOrderId = ?
+        and lotId = ?`)
         .get(workOrderLotForm.workOrderId, workOrderLotForm.lotId);
     if (row) {
         if (row.recordDelete_timeMillis) {
             database
                 .prepare(`update WorkOrderLots
-                        set recordCreate_userName = ?,
-                        recordCreate_timeMillis = ?,
-                        recordUpdate_userName = ?,
-                        recordUpdate_timeMillis = ?,
-                        recordDelete_userName = null,
-                        recordDelete_timeMillis = null
-                        where workOrderId = ?
-                        and lotId = ?`)
+            set recordCreate_userName = ?,
+            recordCreate_timeMillis = ?,
+            recordUpdate_userName = ?,
+            recordUpdate_timeMillis = ?,
+            recordDelete_userName = null,
+            recordDelete_timeMillis = null
+            where workOrderId = ?
+            and lotId = ?`)
                 .run(requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis, workOrderLotForm.workOrderId, workOrderLotForm.lotId);
         }
     }

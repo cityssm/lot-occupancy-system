@@ -117,7 +117,7 @@ function buildEventDescriptionHTML_occupancies(
           <td>
             ${
               occupancy.occupancyEndDate
-                ? occupancy.occupancyEndDateString
+                ? occupancy.occupancyEndDateString!
                 : '(No End Date)'
             }
           </td>
@@ -306,7 +306,7 @@ export const handler: RequestHandler = (request, response) => {
   })
 
   if (request.query.workOrderId && workOrderMilestones.length > 0) {
-    calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber}`)
+    calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber!}`)
     calendar.url(urlRoot + '/workOrders/' + workOrderMilestones[0].workOrderId)
   }
 

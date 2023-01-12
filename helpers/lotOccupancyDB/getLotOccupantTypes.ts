@@ -1,43 +1,43 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from "../../data/databasePaths.js";
+import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
-import { updateRecordOrderNumber } from "./updateRecordOrderNumber.js";
+import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes'
 
 export function getLotOccupantTypes(): recordTypes.LotOccupantType[] {
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const lotOccupantTypes: recordTypes.LotOccupantType[] = database
-        .prepare(
-            `select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass, orderNumber
-                from LotOccupantTypes
-                where recordDelete_timeMillis is null
-                order by orderNumber, lotOccupantType`
-        )
-        .all();
+  const lotOccupantTypes: recordTypes.LotOccupantType[] = database
+    .prepare(
+      `select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass, orderNumber
+        from LotOccupantTypes
+        where recordDelete_timeMillis is null
+        order by orderNumber, lotOccupantType`
+    )
+    .all()
 
-    let expectedOrderNumber = 0;
+  let expectedOrderNumber = 0
 
-    for (const lotOccupantType of lotOccupantTypes) {
-        if (lotOccupantType.orderNumber !== expectedOrderNumber) {
-            updateRecordOrderNumber(
-                "LotOccupantTypes",
-                lotOccupantType.lotOccupantTypeId,
-                expectedOrderNumber,
-                database
-            );
+  for (const lotOccupantType of lotOccupantTypes) {
+    if (lotOccupantType.orderNumber !== expectedOrderNumber) {
+      updateRecordOrderNumber(
+        'LotOccupantTypes',
+        lotOccupantType.lotOccupantTypeId,
+        expectedOrderNumber,
+        database
+      )
 
-            lotOccupantType.orderNumber = expectedOrderNumber;
-        }
-
-        expectedOrderNumber += 1;
+      lotOccupantType.orderNumber = expectedOrderNumber
     }
 
-    database.close();
+    expectedOrderNumber += 1
+  }
 
-    return lotOccupantTypes;
+  database.close()
+
+  return lotOccupantTypes
 }
 
-export default getLotOccupantTypes;
+export default getLotOccupantTypes

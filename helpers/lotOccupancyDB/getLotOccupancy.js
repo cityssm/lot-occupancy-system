@@ -15,18 +15,18 @@ export function getLotOccupancy(lotOccupancyId, connectedDatabase) {
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const lotOccupancy = database
         .prepare(`select o.lotOccupancyId,
-                o.occupancyTypeId, t.occupancyType,
-                o.lotId, l.lotName, l.lotTypeId,
-                l.mapId, m.mapName,
-                o.occupancyStartDate, userFn_dateIntegerToString(o.occupancyStartDate) as occupancyStartDateString,
-                o.occupancyEndDate,  userFn_dateIntegerToString(o.occupancyEndDate) as occupancyEndDateString,
-                o.recordUpdate_timeMillis
-                from LotOccupancies o
-                left join OccupancyTypes t on o.occupancyTypeId = t.occupancyTypeId
-                left join Lots l on o.lotId = l.lotId
-                left join Maps m on l.mapId = m.mapId
-                where o.recordDelete_timeMillis is null
-                and o.lotOccupancyId = ?`)
+        o.occupancyTypeId, t.occupancyType,
+        o.lotId, l.lotName, l.lotTypeId,
+        l.mapId, m.mapName,
+        o.occupancyStartDate, userFn_dateIntegerToString(o.occupancyStartDate) as occupancyStartDateString,
+        o.occupancyEndDate,  userFn_dateIntegerToString(o.occupancyEndDate) as occupancyEndDateString,
+        o.recordUpdate_timeMillis
+        from LotOccupancies o
+        left join OccupancyTypes t on o.occupancyTypeId = t.occupancyTypeId
+        left join Lots l on o.lotId = l.lotId
+        left join Maps m on l.mapId = m.mapId
+        where o.recordDelete_timeMillis is null
+        and o.lotOccupancyId = ?`)
         .get(lotOccupancyId);
     if (lotOccupancy) {
         lotOccupancy.lotOccupancyFields = getLotOccupancyFields(lotOccupancyId, database);

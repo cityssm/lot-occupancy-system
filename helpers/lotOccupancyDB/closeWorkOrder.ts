@@ -25,10 +25,10 @@ export function closeWorkOrder(
   const result = database
     .prepare(
       `update WorkOrders
-                set workOrderCloseDate = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where workOrderId = ?`
+        set workOrderCloseDate = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where workOrderId = ?`
     )
     .run(
       workOrderForm.workOrderCloseDateString

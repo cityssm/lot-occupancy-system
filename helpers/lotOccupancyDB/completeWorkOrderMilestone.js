@@ -6,11 +6,11 @@ export function completeWorkOrderMilestone(milestoneForm, requestSession) {
     const database = sqlite(databasePath);
     const result = database
         .prepare(`update WorkOrderMilestones
-                set workOrderMilestoneCompletionDate = ?,
-                workOrderMilestoneCompletionTime = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where workOrderMilestoneId = ?`)
+        set workOrderMilestoneCompletionDate = ?,
+        workOrderMilestoneCompletionTime = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where workOrderMilestoneId = ?`)
         .run(milestoneForm.workOrderMilestoneCompletionDateString
         ? dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString)
         : dateToInteger(rightNow), milestoneForm.workOrderMilestoneCompletionTimeString

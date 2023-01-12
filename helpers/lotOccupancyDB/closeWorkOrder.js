@@ -6,10 +6,10 @@ export function closeWorkOrder(workOrderForm, requestSession) {
     const rightNow = new Date();
     const result = database
         .prepare(`update WorkOrders
-                set workOrderCloseDate = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where workOrderId = ?`)
+        set workOrderCloseDate = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where workOrderId = ?`)
         .run(workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
         : dateToInteger(new Date()), requestSession.user.userName, rightNow.getTime(), workOrderForm.workOrderId);
