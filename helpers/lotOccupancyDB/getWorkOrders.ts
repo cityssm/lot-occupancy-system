@@ -87,7 +87,7 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
     sqlParameters.push(...lotNameFilters.sqlParameters)
   }
 
-  if (filters.lotOccupancyId) {
+  if ((filters.lotOccupancyId ?? '') !== '') {
     sqlWhereClause +=
       ' and w.workOrderId in (select workOrderId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and lotOccupancyId = ?)'
     sqlParameters.push(filters.lotOccupancyId)
