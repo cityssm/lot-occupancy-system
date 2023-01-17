@@ -171,6 +171,8 @@ export interface Fee extends Record {
   isRequired?: boolean
 
   orderNumber?: number
+
+  lotOccupancyFeeCount?: number
 }
 
 export interface LotOccupancyFee extends Fee, Record {

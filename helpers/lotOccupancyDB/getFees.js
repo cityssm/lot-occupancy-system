@@ -19,18 +19,25 @@ export function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
         sqlParameters.push(additionalFilters.lotTypeId);
     }
     const fees = database
-        .prepare('select f.feeId, f.feeName, f.feeDescription,' +
-        ' f.occupancyTypeId, o.occupancyType,' +
-        ' f.lotTypeId, l.lotType,' +
-        ' ifnull(f.feeAmount, 0) as feeAmount, f.feeFunction,' +
-        ' f.taxAmount, f.taxPercentage,' +
-        ' f.includeQuantity, f.quantityUnit,' +
-        ' f.isRequired, f.orderNumber' +
-        ' from Fees f' +
-        ' left join OccupancyTypes o on f.occupancyTypeId = o.occupancyTypeId' +
-        ' left join LotTypes l on f.lotTypeId = l.lotTypeId' +
-        sqlWhereClause +
-        ' order by f.orderNumber, f.feeName')
+        .prepare(`select f.feeId, f.feeName, f.feeDescription,
+        f.occupancyTypeId, o.occupancyType,
+        f.lotTypeId, l.lotType,
+        ifnull(f.feeAmount, 0) as feeAmount, f.feeFunction,
+        f.taxAmount, f.taxPercentage,
+        f.includeQuantity, f.quantityUnit,
+        f.isRequired, f.orderNumber,
+        ifnull(lo.lotOccupancyFeeCount, 0) as lotOccupancyFeeCount
+        from Fees f
+        left join (
+          select feeId, count(lotOccupancyId) as lotOccupancyFeeCount
+          from LotOccupancyFees
+          where recordDelete_timeMillis is null
+          group by feeId
+        ) lo on f.feeId = lo.feeId
+        left join OccupancyTypes o on f.occupancyTypeId = o.occupancyTypeId
+        left join LotTypes l on f.lotTypeId = l.lotTypeId
+        ${sqlWhereClause}
+        order by f.orderNumber, f.feeName`)
         .all(sqlParameters);
     if (updateOrderNumbers) {
         let expectedOrderNumber = 0;

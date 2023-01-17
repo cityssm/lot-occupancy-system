@@ -128,6 +128,7 @@ export interface Fee extends Record {
     taxPercentage?: number;
     isRequired?: boolean;
     orderNumber?: number;
+    lotOccupancyFeeCount?: number;
 }
 export interface LotOccupancyFee extends Fee, Record {
     lotOccupancyId?: number;
