@@ -294,25 +294,25 @@
                         </div>
                         <div class="level-right">
                             <div class="level-item">
-                                <button class="button is-small is-success" id="button--addMilestone" type="button">
-                                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                                    <span>Add Milestone</span>
-                                </button>
+                              <button class="button is-small is-success" id="button--addMilestone" type="button">
+                                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                                <span>Add Milestone</span>
+                              </button>
                             </div>
                             <div class="level-item">
                                 <div class="dropdown is-right has-text-weight-normal">
                                     <div class="dropdown-trigger">
-                                        <button class="button is-small" type="button" aria-label="Options">
-                                            <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
-                                        </button>
+                                      <button class="button is-small has-tooltip-left" data-tooltip="Milestone Options" type="button" aria-label="Options">
+                                        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                                      </button>
                                     </div>
                                     <div class="dropdown-menu">
-                                        <div class="dropdown-content">
-                                            <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
-                                                <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
-                                                <span>Download iCalendar</span>
-                                            </a>
-                                        </div>
+                                      <div class="dropdown-content">
+                                          <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
+                                            <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+                                            <span>Download iCalendar</span>
+                                          </a>
+                                      </div>
                                     </div>
                                 </div>
                             </div>
