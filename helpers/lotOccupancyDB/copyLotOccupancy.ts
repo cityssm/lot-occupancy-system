@@ -39,10 +39,10 @@ export function copyLotOccupancy(
     database
       .prepare(
         `insert into LotOccupancyFields (
-                    lotOccupancyId, occupancyTypeFieldId, lotOccupancyFieldValue,
-                    recordCreate_userName, recordCreate_timeMillis,
-                    recordUpdate_userName, recordUpdate_timeMillis)
-                    values (?, ?, ?, ?, ?, ?, ?)`
+          lotOccupancyId, occupancyTypeFieldId, lotOccupancyFieldValue,
+          recordCreate_userName, recordCreate_timeMillis,
+          recordUpdate_userName, recordUpdate_timeMillis)
+          values (?, ?, ?, ?, ?, ?, ?)`
       )
       .run(
         newLotOccupancyId,

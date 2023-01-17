@@ -25,14 +25,14 @@ export function getLotOccupancyComments(
   const lotComments = database
     .prepare(
       `select lotOccupancyCommentId,
-                lotOccupancyCommentDate, userFn_dateIntegerToString(lotOccupancyCommentDate) as lotOccupancyCommentDateString,
-                lotOccupancyCommentTime, userFn_timeIntegerToString(lotOccupancyCommentTime) as lotOccupancyCommentTimeString,
-                lotOccupancyComment,
-                recordCreate_userName, recordUpdate_userName
-                from LotOccupancyComments
-                where recordDelete_timeMillis is null
-                and lotOccupancyId = ?
-                order by lotOccupancyCommentDate desc, lotOccupancyCommentTime desc, lotOccupancyCommentId desc`
+        lotOccupancyCommentDate, userFn_dateIntegerToString(lotOccupancyCommentDate) as lotOccupancyCommentDateString,
+        lotOccupancyCommentTime, userFn_timeIntegerToString(lotOccupancyCommentTime) as lotOccupancyCommentTimeString,
+        lotOccupancyComment,
+        recordCreate_userName, recordUpdate_userName
+        from LotOccupancyComments
+        where recordDelete_timeMillis is null
+        and lotOccupancyId = ?
+        order by lotOccupancyCommentDate desc, lotOccupancyCommentTime desc, lotOccupancyCommentId desc`
     )
     .all(lotOccupancyId)
 

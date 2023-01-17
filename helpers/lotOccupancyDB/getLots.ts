@@ -41,22 +41,22 @@ function buildWhereClause(filters: GetLotsFilters): {
   sqlWhereClause += lotNameFilters.sqlWhereClause
   sqlParameters.push(...lotNameFilters.sqlParameters)
 
-  if (filters.mapId) {
+  if ((filters.mapId ?? '') !== '') {
     sqlWhereClause += ' and l.mapId = ?'
     sqlParameters.push(filters.mapId)
   }
 
-  if (filters.lotTypeId) {
+  if ((filters.lotTypeId ?? '') !== '') {
     sqlWhereClause += ' and l.lotTypeId = ?'
     sqlParameters.push(filters.lotTypeId)
   }
 
-  if (filters.lotStatusId) {
+  if ((filters.lotStatusId ?? '') !== '') {
     sqlWhereClause += ' and l.lotStatusId = ?'
     sqlParameters.push(filters.lotStatusId)
   }
 
-  if (filters.occupancyStatus) {
+  if ((filters.occupancyStatus ?? '') !== '') {
     if (filters.occupancyStatus === 'occupied') {
       sqlWhereClause += ' and lotOccupancyCount > 0'
     } else if (filters.occupancyStatus === 'unoccupied') {
@@ -65,7 +65,7 @@ function buildWhereClause(filters: GetLotsFilters): {
     }
   }
 
-  if (filters.workOrderId) {
+  if ((filters.workOrderId ?? '') !== '') {
     sqlWhereClause +=
       ' and l.lotId in (select lotId from WorkOrderLots where recordDelete_timeMillis is null and workOrderId = ?)'
     sqlParameters.push(filters.workOrderId)
@@ -100,20 +100,16 @@ export function getLots(
   if (options.limit !== -1) {
     count = database
       .prepare(
-        'select count(*) as recordCount' +
-          ' from Lots l' +
-          (' left join (' +
-            'select lotId, count(lotOccupancyId) as lotOccupancyCount' +
-            ' from LotOccupancies' +
-            ' where recordDelete_timeMillis is null' +
-            ' and occupancyStartDate <= ' +
-            currentDate +
-            ' and (occupancyEndDate is null or occupancyEndDate >= ' +
-            currentDate +
-            ')' +
-            ' group by lotId' +
-            ') o on l.lotId = o.lotId') +
-          sqlWhereClause
+        `select count(*) as recordCount
+          from Lots l
+          left join (
+            select lotId, count(lotOccupancyId) as lotOccupancyCount from LotOccupancies
+            where recordDelete_timeMillis is null
+            and occupancyStartDate <= ${currentDate}
+            and (occupancyEndDate is null or occupancyEndDate >= ${currentDate})
+            group by lotId
+          ) o on l.lotId = o.lotId
+          ${sqlWhereClause}`
       )
       .get(sqlParameters).recordCount
   }

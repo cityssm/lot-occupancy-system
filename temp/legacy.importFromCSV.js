@@ -940,9 +940,11 @@ function importFromWorkOrderCSV() {
     }
     console.timeEnd('importFromWorkOrderCSV');
 }
+console.log('Started ' + (new Date().toLocaleString()));
 console.time('importFromCsv');
 purgeTables();
 importFromMasterCSV();
 importFromPrepaidCSV();
 importFromWorkOrderCSV();
 console.timeEnd('importFromCsv');
+console.log('Finished ' + (new Date().toLocaleString()));

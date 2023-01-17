@@ -12,9 +12,9 @@ export function getMaps() {
         ifnull(l.lotCount,0) as lotCount
         from Maps m
         left join (
-            select mapId, count(lotId) as lotCount
-            from Lots
-            where recordDelete_timeMillis is null group by mapId
+          select mapId, count(lotId) as lotCount
+          from Lots
+          where recordDelete_timeMillis is null group by mapId
         ) l on m.mapId = l.mapId
         where m.recordDelete_timeMillis is null order by m.mapName, m.mapId`)
         .all();

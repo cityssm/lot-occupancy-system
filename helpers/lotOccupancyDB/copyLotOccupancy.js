@@ -17,10 +17,10 @@ export function copyLotOccupancy(oldLotOccupancyId, requestSession) {
     for (const occupancyField of oldLotOccupancy.lotOccupancyFields ?? []) {
         database
             .prepare(`insert into LotOccupancyFields (
-                    lotOccupancyId, occupancyTypeFieldId, lotOccupancyFieldValue,
-                    recordCreate_userName, recordCreate_timeMillis,
-                    recordUpdate_userName, recordUpdate_timeMillis)
-                    values (?, ?, ?, ?, ?, ?, ?)`)
+          lotOccupancyId, occupancyTypeFieldId, lotOccupancyFieldValue,
+          recordCreate_userName, recordCreate_timeMillis,
+          recordUpdate_userName, recordUpdate_timeMillis)
+          values (?, ?, ?, ?, ?, ?, ?)`)
             .run(newLotOccupancyId, occupancyField.occupancyTypeFieldId, occupancyField.lotOccupancyFieldValue, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     }
     for (const occupant of oldLotOccupancy.lotOccupancyOccupants ?? []) {

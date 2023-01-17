@@ -34,7 +34,8 @@ export function addRecord(
   const result = database
     .prepare(
       `insert into ${recordTable} (
-        ${recordNameColumns.get(recordTable)!}, orderNumber,
+        ${recordNameColumns.get(recordTable)!},
+        orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?)`

@@ -79,10 +79,10 @@ export function deleteRecord(
   const result = database
     .prepare(
       `update ${recordTable}
-                set recordDelete_userName = ?,
-                recordDelete_timeMillis = ?
-                where ${recordIdColumns.get(recordTable)!} = ?
-                and recordDelete_timeMillis is null`
+        set recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+        where ${recordIdColumns.get(recordTable)!} = ?
+        and recordDelete_timeMillis is null`
     )
     .run(requestSession.user!.userName, rightNowMillis, recordId)
 
@@ -90,10 +90,10 @@ export function deleteRecord(
     database
       .prepare(
         `update ${relatedTable}
-                set recordDelete_userName = ?,
-                recordDelete_timeMillis = ?
-                where ${recordIdColumns.get(recordTable)!} = ?
-                and recordDelete_timeMillis is null`
+          set recordDelete_userName = ?,
+          recordDelete_timeMillis = ?
+          where ${recordIdColumns.get(recordTable)!} = ?
+          and recordDelete_timeMillis is null`
       )
       .run(requestSession.user!.userName, rightNowMillis, recordId)
   }

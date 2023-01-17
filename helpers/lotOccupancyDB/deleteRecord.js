@@ -45,18 +45,18 @@ export function deleteRecord(recordTable, recordId, requestSession) {
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update ${recordTable}
-                set recordDelete_userName = ?,
-                recordDelete_timeMillis = ?
-                where ${recordIdColumns.get(recordTable)} = ?
-                and recordDelete_timeMillis is null`)
+        set recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+        where ${recordIdColumns.get(recordTable)} = ?
+        and recordDelete_timeMillis is null`)
         .run(requestSession.user.userName, rightNowMillis, recordId);
     for (const relatedTable of relatedTables.get(recordTable) ?? []) {
         database
             .prepare(`update ${relatedTable}
-                set recordDelete_userName = ?,
-                recordDelete_timeMillis = ?
-                where ${recordIdColumns.get(recordTable)} = ?
-                and recordDelete_timeMillis is null`)
+          set recordDelete_userName = ?,
+          recordDelete_timeMillis = ?
+          where ${recordIdColumns.get(recordTable)} = ?
+          and recordDelete_timeMillis is null`)
             .run(requestSession.user.userName, rightNowMillis, recordId);
     }
     database.close();

@@ -27,10 +27,10 @@ export function addWorkOrderLot(workOrderLotForm, requestSession) {
     else {
         database
             .prepare(`insert into WorkOrderLots (
-                    workOrderId, lotId,
-                    recordCreate_userName, recordCreate_timeMillis,
-                    recordUpdate_userName, recordUpdate_timeMillis)
-                    values (?, ?, ?, ?, ?, ?)`)
+          workOrderId, lotId,
+          recordCreate_userName, recordCreate_timeMillis,
+          recordUpdate_userName, recordUpdate_timeMillis)
+          values (?, ?, ?, ?, ?, ?)`)
             .run(workOrderLotForm.workOrderId, workOrderLotForm.lotId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     }
     database.close();

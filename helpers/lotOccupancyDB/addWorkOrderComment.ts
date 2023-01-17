@@ -22,12 +22,12 @@ export function addWorkOrderComment(
   const result = database
     .prepare(
       `insert into WorkOrderComments (
-                workOrderId,
-                workOrderCommentDate, workOrderCommentTime,
-                workOrderComment,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?, ?, ?)`
+        workOrderId,
+        workOrderCommentDate, workOrderCommentTime,
+        workOrderComment,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       workOrderCommentForm.workOrderId,

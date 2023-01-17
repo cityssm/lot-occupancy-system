@@ -13,7 +13,8 @@ export function addRecord(recordTable, recordName, orderNumber, requestSession) 
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`insert into ${recordTable} (
-        ${recordNameColumns.get(recordTable)}, orderNumber,
+        ${recordNameColumns.get(recordTable)},
+        orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?)`)
