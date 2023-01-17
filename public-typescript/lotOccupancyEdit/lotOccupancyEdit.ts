@@ -242,10 +242,14 @@ declare const bulmaJS: BulmaJS
         },
         onshown(modalElement, closeModalFunction) {
           createCloseModalFunction = closeModalFunction
+          bulmaJS.toggleHtmlClipped()
 
           modalElement
             .querySelector('form')
             ?.addEventListener('submit', doCreate)
+        },
+        onremoved() {
+          bulmaJS.toggleHtmlClipped()
         }
       })
     })

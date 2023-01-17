@@ -163,8 +163,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             onshown(modalElement, closeModalFunction) {
                 var _a;
                 createCloseModalFunction = closeModalFunction;
+                bulmaJS.toggleHtmlClipped();
                 (_a = modalElement
                     .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doCreate);
+            },
+            onremoved() {
+                bulmaJS.toggleHtmlClipped();
             }
         });
     });
