@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable unicorn/prefer-module */
 
 import type * as globalTypes from '../../types/globalTypes'
 import type * as recordTypes from '../../types/recordTypes'
@@ -13,7 +13,6 @@ declare const bulmaJS: BulmaJS
 declare const los: globalTypes.LOS
 
 declare const lotOccupancyId: string
-declare const hasUnsavedChanges: boolean
 
 let lotOccupancyFees: recordTypes.LotOccupancyFee[] = exports.lotOccupancyFees
 delete exports.lotOccupancyFees
@@ -182,7 +181,7 @@ function renderLotOccupancyFees(): void {
 }
 
 document.querySelector('#button--addFee')!.addEventListener('click', () => {
-  if (hasUnsavedChanges) {
+  if (los.hasUnsavedChanges()) {
     bulmaJS.alert({
       message: 'Please save all unsaved changes before adding fees.',
       contextualColorName: 'warning'
@@ -234,14 +233,14 @@ document.querySelector('#button--addFee')!.addEventListener('click', () => {
     }
 
     cityssm.openHtmlModal('lotOccupancy-setFeeQuantity', {
-      onshow: (modalElement) => {
+      onshow(modalElement) {
         ;(
           modalElement.querySelector(
             '#lotOccupancyFeeQuantity--quantityUnit'
           ) as HTMLElement
         ).textContent = fee.quantityUnit!
       },
-      onshown: (modalElement, closeModalFunction) => {
+      onshown(modalElement, closeModalFunction) {
         quantityCloseModalFunction = closeModalFunction
 
         quantityElement = modalElement.querySelector(
@@ -263,11 +262,7 @@ document.querySelector('#button--addFee')!.addEventListener('click', () => {
       10
     )
     const feeCategoryId = Number.parseInt(
-      (
-        (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--feeCategory'
-        ) as HTMLElement
-      ).dataset.feeCategoryId!,
+      (clickEvent.currentTarget as HTMLElement).dataset.feeCategoryId!,
       10
     )
 
@@ -296,32 +291,40 @@ document.querySelector('#button--addFee')!.addEventListener('click', () => {
 
     for (const feeCategory of feeCategories) {
       const categoryContainerElement = document.createElement('div')
+
       categoryContainerElement.className = 'container--feeCategory'
+
       categoryContainerElement.dataset.feeCategoryId =
         feeCategory.feeCategoryId.toString()
+
       categoryContainerElement.innerHTML =
         '<h4 class="title is-5 mt-2">' +
-        cityssm.escapeHTML(feeCategory.feeCategory || '') +
+        cityssm.escapeHTML(feeCategory.feeCategory ?? '') +
         '</h4>' +
         '<div class="panel mb-5"></div>'
 
       let hasFees = false
 
       for (const fee of feeCategory.fees) {
+        // Don't include already applied fees that limit quantity
         if (
           lotOccupancyFeesContainerElement.querySelector(
-            ".container--lotOccupancyFee[data-fee-id='" +
-              fee.feeId +
-              "'][data-include-quantity='0']"
-          )
+            `.container--lotOccupancyFee[data-fee-id='${fee.feeId}'][data-include-quantity='0']`
+          ) !== null
         ) {
           continue
         }
 
         let includeFee = true
 
+        const feeSearchString = (
+          (fee.feeName ?? '') +
+          ' ' +
+          (fee.feeDescription ?? '')
+        ).toLowerCase()
+
         for (const filterStringPiece of filterStringPieces) {
-          if (!fee.feeName!.toLowerCase().includes(filterStringPiece)) {
+          if (!feeSearchString.includes(filterStringPiece)) {
             includeFee = false
             break
           }
@@ -336,6 +339,8 @@ document.querySelector('#button--addFee')!.addEventListener('click', () => {
         const panelBlockElement = document.createElement('a')
         panelBlockElement.className = 'panel-block is-block container--fee'
         panelBlockElement.dataset.feeId = fee.feeId.toString()
+        panelBlockElement.dataset.feeCategoryId =
+          feeCategory.feeCategoryId.toString()
         panelBlockElement.href = '#'
 
         panelBlockElement.innerHTML =
@@ -362,13 +367,11 @@ document.querySelector('#button--addFee')!.addEventListener('click', () => {
 
   cityssm.openHtmlModal('lotOccupancy-addFee', {
     onshow(modalElement) {
-      feeFilterElement = modalElement.querySelector(
-        '#feeSelect--feeName'
-      ) as HTMLInputElement
+      feeFilterElement = modalElement.querySelector('#feeSelect--feeName')!
 
       feeFilterResultsElement = modalElement.querySelector(
         '#resultsContainer--feeSelect'
-      ) as HTMLElement
+      )!
 
       cityssm.postJSON(
         los.urlPrefix + '/lotOccupancies/doGetFees',
@@ -585,7 +588,7 @@ document
     }
 
     cityssm.openHtmlModal('lotOccupancy-addTransaction', {
-      onshow: (modalElement) => {
+      onshow(modalElement) {
         los.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
@@ -610,7 +613,7 @@ document
           0
         ).toFixed(2)
       },
-      onshown: (modalElement, closeModalFunction) => {
+      onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
 
         addCloseModalFunction = closeModalFunction
@@ -619,7 +622,7 @@ document
           .querySelector('form')!
           .addEventListener('submit', doAddTransaction)
       },
-      onremoved: () => {
+      onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
     })

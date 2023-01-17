@@ -1001,7 +1001,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         renderLotOccupancyComments();
         
         "use strict";
-        /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+        /* eslint-disable unicorn/prefer-module */
         Object.defineProperty(exports, "__esModule", { value: true });
         let lotOccupancyFees = exports.lotOccupancyFees;
         delete exports.lotOccupancyFees;
@@ -1128,7 +1128,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             renderLotOccupancyTransactions();
         }
         document.querySelector('#button--addFee').addEventListener('click', () => {
-            if (hasUnsavedChanges) {
+            if (los.hasUnsavedChanges()) {
                 bulmaJS.alert({
                     message: 'Please save all unsaved changes before adding fees.',
                     contextualColorName: 'warning'
@@ -1168,11 +1168,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     quantityCloseModalFunction();
                 }
                 cityssm.openHtmlModal('lotOccupancy-setFeeQuantity', {
-                    onshow: (modalElement) => {
+                    onshow(modalElement) {
                         ;
                         modalElement.querySelector('#lotOccupancyFeeQuantity--quantityUnit').textContent = fee.quantityUnit;
                     },
-                    onshown: (modalElement, closeModalFunction) => {
+                    onshown(modalElement, closeModalFunction) {
                         quantityCloseModalFunction = closeModalFunction;
                         quantityElement = modalElement.querySelector('#lotOccupancyFeeQuantity--quantity');
                         modalElement
@@ -1184,7 +1184,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             function tryAddFee(clickEvent) {
                 clickEvent.preventDefault();
                 const feeId = Number.parseInt(clickEvent.currentTarget.dataset.feeId, 10);
-                const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest('.container--feeCategory').dataset.feeCategoryId, 10);
+                const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId, 10);
                 const feeCategory = feeCategories.find((currentFeeCategory) => {
                     return currentFeeCategory.feeCategoryId === feeCategoryId;
                 });
@@ -1199,7 +1199,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             }
             function filterFees() {
-                var _a, _b;
+                var _a, _b, _c, _d, _e;
                 const filterStringPieces = feeFilterElement.value
                     .trim()
                     .toLowerCase()
@@ -1212,19 +1212,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         feeCategory.feeCategoryId.toString();
                     categoryContainerElement.innerHTML =
                         '<h4 class="title is-5 mt-2">' +
-                            cityssm.escapeHTML(feeCategory.feeCategory || '') +
+                            cityssm.escapeHTML((_a = feeCategory.feeCategory) !== null && _a !== void 0 ? _a : '') +
                             '</h4>' +
                             '<div class="panel mb-5"></div>';
                     let hasFees = false;
                     for (const fee of feeCategory.fees) {
-                        if (lotOccupancyFeesContainerElement.querySelector(".container--lotOccupancyFee[data-fee-id='" +
-                            fee.feeId +
-                            "'][data-include-quantity='0']")) {
+                        // Don't include already applied fees that limit quantity
+                        if (lotOccupancyFeesContainerElement.querySelector(`.container--lotOccupancyFee[data-fee-id='${fee.feeId}'][data-include-quantity='0']`) !== null) {
                             continue;
                         }
                         let includeFee = true;
+                        const feeSearchString = (((_b = fee.feeName) !== null && _b !== void 0 ? _b : '') +
+                            ' ' +
+                            ((_c = fee.feeDescription) !== null && _c !== void 0 ? _c : '')).toLowerCase();
                         for (const filterStringPiece of filterStringPieces) {
-                            if (!fee.feeName.toLowerCase().includes(filterStringPiece)) {
+                            if (!feeSearchString.includes(filterStringPiece)) {
                                 includeFee = false;
                                 break;
                             }
@@ -1236,14 +1238,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         const panelBlockElement = document.createElement('a');
                         panelBlockElement.className = 'panel-block is-block container--fee';
                         panelBlockElement.dataset.feeId = fee.feeId.toString();
+                        panelBlockElement.dataset.feeCategoryId =
+                            feeCategory.feeCategoryId.toString();
                         panelBlockElement.href = '#';
                         panelBlockElement.innerHTML =
                             '<strong>' +
-                                cityssm.escapeHTML((_a = fee.feeName) !== null && _a !== void 0 ? _a : '') +
+                                cityssm.escapeHTML((_d = fee.feeName) !== null && _d !== void 0 ? _d : '') +
                                 '</strong><br />' +
                                 '<small>' +
                                 cityssm
-                                    .escapeHTML((_b = fee.feeDescription) !== null && _b !== void 0 ? _b : '')
+                                    .escapeHTML((_e = fee.feeDescription) !== null && _e !== void 0 ? _e : '')
                                     .replace(/\n/g, '<br />') +
                                 '</small>';
                         panelBlockElement.addEventListener('click', tryAddFee);
@@ -1417,7 +1421,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
             cityssm.openHtmlModal('lotOccupancy-addTransaction', {
-                onshow: (modalElement) => {
+                onshow(modalElement) {
                     los.populateAliases(modalElement);
                     modalElement.querySelector('#lotOccupancyTransactionAdd--lotOccupancyId').value = lotOccupancyId.toString();
                     const feeGrandTotal = getFeeGrandTotal();
@@ -1427,14 +1431,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     transactionAmountElement.max = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
                     transactionAmountElement.value = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
                 },
-                onshown: (modalElement, closeModalFunction) => {
+                onshown(modalElement, closeModalFunction) {
                     bulmaJS.toggleHtmlClipped();
                     addCloseModalFunction = closeModalFunction;
                     modalElement
                         .querySelector('form')
                         .addEventListener('submit', doAddTransaction);
                 },
-                onremoved: () => {
+                onremoved() {
                     bulmaJS.toggleHtmlClipped();
                 }
             });
