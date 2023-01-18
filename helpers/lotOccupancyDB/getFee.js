@@ -1,10 +1,6 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function getFee(feeId, connectedDatabase) {
-    const database = connectedDatabase ??
-        sqlite(databasePath, {
-            readonly: true
-        });
+import { acquireConnection } from './pool.js';
+export async function getFee(feeId, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     const fee = database
         .prepare(`select f.feeId,
         f.feeCategoryId, c.feeCategory,
@@ -23,7 +19,7 @@ export function getFee(feeId, connectedDatabase) {
         and f.feeId = ?`)
         .get(feeId);
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return fee;
 }

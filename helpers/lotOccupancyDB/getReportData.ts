@@ -1,8 +1,6 @@
 /* eslint-disable no-case-declarations */
 
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import * as configFunctions from '../functions.config.js'
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
@@ -35,10 +33,10 @@ const occupancyTypeAlias = occupancyCamelCase + 'Type'
 const occupancyStartDateAlias = occupancyCamelCase + 'StartDate'
 const occupancyEndDateAlias = occupancyCamelCase + 'EndDate'
 
-export function getReportData(
+export async function getReportData(
   reportName: string,
   reportParameters: ReportParameters = {}
-): unknown[] | undefined {
+): Promise<unknown[] | undefined> {
   let sql: string
   const sqlParameters: unknown[] = []
 
@@ -210,21 +208,21 @@ export function getReportData(
 
     case 'workOrders-open': {
       sql = `select w.workOrderId, w.workOrderNumber,
-              t.workOrderType, w.workOrderDescription,
-              w.workOrderOpenDate,
-              m.workOrderMilestoneCount, m.workOrderMilestoneCompletionCount
-              from WorkOrders w
-              left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
-              left join (
-                  select m.workOrderId,
-                  count(m.workOrderMilestoneId) as workOrderMilestoneCount,
-                  sum(case when m.workOrderMilestoneCompletionDate is null then 0 else 1 end) as workOrderMilestoneCompletionCount
-                  from WorkOrderMilestones m
-                  where m.recordDelete_timeMillis is null
-                  group by m.workOrderId
-              ) m on w.workOrderId = m.workOrderId
-              where w.recordDelete_timeMillis is null
-              and w.workOrderCloseDate is null`
+        t.workOrderType, w.workOrderDescription,
+        w.workOrderOpenDate,
+        m.workOrderMilestoneCount, m.workOrderMilestoneCompletionCount
+        from WorkOrders w
+        left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
+        left join (
+            select m.workOrderId,
+            count(m.workOrderMilestoneId) as workOrderMilestoneCount,
+            sum(case when m.workOrderMilestoneCompletionDate is null then 0 else 1 end) as workOrderMilestoneCompletionCount
+            from WorkOrderMilestones m
+            where m.recordDelete_timeMillis is null
+            group by m.workOrderId
+        ) m on w.workOrderId = m.workOrderId
+        where w.recordDelete_timeMillis is null
+        and w.workOrderCloseDate is null`
       break
     }
 
@@ -298,9 +296,7 @@ export function getReportData(
     }
   }
 
-  const database = sqlite(databasePath, {
-    readonly: true
-  })
+  const database = await acquireConnection()
 
   database.function(
     'userFn_dateIntegerToString',
@@ -313,7 +309,7 @@ export function getReportData(
 
   const rows = database.prepare(sql).all(sqlParameters)
 
-  database.close()
+  database.release()
 
   return rows
 }

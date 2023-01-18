@@ -1,6 +1,6 @@
-import sqlite from 'better-sqlite3'
+/* eslint-disable @typescript-eslint/indent */
 
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { dateStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
@@ -22,11 +22,11 @@ interface UpdateLotOccupancyForm {
   [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown
 }
 
-export function updateLotOccupancy(
+export async function updateLotOccupancy(
   lotOccupancyForm: UpdateLotOccupancyForm,
   requestSession: recordTypes.PartialSession
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
@@ -64,28 +64,26 @@ export function updateLotOccupancy(
         'lotOccupancyFieldValue_' + occupancyTypeFieldId
       ] as string
 
-      if (lotOccupancyFieldValue && lotOccupancyFieldValue !== '') {
-        addOrUpdateLotOccupancyField(
-          {
-            lotOccupancyId: lotOccupancyForm.lotOccupancyId,
+      await (lotOccupancyFieldValue && lotOccupancyFieldValue !== ''
+        ? addOrUpdateLotOccupancyField(
+            {
+              lotOccupancyId: lotOccupancyForm.lotOccupancyId,
+              occupancyTypeFieldId,
+              lotOccupancyFieldValue
+            },
+            requestSession,
+            database
+          )
+        : deleteLotOccupancyField(
+            lotOccupancyForm.lotOccupancyId,
             occupancyTypeFieldId,
-            lotOccupancyFieldValue
-          },
-          requestSession,
-          database
-        )
-      } else {
-        deleteLotOccupancyField(
-          lotOccupancyForm.lotOccupancyId,
-          occupancyTypeFieldId,
-          requestSession,
-          database
-        )
-      }
+            requestSession,
+            database
+          ))
     }
   }
 
-  database.close()
+  database.release()
 
   return result.changes > 0
 }

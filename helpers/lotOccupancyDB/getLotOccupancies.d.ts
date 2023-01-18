@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import type { PoolConnection } from 'better-sqlite-pool';
 import type * as recordTypes from '../../types/recordTypes';
 interface GetLotOccupanciesFilters {
     lotId?: number | string;
@@ -19,8 +19,8 @@ interface GetLotOccupanciesOptions {
     offset: number;
     includeOccupants: boolean;
 }
-export declare function getLotOccupancies(filters: GetLotOccupanciesFilters, options: GetLotOccupanciesOptions, connectedDatabase?: sqlite.Database): {
+export declare function getLotOccupancies(filters: GetLotOccupanciesFilters, options: GetLotOccupanciesOptions, connectedDatabase?: PoolConnection): Promise<{
     count: number;
     lotOccupancies: recordTypes.LotOccupancy[];
-};
+}>;
 export default getLotOccupancies;

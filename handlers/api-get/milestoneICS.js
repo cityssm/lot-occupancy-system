@@ -185,7 +185,7 @@ function buildEventLocation(milestone) {
     }
     return lotNames.join(', ');
 }
-export const handler = (request, response) => {
+export async function handler(request, response) {
     const urlRoot = getUrlRoot(request);
     const workOrderMilestoneFilters = {
         workOrderTypeIds: request.query.workOrderTypeIds,
@@ -197,7 +197,7 @@ export const handler = (request, response) => {
     else {
         workOrderMilestoneFilters.workOrderMilestoneDateFilter = 'recent';
     }
-    const workOrderMilestones = getWorkOrderMilestones(workOrderMilestoneFilters, {
+    const workOrderMilestones = await getWorkOrderMilestones(workOrderMilestoneFilters, {
         includeWorkOrders: true,
         orderBy: 'date'
     });
@@ -279,5 +279,5 @@ export const handler = (request, response) => {
         }
     }
     calendar.serve(response);
-};
+}
 export default handler;

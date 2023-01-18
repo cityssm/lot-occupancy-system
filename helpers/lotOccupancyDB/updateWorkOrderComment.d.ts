@@ -5,5 +5,5 @@ interface UpdateWorkOrderCommentForm {
     workOrderCommentTimeString: string;
     workOrderComment: string;
 }
-export declare function updateWorkOrderComment(commentForm: UpdateWorkOrderCommentForm, requestSession: recordTypes.PartialSession): boolean;
+export declare function updateWorkOrderComment(commentForm: UpdateWorkOrderCommentForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
 export default updateWorkOrderComment;

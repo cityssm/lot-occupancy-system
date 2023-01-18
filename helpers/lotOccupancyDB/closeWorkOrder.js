@@ -1,8 +1,7 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateStringToInteger, dateToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
-export function closeWorkOrder(workOrderForm, requestSession) {
-    const database = sqlite(databasePath);
+export async function closeWorkOrder(workOrderForm, requestSession) {
+    const database = await acquireConnection();
     const rightNow = new Date();
     const result = database
         .prepare(`update WorkOrders
@@ -13,7 +12,7 @@ export function closeWorkOrder(workOrderForm, requestSession) {
         .run(workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
         : dateToInteger(new Date()), requestSession.user.userName, rightNow.getTime(), workOrderForm.workOrderId);
-    database.close();
+    database.release();
     return result.changes > 0;
 }
 export default closeWorkOrder;

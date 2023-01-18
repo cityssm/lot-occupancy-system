@@ -7,5 +7,5 @@ interface AddWorkOrderForm {
     workOrderCloseDateString?: string;
     lotOccupancyId?: string;
 }
-export declare function addWorkOrder(workOrderForm: AddWorkOrderForm, requestSession: recordTypes.PartialSession): number;
+export declare function addWorkOrder(workOrderForm: AddWorkOrderForm, requestSession: recordTypes.PartialSession): Promise<number>;
 export default addWorkOrder;

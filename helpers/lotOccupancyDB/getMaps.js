@@ -1,9 +1,6 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function getMaps() {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+import { acquireConnection } from './pool.js';
+export async function getMaps() {
+    const database = await acquireConnection();
     const maps = database
         .prepare(`select m.mapId, m.mapName, m.mapDescription,
         m.mapLatitude, m.mapLongitude, m.mapSVG,
@@ -18,7 +15,7 @@ export function getMaps() {
         ) l on m.mapId = l.mapId
         where m.recordDelete_timeMillis is null order by m.mapName, m.mapId`)
         .all();
-    database.close();
+    database.release();
     return maps;
 }
 export default getMaps;

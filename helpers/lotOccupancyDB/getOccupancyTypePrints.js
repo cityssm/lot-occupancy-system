@@ -1,6 +1,5 @@
-import sqlite from 'better-sqlite3';
+import { acquireConnection } from './pool.js';
 import * as configFunctions from '../functions.config.js';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
 const availablePrints = configFunctions.getProperty('settings.lotOccupancy.prints');
 const userFunction_configContainsPrintEJS = (printEJS) => {
     if (printEJS === '*' || availablePrints.includes(printEJS)) {
@@ -8,8 +7,8 @@ const userFunction_configContainsPrintEJS = (printEJS) => {
     }
     return 0;
 };
-export function getOccupancyTypePrints(occupancyTypeId, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(databasePath);
+export async function getOccupancyTypePrints(occupancyTypeId, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_configContainsPrintEJS', userFunction_configContainsPrintEJS);
     const results = database
         .prepare(`select printEJS, orderNumber
@@ -34,7 +33,7 @@ export function getOccupancyTypePrints(occupancyTypeId, connectedDatabase) {
         prints.push(result.printEJS);
     }
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return prints;
 }

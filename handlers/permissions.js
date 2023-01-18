@@ -7,38 +7,39 @@ const forbiddenJSON = {
     message: 'Forbidden'
 };
 const forbiddenRedirectURL = urlPrefix + '/dashboard/?error=accessDenied';
-export const adminGetHandler = (request, response, next) => {
+export function adminGetHandler(request, response, next) {
     if (userFunctions.userIsAdmin(request)) {
         next();
         return;
     }
     response.redirect(forbiddenRedirectURL);
-};
-export const adminPostHandler = (request, response, next) => {
+}
+export function adminPostHandler(request, response, next) {
     if (userFunctions.userIsAdmin(request)) {
         next();
         return;
     }
-    return response.status(forbiddenStatus).json(forbiddenJSON);
-};
-export const updateGetHandler = (request, response, next) => {
+    response.status(forbiddenStatus).json(forbiddenJSON);
+}
+export function updateGetHandler(request, response, next) {
     if (userFunctions.userCanUpdate(request)) {
         next();
         return;
     }
     response.redirect(forbiddenRedirectURL);
-};
-export const updatePostHandler = (request, response, next) => {
+}
+export function updatePostHandler(request, response, next) {
     if (userFunctions.userCanUpdate(request)) {
         next();
         return;
     }
-    return response.status(forbiddenStatus).json(forbiddenJSON);
-};
-export const apiGetHandler = async (request, response, next) => {
+    response.status(forbiddenStatus).json(forbiddenJSON);
+}
+export async function apiGetHandler(request, response, next) {
     if (await userFunctions.apiKeyIsValid(request)) {
         next();
-        return;
     }
-    response.redirect(urlPrefix + '/login');
-};
+    else {
+        response.redirect(urlPrefix + '/login');
+    }
+}

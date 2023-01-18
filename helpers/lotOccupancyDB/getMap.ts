@@ -1,13 +1,9 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function getMap(mapId: number | string): recordTypes.Map {
-  const database = sqlite(databasePath, {
-    readonly: true
-  })
+export async function getMap(mapId: number | string): Promise<recordTypes.Map> {
+  const database = await acquireConnection()
 
   const map: recordTypes.Map = database
     .prepare(
@@ -32,7 +28,7 @@ export function getMap(mapId: number | string): recordTypes.Map {
     )
     .get(mapId)
 
-  database.close()
+  database.release()
 
   return map
 }

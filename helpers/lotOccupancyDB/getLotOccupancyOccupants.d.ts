@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import type { PoolConnection } from 'better-sqlite-pool';
 import type * as recordTypes from '../../types/recordTypes';
-export declare function getLotOccupancyOccupants(lotOccupancyId: number | string, connectedDatabase?: sqlite.Database): recordTypes.LotOccupancyOccupant[];
+export declare function getLotOccupancyOccupants(lotOccupancyId: number | string, connectedDatabase?: PoolConnection): Promise<recordTypes.LotOccupancyOccupant[]>;
 export default getLotOccupancyOccupants;

@@ -1,7 +1,6 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function updateMap(mapForm, requestSession) {
-    const database = sqlite(databasePath);
+import { acquireConnection } from './pool.js';
+export async function updateMap(mapForm, requestSession) {
+    const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update Maps
@@ -21,7 +20,7 @@ export function updateMap(mapForm, requestSession) {
         where mapId = ?
         and recordDelete_timeMillis is null`)
         .run(mapForm.mapName, mapForm.mapDescription, mapForm.mapSVG, mapForm.mapLatitude === '' ? undefined : mapForm.mapLatitude, mapForm.mapLongitude === '' ? undefined : mapForm.mapLongitude, mapForm.mapAddress1, mapForm.mapAddress2, mapForm.mapCity, mapForm.mapProvince, mapForm.mapPostalCode, mapForm.mapPhoneNumber, requestSession.user.userName, rightNowMillis, mapForm.mapId);
-    database.close();
+    database.release();
     return result.changes > 0;
 }
 export default updateMap;

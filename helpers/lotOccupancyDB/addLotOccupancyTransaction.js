@@ -1,15 +1,14 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
-export function addLotOccupancyTransaction(lotOccupancyTransactionForm, requestSession) {
-    const database = sqlite(databasePath);
+export async function addLotOccupancyTransaction(lotOccupancyTransactionForm, requestSession) {
+    const database = await acquireConnection();
     let transactionIndex = 0;
     const maxIndexResult = database
         .prepare(`select transactionIndex
-                from LotOccupancyTransactions
-                where lotOccupancyId = ?
-                order by transactionIndex desc
-                limit 1`)
+        from LotOccupancyTransactions
+        where lotOccupancyId = ?
+        order by transactionIndex desc
+        limit 1`)
         .get(lotOccupancyTransactionForm.lotOccupancyId);
     if (maxIndexResult) {
         transactionIndex = maxIndexResult.transactionIndex + 1;
@@ -23,14 +22,14 @@ export function addLotOccupancyTransaction(lotOccupancyTransactionForm, requestS
         : dateToTimeInteger(rightNow);
     database
         .prepare(`insert into LotOccupancyTransactions (
-                lotOccupancyId, transactionIndex,
-                transactionDate, transactionTime,
-                transactionAmount, externalReceiptNumber, transactionNote,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+        lotOccupancyId, transactionIndex,
+        transactionDate, transactionTime,
+        transactionAmount, externalReceiptNumber, transactionNote,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(lotOccupancyTransactionForm.lotOccupancyId, transactionIndex, transactionDate, transactionTime, lotOccupancyTransactionForm.transactionAmount, lotOccupancyTransactionForm.externalReceiptNumber, lotOccupancyTransactionForm.transactionNote, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
-    database.close();
+    database.release();
     return transactionIndex;
 }
 export default addLotOccupancyTransaction;

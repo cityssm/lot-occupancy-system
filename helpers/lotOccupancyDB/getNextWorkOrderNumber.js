@@ -1,11 +1,7 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import * as configFunctions from '../functions.config.js';
-export function getNextWorkOrderNumber(connectedDatabase) {
-    const database = connectedDatabase ??
-        sqlite(databasePath, {
-            readonly: true
-        });
+export async function getNextWorkOrderNumber(connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     const paddingLength = configFunctions.getProperty('settings.workOrders.workOrderNumberLength');
     const currentYearString = new Date().getFullYear().toString();
     const regex = new RegExp('^' + currentYearString + '-\\d+$');
@@ -18,7 +14,7 @@ export function getNextWorkOrderNumber(connectedDatabase) {
         " order by cast(substr(workOrderNumber, instr(workOrderNumber, '-') + 1) as integer) desc")
         .get();
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     let workOrderNumberIndex = 0;
     if (workOrderNumberRecord) {

@@ -1,13 +1,12 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import { clearCacheByTableName } from '../functions.cache.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 function getCurrentField(
   lotTypeFieldId: number | string,
-  connectedDatabase: sqlite.Database
+  connectedDatabase: PoolConnection
 ): { lotTypeId?: number; orderNumber: number } {
   const currentField: { lotTypeId?: number; orderNumber: number } =
     connectedDatabase
@@ -19,8 +18,8 @@ function getCurrentField(
   return currentField
 }
 
-export function moveLotTypeFieldDown(lotTypeFieldId: number | string): boolean {
-  const database = sqlite(databasePath)
+export async function moveLotTypeFieldDown(lotTypeFieldId: number | string): Promise<boolean> {
+  const database = await acquireConnection()
 
   const currentField = getCurrentField(lotTypeFieldId, database)
 
@@ -40,17 +39,17 @@ export function moveLotTypeFieldDown(lotTypeFieldId: number | string): boolean {
     database
   )
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('LotTypeFields')
 
   return success
 }
 
-export function moveLotTypeFieldDownToBottom(
+export async function moveLotTypeFieldDownToBottom(
   lotTypeFieldId: number | string
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const currentField = getCurrentField(lotTypeFieldId, database)
 
@@ -82,20 +81,20 @@ export function moveLotTypeFieldDownToBottom(
       .run(currentField.lotTypeId, currentField.orderNumber)
   }
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('LotTypeFields')
 
   return true
 }
 
-export function moveLotTypeFieldUp(lotTypeFieldId: number | string): boolean {
-  const database = sqlite(databasePath)
+export async function moveLotTypeFieldUp(lotTypeFieldId: number | string): Promise<boolean> {
+  const database = await acquireConnection()
 
   const currentField = getCurrentField(lotTypeFieldId, database)
 
   if (currentField.orderNumber <= 0) {
-    database.close()
+    database.release()
     return true
   }
 
@@ -116,17 +115,17 @@ export function moveLotTypeFieldUp(lotTypeFieldId: number | string): boolean {
     database
   )
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('LotTypeFields')
 
   return success
 }
 
-export function moveLotTypeFieldUpToTop(
+export async function moveLotTypeFieldUpToTop(
   lotTypeFieldId: number | string
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const currentField = getCurrentField(lotTypeFieldId, database)
 
@@ -144,7 +143,7 @@ export function moveLotTypeFieldUpToTop(
       .run(currentField.lotTypeId, currentField.orderNumber)
   }
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('LotTypeFields')
 

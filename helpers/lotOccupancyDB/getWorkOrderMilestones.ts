@@ -1,6 +1,5 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import {
   dateIntegerToString,
@@ -115,16 +114,12 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   }
 }
 
-export function getWorkOrderMilestones(
+export async function getWorkOrderMilestones(
   filters: WorkOrderMilestoneFilters,
   options: WorkOrderMilestoneOptions,
-  connectedDatabase?: sqlite.Database
-): recordTypes.WorkOrderMilestone[] {
-  const database =
-    connectedDatabase ??
-    sqlite(databasePath, {
-      readonly: true
-    })
+  connectedDatabase?: PoolConnection
+): Promise<recordTypes.WorkOrderMilestone[]> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
@@ -183,7 +178,7 @@ export function getWorkOrderMilestones(
 
   if (options.includeWorkOrders) {
     for (const workOrderMilestone of workOrderMilestones) {
-      workOrderMilestone.workOrderLots = getLots(
+      const workOrderLotsResults = await getLots(
         {
           workOrderId: workOrderMilestone.workOrderId
         },
@@ -192,9 +187,11 @@ export function getWorkOrderMilestones(
           offset: 0
         },
         database
-      ).lots
+      )
 
-      workOrderMilestone.workOrderLotOccupancies = getLotOccupancies(
+      workOrderMilestone.workOrderLots = workOrderLotsResults.lots
+
+      const lotOccupancies = await getLotOccupancies(
         {
           workOrderId: workOrderMilestone.workOrderId
         },
@@ -204,12 +201,14 @@ export function getWorkOrderMilestones(
           includeOccupants: true
         },
         database
-      ).lotOccupancies
+      )
+
+      workOrderMilestone.workOrderLotOccupancies = lotOccupancies.lotOccupancies
     }
   }
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return workOrderMilestones

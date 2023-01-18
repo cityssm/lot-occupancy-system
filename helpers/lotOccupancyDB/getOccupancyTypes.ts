@@ -1,6 +1,6 @@
-import sqlite from 'better-sqlite3'
+/* eslint-disable @typescript-eslint/indent */
 
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { getOccupancyTypeFields } from './getOccupancyTypeFields.js'
 import { getOccupancyTypePrints } from './getOccupancyTypePrints.js'
@@ -8,8 +8,10 @@ import { getOccupancyTypePrints } from './getOccupancyTypePrints.js'
 import type * as recordTypes from '../../types/recordTypes'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export function getOccupancyTypes(): recordTypes.OccupancyType[] {
-  const database = sqlite(databasePath)
+export async function getOccupancyTypes(): Promise<
+  recordTypes.OccupancyType[]
+> {
+  const database = await acquireConnection()
 
   const occupancyTypes: recordTypes.OccupancyType[] = database
     .prepare(
@@ -36,18 +38,18 @@ export function getOccupancyTypes(): recordTypes.OccupancyType[] {
       occupancyType.orderNumber = expectedTypeOrderNumber
     }
 
-    occupancyType.occupancyTypeFields = getOccupancyTypeFields(
+    occupancyType.occupancyTypeFields = await getOccupancyTypeFields(
       occupancyType.occupancyTypeId,
       database
     )
 
-    occupancyType.occupancyTypePrints = getOccupancyTypePrints(
+    occupancyType.occupancyTypePrints = await getOccupancyTypePrints(
       occupancyType.occupancyTypeId,
       database
     )
   }
 
-  database.close()
+  database.release()
 
   return occupancyTypes
 }

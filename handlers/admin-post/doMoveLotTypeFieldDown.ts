@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import {
   moveLotTypeFieldDown,
@@ -7,13 +7,16 @@ import {
 
 import { getLotTypes } from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const success =
     request.body.moveToEnd === '1'
-      ? moveLotTypeFieldDownToBottom(request.body.lotTypeFieldId)
-      : moveLotTypeFieldDown(request.body.lotTypeFieldId)
+      ? await moveLotTypeFieldDownToBottom(request.body.lotTypeFieldId)
+      : await moveLotTypeFieldDown(request.body.lotTypeFieldId)
 
-  const lotTypes = getLotTypes()
+  const lotTypes = await getLotTypes()
 
   response.json({
     success,

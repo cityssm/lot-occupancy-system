@@ -7,5 +7,5 @@ interface AddLotOccupancyTransactionForm {
     externalReceiptNumber: string;
     transactionNote: string;
 }
-export declare function addLotOccupancyTransaction(lotOccupancyTransactionForm: AddLotOccupancyTransactionForm, requestSession: recordTypes.PartialSession): number;
+export declare function addLotOccupancyTransaction(lotOccupancyTransactionForm: AddLotOccupancyTransactionForm, requestSession: recordTypes.PartialSession): Promise<number>;
 export default addLotOccupancyTransaction;

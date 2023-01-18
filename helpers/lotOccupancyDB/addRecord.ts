@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 import { clearCacheByTableName } from '../functions.cache.js'
@@ -21,13 +21,13 @@ recordNameColumns.set('OccupancyTypes', 'occupancyType')
 recordNameColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneType')
 recordNameColumns.set('WorkOrderTypes', 'workOrderType')
 
-export function addRecord(
+export async function addRecord(
   recordTable: RecordTable,
   recordName: string,
   orderNumber: number | string,
   requestSession: recordTypes.PartialSession
-): number {
-  const database = sqlite(databasePath)
+): Promise<number> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
@@ -49,7 +49,7 @@ export function addRecord(
       rightNowMillis
     )
 
-  database.close()
+  database.release()
 
   clearCacheByTableName(recordTable)
 

@@ -1,6 +1,6 @@
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getReportData, getScreenPrintConfig } from '../../helpers/functions.print.js';
-export const handler = (request, response) => {
+export async function handler(request, response) {
     const printName = request.params.printName;
     if (!configFunctions
         .getProperty('settings.lotOccupancy.prints')
@@ -18,7 +18,7 @@ export const handler = (request, response) => {
             '/dashboard/?error=printConfigNotFound');
         return;
     }
-    const reportData = getReportData(printConfig, request.query);
+    const reportData = await getReportData(printConfig, request.query);
     response.render('print/screen/' + printName, reportData);
-};
+}
 export default handler;

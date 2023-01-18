@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import {
   dateStringToInteger,
@@ -17,13 +15,13 @@ interface UpdateWorkOrderMilestoneForm {
   workOrderMilestoneDescription: string
 }
 
-export function updateWorkOrderMilestone(
+export async function updateWorkOrderMilestone(
   milestoneForm: UpdateWorkOrderMilestoneForm,
   requestSession: recordTypes.PartialSession
-): boolean {
+): Promise<boolean> {
   const rightNow = new Date()
 
-  const database = sqlite(databasePath)
+  const database = await acquireConnection()
 
   const result = database
     .prepare(
@@ -37,7 +35,9 @@ export function updateWorkOrderMilestone(
         where workOrderMilestoneId = ?`
     )
     .run(
-      milestoneForm.workOrderMilestoneTypeId === '' ? undefined : milestoneForm.workOrderMilestoneTypeId,
+      milestoneForm.workOrderMilestoneTypeId === ''
+        ? undefined
+        : milestoneForm.workOrderMilestoneTypeId,
       dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
       milestoneForm.workOrderMilestoneTimeString
         ? timeStringToInteger(milestoneForm.workOrderMilestoneTimeString)
@@ -49,7 +49,7 @@ export function updateWorkOrderMilestone(
       milestoneForm.workOrderMilestoneId
     )
 
-  database.close()
+  database.release()
 
   return result.changes > 0
 }

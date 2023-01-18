@@ -1,7 +1,7 @@
-import sqlite from 'better-sqlite3'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import * as configFunctions from '../functions.config.js'
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 
 const availablePrints = configFunctions.getProperty(
   'settings.lotOccupancy.prints'
@@ -16,11 +16,11 @@ const userFunction_configContainsPrintEJS = (printEJS: string): number => {
   return 0
 }
 
-export function getOccupancyTypePrints(
+export async function getOccupancyTypePrints(
   occupancyTypeId: number,
-  connectedDatabase?: sqlite.Database
-): string[] {
-  const database = connectedDatabase ?? sqlite(databasePath)
+  connectedDatabase?: PoolConnection
+): Promise<string[]> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   database.function(
     'userFn_configContainsPrintEJS',
@@ -60,7 +60,7 @@ export function getOccupancyTypePrints(
   }
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return prints

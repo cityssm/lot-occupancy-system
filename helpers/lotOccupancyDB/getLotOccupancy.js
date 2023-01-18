@@ -1,5 +1,4 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateIntegerToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js';
 import { getLotOccupancyComments } from './getLotOccupancyComments.js';
@@ -7,11 +6,8 @@ import { getLotOccupancyFields } from './getLotOccupancyFields.js';
 import { getLotOccupancyFees } from './getLotOccupancyFees.js';
 import { getLotOccupancyTransactions } from './getLotOccupancyTransactions.js';
 import { getWorkOrders } from './getWorkOrders.js';
-export function getLotOccupancy(lotOccupancyId, connectedDatabase) {
-    const database = connectedDatabase ??
-        sqlite(databasePath, {
-            readonly: true
-        });
+export async function getLotOccupancy(lotOccupancyId, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const lotOccupancy = database
         .prepare(`select o.lotOccupancyId,
@@ -29,20 +25,21 @@ export function getLotOccupancy(lotOccupancyId, connectedDatabase) {
         and o.lotOccupancyId = ?`)
         .get(lotOccupancyId);
     if (lotOccupancy) {
-        lotOccupancy.lotOccupancyFields = getLotOccupancyFields(lotOccupancyId, database);
-        lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(lotOccupancyId, database);
-        lotOccupancy.lotOccupancyComments = getLotOccupancyComments(lotOccupancyId, database);
-        lotOccupancy.lotOccupancyFees = getLotOccupancyFees(lotOccupancyId, database);
-        lotOccupancy.lotOccupancyTransactions = getLotOccupancyTransactions(lotOccupancyId, database);
-        lotOccupancy.workOrders = getWorkOrders({
+        lotOccupancy.lotOccupancyFields = await getLotOccupancyFields(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyComments = await getLotOccupancyComments(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyFees = await getLotOccupancyFees(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyTransactions = await getLotOccupancyTransactions(lotOccupancyId, database);
+        const workOrdersResults = await getWorkOrders({
             lotOccupancyId
         }, {
             limit: -1,
             offset: 0
-        }, database).workOrders;
+        }, database);
+        lotOccupancy.workOrders = workOrdersResults.workOrders;
     }
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return lotOccupancy;
 }

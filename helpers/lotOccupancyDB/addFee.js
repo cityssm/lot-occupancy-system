@@ -1,7 +1,6 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function addFee(feeForm, requestSession) {
-    const database = sqlite(databasePath);
+import { acquireConnection } from './pool.js';
+export async function addFee(feeForm, requestSession) {
+    const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`insert into Fees (
@@ -16,7 +15,7 @@ export function addFee(feeForm, requestSession) {
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(feeForm.feeCategoryId, feeForm.feeName, feeForm.feeDescription, feeForm.occupancyTypeId === '' ? undefined : feeForm.occupancyTypeId, feeForm.lotTypeId === '' ? undefined : feeForm.lotTypeId, feeForm.feeAmount ?? undefined, feeForm.feeFunction ?? undefined, feeForm.taxAmount ?? undefined, feeForm.taxPercentage ?? undefined, (feeForm.includeQuantity ?? '') === '' ? 0 : 1, feeForm.quantityUnit, (feeForm.isRequired ?? '') === '' ? 0 : 1, feeForm.orderNumber ?? -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
-    database.close();
+    database.release();
     return result.lastInsertRowid;
 }
 export default addFee;

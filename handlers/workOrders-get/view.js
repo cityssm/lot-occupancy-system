@@ -1,7 +1,7 @@
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getWorkOrder } from '../../helpers/lotOccupancyDB/getWorkOrder.js';
-export const handler = (request, response) => {
-    const workOrder = getWorkOrder(request.params.workOrderId, {
+export async function handler(request, response) {
+    const workOrder = await getWorkOrder(request.params.workOrderId, {
         includeLotsAndLotOccupancies: true,
         includeComments: true,
         includeMilestones: true
@@ -15,5 +15,5 @@ export const handler = (request, response) => {
         headTitle: `Work Order #${workOrder.workOrderNumber}`,
         workOrder
     });
-};
+}
 export default handler;

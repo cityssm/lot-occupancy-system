@@ -1,13 +1,13 @@
 import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js';
 import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
-export const handler = (request, response) => {
-    const success = deleteRecord('OccupancyTypes', request.body.occupancyTypeId, request.session);
-    const occupancyTypes = getOccupancyTypes();
-    const allOccupancyTypeFields = getAllOccupancyTypeFields();
+export async function handler(request, response) {
+    const success = await deleteRecord('OccupancyTypes', request.body.occupancyTypeId, request.session);
+    const occupancyTypes = await getOccupancyTypes();
+    const allOccupancyTypeFields = await getAllOccupancyTypeFields();
     response.json({
         success,
         occupancyTypes,
         allOccupancyTypeFields
     });
-};
+}
 export default handler;

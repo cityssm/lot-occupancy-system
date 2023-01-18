@@ -1,13 +1,11 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function getWorkOrderMilestoneTypes(): recordTypes.WorkOrderMilestoneType[] {
-  const database = sqlite(databasePath)
+export async function getWorkOrderMilestoneTypes(): Promise<recordTypes.WorkOrderMilestoneType[]> {
+  const database = await acquireConnection()
 
   const workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[] = database
     .prepare(
@@ -35,7 +33,7 @@ export function getWorkOrderMilestoneTypes(): recordTypes.WorkOrderMilestoneType
     expectedOrderNumber += 1
   }
 
-  database.close()
+  database.release()
 
   return workOrderMilestoneTypes
 }

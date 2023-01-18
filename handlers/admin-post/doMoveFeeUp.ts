@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import {
   moveFeeUp,
@@ -7,13 +7,16 @@ import {
 
 import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const success =
     request.body.moveToEnd === '1'
-      ? moveFeeUpToTop(request.body.feeId)
-      : moveFeeUp(request.body.feeId)
+      ? await moveFeeUpToTop(request.body.feeId)
+      : await moveFeeUp(request.body.feeId)
 
-  const feeCategories = getFeeCategories(
+  const feeCategories = await getFeeCategories(
     {},
     {
       includeFees: true

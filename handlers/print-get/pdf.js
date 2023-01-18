@@ -7,7 +7,7 @@ import { getReportData, getPdfPrintConfig } from '../../helpers/functions.print.
 import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer';
 import camelcase from 'camelcase';
 const attachmentOrInline = configFunctions.getProperty('settings.printPdf.contentDisposition');
-export const handler = async (request, response, next) => {
+export async function handler(request, response, next) {
     const printName = request.params.printName;
     if (!configFunctions
         .getProperty('settings.lotOccupancy.prints')
@@ -25,7 +25,7 @@ export const handler = async (request, response, next) => {
             '/dashboard/?error=printConfigNotFound');
         return;
     }
-    const reportData = getReportData(printConfig, request.query);
+    const reportData = await getReportData(printConfig, request.query);
     const reportPath = path.join('views', 'print', 'pdf', printName + '.ejs');
     function pdfCallbackFunction(pdf) {
         response.setHeader('Content-Disposition', `${attachmentOrInline}; filename=${camelcase(printConfig.title)}.pdf`);
@@ -50,5 +50,5 @@ export const handler = async (request, response, next) => {
     reportData.dateTimeFunctions = dateTimeFunctions;
     reportData.lotOccupancyFunctions = lotOccupancyFunctions;
     await ejs.renderFile(reportPath, reportData, {}, ejsCallbackFunction);
-};
+}
 export default handler;

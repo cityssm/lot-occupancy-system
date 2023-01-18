@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import {
   moveRecordUp,
@@ -6,13 +6,16 @@ import {
 } from '../../helpers/lotOccupancyDB/moveRecord.js'
 import { getLotOccupantTypes } from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const success =
     request.body.moveToEnd === '1'
-      ? moveRecordUpToTop('LotOccupantTypes', request.body.lotOccupantTypeId)
-      : moveRecordUp('LotOccupantTypes', request.body.lotOccupantTypeId)
+      ? await moveRecordUpToTop('LotOccupantTypes', request.body.lotOccupantTypeId)
+      : await moveRecordUp('LotOccupantTypes', request.body.lotOccupantTypeId)
 
-  const lotOccupantTypes = getLotOccupantTypes()
+  const lotOccupantTypes = await getLotOccupantTypes()
 
   response.json({
     success,

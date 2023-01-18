@@ -3,18 +3,18 @@ import { getMap } from '../../helpers/lotOccupancyDB/getMap.js';
 import { getMapSVGs } from '../../helpers/functions.map.js';
 import { getLotTypeSummary } from '../../helpers/lotOccupancyDB/getLotTypeSummary.js';
 import { getLotStatusSummary } from '../../helpers/lotOccupancyDB/getLotStatusSummary.js';
-export const handler = async (request, response) => {
-    const map = getMap(request.params.mapId);
+export async function handler(request, response) {
+    const map = await getMap(request.params.mapId);
     if (!map) {
         response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
             '/maps/?error=mapIdNotFound');
         return;
     }
     const mapSVGs = await getMapSVGs();
-    const lotTypeSummary = getLotTypeSummary({
+    const lotTypeSummary = await getLotTypeSummary({
         mapId: map.mapId
     });
-    const lotStatusSummary = getLotStatusSummary({
+    const lotStatusSummary = await getLotStatusSummary({
         mapId: map.mapId
     });
     response.render('map-edit', {
@@ -25,5 +25,5 @@ export const handler = async (request, response) => {
         lotTypeSummary,
         lotStatusSummary
     });
-};
+}
 export default handler;

@@ -1,18 +1,13 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function getFee(
+export async function getFee(
   feeId: number | string,
-  connectedDatabase?: sqlite.Database
-): recordTypes.Fee {
-  const database =
-    connectedDatabase ??
-    sqlite(databasePath, {
-      readonly: true
-    })
+  connectedDatabase?: PoolConnection
+): Promise<recordTypes.Fee> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   const fee = database
     .prepare(
@@ -35,7 +30,7 @@ export function getFee(
     .get(feeId)
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return fee

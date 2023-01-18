@@ -1,10 +1,10 @@
 import { getLotOccupantTypes, getLotStatuses, getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
 import { getSolidIconClasses } from '../../helpers/functions.icons.js';
-export const handler = async (_request, response) => {
-    const workOrderTypes = getWorkOrderTypes();
-    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
-    const lotStatuses = getLotStatuses();
-    const lotOccupantTypes = getLotOccupantTypes();
+export async function handler(_request, response) {
+    const workOrderTypes = await getWorkOrderTypes();
+    const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
+    const lotStatuses = await getLotStatuses();
+    const lotOccupantTypes = await getLotOccupantTypes();
     const fontAwesomeIconClasses = await getSolidIconClasses();
     response.render('admin-tables', {
         headTitle: 'Config Table Management',
@@ -14,5 +14,5 @@ export const handler = async (_request, response) => {
         lotOccupantTypes,
         fontAwesomeIconClasses
     });
-};
+}
 export default handler;

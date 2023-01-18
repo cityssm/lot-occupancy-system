@@ -1,8 +1,7 @@
+import { acquireConnection } from './pool.js';
 import { dateStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function updateWorkOrder(workOrderForm, requestSession) {
-    const database = sqlite(databasePath);
+export async function updateWorkOrder(workOrderForm, requestSession) {
+    const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update WorkOrders
@@ -15,7 +14,7 @@ export function updateWorkOrder(workOrderForm, requestSession) {
         where workOrderId = ?
         and recordDelete_timeMillis is null`)
         .run(workOrderForm.workOrderNumber, workOrderForm.workOrderTypeId, workOrderForm.workOrderDescription, dateStringToInteger(workOrderForm.workOrderOpenDateString), requestSession.user.userName, rightNowMillis, workOrderForm.workOrderId);
-    database.close();
+    database.release();
     return result.changes > 0;
 }
 export default updateWorkOrder;

@@ -1,11 +1,7 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateIntegerToString, timeIntegerToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
-export function getLotOccupancyTransactions(lotOccupancyId, connectedDatabase) {
-    const database = connectedDatabase ??
-        sqlite(databasePath, {
-            readonly: true
-        });
+export async function getLotOccupancyTransactions(lotOccupancyId, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     const lotOccupancyTransactions = database
@@ -19,7 +15,7 @@ export function getLotOccupancyTransactions(lotOccupancyId, connectedDatabase) {
           order by transactionDate, transactionTime, transactionIndex`)
         .all(lotOccupancyId);
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return lotOccupancyTransactions;
 }

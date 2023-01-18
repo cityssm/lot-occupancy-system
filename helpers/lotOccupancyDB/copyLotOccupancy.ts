@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { getLotOccupancy } from './getLotOccupancy.js'
 import { addLotOccupancy } from './addLotOccupancy.js'
@@ -10,15 +8,15 @@ import { dateToString } from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function copyLotOccupancy(
+export async function copyLotOccupancy(
   oldLotOccupancyId: number | string,
   requestSession: recordTypes.PartialSession
-): number {
-  const database = sqlite(databasePath)
+): Promise<number> {
+  const database = await acquireConnection()
 
-  const oldLotOccupancy = getLotOccupancy(oldLotOccupancyId, database)!
+  const oldLotOccupancy = (await getLotOccupancy(oldLotOccupancyId, database))!
 
-  const newLotOccupancyId = addLotOccupancy(
+  const newLotOccupancyId = await addLotOccupancy(
     {
       lotId: oldLotOccupancy.lotId ?? '',
       occupancyTypeId: oldLotOccupancy.occupancyTypeId!,
@@ -60,7 +58,7 @@ export function copyLotOccupancy(
    */
 
   for (const occupant of oldLotOccupancy.lotOccupancyOccupants ?? []) {
-    addLotOccupancyOccupant(
+    await addLotOccupancyOccupant(
       {
         lotOccupancyId: newLotOccupancyId,
         lotOccupantTypeId: occupant.lotOccupantTypeId!,
@@ -78,7 +76,7 @@ export function copyLotOccupancy(
     )
   }
 
-  database.close()
+  database.release()
 
   return newLotOccupancyId
 }

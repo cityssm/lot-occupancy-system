@@ -5,5 +5,5 @@ interface UpdateLotOccupancyCommentForm {
     lotOccupancyCommentTimeString: string;
     lotOccupancyComment: string;
 }
-export declare function updateLotOccupancyComment(commentForm: UpdateLotOccupancyCommentForm, requestSession: recordTypes.PartialSession): boolean;
+export declare function updateLotOccupancyComment(commentForm: UpdateLotOccupancyCommentForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
 export default updateLotOccupancyComment;

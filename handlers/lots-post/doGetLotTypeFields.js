@@ -1,8 +1,8 @@
 import { getLotTypeById } from '../../helpers/functions.cache.js';
-export const handler = (request, response) => {
-    const lotType = getLotTypeById(Number.parseInt(request.body.lotTypeId, 10));
+export async function handler(request, response) {
+    const lotType = (await getLotTypeById(Number.parseInt(request.body.lotTypeId, 10)));
     response.json({
         lotTypeFields: lotType.lotTypeFields
     });
-};
+}
 export default handler;

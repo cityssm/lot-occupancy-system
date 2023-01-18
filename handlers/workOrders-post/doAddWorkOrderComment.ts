@@ -1,10 +1,13 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { addWorkOrderComment } from '../../helpers/lotOccupancyDB/addWorkOrderComment.js'
 
 import { getWorkOrderComments } from '../../helpers/lotOccupancyDB/getWorkOrderComments.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   addWorkOrderComment(request.body, request.session)
 
   const workOrderComments = getWorkOrderComments(request.body.workOrderId)

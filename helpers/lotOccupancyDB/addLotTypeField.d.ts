@@ -9,5 +9,5 @@ interface AddLotTypeFieldForm {
     maximumLength: string | number;
     orderNumber?: number;
 }
-export declare function addLotTypeField(lotTypeFieldForm: AddLotTypeFieldForm, requestSession: recordTypes.PartialSession): number;
+export declare function addLotTypeField(lotTypeFieldForm: AddLotTypeFieldForm, requestSession: recordTypes.PartialSession): Promise<number>;
 export default addLotTypeField;

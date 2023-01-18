@@ -1,8 +1,8 @@
 import { getLotStatuses, getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getWorkOrder } from '../../helpers/lotOccupancyDB/getWorkOrder.js';
-export const handler = (request, response) => {
-    const workOrder = getWorkOrder(request.params.workOrderId, {
+export async function handler(request, response) {
+    const workOrder = await getWorkOrder(request.params.workOrderId, {
         includeLotsAndLotOccupancies: true,
         includeComments: true,
         includeMilestones: true
@@ -19,9 +19,9 @@ export const handler = (request, response) => {
             '/?error=workOrderIsClosed');
         return;
     }
-    const workOrderTypes = getWorkOrderTypes();
-    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
-    const lotStatuses = getLotStatuses();
+    const workOrderTypes = await getWorkOrderTypes();
+    const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
+    const lotStatuses = await getLotStatuses();
     response.render('workOrder-edit', {
         headTitle: `Work Order #${workOrder.workOrderNumber}`,
         workOrder,
@@ -30,5 +30,5 @@ export const handler = (request, response) => {
         workOrderMilestoneTypes,
         lotStatuses
     });
-};
+}
 export default handler;

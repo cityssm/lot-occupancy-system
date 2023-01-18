@@ -4,5 +4,5 @@ interface OccupancyTypePrintForm {
     printEJS: string;
     orderNumber?: number;
 }
-export declare function addOccupancyTypePrint(occupancyTypePrintForm: OccupancyTypePrintForm, requestSession: recordTypes.PartialSession): boolean;
+export declare function addOccupancyTypePrint(occupancyTypePrintForm: OccupancyTypePrintForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
 export default addOccupancyTypePrint;

@@ -1,17 +1,20 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js'
 
 import { getLotOccupancyComments } from '../../helpers/lotOccupancyDB/getLotOccupancyComments.js'
 
-export const handler: RequestHandler = (request, response) => {
-  const success = deleteRecord(
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const success = await deleteRecord(
     'LotOccupancyComments',
     request.body.lotOccupancyCommentId,
     request.session
   )
 
-  const lotOccupancyComments = getLotOccupancyComments(
+  const lotOccupancyComments = await getLotOccupancyComments(
     request.body.lotOccupancyId
   )
 

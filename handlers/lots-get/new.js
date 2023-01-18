@@ -1,12 +1,12 @@
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js';
 import * as cacheFunctions from '../../helpers/functions.cache.js';
-export const handler = (request, response) => {
+export async function handler(request, response) {
     const lot = {
         lotId: -1,
         lotOccupancies: []
     };
-    const maps = getMaps();
+    const maps = await getMaps();
     if (request.query.mapId) {
         const mapId = Number.parseInt(request.query.mapId, 10);
         const map = maps.find((possibleMap) => {
@@ -17,8 +17,8 @@ export const handler = (request, response) => {
             lot.mapName = map.mapName;
         }
     }
-    const lotTypes = cacheFunctions.getLotTypes();
-    const lotStatuses = cacheFunctions.getLotStatuses();
+    const lotTypes = await cacheFunctions.getLotTypes();
+    const lotStatuses = await cacheFunctions.getLotStatuses();
     response.render('lot-edit', {
         headTitle: 'Create a New ' + configFunctions.getProperty('aliases.lot'),
         lot,
@@ -27,5 +27,5 @@ export const handler = (request, response) => {
         lotTypes,
         lotStatuses
     });
-};
+}
 export default handler;

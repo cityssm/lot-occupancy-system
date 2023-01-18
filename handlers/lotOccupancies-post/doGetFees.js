@@ -1,9 +1,9 @@
 import { getLotOccupancy } from '../../helpers/lotOccupancyDB/getLotOccupancy.js';
 import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js';
-export const handler = (request, response) => {
+export async function handler(request, response) {
     const lotOccupancyId = request.body.lotOccupancyId;
-    const lotOccupancy = getLotOccupancy(lotOccupancyId);
-    const feeCategories = getFeeCategories({
+    const lotOccupancy = (await getLotOccupancy(lotOccupancyId));
+    const feeCategories = await getFeeCategories({
         occupancyTypeId: lotOccupancy.occupancyTypeId,
         lotTypeId: lotOccupancy.lotTypeId
     }, {
@@ -12,5 +12,5 @@ export const handler = (request, response) => {
     response.json({
         feeCategories
     });
-};
+}
 export default handler;

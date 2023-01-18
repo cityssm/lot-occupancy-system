@@ -7,20 +7,20 @@ import { getOccupancyTypeFields as getOccupancyTypeFieldsFromDatabase } from './
 import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from './lotOccupancyDB/getWorkOrderTypes.js';
 import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from './lotOccupancyDB/getWorkOrderMilestoneTypes.js';
 let lotOccupantTypes;
-export function getLotOccupantTypes() {
+export async function getLotOccupantTypes() {
     if (lotOccupantTypes === undefined) {
-        lotOccupantTypes = getLotOccupantTypesFromDatabase();
+        lotOccupantTypes = await getLotOccupantTypesFromDatabase();
     }
     return lotOccupantTypes;
 }
-export function getLotOccupantTypeById(lotOccupantTypeId) {
-    const cachedLotOccupantTypes = getLotOccupantTypes();
+export async function getLotOccupantTypeById(lotOccupantTypeId) {
+    const cachedLotOccupantTypes = await getLotOccupantTypes();
     return cachedLotOccupantTypes.find((currentLotOccupantType) => {
         return currentLotOccupantType.lotOccupantTypeId === lotOccupantTypeId;
     });
 }
-export function getLotOccupantTypeByLotOccupantType(lotOccupantType) {
-    const cachedLotOccupantTypes = getLotOccupantTypes();
+export async function getLotOccupantTypeByLotOccupantType(lotOccupantType) {
+    const cachedLotOccupantTypes = await getLotOccupantTypes();
     const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase();
     return cachedLotOccupantTypes.find((currentLotOccupantType) => {
         return (currentLotOccupantType.lotOccupantType.toLowerCase() ===
@@ -31,20 +31,20 @@ function clearLotOccupantTypesCache() {
     lotOccupantTypes = undefined;
 }
 let lotStatuses;
-export function getLotStatuses() {
+export async function getLotStatuses() {
     if (lotStatuses === undefined) {
-        lotStatuses = getLotStatusesFromDatabase();
+        lotStatuses = await getLotStatusesFromDatabase();
     }
     return lotStatuses;
 }
-export function getLotStatusById(lotStatusId) {
-    const cachedLotStatuses = getLotStatuses();
+export async function getLotStatusById(lotStatusId) {
+    const cachedLotStatuses = await getLotStatuses();
     return cachedLotStatuses.find((currentLotStatus) => {
         return currentLotStatus.lotStatusId === lotStatusId;
     });
 }
-export function getLotStatusByLotStatus(lotStatus) {
-    const cachedLotStatuses = getLotStatuses();
+export async function getLotStatusByLotStatus(lotStatus) {
+    const cachedLotStatuses = await getLotStatuses();
     const lotStatusLowerCase = lotStatus.toLowerCase();
     return cachedLotStatuses.find((currentLotStatus) => {
         return currentLotStatus.lotStatus.toLowerCase() === lotStatusLowerCase;
@@ -54,20 +54,20 @@ function clearLotStatusesCache() {
     lotStatuses = undefined;
 }
 let lotTypes;
-export function getLotTypes() {
+export async function getLotTypes() {
     if (lotTypes === undefined) {
-        lotTypes = getLotTypesFromDatabase();
+        lotTypes = await getLotTypesFromDatabase();
     }
     return lotTypes;
 }
-export function getLotTypeById(lotTypeId) {
-    const cachedLotTypes = getLotTypes();
+export async function getLotTypeById(lotTypeId) {
+    const cachedLotTypes = await getLotTypes();
     return cachedLotTypes.find((currentLotType) => {
         return currentLotType.lotTypeId === lotTypeId;
     });
 }
-export function getLotTypesByLotType(lotType) {
-    const cachedLotTypes = getLotTypes();
+export async function getLotTypesByLotType(lotType) {
+    const cachedLotTypes = await getLotTypes();
     const lotTypeLowerCase = lotType.toLowerCase();
     return cachedLotTypes.find((currentLotType) => {
         return currentLotType.lotType.toLowerCase() === lotTypeLowerCase;
@@ -78,34 +78,34 @@ function clearLotTypesCache() {
 }
 let occupancyTypes;
 let allOccupancyTypeFields;
-export function getOccupancyTypes() {
+export async function getOccupancyTypes() {
     if (occupancyTypes === undefined) {
-        occupancyTypes = getOccupancyTypesFromDatabase();
+        occupancyTypes = await getOccupancyTypesFromDatabase();
     }
     return occupancyTypes;
 }
-export function getAllOccupancyTypeFields() {
+export async function getAllOccupancyTypeFields() {
     if (allOccupancyTypeFields === undefined) {
-        allOccupancyTypeFields = getOccupancyTypeFieldsFromDatabase();
+        allOccupancyTypeFields = await getOccupancyTypeFieldsFromDatabase();
     }
     return allOccupancyTypeFields;
 }
-export function getOccupancyTypeById(occupancyTypeId) {
-    const cachedOccupancyTypes = getOccupancyTypes();
+export async function getOccupancyTypeById(occupancyTypeId) {
+    const cachedOccupancyTypes = await getOccupancyTypes();
     return cachedOccupancyTypes.find((currentOccupancyType) => {
         return currentOccupancyType.occupancyTypeId === occupancyTypeId;
     });
 }
-export function getOccupancyTypeByOccupancyType(occupancyTypeString) {
-    const cachedOccupancyTypes = getOccupancyTypes();
+export async function getOccupancyTypeByOccupancyType(occupancyTypeString) {
+    const cachedOccupancyTypes = await getOccupancyTypes();
     const occupancyTypeLowerCase = occupancyTypeString.toLowerCase();
     return cachedOccupancyTypes.find((currentOccupancyType) => {
         return (currentOccupancyType.occupancyType.toLowerCase() ===
             occupancyTypeLowerCase);
     });
 }
-export function getOccupancyTypePrintsById(occupancyTypeId) {
-    const occupancyType = getOccupancyTypeById(occupancyTypeId);
+export async function getOccupancyTypePrintsById(occupancyTypeId) {
+    const occupancyType = await getOccupancyTypeById(occupancyTypeId);
     if (occupancyType === undefined ||
         (occupancyType.occupancyTypePrints ?? []).length === 0) {
         return [];
@@ -120,14 +120,14 @@ function clearOccupancyTypesCache() {
     allOccupancyTypeFields = undefined;
 }
 let workOrderTypes;
-export function getWorkOrderTypes() {
+export async function getWorkOrderTypes() {
     if (workOrderTypes === undefined) {
-        workOrderTypes = getWorkOrderTypesFromDatabase();
+        workOrderTypes = await getWorkOrderTypesFromDatabase();
     }
     return workOrderTypes;
 }
-export function getWorkOrderTypeById(workOrderTypeId) {
-    const cachedWorkOrderTypes = getWorkOrderTypes();
+export async function getWorkOrderTypeById(workOrderTypeId) {
+    const cachedWorkOrderTypes = await getWorkOrderTypes();
     return cachedWorkOrderTypes.find((currentWorkOrderType) => {
         return currentWorkOrderType.workOrderTypeId === workOrderTypeId;
     });
@@ -136,21 +136,21 @@ function clearWorkOrderTypesCache() {
     workOrderTypes = undefined;
 }
 let workOrderMilestoneTypes;
-export function getWorkOrderMilestoneTypes() {
+export async function getWorkOrderMilestoneTypes() {
     if (workOrderMilestoneTypes === undefined) {
-        workOrderMilestoneTypes = getWorkOrderMilestoneTypesFromDatabase();
+        workOrderMilestoneTypes = await getWorkOrderMilestoneTypesFromDatabase();
     }
     return workOrderMilestoneTypes;
 }
-export function getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(workOrderMilestoneTypeId) {
-    const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(workOrderMilestoneTypeId) {
+    const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => {
         return (currentWorkOrderMilestoneType.workOrderMilestoneTypeId ===
             workOrderMilestoneTypeId);
     });
 }
-export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString) {
-    const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString) {
+    const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
     const workOrderMilestoneTypeLowerCase = workOrderMilestoneTypeString.toLowerCase();
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => {
         return (currentWorkOrderMilestoneType.workOrderMilestoneType.toLowerCase() ===

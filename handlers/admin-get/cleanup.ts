@@ -1,6 +1,6 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
-export const handler: RequestHandler = (_request, response) => {
+export function handler(_request: Request, response: Response): void {
   response.render('admin-cleanup', {
     headTitle: 'Database Cleanup'
   })

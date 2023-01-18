@@ -3,5 +3,5 @@ interface AddLotCommentForm {
     lotId: string;
     lotComment: string;
 }
-export declare function addLotComment(lotCommentForm: AddLotCommentForm, requestSession: recordTypes.PartialSession): number;
+export declare function addLotComment(lotCommentForm: AddLotCommentForm, requestSession: recordTypes.PartialSession): Promise<number>;
 export default addLotComment;

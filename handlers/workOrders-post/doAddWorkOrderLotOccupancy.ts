@@ -1,9 +1,12 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { addWorkOrderLotOccupancy } from '../../helpers/lotOccupancyDB/addWorkOrderLotOccupancy.js'
 import { getLotOccupancies } from '../../helpers/lotOccupancyDB/getLotOccupancies.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const success = addWorkOrderLotOccupancy(
     {
       workOrderId: request.body.workOrderId,
@@ -12,7 +15,7 @@ export const handler: RequestHandler = (request, response) => {
     request.session
   )
 
-  const workOrderLotOccupancies = getLotOccupancies(
+  const workOrderLotOccupanciesResults = await getLotOccupancies(
     {
       workOrderId: request.body.workOrderId
     },
@@ -21,11 +24,11 @@ export const handler: RequestHandler = (request, response) => {
       offset: 0,
       includeOccupants: true
     }
-  ).lotOccupancies
+  )
 
   response.json({
     success,
-    workOrderLotOccupancies
+    workOrderLotOccupancies: workOrderLotOccupanciesResults.lotOccupancies
   })
 }
 

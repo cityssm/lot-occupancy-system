@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
@@ -12,10 +10,10 @@ interface LotTypeSummary extends recordTypes.LotType {
   lotCount: number
 }
 
-export function getLotTypeSummary(filters?: GetFilters): LotTypeSummary[] {
-  const database = sqlite(databasePath, {
-    readonly: true
-  })
+export async function getLotTypeSummary(
+  filters?: GetFilters
+): Promise<LotTypeSummary[]> {
+  const database = await acquireConnection()
 
   let sqlWhereClause = ' where l.recordDelete_timeMillis is null'
   const sqlParameters: unknown[] = []
@@ -36,7 +34,7 @@ export function getLotTypeSummary(filters?: GetFilters): LotTypeSummary[] {
     )
     .all(sqlParameters)
 
-  database.close()
+  database.release()
 
   return lotTypes
 }

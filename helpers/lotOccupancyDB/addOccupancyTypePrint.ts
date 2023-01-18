@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { clearCacheByTableName } from '../functions.cache.js'
 
@@ -12,23 +10,23 @@ interface OccupancyTypePrintForm {
   orderNumber?: number
 }
 
-export function addOccupancyTypePrint(
+export async function addOccupancyTypePrint(
   occupancyTypePrintForm: OccupancyTypePrintForm,
   requestSession: recordTypes.PartialSession
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
   let result = database
     .prepare(
       `update OccupancyTypePrints
-                set recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?,
-                recordDelete_userName = null,
-                recordDelete_timeMillis = null
-                where occupancyTypeId = ?
-                and printEJS = ?`
+        set recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?,
+        recordDelete_userName = null,
+        recordDelete_timeMillis = null
+        where occupancyTypeId = ?
+        and printEJS = ?`
     )
     .run(
       requestSession.user!.userName,
@@ -41,10 +39,10 @@ export function addOccupancyTypePrint(
     result = database
       .prepare(
         `insert into OccupancyTypePrints (
-                    occupancyTypeId, printEJS, orderNumber,
-                    recordCreate_userName, recordCreate_timeMillis,
-                    recordUpdate_userName, recordUpdate_timeMillis)
-                    values (?, ?, ?, ?, ?, ?, ?)`
+          occupancyTypeId, printEJS, orderNumber,
+          recordCreate_userName, recordCreate_timeMillis,
+          recordUpdate_userName, recordUpdate_timeMillis)
+          values (?, ?, ?, ?, ?, ?, ?)`
       )
       .run(
         occupancyTypePrintForm.occupancyTypeId,
@@ -57,7 +55,7 @@ export function addOccupancyTypePrint(
       )
   }
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('OccupancyTypePrints')
 

@@ -6,5 +6,5 @@ interface UpdateWorkOrderForm {
     workOrderDescription: string;
     workOrderOpenDateString: string;
 }
-export declare function updateWorkOrder(workOrderForm: UpdateWorkOrderForm, requestSession: recordTypes.PartialSession): boolean;
+export declare function updateWorkOrder(workOrderForm: UpdateWorkOrderForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
 export default updateWorkOrder;

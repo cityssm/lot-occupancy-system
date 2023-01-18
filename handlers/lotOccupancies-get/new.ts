@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import {
   dateToInteger,
@@ -19,7 +19,10 @@ import * as configFunctions from '../../helpers/functions.config.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const startDate = new Date()
 
   const lotOccupancy: recordTypes.LotOccupancy = {
@@ -28,7 +31,7 @@ export const handler: RequestHandler = (request, response) => {
   }
 
   if (request.query.lotId) {
-    const lot = getLot(request.query.lotId as string)
+    const lot = await getLot(request.query.lotId as string)
 
     if (lot) {
       lotOccupancy.lotId = lot.lotId
@@ -38,11 +41,11 @@ export const handler: RequestHandler = (request, response) => {
     }
   }
 
-  const occupancyTypes = getOccupancyTypes()
-  const lotOccupantTypes = getLotOccupantTypes()
-  const lotTypes = getLotTypes()
-  const lotStatuses = getLotStatuses()
-  const maps = getMaps()
+  const occupancyTypes = await getOccupancyTypes()
+  const lotOccupantTypes = await getLotOccupantTypes()
+  const lotTypes = await getLotTypes()
+  const lotStatuses = await getLotStatuses()
+  const maps = await getMaps()
 
   response.render('lotOccupancy-edit', {
     headTitle: `Create a New ${configFunctions.getProperty(

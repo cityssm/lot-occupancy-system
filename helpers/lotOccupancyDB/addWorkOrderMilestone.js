@@ -1,9 +1,8 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
-export function addWorkOrderMilestone(milestoneForm, requestSession) {
+export async function addWorkOrderMilestone(milestoneForm, requestSession) {
     const rightNow = new Date();
-    const database = sqlite(databasePath);
+    const database = await acquireConnection();
     const result = database
         .prepare(`insert into WorkOrderMilestones (
         workOrderId, workOrderMilestoneTypeId,
@@ -20,7 +19,7 @@ export function addWorkOrderMilestone(milestoneForm, requestSession) {
         : undefined, milestoneForm.workOrderMilestoneCompletionTimeString
         ? timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString)
         : undefined, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
-    database.close();
+    database.release();
     return result.lastInsertRowid;
 }
 export default addWorkOrderMilestone;

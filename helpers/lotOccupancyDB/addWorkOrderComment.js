@@ -1,8 +1,7 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
-export function addWorkOrderComment(workOrderCommentForm, requestSession) {
-    const database = sqlite(databasePath);
+export async function addWorkOrderComment(workOrderCommentForm, requestSession) {
+    const database = await acquireConnection();
     const rightNow = new Date();
     const result = database
         .prepare(`insert into WorkOrderComments (
@@ -13,7 +12,7 @@ export function addWorkOrderComment(workOrderCommentForm, requestSession) {
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(workOrderCommentForm.workOrderId, dateTimeFunctions.dateToInteger(rightNow), dateTimeFunctions.dateToTimeInteger(rightNow), workOrderCommentForm.workOrderComment, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
-    database.close();
+    database.release();
     return result.lastInsertRowid;
 }
 export default addWorkOrderComment;

@@ -1,13 +1,16 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { updateLotOccupantType } from '../../helpers/lotOccupancyDB/updateLotOccupantType.js'
 
 import { getLotOccupantTypes } from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = (request, response) => {
-  const success = updateLotOccupantType(request.body, request.session)
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const success = await updateLotOccupantType(request.body, request.session)
 
-  const lotOccupantTypes = getLotOccupantTypes()
+  const lotOccupantTypes = await getLotOccupantTypes()
 
   response.json({
     success,

@@ -1,16 +1,16 @@
 import { getLotTypes, getOccupancyTypes } from '../../helpers/functions.cache.js';
 import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js';
-export const handler = (_request, response) => {
-    const feeCategories = getFeeCategories({}, {
+export async function handler(_request, response) {
+    const feeCategories = await getFeeCategories({}, {
         includeFees: true
     });
-    const occupancyTypes = getOccupancyTypes();
-    const lotTypes = getLotTypes();
+    const occupancyTypes = await getOccupancyTypes();
+    const lotTypes = await getLotTypes();
     response.render('admin-fees', {
         headTitle: 'Fee Management',
         feeCategories,
         occupancyTypes,
         lotTypes
     });
-};
+}
 export default handler;

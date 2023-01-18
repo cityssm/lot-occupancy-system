@@ -1,7 +1,6 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function addOrUpdateLotField(lotFieldForm, requestSession, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(databasePath);
+import { acquireConnection } from './pool.js';
+export async function addOrUpdateLotField(lotFieldForm, requestSession, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     let result = database
         .prepare(`update LotFields
@@ -16,14 +15,14 @@ export function addOrUpdateLotField(lotFieldForm, requestSession, connectedDatab
     if (result.changes === 0) {
         result = database
             .prepare(`insert into LotFields (
-                    lotId, lotTypeFieldId, lotFieldValue,
-                    recordCreate_userName, recordCreate_timeMillis,
-                    recordUpdate_userName, recordUpdate_timeMillis)
-                    values (?, ?, ?, ?, ?, ?, ?)`)
+          lotId, lotTypeFieldId, lotFieldValue,
+          recordCreate_userName, recordCreate_timeMillis,
+          recordUpdate_userName, recordUpdate_timeMillis)
+          values (?, ?, ?, ?, ?, ?, ?)`)
             .run(lotFieldForm.lotId, lotFieldForm.lotTypeFieldId, lotFieldForm.lotFieldValue, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     }
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return result.changes > 0;
 }

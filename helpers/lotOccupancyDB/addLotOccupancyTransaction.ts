@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import {
   dateStringToInteger,
@@ -20,21 +18,21 @@ interface AddLotOccupancyTransactionForm {
   transactionNote: string
 }
 
-export function addLotOccupancyTransaction(
+export async function addLotOccupancyTransaction(
   lotOccupancyTransactionForm: AddLotOccupancyTransactionForm,
   requestSession: recordTypes.PartialSession
-): number {
-  const database = sqlite(databasePath)
+): Promise<number> {
+  const database = await acquireConnection()
 
   let transactionIndex = 0
 
   const maxIndexResult: { transactionIndex: number } | undefined = database
     .prepare(
       `select transactionIndex
-                from LotOccupancyTransactions
-                where lotOccupancyId = ?
-                order by transactionIndex desc
-                limit 1`
+        from LotOccupancyTransactions
+        where lotOccupancyId = ?
+        order by transactionIndex desc
+        limit 1`
     )
     .get(lotOccupancyTransactionForm.lotOccupancyId)
 
@@ -55,12 +53,12 @@ export function addLotOccupancyTransaction(
   database
     .prepare(
       `insert into LotOccupancyTransactions (
-                lotOccupancyId, transactionIndex,
-                transactionDate, transactionTime,
-                transactionAmount, externalReceiptNumber, transactionNote,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        lotOccupancyId, transactionIndex,
+        transactionDate, transactionTime,
+        transactionAmount, externalReceiptNumber, transactionNote,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       lotOccupancyTransactionForm.lotOccupancyId,
@@ -76,7 +74,7 @@ export function addLotOccupancyTransaction(
       rightNow.getTime()
     )
 
-  database.close()
+  database.release()
 
   return transactionIndex
 }

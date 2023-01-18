@@ -1,11 +1,11 @@
 import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js';
 import { getLotStatuses } from '../../helpers/functions.cache.js';
-export const handler = (request, response) => {
-    const success = deleteRecord('LotStatuses', request.body.lotStatusId, request.session);
-    const lotStatuses = getLotStatuses();
+export async function handler(request, response) {
+    const success = await deleteRecord('LotStatuses', request.body.lotStatusId, request.session);
+    const lotStatuses = await getLotStatuses();
     response.json({
         success,
         lotStatuses
     });
-};
+}
 export default handler;

@@ -1,16 +1,19 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { updateLotStatus } from '../../helpers/lotOccupancyDB/updateLot.js'
 import { getLots } from '../../helpers/lotOccupancyDB/getLots.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const success = updateLotStatus(
     request.body.lotId,
     request.body.lotStatusId,
     request.session
   )
 
-  const workOrderLots = getLots(
+  const workOrderLotsResults = await getLots(
     {
       workOrderId: request.body.workOrderId
     },
@@ -18,11 +21,11 @@ export const handler: RequestHandler = (request, response) => {
       limit: -1,
       offset: 0
     }
-  ).lots
+  )
 
   response.json({
     success,
-    workOrderLots
+    workOrderLots: workOrderLotsResults.lots
   })
 }
 

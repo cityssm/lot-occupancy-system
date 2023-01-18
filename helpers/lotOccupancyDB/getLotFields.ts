@@ -1,18 +1,13 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function getLotFields(
+export async function getLotFields(
   lotId: number | string,
-  connectedDatabase?: sqlite.Database
-): recordTypes.LotField[] {
-  const database =
-    connectedDatabase ??
-    sqlite(databasePath, {
-      readonly: true
-    })
+  connectedDatabase?: PoolConnection
+): Promise<recordTypes.LotField[]> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   const lotFields: recordTypes.LotField[] = database
     .prepare(
@@ -46,7 +41,7 @@ export function getLotFields(
     .all(lotId, lotId, lotId, lotId)
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return lotFields

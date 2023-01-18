@@ -8,5 +8,5 @@ interface UpdateLotTypeFieldForm {
     pattern?: string;
     lotTypeFieldValues: string;
 }
-export declare function updateLotTypeField(lotTypeFieldForm: UpdateLotTypeFieldForm, requestSession: recordTypes.PartialSession): boolean;
+export declare function updateLotTypeField(lotTypeFieldForm: UpdateLotTypeFieldForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
 export default updateLotTypeField;

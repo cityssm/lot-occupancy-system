@@ -7,11 +7,11 @@ interface UpdateFeeCategoryForm {
   feeCategory: string
 }
 
-export function updateFeeCategory(
+export async function updateFeeCategory(
   feeCategoryForm: UpdateFeeCategoryForm,
   requestSession: recordTypes.PartialSession
-): boolean {
-  const success = updateRecord(
+): Promise<boolean> {
+  const success = await updateRecord(
     'FeeCategories',
     feeCategoryForm.feeCategoryId,
     feeCategoryForm.feeCategory,

@@ -2,7 +2,7 @@
 
 import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import {
   dateStringToInteger,
@@ -21,13 +21,13 @@ interface AddWorkOrderMilestoneForm {
   workOrderMilestoneCompletionTimeString?: string
 }
 
-export function addWorkOrderMilestone(
+export async function addWorkOrderMilestone(
   milestoneForm: AddWorkOrderMilestoneForm,
   requestSession: recordTypes.PartialSession
-): number {
+): Promise<number> {
   const rightNow = new Date()
 
-  const database = sqlite(databasePath)
+  const database = await acquireConnection()
 
   const result = database
     .prepare(
@@ -64,7 +64,7 @@ export function addWorkOrderMilestone(
       rightNow.getTime()
     )
 
-  database.close()
+  database.release()
 
   return result.lastInsertRowid as number
 }

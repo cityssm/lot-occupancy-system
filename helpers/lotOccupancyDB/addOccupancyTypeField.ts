@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 import { clearCacheByTableName } from '../functions.cache.js'
@@ -16,24 +14,24 @@ interface AddOccupancyTypeFieldForm {
   orderNumber?: number
 }
 
-export function addOccupancyTypeField(
+export async function addOccupancyTypeField(
   occupancyTypeFieldForm: AddOccupancyTypeFieldForm,
   requestSession: recordTypes.PartialSession
-): number {
-  const database = sqlite(databasePath)
+): Promise<number> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
   const result = database
     .prepare(
       `insert into OccupancyTypeFields (
-                occupancyTypeId, occupancyTypeField,
-                occupancyTypeFieldValues, isRequired, pattern,
-                minimumLength, maximumLength,
-                orderNumber,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        occupancyTypeId, occupancyTypeField,
+        occupancyTypeFieldValues, isRequired, pattern,
+        minimumLength, maximumLength,
+        orderNumber,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       occupancyTypeFieldForm.occupancyTypeId ?? undefined,
@@ -50,7 +48,7 @@ export function addOccupancyTypeField(
       rightNowMillis
     )
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('OccupancyTypeFields')
 

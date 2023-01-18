@@ -1,6 +1,5 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import { dateIntegerToString } from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
@@ -13,15 +12,11 @@ import { getWorkOrders } from './getWorkOrders.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function getLotOccupancy(
+export async function getLotOccupancy(
   lotOccupancyId: number | string,
-  connectedDatabase?: sqlite.Database
-): recordTypes.LotOccupancy | undefined {
-  const database =
-    connectedDatabase ??
-    sqlite(databasePath, {
-      readonly: true
-    })
+  connectedDatabase?: PoolConnection
+): Promise<recordTypes.LotOccupancy | undefined> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
@@ -44,28 +39,28 @@ export function getLotOccupancy(
     .get(lotOccupancyId)
 
   if (lotOccupancy) {
-    lotOccupancy.lotOccupancyFields = getLotOccupancyFields(
+    lotOccupancy.lotOccupancyFields = await getLotOccupancyFields(
       lotOccupancyId,
       database
     )
-    lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(
+    lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(
       lotOccupancyId,
       database
     )
-    lotOccupancy.lotOccupancyComments = getLotOccupancyComments(
+    lotOccupancy.lotOccupancyComments = await getLotOccupancyComments(
       lotOccupancyId,
       database
     )
-    lotOccupancy.lotOccupancyFees = getLotOccupancyFees(
+    lotOccupancy.lotOccupancyFees = await getLotOccupancyFees(
       lotOccupancyId,
       database
     )
-    lotOccupancy.lotOccupancyTransactions = getLotOccupancyTransactions(
+    lotOccupancy.lotOccupancyTransactions = await getLotOccupancyTransactions(
       lotOccupancyId,
       database
     )
 
-    lotOccupancy.workOrders = getWorkOrders(
+    const workOrdersResults = await getWorkOrders(
       {
         lotOccupancyId
       },
@@ -74,11 +69,13 @@ export function getLotOccupancy(
         offset: 0
       },
       database
-    ).workOrders
+    )
+
+    lotOccupancy.workOrders = workOrdersResults.workOrders
   }
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return lotOccupancy

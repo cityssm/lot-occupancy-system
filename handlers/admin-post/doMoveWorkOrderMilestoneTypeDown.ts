@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import {
   moveRecordDown,
@@ -8,19 +8,22 @@ import {
 } from '../../helpers/lotOccupancyDB/moveRecord.js'
 import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const success =
     request.body.moveToEnd === '1'
-      ? moveRecordDownToBottom(
+      ? await moveRecordDownToBottom(
           'WorkOrderMilestoneTypes',
           request.body.workOrderMilestoneTypeId
         )
-      : moveRecordDown(
+      : await moveRecordDown(
           'WorkOrderMilestoneTypes',
           request.body.workOrderMilestoneTypeId
         )
 
-  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes()
+  const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
 
   response.json({
     success,

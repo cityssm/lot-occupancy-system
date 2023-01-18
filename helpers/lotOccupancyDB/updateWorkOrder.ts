@@ -1,7 +1,6 @@
-import { dateStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js'
-import sqlite from 'better-sqlite3'
+import { acquireConnection } from './pool.js'
 
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { dateStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
@@ -13,11 +12,11 @@ interface UpdateWorkOrderForm {
   workOrderOpenDateString: string
 }
 
-export function updateWorkOrder(
+export async function updateWorkOrder(
   workOrderForm: UpdateWorkOrderForm,
   requestSession: recordTypes.PartialSession
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
@@ -43,7 +42,7 @@ export function updateWorkOrder(
       workOrderForm.workOrderId
     )
 
-  database.close()
+  database.release()
 
   return result.changes > 0
 }

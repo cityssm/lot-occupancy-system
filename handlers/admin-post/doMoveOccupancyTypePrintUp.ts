@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import {
   moveOccupancyTypePrintUp,
@@ -12,20 +12,23 @@ import {
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const success =
     request.body.moveToEnd === '1'
-      ? moveOccupancyTypePrintUpToTop(
+      ? await moveOccupancyTypePrintUpToTop(
           request.body.occupancyTypeId,
           request.body.printEJS
         )
-      : moveOccupancyTypePrintUp(
+      : await moveOccupancyTypePrintUp(
           request.body.occupancyTypeId,
           request.body.printEJS
         )
 
-  const occupancyTypes = getOccupancyTypes()
-  const allOccupancyTypeFields = getAllOccupancyTypeFields()
+  const occupancyTypes = await getOccupancyTypes()
+  const allOccupancyTypeFields = await getAllOccupancyTypeFields()
 
   response.json({
     success,

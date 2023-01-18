@@ -1,13 +1,11 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import * as configFunctions from '../functions.config.js'
 
-export function getNextLotId(lotId: number | string): number | undefined {
-  const database = sqlite(databasePath, {
-    readonly: true
-  })
+export async function getNextLotId(
+  lotId: number | string
+): Promise<number | undefined> {
+  const database = await acquireConnection()
 
   database.function(
     'userFn_lotNameSortName',
@@ -27,7 +25,7 @@ export function getNextLotId(lotId: number | string): number | undefined {
     )
     .get(lotId)
 
-  database.close()
+  database.release()
 
   if (result) {
     return result.lotId

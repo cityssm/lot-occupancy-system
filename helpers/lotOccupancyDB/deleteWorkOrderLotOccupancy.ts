@@ -1,15 +1,13 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function deleteWorkOrderLotOccupancy(
+export async function deleteWorkOrderLotOccupancy(
   workOrderId: number | string,
   lotOccupancyId: number | string,
   requestSession: recordTypes.PartialSession
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
@@ -28,7 +26,7 @@ export function deleteWorkOrderLotOccupancy(
       lotOccupancyId
     )
 
-  database.close()
+  database.release()
 
   return result.changes > 0
 }

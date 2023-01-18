@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import type { PoolConnection } from 'better-sqlite-pool';
 import type * as recordTypes from '../../types/recordTypes';
 interface GetLotsFilters {
     lotNameSearchType?: '' | 'startsWith' | 'endsWith';
@@ -13,8 +13,8 @@ interface GetLotsOptions {
     limit: -1 | number;
     offset: number;
 }
-export declare function getLots(filters: GetLotsFilters, options: GetLotsOptions, connectedDatabase?: sqlite.Database): {
+export declare function getLots(filters: GetLotsFilters, options: GetLotsOptions, connectedDatabase?: PoolConnection): Promise<{
     count: number;
     lots: recordTypes.Lot[];
-};
+}>;
 export default getLots;

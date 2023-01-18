@@ -7,7 +7,7 @@ import {
   WorkOrderMilestoneFilters
 } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
 
-import type { RequestHandler, Request } from 'express'
+import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
 import { getPrintConfig } from '../../helpers/functions.print.js'
@@ -270,13 +270,12 @@ function buildEventLocation(milestone: recordTypes.WorkOrderMilestone): string {
   return lotNames.join(', ')
 }
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(request: Request, response: Response): Promise<void> {
   const urlRoot = getUrlRoot(request)
 
   /*
    * Get work order milestones
    */
-
   const workOrderMilestoneFilters: WorkOrderMilestoneFilters = {
     workOrderTypeIds: request.query.workOrderTypeIds as string,
     workOrderMilestoneTypeIds: request.query.workOrderMilestoneTypeIds as string
@@ -288,7 +287,7 @@ export const handler: RequestHandler = (request, response) => {
     workOrderMilestoneFilters.workOrderMilestoneDateFilter = 'recent'
   }
 
-  const workOrderMilestones = getWorkOrderMilestones(
+  const workOrderMilestones = await getWorkOrderMilestones(
     workOrderMilestoneFilters,
     {
       includeWorkOrders: true,
@@ -299,7 +298,6 @@ export const handler: RequestHandler = (request, response) => {
   /*
    * Create calendar object
    */
-
   const calendar = ical({
     name: 'Work Order Milestone Calendar',
     url: urlRoot + '/workOrders'
@@ -318,7 +316,6 @@ export const handler: RequestHandler = (request, response) => {
   /*
    * Loop through milestones
    */
-
   for (const milestone of workOrderMilestones) {
     const milestoneTimePieces = (
       milestone.workOrderMilestoneDateString +
@@ -338,15 +335,12 @@ export const handler: RequestHandler = (request, response) => {
     milestoneEndDate.setHours(milestoneEndDate.getHours() + 1)
 
     // Build summary (title in Outlook)
-
     const summary = buildEventSummary(milestone)
 
     // Build URL
-
     const workOrderUrl = getWorkOrderUrl(request, milestone)
 
     // Create event
-
     const eventData: ICalEventData = {
       start: milestoneDate,
       created: new Date(milestone.recordCreate_timeMillis),
@@ -369,7 +363,6 @@ export const handler: RequestHandler = (request, response) => {
     const calendarEvent = calendar.createEvent(eventData)
 
     // Build description
-
     const descriptionHTML = buildEventDescriptionHTML(request, milestone)
 
     calendarEvent.description({
@@ -378,13 +371,11 @@ export const handler: RequestHandler = (request, response) => {
     })
 
     // Set status
-
     if (milestone.workOrderMilestoneCompletionDate) {
       calendarEvent.status(ICalEventStatus.CONFIRMED)
     }
 
     // Add categories
-
     const categories = buildEventCategoryList(milestone)
     for (const category of categories) {
       calendarEvent.createCategory({
@@ -393,12 +384,10 @@ export const handler: RequestHandler = (request, response) => {
     }
 
     // Set location
-
     const location = buildEventLocation(milestone)
     calendarEvent.location(location)
 
     // Set organizer / attendees
-
     if (milestone.workOrderLotOccupancies.length > 0) {
       let organizerSet = false
       for (const lotOccupancy of milestone.workOrderLotOccupancies) {

@@ -1,11 +1,7 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateIntegerToString, timeIntegerToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
-export function getWorkOrderComments(workOrderId, connectedDatabase) {
-    const database = connectedDatabase ??
-        sqlite(databasePath, {
-            readonly: true
-        });
+export async function getWorkOrderComments(workOrderId, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     const workOrderComments = database
@@ -20,7 +16,7 @@ export function getWorkOrderComments(workOrderId, connectedDatabase) {
         order by workOrderCommentDate desc, workOrderCommentTime desc, workOrderCommentId desc`)
         .all(workOrderId);
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return workOrderComments;
 }

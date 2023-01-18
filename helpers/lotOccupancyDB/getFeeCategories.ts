@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { getFees } from './getFees.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
@@ -16,16 +14,14 @@ interface GetFeeCategoriesOptions {
   includeFees?: boolean
 }
 
-export function getFeeCategories(
+export async function getFeeCategories(
   filters: GetFeeCategoriesFilters,
   options: GetFeeCategoriesOptions
-): recordTypes.FeeCategory[] {
+): Promise<recordTypes.FeeCategory[]> {
   const updateOrderNumbers =
     !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees
 
-  const database = sqlite(databasePath, {
-    readonly: !updateOrderNumbers
-  })
+  const database = await acquireConnection()
 
   let sqlWhereClause = ' where recordDelete_timeMillis is null'
 
@@ -80,11 +76,11 @@ export function getFeeCategories(
 
       expectedOrderNumber += 1
 
-      feeCategory.fees = getFees(feeCategory.feeCategoryId, filters, database)
+      feeCategory.fees = await getFees(feeCategory.feeCategoryId, filters, database)
     }
   }
 
-  database.close()
+  database.release()
 
   return feeCategories
 }

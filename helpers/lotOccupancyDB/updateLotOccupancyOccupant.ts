@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
@@ -19,32 +17,32 @@ interface UpdateLotOccupancyOccupantForm {
   occupantComment: string
 }
 
-export function updateLotOccupancyOccupant(
+export async function updateLotOccupancyOccupant(
   lotOccupancyOccupantForm: UpdateLotOccupancyOccupantForm,
   requestSession: recordTypes.PartialSession
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
   const results = database
     .prepare(
       `update LotOccupancyOccupants
-                set occupantName = ?,
-                occupantAddress1 = ?,
-                occupantAddress2 = ?,
-                occupantCity = ?,
-                occupantProvince = ?,
-                occupantPostalCode = ?,
-                occupantPhoneNumber = ?,
-                occupantEmailAddress = ?,
-                occupantComment = ?,
-                lotOccupantTypeId = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where recordDelete_timeMillis is null
-                and lotOccupancyId = ?
-                and lotOccupantIndex = ?`
+        set occupantName = ?,
+        occupantAddress1 = ?,
+        occupantAddress2 = ?,
+        occupantCity = ?,
+        occupantProvince = ?,
+        occupantPostalCode = ?,
+        occupantPhoneNumber = ?,
+        occupantEmailAddress = ?,
+        occupantComment = ?,
+        lotOccupantTypeId = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where recordDelete_timeMillis is null
+        and lotOccupancyId = ?
+        and lotOccupantIndex = ?`
     )
     .run(
       lotOccupancyOccupantForm.occupantName,
@@ -63,7 +61,7 @@ export function updateLotOccupancyOccupant(
       lotOccupancyOccupantForm.lotOccupantIndex
     )
 
-  database.close()
+  database.release()
 
   return results.changes > 0
 }

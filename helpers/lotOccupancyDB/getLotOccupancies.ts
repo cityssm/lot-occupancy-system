@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
 
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import {
   dateIntegerToString,
@@ -128,19 +127,12 @@ function buildWhereClause(filters: GetLotOccupanciesFilters): {
   }
 }
 
-export function getLotOccupancies(
+export async function getLotOccupancies(
   filters: GetLotOccupanciesFilters,
   options: GetLotOccupanciesOptions,
-  connectedDatabase?: sqlite.Database
-): {
-  count: number
-  lotOccupancies: recordTypes.LotOccupancy[]
-} {
-  const database =
-    connectedDatabase ??
-    sqlite(databasePath, {
-      readonly: true
-    })
+  connectedDatabase?: PoolConnection
+): Promise<{ count: number; lotOccupancies: recordTypes.LotOccupancy[] }> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
@@ -188,7 +180,7 @@ export function getLotOccupancies(
     }
 
     for (const lotOccupancy of lotOccupancies) {
-      const occupancyType = getOccupancyTypeById(lotOccupancy.occupancyTypeId!)
+      const occupancyType = await getOccupancyTypeById(lotOccupancy.occupancyTypeId!)
 
       if (occupancyType) {
         lotOccupancy.printEJS = (
@@ -199,7 +191,7 @@ export function getLotOccupancies(
       }
 
       if (options.includeOccupants) {
-        lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(
+        lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(
           lotOccupancy.lotOccupancyId!,
           database
         )
@@ -208,7 +200,7 @@ export function getLotOccupancies(
   }
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return {

@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
@@ -11,11 +9,11 @@ interface AddWorkOrderCommentForm {
   workOrderComment: string
 }
 
-export function addWorkOrderComment(
+export async function addWorkOrderComment(
   workOrderCommentForm: AddWorkOrderCommentForm,
   requestSession: recordTypes.PartialSession
-): number {
-  const database = sqlite(databasePath)
+): Promise<number> {
+  const database = await acquireConnection()
 
   const rightNow = new Date()
 
@@ -40,7 +38,7 @@ export function addWorkOrderComment(
       rightNow.getTime()
     )
 
-  database.close()
+  database.release()
 
   return result.lastInsertRowid as number
 }

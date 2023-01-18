@@ -5,5 +5,5 @@ interface GetPastLotOccupancyOccupantsFilters {
 interface GetPastLotOccupancyOccupantsOptions {
     limit: number;
 }
-export declare function getPastLotOccupancyOccupants(filters: GetPastLotOccupancyOccupantsFilters, options: GetPastLotOccupancyOccupantsOptions): recordTypes.LotOccupancyOccupant[];
+export declare function getPastLotOccupancyOccupants(filters: GetPastLotOccupancyOccupantsFilters, options: GetPastLotOccupancyOccupantsOptions): Promise<recordTypes.LotOccupancyOccupant[]>;
 export default getPastLotOccupancyOccupants;

@@ -1,14 +1,13 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { getNextWorkOrderNumber } from './getNextWorkOrderNumber.js';
 import { addWorkOrderLotOccupancy } from './addWorkOrderLotOccupancy.js';
 import { dateStringToInteger, dateToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
-export function addWorkOrder(workOrderForm, requestSession) {
-    const database = sqlite(databasePath);
+export async function addWorkOrder(workOrderForm, requestSession) {
+    const database = await acquireConnection();
     const rightNow = new Date();
     let workOrderNumber = workOrderForm.workOrderNumber;
     if (!workOrderNumber) {
-        workOrderNumber = getNextWorkOrderNumber(database);
+        workOrderNumber = await getNextWorkOrderNumber(database);
     }
     const result = database
         .prepare(`insert into WorkOrders (
@@ -24,12 +23,12 @@ export function addWorkOrder(workOrderForm, requestSession) {
         : undefined, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
     const workOrderId = result.lastInsertRowid;
     if (workOrderForm.lotOccupancyId) {
-        addWorkOrderLotOccupancy({
+        await addWorkOrderLotOccupancy({
             workOrderId,
             lotOccupancyId: workOrderForm.lotOccupancyId
         }, requestSession, database);
     }
-    database.close();
+    database.release();
     return workOrderId;
 }
 export default addWorkOrder;

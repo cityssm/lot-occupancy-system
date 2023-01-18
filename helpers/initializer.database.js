@@ -3,11 +3,11 @@ import { lotOccupancyDB as databasePath } from '../data/databasePaths.js';
 import debug from 'debug';
 const debugSQL = debug('lot-occupancy-system:databaseInitializer');
 const recordColumns = `recordCreate_userName varchar(30) not null,
-        recordCreate_timeMillis integer not null,
-        recordUpdate_userName varchar(30) not null,
-        recordUpdate_timeMillis integer not null,
-        recordDelete_userName varchar(30),
-        recordDelete_timeMillis integer`;
+  recordCreate_timeMillis integer not null,
+  recordUpdate_userName varchar(30) not null,
+  recordUpdate_timeMillis integer not null,
+  recordDelete_userName varchar(30),
+  recordDelete_timeMillis integer`;
 const createStatements = [
     `create table if not exists LotTypes (lotTypeId integer not null primary key autoincrement, lotType varchar(100) not null, orderNumber smallint not null default 0, ${recordColumns})`,
     'create index if not exists idx_lottypes_ordernumber on LotTypes (orderNumber, lotType)',

@@ -1,13 +1,16 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { addLotTypeField } from '../../helpers/lotOccupancyDB/addLotTypeField.js'
 
 import { getLotTypes } from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = (request, response) => {
-  const lotTypeFieldId = addLotTypeField(request.body, request.session)
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const lotTypeFieldId = await addLotTypeField(request.body, request.session)
 
-  const lotTypes = getLotTypes()
+  const lotTypes = await getLotTypes()
 
   response.json({
     success: true,

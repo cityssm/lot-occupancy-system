@@ -1,12 +1,8 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
+export async function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
     const updateOrderNumbers = !(additionalFilters.lotTypeId || additionalFilters.occupancyTypeId);
-    const database = connectedDatabase ??
-        sqlite(databasePath, {
-            readonly: !updateOrderNumbers
-        });
+    const database = connectedDatabase ?? (await acquireConnection());
     let sqlWhereClause = ' where f.recordDelete_timeMillis is null and f.feeCategoryId = ?';
     const sqlParameters = [feeCategoryId];
     if (additionalFilters.occupancyTypeId) {
@@ -50,7 +46,7 @@ export function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
         }
     }
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return fees;
 }

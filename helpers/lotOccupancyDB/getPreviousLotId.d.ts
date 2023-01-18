@@ -1,2 +1,2 @@
-export declare function getPreviousLotId(lotId: number | string): number | undefined;
+export declare function getPreviousLotId(lotId: number | string): Promise<number | undefined>;
 export default getPreviousLotId;

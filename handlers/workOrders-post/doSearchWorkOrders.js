@@ -1,6 +1,6 @@
 import { getWorkOrders } from '../../helpers/lotOccupancyDB/getWorkOrders.js';
-export const handler = (request, response) => {
-    const result = getWorkOrders(request.body, {
+export async function handler(request, response) {
+    const result = await getWorkOrders(request.body, {
         limit: request.body.limit,
         offset: request.body.offset,
         includeLotsAndLotOccupancies: true
@@ -10,5 +10,5 @@ export const handler = (request, response) => {
         offset: Number.parseInt(request.body.offset, 10),
         workOrders: result.workOrders
     });
-};
+}
 export default handler;

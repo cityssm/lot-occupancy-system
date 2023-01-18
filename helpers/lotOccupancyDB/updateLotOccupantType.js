@@ -1,8 +1,7 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
-export function updateLotOccupantType(lotOccupantTypeForm, requestSession) {
-    const database = sqlite(databasePath);
+export async function updateLotOccupantType(lotOccupantTypeForm, requestSession) {
+    const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update LotOccupantTypes
@@ -13,7 +12,7 @@ export function updateLotOccupantType(lotOccupantTypeForm, requestSession) {
         where lotOccupantTypeId = ?
         and recordDelete_timeMillis is null`)
         .run(lotOccupantTypeForm.lotOccupantType, lotOccupantTypeForm.fontAwesomeIconClass ?? '', requestSession.user.userName, rightNowMillis, lotOccupantTypeForm.lotOccupantTypeId);
-    database.close();
+    database.release();
     clearCacheByTableName('LotOccupantTypes');
     return result.changes > 0;
 }

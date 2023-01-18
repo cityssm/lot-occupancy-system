@@ -1,5 +1,4 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 function getCurrentField(lotTypeFieldId, connectedDatabase) {
@@ -8,8 +7,8 @@ function getCurrentField(lotTypeFieldId, connectedDatabase) {
         .get(lotTypeFieldId);
     return currentField;
 }
-export function moveLotTypeFieldDown(lotTypeFieldId) {
-    const database = sqlite(databasePath);
+export async function moveLotTypeFieldDown(lotTypeFieldId) {
+    const database = await acquireConnection();
     const currentField = getCurrentField(lotTypeFieldId, database);
     database
         .prepare(`update LotTypeFields
@@ -18,12 +17,12 @@ export function moveLotTypeFieldDown(lotTypeFieldId) {
         and lotTypeId = ? and orderNumber = ? + 1`)
         .run(currentField.lotTypeId, currentField.orderNumber);
     const success = updateRecordOrderNumber('LotTypeFields', lotTypeFieldId, currentField.orderNumber + 1, database);
-    database.close();
+    database.release();
     clearCacheByTableName('LotTypeFields');
     return success;
 }
-export function moveLotTypeFieldDownToBottom(lotTypeFieldId) {
-    const database = sqlite(databasePath);
+export async function moveLotTypeFieldDownToBottom(lotTypeFieldId) {
+    const database = await acquireConnection();
     const currentField = getCurrentField(lotTypeFieldId, database);
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
@@ -41,15 +40,15 @@ export function moveLotTypeFieldDownToBottom(lotTypeFieldId) {
             and orderNumber > ?`)
             .run(currentField.lotTypeId, currentField.orderNumber);
     }
-    database.close();
+    database.release();
     clearCacheByTableName('LotTypeFields');
     return true;
 }
-export function moveLotTypeFieldUp(lotTypeFieldId) {
-    const database = sqlite(databasePath);
+export async function moveLotTypeFieldUp(lotTypeFieldId) {
+    const database = await acquireConnection();
     const currentField = getCurrentField(lotTypeFieldId, database);
     if (currentField.orderNumber <= 0) {
-        database.close();
+        database.release();
         return true;
     }
     database
@@ -60,12 +59,12 @@ export function moveLotTypeFieldUp(lotTypeFieldId) {
         and orderNumber = ? - 1`)
         .run(currentField.lotTypeId, currentField.orderNumber);
     const success = updateRecordOrderNumber('LotTypeFields', lotTypeFieldId, currentField.orderNumber - 1, database);
-    database.close();
+    database.release();
     clearCacheByTableName('LotTypeFields');
     return success;
 }
-export function moveLotTypeFieldUpToTop(lotTypeFieldId) {
-    const database = sqlite(databasePath);
+export async function moveLotTypeFieldUpToTop(lotTypeFieldId) {
+    const database = await acquireConnection();
     const currentField = getCurrentField(lotTypeFieldId, database);
     if (currentField.orderNumber > 0) {
         updateRecordOrderNumber('LotTypeFields', lotTypeFieldId, -1, database);
@@ -77,7 +76,7 @@ export function moveLotTypeFieldUpToTop(lotTypeFieldId) {
             and orderNumber < ?`)
             .run(currentField.lotTypeId, currentField.orderNumber);
     }
-    database.close();
+    database.release();
     clearCacheByTableName('LotTypeFields');
     return true;
 }

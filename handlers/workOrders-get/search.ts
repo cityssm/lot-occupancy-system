@@ -1,11 +1,14 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const workOrderOpenDateString = request.query.workOrderOpenDateString
 
-  const workOrderTypes = getWorkOrderTypes()
+  const workOrderTypes = await getWorkOrderTypes()
 
   response.render('workOrder-search', {
     headTitle: 'Work Order Search',

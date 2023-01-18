@@ -1,8 +1,7 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
-export function deleteOccupancyTypePrint(occupancyTypeId, printEJS, requestSession) {
-    const database = sqlite(databasePath);
+export async function deleteOccupancyTypePrint(occupancyTypeId, printEJS, requestSession) {
+    const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update OccupancyTypePrints
@@ -11,7 +10,7 @@ export function deleteOccupancyTypePrint(occupancyTypeId, printEJS, requestSessi
         where occupancyTypeId = ?
         and printEJS = ?`)
         .run(requestSession.user.userName, rightNowMillis, occupancyTypeId, printEJS);
-    database.close();
+    database.release();
     clearCacheByTableName('OccupancyTypePrints');
     return result.changes > 0;
 }

@@ -5,5 +5,5 @@ interface AddLotOccupancyCommentForm {
     lotOccupancyCommentTimeString?: string;
     lotOccupancyComment: string;
 }
-export declare function addLotOccupancyComment(commentForm: AddLotOccupancyCommentForm, requestSession: recordTypes.PartialSession): number;
+export declare function addLotOccupancyComment(commentForm: AddLotOccupancyCommentForm, requestSession: recordTypes.PartialSession): Promise<number>;
 export default addLotOccupancyComment;

@@ -1,17 +1,20 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { addRecord } from '../../helpers/lotOccupancyDB/addRecord.js'
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = (request, response) => {
-  const workOrderTypeId = addRecord(
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const workOrderTypeId = await addRecord(
     'WorkOrderTypes',
     request.body.workOrderType,
     request.body.orderNumber ?? -1,
     request.session
   )
 
-  const workOrderTypes = getWorkOrderTypes()
+  const workOrderTypes = await getWorkOrderTypes()
 
   response.json({
     success: true,

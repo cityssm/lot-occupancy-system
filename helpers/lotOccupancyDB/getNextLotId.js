@@ -1,10 +1,7 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import * as configFunctions from '../functions.config.js';
-export function getNextLotId(lotId) {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+export async function getNextLotId(lotId) {
+    const database = await acquireConnection();
     database.function('userFn_lotNameSortName', configFunctions.getProperty('settings.lot.lotNameSortNameFunction'));
     const result = database
         .prepare(`select lotId
@@ -14,7 +11,7 @@ export function getNextLotId(lotId) {
         order by userFn_lotNameSortName(lotName)
         limit 1`)
         .get(lotId);
-    database.close();
+    database.release();
     if (result) {
         return result.lotId;
     }

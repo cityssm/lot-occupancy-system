@@ -1,8 +1,7 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import * as configFunctions from '../functions.config.js';
-export function cleanupDatabase(requestSession) {
-    const database = sqlite(databasePath);
+export async function cleanupDatabase(requestSession) {
+    const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const recordDeleteTimeMillisMin = rightNowMillis -
         configFunctions.getProperty('settings.adminCleanup.recordDeleteAgeDays') *
@@ -229,7 +228,7 @@ export function cleanupDatabase(requestSession) {
         where recordDelete_timeMillis <= ?
         and lotTypeId not in (select lotTypeId from Lots)`)
         .run(recordDeleteTimeMillisMin).changes;
-    database.close();
+    database.release();
     return {
         inactivedRecordCount,
         purgedRecordCount

@@ -2,13 +2,16 @@ import {
   dateToInteger,
   dateToString
 } from '@cityssm/expressjs-server-js/dateTimeFns.js'
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js'
 
 import * as recordTypes from '../../types/recordTypes'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const currentDate = new Date()
 
   const workOrder: recordTypes.WorkOrder = {
@@ -16,7 +19,7 @@ export const handler: RequestHandler = (request, response) => {
     workOrderOpenDateString: dateToString(currentDate)
   }
 
-  const workOrderTypes = getWorkOrderTypes()
+  const workOrderTypes = await getWorkOrderTypes()
 
   response.render('workOrder-edit', {
     headTitle: 'New Work Order',

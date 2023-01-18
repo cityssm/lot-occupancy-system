@@ -14,5 +14,5 @@ interface UpdateFeeForm {
     quantityUnit?: string;
     isRequired: '' | '1';
 }
-export declare function updateFee(feeForm: UpdateFeeForm, requestSession: recordTypes.PartialSession): boolean;
+export declare function updateFee(feeForm: UpdateFeeForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
 export default updateFee;

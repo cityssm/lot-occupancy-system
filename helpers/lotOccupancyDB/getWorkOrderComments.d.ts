@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import type { PoolConnection } from 'better-sqlite-pool';
 import type * as recordTypes from '../../types/recordTypes';
-export declare function getWorkOrderComments(workOrderId: number | string, connectedDatabase?: sqlite.Database): recordTypes.WorkOrderComment[];
+export declare function getWorkOrderComments(workOrderId: number | string, connectedDatabase?: PoolConnection): Promise<recordTypes.WorkOrderComment[]>;
 export default getWorkOrderComments;

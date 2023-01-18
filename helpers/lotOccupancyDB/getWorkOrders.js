@@ -1,5 +1,4 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateIntegerToString, dateStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import { getWorkOrderComments } from './getWorkOrderComments.js';
 import { getLots } from './getLots.js';
@@ -56,11 +55,8 @@ function buildWhereClause(filters) {
         sqlParameters
     };
 }
-export function getWorkOrders(filters, options, connectedDatabase) {
-    const database = connectedDatabase ??
-        sqlite(databasePath, {
-            readonly: true
-        });
+export async function getWorkOrders(filters, options, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
     const count = database
@@ -86,9 +82,7 @@ export function getWorkOrders(filters, options, connectedDatabase) {
                 ' group by workOrderId) m on w.workOrderId = m.workOrderId') +
             sqlWhereClause +
             ' order by w.workOrderOpenDate desc, w.workOrderNumber desc' +
-            (options
-                ? ` limit ${options.limit} offset ${options.offset}`
-                : ''))
+            (options ? ` limit ${options.limit} offset ${options.offset}` : ''))
             .all(sqlParameters);
     }
     if (options &&
@@ -97,25 +91,27 @@ export function getWorkOrders(filters, options, connectedDatabase) {
             options.includeMilestones)) {
         for (const workOrder of workOrders) {
             if (options.includeComments) {
-                workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId, database);
+                workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);
             }
             if (options.includeLotsAndLotOccupancies) {
-                workOrder.workOrderLots = getLots({
+                const workOrderLotsResults = await getLots({
                     workOrderId: workOrder.workOrderId
                 }, {
                     limit: -1,
                     offset: 0
-                }, database).lots;
-                workOrder.workOrderLotOccupancies = getLotOccupancies({
+                }, database);
+                workOrder.workOrderLots = workOrderLotsResults.lots;
+                const lotOccupancies = await getLotOccupancies({
                     workOrderId: workOrder.workOrderId
                 }, {
                     limit: -1,
                     offset: 0,
                     includeOccupants: true
-                }, database).lotOccupancies;
+                }, database);
+                workOrder.workOrderLotOccupancies = lotOccupancies.lotOccupancies;
             }
             if (options.includeMilestones) {
-                workOrder.workOrderMilestones = getWorkOrderMilestones({
+                workOrder.workOrderMilestones = await getWorkOrderMilestones({
                     workOrderId: workOrder.workOrderId
                 }, {
                     orderBy: 'date'
@@ -124,7 +120,7 @@ export function getWorkOrders(filters, options, connectedDatabase) {
         }
     }
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return {
         count,

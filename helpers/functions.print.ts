@@ -64,10 +64,10 @@ export function getPrintConfig(
   return undefined
 }
 
-export function getReportData(
+export async function getReportData(
   printConfig: PrintConfig,
   requestQuery: Record<string, unknown>
-): Record<string, unknown> {
+): Promise<Record<string, unknown>> {
   const reportData: Record<string, unknown> = {
     headTitle: printConfig.title
   }
@@ -76,7 +76,7 @@ export function getReportData(
     printConfig.params.includes('lotOccupancyId') &&
     typeof requestQuery.lotOccupancyId === 'string'
   ) {
-    const lotOccupancy = getLotOccupancy(requestQuery.lotOccupancyId)
+    const lotOccupancy = await getLotOccupancy(requestQuery.lotOccupancyId)
 
     if (lotOccupancy?.lotId) {
       reportData.lot = getLot(lotOccupancy.lotId)

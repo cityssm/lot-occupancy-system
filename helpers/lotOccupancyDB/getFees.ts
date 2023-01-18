@@ -1,6 +1,7 @@
 import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
@@ -11,20 +12,16 @@ interface GetFeesFilters {
   lotTypeId?: number | string
 }
 
-export function getFees(
+export async function getFees(
   feeCategoryId: number,
   additionalFilters: GetFeesFilters,
-  connectedDatabase?: sqlite.Database
-): recordTypes.Fee[] {
+  connectedDatabase?: PoolConnection
+): Promise<recordTypes.Fee[]> {
   const updateOrderNumbers = !(
     additionalFilters.lotTypeId || additionalFilters.occupancyTypeId
   )
 
-  const database =
-    connectedDatabase ??
-    sqlite(databasePath, {
-      readonly: !updateOrderNumbers
-    })
+  const database = connectedDatabase ?? (await acquireConnection())
 
   let sqlWhereClause =
     ' where f.recordDelete_timeMillis is null and f.feeCategoryId = ?'
@@ -87,7 +84,7 @@ export function getFees(
   }
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return fees

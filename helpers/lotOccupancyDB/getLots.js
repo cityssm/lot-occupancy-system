@@ -1,5 +1,4 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import * as configFunctions from '../functions.config.js';
 import { getLotNameWhereClause } from '../functions.sqlFilters.js';
@@ -40,11 +39,8 @@ function buildWhereClause(filters) {
         sqlParameters
     };
 }
-export function getLots(filters, options, connectedDatabase) {
-    const database = connectedDatabase ??
-        sqlite(databasePath, {
-            readonly: true
-        });
+export async function getLots(filters, options, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
     const currentDate = dateToInteger(new Date());
     let count = 0;
@@ -86,14 +82,14 @@ export function getLots(filters, options, connectedDatabase) {
                 ') o on l.lotId = o.lotId') +
             sqlWhereClause +
             ' order by userFn_lotNameSortName(l.lotName), l.lotId' +
-            (options ? ` limit ${options.limit} offset ${options.offset}` : ''))
+            (options.limit === -1 ? '' : ` limit ${options.limit} offset ${options.offset}`))
             .all(sqlParameters);
         if (options.limit === -1) {
             count = lots.length;
         }
     }
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return {
         count,

@@ -1,7 +1,7 @@
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getLot } from '../../helpers/lotOccupancyDB/getLot.js';
-export const handler = (request, response) => {
-    const lot = getLot(request.params.lotId);
+export async function handler(request, response) {
+    const lot = await getLot(request.params.lotId);
     if (!lot) {
         response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
             '/lots/?error=lotIdNotFound');
@@ -11,5 +11,5 @@ export const handler = (request, response) => {
         headTitle: lot.lotName,
         lot
     });
-};
+}
 export default handler;

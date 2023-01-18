@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import {
   getLotOccupantTypes,
@@ -14,8 +14,8 @@ import * as configFunctions from '../../helpers/functions.config.js'
 import { getLotOccupancy } from '../../helpers/lotOccupancyDB/getLotOccupancy.js'
 import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 
-export const handler: RequestHandler = (request, response) => {
-  const lotOccupancy = getLotOccupancy(request.params.lotOccupancyId)
+export async function handler(request: Request, response: Response): Promise<void> {
+  const lotOccupancy = await getLotOccupancy(request.params.lotOccupancyId)
 
   if (!lotOccupancy) {
     response.redirect(
@@ -26,16 +26,16 @@ export const handler: RequestHandler = (request, response) => {
     return
   }
 
-  const occupancyTypePrints = getOccupancyTypePrintsById(
+  const occupancyTypePrints = await getOccupancyTypePrintsById(
     lotOccupancy.occupancyTypeId!
   )
 
-  const occupancyTypes = getOccupancyTypes()
-  const lotOccupantTypes = getLotOccupantTypes()
-  const lotTypes = getLotTypes()
-  const lotStatuses = getLotStatuses()
-  const maps = getMaps()
-  const workOrderTypes = getWorkOrderTypes()
+  const occupancyTypes = await getOccupancyTypes()
+  const lotOccupantTypes = await getLotOccupantTypes()
+  const lotTypes = await getLotTypes()
+  const lotStatuses = await getLotStatuses()
+  const maps = await getMaps()
+  const workOrderTypes = await getWorkOrderTypes()
 
   response.render('lotOccupancy-edit', {
     headTitle: `${configFunctions.getProperty('aliases.occupancy')} Update`,

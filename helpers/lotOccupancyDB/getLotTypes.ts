@@ -1,14 +1,12 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { getLotTypeFields } from './getLotTypeFields.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export function getLotTypes(): recordTypes.LotType[] {
-  const database = sqlite(databasePath)
+export async function getLotTypes(): Promise<recordTypes.LotType[]> {
+  const database = await acquireConnection()
 
   const lotTypes: recordTypes.LotType[] = database
     .prepare(
@@ -35,13 +33,10 @@ export function getLotTypes(): recordTypes.LotType[] {
       lotType.orderNumber = expectedTypeOrderNumber
     }
 
-    lotType.lotTypeFields = getLotTypeFields(
-      lotType.lotTypeId,
-      database
-    )
+    lotType.lotTypeFields = await getLotTypeFields(lotType.lotTypeId, database)
   }
 
-  database.close()
+  database.release()
 
   return lotTypes
 }

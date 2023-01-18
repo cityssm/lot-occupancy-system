@@ -1,5 +1,4 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 const recordIdColumns = new Map();
@@ -18,8 +17,8 @@ function getCurrentOrderNumber(recordTable, recordId, database) {
         .get(recordId).orderNumber;
     return currentOrderNumber;
 }
-export function moveRecordDown(recordTable, recordId) {
-    const database = sqlite(databasePath);
+export async function moveRecordDown(recordTable, recordId) {
+    const database = await acquireConnection();
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     database
         .prepare(`update ${recordTable}
@@ -28,12 +27,12 @@ export function moveRecordDown(recordTable, recordId) {
         and orderNumber = ? + 1`)
         .run(currentOrderNumber);
     const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber + 1, database);
-    database.close();
+    database.release();
     clearCacheByTableName(recordTable);
     return success;
 }
-export function moveRecordDownToBottom(recordTable, recordId) {
-    const database = sqlite(databasePath);
+export async function moveRecordDownToBottom(recordTable, recordId) {
+    const database = await acquireConnection();
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
@@ -49,15 +48,15 @@ export function moveRecordDownToBottom(recordTable, recordId) {
             and orderNumber > ?`)
             .run(currentOrderNumber);
     }
-    database.close();
+    database.release();
     clearCacheByTableName(recordTable);
     return true;
 }
-export function moveRecordUp(recordTable, recordId) {
-    const database = sqlite(databasePath);
+export async function moveRecordUp(recordTable, recordId) {
+    const database = await acquireConnection();
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     if (currentOrderNumber <= 0) {
-        database.close();
+        database.release();
         return true;
     }
     database
@@ -67,12 +66,12 @@ export function moveRecordUp(recordTable, recordId) {
         and orderNumber = ? - 1`)
         .run(currentOrderNumber);
     const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber - 1, database);
-    database.close();
+    database.release();
     clearCacheByTableName(recordTable);
     return success;
 }
-export function moveRecordUpToTop(recordTable, recordId) {
-    const database = sqlite(databasePath);
+export async function moveRecordUpToTop(recordTable, recordId) {
+    const database = await acquireConnection();
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     if (currentOrderNumber > 0) {
         updateRecordOrderNumber(recordTable, recordId, -1, database);
@@ -83,7 +82,7 @@ export function moveRecordUpToTop(recordTable, recordId) {
             and orderNumber < ?`)
             .run(currentOrderNumber);
     }
-    database.close();
+    database.release();
     clearCacheByTableName(recordTable);
     return true;
 }

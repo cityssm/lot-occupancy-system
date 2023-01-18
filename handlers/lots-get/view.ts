@@ -1,11 +1,14 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
 
 import { getLot } from '../../helpers/lotOccupancyDB/getLot.js'
 
-export const handler: RequestHandler = (request, response) => {
-  const lot = getLot(request.params.lotId)
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const lot = await getLot(request.params.lotId)
 
   if (!lot) {
     response.redirect(

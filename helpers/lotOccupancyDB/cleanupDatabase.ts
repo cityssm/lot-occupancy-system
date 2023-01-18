@@ -1,16 +1,13 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import * as configFunctions from '../functions.config.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function cleanupDatabase(requestSession: recordTypes.PartialSession): {
-  inactivedRecordCount: number
-  purgedRecordCount: number
-} {
-  const database = sqlite(databasePath)
+export async function cleanupDatabase(
+  requestSession: recordTypes.PartialSession
+): Promise<{ inactivedRecordCount: number; purgedRecordCount: number }> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
   const recordDeleteTimeMillisMin =
@@ -445,7 +442,7 @@ export function cleanupDatabase(requestSession: recordTypes.PartialSession): {
     )
     .run(recordDeleteTimeMillisMin).changes
 
-  database.close()
+  database.release()
 
   return {
     inactivedRecordCount,

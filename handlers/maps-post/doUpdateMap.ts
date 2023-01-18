@@ -1,9 +1,12 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { updateMap } from '../../helpers/lotOccupancyDB/updateMap.js'
 
-export const handler: RequestHandler = (request, response) => {
-  const success = updateMap(request.body, request.session)
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const success = await updateMap(request.body, request.session)
 
   response.json({
     success,

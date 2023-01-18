@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { clearCacheByTableName } from '../functions.cache.js'
 
@@ -16,11 +14,11 @@ interface UpdateOccupancyTypeFieldForm {
   occupancyTypeFieldValues: string
 }
 
-export function updateOccupancyTypeField(
+export async function updateOccupancyTypeField(
   occupancyTypeFieldForm: UpdateOccupancyTypeFieldForm,
   requestSession: recordTypes.PartialSession
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
@@ -50,7 +48,7 @@ export function updateOccupancyTypeField(
       occupancyTypeFieldForm.occupancyTypeFieldId
     )
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('OccupancyTypeFields')
 

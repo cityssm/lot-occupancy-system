@@ -1,6 +1,5 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import {
   dateIntegerToString,
@@ -9,15 +8,11 @@ import {
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function getLotOccupancyComments(
+export async function getLotOccupancyComments(
   lotOccupancyId: number | string,
-  connectedDatabase?: sqlite.Database
-): recordTypes.LotOccupancyComment[] {
-  const database =
-    connectedDatabase ??
-    sqlite(databasePath, {
-      readonly: true
-    })
+  connectedDatabase?: PoolConnection
+): Promise<recordTypes.LotOccupancyComment[]> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
@@ -37,7 +32,7 @@ export function getLotOccupancyComments(
     .all(lotOccupancyId)
 
   if (connectedDatabase === null) {
-    database.close()
+    database.release()
   }
 
   return lotComments

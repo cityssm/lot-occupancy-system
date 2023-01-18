@@ -1,15 +1,14 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import type * as recordTypes from '../../types/recordTypes'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export function getOccupancyTypeFields(
+export async function getOccupancyTypeFields(
   occupancyTypeId?: number,
-  connectedDatabase?: sqlite.Database
-): recordTypes.OccupancyTypeField[] {
-  const database = connectedDatabase ?? sqlite(databasePath)
+  connectedDatabase?: PoolConnection
+): Promise<recordTypes.OccupancyTypeField[]> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   const sqlParameters: unknown[] = []
 
@@ -50,7 +49,7 @@ export function getOccupancyTypeFields(
   }
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return occupancyTypeFields

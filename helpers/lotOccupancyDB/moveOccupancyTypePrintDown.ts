@@ -1,14 +1,12 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { clearCacheByTableName } from '../functions.cache.js'
 
-export function moveOccupancyTypePrintDown(
+export async function moveOccupancyTypePrintDown(
   occupancyTypeId: number | string,
   printEJS: string
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const currentOrderNumber = database
     .prepare(
@@ -32,18 +30,18 @@ export function moveOccupancyTypePrintDown(
     )
     .run(currentOrderNumber, occupancyTypeId, printEJS)
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('OccupancyTypePrints')
 
   return result.changes > 0
 }
 
-export function moveOccupancyTypePrintDownToBottom(
+export async function moveOccupancyTypePrintDownToBottom(
   occupancyTypeId: number | string,
   printEJS: string
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const currentOrderNumber = database
     .prepare(
@@ -81,7 +79,7 @@ export function moveOccupancyTypePrintDownToBottom(
       .run(occupancyTypeId, currentOrderNumber)
   }
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('OccupancyTypePrints')
 

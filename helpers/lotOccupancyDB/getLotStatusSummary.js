@@ -1,9 +1,6 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function getLotStatusSummary(filters) {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+import { acquireConnection } from './pool.js';
+export async function getLotStatusSummary(filters) {
+    const database = await acquireConnection();
     let sqlWhereClause = ' where l.recordDelete_timeMillis is null';
     const sqlParameters = [];
     if (filters?.mapId) {
@@ -18,7 +15,7 @@ export function getLotStatusSummary(filters) {
         ' group by s.lotStatusId, s.lotStatus, s.orderNumber' +
         ' order by s.orderNumber')
         .all(sqlParameters);
-    database.close();
+    database.release();
     return lotStatuses;
 }
 export default getLotStatusSummary;

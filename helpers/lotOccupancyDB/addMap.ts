@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
@@ -18,11 +16,11 @@ interface AddMapForm {
   mapPhoneNumber: string
 }
 
-export function addMap(
+export async function addMap(
   mapForm: AddMapForm,
   requestSession: recordTypes.PartialSession
-): number {
-  const database = sqlite(databasePath)
+): Promise<number> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
@@ -56,7 +54,7 @@ export function addMap(
       rightNowMillis
     )
 
-  database.close()
+  database.release()
 
   return result.lastInsertRowid as number
 }

@@ -1,14 +1,12 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { getFee } from './getFee.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export function moveFeeDown(feeId: number | string): boolean {
-  const database = sqlite(databasePath)
+export async function moveFeeDown(feeId: number | string): Promise<boolean> {
+  const database = await acquireConnection()
 
-  const currentFee = getFee(feeId, database)
+  const currentFee = await getFee(feeId, database)
 
   database
     .prepare(
@@ -27,22 +25,24 @@ export function moveFeeDown(feeId: number | string): boolean {
     database
   )
 
-  database.close()
+  database.release()
 
   return success
 }
 
-export function moveFeeDownToBottom(feeId: number | string): boolean {
-  const database = sqlite(databasePath)
+export async function moveFeeDownToBottom(
+  feeId: number | string
+): Promise<boolean> {
+  const database = await acquireConnection()
 
-  const currentFee = getFee(feeId, database)
+  const currentFee = await getFee(feeId, database)
 
   const maxOrderNumber: number = database
     .prepare(
       `select max(orderNumber) as maxOrderNumber
-                from Fees
-                where recordDelete_timeMillis is null
-                and feeCategoryId = ?`
+        from Fees
+        where recordDelete_timeMillis is null
+        and feeCategoryId = ?`
     )
     .get(currentFee.feeCategoryId).maxOrderNumber
 
@@ -52,35 +52,35 @@ export function moveFeeDownToBottom(feeId: number | string): boolean {
     database
       .prepare(
         `update Fees
-                    set orderNumber = orderNumber - 1
-                    where recordDelete_timeMillis is null
-                    and feeCategoryId = ? and orderNumber > ?`
+          set orderNumber = orderNumber - 1
+          where recordDelete_timeMillis is null
+          and feeCategoryId = ? and orderNumber > ?`
       )
       .run(currentFee.feeCategoryId, currentFee.orderNumber)
   }
 
-  database.close()
+  database.release()
 
   return true
 }
 
-export function moveFeeUp(feeId: number): boolean {
-  const database = sqlite(databasePath)
+export async function moveFeeUp(feeId: number): Promise<boolean> {
+  const database = await acquireConnection()
 
-  const currentFee = getFee(feeId, database)
+  const currentFee = await getFee(feeId, database)
 
   if (currentFee.orderNumber! <= 0) {
-    database.close()
+    database.release()
     return true
   }
 
   database
     .prepare(
       `update Fees
-                set orderNumber = orderNumber + 1
-                where recordDelete_timeMillis is null
-                and feeCategoryId = ?
-                and orderNumber = ? - 1`
+        set orderNumber = orderNumber + 1
+        where recordDelete_timeMillis is null
+        and feeCategoryId = ?
+        and orderNumber = ? - 1`
     )
     .run(currentFee.feeCategoryId, currentFee.orderNumber)
 
@@ -91,15 +91,15 @@ export function moveFeeUp(feeId: number): boolean {
     database
   )
 
-  database.close()
+  database.release()
 
   return success
 }
 
-export function moveFeeUpToTop(feeId: number | string): boolean {
-  const database = sqlite(databasePath)
+export async function moveFeeUpToTop(feeId: number | string): Promise<boolean> {
+  const database = await acquireConnection()
 
-  const currentFee = getFee(feeId, database)
+  const currentFee = await getFee(feeId, database)
 
   if (currentFee.orderNumber! > 0) {
     updateRecordOrderNumber('Fees', feeId, -1, database)
@@ -115,7 +115,7 @@ export function moveFeeUpToTop(feeId: number | string): boolean {
       .run(currentFee.feeCategoryId, currentFee.orderNumber)
   }
 
-  database.close()
+  database.release()
 
   return true
 }

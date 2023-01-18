@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 type RecordTable =
   | 'FeeCategories'
@@ -28,7 +28,7 @@ export function updateRecordOrderNumber(
   recordTable: RecordTable,
   recordId: number | string,
   orderNumber: number | string,
-  connectedDatabase: sqlite.Database
+  connectedDatabase: PoolConnection
 ): boolean {
   const result = connectedDatabase
     .prepare(

@@ -1,11 +1,11 @@
 import { deleteLotOccupancyTransaction } from '../../helpers/lotOccupancyDB/deleteLotOccupancyTransaction.js';
 import { getLotOccupancyTransactions } from '../../helpers/lotOccupancyDB/getLotOccupancyTransactions.js';
-export const handler = (request, response) => {
-    const success = deleteLotOccupancyTransaction(request.body.lotOccupancyId, request.body.transactionIndex, request.session);
-    const lotOccupancyTransactions = getLotOccupancyTransactions(request.body.lotOccupancyId);
+export async function handler(request, response) {
+    const success = await deleteLotOccupancyTransaction(request.body.lotOccupancyId, request.body.transactionIndex, request.session);
+    const lotOccupancyTransactions = await getLotOccupancyTransactions(request.body.lotOccupancyId);
     response.json({
         success,
         lotOccupancyTransactions
     });
-};
+}
 export default handler;

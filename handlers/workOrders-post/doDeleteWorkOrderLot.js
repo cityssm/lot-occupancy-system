@@ -1,16 +1,16 @@
 import { deleteWorkOrderLot } from '../../helpers/lotOccupancyDB/deleteWorkOrderLot.js';
 import { getLots } from '../../helpers/lotOccupancyDB/getLots.js';
-export const handler = (request, response) => {
+export async function handler(request, response) {
     const success = deleteWorkOrderLot(request.body.workOrderId, request.body.lotId, request.session);
-    const workOrderLots = getLots({
+    const workOrderLotsResults = await getLots({
         workOrderId: request.body.workOrderId
     }, {
         limit: -1,
         offset: 0
-    }).lots;
+    });
     response.json({
         success,
-        workOrderLots
+        workOrderLots: workOrderLotsResults.lots
     });
-};
+}
 export default handler;

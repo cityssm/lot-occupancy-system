@@ -1,15 +1,15 @@
 import { moveOccupancyTypePrintDown, moveOccupancyTypePrintDownToBottom } from '../../helpers/lotOccupancyDB/moveOccupancyTypePrintDown.js';
 import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
-export const handler = (request, response) => {
+export async function handler(request, response) {
     const success = request.body.moveToEnd === '1'
-        ? moveOccupancyTypePrintDownToBottom(request.body.occupancyTypeId, request.body.printEJS)
-        : moveOccupancyTypePrintDown(request.body.occupancyTypeId, request.body.printEJS);
-    const occupancyTypes = getOccupancyTypes();
-    const allOccupancyTypeFields = getAllOccupancyTypeFields();
+        ? await moveOccupancyTypePrintDownToBottom(request.body.occupancyTypeId, request.body.printEJS)
+        : await moveOccupancyTypePrintDown(request.body.occupancyTypeId, request.body.printEJS);
+    const occupancyTypes = await getOccupancyTypes();
+    const allOccupancyTypeFields = await getAllOccupancyTypeFields();
     response.json({
         success,
         occupancyTypes,
         allOccupancyTypeFields
     });
-};
+}
 export default handler;

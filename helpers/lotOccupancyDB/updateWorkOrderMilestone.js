@@ -1,9 +1,8 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
-export function updateWorkOrderMilestone(milestoneForm, requestSession) {
+export async function updateWorkOrderMilestone(milestoneForm, requestSession) {
     const rightNow = new Date();
-    const database = sqlite(databasePath);
+    const database = await acquireConnection();
     const result = database
         .prepare(`update WorkOrderMilestones
         set workOrderMilestoneTypeId = ?,
@@ -13,10 +12,12 @@ export function updateWorkOrderMilestone(milestoneForm, requestSession) {
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where workOrderMilestoneId = ?`)
-        .run(milestoneForm.workOrderMilestoneTypeId === '' ? undefined : milestoneForm.workOrderMilestoneTypeId, dateStringToInteger(milestoneForm.workOrderMilestoneDateString), milestoneForm.workOrderMilestoneTimeString
+        .run(milestoneForm.workOrderMilestoneTypeId === ''
+        ? undefined
+        : milestoneForm.workOrderMilestoneTypeId, dateStringToInteger(milestoneForm.workOrderMilestoneDateString), milestoneForm.workOrderMilestoneTimeString
         ? timeStringToInteger(milestoneForm.workOrderMilestoneTimeString)
         : 0, milestoneForm.workOrderMilestoneDescription, requestSession.user.userName, rightNow.getTime(), milestoneForm.workOrderMilestoneId);
-    database.close();
+    database.release();
     return result.changes > 0;
 }
 export default updateWorkOrderMilestone;

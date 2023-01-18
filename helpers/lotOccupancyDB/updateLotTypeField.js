@@ -1,8 +1,7 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
-export function updateLotTypeField(lotTypeFieldForm, requestSession) {
-    const database = sqlite(databasePath);
+export async function updateLotTypeField(lotTypeFieldForm, requestSession) {
+    const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update LotTypeFields
@@ -17,7 +16,7 @@ export function updateLotTypeField(lotTypeFieldForm, requestSession) {
         where lotTypeFieldId = ?
         and recordDelete_timeMillis is null`)
         .run(lotTypeFieldForm.lotTypeField, Number.parseInt(lotTypeFieldForm.isRequired, 10), lotTypeFieldForm.minimumLength ?? 0, lotTypeFieldForm.maximumLength ?? 100, lotTypeFieldForm.pattern ?? '', lotTypeFieldForm.lotTypeFieldValues, requestSession.user.userName, rightNowMillis, lotTypeFieldForm.lotTypeFieldId);
-    database.close();
+    database.release();
     clearCacheByTableName('LotTypeFields');
     return result.changes > 0;
 }

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import sqlite from 'better-sqlite3'
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
@@ -21,11 +20,11 @@ interface AddFeeForm {
   orderNumber?: number
 }
 
-export function addFee(
+export async function addFee(
   feeForm: AddFeeForm,
   requestSession: recordTypes.PartialSession
-): number {
-  const database = sqlite(databasePath)
+): Promise<number> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
@@ -63,7 +62,7 @@ export function addFee(
       rightNowMillis
     )
 
-  database.close()
+  database.release()
 
   return result.lastInsertRowid as number
 }

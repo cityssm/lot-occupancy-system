@@ -1,5 +1,4 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 function getCurrentField(occupancyTypeFieldId, connectedDatabase) {
@@ -10,8 +9,8 @@ function getCurrentField(occupancyTypeFieldId, connectedDatabase) {
         .get(occupancyTypeFieldId);
     return currentField;
 }
-export function moveOccupancyTypeFieldDown(occupancyTypeFieldId) {
-    const database = sqlite(databasePath);
+export async function moveOccupancyTypeFieldDown(occupancyTypeFieldId) {
+    const database = await acquireConnection();
     const currentField = getCurrentField(occupancyTypeFieldId, database);
     database
         .prepare('update OccupancyTypeFields' +
@@ -23,12 +22,12 @@ export function moveOccupancyTypeFieldDown(occupancyTypeFieldId) {
         ' and orderNumber = ? + 1')
         .run(currentField.orderNumber);
     const success = updateRecordOrderNumber('OccupancyTypeFields', occupancyTypeFieldId, currentField.orderNumber + 1, database);
-    database.close();
+    database.release();
     clearCacheByTableName('OccupancyTypeFields');
     return success;
 }
-export function moveOccupancyTypeFieldDownToBottom(occupancyTypeFieldId) {
-    const database = sqlite(databasePath);
+export async function moveOccupancyTypeFieldDownToBottom(occupancyTypeFieldId) {
+    const database = await acquireConnection();
     const currentField = getCurrentField(occupancyTypeFieldId, database);
     const occupancyTypeParameters = [];
     if (currentField.occupancyTypeId) {
@@ -55,15 +54,15 @@ export function moveOccupancyTypeFieldDownToBottom(occupancyTypeFieldId) {
             ' and orderNumber > ?')
             .run(occupancyTypeParameters);
     }
-    database.close();
+    database.release();
     clearCacheByTableName('OccupancyTypeFields');
     return true;
 }
-export function moveOccupancyTypeFieldUp(occupancyTypeFieldId) {
-    const database = sqlite(databasePath);
+export async function moveOccupancyTypeFieldUp(occupancyTypeFieldId) {
+    const database = await acquireConnection();
     const currentField = getCurrentField(occupancyTypeFieldId, database);
     if (currentField.orderNumber <= 0) {
-        database.close();
+        database.release();
         return true;
     }
     database
@@ -76,12 +75,12 @@ export function moveOccupancyTypeFieldUp(occupancyTypeFieldId) {
         ' and orderNumber = ? - 1')
         .run(currentField.orderNumber);
     const success = updateRecordOrderNumber('OccupancyTypeFields', occupancyTypeFieldId, currentField.orderNumber - 1, database);
-    database.close();
+    database.release();
     clearCacheByTableName('OccupancyTypeFields');
     return success;
 }
-export function moveOccupancyTypeFieldUpToTop(occupancyTypeFieldId) {
-    const database = sqlite(databasePath);
+export async function moveOccupancyTypeFieldUpToTop(occupancyTypeFieldId) {
+    const database = await acquireConnection();
     const currentField = getCurrentField(occupancyTypeFieldId, database);
     if (currentField.orderNumber > 0) {
         updateRecordOrderNumber('OccupancyTypeFields', occupancyTypeFieldId, -1, database);
@@ -100,7 +99,7 @@ export function moveOccupancyTypeFieldUpToTop(occupancyTypeFieldId) {
             ' and orderNumber < ?')
             .run(occupancyTypeParameters);
     }
-    database.close();
+    database.release();
     clearCacheByTableName('OccupancyTypeFields');
     return true;
 }

@@ -23,7 +23,7 @@ const session: PartialSession = {
   }
 }
 
-function initializeCemeteryDatabase(): void {
+async function initializeCemeteryDatabase(): Promise<void> {
   /*
    * Ensure database does not already exist
    */
@@ -45,26 +45,26 @@ function initializeCemeteryDatabase(): void {
    * Lot Types
    */
 
-  addRecord('LotTypes', 'Casket Grave', 1, session)
-  addRecord('LotTypes', 'Columbarium', 2, session)
-  addRecord('LotTypes', 'Mausoleum', 2, session)
-  addRecord('LotTypes', 'Niche Wall', 2, session)
-  addRecord('LotTypes', 'Urn Garden', 2, session)
-  addRecord('LotTypes', 'Crematorium', 2, session)
+  await addRecord('LotTypes', 'Casket Grave', 1, session)
+  await addRecord('LotTypes', 'Columbarium', 2, session)
+  await addRecord('LotTypes', 'Mausoleum', 2, session)
+  await addRecord('LotTypes', 'Niche Wall', 2, session)
+  await addRecord('LotTypes', 'Urn Garden', 2, session)
+  await addRecord('LotTypes', 'Crematorium', 2, session)
 
   /*
    * Lot Statuses
    */
 
-  addRecord('LotStatuses', 'Available', 1, session)
-  addRecord('LotStatuses', 'Reserved', 2, session)
-  addRecord('LotStatuses', 'Taken', 3, session)
+  await addRecord('LotStatuses', 'Available', 1, session)
+  await addRecord('LotStatuses', 'Reserved', 2, session)
+  await addRecord('LotStatuses', 'Taken', 3, session)
 
   /*
    * Lot Occupant Types
    */
 
-  addLotOccupantType(
+  await addLotOccupantType(
     {
       lotOccupantType: 'Deceased',
       orderNumber: 1
@@ -72,7 +72,7 @@ function initializeCemeteryDatabase(): void {
     session
   )
 
-  addLotOccupantType(
+  await addLotOccupantType(
     {
       lotOccupantType: 'Funeral Director',
       orderNumber: 2
@@ -80,7 +80,7 @@ function initializeCemeteryDatabase(): void {
     session
   )
 
-  addLotOccupantType(
+  await addLotOccupantType(
     {
       lotOccupantType: 'Preneed Owner',
       orderNumber: 3
@@ -88,7 +88,7 @@ function initializeCemeteryDatabase(): void {
     session
   )
 
-  addLotOccupantType(
+  await addLotOccupantType(
     {
       lotOccupantType: 'Purchaser',
       orderNumber: 4
@@ -100,14 +100,14 @@ function initializeCemeteryDatabase(): void {
    * Occupancy Types
    */
 
-  addRecord('OccupancyTypes', 'Preneed', 1, session)
-  const intermentOccupancyTypeId = addRecord(
+  await addRecord('OccupancyTypes', 'Preneed', 1, session)
+  const intermentOccupancyTypeId = await addRecord(
     'OccupancyTypes',
     'Interment',
     2,
     session
   )
-  const cremationOccupancyTypeId = addRecord(
+  const cremationOccupancyTypeId = await addRecord(
     'OccupancyTypes',
     'Cremation',
     3,
@@ -126,9 +126,9 @@ function initializeCemeteryDatabase(): void {
     orderNumber: 1
   }
 
-  addOccupancyTypeField(deathDateField, session)
+  await addOccupancyTypeField(deathDateField, session)
 
-  addOccupancyTypeField(
+  await addOccupancyTypeField(
     Object.assign(deathDateField, {
       occupancyTypeId: cremationOccupancyTypeId
     }),
@@ -147,9 +147,9 @@ function initializeCemeteryDatabase(): void {
     orderNumber: 2
   }
 
-  addOccupancyTypeField(deathAgeField, session)
+  await addOccupancyTypeField(deathAgeField, session)
 
-  addOccupancyTypeField(
+  await addOccupancyTypeField(
     Object.assign(deathAgeField, { occupancyTypeId: cremationOccupancyTypeId }),
     session
   )
@@ -166,9 +166,9 @@ function initializeCemeteryDatabase(): void {
     orderNumber: 3
   }
 
-  addOccupancyTypeField(deathAgePeriod, session)
+  await addOccupancyTypeField(deathAgePeriod, session)
 
-  addOccupancyTypeField(
+  await addOccupancyTypeField(
     Object.assign(deathAgePeriod, {
       occupancyTypeId: cremationOccupancyTypeId
     }),
@@ -187,9 +187,9 @@ function initializeCemeteryDatabase(): void {
     orderNumber: 4
   }
 
-  addOccupancyTypeField(deathPlace, session)
+  await addOccupancyTypeField(deathPlace, session)
 
-  addOccupancyTypeField(
+  await addOccupancyTypeField(
     Object.assign(deathPlace, { occupancyTypeId: cremationOccupancyTypeId }),
     session
   )
@@ -206,9 +206,9 @@ function initializeCemeteryDatabase(): void {
     orderNumber: 10
   }
 
-  addOccupancyTypeField(funeralHome, session)
+  await addOccupancyTypeField(funeralHome, session)
 
-  addOccupancyTypeField(
+  await addOccupancyTypeField(
     Object.assign(funeralHome, { occupancyTypeId: cremationOccupancyTypeId }),
     session
   )
@@ -225,9 +225,9 @@ function initializeCemeteryDatabase(): void {
     orderNumber: 11
   }
 
-  addOccupancyTypeField(funeralDate, session)
+  await addOccupancyTypeField(funeralDate, session)
 
-  addOccupancyTypeField(
+  await addOccupancyTypeField(
     Object.assign(funeralDate, { occupancyTypeId: cremationOccupancyTypeId }),
     session
   )
@@ -244,9 +244,9 @@ function initializeCemeteryDatabase(): void {
     orderNumber: 20
   }
 
-  addOccupancyTypeField(containerType, session)
+  await addOccupancyTypeField(containerType, session)
 
-  addOccupancyTypeField(
+  await addOccupancyTypeField(
     Object.assign(containerType, { occupancyTypeId: cremationOccupancyTypeId }),
     session
   )
@@ -263,9 +263,9 @@ function initializeCemeteryDatabase(): void {
     orderNumber: 21
   }
 
-  addOccupancyTypeField(committalType, session)
+  await addOccupancyTypeField(committalType, session)
 
-  addOccupancyTypeField(
+  await addOccupancyTypeField(
     Object.assign(committalType, { occupancyTypeId: cremationOccupancyTypeId }),
     session
   )
@@ -274,11 +274,11 @@ function initializeCemeteryDatabase(): void {
    * Fee Categories
    */
 
-  addRecord('FeeCategories', 'Interment Rights', 1, session)
-  addRecord('FeeCategories', 'Cremation Services', 2, session)
-  addRecord('FeeCategories', 'Burial Charges', 3, session)
-  addRecord('FeeCategories', 'Disinterment of Human Remains', 4, session)
-  addRecord('FeeCategories', 'Additional Services', 4, session)
+  await addRecord('FeeCategories', 'Interment Rights', 1, session)
+  await addRecord('FeeCategories', 'Cremation Services', 2, session)
+  await addRecord('FeeCategories', 'Burial Charges', 3, session)
+  await addRecord('FeeCategories', 'Disinterment of Human Remains', 4, session)
+  await addRecord('FeeCategories', 'Additional Services', 4, session)
 }
 
-initializeCemeteryDatabase()
+await initializeCemeteryDatabase()

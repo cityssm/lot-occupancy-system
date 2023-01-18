@@ -1,3 +1,3 @@
-import type { RequestHandler } from 'express';
-export declare const handler: RequestHandler;
+import type { Request, Response } from 'express';
+export declare function handler(_request: Request, response: Response): void;
 export default handler;

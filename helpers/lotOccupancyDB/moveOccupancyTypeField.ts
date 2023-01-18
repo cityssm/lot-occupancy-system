@@ -1,13 +1,14 @@
 import sqlite from 'better-sqlite3'
 
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import { clearCacheByTableName } from '../functions.cache.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 function getCurrentField(
   occupancyTypeFieldId: number,
-  connectedDatabase: sqlite.Database
+  connectedDatabase: PoolConnection
 ): { occupancyTypeId?: number; orderNumber: number } {
   const currentField: { occupancyTypeId?: number; orderNumber: number } =
     connectedDatabase
@@ -21,10 +22,10 @@ function getCurrentField(
   return currentField
 }
 
-export function moveOccupancyTypeFieldDown(
+export async function moveOccupancyTypeFieldDown(
   occupancyTypeFieldId: number
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const currentField = getCurrentField(occupancyTypeFieldId, database)
 
@@ -47,17 +48,17 @@ export function moveOccupancyTypeFieldDown(
     database
   )
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('OccupancyTypeFields')
 
   return success
 }
 
-export function moveOccupancyTypeFieldDownToBottom(
+export async function moveOccupancyTypeFieldDownToBottom(
   occupancyTypeFieldId: number
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const currentField = getCurrentField(occupancyTypeFieldId, database)
 
@@ -101,22 +102,22 @@ export function moveOccupancyTypeFieldDownToBottom(
       .run(occupancyTypeParameters)
   }
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('OccupancyTypeFields')
 
   return true
 }
 
-export function moveOccupancyTypeFieldUp(
+export async function moveOccupancyTypeFieldUp(
   occupancyTypeFieldId: number
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const currentField = getCurrentField(occupancyTypeFieldId, database)
 
   if (currentField.orderNumber <= 0) {
-    database.close()
+    database.release()
     return true
   }
 
@@ -139,17 +140,17 @@ export function moveOccupancyTypeFieldUp(
     database
   )
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('OccupancyTypeFields')
 
   return success
 }
 
-export function moveOccupancyTypeFieldUpToTop(
+export async function moveOccupancyTypeFieldUpToTop(
   occupancyTypeFieldId: number
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const currentField = getCurrentField(occupancyTypeFieldId, database)
 
@@ -182,7 +183,7 @@ export function moveOccupancyTypeFieldUpToTop(
       .run(occupancyTypeParameters)
   }
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('OccupancyTypeFields')
 

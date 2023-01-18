@@ -1,8 +1,7 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export function getLotOccupantTypes() {
-    const database = sqlite(databasePath);
+export async function getLotOccupantTypes() {
+    const database = await acquireConnection();
     const lotOccupantTypes = database
         .prepare(`select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass, orderNumber
         from LotOccupantTypes
@@ -17,7 +16,7 @@ export function getLotOccupantTypes() {
         }
         expectedOrderNumber += 1;
     }
-    database.close();
+    database.release();
     return lotOccupantTypes;
 }
 export default getLotOccupantTypes;

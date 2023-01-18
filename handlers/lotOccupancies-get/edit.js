@@ -2,19 +2,19 @@ import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypePrint
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getLotOccupancy } from '../../helpers/lotOccupancyDB/getLotOccupancy.js';
 import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js';
-export const handler = (request, response) => {
-    const lotOccupancy = getLotOccupancy(request.params.lotOccupancyId);
+export async function handler(request, response) {
+    const lotOccupancy = await getLotOccupancy(request.params.lotOccupancyId);
     if (!lotOccupancy) {
         response.redirect(`${configFunctions.getProperty('reverseProxy.urlPrefix')}/lotOccupancies/?error=lotOccupancyIdNotFound`);
         return;
     }
-    const occupancyTypePrints = getOccupancyTypePrintsById(lotOccupancy.occupancyTypeId);
-    const occupancyTypes = getOccupancyTypes();
-    const lotOccupantTypes = getLotOccupantTypes();
-    const lotTypes = getLotTypes();
-    const lotStatuses = getLotStatuses();
-    const maps = getMaps();
-    const workOrderTypes = getWorkOrderTypes();
+    const occupancyTypePrints = await getOccupancyTypePrintsById(lotOccupancy.occupancyTypeId);
+    const occupancyTypes = await getOccupancyTypes();
+    const lotOccupantTypes = await getLotOccupantTypes();
+    const lotTypes = await getLotTypes();
+    const lotStatuses = await getLotStatuses();
+    const maps = await getMaps();
+    const workOrderTypes = await getWorkOrderTypes();
     response.render('lotOccupancy-edit', {
         headTitle: `${configFunctions.getProperty('aliases.occupancy')} Update`,
         lotOccupancy,
@@ -27,5 +27,5 @@ export const handler = (request, response) => {
         workOrderTypes,
         isCreate: false
     });
-};
+}
 export default handler;

@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-await-expression-member */
 import sqlite from 'better-sqlite3'
 import { lotOccupancyDB as databasePath } from '../data/databasePaths.js'
 
@@ -39,52 +40,56 @@ export function getFeeIdByFeeDescription(feeDescription: string): number {
  */
 
 export const preneedOwnerLotOccupantTypeId =
-  cacheFunctions.getLotOccupantTypeByLotOccupantType(
-    'Preneed Owner'
-  )!.lotOccupantTypeId
+  (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Preneed Owner'))!
+    .lotOccupantTypeId
 
 export const funeralDirectorLotOccupantTypeId =
-  cacheFunctions.getLotOccupantTypeByLotOccupantType(
+  (await cacheFunctions.getLotOccupantTypeByLotOccupantType(
     'Funeral Director'
-  )!.lotOccupantTypeId
+  ))!.lotOccupantTypeId
 
 export const deceasedLotOccupantTypeId =
-  cacheFunctions.getLotOccupantTypeByLotOccupantType(
-    'Deceased'
-  )!.lotOccupantTypeId
+  (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Deceased'))!
+    .lotOccupantTypeId
 
 export const purchaserLotOccupantTypeId =
-  cacheFunctions.getLotOccupantTypeByLotOccupantType(
-    'Purchaser'
-  )!.lotOccupantTypeId
+  (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Purchaser'))!
+    .lotOccupantTypeId
 
 /*
  * Lot Status IDs
  */
 
 export const availableLotStatusId =
-  cacheFunctions.getLotStatusByLotStatus('Available')!.lotStatusId
+  (await cacheFunctions.getLotStatusByLotStatus('Available'))!.lotStatusId
 export const reservedLotStatusId =
-  cacheFunctions.getLotStatusByLotStatus('Reserved')!.lotStatusId
-export const takenLotStatusId =
-  cacheFunctions.getLotStatusByLotStatus('Taken')!.lotStatusId
+  (await cacheFunctions.getLotStatusByLotStatus('Reserved'))!.lotStatusId
+export const takenLotStatusId = (await cacheFunctions.getLotStatusByLotStatus(
+  'Taken'
+))!.lotStatusId
 
 /*
  * Lot Type IDs
  */
 
-const casketLotTypeId =
-  cacheFunctions.getLotTypesByLotType('Casket Grave')!.lotTypeId
-const columbariumLotTypeId =
-  cacheFunctions.getLotTypesByLotType('Columbarium')!.lotTypeId
-const crematoriumLotTypeId =
-  cacheFunctions.getLotTypesByLotType('Crematorium')!.lotTypeId
-const mausoleumLotTypeId =
-  cacheFunctions.getLotTypesByLotType('Mausoleum')!.lotTypeId
-const nicheWallLotTypeId =
-  cacheFunctions.getLotTypesByLotType('Niche Wall')!.lotTypeId
-const urnGardenLotTypeId =
-  cacheFunctions.getLotTypesByLotType('Urn Garden')!.lotTypeId
+const casketLotTypeId = (await cacheFunctions.getLotTypesByLotType(
+  'Casket Grave'
+))!.lotTypeId
+const columbariumLotTypeId = (await cacheFunctions.getLotTypesByLotType(
+  'Columbarium'
+))!.lotTypeId
+const crematoriumLotTypeId = (await cacheFunctions.getLotTypesByLotType(
+  'Crematorium'
+))!.lotTypeId
+const mausoleumLotTypeId = (await cacheFunctions.getLotTypesByLotType(
+  'Mausoleum'
+))!.lotTypeId
+const nicheWallLotTypeId = (await cacheFunctions.getLotTypesByLotType(
+  'Niche Wall'
+))!.lotTypeId
+const urnGardenLotTypeId = (await cacheFunctions.getLotTypesByLotType(
+  'Urn Garden'
+))!.lotTypeId
 
 export function getLotTypeId(dataRow: { cemetery: string }): number {
   switch (dataRow.cemetery) {
@@ -115,42 +120,47 @@ export function getLotTypeId(dataRow: { cemetery: string }): number {
  */
 
 export const preneedOccupancyType =
-  cacheFunctions.getOccupancyTypeByOccupancyType('Preneed')!
+  (await cacheFunctions.getOccupancyTypeByOccupancyType('Preneed'))!
 
 export const deceasedOccupancyType =
-  cacheFunctions.getOccupancyTypeByOccupancyType('Interment')!
+  (await cacheFunctions.getOccupancyTypeByOccupancyType('Interment'))!
 
 export const cremationOccupancyType =
-  cacheFunctions.getOccupancyTypeByOccupancyType('Cremation')!
+  (await cacheFunctions.getOccupancyTypeByOccupancyType('Cremation'))!
 
 /*
  * Work Order Milestone Type IDs
  */
 
-export const acknowledgedWorkOrderMilestoneTypeId =
-  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+export const acknowledgedWorkOrderMilestoneTypeId = (
+  await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Acknowledged'
-  )?.workOrderMilestoneTypeId
+  )
+)?.workOrderMilestoneTypeId
 
-export const deathWorkOrderMilestoneTypeId =
-  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+export const deathWorkOrderMilestoneTypeId = (
+  await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Death'
-  )?.workOrderMilestoneTypeId
+  )
+)?.workOrderMilestoneTypeId
 
-export const funeralWorkOrderMilestoneTypeId =
-  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+export const funeralWorkOrderMilestoneTypeId = (
+  await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Funeral'
-  )?.workOrderMilestoneTypeId
+  )
+)?.workOrderMilestoneTypeId
 
-export const cremationWorkOrderMilestoneTypeId =
-  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+export const cremationWorkOrderMilestoneTypeId = (
+  await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Cremation'
-  )?.workOrderMilestoneTypeId
+  )
+)?.workOrderMilestoneTypeId
 
-export const intermentWorkOrderMilestoneTypeId =
-  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+export const intermentWorkOrderMilestoneTypeId = (
+  await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Interment'
-  )?.workOrderMilestoneTypeId
+  )
+)?.workOrderMilestoneTypeId
 
 /*
  * Work Order Type IDs

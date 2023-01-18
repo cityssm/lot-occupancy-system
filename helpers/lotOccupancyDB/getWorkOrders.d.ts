@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3';
+import type { PoolConnection } from 'better-sqlite-pool';
 import type * as recordTypes from '../../types/recordTypes';
 interface GetWorkOrdersFilters {
     workOrderTypeId?: number | string;
@@ -15,8 +15,8 @@ interface GetWorkOrdersOptions {
     includeComments?: boolean;
     includeMilestones?: boolean;
 }
-export declare function getWorkOrders(filters: GetWorkOrdersFilters, options?: GetWorkOrdersOptions, connectedDatabase?: sqlite.Database): {
+export declare function getWorkOrders(filters: GetWorkOrdersFilters, options?: GetWorkOrdersOptions, connectedDatabase?: PoolConnection): Promise<{
     count: number;
     workOrders: recordTypes.WorkOrder[];
-};
+}>;
 export default getWorkOrders;

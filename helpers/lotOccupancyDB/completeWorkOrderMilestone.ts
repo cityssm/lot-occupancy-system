@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import {
   dateStringToInteger,
@@ -19,13 +17,13 @@ interface CompleteWorkOrderMilestoneForm {
   workOrderMilestoneCompletionTimeString?: string
 }
 
-export function completeWorkOrderMilestone(
+export async function completeWorkOrderMilestone(
   milestoneForm: CompleteWorkOrderMilestoneForm,
   requestSession: recordTypes.PartialSession
-): boolean {
+): Promise<boolean> {
   const rightNow = new Date()
 
-  const database = sqlite(databasePath)
+  const database = await acquireConnection()
 
   const result = database
     .prepare(
@@ -52,7 +50,7 @@ export function completeWorkOrderMilestone(
       milestoneForm.workOrderMilestoneId
     )
 
-  database.close()
+  database.release()
 
   return result.changes > 0
 }

@@ -1,7 +1,6 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function deleteLotOccupancyField(lotOccupancyId, occupancyTypeFieldId, requestSession, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(databasePath);
+import { acquireConnection } from './pool.js';
+export async function deleteLotOccupancyField(lotOccupancyId, occupancyTypeFieldId, requestSession, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update LotOccupancyFields
@@ -11,7 +10,7 @@ export function deleteLotOccupancyField(lotOccupancyId, occupancyTypeFieldId, re
         and occupancyTypeFieldId = ?`)
         .run(requestSession.user.userName, rightNowMillis, lotOccupancyId, occupancyTypeFieldId);
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return result.changes > 0;
 }

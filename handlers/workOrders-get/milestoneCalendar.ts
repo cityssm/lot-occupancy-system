@@ -1,6 +1,9 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   response.render('workOrder-milestoneCalendar', {
     headTitle: 'Work Order Milestone Calendar'
   })

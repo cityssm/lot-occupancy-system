@@ -1,5 +1,4 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import * as configFunctions from '../functions.config.js';
 import { getLots } from './getLots.js';
@@ -56,11 +55,8 @@ function buildWhereClause(filters) {
         sqlParameters
     };
 }
-export function getWorkOrderMilestones(filters, options, connectedDatabase) {
-    const database = connectedDatabase ??
-        sqlite(databasePath, {
-            readonly: true
-        });
+export async function getWorkOrderMilestones(filters, options, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
@@ -107,23 +103,25 @@ export function getWorkOrderMilestones(filters, options, connectedDatabase) {
         .all(sqlParameters);
     if (options.includeWorkOrders) {
         for (const workOrderMilestone of workOrderMilestones) {
-            workOrderMilestone.workOrderLots = getLots({
+            const workOrderLotsResults = await getLots({
                 workOrderId: workOrderMilestone.workOrderId
             }, {
                 limit: -1,
                 offset: 0
-            }, database).lots;
-            workOrderMilestone.workOrderLotOccupancies = getLotOccupancies({
+            }, database);
+            workOrderMilestone.workOrderLots = workOrderLotsResults.lots;
+            const lotOccupancies = await getLotOccupancies({
                 workOrderId: workOrderMilestone.workOrderId
             }, {
                 limit: -1,
                 offset: 0,
                 includeOccupants: true
-            }, database).lotOccupancies;
+            }, database);
+            workOrderMilestone.workOrderLotOccupancies = lotOccupancies.lotOccupancies;
         }
     }
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return workOrderMilestones;
 }

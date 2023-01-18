@@ -1,10 +1,6 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function getLotFields(lotId, connectedDatabase) {
-    const database = connectedDatabase ??
-        sqlite(databasePath, {
-            readonly: true
-        });
+import { acquireConnection } from './pool.js';
+export async function getLotFields(lotId, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     const lotFields = database
         .prepare(`select l.lotId, l.lotTypeFieldId,
         l.lotFieldValue,
@@ -34,7 +30,7 @@ export function getLotFields(lotId, connectedDatabase) {
         order by lotTypeOrderNumber, f.orderNumber, f.lotTypeField`)
         .all(lotId, lotId, lotId, lotId);
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return lotFields;
 }

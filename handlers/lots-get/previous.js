@@ -1,8 +1,8 @@
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getPreviousLotId } from '../../helpers/lotOccupancyDB/getPreviousLotId.js';
-export const handler = (request, response) => {
+export async function handler(request, response) {
     const lotId = request.params.lotId;
-    const previousLotId = getPreviousLotId(lotId);
+    const previousLotId = await getPreviousLotId(lotId);
     if (!previousLotId) {
         response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
             '/lots/?error=noPreviousLotIdFound');
@@ -11,5 +11,5 @@ export const handler = (request, response) => {
     response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
         '/lots/' +
         previousLotId);
-};
+}
 export default handler;

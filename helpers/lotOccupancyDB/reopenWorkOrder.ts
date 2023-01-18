@@ -1,14 +1,12 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function reopenWorkOrder(
+export async function reopenWorkOrder(
   workOrderId: number | string,
   requestSession: recordTypes.PartialSession
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
@@ -23,7 +21,7 @@ export function reopenWorkOrder(
     )
     .run(requestSession.user!.userName, rightNowMillis, workOrderId)
 
-  database.close()
+  database.release()
 
   return result.changes > 0
 }

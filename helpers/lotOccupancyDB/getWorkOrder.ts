@@ -1,6 +1,5 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import { dateIntegerToString } from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
@@ -30,17 +29,13 @@ const baseSQL = `select w.workOrderId,
     left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
     where w.recordDelete_timeMillis is null`
 
-function _getWorkOrder(
+async function _getWorkOrder(
   sql: string,
   workOrderIdOrWorkOrderNumber: number | string,
   options: WorkOrderOptions,
-  connectedDatabase?: sqlite.Database
-): recordTypes.WorkOrder {
-  const database =
-    connectedDatabase ??
-    sqlite(databasePath, {
-      readonly: true
-    })
+  connectedDatabase?: PoolConnection
+): Promise<recordTypes.WorkOrder> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
@@ -50,7 +45,7 @@ function _getWorkOrder(
 
   if (workOrder) {
     if (options.includeLotsAndLotOccupancies) {
-      workOrder.workOrderLots = getLots(
+      const workOrderLotsResults = await getLots(
         {
           workOrderId: workOrder.workOrderId
         },
@@ -59,9 +54,11 @@ function _getWorkOrder(
           offset: 0
         },
         database
-      ).lots
+      )
 
-      workOrder.workOrderLotOccupancies = getLotOccupancies(
+      workOrder.workOrderLots = workOrderLotsResults.lots
+
+      const workOrderLotOccupanciesResults = await getLotOccupancies(
         {
           workOrderId: workOrder.workOrderId
         },
@@ -71,18 +68,21 @@ function _getWorkOrder(
           includeOccupants: true
         },
         database
-      ).lotOccupancies
+      )
+
+      workOrder.workOrderLotOccupancies =
+        workOrderLotOccupanciesResults.lotOccupancies
     }
 
     if (options.includeComments) {
-      workOrder.workOrderComments = getWorkOrderComments(
+      workOrder.workOrderComments = await getWorkOrderComments(
         workOrder.workOrderId as number,
         database
       )
     }
 
     if (options.includeMilestones) {
-      workOrder.workOrderMilestones = getWorkOrderMilestones(
+      workOrder.workOrderMilestones = await getWorkOrderMilestones(
         {
           workOrderId: workOrder.workOrderId
         },
@@ -96,16 +96,16 @@ function _getWorkOrder(
   }
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return workOrder
 }
 
-export function getWorkOrderByWorkOrderNumber(
+export async function getWorkOrderByWorkOrderNumber(
   workOrderNumber: string
-): recordTypes.WorkOrder {
-  return _getWorkOrder(
+): Promise<recordTypes.WorkOrder> {
+  return await _getWorkOrder(
     baseSQL + ' and w.workOrderNumber = ?',
     workOrderNumber,
     {
@@ -116,12 +116,12 @@ export function getWorkOrderByWorkOrderNumber(
   )
 }
 
-export function getWorkOrder(
+export async function getWorkOrder(
   workOrderId: number | string,
   options: WorkOrderOptions,
-  connectedDatabase?: sqlite.Database
-): recordTypes.WorkOrder {
-  return _getWorkOrder(
+  connectedDatabase?: PoolConnection
+): Promise<recordTypes.WorkOrder> {
+  return await _getWorkOrder(
     baseSQL + ' and w.workOrderId = ?',
     workOrderId,
     options,

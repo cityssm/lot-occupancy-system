@@ -1,7 +1,6 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function reopenWorkOrderMilestone(workOrderMilestoneId, requestSession) {
-    const database = sqlite(databasePath);
+import { acquireConnection } from './pool.js';
+export async function reopenWorkOrderMilestone(workOrderMilestoneId, requestSession) {
+    const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update WorkOrderMilestones
@@ -12,7 +11,7 @@ export function reopenWorkOrderMilestone(workOrderMilestoneId, requestSession) {
         where workOrderMilestoneId = ?
         and workOrderMilestoneCompletionDate is not null`)
         .run(requestSession.user.userName, rightNowMillis, workOrderMilestoneId);
-    database.close();
+    database.release();
     return result.changes > 0;
 }
 export default reopenWorkOrderMilestone;

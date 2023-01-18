@@ -1,10 +1,13 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { completeWorkOrderMilestone } from '../../helpers/lotOccupancyDB/completeWorkOrderMilestone.js'
 
 import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const success = completeWorkOrderMilestone(
     {
       workOrderMilestoneId: request.body.workOrderMilestoneId

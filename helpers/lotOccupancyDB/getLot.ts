@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { getLotFields } from './getLotFields.js'
 
@@ -19,18 +17,16 @@ const baseSQL = `select l.lotId, l.lotTypeId, t.lotType, l.lotName, l.lotStatusI
     left join Maps m on l.mapId = m.mapId
     where l.recordDelete_timeMillis is null`
 
-function _getLot(
+async function _getLot(
   sql: string,
   lotIdOrLotName: number | string
-): recordTypes.Lot | undefined {
-  const database = sqlite(databasePath, {
-    readonly: true
-  })
+): Promise<recordTypes.Lot | undefined> {
+  const database = await acquireConnection()
 
   const lot: recordTypes.Lot = database.prepare(sql).get(lotIdOrLotName)
 
   if (lot) {
-    lot.lotOccupancies = getLotOccupancies(
+    const lotOccupancies = await getLotOccupancies(
       {
         lotId: lot.lotId
       },
@@ -40,24 +36,30 @@ function _getLot(
         offset: 0
       },
       database
-    ).lotOccupancies
+    )
 
-    lot.lotFields = getLotFields(lot.lotId, database)
+    lot.lotOccupancies = lotOccupancies.lotOccupancies
 
-    lot.lotComments = getLotComments(lot.lotId, database)
+    lot.lotFields = await getLotFields(lot.lotId, database)
+
+    lot.lotComments = await getLotComments(lot.lotId, database)
   }
 
-  database.close()
+  database.release()
 
   return lot
 }
 
-export function getLotByLotName(lotName: string): recordTypes.Lot | undefined {
-  return _getLot(baseSQL + ' and l.lotName = ?', lotName)
+export async function getLotByLotName(
+  lotName: string
+): Promise<recordTypes.Lot | undefined> {
+  return await _getLot(baseSQL + ' and l.lotName = ?', lotName)
 }
 
-export function getLot(lotId: number | string): recordTypes.Lot | undefined {
-  return _getLot(baseSQL + ' and l.lotId = ?', lotId)
+export async function getLot(
+  lotId: number | string
+): Promise<recordTypes.Lot | undefined> {
+  return await _getLot(baseSQL + ' and l.lotId = ?', lotId)
 }
 
 export default getLot

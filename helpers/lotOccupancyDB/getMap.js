@@ -1,9 +1,6 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function getMap(mapId) {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+import { acquireConnection } from './pool.js';
+export async function getMap(mapId) {
+    const database = await acquireConnection();
     const map = database
         .prepare(`select m.mapId, m.mapName, m.mapDescription,
         m.mapLatitude, m.mapLongitude, m.mapSVG,
@@ -24,7 +21,7 @@ export function getMap(mapId) {
             m.recordUpdate_userName, m.recordUpdate_timeMillis,
             m.recordDelete_userName, m.recordDelete_timeMillis`)
         .get(mapId);
-    database.close();
+    database.release();
     return map;
 }
 export default getMap;

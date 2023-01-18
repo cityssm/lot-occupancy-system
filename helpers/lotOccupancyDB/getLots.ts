@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
 
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import { dateToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
@@ -77,19 +76,12 @@ function buildWhereClause(filters: GetLotsFilters): {
   }
 }
 
-export function getLots(
+export async function getLots(
   filters: GetLotsFilters,
   options: GetLotsOptions,
-  connectedDatabase?: sqlite.Database
-): {
-  count: number
-  lots: recordTypes.Lot[]
-} {
-  const database =
-    connectedDatabase ??
-    sqlite(databasePath, {
-      readonly: true
-    })
+  connectedDatabase?: PoolConnection
+): Promise<{ count: number; lots: recordTypes.Lot[] }> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   const { sqlWhereClause, sqlParameters } = buildWhereClause(filters)
 
@@ -145,7 +137,7 @@ export function getLots(
             ') o on l.lotId = o.lotId') +
           sqlWhereClause +
           ' order by userFn_lotNameSortName(l.lotName), l.lotId' +
-          (options ? ` limit ${options.limit} offset ${options.offset}` : '')
+          (options.limit === -1 ? '' : ` limit ${options.limit} offset ${options.offset}`)
       )
       .all(sqlParameters)
 
@@ -155,7 +147,7 @@ export function getLots(
   }
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return {

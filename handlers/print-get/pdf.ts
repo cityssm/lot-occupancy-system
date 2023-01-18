@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import path from 'node:path'
 import * as ejs from 'ejs'
@@ -19,7 +19,11 @@ const attachmentOrInline = configFunctions.getProperty(
   'settings.printPdf.contentDisposition'
 )
 
-export const handler: RequestHandler = async (request, response, next) => {
+export async function handler(
+  request: Request,
+  response: Response,
+  next
+): Promise<void> {
   const printName = request.params.printName
 
   if (
@@ -47,7 +51,7 @@ export const handler: RequestHandler = async (request, response, next) => {
     return
   }
 
-  const reportData = getReportData(printConfig, request.query)
+  const reportData = await getReportData(printConfig, request.query)
 
   const reportPath = path.join('views', 'print', 'pdf', printName + '.ejs')
 

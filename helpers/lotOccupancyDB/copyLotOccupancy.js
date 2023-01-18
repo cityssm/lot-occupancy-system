@@ -1,13 +1,12 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { getLotOccupancy } from './getLotOccupancy.js';
 import { addLotOccupancy } from './addLotOccupancy.js';
 import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js';
 import { dateToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
-export function copyLotOccupancy(oldLotOccupancyId, requestSession) {
-    const database = sqlite(databasePath);
-    const oldLotOccupancy = getLotOccupancy(oldLotOccupancyId, database);
-    const newLotOccupancyId = addLotOccupancy({
+export async function copyLotOccupancy(oldLotOccupancyId, requestSession) {
+    const database = await acquireConnection();
+    const oldLotOccupancy = (await getLotOccupancy(oldLotOccupancyId, database));
+    const newLotOccupancyId = await addLotOccupancy({
         lotId: oldLotOccupancy.lotId ?? '',
         occupancyTypeId: oldLotOccupancy.occupancyTypeId,
         occupancyStartDateString: dateToString(new Date()),
@@ -24,7 +23,7 @@ export function copyLotOccupancy(oldLotOccupancyId, requestSession) {
             .run(newLotOccupancyId, occupancyField.occupancyTypeFieldId, occupancyField.lotOccupancyFieldValue, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     }
     for (const occupant of oldLotOccupancy.lotOccupancyOccupants ?? []) {
-        addLotOccupancyOccupant({
+        await addLotOccupancyOccupant({
             lotOccupancyId: newLotOccupancyId,
             lotOccupantTypeId: occupant.lotOccupantTypeId,
             occupantName: occupant.occupantName,
@@ -37,7 +36,7 @@ export function copyLotOccupancy(oldLotOccupancyId, requestSession) {
             occupantEmailAddress: occupant.occupantEmailAddress
         }, requestSession, database);
     }
-    database.close();
+    database.release();
     return newLotOccupancyId;
 }
 export default copyLotOccupancy;

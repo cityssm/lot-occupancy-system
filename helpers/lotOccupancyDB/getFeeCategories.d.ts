@@ -6,5 +6,5 @@ interface GetFeeCategoriesFilters {
 interface GetFeeCategoriesOptions {
     includeFees?: boolean;
 }
-export declare function getFeeCategories(filters: GetFeeCategoriesFilters, options: GetFeeCategoriesOptions): recordTypes.FeeCategory[];
+export declare function getFeeCategories(filters: GetFeeCategoriesFilters, options: GetFeeCategoriesOptions): Promise<recordTypes.FeeCategory[]>;
 export default getFeeCategories;

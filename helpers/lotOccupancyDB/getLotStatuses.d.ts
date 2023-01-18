@@ -1,3 +1,3 @@
 import type * as recordTypes from '../../types/recordTypes';
-export declare function getLotStatuses(): recordTypes.LotStatus[];
+export declare function getLotStatuses(): Promise<recordTypes.LotStatus[]>;
 export default getLotStatuses;

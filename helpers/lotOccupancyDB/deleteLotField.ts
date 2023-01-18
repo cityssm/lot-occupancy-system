@@ -1,16 +1,15 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function deleteLotField(
+export async function deleteLotField(
   lotId: number | string,
   lotTypeFieldId: number | string,
   requestSession: recordTypes.PartialSession,
-  connectedDatabase?: sqlite.Database
-): boolean {
-  const database = connectedDatabase ?? sqlite(databasePath)
+  connectedDatabase?: PoolConnection
+): Promise<boolean> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   const rightNowMillis = Date.now()
 
@@ -25,7 +24,7 @@ export function deleteLotField(
     .run(requestSession.user!.userName, rightNowMillis, lotId, lotTypeFieldId)
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return result.changes > 0

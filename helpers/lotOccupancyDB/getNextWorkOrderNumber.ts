@@ -1,17 +1,12 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import * as configFunctions from '../functions.config.js'
 
-export function getNextWorkOrderNumber(
-  connectedDatabase?: sqlite.Database
-): string {
-  const database =
-    connectedDatabase ??
-    sqlite(databasePath, {
-      readonly: true
-    })
+export async function getNextWorkOrderNumber(
+  connectedDatabase?: PoolConnection
+): Promise<string> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   const paddingLength = configFunctions.getProperty(
     'settings.workOrders.workOrderNumberLength'
@@ -36,7 +31,7 @@ export function getNextWorkOrderNumber(
     .get()
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   let workOrderNumberIndex = 0

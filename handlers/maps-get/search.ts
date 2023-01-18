@@ -1,11 +1,11 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
 
 import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 
-export const handler: RequestHandler = (_request, response) => {
-  const maps = getMaps()
+export async function handler(_request: Request, response: Response): Promise<void> {
+  const maps = await getMaps()
 
   response.render('map-search', {
     headTitle: configFunctions.getProperty('aliases.map') + ' Search',

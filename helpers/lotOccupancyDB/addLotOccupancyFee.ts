@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { calculateFeeAmount, calculateTaxAmount } from '../functions.fee.js'
 
@@ -18,11 +16,11 @@ interface AddLotOccupancyFeeForm {
   taxAmount?: number | string
 }
 
-export function addLotOccupancyFee(
+export async function addLotOccupancyFee(
   lotOccupancyFeeForm: AddLotOccupancyFeeForm,
   requestSession: recordTypes.PartialSession
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
@@ -40,8 +38,10 @@ export function addLotOccupancyFee(
         ? Number.parseFloat(lotOccupancyFeeForm.taxAmount)
         : 0
   } else {
-    const lotOccupancy = getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId)!
-    const fee = getFee(lotOccupancyFeeForm.feeId)
+    const lotOccupancy = (await getLotOccupancy(
+      lotOccupancyFeeForm.lotOccupancyId
+    ))!
+    const fee = await getFee(lotOccupancyFeeForm.feeId)
 
     feeAmount = calculateFeeAmount(fee, lotOccupancy)
     taxAmount = calculateTaxAmount(fee, feeAmount)
@@ -55,9 +55,9 @@ export function addLotOccupancyFee(
   } = database
     .prepare(
       `select feeAmount, taxAmount, recordDelete_timeMillis
-                from LotOccupancyFees
-                where lotOccupancyId = ?
-                and feeId = ?`
+        from LotOccupancyFees
+        where lotOccupancyId = ?
+        and feeId = ?`
     )
     .get(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId)
 
@@ -66,9 +66,9 @@ export function addLotOccupancyFee(
       database
         .prepare(
           `delete from LotOccupancyFees
-                        where recordDelete_timeMillis is not null
-                        and lotOccupancyId = ?
-                        and feeId = ?`
+            where recordDelete_timeMillis is not null
+            and lotOccupancyId = ?
+            and feeId = ?`
         )
         .run(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId)
     } else if (
@@ -78,11 +78,11 @@ export function addLotOccupancyFee(
       database
         .prepare(
           `update LotOccupancyFees
-                        set quantity = quantity + ?,
-                        recordUpdate_userName = ?,
-                        recordUpdate_timeMillis = ?
-                        where lotOccupancyId = ?
-                        and feeId = ?`
+            set quantity = quantity + ?,
+            recordUpdate_userName = ?,
+            recordUpdate_timeMillis = ?
+            where lotOccupancyId = ?
+            and feeId = ?`
         )
         .run(
           lotOccupancyFeeForm.quantity,
@@ -92,7 +92,7 @@ export function addLotOccupancyFee(
           lotOccupancyFeeForm.feeId
         )
 
-      database.close()
+      database.release()
 
       return true
     } else {
@@ -121,7 +121,7 @@ export function addLotOccupancyFee(
           lotOccupancyFeeForm.feeId
         )
 
-      database.close()
+      database.release()
 
       return true
     }
@@ -131,11 +131,11 @@ export function addLotOccupancyFee(
   const result = database
     .prepare(
       `insert into LotOccupancyFees (
-                lotOccupancyId, feeId,
-                quantity, feeAmount, taxAmount,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        lotOccupancyId, feeId,
+        quantity, feeAmount, taxAmount,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       lotOccupancyFeeForm.lotOccupancyId,
@@ -149,7 +149,7 @@ export function addLotOccupancyFee(
       rightNowMillis
     )
 
-  database.close()
+  database.release()
 
   return result.changes > 0
 }

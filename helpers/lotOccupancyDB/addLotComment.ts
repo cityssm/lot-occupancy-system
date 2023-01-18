@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
@@ -11,22 +9,22 @@ interface AddLotCommentForm {
   lotComment: string
 }
 
-export function addLotComment(
+export async function addLotComment(
   lotCommentForm: AddLotCommentForm,
   requestSession: recordTypes.PartialSession
-): number {
-  const database = sqlite(databasePath)
+): Promise<number> {
+  const database = await acquireConnection()
 
   const rightNow = new Date()
 
   const result = database
     .prepare(
       `insert into LotComments (
-                lotId,
-                lotCommentDate, lotCommentTime, lotComment,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis) 
-                values (?, ?, ?, ?, ?, ?, ?, ?)`
+        lotId,
+        lotCommentDate, lotCommentTime, lotComment,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis) 
+        values (?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       lotCommentForm.lotId,
@@ -39,7 +37,7 @@ export function addLotComment(
       rightNow.getTime()
     )
 
-  database.close()
+  database.release()
 
   return result.lastInsertRowid as number
 }

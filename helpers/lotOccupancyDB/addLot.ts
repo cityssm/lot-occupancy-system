@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { addOrUpdateLotField } from './addOrUpdateLotField.js'
 
@@ -21,23 +19,23 @@ interface AddLotForm {
   [lotFieldValue_lotTypeFieldId: string]: unknown
 }
 
-export function addLot(
+export async function addLot(
   lotForm: AddLotForm,
   requestSession: recordTypes.PartialSession
-): number {
-  const database = sqlite(databasePath)
+): Promise<number> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
   const result = database
     .prepare(
       `insert into Lots (
-                lotName, lotTypeId, lotStatusId,
-                mapId, mapKey,
-                lotLatitude, lotLongitude,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis) 
-                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        lotName, lotTypeId, lotStatusId,
+        mapId, mapKey,
+        lotLatitude, lotLongitude,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis) 
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       lotForm.lotName,
@@ -61,7 +59,7 @@ export function addLot(
     const lotFieldValue = lotForm['lotFieldValue_' + lotTypeFieldId] as string
 
     if (lotFieldValue && lotFieldValue !== '') {
-      addOrUpdateLotField(
+      await addOrUpdateLotField(
         {
           lotId,
           lotTypeFieldId,
@@ -73,7 +71,7 @@ export function addLot(
     }
   }
 
-  database.close()
+  database.release()
 
   return lotId
 }

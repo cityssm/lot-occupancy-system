@@ -17,19 +17,22 @@ export function getFeeIdByFeeDescription(feeDescription) {
     }
     return feeCache.get(feeDescription);
 }
-export const preneedOwnerLotOccupantTypeId = cacheFunctions.getLotOccupantTypeByLotOccupantType('Preneed Owner').lotOccupantTypeId;
-export const funeralDirectorLotOccupantTypeId = cacheFunctions.getLotOccupantTypeByLotOccupantType('Funeral Director').lotOccupantTypeId;
-export const deceasedLotOccupantTypeId = cacheFunctions.getLotOccupantTypeByLotOccupantType('Deceased').lotOccupantTypeId;
-export const purchaserLotOccupantTypeId = cacheFunctions.getLotOccupantTypeByLotOccupantType('Purchaser').lotOccupantTypeId;
-export const availableLotStatusId = cacheFunctions.getLotStatusByLotStatus('Available').lotStatusId;
-export const reservedLotStatusId = cacheFunctions.getLotStatusByLotStatus('Reserved').lotStatusId;
-export const takenLotStatusId = cacheFunctions.getLotStatusByLotStatus('Taken').lotStatusId;
-const casketLotTypeId = cacheFunctions.getLotTypesByLotType('Casket Grave').lotTypeId;
-const columbariumLotTypeId = cacheFunctions.getLotTypesByLotType('Columbarium').lotTypeId;
-const crematoriumLotTypeId = cacheFunctions.getLotTypesByLotType('Crematorium').lotTypeId;
-const mausoleumLotTypeId = cacheFunctions.getLotTypesByLotType('Mausoleum').lotTypeId;
-const nicheWallLotTypeId = cacheFunctions.getLotTypesByLotType('Niche Wall').lotTypeId;
-const urnGardenLotTypeId = cacheFunctions.getLotTypesByLotType('Urn Garden').lotTypeId;
+export const preneedOwnerLotOccupantTypeId = (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Preneed Owner'))
+    .lotOccupantTypeId;
+export const funeralDirectorLotOccupantTypeId = (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Funeral Director')).lotOccupantTypeId;
+export const deceasedLotOccupantTypeId = (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Deceased'))
+    .lotOccupantTypeId;
+export const purchaserLotOccupantTypeId = (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Purchaser'))
+    .lotOccupantTypeId;
+export const availableLotStatusId = (await cacheFunctions.getLotStatusByLotStatus('Available')).lotStatusId;
+export const reservedLotStatusId = (await cacheFunctions.getLotStatusByLotStatus('Reserved')).lotStatusId;
+export const takenLotStatusId = (await cacheFunctions.getLotStatusByLotStatus('Taken')).lotStatusId;
+const casketLotTypeId = (await cacheFunctions.getLotTypesByLotType('Casket Grave')).lotTypeId;
+const columbariumLotTypeId = (await cacheFunctions.getLotTypesByLotType('Columbarium')).lotTypeId;
+const crematoriumLotTypeId = (await cacheFunctions.getLotTypesByLotType('Crematorium')).lotTypeId;
+const mausoleumLotTypeId = (await cacheFunctions.getLotTypesByLotType('Mausoleum')).lotTypeId;
+const nicheWallLotTypeId = (await cacheFunctions.getLotTypesByLotType('Niche Wall')).lotTypeId;
+const urnGardenLotTypeId = (await cacheFunctions.getLotTypesByLotType('Urn Garden')).lotTypeId;
 export function getLotTypeId(dataRow) {
     switch (dataRow.cemetery) {
         case '00': {
@@ -52,12 +55,12 @@ export function getLotTypeId(dataRow) {
     }
     return casketLotTypeId;
 }
-export const preneedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType('Preneed');
-export const deceasedOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType('Interment');
-export const cremationOccupancyType = cacheFunctions.getOccupancyTypeByOccupancyType('Cremation');
-export const acknowledgedWorkOrderMilestoneTypeId = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Acknowledged')?.workOrderMilestoneTypeId;
-export const deathWorkOrderMilestoneTypeId = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Death')?.workOrderMilestoneTypeId;
-export const funeralWorkOrderMilestoneTypeId = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Funeral')?.workOrderMilestoneTypeId;
-export const cremationWorkOrderMilestoneTypeId = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Cremation')?.workOrderMilestoneTypeId;
-export const intermentWorkOrderMilestoneTypeId = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Interment')?.workOrderMilestoneTypeId;
+export const preneedOccupancyType = (await cacheFunctions.getOccupancyTypeByOccupancyType('Preneed'));
+export const deceasedOccupancyType = (await cacheFunctions.getOccupancyTypeByOccupancyType('Interment'));
+export const cremationOccupancyType = (await cacheFunctions.getOccupancyTypeByOccupancyType('Cremation'));
+export const acknowledgedWorkOrderMilestoneTypeId = (await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Acknowledged'))?.workOrderMilestoneTypeId;
+export const deathWorkOrderMilestoneTypeId = (await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Death'))?.workOrderMilestoneTypeId;
+export const funeralWorkOrderMilestoneTypeId = (await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Funeral'))?.workOrderMilestoneTypeId;
+export const cremationWorkOrderMilestoneTypeId = (await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Cremation'))?.workOrderMilestoneTypeId;
+export const intermentWorkOrderMilestoneTypeId = (await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Interment'))?.workOrderMilestoneTypeId;
 export const workOrderTypeId = 1;

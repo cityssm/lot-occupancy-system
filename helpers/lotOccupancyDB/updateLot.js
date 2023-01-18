@@ -1,55 +1,51 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { addOrUpdateLotField } from './addOrUpdateLotField.js';
 import { deleteLotField } from './deleteLotField.js';
-export function updateLot(lotForm, requestSession) {
-    const database = sqlite(databasePath);
+export async function updateLot(lotForm, requestSession) {
+    const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update Lots
-                set lotName = ?,
-                lotTypeId = ?,
-                lotStatusId = ?,
-                mapId = ?,
-                mapKey = ?,
-                lotLatitude = ?,
-                lotLongitude = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where lotId = ?
-                and recordDelete_timeMillis is null`)
+        set lotName = ?,
+        lotTypeId = ?,
+        lotStatusId = ?,
+        mapId = ?,
+        mapKey = ?,
+        lotLatitude = ?,
+        lotLongitude = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where lotId = ?
+        and recordDelete_timeMillis is null`)
         .run(lotForm.lotName, lotForm.lotTypeId, lotForm.lotStatusId === '' ? undefined : lotForm.lotStatusId, lotForm.mapId === '' ? undefined : lotForm.mapId, lotForm.mapKey, lotForm.lotLatitude === '' ? undefined : lotForm.lotLatitude, lotForm.lotLongitude === '' ? undefined : lotForm.lotLongitude, requestSession.user.userName, rightNowMillis, lotForm.lotId);
     if (result.changes > 0) {
         const lotTypeFieldIds = (lotForm.lotTypeFieldIds ?? '').split(',');
         for (const lotTypeFieldId of lotTypeFieldIds) {
             const lotFieldValue = lotForm['lotFieldValue_' + lotTypeFieldId];
-            if (lotFieldValue && lotFieldValue !== '') {
-                addOrUpdateLotField({
+            await (lotFieldValue && lotFieldValue !== ''
+                ? addOrUpdateLotField({
                     lotId: lotForm.lotId,
                     lotTypeFieldId,
                     lotFieldValue
-                }, requestSession, database);
-            }
-            else {
-                deleteLotField(lotForm.lotId, lotTypeFieldId, requestSession, database);
-            }
+                }, requestSession, database)
+                : deleteLotField(lotForm.lotId, lotTypeFieldId, requestSession, database));
         }
     }
-    database.close();
+    database.release();
     return result.changes > 0;
 }
-export function updateLotStatus(lotId, lotStatusId, requestSession) {
-    const database = sqlite(databasePath);
+export async function updateLotStatus(lotId, lotStatusId, requestSession) {
+    const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update Lots
-                set lotStatusId = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where lotId = ?
-                and recordDelete_timeMillis is null`)
+        set lotStatusId = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where lotId = ?
+        and recordDelete_timeMillis is null`)
         .run(lotStatusId === '' ? undefined : lotStatusId, requestSession.user.userName, rightNowMillis, lotId);
-    database.close();
+    database.release();
     return result.changes > 0;
 }
 export default updateLot;

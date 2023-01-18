@@ -1,14 +1,14 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { dateToString } from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
 import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
 import { getWorkOrders } from '../../helpers/lotOccupancyDB/getWorkOrders.js'
 
-export const handler: RequestHandler = (_request, response) => {
+export async function handler(_request: Request, response: Response): Promise<void> {
   const currentDateString = dateToString(new Date())
 
-  const workOrderMilestones = getWorkOrderMilestones(
+  const workOrderMilestones = await getWorkOrderMilestones(
     {
       workOrderMilestoneDateFilter: 'date',
       workOrderMilestoneDateString: currentDateString
@@ -19,7 +19,7 @@ export const handler: RequestHandler = (_request, response) => {
     }
   )
 
-  const workOrderCount = getWorkOrders(
+  const workOrderResults = await getWorkOrders(
     {
       workOrderOpenDateString: currentDateString
     },
@@ -27,12 +27,12 @@ export const handler: RequestHandler = (_request, response) => {
       limit: 1,
       offset: 0
     }
-  ).count
+  )
 
   response.render('dashboard', {
     headTitle: 'Dashboard',
     workOrderMilestones,
-    workOrderCount
+    workOrderCount: workOrderResults.count
   })
 }
 

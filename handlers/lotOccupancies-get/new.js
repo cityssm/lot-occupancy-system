@@ -3,14 +3,14 @@ import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypes } f
 import { getLot } from '../../helpers/lotOccupancyDB/getLot.js';
 import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js';
 import * as configFunctions from '../../helpers/functions.config.js';
-export const handler = (request, response) => {
+export async function handler(request, response) {
     const startDate = new Date();
     const lotOccupancy = {
         occupancyStartDate: dateToInteger(startDate),
         occupancyStartDateString: dateToString(startDate)
     };
     if (request.query.lotId) {
-        const lot = getLot(request.query.lotId);
+        const lot = await getLot(request.query.lotId);
         if (lot) {
             lotOccupancy.lotId = lot.lotId;
             lotOccupancy.lotName = lot.lotName;
@@ -18,11 +18,11 @@ export const handler = (request, response) => {
             lotOccupancy.mapName = lot.mapName;
         }
     }
-    const occupancyTypes = getOccupancyTypes();
-    const lotOccupantTypes = getLotOccupantTypes();
-    const lotTypes = getLotTypes();
-    const lotStatuses = getLotStatuses();
-    const maps = getMaps();
+    const occupancyTypes = await getOccupancyTypes();
+    const lotOccupantTypes = await getLotOccupantTypes();
+    const lotTypes = await getLotTypes();
+    const lotStatuses = await getLotStatuses();
+    const maps = await getMaps();
     response.render('lotOccupancy-edit', {
         headTitle: `Create a New ${configFunctions.getProperty('aliases.occupancy')} Record`,
         lotOccupancy,
@@ -33,5 +33,5 @@ export const handler = (request, response) => {
         maps,
         isCreate: true
     });
-};
+}
 export default handler;

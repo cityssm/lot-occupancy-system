@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import {
   moveRecordUp,
@@ -9,14 +9,17 @@ import {
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const success =
     request.body.moveToEnd === '1'
-      ? moveRecordUpToTop('OccupancyTypes', request.body.occupancyTypeId)
-      : moveRecordUp('OccupancyTypes', request.body.occupancyTypeId)
+      ? await moveRecordUpToTop('OccupancyTypes', request.body.occupancyTypeId)
+      : await moveRecordUp('OccupancyTypes', request.body.occupancyTypeId)
 
-  const occupancyTypes = getOccupancyTypes()
-  const allOccupancyTypeFields = getAllOccupancyTypeFields()
+  const occupancyTypes = await getOccupancyTypes()
+  const allOccupancyTypeFields = await getAllOccupancyTypeFields()
 
   response.json({
     success,

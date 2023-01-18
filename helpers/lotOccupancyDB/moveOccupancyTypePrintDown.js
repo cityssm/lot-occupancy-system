@@ -1,8 +1,7 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
-export function moveOccupancyTypePrintDown(occupancyTypeId, printEJS) {
-    const database = sqlite(databasePath);
+export async function moveOccupancyTypePrintDown(occupancyTypeId, printEJS) {
+    const database = await acquireConnection();
     const currentOrderNumber = database
         .prepare('select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?')
         .get(occupancyTypeId, printEJS).orderNumber;
@@ -16,12 +15,12 @@ export function moveOccupancyTypePrintDown(occupancyTypeId, printEJS) {
     const result = database
         .prepare('update OccupancyTypePrints set orderNumber = ? + 1 where occupancyTypeId = ? and printEJS = ?')
         .run(currentOrderNumber, occupancyTypeId, printEJS);
-    database.close();
+    database.release();
     clearCacheByTableName('OccupancyTypePrints');
     return result.changes > 0;
 }
-export function moveOccupancyTypePrintDownToBottom(occupancyTypeId, printEJS) {
-    const database = sqlite(databasePath);
+export async function moveOccupancyTypePrintDownToBottom(occupancyTypeId, printEJS) {
+    const database = await acquireConnection();
     const currentOrderNumber = database
         .prepare('select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?')
         .get(occupancyTypeId, printEJS).orderNumber;
@@ -46,7 +45,7 @@ export function moveOccupancyTypePrintDownToBottom(occupancyTypeId, printEJS) {
             and orderNumber > ?`)
             .run(occupancyTypeId, currentOrderNumber);
     }
-    database.close();
+    database.release();
     clearCacheByTableName('OccupancyTypePrints');
     return true;
 }

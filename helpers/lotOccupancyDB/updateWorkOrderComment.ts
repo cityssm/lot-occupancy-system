@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import {
   dateStringToInteger,
@@ -16,13 +14,13 @@ interface UpdateWorkOrderCommentForm {
   workOrderComment: string
 }
 
-export function updateWorkOrderComment(
+export async function updateWorkOrderComment(
   commentForm: UpdateWorkOrderCommentForm,
   requestSession: recordTypes.PartialSession
-): boolean {
+): Promise<boolean> {
   const rightNowMillis = Date.now()
 
-  const database = sqlite(databasePath)
+  const database = await acquireConnection()
 
   const result = database
     .prepare(
@@ -44,7 +42,7 @@ export function updateWorkOrderComment(
       commentForm.workOrderCommentId
     )
 
-  database.close()
+  database.release()
 
   return result.changes > 0
 }

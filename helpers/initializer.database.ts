@@ -6,11 +6,11 @@ import debug from 'debug'
 const debugSQL = debug('lot-occupancy-system:databaseInitializer')
 
 const recordColumns = `recordCreate_userName varchar(30) not null,
-        recordCreate_timeMillis integer not null,
-        recordUpdate_userName varchar(30) not null,
-        recordUpdate_timeMillis integer not null,
-        recordDelete_userName varchar(30),
-        recordDelete_timeMillis integer`
+  recordCreate_timeMillis integer not null,
+  recordUpdate_userName varchar(30) not null,
+  recordUpdate_timeMillis integer not null,
+  recordDelete_userName varchar(30),
+  recordDelete_timeMillis integer`
 
 const createStatements = [
   // Lot Types

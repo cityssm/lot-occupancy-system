@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import {
   getLotOccupantTypes,
@@ -9,11 +9,11 @@ import {
 
 import { getSolidIconClasses } from '../../helpers/functions.icons.js'
 
-export const handler: RequestHandler = async (_request, response) => {
-  const workOrderTypes = getWorkOrderTypes()
-  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes()
-  const lotStatuses = getLotStatuses()
-  const lotOccupantTypes = getLotOccupantTypes()
+export async function handler(_request: Request, response: Response): Promise<void> {
+  const workOrderTypes = await getWorkOrderTypes()
+  const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
+  const lotStatuses = await getLotStatuses()
+  const lotOccupantTypes = await getLotOccupantTypes()
 
   const fontAwesomeIconClasses = await getSolidIconClasses()
 

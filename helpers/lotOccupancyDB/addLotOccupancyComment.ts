@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import {
   dateStringToInteger,
@@ -18,10 +16,10 @@ interface AddLotOccupancyCommentForm {
   lotOccupancyComment: string
 }
 
-export function addLotOccupancyComment(
+export async function addLotOccupancyComment(
   commentForm: AddLotOccupancyCommentForm,
   requestSession: recordTypes.PartialSession
-): number {
+): Promise<number> {
   const rightNow = new Date()
 
   let lotOccupancyCommentDate: number
@@ -39,17 +37,17 @@ export function addLotOccupancyComment(
     lotOccupancyCommentTime = dateToTimeInteger(rightNow)
   }
 
-  const database = sqlite(databasePath)
+  const database = await acquireConnection()
 
   const result = database
     .prepare(
       `insert into LotOccupancyComments (
-                lotOccupancyId,
-                lotOccupancyCommentDate, lotOccupancyCommentTime,
-                lotOccupancyComment,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?, ?, ?)`
+        lotOccupancyId,
+        lotOccupancyCommentDate, lotOccupancyCommentTime,
+        lotOccupancyComment,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       commentForm.lotOccupancyId,
@@ -62,7 +60,7 @@ export function addLotOccupancyComment(
       rightNow.getTime()
     )
 
-  database.close()
+  database.release()
 
   return result.lastInsertRowid as number
 }

@@ -1,13 +1,13 @@
 import { moveRecordUp, moveRecordUpToTop } from '../../helpers/lotOccupancyDB/moveRecord.js';
 import { getLotTypes } from '../../helpers/functions.cache.js';
-export const handler = (request, response) => {
+export async function handler(request, response) {
     const success = request.body.moveToEnd === '1'
-        ? moveRecordUpToTop('LotTypes', request.body.lotTypeId)
-        : moveRecordUp('LotTypes', request.body.lotTypeId);
-    const lotTypes = getLotTypes();
+        ? await moveRecordUpToTop('LotTypes', request.body.lotTypeId)
+        : await moveRecordUp('LotTypes', request.body.lotTypeId);
+    const lotTypes = await getLotTypes();
     response.json({
         success,
         lotTypes
     });
-};
+}
 export default handler;

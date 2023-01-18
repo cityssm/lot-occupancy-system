@@ -1,5 +1,4 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateIntegerToString, dateStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import * as configFunctions from '../functions.config.js';
 import { getOccupancyTypeById } from '../functions.cache.js';
@@ -62,11 +61,8 @@ function buildWhereClause(filters) {
         sqlParameters
     };
 }
-export function getLotOccupancies(filters, options, connectedDatabase) {
-    const database = connectedDatabase ??
-        sqlite(databasePath, {
-            readonly: true
-        });
+export async function getLotOccupancies(filters, options, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
     let count = options.limit;
@@ -101,19 +97,19 @@ export function getLotOccupancies(filters, options, connectedDatabase) {
             count = lotOccupancies.length;
         }
         for (const lotOccupancy of lotOccupancies) {
-            const occupancyType = getOccupancyTypeById(lotOccupancy.occupancyTypeId);
+            const occupancyType = await getOccupancyTypeById(lotOccupancy.occupancyTypeId);
             if (occupancyType) {
                 lotOccupancy.printEJS = (occupancyType.occupancyTypePrints ?? []).includes('*')
                     ? configFunctions.getProperty('settings.lotOccupancy.prints')[0]
                     : occupancyType.occupancyTypePrints[0];
             }
             if (options.includeOccupants) {
-                lotOccupancy.lotOccupancyOccupants = getLotOccupancyOccupants(lotOccupancy.lotOccupancyId, database);
+                lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(lotOccupancy.lotOccupancyId, database);
             }
         }
     }
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return {
         count,

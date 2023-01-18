@@ -1,6 +1,5 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import type * as recordTypes from '../../types/recordTypes'
 
@@ -18,22 +17,22 @@ interface AddLotOccupancyOccupantForm {
   occupantComment?: string
 }
 
-export function addLotOccupancyOccupant(
+export async function addLotOccupancyOccupant(
   lotOccupancyOccupantForm: AddLotOccupancyOccupantForm,
   requestSession: recordTypes.PartialSession,
-  connectedDatabase?: sqlite.Database
-): number {
-  const database = connectedDatabase ?? sqlite(databasePath)
+  connectedDatabase?: PoolConnection
+): Promise<number> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   let lotOccupantIndex = 0
 
-  const maxIndexResult = database
+  const maxIndexResult: { lotOccupantIndex: number } | undefined = database
     .prepare(
       `select lotOccupantIndex
-                from LotOccupancyOccupants
-                where lotOccupancyId = ?
-                order by lotOccupantIndex desc
-                limit 1`
+        from LotOccupancyOccupants
+        where lotOccupancyId = ?
+        order by lotOccupantIndex desc
+        limit 1`
     )
     .get(lotOccupancyOccupantForm.lotOccupancyId)
 
@@ -46,16 +45,16 @@ export function addLotOccupancyOccupant(
   database
     .prepare(
       `insert into LotOccupancyOccupants (
-                lotOccupancyId, lotOccupantIndex,
-                occupantName,
-                occupantAddress1, occupantAddress2,
-                occupantCity, occupantProvince, occupantPostalCode,
-                occupantPhoneNumber, occupantEmailAddress,
-                occupantComment,
-                lotOccupantTypeId,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        lotOccupancyId, lotOccupantIndex,
+        occupantName,
+        occupantAddress1, occupantAddress2,
+        occupantCity, occupantProvince, occupantPostalCode,
+        occupantPhoneNumber, occupantEmailAddress,
+        occupantComment,
+        lotOccupantTypeId,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       lotOccupancyOccupantForm.lotOccupancyId,
@@ -77,7 +76,7 @@ export function addLotOccupancyOccupant(
     )
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return lotOccupantIndex

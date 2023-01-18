@@ -15,7 +15,7 @@ const session = {
         }
     }
 };
-function initializeCemeteryDatabase() {
+async function initializeCemeteryDatabase() {
     debug('Checking for ' + databasePath + '...');
     const databaseInitialized = initializeDatabase();
     if (!databaseInitialized) {
@@ -24,34 +24,34 @@ function initializeCemeteryDatabase() {
         return;
     }
     debug('New database file created.  Proceeding with initialization.');
-    addRecord('LotTypes', 'Casket Grave', 1, session);
-    addRecord('LotTypes', 'Columbarium', 2, session);
-    addRecord('LotTypes', 'Mausoleum', 2, session);
-    addRecord('LotTypes', 'Niche Wall', 2, session);
-    addRecord('LotTypes', 'Urn Garden', 2, session);
-    addRecord('LotTypes', 'Crematorium', 2, session);
-    addRecord('LotStatuses', 'Available', 1, session);
-    addRecord('LotStatuses', 'Reserved', 2, session);
-    addRecord('LotStatuses', 'Taken', 3, session);
-    addLotOccupantType({
+    await addRecord('LotTypes', 'Casket Grave', 1, session);
+    await addRecord('LotTypes', 'Columbarium', 2, session);
+    await addRecord('LotTypes', 'Mausoleum', 2, session);
+    await addRecord('LotTypes', 'Niche Wall', 2, session);
+    await addRecord('LotTypes', 'Urn Garden', 2, session);
+    await addRecord('LotTypes', 'Crematorium', 2, session);
+    await addRecord('LotStatuses', 'Available', 1, session);
+    await addRecord('LotStatuses', 'Reserved', 2, session);
+    await addRecord('LotStatuses', 'Taken', 3, session);
+    await addLotOccupantType({
         lotOccupantType: 'Deceased',
         orderNumber: 1
     }, session);
-    addLotOccupantType({
+    await addLotOccupantType({
         lotOccupantType: 'Funeral Director',
         orderNumber: 2
     }, session);
-    addLotOccupantType({
+    await addLotOccupantType({
         lotOccupantType: 'Preneed Owner',
         orderNumber: 3
     }, session);
-    addLotOccupantType({
+    await addLotOccupantType({
         lotOccupantType: 'Purchaser',
         orderNumber: 4
     }, session);
-    addRecord('OccupancyTypes', 'Preneed', 1, session);
-    const intermentOccupancyTypeId = addRecord('OccupancyTypes', 'Interment', 2, session);
-    const cremationOccupancyTypeId = addRecord('OccupancyTypes', 'Cremation', 3, session);
+    await addRecord('OccupancyTypes', 'Preneed', 1, session);
+    const intermentOccupancyTypeId = await addRecord('OccupancyTypes', 'Interment', 2, session);
+    const cremationOccupancyTypeId = await addRecord('OccupancyTypes', 'Cremation', 3, session);
     const deathDateField = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: 'Death Date',
@@ -62,8 +62,8 @@ function initializeCemeteryDatabase() {
         maximumLength: 10,
         orderNumber: 1
     };
-    addOccupancyTypeField(deathDateField, session);
-    addOccupancyTypeField(Object.assign(deathDateField, {
+    await addOccupancyTypeField(deathDateField, session);
+    await addOccupancyTypeField(Object.assign(deathDateField, {
         occupancyTypeId: cremationOccupancyTypeId
     }), session);
     const deathAgeField = {
@@ -76,8 +76,8 @@ function initializeCemeteryDatabase() {
         maximumLength: 3,
         orderNumber: 2
     };
-    addOccupancyTypeField(deathAgeField, session);
-    addOccupancyTypeField(Object.assign(deathAgeField, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    await addOccupancyTypeField(deathAgeField, session);
+    await addOccupancyTypeField(Object.assign(deathAgeField, { occupancyTypeId: cremationOccupancyTypeId }), session);
     const deathAgePeriod = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: 'Death Age Period',
@@ -88,8 +88,8 @@ function initializeCemeteryDatabase() {
         maximumLength: 10,
         orderNumber: 3
     };
-    addOccupancyTypeField(deathAgePeriod, session);
-    addOccupancyTypeField(Object.assign(deathAgePeriod, {
+    await addOccupancyTypeField(deathAgePeriod, session);
+    await addOccupancyTypeField(Object.assign(deathAgePeriod, {
         occupancyTypeId: cremationOccupancyTypeId
     }), session);
     const deathPlace = {
@@ -102,8 +102,8 @@ function initializeCemeteryDatabase() {
         maximumLength: 100,
         orderNumber: 4
     };
-    addOccupancyTypeField(deathPlace, session);
-    addOccupancyTypeField(Object.assign(deathPlace, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    await addOccupancyTypeField(deathPlace, session);
+    await addOccupancyTypeField(Object.assign(deathPlace, { occupancyTypeId: cremationOccupancyTypeId }), session);
     const funeralHome = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: 'Funeral Home',
@@ -114,8 +114,8 @@ function initializeCemeteryDatabase() {
         maximumLength: 100,
         orderNumber: 10
     };
-    addOccupancyTypeField(funeralHome, session);
-    addOccupancyTypeField(Object.assign(funeralHome, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    await addOccupancyTypeField(funeralHome, session);
+    await addOccupancyTypeField(Object.assign(funeralHome, { occupancyTypeId: cremationOccupancyTypeId }), session);
     const funeralDate = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: 'Funeral Date',
@@ -126,8 +126,8 @@ function initializeCemeteryDatabase() {
         maximumLength: 10,
         orderNumber: 11
     };
-    addOccupancyTypeField(funeralDate, session);
-    addOccupancyTypeField(Object.assign(funeralDate, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    await addOccupancyTypeField(funeralDate, session);
+    await addOccupancyTypeField(Object.assign(funeralDate, { occupancyTypeId: cremationOccupancyTypeId }), session);
     const containerType = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: 'Container Type',
@@ -138,8 +138,8 @@ function initializeCemeteryDatabase() {
         maximumLength: 100,
         orderNumber: 20
     };
-    addOccupancyTypeField(containerType, session);
-    addOccupancyTypeField(Object.assign(containerType, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    await addOccupancyTypeField(containerType, session);
+    await addOccupancyTypeField(Object.assign(containerType, { occupancyTypeId: cremationOccupancyTypeId }), session);
     const committalType = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: 'Committal Type',
@@ -150,12 +150,12 @@ function initializeCemeteryDatabase() {
         maximumLength: 100,
         orderNumber: 21
     };
-    addOccupancyTypeField(committalType, session);
-    addOccupancyTypeField(Object.assign(committalType, { occupancyTypeId: cremationOccupancyTypeId }), session);
-    addRecord('FeeCategories', 'Interment Rights', 1, session);
-    addRecord('FeeCategories', 'Cremation Services', 2, session);
-    addRecord('FeeCategories', 'Burial Charges', 3, session);
-    addRecord('FeeCategories', 'Disinterment of Human Remains', 4, session);
-    addRecord('FeeCategories', 'Additional Services', 4, session);
+    await addOccupancyTypeField(committalType, session);
+    await addOccupancyTypeField(Object.assign(committalType, { occupancyTypeId: cremationOccupancyTypeId }), session);
+    await addRecord('FeeCategories', 'Interment Rights', 1, session);
+    await addRecord('FeeCategories', 'Cremation Services', 2, session);
+    await addRecord('FeeCategories', 'Burial Charges', 3, session);
+    await addRecord('FeeCategories', 'Disinterment of Human Remains', 4, session);
+    await addRecord('FeeCategories', 'Additional Services', 4, session);
 }
-initializeCemeteryDatabase();
+await initializeCemeteryDatabase();

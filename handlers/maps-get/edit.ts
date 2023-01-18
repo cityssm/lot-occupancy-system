@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
 
@@ -8,8 +8,11 @@ import { getMapSVGs } from '../../helpers/functions.map.js'
 import { getLotTypeSummary } from '../../helpers/lotOccupancyDB/getLotTypeSummary.js'
 import { getLotStatusSummary } from '../../helpers/lotOccupancyDB/getLotStatusSummary.js'
 
-export const handler: RequestHandler = async (request, response) => {
-  const map = getMap(request.params.mapId)
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const map = await getMap(request.params.mapId)
 
   if (!map) {
     response.redirect(
@@ -21,11 +24,11 @@ export const handler: RequestHandler = async (request, response) => {
 
   const mapSVGs = await getMapSVGs()
 
-  const lotTypeSummary = getLotTypeSummary({
+  const lotTypeSummary = await getLotTypeSummary({
     mapId: map.mapId
   })
 
-  const lotStatusSummary = getLotStatusSummary({
+  const lotStatusSummary = await getLotStatusSummary({
     mapId: map.mapId
   })
 

@@ -1,10 +1,9 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js';
 import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js';
-export function addLotOccupancy(lotOccupancyForm, requestSession, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(databasePath);
+export async function addLotOccupancy(lotOccupancyForm, requestSession, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     const occupancyStartDate = dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyStartDateString);
     if (occupancyStartDate <= 0) {
@@ -25,7 +24,7 @@ export function addLotOccupancy(lotOccupancyForm, requestSession, connectedDatab
     for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
         const lotOccupancyFieldValue = lotOccupancyForm['lotOccupancyFieldValue_' + occupancyTypeFieldId];
         if (lotOccupancyFieldValue && lotOccupancyFieldValue !== '') {
-            addOrUpdateLotOccupancyField({
+            await addOrUpdateLotOccupancyField({
                 lotOccupancyId,
                 occupancyTypeFieldId,
                 lotOccupancyFieldValue
@@ -33,7 +32,7 @@ export function addLotOccupancy(lotOccupancyForm, requestSession, connectedDatab
         }
     }
     if (lotOccupancyForm.lotOccupantTypeId) {
-        addLotOccupancyOccupant({
+        await addLotOccupancyOccupant({
             lotOccupancyId,
             lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId,
             occupantName: lotOccupancyForm.occupantName,
@@ -48,7 +47,7 @@ export function addLotOccupancy(lotOccupancyForm, requestSession, connectedDatab
         }, requestSession, database);
     }
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return lotOccupancyId;
 }

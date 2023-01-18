@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { getNextWorkOrderNumber } from './getNextWorkOrderNumber.js'
 import { addWorkOrderLotOccupancy } from './addWorkOrderLotOccupancy.js'
@@ -21,18 +19,18 @@ interface AddWorkOrderForm {
   lotOccupancyId?: string
 }
 
-export function addWorkOrder(
+export async function addWorkOrder(
   workOrderForm: AddWorkOrderForm,
   requestSession: recordTypes.PartialSession
-): number {
-  const database = sqlite(databasePath)
+): Promise<number> {
+  const database = await acquireConnection()
 
   const rightNow = new Date()
 
   let workOrderNumber = workOrderForm.workOrderNumber
 
   if (!workOrderNumber) {
-    workOrderNumber = getNextWorkOrderNumber(database)
+    workOrderNumber = await getNextWorkOrderNumber(database)
   }
 
   const result = database
@@ -63,7 +61,7 @@ export function addWorkOrder(
   const workOrderId = result.lastInsertRowid as number
 
   if (workOrderForm.lotOccupancyId) {
-    addWorkOrderLotOccupancy(
+    await addWorkOrderLotOccupancy(
       {
         workOrderId,
         lotOccupancyId: workOrderForm.lotOccupancyId
@@ -73,7 +71,7 @@ export function addWorkOrder(
     )
   }
 
-  database.close()
+  database.release()
 
   return workOrderId
 }

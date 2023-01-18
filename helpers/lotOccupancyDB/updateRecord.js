@@ -1,5 +1,4 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
 const recordNameIdColumns = new Map();
 recordNameIdColumns.set('FeeCategories', ['feeCategory', 'feeCategoryId']);
@@ -11,18 +10,18 @@ recordNameIdColumns.set('WorkOrderMilestoneTypes', [
     'workOrderMilestoneTypeId'
 ]);
 recordNameIdColumns.set('WorkOrderTypes', ['workOrderType', 'workOrderTypeId']);
-export function updateRecord(recordTable, recordId, recordName, requestSession) {
-    const database = sqlite(databasePath);
+export async function updateRecord(recordTable, recordId, recordName, requestSession) {
+    const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update ${recordTable}
-                set ${recordNameIdColumns.get(recordTable)[0]} = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where recordDelete_timeMillis is null
-                and ${recordNameIdColumns.get(recordTable)[1]} = ?`)
+        set ${recordNameIdColumns.get(recordTable)[0]} = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where recordDelete_timeMillis is null
+        and ${recordNameIdColumns.get(recordTable)[1]} = ?`)
         .run(recordName, requestSession.user.userName, rightNowMillis, recordId);
-    database.close();
+    database.release();
     clearCacheByTableName(recordTable);
     return result.changes > 0;
 }

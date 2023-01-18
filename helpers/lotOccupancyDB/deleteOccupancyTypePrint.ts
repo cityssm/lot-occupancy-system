@@ -1,17 +1,15 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { clearCacheByTableName } from '../functions.cache.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function deleteOccupancyTypePrint(
+export async function deleteOccupancyTypePrint(
   occupancyTypeId: number | string,
   printEJS: string,
   requestSession: recordTypes.PartialSession
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
@@ -30,7 +28,7 @@ export function deleteOccupancyTypePrint(
       printEJS
     )
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('OccupancyTypePrints')
 

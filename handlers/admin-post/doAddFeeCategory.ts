@@ -1,18 +1,21 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { addRecord } from '../../helpers/lotOccupancyDB/addRecord.js'
 
 import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js'
 
-export const handler: RequestHandler = (request, response) => {
-  const feeCategoryId = addRecord(
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const feeCategoryId = await addRecord(
     'FeeCategories',
     request.body.feeCategory,
     request.body.orderNumber ?? -1,
     request.session
   )
 
-  const feeCategories = getFeeCategories(
+  const feeCategories = await getFeeCategories(
     {},
     {
       includeFees: true

@@ -1,3 +1,3 @@
-import sqlite from 'better-sqlite3';
-export declare function getOccupancyTypePrints(occupancyTypeId: number, connectedDatabase?: sqlite.Database): string[];
+import type { PoolConnection } from 'better-sqlite-pool';
+export declare function getOccupancyTypePrints(occupancyTypeId: number, connectedDatabase?: PoolConnection): Promise<string[]>;
 export default getOccupancyTypePrints;

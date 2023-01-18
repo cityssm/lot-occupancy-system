@@ -11,6 +11,6 @@ interface UpdateLotForm {
     lotTypeFieldIds?: string;
     [lotFieldValue_lotTypeFieldId: string]: unknown;
 }
-export declare function updateLot(lotForm: UpdateLotForm, requestSession: recordTypes.PartialSession): boolean;
-export declare function updateLotStatus(lotId: number | string, lotStatusId: number | string, requestSession: recordTypes.PartialSession): boolean;
+export declare function updateLot(lotForm: UpdateLotForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
+export declare function updateLotStatus(lotId: number | string, lotStatusId: number | string, requestSession: recordTypes.PartialSession): Promise<boolean>;
 export default updateLot;

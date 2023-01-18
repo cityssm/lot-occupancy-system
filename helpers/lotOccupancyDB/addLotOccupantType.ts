@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 import { clearCacheByTableName } from '../functions.cache.js'
@@ -11,21 +9,21 @@ interface AddLotOccupantTypeForm {
   orderNumber?: number
 }
 
-export function addLotOccupantType(
+export async function addLotOccupantType(
   lotOccupantTypeForm: AddLotOccupantTypeForm,
   requestSession: recordTypes.PartialSession
-): number {
-  const database = sqlite(databasePath)
+): Promise<number> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
   const result = database
     .prepare(
       `insert into LotOccupantTypes (
-                lotOccupantType, fontAwesomeIconClass, orderNumber,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?, ?)`
+        lotOccupantType, fontAwesomeIconClass, orderNumber,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       lotOccupantTypeForm.lotOccupantType,
@@ -37,7 +35,7 @@ export function addLotOccupantType(
       rightNowMillis
     )
 
-  database.close()
+  database.release()
 
   clearCacheByTableName('LotOccupantTypes')
 

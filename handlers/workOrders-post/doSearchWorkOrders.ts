@@ -1,9 +1,12 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { getWorkOrders } from '../../helpers/lotOccupancyDB/getWorkOrders.js'
 
-export const handler: RequestHandler = (request, response) => {
-  const result = getWorkOrders(request.body, {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const result = await getWorkOrders(request.body, {
     limit: request.body.limit,
     offset: request.body.offset,
     includeLotsAndLotOccupancies: true

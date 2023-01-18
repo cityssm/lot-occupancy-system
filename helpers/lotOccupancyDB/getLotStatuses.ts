@@ -1,13 +1,11 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function getLotStatuses(): recordTypes.LotStatus[] {
-  const database = sqlite(databasePath)
+export async function getLotStatuses(): Promise<recordTypes.LotStatus[]> {
+  const database = await acquireConnection()
 
   const lotStatuses: recordTypes.LotStatus[] = database
     .prepare(
@@ -34,7 +32,7 @@ export function getLotStatuses(): recordTypes.LotStatus[] {
     expectedOrderNumber += 1
   }
 
-  database.close()
+  database.release()
 
   return lotStatuses
 }

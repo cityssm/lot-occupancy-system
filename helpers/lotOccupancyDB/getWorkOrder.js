@@ -1,5 +1,4 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateIntegerToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import { getLots } from './getLots.js';
 import { getLotOccupancies } from './getLotOccupancies.js';
@@ -14,36 +13,36 @@ const baseSQL = `select w.workOrderId,
     from WorkOrders w
     left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
     where w.recordDelete_timeMillis is null`;
-function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connectedDatabase) {
-    const database = connectedDatabase ??
-        sqlite(databasePath, {
-            readonly: true
-        });
+async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const workOrder = database
         .prepare(sql)
         .get(workOrderIdOrWorkOrderNumber);
     if (workOrder) {
         if (options.includeLotsAndLotOccupancies) {
-            workOrder.workOrderLots = getLots({
+            const workOrderLotsResults = await getLots({
                 workOrderId: workOrder.workOrderId
             }, {
                 limit: -1,
                 offset: 0
-            }, database).lots;
-            workOrder.workOrderLotOccupancies = getLotOccupancies({
+            }, database);
+            workOrder.workOrderLots = workOrderLotsResults.lots;
+            const workOrderLotOccupanciesResults = await getLotOccupancies({
                 workOrderId: workOrder.workOrderId
             }, {
                 limit: -1,
                 offset: 0,
                 includeOccupants: true
-            }, database).lotOccupancies;
+            }, database);
+            workOrder.workOrderLotOccupancies =
+                workOrderLotOccupanciesResults.lotOccupancies;
         }
         if (options.includeComments) {
-            workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId, database);
+            workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);
         }
         if (options.includeMilestones) {
-            workOrder.workOrderMilestones = getWorkOrderMilestones({
+            workOrder.workOrderMilestones = await getWorkOrderMilestones({
                 workOrderId: workOrder.workOrderId
             }, {
                 includeWorkOrders: false,
@@ -52,18 +51,18 @@ function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connectedData
         }
     }
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return workOrder;
 }
-export function getWorkOrderByWorkOrderNumber(workOrderNumber) {
-    return _getWorkOrder(baseSQL + ' and w.workOrderNumber = ?', workOrderNumber, {
+export async function getWorkOrderByWorkOrderNumber(workOrderNumber) {
+    return await _getWorkOrder(baseSQL + ' and w.workOrderNumber = ?', workOrderNumber, {
         includeLotsAndLotOccupancies: true,
         includeComments: true,
         includeMilestones: true
     });
 }
-export function getWorkOrder(workOrderId, options, connectedDatabase) {
-    return _getWorkOrder(baseSQL + ' and w.workOrderId = ?', workOrderId, options, connectedDatabase);
+export async function getWorkOrder(workOrderId, options, connectedDatabase) {
+    return await _getWorkOrder(baseSQL + ' and w.workOrderId = ?', workOrderId, options, connectedDatabase);
 }
 export default getWorkOrder;

@@ -1,8 +1,8 @@
 import { addRecord } from '../../helpers/lotOccupancyDB/addRecord.js';
 import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js';
-export const handler = (request, response) => {
-    const feeCategoryId = addRecord('FeeCategories', request.body.feeCategory, request.body.orderNumber ?? -1, request.session);
-    const feeCategories = getFeeCategories({}, {
+export async function handler(request, response) {
+    const feeCategoryId = await addRecord('FeeCategories', request.body.feeCategory, request.body.orderNumber ?? -1, request.session);
+    const feeCategories = await getFeeCategories({}, {
         includeFees: true
     });
     response.json({
@@ -10,5 +10,5 @@ export const handler = (request, response) => {
         feeCategoryId,
         feeCategories
     });
-};
+}
 export default handler;

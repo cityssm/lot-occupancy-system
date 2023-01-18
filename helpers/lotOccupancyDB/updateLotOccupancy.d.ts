@@ -8,5 +8,5 @@ interface UpdateLotOccupancyForm {
     occupancyTypeFieldIds?: string;
     [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown;
 }
-export declare function updateLotOccupancy(lotOccupancyForm: UpdateLotOccupancyForm, requestSession: recordTypes.PartialSession): boolean;
+export declare function updateLotOccupancy(lotOccupancyForm: UpdateLotOccupancyForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
 export default updateLotOccupancy;

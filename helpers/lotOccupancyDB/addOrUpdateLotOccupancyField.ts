@@ -1,6 +1,5 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import type * as recordTypes from '../../types/recordTypes'
 
@@ -10,12 +9,12 @@ interface LotOccupancyFieldForm {
   lotOccupancyFieldValue: string
 }
 
-export function addOrUpdateLotOccupancyField(
+export async function addOrUpdateLotOccupancyField(
   lotOccupancyFieldForm: LotOccupancyFieldForm,
   requestSession: recordTypes.PartialSession,
-  connectedDatabase?: sqlite.Database
-): boolean {
-  const database = connectedDatabase ?? sqlite(databasePath)
+  connectedDatabase?: PoolConnection
+): Promise<boolean> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   const rightNowMillis = Date.now()
 
@@ -59,7 +58,7 @@ export function addOrUpdateLotOccupancyField(
   }
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return result.changes > 0

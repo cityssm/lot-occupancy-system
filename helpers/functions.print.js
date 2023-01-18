@@ -44,13 +44,13 @@ export function getPrintConfig(screenOrPdfPrintName) {
     }
     return undefined;
 }
-export function getReportData(printConfig, requestQuery) {
+export async function getReportData(printConfig, requestQuery) {
     const reportData = {
         headTitle: printConfig.title
     };
     if (printConfig.params.includes('lotOccupancyId') &&
         typeof requestQuery.lotOccupancyId === 'string') {
-        const lotOccupancy = getLotOccupancy(requestQuery.lotOccupancyId);
+        const lotOccupancy = await getLotOccupancy(requestQuery.lotOccupancyId);
         if (lotOccupancy?.lotId) {
             reportData.lot = getLot(lotOccupancy.lotId);
         }

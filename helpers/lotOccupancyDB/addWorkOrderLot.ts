@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
@@ -9,11 +7,11 @@ interface AddWorkOrderLotForm {
   lotId: number | string
 }
 
-export function addWorkOrderLot(
+export async function addWorkOrderLot(
   workOrderLotForm: AddWorkOrderLotForm,
   requestSession: recordTypes.PartialSession
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
@@ -68,7 +66,7 @@ export function addWorkOrderLot(
       )
   }
 
-  database.close()
+  database.release()
 
   return true
 }

@@ -1,6 +1,5 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
@@ -31,12 +30,12 @@ interface AddLotOccupancyForm {
   occupantComment?: string
 }
 
-export function addLotOccupancy(
+export async function addLotOccupancy(
   lotOccupancyForm: AddLotOccupancyForm,
   requestSession: recordTypes.PartialSession,
-  connectedDatabase?: sqlite.Database
-): number {
-  const database = connectedDatabase ?? sqlite(databasePath)
+  connectedDatabase?: PoolConnection
+): Promise<number> {
+  const database = connectedDatabase ?? (await acquireConnection())
 
   const rightNowMillis = Date.now()
 
@@ -85,7 +84,7 @@ export function addLotOccupancy(
     ] as string
 
     if (lotOccupancyFieldValue && lotOccupancyFieldValue !== '') {
-      addOrUpdateLotOccupancyField(
+      await addOrUpdateLotOccupancyField(
         {
           lotOccupancyId,
           occupancyTypeFieldId,
@@ -98,7 +97,7 @@ export function addLotOccupancy(
   }
 
   if (lotOccupancyForm.lotOccupantTypeId) {
-    addLotOccupancyOccupant(
+    await addLotOccupancyOccupant(
       {
         lotOccupancyId,
         lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId,
@@ -118,7 +117,7 @@ export function addLotOccupancy(
   }
 
   if (connectedDatabase === undefined) {
-    database.close()
+    database.release()
   }
 
   return lotOccupancyId

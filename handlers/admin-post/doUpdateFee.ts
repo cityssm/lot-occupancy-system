@@ -1,13 +1,16 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { updateFee } from '../../helpers/lotOccupancyDB/updateFee.js'
 
 import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js'
 
-export const handler: RequestHandler = (request, response) => {
-  const success = updateFee(request.body, request.session)
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const success = await updateFee(request.body, request.session)
 
-  const feeCategories = getFeeCategories(
+  const feeCategories = await getFeeCategories(
     {},
     {
       includeFees: true

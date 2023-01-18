@@ -1,9 +1,6 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function getLotTypeSummary(filters) {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+import { acquireConnection } from './pool.js';
+export async function getLotTypeSummary(filters) {
+    const database = await acquireConnection();
     let sqlWhereClause = ' where l.recordDelete_timeMillis is null';
     const sqlParameters = [];
     if (filters?.mapId) {
@@ -18,7 +15,7 @@ export function getLotTypeSummary(filters) {
         ' group by t.lotTypeId, t.lotType, t.orderNumber' +
         ' order by t.orderNumber')
         .all(sqlParameters);
-    database.close();
+    database.release();
     return lotTypes;
 }
 export default getLotTypeSummary;

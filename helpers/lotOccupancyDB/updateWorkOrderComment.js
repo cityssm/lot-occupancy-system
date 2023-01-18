@@ -1,9 +1,8 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
-export function updateWorkOrderComment(commentForm, requestSession) {
+export async function updateWorkOrderComment(commentForm, requestSession) {
     const rightNowMillis = Date.now();
-    const database = sqlite(databasePath);
+    const database = await acquireConnection();
     const result = database
         .prepare(`update WorkOrderComments
         set workOrderCommentDate = ?,
@@ -14,7 +13,7 @@ export function updateWorkOrderComment(commentForm, requestSession) {
         where recordDelete_timeMillis is null
         and workOrderCommentId = ?`)
         .run(dateStringToInteger(commentForm.workOrderCommentDateString), timeStringToInteger(commentForm.workOrderCommentTimeString), commentForm.workOrderComment, requestSession.user.userName, rightNowMillis, commentForm.workOrderCommentId);
-    database.close();
+    database.release();
     return result.changes > 0;
 }
 export default updateWorkOrderComment;

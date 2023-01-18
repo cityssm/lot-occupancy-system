@@ -1,5 +1,4 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { getLotFields } from './getLotFields.js';
 import { getLotComments } from './getLotComments.js';
 import { getLotOccupancies } from './getLotOccupancies.js';
@@ -11,29 +10,28 @@ const baseSQL = `select l.lotId, l.lotTypeId, t.lotType, l.lotName, l.lotStatusI
     left join LotStatuses s on l.lotStatusId = s.lotStatusId
     left join Maps m on l.mapId = m.mapId
     where l.recordDelete_timeMillis is null`;
-function _getLot(sql, lotIdOrLotName) {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+async function _getLot(sql, lotIdOrLotName) {
+    const database = await acquireConnection();
     const lot = database.prepare(sql).get(lotIdOrLotName);
     if (lot) {
-        lot.lotOccupancies = getLotOccupancies({
+        const lotOccupancies = await getLotOccupancies({
             lotId: lot.lotId
         }, {
             includeOccupants: true,
             limit: -1,
             offset: 0
-        }, database).lotOccupancies;
-        lot.lotFields = getLotFields(lot.lotId, database);
-        lot.lotComments = getLotComments(lot.lotId, database);
+        }, database);
+        lot.lotOccupancies = lotOccupancies.lotOccupancies;
+        lot.lotFields = await getLotFields(lot.lotId, database);
+        lot.lotComments = await getLotComments(lot.lotId, database);
     }
-    database.close();
+    database.release();
     return lot;
 }
-export function getLotByLotName(lotName) {
-    return _getLot(baseSQL + ' and l.lotName = ?', lotName);
+export async function getLotByLotName(lotName) {
+    return await _getLot(baseSQL + ' and l.lotName = ?', lotName);
 }
-export function getLot(lotId) {
-    return _getLot(baseSQL + ' and l.lotId = ?', lotId);
+export async function getLot(lotId) {
+    return await _getLot(baseSQL + ' and l.lotId = ?', lotId);
 }
 export default getLot;

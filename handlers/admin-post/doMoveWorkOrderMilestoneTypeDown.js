@@ -1,13 +1,13 @@
 import { moveRecordDown, moveRecordDownToBottom } from '../../helpers/lotOccupancyDB/moveRecord.js';
 import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js';
-export const handler = (request, response) => {
+export async function handler(request, response) {
     const success = request.body.moveToEnd === '1'
-        ? moveRecordDownToBottom('WorkOrderMilestoneTypes', request.body.workOrderMilestoneTypeId)
-        : moveRecordDown('WorkOrderMilestoneTypes', request.body.workOrderMilestoneTypeId);
-    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+        ? await moveRecordDownToBottom('WorkOrderMilestoneTypes', request.body.workOrderMilestoneTypeId)
+        : await moveRecordDown('WorkOrderMilestoneTypes', request.body.workOrderMilestoneTypeId);
+    const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
     response.json({
         success,
         workOrderMilestoneTypes
     });
-};
+}
 export default handler;

@@ -1,13 +1,15 @@
-import sqlite from 'better-sqlite3'
+/* eslint-disable @typescript-eslint/indent */
 
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export function getLotOccupantTypes(): recordTypes.LotOccupantType[] {
-  const database = sqlite(databasePath)
+export async function getLotOccupantTypes(): Promise<
+  recordTypes.LotOccupantType[]
+> {
+  const database = await acquireConnection()
 
   const lotOccupantTypes: recordTypes.LotOccupantType[] = database
     .prepare(
@@ -35,7 +37,7 @@ export function getLotOccupantTypes(): recordTypes.LotOccupantType[] {
     expectedOrderNumber += 1
   }
 
-  database.close()
+  database.release()
 
   return lotOccupantTypes
 }

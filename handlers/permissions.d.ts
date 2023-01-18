@@ -1,6 +1,6 @@
-import type { RequestHandler } from 'express';
-export declare const adminGetHandler: RequestHandler;
-export declare const adminPostHandler: RequestHandler;
-export declare const updateGetHandler: RequestHandler;
-export declare const updatePostHandler: RequestHandler;
-export declare const apiGetHandler: RequestHandler;
+import type { Request, Response, NextFunction } from 'express';
+export declare function adminGetHandler(request: Request, response: Response, next: NextFunction): void;
+export declare function adminPostHandler(request: Request, response: Response, next: NextFunction): void;
+export declare function updateGetHandler(request: Request, response: Response, next: NextFunction): void;
+export declare function updatePostHandler(request: Request, response: Response, next: NextFunction): void;
+export declare function apiGetHandler(request: Request, response: Response, next: NextFunction): Promise<void>;

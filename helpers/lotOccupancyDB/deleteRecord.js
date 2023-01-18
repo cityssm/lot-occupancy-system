@@ -1,5 +1,4 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
 const recordIdColumns = new Map();
 recordIdColumns.set('FeeCategories', 'feeCategoryId');
@@ -40,8 +39,8 @@ relatedTables.set('WorkOrders', [
     'WorkOrderLotOccupancies',
     'WorkOrderComments'
 ]);
-export function deleteRecord(recordTable, recordId, requestSession) {
-    const database = sqlite(databasePath);
+export async function deleteRecord(recordTable, recordId, requestSession) {
+    const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update ${recordTable}
@@ -59,7 +58,7 @@ export function deleteRecord(recordTable, recordId, requestSession) {
           and recordDelete_timeMillis is null`)
             .run(requestSession.user.userName, rightNowMillis, recordId);
     }
-    database.close();
+    database.release();
     clearCacheByTableName(recordTable);
     return result.changes > 0;
 }

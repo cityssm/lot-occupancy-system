@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 
 import * as configFunctions from '../helpers/functions.config.js'
 
@@ -15,7 +15,11 @@ const forbiddenJSON = {
 
 const forbiddenRedirectURL = urlPrefix + '/dashboard/?error=accessDenied'
 
-export const adminGetHandler: RequestHandler = (request, response, next) => {
+export function adminGetHandler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): void {
   if (userFunctions.userIsAdmin(request)) {
     next()
     return
@@ -24,16 +28,24 @@ export const adminGetHandler: RequestHandler = (request, response, next) => {
   response.redirect(forbiddenRedirectURL)
 }
 
-export const adminPostHandler: RequestHandler = (request, response, next) => {
+export function adminPostHandler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): void {
   if (userFunctions.userIsAdmin(request)) {
     next()
     return
   }
 
-  return response.status(forbiddenStatus).json(forbiddenJSON)
+  response.status(forbiddenStatus).json(forbiddenJSON)
 }
 
-export const updateGetHandler: RequestHandler = (request, response, next) => {
+export function updateGetHandler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): void {
   if (userFunctions.userCanUpdate(request)) {
     next()
     return
@@ -42,24 +54,27 @@ export const updateGetHandler: RequestHandler = (request, response, next) => {
   response.redirect(forbiddenRedirectURL)
 }
 
-export const updatePostHandler: RequestHandler = (request, response, next) => {
+export function updatePostHandler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): void {
   if (userFunctions.userCanUpdate(request)) {
     next()
     return
   }
 
-  return response.status(forbiddenStatus).json(forbiddenJSON)
+  response.status(forbiddenStatus).json(forbiddenJSON)
 }
 
-export const apiGetHandler: RequestHandler = async (
-  request,
-  response,
-  next
-) => {
+export async function apiGetHandler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> {
   if (await userFunctions.apiKeyIsValid(request)) {
     next()
-    return
+  } else {
+    response.redirect(urlPrefix + '/login')
   }
-
-  response.redirect(urlPrefix + '/login')
 }

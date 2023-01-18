@@ -1,13 +1,16 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
 
 import { getPreviousLotId } from '../../helpers/lotOccupancyDB/getPreviousLotId.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const lotId = request.params.lotId
 
-  const previousLotId = getPreviousLotId(lotId)
+  const previousLotId = await getPreviousLotId(lotId)
 
   if (!previousLotId) {
     response.redirect(

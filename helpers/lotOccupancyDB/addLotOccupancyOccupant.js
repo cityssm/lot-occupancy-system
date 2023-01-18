@@ -1,14 +1,13 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
-export function addLotOccupancyOccupant(lotOccupancyOccupantForm, requestSession, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(databasePath);
+import { acquireConnection } from './pool.js';
+export async function addLotOccupancyOccupant(lotOccupancyOccupantForm, requestSession, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     let lotOccupantIndex = 0;
     const maxIndexResult = database
         .prepare(`select lotOccupantIndex
-                from LotOccupancyOccupants
-                where lotOccupancyId = ?
-                order by lotOccupantIndex desc
-                limit 1`)
+        from LotOccupancyOccupants
+        where lotOccupancyId = ?
+        order by lotOccupantIndex desc
+        limit 1`)
         .get(lotOccupancyOccupantForm.lotOccupancyId);
     if (maxIndexResult) {
         lotOccupantIndex = maxIndexResult.lotOccupantIndex + 1;
@@ -16,19 +15,19 @@ export function addLotOccupancyOccupant(lotOccupancyOccupantForm, requestSession
     const rightNowMillis = Date.now();
     database
         .prepare(`insert into LotOccupancyOccupants (
-                lotOccupancyId, lotOccupantIndex,
-                occupantName,
-                occupantAddress1, occupantAddress2,
-                occupantCity, occupantProvince, occupantPostalCode,
-                occupantPhoneNumber, occupantEmailAddress,
-                occupantComment,
-                lotOccupantTypeId,
-                recordCreate_userName, recordCreate_timeMillis,
-                recordUpdate_userName, recordUpdate_timeMillis)
-                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+        lotOccupancyId, lotOccupantIndex,
+        occupantName,
+        occupantAddress1, occupantAddress2,
+        occupantCity, occupantProvince, occupantPostalCode,
+        occupantPhoneNumber, occupantEmailAddress,
+        occupantComment,
+        lotOccupantTypeId,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(lotOccupancyOccupantForm.lotOccupancyId, lotOccupantIndex, lotOccupancyOccupantForm.occupantName, lotOccupancyOccupantForm.occupantAddress1, lotOccupancyOccupantForm.occupantAddress2, lotOccupancyOccupantForm.occupantCity, lotOccupancyOccupantForm.occupantProvince, lotOccupancyOccupantForm.occupantPostalCode, lotOccupancyOccupantForm.occupantPhoneNumber, lotOccupancyOccupantForm.occupantEmailAddress, lotOccupancyOccupantForm.occupantComment ?? '', lotOccupancyOccupantForm.lotOccupantTypeId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {
-        database.close();
+        database.release();
     }
     return lotOccupantIndex;
 }

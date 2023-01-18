@@ -1,10 +1,9 @@
-import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js';
+import { acquireConnection } from './pool.js';
 import { getOccupancyTypeFields } from './getOccupancyTypeFields.js';
 import { getOccupancyTypePrints } from './getOccupancyTypePrints.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export function getOccupancyTypes() {
-    const database = sqlite(databasePath);
+export async function getOccupancyTypes() {
+    const database = await acquireConnection();
     const occupancyTypes = database
         .prepare(`select occupancyTypeId, occupancyType, orderNumber
         from OccupancyTypes
@@ -18,10 +17,10 @@ export function getOccupancyTypes() {
             updateRecordOrderNumber('OccupancyTypes', occupancyType.occupancyTypeId, expectedTypeOrderNumber, database);
             occupancyType.orderNumber = expectedTypeOrderNumber;
         }
-        occupancyType.occupancyTypeFields = getOccupancyTypeFields(occupancyType.occupancyTypeId, database);
-        occupancyType.occupancyTypePrints = getOccupancyTypePrints(occupancyType.occupancyTypeId, database);
+        occupancyType.occupancyTypeFields = await getOccupancyTypeFields(occupancyType.occupancyTypeId, database);
+        occupancyType.occupancyTypePrints = await getOccupancyTypePrints(occupancyType.occupancyTypeId, database);
     }
-    database.close();
+    database.release();
     return occupancyTypes;
 }
 export default getOccupancyTypes;

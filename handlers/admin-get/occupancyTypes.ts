@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
 import * as printFunctions from '../../helpers/functions.print.js'
@@ -8,9 +8,12 @@ import {
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
 
-export const handler: RequestHandler = (_request, response) => {
-  const occupancyTypes = getOccupancyTypes()
-  const allOccupancyTypeFields = getAllOccupancyTypeFields()
+export async function handler(
+  _request: Request,
+  response: Response
+): Promise<void> {
+  const occupancyTypes = await getOccupancyTypes()
+  const allOccupancyTypeFields = await getAllOccupancyTypeFields()
 
   const occupancyTypePrints = configFunctions.getProperty(
     'settings.lotOccupancy.prints'

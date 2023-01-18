@@ -1,6 +1,4 @@
-import sqlite from 'better-sqlite3'
-
-import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
+import { acquireConnection } from './pool.js'
 
 import { clearCacheByTableName } from '../functions.cache.js'
 
@@ -25,28 +23,28 @@ recordNameIdColumns.set('WorkOrderMilestoneTypes', [
 ])
 recordNameIdColumns.set('WorkOrderTypes', ['workOrderType', 'workOrderTypeId'])
 
-export function updateRecord(
+export async function updateRecord(
   recordTable: RecordTable,
   recordId: number | string,
   recordName: string,
   requestSession: recordTypes.PartialSession
-): boolean {
-  const database = sqlite(databasePath)
+): Promise<boolean> {
+  const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
 
   const result = database
     .prepare(
       `update ${recordTable}
-                set ${recordNameIdColumns.get(recordTable)![0]} = ?,
-                recordUpdate_userName = ?,
-                recordUpdate_timeMillis = ?
-                where recordDelete_timeMillis is null
-                and ${recordNameIdColumns.get(recordTable)![1]} = ?`
+        set ${recordNameIdColumns.get(recordTable)![0]} = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where recordDelete_timeMillis is null
+        and ${recordNameIdColumns.get(recordTable)![1]} = ?`
     )
     .run(recordName, requestSession.user!.userName, rightNowMillis, recordId)
 
-  database.close()
+  database.release()
 
   clearCacheByTableName(recordTable)
 

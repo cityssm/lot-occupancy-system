@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
 import {
@@ -6,7 +6,10 @@ import {
   getScreenPrintConfig
 } from '../../helpers/functions.print.js'
 
-export const handler: RequestHandler = (request, response) => {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const printName = request.params.printName
 
   if (
@@ -34,7 +37,7 @@ export const handler: RequestHandler = (request, response) => {
     return
   }
 
-  const reportData = getReportData(printConfig, request.query)
+  const reportData = await getReportData(printConfig, request.query)
 
   response.render('print/screen/' + printName, reportData)
 }
