@@ -19,7 +19,7 @@ export function getLotOccupancyComments(lotOccupancyId, connectedDatabase) {
         and lotOccupancyId = ?
         order by lotOccupancyCommentDate desc, lotOccupancyCommentTime desc, lotOccupancyCommentId desc`)
         .all(lotOccupancyId);
-    if (!connectedDatabase) {
+    if (connectedDatabase === null) {
         database.close();
     }
     return lotComments;

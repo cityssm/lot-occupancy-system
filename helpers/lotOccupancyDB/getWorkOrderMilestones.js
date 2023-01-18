@@ -122,7 +122,7 @@ export function getWorkOrderMilestones(filters, options, connectedDatabase) {
             }, database).lotOccupancies;
         }
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return workOrderMilestones;

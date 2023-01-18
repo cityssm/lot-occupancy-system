@@ -10,7 +10,7 @@ export function deleteLotOccupancyField(lotOccupancyId, occupancyTypeFieldId, re
         where lotOccupancyId = ?
         and occupancyTypeFieldId = ?`)
         .run(requestSession.user.userName, rightNowMillis, lotOccupancyId, occupancyTypeFieldId);
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return result.changes > 0;

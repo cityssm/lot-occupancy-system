@@ -77,7 +77,7 @@ export function getLotOccupancy(
     ).workOrders
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

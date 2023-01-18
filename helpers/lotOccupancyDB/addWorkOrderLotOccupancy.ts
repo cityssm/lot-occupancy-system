@@ -72,7 +72,7 @@ export function addWorkOrderLotOccupancy(
       )
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

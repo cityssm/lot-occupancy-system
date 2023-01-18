@@ -34,7 +34,7 @@ export function getFee(
     )
     .get(feeId)
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

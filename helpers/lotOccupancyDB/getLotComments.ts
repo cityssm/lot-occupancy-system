@@ -36,7 +36,7 @@ export function getLotComments(
     )
     .all(lotId)
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

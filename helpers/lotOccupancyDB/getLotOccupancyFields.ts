@@ -42,7 +42,7 @@ export function getLotOccupancyFields(
     )
     .all(lotOccupancyId, lotOccupancyId, lotOccupancyId, lotOccupancyId)
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

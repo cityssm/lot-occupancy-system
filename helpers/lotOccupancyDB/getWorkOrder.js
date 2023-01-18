@@ -51,7 +51,7 @@ function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connectedData
             }, database);
         }
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return workOrder;

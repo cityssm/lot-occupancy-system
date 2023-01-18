@@ -45,7 +45,7 @@ export function getLotFields(
     )
     .all(lotId, lotId, lotId, lotId)
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

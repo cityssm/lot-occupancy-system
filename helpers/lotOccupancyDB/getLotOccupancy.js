@@ -41,7 +41,7 @@ export function getLotOccupancy(lotOccupancyId, connectedDatabase) {
             offset: 0
         }, database).workOrders;
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return lotOccupancy;

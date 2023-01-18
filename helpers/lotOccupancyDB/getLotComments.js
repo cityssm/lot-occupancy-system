@@ -19,7 +19,7 @@ export function getLotComments(lotId, connectedDatabase) {
         and lotId = ?
         order by lotCommentDate desc, lotCommentTime desc, lotCommentId desc`)
         .all(lotId);
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return lotComments;

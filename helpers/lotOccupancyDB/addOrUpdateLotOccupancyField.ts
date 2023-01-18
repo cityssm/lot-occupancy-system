@@ -58,7 +58,7 @@ export function addOrUpdateLotOccupancyField(
       )
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

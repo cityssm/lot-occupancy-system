@@ -33,7 +33,7 @@ export function getOccupancyTypePrints(occupancyTypeId, connectedDatabase) {
         }
         prints.push(result.printEJS);
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return prints;

@@ -95,7 +95,7 @@ function _getWorkOrder(
     }
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

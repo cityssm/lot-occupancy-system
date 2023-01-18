@@ -58,7 +58,7 @@ export function addOrUpdateLotField(
       )
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

@@ -19,7 +19,7 @@ export function getWorkOrderComments(workOrderId, connectedDatabase) {
         and workOrderId = ?
         order by workOrderCommentDate desc, workOrderCommentTime desc, workOrderCommentId desc`)
         .all(workOrderId);
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return workOrderComments;

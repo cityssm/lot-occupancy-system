@@ -10,7 +10,7 @@ export function deleteLotField(lotId, lotTypeFieldId, requestSession, connectedD
         where lotId = ?
         and lotTypeFieldId = ?`)
         .run(requestSession.user.userName, rightNowMillis, lotId, lotTypeFieldId);
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return result.changes > 0;

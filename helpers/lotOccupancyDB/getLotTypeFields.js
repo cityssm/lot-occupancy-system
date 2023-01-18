@@ -20,7 +20,7 @@ export function getLotTypeFields(lotTypeId, connectedDatabase) {
         }
         expectedOrderNumber += 1;
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return lotTypeFields;

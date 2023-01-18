@@ -33,7 +33,7 @@ export function getLotFields(lotId, connectedDatabase) {
         and f.lotTypeFieldId not in (select lotTypeFieldId from LotFields where lotId = ? and recordDelete_timeMillis is null)
         order by lotTypeOrderNumber, f.orderNumber, f.lotTypeField`)
         .all(lotId, lotId, lotId, lotId);
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return lotFields;

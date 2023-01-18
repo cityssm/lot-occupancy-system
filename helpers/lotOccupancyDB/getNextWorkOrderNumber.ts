@@ -35,7 +35,7 @@ export function getNextWorkOrderNumber(
     )
     .get()
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

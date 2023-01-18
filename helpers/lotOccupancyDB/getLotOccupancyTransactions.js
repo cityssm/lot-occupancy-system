@@ -18,7 +18,7 @@ export function getLotOccupancyTransactions(lotOccupancyId, connectedDatabase) {
           and lotOccupancyId = ?
           order by transactionDate, transactionTime, transactionIndex`)
         .all(lotOccupancyId);
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return lotOccupancyTransactions;

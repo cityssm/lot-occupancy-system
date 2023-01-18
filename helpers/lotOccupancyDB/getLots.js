@@ -92,7 +92,7 @@ export function getLots(filters, options, connectedDatabase) {
             count = lots.length;
         }
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return {

@@ -36,7 +36,7 @@ export function getWorkOrderComments(
     )
     .all(workOrderId)
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

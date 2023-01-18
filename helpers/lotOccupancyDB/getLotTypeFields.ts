@@ -40,7 +40,7 @@ export function getLotTypeFields(
     expectedOrderNumber += 1
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

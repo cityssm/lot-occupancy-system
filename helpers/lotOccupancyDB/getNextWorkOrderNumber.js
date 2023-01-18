@@ -17,7 +17,7 @@ export function getNextWorkOrderNumber(connectedDatabase) {
         ' where userFn_matchesWorkOrderNumberSyntax(workOrderNumber) = 1' +
         " order by cast(substr(workOrderNumber, instr(workOrderNumber, '-') + 1) as integer) desc")
         .get();
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     let workOrderNumberIndex = 0;

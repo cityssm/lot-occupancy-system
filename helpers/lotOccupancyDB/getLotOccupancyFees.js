@@ -16,7 +16,7 @@ export function getLotOccupancyFees(lotOccupancyId, connectedDatabase) {
         and o.lotOccupancyId = ?
         order by o.recordCreate_timeMillis`)
         .all(lotOccupancyId);
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return lotOccupancyFees;

@@ -205,7 +205,7 @@ export function getWorkOrders(
     }
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

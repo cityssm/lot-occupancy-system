@@ -22,7 +22,7 @@ export function addOrUpdateLotField(lotFieldForm, requestSession, connectedDatab
                     values (?, ?, ?, ?, ?, ?, ?)`)
             .run(lotFieldForm.lotId, lotFieldForm.lotTypeFieldId, lotFieldForm.lotFieldValue, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return result.changes > 0;

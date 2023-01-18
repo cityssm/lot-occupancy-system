@@ -29,7 +29,7 @@ export function deleteLotOccupancyField(
       occupancyTypeFieldId
     )
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

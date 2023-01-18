@@ -33,7 +33,7 @@ export function addWorkOrderLotOccupancy(workOrderLotOccupancyForm, requestSessi
           values (?, ?, ?, ?, ?, ?)`)
             .run(workOrderLotOccupancyForm.workOrderId, workOrderLotOccupancyForm.lotOccupancyId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return true;

@@ -208,7 +208,7 @@ export function getWorkOrderMilestones(
     }
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

@@ -27,7 +27,7 @@ export function addLotOccupancyOccupant(lotOccupancyOccupantForm, requestSession
                 recordUpdate_userName, recordUpdate_timeMillis)
                 values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(lotOccupancyOccupantForm.lotOccupancyId, lotOccupantIndex, lotOccupancyOccupantForm.occupantName, lotOccupancyOccupantForm.occupantAddress1, lotOccupancyOccupantForm.occupantAddress2, lotOccupancyOccupantForm.occupantCity, lotOccupancyOccupantForm.occupantProvince, lotOccupancyOccupantForm.occupantPostalCode, lotOccupancyOccupantForm.occupantPhoneNumber, lotOccupancyOccupantForm.occupantEmailAddress, lotOccupancyOccupantForm.occupantComment ?? '', lotOccupancyOccupantForm.lotOccupantTypeId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return lotOccupantIndex;

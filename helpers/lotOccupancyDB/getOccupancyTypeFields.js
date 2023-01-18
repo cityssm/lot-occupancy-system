@@ -27,7 +27,7 @@ export function getOccupancyTypeFields(occupancyTypeId, connectedDatabase) {
         }
         expectedOrderNumber += 1;
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return occupancyTypeFields;

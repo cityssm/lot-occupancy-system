@@ -28,7 +28,7 @@ export function getLotOccupancyFees(
     )
     .all(lotOccupancyId)
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

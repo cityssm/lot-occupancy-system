@@ -20,7 +20,7 @@ export function getLotOccupancyOccupants(lotOccupancyId, connectedDatabase) {
         and o.lotOccupancyId = ?
         order by t.orderNumber, t.lotOccupantType, o.occupantName, o.lotOccupantIndex`)
         .all(lotOccupancyId);
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return lotOccupancyOccupants;

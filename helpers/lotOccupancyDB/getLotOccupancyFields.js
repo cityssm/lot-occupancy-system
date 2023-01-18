@@ -30,7 +30,7 @@ export function getLotOccupancyFields(lotOccupancyId, connectedDatabase) {
         and f.occupancyTypeFieldId not in (select occupancyTypeFieldId from LotOccupancyFields where lotOccupancyId = ? and recordDelete_timeMillis is null)
         order by occupancyTypeOrderNumber, f.orderNumber, f.occupancyTypeField`)
         .all(lotOccupancyId, lotOccupancyId, lotOccupancyId, lotOccupancyId);
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return lotOccupancyFields;

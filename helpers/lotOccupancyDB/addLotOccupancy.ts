@@ -117,7 +117,7 @@ export function addLotOccupancy(
     )
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

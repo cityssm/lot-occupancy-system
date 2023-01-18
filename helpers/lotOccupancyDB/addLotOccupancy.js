@@ -47,7 +47,7 @@ export function addLotOccupancy(lotOccupancyForm, requestSession, connectedDatab
             occupantComment: lotOccupancyForm.occupantComment
         }, requestSession, database);
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return lotOccupancyId;

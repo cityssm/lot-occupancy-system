@@ -112,7 +112,7 @@ export function getLotOccupancies(filters, options, connectedDatabase) {
             }
         }
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return {

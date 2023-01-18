@@ -207,7 +207,7 @@ export function getLotOccupancies(
     }
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

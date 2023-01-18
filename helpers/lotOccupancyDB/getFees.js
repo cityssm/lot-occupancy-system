@@ -49,7 +49,7 @@ export function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
             expectedOrderNumber += 1;
         }
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return fees;

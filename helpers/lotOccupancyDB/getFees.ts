@@ -86,7 +86,7 @@ export function getFees(
     }
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

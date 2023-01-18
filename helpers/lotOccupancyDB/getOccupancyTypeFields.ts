@@ -49,7 +49,7 @@ export function getOccupancyTypeFields(
     expectedOrderNumber += 1
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

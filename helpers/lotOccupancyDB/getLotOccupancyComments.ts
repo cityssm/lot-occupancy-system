@@ -36,7 +36,7 @@ export function getLotOccupancyComments(
     )
     .all(lotOccupancyId)
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === null) {
     database.close()
   }
 

@@ -76,7 +76,7 @@ export function addLotOccupancyOccupant(
       rightNowMillis
     )
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

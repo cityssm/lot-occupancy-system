@@ -22,7 +22,7 @@ export function getFee(feeId, connectedDatabase) {
         where f.recordDelete_timeMillis is null
         and f.feeId = ?`)
         .get(feeId);
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return fee;

@@ -24,7 +24,7 @@ export function deleteLotField(
     )
     .run(requestSession.user!.userName, rightNowMillis, lotId, lotTypeFieldId)
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

@@ -32,7 +32,7 @@ export function getLotOccupancyOccupants(
     )
     .all(lotOccupancyId)
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 

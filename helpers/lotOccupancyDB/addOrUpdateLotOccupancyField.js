@@ -22,7 +22,7 @@ export function addOrUpdateLotOccupancyField(lotOccupancyFieldForm, requestSessi
           values (?, ?, ?, ?, ?, ?, ?)`)
             .run(lotOccupancyFieldForm.lotOccupancyId, lotOccupancyFieldForm.occupancyTypeFieldId, lotOccupancyFieldForm.lotOccupancyFieldValue, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     }
-    if (!connectedDatabase) {
+    if (connectedDatabase === undefined) {
         database.close();
     }
     return result.changes > 0;

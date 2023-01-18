@@ -59,7 +59,7 @@ export function getOccupancyTypePrints(
     prints.push(result.printEJS)
   }
 
-  if (!connectedDatabase) {
+  if (connectedDatabase === undefined) {
     database.close()
   }
 
