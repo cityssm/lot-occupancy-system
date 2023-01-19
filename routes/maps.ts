@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { RequestHandler, Router } from 'express'
 
 import * as permissionHandlers from '../handlers/permissions.js'
 
@@ -14,30 +14,38 @@ import handler_doDeleteMap from '../handlers/maps-post/doDeleteMap.js'
 
 export const router = Router()
 
-router.get('/', handler_search)
+router.get('/', handler_search as RequestHandler)
 
-router.get('/new', permissionHandlers.updateGetHandler, handler_new)
+router.get(
+  '/new',
+  permissionHandlers.updateGetHandler,
+  handler_new as RequestHandler
+)
 
-router.get('/:mapId', handler_view)
+router.get('/:mapId', handler_view as RequestHandler)
 
-router.get('/:mapId/edit', permissionHandlers.updateGetHandler, handler_edit)
+router.get(
+  '/:mapId/edit',
+  permissionHandlers.updateGetHandler,
+  handler_edit as RequestHandler
+)
 
 router.post(
   '/doCreateMap',
   permissionHandlers.updatePostHandler,
-  handler_doCreateMap
+  handler_doCreateMap as RequestHandler
 )
 
 router.post(
   '/doUpdateMap',
   permissionHandlers.updatePostHandler,
-  handler_doUpdateMap
+  handler_doUpdateMap as RequestHandler
 )
 
 router.post(
   '/doDeleteMap',
   permissionHandlers.updatePostHandler,
-  handler_doDeleteMap
+  handler_doDeleteMap as RequestHandler
 )
 
 export default router

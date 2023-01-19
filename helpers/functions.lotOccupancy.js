@@ -12,10 +12,10 @@ export function getFieldValueByOccupancyTypeField(lotOccupancy, occupancyTypeFie
         return (possibleField.occupancyTypeField.toLowerCase() ===
             occupancyTypeFieldLowerCase);
     });
-    if (field) {
-        return field.lotOccupancyFieldValue;
+    if (field === undefined) {
+        return undefined;
     }
-    return undefined;
+    return field.lotOccupancyFieldValue;
 }
 export function getFeesByFeeCategory(lotOccupancy, feeCategory, feeCategoryContains = false) {
     const feeCategoryLowerCase = feeCategory.toLowerCase();

@@ -20,7 +20,7 @@ async function authenticateViaActiveDirectory(userName, password) {
     });
 }
 export async function authenticate(userName, password) {
-    if (!userName || userName === '' || !password || password === '') {
+    if ((userName ?? '') === '' || (password ?? '') === '') {
         return false;
     }
     return await authenticateViaActiveDirectory(userName, password);

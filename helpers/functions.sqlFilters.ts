@@ -53,36 +53,34 @@ export function getOccupancyTimeWhereClause(
   let sqlWhereClause = ''
   const sqlParameters: unknown[] = []
 
-  if (occupancyTime) {
-    const currentDateString = dateToInteger(new Date())
+  const currentDateString = dateToInteger(new Date())
 
-    switch (occupancyTime) {
-      case 'current': {
-        sqlWhereClause +=
-          ' and ' +
-          lotOccupanciesTableAlias +
-          '.occupancyStartDate <= ? and (' +
-          lotOccupanciesTableAlias +
-          '.occupancyEndDate is null or ' +
-          lotOccupanciesTableAlias +
-          '.occupancyEndDate >= ?)'
-        sqlParameters.push(currentDateString, currentDateString)
-        break
-      }
+  switch (occupancyTime ?? '') {
+    case 'current': {
+      sqlWhereClause +=
+        ' and ' +
+        lotOccupanciesTableAlias +
+        '.occupancyStartDate <= ? and (' +
+        lotOccupanciesTableAlias +
+        '.occupancyEndDate is null or ' +
+        lotOccupanciesTableAlias +
+        '.occupancyEndDate >= ?)'
+      sqlParameters.push(currentDateString, currentDateString)
+      break
+    }
 
-      case 'past': {
-        sqlWhereClause +=
-          ' and ' + lotOccupanciesTableAlias + '.occupancyEndDate < ?'
-        sqlParameters.push(currentDateString)
-        break
-      }
+    case 'past': {
+      sqlWhereClause +=
+        ' and ' + lotOccupanciesTableAlias + '.occupancyEndDate < ?'
+      sqlParameters.push(currentDateString)
+      break
+    }
 
-      case 'future': {
-        sqlWhereClause +=
-          ' and ' + lotOccupanciesTableAlias + '.occupancyStartDate > ?'
-        sqlParameters.push(currentDateString)
-        break
-      }
+    case 'future': {
+      sqlWhereClause +=
+        ' and ' + lotOccupanciesTableAlias + '.occupancyStartDate > ?'
+      sqlParameters.push(currentDateString)
+      break
     }
   }
 
@@ -102,7 +100,7 @@ export function getOccupantNameWhereClause(
   if (occupantName !== '') {
     const occupantNamePieces = occupantName.toLowerCase().split(' ')
     for (const occupantNamePiece of occupantNamePieces) {
-      sqlWhereClause += ' and instr(lower(' + tableAlias + '.occupantName), ?)'
+      sqlWhereClause += ` and instr(lower(${tableAlias}.occupantName), ?)`
       sqlParameters.push(occupantNamePiece)
     }
   }

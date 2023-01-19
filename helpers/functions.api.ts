@@ -29,7 +29,7 @@ async function saveApiKeys(): Promise<void> {
 }
 
 function generateApiKey(apiKeyPrefix: string): string {
-  return apiKeyPrefix + '-' + uuidv4() + '-' + Date.now()
+  return `${apiKeyPrefix}-${uuidv4()}-${Date.now()}`
 }
 
 export async function regenerateApiKey(userName: string): Promise<void> {
@@ -38,11 +38,11 @@ export async function regenerateApiKey(userName: string): Promise<void> {
 }
 
 export async function getApiKey(userName: string): Promise<string> {
-  if (!apiKeys) {
+  if (apiKeys === undefined) {
     await loadApiKeys()
   }
 
-  if (!apiKeys[userName]) {
+  if (!Object.hasOwn(apiKeys, userName)) {
     await regenerateApiKey(userName)
   }
 
@@ -58,7 +58,7 @@ export async function getApiKeyFromSession(
 export async function getUserNameFromApiKey(
   apiKey: string
 ): Promise<string | undefined> {
-  if (!apiKeys) {
+  if (apiKeys === undefined) {
     await loadApiKeys()
   }
 

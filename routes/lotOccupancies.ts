@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { RequestHandler, Router } from 'express'
 
 import handler_search from '../handlers/lotOccupancies-get/search.js'
 import handler_doSearchLotOccupancies from '../handlers/lotOccupancies-post/doSearchLotOccupancies.js'
@@ -36,54 +36,61 @@ export const router = Router()
 
 // Search
 
-router.get('/', handler_search)
+router.get('/', handler_search as RequestHandler)
 
-router.post('/doSearchLotOccupancies', handler_doSearchLotOccupancies)
+router.post(
+  '/doSearchLotOccupancies',
+  handler_doSearchLotOccupancies as RequestHandler
+)
 
 // Create
 
-router.get('/new', permissionHandlers.updateGetHandler, handler_new)
+router.get(
+  '/new',
+  permissionHandlers.updateGetHandler,
+  handler_new as RequestHandler
+)
 
 router.post(
   '/doGetOccupancyTypeFields',
   permissionHandlers.updatePostHandler,
-  handler_doGetOccupancyTypeFields
+  handler_doGetOccupancyTypeFields as RequestHandler
 )
 
 router.post(
   '/doCreateLotOccupancy',
   permissionHandlers.updatePostHandler,
-  handler_doCreateLotOccupancy
+  handler_doCreateLotOccupancy as RequestHandler
 )
 
 // View
 
-router.get('/:lotOccupancyId', handler_view)
+router.get('/:lotOccupancyId', handler_view as RequestHandler)
 
 // Edit
 
 router.get(
   '/:lotOccupancyId/edit',
   permissionHandlers.updateGetHandler,
-  handler_edit
+  handler_edit as RequestHandler
 )
 
 router.post(
   '/doUpdateLotOccupancy',
   permissionHandlers.updatePostHandler,
-  handler_doUpdateLotOccupancy
+  handler_doUpdateLotOccupancy as RequestHandler
 )
 
 router.post(
   '/doCopyLotOccupancy',
   permissionHandlers.updatePostHandler,
-  handler_doCopyLotOccupancy
+  handler_doCopyLotOccupancy as RequestHandler
 )
 
 router.post(
   '/doDeleteLotOccupancy',
   permissionHandlers.updatePostHandler,
-  handler_doDeleteLotOccupancy
+  handler_doDeleteLotOccupancy as RequestHandler
 )
 
 // Occupants
@@ -91,25 +98,25 @@ router.post(
 router.post(
   '/doSearchPastOccupants',
   permissionHandlers.updatePostHandler,
-  handler_doSearchPastOccupants
+  handler_doSearchPastOccupants as RequestHandler
 )
 
 router.post(
   '/doAddLotOccupancyOccupant',
   permissionHandlers.updatePostHandler,
-  handler_doAddLotOccupancyOccupant
+  handler_doAddLotOccupancyOccupant as RequestHandler
 )
 
 router.post(
   '/doUpdateLotOccupancyOccupant',
   permissionHandlers.updatePostHandler,
-  handler_doUpdateLotOccupancyOccupant
+  handler_doUpdateLotOccupancyOccupant as RequestHandler
 )
 
 router.post(
   '/doDeleteLotOccupancyOccupant',
   permissionHandlers.updatePostHandler,
-  handler_doDeleteLotOccupancyOccupant
+  handler_doDeleteLotOccupancyOccupant as RequestHandler
 )
 
 // Comments
@@ -117,19 +124,19 @@ router.post(
 router.post(
   '/doAddLotOccupancyComment',
   permissionHandlers.updatePostHandler,
-  handler_doAddLotOccupancyComment
+  handler_doAddLotOccupancyComment as RequestHandler
 )
 
 router.post(
   '/doUpdateLotOccupancyComment',
   permissionHandlers.updatePostHandler,
-  handler_doUpdateLotOccupancyComment
+  handler_doUpdateLotOccupancyComment as RequestHandler
 )
 
 router.post(
   '/doDeleteLotOccupancyComment',
   permissionHandlers.updatePostHandler,
-  handler_doDeleteLotOccupancyComment
+  handler_doDeleteLotOccupancyComment as RequestHandler
 )
 
 // Fees
@@ -137,19 +144,19 @@ router.post(
 router.post(
   '/doGetFees',
   permissionHandlers.updatePostHandler,
-  handler_doGetFees
+  handler_doGetFees as RequestHandler
 )
 
 router.post(
   '/doAddLotOccupancyFee',
   permissionHandlers.updatePostHandler,
-  handler_doAddLotOccupancyFee
+  handler_doAddLotOccupancyFee as RequestHandler
 )
 
 router.post(
   '/doDeleteLotOccupancyFee',
   permissionHandlers.updatePostHandler,
-  handler_doDeleteLotOccupancyFee
+  handler_doDeleteLotOccupancyFee as RequestHandler
 )
 
 // Transactions
@@ -157,13 +164,13 @@ router.post(
 router.post(
   '/doAddLotOccupancyTransaction',
   permissionHandlers.updatePostHandler,
-  handler_doAddLotOccupancyTransaction
+  handler_doAddLotOccupancyTransaction as RequestHandler
 )
 
 router.post(
   '/doDeleteLotOccupancyTransaction',
   permissionHandlers.updatePostHandler,
-  handler_doDeleteLotOccupancyTransaction
+  handler_doDeleteLotOccupancyTransaction as RequestHandler
 )
 
 export default router

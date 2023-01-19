@@ -74,7 +74,7 @@ export function initializeDatabase(): boolean {
     )
     .get()
 
-  if (!row) {
+  if (row === undefined) {
     debugSQL('Creating ' + databasePath)
 
     for (const sql of createStatements) {

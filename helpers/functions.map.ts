@@ -3,7 +3,7 @@ import fs from 'node:fs/promises'
 let mapSVGs: string[]
 
 export async function getMapSVGs(): Promise<string[]> {
-  if (!mapSVGs) {
+  if (mapSVGs === undefined) {
     const files = await fs.readdir('./public/images/maps/')
 
     const SVGs: string[] = []

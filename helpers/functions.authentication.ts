@@ -33,7 +33,7 @@ export async function authenticate(
   userName: string,
   password: string
 ): Promise<boolean> {
-  if (!userName || userName === '' || !password || password === '') {
+  if ((userName ?? '') === '' || (password ?? '') === '') {
     return false
   }
 

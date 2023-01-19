@@ -23,17 +23,17 @@ async function saveApiKeys() {
     }
 }
 function generateApiKey(apiKeyPrefix) {
-    return apiKeyPrefix + '-' + uuidv4() + '-' + Date.now();
+    return `${apiKeyPrefix}-${uuidv4()}-${Date.now()}`;
 }
 export async function regenerateApiKey(userName) {
     apiKeys[userName] = generateApiKey(userName);
     await saveApiKeys();
 }
 export async function getApiKey(userName) {
-    if (!apiKeys) {
+    if (apiKeys === undefined) {
         await loadApiKeys();
     }
-    if (!apiKeys[userName]) {
+    if (!Object.hasOwn(apiKeys, userName)) {
         await regenerateApiKey(userName);
     }
     return apiKeys[userName];
@@ -42,7 +42,7 @@ export async function getApiKeyFromSession(session) {
     return await getApiKey(session.user.userName);
 }
 export async function getUserNameFromApiKey(apiKey) {
-    if (!apiKeys) {
+    if (apiKeys === undefined) {
         await loadApiKeys();
     }
     for (const [userName, currentApiKey] of Object.entries(apiKeys)) {

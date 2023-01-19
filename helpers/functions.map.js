@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 let mapSVGs;
 export async function getMapSVGs() {
-    if (!mapSVGs) {
+    if (mapSVGs === undefined) {
         const files = await fs.readdir('./public/images/maps/');
         const SVGs = [];
         for (const file of files) {

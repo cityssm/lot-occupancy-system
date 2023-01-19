@@ -33,11 +33,11 @@ export function getFieldValueByOccupancyTypeField(
     }
   )
 
-  if (field) {
-    return field.lotOccupancyFieldValue
+  if (field === undefined) {
+    return undefined
   }
 
-  return undefined
+  return field.lotOccupancyFieldValue
 }
 
 export function getFeesByFeeCategory(

@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { RequestHandler, Router } from 'express'
 
 import * as permissionHandlers from '../handlers/permissions.js'
 
@@ -28,64 +28,72 @@ export const router = Router()
  * Lot Search
  */
 
-router.get('/', handler_search)
+router.get('/', handler_search as RequestHandler)
 
-router.post('/doSearchLots', handler_doSearchLots)
+router.post('/doSearchLots', handler_doSearchLots as RequestHandler)
 
 /*
  * Lot View / Edit
  */
 
-router.get('/new', permissionHandlers.updateGetHandler, handler_new)
+router.get(
+  '/new',
+  permissionHandlers.updateGetHandler,
+  handler_new as RequestHandler
+)
 
-router.get('/:lotId', handler_view)
+router.get('/:lotId', handler_view as RequestHandler)
 
-router.get('/:lotId/next', handler_next)
+router.get('/:lotId/next', handler_next as RequestHandler)
 
-router.get('/:lotId/previous', handler_previous)
+router.get('/:lotId/previous', handler_previous as RequestHandler)
 
-router.get('/:lotId/edit', permissionHandlers.updateGetHandler, handler_edit)
+router.get(
+  '/:lotId/edit',
+  permissionHandlers.updateGetHandler,
+  handler_edit as RequestHandler
+)
 
 router.post(
   '/doGetLotTypeFields',
   permissionHandlers.updatePostHandler,
-  handler_doGetLotTypeFields
+  handler_doGetLotTypeFields as RequestHandler
 )
 
 router.post(
   '/doCreateLot',
   permissionHandlers.updatePostHandler,
-  handler_doCreateLot
+  handler_doCreateLot as RequestHandler
 )
 
 router.post(
   '/doUpdateLot',
   permissionHandlers.updatePostHandler,
-  handler_doUpdateLot
+  handler_doUpdateLot as RequestHandler
 )
 
 router.post(
   '/doDeleteLot',
   permissionHandlers.updatePostHandler,
-  handler_doDeleteLot
+  handler_doDeleteLot as RequestHandler
 )
 
 router.post(
   '/doAddLotComment',
   permissionHandlers.updatePostHandler,
-  handler_doAddLotComment
+  handler_doAddLotComment as RequestHandler
 )
 
 router.post(
   '/doUpdateLotComment',
   permissionHandlers.updatePostHandler,
-  handler_doUpdateLotComment
+  handler_doUpdateLotComment as RequestHandler
 )
 
 router.post(
   '/doDeleteLotComment',
   permissionHandlers.updatePostHandler,
-  handler_doDeleteLotComment
+  handler_doDeleteLotComment as RequestHandler
 )
 
 export default router

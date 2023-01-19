@@ -146,7 +146,7 @@ function buildEventDescriptionHTML_lots(
 ): string {
   let descriptionHTML = ''
 
-  if (milestone.workOrderLots.length > 0) {
+  if (milestone.workOrderLots!.length > 0) {
     const urlRoot = getUrlRoot(request)
 
     descriptionHTML +=
@@ -388,10 +388,10 @@ export async function handler(request: Request, response: Response): Promise<voi
     calendarEvent.location(location)
 
     // Set organizer / attendees
-    if (milestone.workOrderLotOccupancies.length > 0) {
+    if (milestone.workOrderLotOccupancies!.length > 0) {
       let organizerSet = false
-      for (const lotOccupancy of milestone.workOrderLotOccupancies) {
-        for (const occupant of lotOccupancy.lotOccupancyOccupants) {
+      for (const lotOccupancy of milestone.workOrderLotOccupancies!) {
+        for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
           if (organizerSet) {
             calendarEvent.createAttendee({
               name: occupant.occupantName,
