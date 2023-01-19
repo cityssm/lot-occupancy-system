@@ -10,7 +10,7 @@ export async function addLotOccupancyTransaction(lotOccupancyTransactionForm, re
         order by transactionIndex desc
         limit 1`)
         .get(lotOccupancyTransactionForm.lotOccupancyId);
-    if (maxIndexResult) {
+    if (maxIndexResult !== undefined) {
         transactionIndex = maxIndexResult.transactionIndex + 1;
     }
     const rightNow = new Date();

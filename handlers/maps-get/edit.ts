@@ -14,7 +14,7 @@ export async function handler(
 ): Promise<void> {
   const map = await getMap(request.params.mapId)
 
-  if (!map) {
+  if (map === undefined) {
     response.redirect(
       configFunctions.getProperty('reverseProxy.urlPrefix') +
         '/maps/?error=mapIdNotFound'

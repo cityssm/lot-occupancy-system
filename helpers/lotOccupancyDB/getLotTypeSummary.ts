@@ -11,14 +11,14 @@ interface LotTypeSummary extends recordTypes.LotType {
 }
 
 export async function getLotTypeSummary(
-  filters?: GetFilters
+  filters: GetFilters
 ): Promise<LotTypeSummary[]> {
   const database = await acquireConnection()
 
   let sqlWhereClause = ' where l.recordDelete_timeMillis is null'
   const sqlParameters: unknown[] = []
 
-  if (filters?.mapId) {
+  if ((filters.mapId ?? '') !== '') {
     sqlWhereClause += ' and l.mapId = ?'
     sqlParameters.push(filters.mapId)
   }

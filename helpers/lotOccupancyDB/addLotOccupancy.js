@@ -23,7 +23,7 @@ export async function addLotOccupancy(lotOccupancyForm, requestSession, connecte
     const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds ?? '').split(',');
     for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
         const lotOccupancyFieldValue = lotOccupancyForm['lotOccupancyFieldValue_' + occupancyTypeFieldId];
-        if (lotOccupancyFieldValue && lotOccupancyFieldValue !== '') {
+        if ((lotOccupancyFieldValue ?? '') !== '') {
             await addOrUpdateLotOccupancyField({
                 lotOccupancyId,
                 occupancyTypeFieldId,
@@ -31,7 +31,7 @@ export async function addLotOccupancy(lotOccupancyForm, requestSession, connecte
             }, requestSession, database);
         }
     }
-    if (lotOccupancyForm.lotOccupantTypeId) {
+    if ((lotOccupancyForm.lotOccupantTypeId ?? '') !== '') {
         await addLotOccupancyOccupant({
             lotOccupancyId,
             lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId,

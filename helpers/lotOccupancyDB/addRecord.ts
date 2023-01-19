@@ -1,5 +1,3 @@
-import sqlite from 'better-sqlite3'
-
 import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'

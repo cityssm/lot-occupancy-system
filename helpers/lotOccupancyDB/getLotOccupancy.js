@@ -24,7 +24,7 @@ export async function getLotOccupancy(lotOccupancyId, connectedDatabase) {
         where o.recordDelete_timeMillis is null
         and o.lotOccupancyId = ?`)
         .get(lotOccupancyId);
-    if (lotOccupancy) {
+    if (lotOccupancy !== undefined) {
         lotOccupancy.lotOccupancyFields = await getLotOccupancyFields(lotOccupancyId, database);
         lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(lotOccupancyId, database);
         lotOccupancy.lotOccupancyComments = await getLotOccupancyComments(lotOccupancyId, database);

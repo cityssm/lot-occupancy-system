@@ -58,7 +58,7 @@ export async function addLot(
   for (const lotTypeFieldId of lotTypeFieldIds) {
     const lotFieldValue = lotForm['lotFieldValue_' + lotTypeFieldId] as string
 
-    if (lotFieldValue && lotFieldValue !== '') {
+    if ((lotFieldValue ?? '') !== '') {
       await addOrUpdateLotField(
         {
           lotId,

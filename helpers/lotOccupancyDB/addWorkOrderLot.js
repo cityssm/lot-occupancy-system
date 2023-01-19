@@ -8,7 +8,16 @@ export async function addWorkOrderLot(workOrderLotForm, requestSession) {
         where workOrderId = ?
         and lotId = ?`)
         .get(workOrderLotForm.workOrderId, workOrderLotForm.lotId);
-    if (row) {
+    if (row === undefined) {
+        database
+            .prepare(`insert into WorkOrderLots (
+          workOrderId, lotId,
+          recordCreate_userName, recordCreate_timeMillis,
+          recordUpdate_userName, recordUpdate_timeMillis)
+          values (?, ?, ?, ?, ?, ?)`)
+            .run(workOrderLotForm.workOrderId, workOrderLotForm.lotId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+    }
+    else {
         if (row.recordDelete_timeMillis) {
             database
                 .prepare(`update WorkOrderLots
@@ -22,15 +31,6 @@ export async function addWorkOrderLot(workOrderLotForm, requestSession) {
             and lotId = ?`)
                 .run(requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis, workOrderLotForm.workOrderId, workOrderLotForm.lotId);
         }
-    }
-    else {
-        database
-            .prepare(`insert into WorkOrderLots (
-          workOrderId, lotId,
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis)
-          values (?, ?, ?, ?, ?, ?)`)
-            .run(workOrderLotForm.workOrderId, workOrderLotForm.lotId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     }
     database.release();
     return true;

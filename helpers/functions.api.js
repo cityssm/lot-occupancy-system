@@ -23,7 +23,7 @@ async function saveApiKeys() {
     }
 }
 function generateApiKey(apiKeyPrefix) {
-    return `${apiKeyPrefix}-${uuidv4()}-${Date.now()}`;
+    return `${apiKeyPrefix}-${uuidv4()}-${Date.now().toString()}`;
 }
 export async function regenerateApiKey(userName) {
     apiKeys[userName] = generateApiKey(userName);

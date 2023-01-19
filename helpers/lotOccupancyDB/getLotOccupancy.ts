@@ -38,7 +38,7 @@ export async function getLotOccupancy(
     )
     .get(lotOccupancyId)
 
-  if (lotOccupancy) {
+  if (lotOccupancy !== undefined) {
     lotOccupancy.lotOccupancyFields = await getLotOccupancyFields(
       lotOccupancyId,
       database

@@ -8,7 +8,16 @@ export async function addWorkOrderLotOccupancy(workOrderLotOccupancyForm, reques
         where workOrderId = ?
         and lotOccupancyId = ?`)
         .get(workOrderLotOccupancyForm.workOrderId, workOrderLotOccupancyForm.lotOccupancyId);
-    if (row) {
+    if (row === undefined) {
+        database
+            .prepare(`insert into WorkOrderLotOccupancies (
+          workOrderId, lotOccupancyId,
+          recordCreate_userName, recordCreate_timeMillis,
+          recordUpdate_userName, recordUpdate_timeMillis)
+          values (?, ?, ?, ?, ?, ?)`)
+            .run(workOrderLotOccupancyForm.workOrderId, workOrderLotOccupancyForm.lotOccupancyId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+    }
+    else {
         if (row.recordDelete_timeMillis) {
             database
                 .prepare(`update WorkOrderLotOccupancies
@@ -22,15 +31,6 @@ export async function addWorkOrderLotOccupancy(workOrderLotOccupancyForm, reques
             and lotOccupancyId = ?`)
                 .run(requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis, workOrderLotOccupancyForm.workOrderId, workOrderLotOccupancyForm.lotOccupancyId);
         }
-    }
-    else {
-        database
-            .prepare(`insert into WorkOrderLotOccupancies (
-          workOrderId, lotOccupancyId,
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis)
-          values (?, ?, ?, ?, ?, ?)`)
-            .run(workOrderLotOccupancyForm.workOrderId, workOrderLotOccupancyForm.lotOccupancyId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     }
     if (connectedDatabase === undefined) {
         database.release();

@@ -36,7 +36,7 @@ export async function addLotOccupancyOccupant(
     )
     .get(lotOccupancyOccupantForm.lotOccupancyId)
 
-  if (maxIndexResult) {
+  if (maxIndexResult !== undefined) {
     lotOccupantIndex = maxIndexResult.lotOccupantIndex + 1
   }
 

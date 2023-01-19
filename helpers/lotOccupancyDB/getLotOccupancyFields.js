@@ -21,8 +21,8 @@ export async function getLotOccupancyFields(lotOccupancyId, connectedDatabase) {
         from OccupancyTypeFields f
         left join OccupancyTypes t on f.occupancyTypeId = t.occupancyTypeId
         where f.recordDelete_timeMillis is null and (
-            f.occupancyTypeId is null
-            or f.occupancyTypeId in (select occupancyTypeId from LotOccupancies where lotOccupancyId = ?))
+          f.occupancyTypeId is null
+          or f.occupancyTypeId in (select occupancyTypeId from LotOccupancies where lotOccupancyId = ?))
         and f.occupancyTypeFieldId not in (select occupancyTypeFieldId from LotOccupancyFields where lotOccupancyId = ? and recordDelete_timeMillis is null)
         order by occupancyTypeOrderNumber, f.orderNumber, f.occupancyTypeField`)
         .all(lotOccupancyId, lotOccupancyId, lotOccupancyId, lotOccupancyId);

@@ -27,7 +27,7 @@ export async function getFeeCategories(
 
   const sqlParameters: unknown[] = []
 
-  if (filters.occupancyTypeId) {
+  if ((filters.occupancyTypeId ?? '') !== '') {
     sqlWhereClause +=
       ' and feeCategoryId in (' +
       'select feeCategoryId from Fees' +
@@ -37,7 +37,7 @@ export async function getFeeCategories(
     sqlParameters.push(filters.occupancyTypeId)
   }
 
-  if (filters.lotTypeId) {
+  if ((filters.lotTypeId ?? '') !== '') {
     sqlWhereClause +=
       ' and feeCategoryId in (' +
       'select feeCategoryId from Fees' +
@@ -76,7 +76,11 @@ export async function getFeeCategories(
 
       expectedOrderNumber += 1
 
-      feeCategory.fees = await getFees(feeCategory.feeCategoryId, filters, database)
+      feeCategory.fees = await getFees(
+        feeCategory.feeCategoryId,
+        filters,
+        database
+      )
     }
   }
 

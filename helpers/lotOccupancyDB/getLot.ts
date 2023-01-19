@@ -25,7 +25,7 @@ async function _getLot(
 
   const lot: recordTypes.Lot = database.prepare(sql).get(lotIdOrLotName)
 
-  if (lot) {
+  if (lot !== undefined) {
     const lotOccupancies = await getLotOccupancies(
       {
         lotId: lot.lotId

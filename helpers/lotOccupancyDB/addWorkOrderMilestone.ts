@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
 
-import sqlite from 'better-sqlite3'
-
 import { acquireConnection } from './pool.js'
 
 import {

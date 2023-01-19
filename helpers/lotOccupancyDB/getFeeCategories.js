@@ -6,7 +6,7 @@ export async function getFeeCategories(filters, options) {
     const database = await acquireConnection();
     let sqlWhereClause = ' where recordDelete_timeMillis is null';
     const sqlParameters = [];
-    if (filters.occupancyTypeId) {
+    if ((filters.occupancyTypeId ?? '') !== '') {
         sqlWhereClause +=
             ' and feeCategoryId in (' +
                 'select feeCategoryId from Fees' +
@@ -14,7 +14,7 @@ export async function getFeeCategories(filters, options) {
                 ' and (occupancyTypeId is null or occupancyTypeId = ?))';
         sqlParameters.push(filters.occupancyTypeId);
     }
-    if (filters.lotTypeId) {
+    if ((filters.lotTypeId ?? '') !== '') {
         sqlWhereClause +=
             ' and feeCategoryId in (' +
                 'select feeCategoryId from Fees' +

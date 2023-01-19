@@ -13,7 +13,7 @@ const baseSQL = `select l.lotId, l.lotTypeId, t.lotType, l.lotName, l.lotStatusI
 async function _getLot(sql, lotIdOrLotName) {
     const database = await acquireConnection();
     const lot = database.prepare(sql).get(lotIdOrLotName);
-    if (lot) {
+    if (lot !== undefined) {
         const lotOccupancies = await getLotOccupancies({
             lotId: lot.lotId
         }, {

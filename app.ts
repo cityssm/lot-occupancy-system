@@ -1,5 +1,5 @@
 import createError from 'http-errors'
-import express from 'express'
+import express, { RequestHandler } from 'express'
 
 import compression from 'compression'
 import path from 'node:path'
@@ -233,7 +233,7 @@ app.get(urlPrefix + '/', sessionChecker, (_request, response) => {
 
 app.use(urlPrefix + '/dashboard', sessionChecker, routerDashboard)
 
-app.use(urlPrefix + '/api/:apiKey', apiGetHandler, routerApi)
+app.use(urlPrefix + '/api/:apiKey', apiGetHandler as RequestHandler, routerApi)
 
 app.use(urlPrefix + '/print', sessionChecker, routerPrint)
 app.use(urlPrefix + '/maps', sessionChecker, routerMaps)

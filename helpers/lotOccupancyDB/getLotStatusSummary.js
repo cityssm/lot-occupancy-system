@@ -3,7 +3,7 @@ export async function getLotStatusSummary(filters) {
     const database = await acquireConnection();
     let sqlWhereClause = ' where l.recordDelete_timeMillis is null';
     const sqlParameters = [];
-    if (filters?.mapId) {
+    if ((filters.mapId ?? '') !== '') {
         sqlWhereClause += ' and l.mapId = ?';
         sqlParameters.push(filters.mapId);
     }

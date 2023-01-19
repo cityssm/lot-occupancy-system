@@ -7,7 +7,7 @@ import { getLotNameWhereClause, getOccupancyTimeWhereClause, getOccupantNameWher
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where o.recordDelete_timeMillis is null';
     const sqlParameters = [];
-    if (filters.lotId) {
+    if ((filters.lotId ?? '') !== '') {
         sqlWhereClause += ' and o.lotId = ?';
         sqlParameters.push(filters.lotId);
     }
@@ -22,36 +22,36 @@ function buildWhereClause(filters) {
                 ')';
         sqlParameters.push(...occupantNameFilters.sqlParameters);
     }
-    if (filters.occupancyTypeId) {
+    if ((filters.occupancyTypeId ?? '') !== '') {
         sqlWhereClause += ' and o.occupancyTypeId = ?';
         sqlParameters.push(filters.occupancyTypeId);
     }
     const occupancyTimeFilters = getOccupancyTimeWhereClause(filters.occupancyTime ?? '', 'o');
     sqlWhereClause += occupancyTimeFilters.sqlWhereClause;
     sqlParameters.push(...occupancyTimeFilters.sqlParameters);
-    if (filters.occupancyStartDateString) {
+    if ((filters.occupancyStartDateString ?? '') !== '') {
         sqlWhereClause += ' and o.occupancyStartDate = ?';
         sqlParameters.push(dateStringToInteger(filters.occupancyStartDateString));
     }
-    if (filters.occupancyEffectiveDateString) {
+    if ((filters.occupancyEffectiveDateString ?? '') !== '') {
         sqlWhereClause +=
             ' and (o.occupancyStartDate <= ? and (o.occupancyEndDate is null or o.occupancyEndDate >= ?))';
         sqlParameters.push(dateStringToInteger(filters.occupancyEffectiveDateString), dateStringToInteger(filters.occupancyEffectiveDateString));
     }
-    if (filters.mapId) {
+    if ((filters.mapId ?? '') !== '') {
         sqlWhereClause += ' and l.mapId = ?';
         sqlParameters.push(filters.mapId);
     }
-    if (filters.lotTypeId) {
+    if ((filters.lotTypeId ?? '') !== '') {
         sqlWhereClause += ' and l.lotTypeId = ?';
         sqlParameters.push(filters.lotTypeId);
     }
-    if (filters.workOrderId) {
+    if ((filters.workOrderId ?? '') !== '') {
         sqlWhereClause +=
             ' and o.lotOccupancyId in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)';
         sqlParameters.push(filters.workOrderId);
     }
-    if (filters.notWorkOrderId) {
+    if ((filters.notWorkOrderId ?? '') !== '') {
         sqlWhereClause +=
             ' and o.lotOccupancyId not in (select lotOccupancyId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and workOrderId = ?)';
         sqlParameters.push(filters.notWorkOrderId);
@@ -98,7 +98,7 @@ export async function getLotOccupancies(filters, options, connectedDatabase) {
         }
         for (const lotOccupancy of lotOccupancies) {
             const occupancyType = await getOccupancyTypeById(lotOccupancy.occupancyTypeId);
-            if (occupancyType) {
+            if (occupancyType !== undefined) {
                 lotOccupancy.printEJS = (occupancyType.occupancyTypePrints ?? []).includes('*')
                     ? configFunctions.getProperty('settings.lotOccupancy.prints')[0]
                     : occupancyType.occupancyTypePrints[0];

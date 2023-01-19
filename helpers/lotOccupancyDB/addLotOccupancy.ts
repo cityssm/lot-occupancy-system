@@ -83,7 +83,7 @@ export async function addLotOccupancy(
       'lotOccupancyFieldValue_' + occupancyTypeFieldId
     ] as string
 
-    if (lotOccupancyFieldValue && lotOccupancyFieldValue !== '') {
+    if ((lotOccupancyFieldValue ?? '') !== '') {
       await addOrUpdateLotOccupancyField(
         {
           lotOccupancyId,
@@ -96,11 +96,11 @@ export async function addLotOccupancy(
     }
   }
 
-  if (lotOccupancyForm.lotOccupantTypeId) {
+  if ((lotOccupancyForm.lotOccupantTypeId ?? '') !== '') {
     await addLotOccupancyOccupant(
       {
         lotOccupancyId,
-        lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId,
+        lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId!,
         occupantName: lotOccupancyForm.occupantName!,
         occupantAddress1: lotOccupancyForm.occupantAddress1!,
         occupantAddress2: lotOccupancyForm.occupantAddress2!,

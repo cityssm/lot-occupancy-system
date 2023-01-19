@@ -9,7 +9,7 @@ export async function addLotOccupancyOccupant(lotOccupancyOccupantForm, requestS
         order by lotOccupantIndex desc
         limit 1`)
         .get(lotOccupancyOccupantForm.lotOccupancyId);
-    if (maxIndexResult) {
+    if (maxIndexResult !== undefined) {
         lotOccupantIndex = maxIndexResult.lotOccupantIndex + 1;
     }
     const rightNowMillis = Date.now();
