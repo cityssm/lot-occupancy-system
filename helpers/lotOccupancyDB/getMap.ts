@@ -2,7 +2,9 @@ import { acquireConnection } from './pool.js'
 
 import type * as recordTypes from '../../types/recordTypes'
 
-export async function getMap(mapId: number | string): Promise<recordTypes.Map> {
+export async function getMap(
+  mapId: number | string
+): Promise<recordTypes.Map | undefined> {
   const database = await acquireConnection()
 
   const map: recordTypes.Map = database
@@ -18,13 +20,14 @@ export async function getMap(mapId: number | string): Promise<recordTypes.Map> {
         from Maps m
         left join Lots l on m.mapId = l.mapId and l.recordDelete_timeMillis is null
         where m.mapId = ?
+        and m.recordDelete_timeMillis is null
         group by m.mapId, m.mapName, m.mapDescription,
-            m.mapLatitude, m.mapLongitude, m.mapSVG,
-            m.mapAddress1, m.mapAddress2, m.mapCity, m.mapProvince, m.mapPostalCode,
-            m.mapPhoneNumber,
-            m.recordCreate_userName, m.recordCreate_timeMillis,
-            m.recordUpdate_userName, m.recordUpdate_timeMillis,
-            m.recordDelete_userName, m.recordDelete_timeMillis`
+          m.mapLatitude, m.mapLongitude, m.mapSVG,
+          m.mapAddress1, m.mapAddress2, m.mapCity, m.mapProvince, m.mapPostalCode,
+          m.mapPhoneNumber,
+          m.recordCreate_userName, m.recordCreate_timeMillis,
+          m.recordUpdate_userName, m.recordUpdate_timeMillis,
+          m.recordDelete_userName, m.recordDelete_timeMillis`
     )
     .get(mapId)
 
