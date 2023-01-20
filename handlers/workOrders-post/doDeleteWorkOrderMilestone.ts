@@ -8,13 +8,13 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const success = deleteRecord(
+  const success = await deleteRecord(
     'WorkOrderMilestones',
     request.body.workOrderMilestoneId,
     request.session
   )
 
-  const workOrderMilestones = getWorkOrderMilestones(
+  const workOrderMilestones = await getWorkOrderMilestones(
     {
       workOrderId: request.body.workOrderId
     },

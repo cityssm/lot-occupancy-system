@@ -8,12 +8,12 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const success = reopenWorkOrderMilestone(
+  const success = await reopenWorkOrderMilestone(
     request.body.workOrderMilestoneId,
     request.session
   )
 
-  const workOrderMilestones = getWorkOrderMilestones(
+  const workOrderMilestones = await getWorkOrderMilestones(
     {
       workOrderId: request.body.workOrderId
     },

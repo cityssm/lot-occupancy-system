@@ -7,7 +7,7 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const success = addWorkOrderLot(
+  const success = await addWorkOrderLot(
     {
       workOrderId: request.body.workOrderId,
       lotId: request.body.lotId

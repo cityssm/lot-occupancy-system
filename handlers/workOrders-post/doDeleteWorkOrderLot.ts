@@ -7,7 +7,7 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const success = deleteWorkOrderLot(
+  const success = await deleteWorkOrderLot(
     request.body.workOrderId,
     request.body.lotId,
     request.session

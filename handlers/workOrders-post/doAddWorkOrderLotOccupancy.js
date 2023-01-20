@@ -1,7 +1,7 @@
 import { addWorkOrderLotOccupancy } from '../../helpers/lotOccupancyDB/addWorkOrderLotOccupancy.js';
 import { getLotOccupancies } from '../../helpers/lotOccupancyDB/getLotOccupancies.js';
 export async function handler(request, response) {
-    const success = addWorkOrderLotOccupancy({
+    const success = await addWorkOrderLotOccupancy({
         workOrderId: request.body.workOrderId,
         lotOccupancyId: request.body.lotOccupancyId
     }, request.session);

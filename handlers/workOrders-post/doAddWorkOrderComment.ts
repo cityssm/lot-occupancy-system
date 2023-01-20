@@ -8,7 +8,7 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  addWorkOrderComment(request.body, request.session)
+  await addWorkOrderComment(request.body, request.session)
 
   const workOrderComments = getWorkOrderComments(request.body.workOrderId)
 

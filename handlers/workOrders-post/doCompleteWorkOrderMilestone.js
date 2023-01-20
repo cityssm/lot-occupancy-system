@@ -1,10 +1,10 @@
 import { completeWorkOrderMilestone } from '../../helpers/lotOccupancyDB/completeWorkOrderMilestone.js';
 import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js';
 export async function handler(request, response) {
-    const success = completeWorkOrderMilestone({
+    const success = await completeWorkOrderMilestone({
         workOrderMilestoneId: request.body.workOrderMilestoneId
     }, request.session);
-    const workOrderMilestones = getWorkOrderMilestones({
+    const workOrderMilestones = await getWorkOrderMilestones({
         workOrderId: request.body.workOrderId
     }, {
         orderBy: 'completion'

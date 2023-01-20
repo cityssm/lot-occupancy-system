@@ -8,9 +8,9 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const success = updateWorkOrderComment(request.body, request.session)
+  const success = await updateWorkOrderComment(request.body, request.session)
 
-  const workOrderComments = getWorkOrderComments(request.body.workOrderId)
+  const workOrderComments = await getWorkOrderComments(request.body.workOrderId)
 
   response.json({
     success,

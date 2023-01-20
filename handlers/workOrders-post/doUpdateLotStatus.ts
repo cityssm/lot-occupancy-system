@@ -7,7 +7,7 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const success = updateLotStatus(
+  const success = await updateLotStatus(
     request.body.lotId,
     request.body.lotStatusId,
     request.session

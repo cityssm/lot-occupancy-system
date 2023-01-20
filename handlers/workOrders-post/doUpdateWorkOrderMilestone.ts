@@ -7,9 +7,9 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const success = updateWorkOrderMilestone(request.body, request.session)
+  const success = await updateWorkOrderMilestone(request.body, request.session)
 
-  const workOrderMilestones = getWorkOrderMilestones(
+  const workOrderMilestones = await getWorkOrderMilestones(
     {
       workOrderId: request.body.workOrderId
     },

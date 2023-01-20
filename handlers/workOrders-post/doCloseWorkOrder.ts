@@ -6,7 +6,7 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const success = closeWorkOrder(request.body, request.session)
+  const success = await closeWorkOrder(request.body, request.session)
 
   response.json({
     success
