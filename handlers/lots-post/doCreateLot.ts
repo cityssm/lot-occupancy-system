@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express'
+import { clearNextPreviousLotIdCache } from '../../helpers/functions.lots.js'
 
 import { addLot } from '../../helpers/lotOccupancyDB/addLot.js'
 
@@ -11,6 +12,10 @@ export async function handler(
   response.json({
     success: true,
     lotId
+  })
+
+  response.on('finish', () => {
+    clearNextPreviousLotIdCache()
   })
 }
 
