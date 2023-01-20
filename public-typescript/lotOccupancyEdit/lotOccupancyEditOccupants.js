@@ -109,7 +109,7 @@ function deleteLotOccupancyOccupant(clickEvent) {
     });
 }
 function renderLotOccupancyOccupants() {
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
     const occupantsContainer = document.querySelector('#container--lotOccupancyOccupants');
     cityssm.clearElement(occupantsContainer);
     if (lotOccupancyOccupants.length === 0) {
@@ -148,27 +148,29 @@ function renderLotOccupancyOccupants() {
                     '</span>') +
                 '</td>' +
                 ('<td>' +
-                    (lotOccupancyOccupant.occupantAddress1
-                        ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) + '<br />'
-                        : '') +
-                    (lotOccupancyOccupant.occupantAddress2
-                        ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2) + '<br />'
-                        : '') +
-                    (lotOccupancyOccupant.occupantCity
-                        ? cityssm.escapeHTML(lotOccupancyOccupant.occupantCity) + ', '
-                        : '') +
-                    cityssm.escapeHTML((_b = lotOccupancyOccupant.occupantProvince) !== null && _b !== void 0 ? _b : '') +
+                    (((_b = lotOccupancyOccupant.occupantAddress1) !== null && _b !== void 0 ? _b : '') === ''
+                        ? ''
+                        : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) +
+                            '<br />') +
+                    (((_c = lotOccupancyOccupant.occupantAddress2) !== null && _c !== void 0 ? _c : '') === ''
+                        ? ''
+                        : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2) +
+                            '<br />') +
+                    (((_d = lotOccupancyOccupant.occupantCity) !== null && _d !== void 0 ? _d : '') === ''
+                        ? ''
+                        : cityssm.escapeHTML(lotOccupancyOccupant.occupantCity) + ', ') +
+                    cityssm.escapeHTML((_e = lotOccupancyOccupant.occupantProvince) !== null && _e !== void 0 ? _e : '') +
                     '<br />' +
-                    cityssm.escapeHTML((_c = lotOccupancyOccupant.occupantPostalCode) !== null && _c !== void 0 ? _c : '') +
+                    cityssm.escapeHTML((_f = lotOccupancyOccupant.occupantPostalCode) !== null && _f !== void 0 ? _f : '') +
                     '</td>') +
                 ('<td>' +
-                    (lotOccupancyOccupant.occupantPhoneNumber
-                        ? cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber) +
-                            '<br />'
-                        : '') +
-                    (lotOccupancyOccupant.occupantEmailAddress
-                        ? cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress)
-                        : '') +
+                    (((_g = lotOccupancyOccupant.occupantPhoneNumber) !== null && _g !== void 0 ? _g : '') === ''
+                        ? ''
+                        : cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber) +
+                            '<br />') +
+                    (((_h = lotOccupancyOccupant.occupantEmailAddress) !== null && _h !== void 0 ? _h : '') === ''
+                        ? ''
+                        : cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress)) +
                     '</td>') +
                 ('<td>' +
                     cityssm.escapeHTML(lotOccupancyOccupant.occupantComment) +
@@ -269,7 +271,7 @@ else {
             searchResultsElement.innerHTML =
                 los.getLoadingParagraphHTML('Searching...');
             cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doSearchPastOccupants', searchFormElement, (responseJSON) => {
-                var _a, _b, _c, _d, _e, _f;
+                var _a, _b, _c, _d, _e, _f, _g, _h;
                 pastOccupantSearchResults = responseJSON.occupants;
                 const panelElement = document.createElement('div');
                 panelElement.className = 'panel';
@@ -286,21 +288,22 @@ else {
                             ('<div class="column">' +
                                 cityssm.escapeHTML((_b = occupant.occupantAddress1) !== null && _b !== void 0 ? _b : '') +
                                 '<br />' +
-                                (occupant.occupantAddress2
-                                    ? cityssm.escapeHTML(occupant.occupantAddress2) + '<br />'
-                                    : '') +
-                                cityssm.escapeHTML((_c = occupant.occupantCity) !== null && _c !== void 0 ? _c : '') +
+                                (((_c = occupant.occupantAddress2) !== null && _c !== void 0 ? _c : '') === ''
+                                    ? ''
+                                    : cityssm.escapeHTML(occupant.occupantAddress2) +
+                                        '<br />') +
+                                cityssm.escapeHTML((_d = occupant.occupantCity) !== null && _d !== void 0 ? _d : '') +
                                 ', ' +
-                                cityssm.escapeHTML((_d = occupant.occupantProvince) !== null && _d !== void 0 ? _d : '') +
+                                cityssm.escapeHTML((_e = occupant.occupantProvince) !== null && _e !== void 0 ? _e : '') +
                                 '<br />' +
-                                cityssm.escapeHTML((_e = occupant.occupantPostalCode) !== null && _e !== void 0 ? _e : '') +
+                                cityssm.escapeHTML((_f = occupant.occupantPostalCode) !== null && _f !== void 0 ? _f : '') +
                                 '</div>') +
                             ('<div class="column">' +
-                                (occupant.occupantPhoneNumber
-                                    ? cityssm.escapeHTML(occupant.occupantPhoneNumber) +
-                                        '<br />'
-                                    : '') +
-                                cityssm.escapeHTML((_f = occupant.occupantEmailAddress) !== null && _f !== void 0 ? _f : '') +
+                                (((_g = occupant.occupantPhoneNumber) !== null && _g !== void 0 ? _g : '') === ''
+                                    ? ''
+                                    : cityssm.escapeHTML(occupant.occupantPhoneNumber) +
+                                        '<br />') +
+                                cityssm.escapeHTML((_h = occupant.occupantEmailAddress) !== null && _h !== void 0 ? _h : '') +
                                 '<br />' +
                                 '</div>') +
                             '</div>';

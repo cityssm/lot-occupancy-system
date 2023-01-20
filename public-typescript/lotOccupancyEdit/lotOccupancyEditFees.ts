@@ -120,9 +120,8 @@ function renderLotOccupancyFees(): void {
     const tableRowElement = document.createElement('tr')
     tableRowElement.className = 'container--lotOccupancyFee'
     tableRowElement.dataset.feeId = lotOccupancyFee.feeId.toString()
-    tableRowElement.dataset.includeQuantity = lotOccupancyFee.includeQuantity
-      ? '1'
-      : '0'
+    tableRowElement.dataset.includeQuantity =
+      lotOccupancyFee.includeQuantity ?? false ? '1' : '0'
 
     tableRowElement.innerHTML =
       '<td colspan="' +
@@ -274,7 +273,7 @@ document.querySelector('#button--addFee')!.addEventListener('click', () => {
       return currentFee.feeId === feeId
     })!
 
-    if (fee.includeQuantity) {
+    if (fee.includeQuantity ?? false) {
       doSetQuantityAndAddFee(fee)
     } else {
       doAddFee(feeId)
@@ -502,7 +501,7 @@ function renderLotOccupancyTransactions(): void {
 
     tableRowElement.innerHTML =
       '<td>' +
-      lotOccupancyTransaction.transactionDateString +
+      (lotOccupancyTransaction.transactionDateString ?? '') +
       '</td>' +
       ('<td>' +
         cityssm.escapeHTML(

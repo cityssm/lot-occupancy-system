@@ -92,7 +92,7 @@ function deleteLotOccupancyComment(clickEvent) {
     });
 }
 function renderLotOccupancyComments() {
-    var _a, _b;
+    var _a, _b, _c;
     const containerElement = document.querySelector('#container--lotOccupancyComments');
     if (lotOccupancyComments.length === 0) {
         containerElement.innerHTML =
@@ -120,13 +120,13 @@ function renderLotOccupancyComments() {
                 cityssm.escapeHTML((_a = lotOccupancyComment.recordCreate_userName) !== null && _a !== void 0 ? _a : '') +
                 '</td>' +
                 '<td>' +
-                lotOccupancyComment.lotOccupancyCommentDateString +
+                ((_b = lotOccupancyComment.lotOccupancyCommentDateString) !== null && _b !== void 0 ? _b : '') +
                 (lotOccupancyComment.lotOccupancyCommentTime === 0
                     ? ''
                     : ' ' + lotOccupancyComment.lotOccupancyCommentTimeString) +
                 '</td>' +
                 '<td>' +
-                cityssm.escapeHTML((_b = lotOccupancyComment.lotOccupancyComment) !== null && _b !== void 0 ? _b : '') +
+                cityssm.escapeHTML((_c = lotOccupancyComment.lotOccupancyComment) !== null && _c !== void 0 ? _c : '') +
                 '</td>' +
                 ('<td class="is-hidden-print">' +
                     '<div class="buttons are-small is-justify-content-end">' +

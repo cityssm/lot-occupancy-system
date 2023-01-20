@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const mapContainerElement = document.querySelector('#map--leaflet');
-    if (mapContainerElement) {
+    if (mapContainerElement !== null) {
         const mapLatitude = Number.parseFloat(mapContainerElement.dataset.mapLatitude);
         const mapLongitude = Number.parseFloat(mapContainerElement.dataset.mapLongitude);
         const mapCoordinates = [mapLatitude, mapLongitude];

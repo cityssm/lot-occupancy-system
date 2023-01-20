@@ -264,27 +264,29 @@ function renderLotOccupancyOccupants(): void {
         '</span>') +
       '</td>' +
       ('<td>' +
-        (lotOccupancyOccupant.occupantAddress1
-          ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) + '<br />'
-          : '') +
-        (lotOccupancyOccupant.occupantAddress2
-          ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2) + '<br />'
-          : '') +
-        (lotOccupancyOccupant.occupantCity
-          ? cityssm.escapeHTML(lotOccupancyOccupant.occupantCity) + ', '
-          : '') +
+        ((lotOccupancyOccupant.occupantAddress1 ?? '') === ''
+          ? ''
+          : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1!) +
+            '<br />') +
+        ((lotOccupancyOccupant.occupantAddress2 ?? '') === ''
+          ? ''
+          : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2!) +
+            '<br />') +
+        ((lotOccupancyOccupant.occupantCity ?? '') === ''
+          ? ''
+          : cityssm.escapeHTML(lotOccupancyOccupant.occupantCity!) + ', ') +
         cityssm.escapeHTML(lotOccupancyOccupant.occupantProvince ?? '') +
         '<br />' +
         cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode ?? '') +
         '</td>') +
       ('<td>' +
-        (lotOccupancyOccupant.occupantPhoneNumber
-          ? cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber) +
-            '<br />'
-          : '') +
-        (lotOccupancyOccupant.occupantEmailAddress
-          ? cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress)
-          : '') +
+        ((lotOccupancyOccupant.occupantPhoneNumber ?? '') === ''
+          ? ''
+          : cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber!) +
+            '<br />') +
+        ((lotOccupancyOccupant.occupantEmailAddress ?? '') === ''
+          ? ''
+          : cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress!)) +
         '</td>') +
       ('<td>' +
         cityssm.escapeHTML(lotOccupancyOccupant.occupantComment!) +
@@ -455,9 +457,10 @@ if (isCreate) {
                 ('<div class="column">' +
                   cityssm.escapeHTML(occupant.occupantAddress1 ?? '') +
                   '<br />' +
-                  (occupant.occupantAddress2
-                    ? cityssm.escapeHTML(occupant.occupantAddress2) + '<br />'
-                    : '') +
+                  ((occupant.occupantAddress2 ?? '') === ''
+                    ? ''
+                    : cityssm.escapeHTML(occupant.occupantAddress2!) +
+                      '<br />') +
                   cityssm.escapeHTML(occupant.occupantCity ?? '') +
                   ', ' +
                   cityssm.escapeHTML(occupant.occupantProvince ?? '') +
@@ -465,10 +468,10 @@ if (isCreate) {
                   cityssm.escapeHTML(occupant.occupantPostalCode ?? '') +
                   '</div>') +
                 ('<div class="column">' +
-                  (occupant.occupantPhoneNumber
-                    ? cityssm.escapeHTML(occupant.occupantPhoneNumber) +
-                      '<br />'
-                    : '') +
+                  ((occupant.occupantPhoneNumber ?? '') === ''
+                    ? ''
+                    : cityssm.escapeHTML(occupant.occupantPhoneNumber!) +
+                      '<br />') +
                   cityssm.escapeHTML(occupant.occupantEmailAddress ?? '') +
                   '<br />' +
                   '</div>') +

@@ -3,13 +3,11 @@
 import type * as Leaflet from 'leaflet'
 
 declare const L
-
 ;(() => {
-  const mapContainerElement = document.querySelector(
-    '#map--leaflet'
-  ) as HTMLElement
+  const mapContainerElement: HTMLElement | null =
+    document.querySelector('#map--leaflet')
 
-  if (mapContainerElement) {
+  if (mapContainerElement !== null) {
     const mapLatitude = Number.parseFloat(
       mapContainerElement.dataset.mapLatitude!
     )

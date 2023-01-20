@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const searchFilterElement = document.querySelector('#searchFilter--map');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     function renderResults() {
-        var _a, _b, _c, _d, _e, _f, _g, _h;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Maps}...`);
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');
@@ -40,34 +40,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '</span>' +
                     '</td>') +
                 ('<td>' +
-                    (map.mapAddress1
-                        ? cityssm.escapeHTML(map.mapAddress1) + '<br />'
-                        : '') +
-                    (map.mapAddress2
-                        ? cityssm.escapeHTML(map.mapAddress2) + '<br />'
-                        : '') +
+                    (((_f = map.mapAddress1) !== null && _f !== void 0 ? _f : '') === ''
+                        ? ''
+                        : cityssm.escapeHTML(map.mapAddress1) + '<br />') +
+                    (((_g = map.mapAddress2) !== null && _g !== void 0 ? _g : '') === ''
+                        ? ''
+                        : cityssm.escapeHTML(map.mapAddress2) + '<br />') +
                     (map.mapCity || map.mapProvince
-                        ? cityssm.escapeHTML((_f = map.mapCity) !== null && _f !== void 0 ? _f : '') +
+                        ? cityssm.escapeHTML((_h = map.mapCity) !== null && _h !== void 0 ? _h : '') +
                             ', ' +
-                            cityssm.escapeHTML((_g = map.mapProvince) !== null && _g !== void 0 ? _g : '') +
+                            cityssm.escapeHTML((_j = map.mapProvince) !== null && _j !== void 0 ? _j : '') +
                             '<br />'
                         : '') +
-                    (map.mapPostalCode ? cityssm.escapeHTML(map.mapPostalCode) : '') +
+                    (((_k = map.mapPostalCode) !== null && _k !== void 0 ? _k : '') === ''
+                        ? ''
+                        : cityssm.escapeHTML(map.mapPostalCode)) +
                     '</td>') +
-                ('<td>' + cityssm.escapeHTML((_h = map.mapPhoneNumber) !== null && _h !== void 0 ? _h : '') + '</td>') +
+                ('<td>' + cityssm.escapeHTML((_l = map.mapPhoneNumber) !== null && _l !== void 0 ? _l : '') + '</td>') +
                 '<td class="has-text-centered">' +
                 (map.mapLatitude && map.mapLongitude
                     ? '<span data-tooltip="Has Geographic Coordinates"><i class="fas fa-map-marker-alt" aria-label="Has Geographic Coordinates"></i></span>'
                     : '') +
                 '</td>' +
                 '<td class="has-text-centered">' +
-                (map.mapSVG
-                    ? '<span data-tooltip="Has Image"><i class="fas fa-image" aria-label="Has Image"></i></span>'
-                    : '') +
+                (((_m = map.mapSVG) !== null && _m !== void 0 ? _m : '') === ''
+                    ? ''
+                    : '<span data-tooltip="Has Image"><i class="fas fa-image" aria-label="Has Image"></i></span>') +
                 '</td>' +
-                (`<td class="has-text-right">
+                `<td class="has-text-right">
             <a href="${los.urlPrefix}/lots?mapId=${map.mapId}">${map.lotCount}</a>
-            </td>`) +
+            </td>` +
                 '</tr>');
         }
         searchResultsContainerElement.innerHTML = '';

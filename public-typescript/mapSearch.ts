@@ -68,19 +68,21 @@ declare const cityssm: cityssmGlobal
             '</span>' +
             '</td>') +
           ('<td>' +
-            (map.mapAddress1
-              ? cityssm.escapeHTML(map.mapAddress1) + '<br />'
-              : '') +
-            (map.mapAddress2
-              ? cityssm.escapeHTML(map.mapAddress2) + '<br />'
-              : '') +
+            ((map.mapAddress1 ?? '') === ''
+              ? ''
+              : cityssm.escapeHTML(map.mapAddress1!) + '<br />') +
+            ((map.mapAddress2 ?? '') === ''
+              ? ''
+              : cityssm.escapeHTML(map.mapAddress2!) + '<br />') +
             (map.mapCity || map.mapProvince
               ? cityssm.escapeHTML(map.mapCity ?? '') +
                 ', ' +
                 cityssm.escapeHTML(map.mapProvince ?? '') +
                 '<br />'
               : '') +
-            (map.mapPostalCode ? cityssm.escapeHTML(map.mapPostalCode) : '') +
+            ((map.mapPostalCode ?? '') === ''
+              ? ''
+              : cityssm.escapeHTML(map.mapPostalCode!)) +
             '</td>') +
           ('<td>' + cityssm.escapeHTML(map.mapPhoneNumber ?? '') + '</td>') +
           '<td class="has-text-centered">' +
@@ -89,13 +91,15 @@ declare const cityssm: cityssmGlobal
             : '') +
           '</td>' +
           '<td class="has-text-centered">' +
-          (map.mapSVG
-            ? '<span data-tooltip="Has Image"><i class="fas fa-image" aria-label="Has Image"></i></span>'
-            : '') +
+          ((map.mapSVG ?? '') === ''
+            ? ''
+            : '<span data-tooltip="Has Image"><i class="fas fa-image" aria-label="Has Image"></i></span>') +
           '</td>' +
-          (`<td class="has-text-right">
-            <a href="${los.urlPrefix}/lots?mapId=${map.mapId!}">${map.lotCount!}</a>
-            </td>`) +
+          `<td class="has-text-right">
+            <a href="${
+              los.urlPrefix
+            }/lots?mapId=${map.mapId!}">${map.lotCount!}</a>
+            </td>` +
           '</tr>'
       )
     }

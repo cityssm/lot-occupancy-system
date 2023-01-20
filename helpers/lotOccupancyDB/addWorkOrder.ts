@@ -29,7 +29,7 @@ export async function addWorkOrder(
 
   let workOrderNumber = workOrderForm.workOrderNumber
 
-  if (!workOrderNumber) {
+  if ((workOrderNumber ?? '') === '') {
     workOrderNumber = await getNextWorkOrderNumber(database)
   }
 
@@ -46,12 +46,12 @@ export async function addWorkOrder(
       workOrderForm.workOrderTypeId,
       workOrderNumber,
       workOrderForm.workOrderDescription,
-      workOrderForm.workOrderOpenDateString
-        ? dateStringToInteger(workOrderForm.workOrderOpenDateString)
-        : dateToInteger(rightNow),
-      workOrderForm.workOrderCloseDateString
-        ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
-        : undefined,
+      (workOrderForm.workOrderOpenDateString ?? '') === ''
+        ? dateToInteger(rightNow)
+        : dateStringToInteger(workOrderForm.workOrderOpenDateString!),
+      (workOrderForm.workOrderCloseDateString ?? '') === ''
+        ? undefined
+        : dateStringToInteger(workOrderForm.workOrderCloseDateString!),
       requestSession.user!.userName,
       rightNow.getTime(),
       requestSession.user!.userName,
@@ -60,11 +60,11 @@ export async function addWorkOrder(
 
   const workOrderId = result.lastInsertRowid as number
 
-  if (workOrderForm.lotOccupancyId) {
+  if ((workOrderForm.lotOccupancyId ?? '') !== '') {
     await addWorkOrderLotOccupancy(
       {
         workOrderId,
-        lotOccupancyId: workOrderForm.lotOccupancyId
+        lotOccupancyId: workOrderForm.lotOccupancyId!
       },
       requestSession,
       database

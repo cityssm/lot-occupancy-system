@@ -29,12 +29,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         // eslint-disable-next-line no-constant-condition
         while (true) {
             svgElementToHighlight = mapContainerElement.querySelector('#' + svgId);
-            if (svgElementToHighlight || !svgId.includes('-')) {
+            if (svgElementToHighlight !== null || !svgId.includes('-')) {
                 break;
             }
             svgId = svgId.slice(0, Math.max(0, svgId.lastIndexOf('-')));
         }
-        if (svgElementToHighlight) {
+        if (svgElementToHighlight !== null) {
             // eslint-disable-next-line unicorn/no-null
             svgElementToHighlight.style.fill = '';
             svgElementToHighlight.classList.add('highlight', 'is-' + contextualClass);
@@ -80,6 +80,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         displayMode: 'dialog'
     };
     function initializeDatePickers(containerElement) {
+        var _a;
         const dateElements = containerElement.querySelectorAll("input[type='date']");
         for (const dateElement of dateElements) {
             const datePickerOptions = Object.assign({}, datePickerBaseOptions);
@@ -87,11 +88,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 datePickerOptions.showClearButton = false;
             }
             // apply min date if set
-            if (dateElement.min) {
+            if (dateElement.min !== '') {
                 datePickerOptions.minDate = cityssm.dateStringToDate(dateElement.min);
             }
             // apply max date if set
-            if (dateElement.max) {
+            if (dateElement.max !== '') {
                 datePickerOptions.maxDate = cityssm.dateStringToDate(dateElement.max);
             }
             const cal = exports.bulmaCalendar.attach(dateElement, datePickerOptions)[0];
@@ -113,12 +114,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // Override the previous and next month button styles
             const datePickerNavButtonElements = datepickerElement.querySelectorAll('.datepicker-nav button.is-text');
             for (const datePickerNavButtonElement of datePickerNavButtonElements) {
-                datePickerNavButtonElement.classList.add('is-' + datePickerBaseOptions.color);
+                datePickerNavButtonElement.classList.add(`is-${(_a = datePickerBaseOptions.color) !== null && _a !== void 0 ? _a : ''}`);
                 datePickerNavButtonElement.classList.remove('is-text');
             }
             // Override the clear button style
             const clearButtonElement = datepickerElement.querySelector('.datetimepicker-clear-button');
-            if (clearButtonElement) {
+            if (clearButtonElement !== null) {
                 if (dateElement.required) {
                     clearButtonElement.remove();
                 }
@@ -131,7 +132,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             // Apply a label
             const labelElement = document.querySelector("label[for='" + dateElement.id + "']");
-            if (labelElement) {
+            if (labelElement !== null) {
                 datepickerElement.querySelector('.datetimepicker-dummy-input').ariaLabel = labelElement.textContent;
             }
         }
@@ -359,9 +360,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         return (urlPrefix +
             '/' +
             recordTypePlural +
-            (recordId ? '/' + recordId : '') +
+            (recordId ? '/' + recordId.toString() : '') +
             (recordId && edit ? '/edit' : '') +
-            (time ? '/?t=' + Date.now() : ''));
+            (time ? '/?t=' + Date.now().toString() : ''));
     }
     function getMapURL(mapId = '', edit = false, time = false) {
         return getRecordURL('maps', mapId, edit, time);

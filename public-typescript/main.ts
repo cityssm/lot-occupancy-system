@@ -47,14 +47,14 @@ declare const bulmaJS: BulmaJS
     while (true) {
       svgElementToHighlight = mapContainerElement.querySelector('#' + svgId)
 
-      if (svgElementToHighlight || !svgId.includes('-')) {
+      if (svgElementToHighlight !== null || !svgId.includes('-')) {
         break
       }
 
       svgId = svgId.slice(0, Math.max(0, svgId.lastIndexOf('-')))
     }
 
-    if (svgElementToHighlight) {
+    if (svgElementToHighlight !== null) {
       // eslint-disable-next-line unicorn/no-null
       svgElementToHighlight.style.fill = ''
 
@@ -127,12 +127,12 @@ declare const bulmaJS: BulmaJS
       }
 
       // apply min date if set
-      if (dateElement.min) {
+      if (dateElement.min !== '') {
         datePickerOptions.minDate = cityssm.dateStringToDate(dateElement.min)
       }
 
       // apply max date if set
-      if (dateElement.max) {
+      if (dateElement.max !== '') {
         datePickerOptions.maxDate = cityssm.dateStringToDate(dateElement.max)
       }
 
@@ -158,8 +158,7 @@ declare const bulmaJS: BulmaJS
       })
 
       // Get the datepicker container element
-      const datepickerElement: HTMLElement | null =
-        containerElement.querySelector('#' + cal._id)!
+      const datepickerElement = containerElement.querySelector('#' + cal._id)!
 
       // Override the previous and next month button styles
       const datePickerNavButtonElements = datepickerElement.querySelectorAll(
@@ -168,7 +167,7 @@ declare const bulmaJS: BulmaJS
 
       for (const datePickerNavButtonElement of datePickerNavButtonElements) {
         datePickerNavButtonElement.classList.add(
-          'is-' + datePickerBaseOptions.color
+          `is-${datePickerBaseOptions.color ?? ''}`
         )
         datePickerNavButtonElement.classList.remove('is-text')
       }
@@ -177,7 +176,7 @@ declare const bulmaJS: BulmaJS
       const clearButtonElement: HTMLElement | null =
         datepickerElement.querySelector('.datetimepicker-clear-button')
 
-      if (clearButtonElement) {
+      if (clearButtonElement !== null) {
         if (dateElement.required) {
           clearButtonElement.remove()
         } else {
@@ -193,7 +192,7 @@ declare const bulmaJS: BulmaJS
         "label[for='" + dateElement.id + "']"
       )
 
-      if (labelElement) {
+      if (labelElement !== null) {
         datepickerElement.querySelector(
           '.datetimepicker-dummy-input'
         )!.ariaLabel = labelElement.textContent
@@ -483,9 +482,9 @@ declare const bulmaJS: BulmaJS
       urlPrefix +
       '/' +
       recordTypePlural +
-      (recordId ? '/' + recordId : '') +
+      (recordId ? '/' + recordId.toString() : '') +
       (recordId && edit ? '/edit' : '') +
-      (time ? '/?t=' + Date.now() : '')
+      (time ? '/?t=' + Date.now().toString() : '')
     )
   }
 

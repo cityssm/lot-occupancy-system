@@ -45,7 +45,7 @@ function deleteLotOccupancyFee(clickEvent) {
     });
 }
 function renderLotOccupancyFees() {
-    var _a;
+    var _a, _b;
     if (lotOccupancyFees.length === 0) {
         lotOccupancyFeesContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no fees associated with this record.</p>
@@ -83,14 +83,13 @@ function renderLotOccupancyFees() {
         const tableRowElement = document.createElement('tr');
         tableRowElement.className = 'container--lotOccupancyFee';
         tableRowElement.dataset.feeId = lotOccupancyFee.feeId.toString();
-        tableRowElement.dataset.includeQuantity = lotOccupancyFee.includeQuantity
-            ? '1'
-            : '0';
+        tableRowElement.dataset.includeQuantity =
+            ((_a = lotOccupancyFee.includeQuantity) !== null && _a !== void 0 ? _a : false) ? '1' : '0';
         tableRowElement.innerHTML =
             '<td colspan="' +
                 (lotOccupancyFee.quantity === 1 ? '5' : '1') +
                 '">' +
-                cityssm.escapeHTML((_a = lotOccupancyFee.feeName) !== null && _a !== void 0 ? _a : '') +
+                cityssm.escapeHTML((_b = lotOccupancyFee.feeName) !== null && _b !== void 0 ? _b : '') +
                 '</td>' +
                 (lotOccupancyFee.quantity === 1
                     ? ''
@@ -180,6 +179,7 @@ document.querySelector('#button--addFee').addEventListener('click', () => {
         });
     }
     function tryAddFee(clickEvent) {
+        var _a;
         clickEvent.preventDefault();
         const feeId = Number.parseInt(clickEvent.currentTarget.dataset.feeId, 10);
         const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId, 10);
@@ -189,7 +189,7 @@ document.querySelector('#button--addFee').addEventListener('click', () => {
         const fee = feeCategory.fees.find((currentFee) => {
             return currentFee.feeId === feeId;
         });
-        if (fee.includeQuantity) {
+        if ((_a = fee.includeQuantity) !== null && _a !== void 0 ? _a : false) {
             doSetQuantityAndAddFee(fee);
         }
         else {
@@ -323,7 +323,7 @@ function deleteLotOccupancyTransaction(clickEvent) {
     });
 }
 function renderLotOccupancyTransactions() {
-    var _a, _b;
+    var _a, _b, _c;
     if (lotOccupancyTransactions.length === 0) {
         lotOccupancyTransactionsContainerElement.innerHTML =
             '<div class="message ' +
@@ -356,13 +356,13 @@ function renderLotOccupancyTransactions() {
             lotOccupancyTransaction.transactionIndex.toString();
         tableRowElement.innerHTML =
             '<td>' +
-                lotOccupancyTransaction.transactionDateString +
+                ((_a = lotOccupancyTransaction.transactionDateString) !== null && _a !== void 0 ? _a : '') +
                 '</td>' +
                 ('<td>' +
-                    cityssm.escapeHTML((_a = lotOccupancyTransaction.externalReceiptNumber) !== null && _a !== void 0 ? _a : '') +
+                    cityssm.escapeHTML((_b = lotOccupancyTransaction.externalReceiptNumber) !== null && _b !== void 0 ? _b : '') +
                     '<br />' +
                     '<small>' +
-                    cityssm.escapeHTML((_b = lotOccupancyTransaction.transactionNote) !== null && _b !== void 0 ? _b : '') +
+                    cityssm.escapeHTML((_c = lotOccupancyTransaction.transactionNote) !== null && _c !== void 0 ? _c : '') +
                     '</small>' +
                     '</td>') +
                 ('<td class="has-text-right">$' +

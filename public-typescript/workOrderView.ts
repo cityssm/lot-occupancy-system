@@ -11,11 +11,10 @@ declare const bulmaJS: BulmaJS
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
-  const reopenWorkOrderButtonElement = document.querySelector(
-    '#button--reopenWorkOrder'
-  ) as HTMLButtonElement
+  const reopenWorkOrderButtonElement: HTMLButtonElement | null =
+    document.querySelector('#button--reopenWorkOrder')
 
-  if (reopenWorkOrderButtonElement) {
+  if (reopenWorkOrderButtonElement !== null) {
     const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId!
 
     reopenWorkOrderButtonElement.addEventListener('click', () => {

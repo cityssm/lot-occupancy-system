@@ -65,18 +65,19 @@ function buildEventSummary(milestone: recordTypes.WorkOrderMilestone): string {
           summary += ': '
         }
 
-        summary += occupant.occupantName
+        summary += occupant.occupantName ?? ''
       }
     }
   }
 
   if (occupantCount > 1) {
-    summary += ' plus ' + (occupantCount - 1)
+    summary += ' plus ' + (occupantCount - 1).toString()
   }
 
   return summary
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 function buildEventDescriptionHTML_occupancies(
   request: Request,
   milestone: recordTypes.WorkOrderMilestone
@@ -140,6 +141,7 @@ function buildEventDescriptionHTML_occupancies(
   return descriptionHTML
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 function buildEventDescriptionHTML_lots(
   request: Request,
   milestone: recordTypes.WorkOrderMilestone
@@ -190,6 +192,7 @@ function buildEventDescriptionHTML_lots(
   return descriptionHTML
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 function buildEventDescriptionHTML_prints(
   request: Request,
   milestone: recordTypes.WorkOrderMilestone
@@ -249,7 +252,10 @@ function buildEventCategoryList(
   const categories: string[] = []
 
   if (milestone.workOrderMilestoneTypeId) {
-    categories.push(milestone.workOrderMilestoneType, milestone.workOrderType)
+    categories.push(
+      milestone.workOrderMilestoneType!,
+      milestone.workOrderType ?? ''
+    )
   }
 
   if (milestone.workOrderMilestoneCompletionDate) {
@@ -270,7 +276,10 @@ function buildEventLocation(milestone: recordTypes.WorkOrderMilestone): string {
   return lotNames.join(', ')
 }
 
-export async function handler(request: Request, response: Response): Promise<void> {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const urlRoot = getUrlRoot(request)
 
   /*

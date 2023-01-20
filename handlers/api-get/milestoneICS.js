@@ -32,12 +32,12 @@ function buildEventSummary(milestone) {
                 if (summary !== '') {
                     summary += ': ';
                 }
-                summary += occupant.occupantName;
+                summary += occupant.occupantName ?? '';
             }
         }
     }
     if (occupantCount > 1) {
-        summary += ' plus ' + (occupantCount - 1);
+        summary += ' plus ' + (occupantCount - 1).toString();
     }
     return summary;
 }
@@ -169,7 +169,7 @@ function buildEventDescriptionHTML(request, milestone) {
 function buildEventCategoryList(milestone) {
     const categories = [];
     if (milestone.workOrderMilestoneTypeId) {
-        categories.push(milestone.workOrderMilestoneType, milestone.workOrderType);
+        categories.push(milestone.workOrderMilestoneType, milestone.workOrderType ?? '');
     }
     if (milestone.workOrderMilestoneCompletionDate) {
         categories.push('Completed');

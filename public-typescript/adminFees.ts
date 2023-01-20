@@ -85,9 +85,7 @@ declare const bulmaJS: BulmaJS
             <div class="message is-info">
               <p class="message-body">
                   There are no fees in the
-                  "${cityssm.escapeHTML(
-                    feeCategory.feeCategory || ''
-                  )}"
+                  "${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}"
                   category.
               </p>
             </div>
@@ -105,7 +103,9 @@ declare const bulmaJS: BulmaJS
           panelBlockElement.dataset.feeId = fee.feeId.toString()
 
           const hasTagsBlock =
-            fee.isRequired || fee.occupancyTypeId || fee.lotTypeId
+            (fee.isRequired ?? false) ||
+            fee.occupancyTypeId !== undefined ||
+            fee.lotTypeId !== undefined
 
           panelBlockElement.innerHTML =
             '<div class="columns">' +
@@ -122,23 +122,23 @@ declare const bulmaJS: BulmaJS
               '</p>' +
               (hasTagsBlock
                 ? '<p class="tags">' +
-                  (fee.isRequired
+                  (fee.isRequired ?? false
                     ? '<span class="tag is-warning">Required</span>'
                     : '') +
-                  (fee.occupancyTypeId
-                    ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
+                  (fee.occupancyTypeId === undefined
+                    ? ''
+                    : ' <span class="tag has-tooltip-bottom" data-tooltip="' +
                       los.escapedAliases.Occupancy +
                       ' Type Filter">' +
                       cityssm.escapeHTML(fee.occupancyType ?? '') +
-                      '</span>'
-                    : '') +
-                  (fee.lotTypeId
-                    ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
+                      '</span>') +
+                  (fee.lotTypeId === undefined
+                    ? ''
+                    : ' <span class="tag has-tooltip-bottom" data-tooltip="' +
                       los.escapedAliases.Lot +
                       ' Type Filter">' +
                       cityssm.escapeHTML(fee.lotType ?? '') +
-                      '</span>'
-                    : '') +
+                      '</span>') +
                   '</p>'
                 : '') +
               '</div>') +
@@ -844,7 +844,7 @@ declare const bulmaJS: BulmaJS
           '#feeEdit--includeQuantity'
         ) as HTMLSelectElement
 
-        if (fee.includeQuantity) {
+        if (fee.includeQuantity ?? false) {
           includeQuantityElement.value = '1'
         }
 
@@ -857,7 +857,7 @@ declare const bulmaJS: BulmaJS
 
         toggleQuantityFields()
 
-        if (fee.isRequired) {
+        if (fee.isRequired ?? false) {
           ;(
             modalElement.querySelector(
               '#feeEdit--isRequired'

@@ -296,11 +296,11 @@ declare const bulmaJS: BulmaJS
 
           for (const occupancyTypeField of responseJSON.occupancyTypeFields) {
             occupancyTypeFieldIds +=
-              ',' + occupancyTypeField.occupancyTypeFieldId
+              ',' + occupancyTypeField.occupancyTypeFieldId!.toString()
 
             const fieldName =
               'lotOccupancyFieldValue_' +
-              occupancyTypeField.occupancyTypeFieldId
+              occupancyTypeField.occupancyTypeFieldId!.toString()
 
             const fieldId = 'lotOccupancy--' + fieldName
 
@@ -328,11 +328,8 @@ declare const bulmaJS: BulmaJS
               inputElement.maxLength =
                 occupancyTypeField.maximumLength as number
 
-              if (
-                occupancyTypeField.pattern &&
-                occupancyTypeField.pattern !== ''
-              ) {
-                inputElement.pattern = occupancyTypeField.pattern
+              if ((occupancyTypeField.pattern ?? '') !== '') {
+                inputElement.pattern = occupancyTypeField.pattern!
               }
 
               ;(fieldElement.querySelector('.control') as HTMLElement).append(
@@ -341,14 +338,11 @@ declare const bulmaJS: BulmaJS
             } else {
               ;(
                 fieldElement.querySelector('.control') as HTMLElement
-              ).innerHTML =
-                '<div class="select is-fullwidth"><select id="' +
-                fieldId +
-                '" name="' +
-                fieldName +
-                '">' +
-                '<option value="">(Not Set)</option>' +
-                '</select></div>'
+              ).innerHTML = `<div class="select is-fullwidth">
+                  <select id="${fieldId}" name="${fieldName}">
+                  <option value="">(Not Set)</option>
+                  </select>
+                  </div>`
 
               const selectElement = fieldElement.querySelector(
                 'select'
@@ -388,7 +382,7 @@ declare const bulmaJS: BulmaJS
         bulmaJS.confirm({
           title: 'Confirm Change',
           message: `Are you sure you want to change the ${los.escapedAliases.occupancy} type?\n
-                        This change affects the additional fields associated with this record, and may also affect the available fees.`,
+                      This change affects the additional fields associated with this record, and may also affect the available fees.`,
           contextualColorName: 'warning',
           okButton: {
             text: 'Yes, Keep the Change',
@@ -647,13 +641,13 @@ declare const bulmaJS: BulmaJS
         document.querySelector('#lotOccupancy--lotId') as HTMLInputElement
       ).value
 
-      if (lotId) {
-        window.open(los.urlPrefix + '/lots/' + lotId)
-      } else {
+      if (lotId === '') {
         bulmaJS.alert({
           message: `No ${los.escapedAliases.lot} selected.`,
           contextualColorName: 'info'
         })
+      } else {
+        window.open(los.urlPrefix + '/lots/' + lotId)
       }
     })
 

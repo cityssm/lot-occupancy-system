@@ -6,7 +6,7 @@ export async function addWorkOrder(workOrderForm, requestSession) {
     const database = await acquireConnection();
     const rightNow = new Date();
     let workOrderNumber = workOrderForm.workOrderNumber;
-    if (!workOrderNumber) {
+    if ((workOrderNumber ?? '') === '') {
         workOrderNumber = await getNextWorkOrderNumber(database);
     }
     const result = database
@@ -16,13 +16,13 @@ export async function addWorkOrder(workOrderForm, requestSession) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(workOrderForm.workOrderTypeId, workOrderNumber, workOrderForm.workOrderDescription, workOrderForm.workOrderOpenDateString
-        ? dateStringToInteger(workOrderForm.workOrderOpenDateString)
-        : dateToInteger(rightNow), workOrderForm.workOrderCloseDateString
-        ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
-        : undefined, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
+        .run(workOrderForm.workOrderTypeId, workOrderNumber, workOrderForm.workOrderDescription, (workOrderForm.workOrderOpenDateString ?? '') === ''
+        ? dateToInteger(rightNow)
+        : dateStringToInteger(workOrderForm.workOrderOpenDateString), (workOrderForm.workOrderCloseDateString ?? '') === ''
+        ? undefined
+        : dateStringToInteger(workOrderForm.workOrderCloseDateString), requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
     const workOrderId = result.lastInsertRowid;
-    if (workOrderForm.lotOccupancyId) {
+    if ((workOrderForm.lotOccupancyId ?? '') !== '') {
         await addWorkOrderLotOccupancy({
             workOrderId,
             lotOccupancyId: workOrderForm.lotOccupancyId

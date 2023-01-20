@@ -200,10 +200,10 @@ function renderLotOccupancyComments(): void {
       cityssm.escapeHTML(lotOccupancyComment.recordCreate_userName ?? '') +
       '</td>' +
       '<td>' +
-      lotOccupancyComment.lotOccupancyCommentDateString +
+      (lotOccupancyComment.lotOccupancyCommentDateString ?? '') +
       (lotOccupancyComment.lotOccupancyCommentTime === 0
         ? ''
-        : ' ' + lotOccupancyComment.lotOccupancyCommentTimeString) +
+        : ' ' + lotOccupancyComment.lotOccupancyCommentTimeString!) +
       '</td>' +
       '<td>' +
       cityssm.escapeHTML(lotOccupancyComment.lotOccupancyComment ?? '') +

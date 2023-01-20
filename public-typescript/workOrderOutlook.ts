@@ -17,7 +17,7 @@ import type * as globalTypes from '../types/globalTypes'
     '#icsFilters--calendarURL'
   ) as HTMLTextAreaElement
 
-  function updateCalendarURL() {
+  function updateCalendarURL(): void {
     let url =
       window.location.href.slice(
         0,
@@ -81,9 +81,7 @@ import type * as globalTypes from '../types/globalTypes'
 
   const inputSelectElements = (
     document.querySelector('#panel--icsFilters') as HTMLElement
-  ).querySelectorAll('input, select') as NodeListOf<
-    HTMLInputElement | HTMLSelectElement
-  >
+  ).querySelectorAll('input, select')
 
   for (const element of inputSelectElements) {
     element.addEventListener('change', updateCalendarURL)

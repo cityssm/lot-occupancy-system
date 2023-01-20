@@ -186,6 +186,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doGetOccupancyTypeFields', {
                 occupancyTypeId: occupancyTypeIdElement.value
             }, (responseJSON) => {
+                var _a;
                 if (responseJSON.occupancyTypeFields.length === 0) {
                     lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
                             <p class="message-body">There are no additional fields for this ${los.escapedAliases.occupancy} type.</p>
@@ -196,9 +197,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 let occupancyTypeFieldIds = '';
                 for (const occupancyTypeField of responseJSON.occupancyTypeFields) {
                     occupancyTypeFieldIds +=
-                        ',' + occupancyTypeField.occupancyTypeFieldId;
+                        ',' + occupancyTypeField.occupancyTypeFieldId.toString();
                     const fieldName = 'lotOccupancyFieldValue_' +
-                        occupancyTypeField.occupancyTypeFieldId;
+                        occupancyTypeField.occupancyTypeFieldId.toString();
                     const fieldId = 'lotOccupancy--' + fieldName;
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
@@ -215,8 +216,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             occupancyTypeField.minimumLength;
                         inputElement.maxLength =
                             occupancyTypeField.maximumLength;
-                        if (occupancyTypeField.pattern &&
-                            occupancyTypeField.pattern !== '') {
+                        if (((_a = occupancyTypeField.pattern) !== null && _a !== void 0 ? _a : '') !== '') {
                             inputElement.pattern = occupancyTypeField.pattern;
                         }
                         ;
@@ -224,14 +224,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                     else {
                         ;
-                        fieldElement.querySelector('.control').innerHTML =
-                            '<div class="select is-fullwidth"><select id="' +
-                                fieldId +
-                                '" name="' +
-                                fieldName +
-                                '">' +
-                                '<option value="">(Not Set)</option>' +
-                                '</select></div>';
+                        fieldElement.querySelector('.control').innerHTML = `<div class="select is-fullwidth">
+                  <select id="${fieldId}" name="${fieldName}">
+                  <option value="">(Not Set)</option>
+                  </select>
+                  </div>`;
                         const selectElement = fieldElement.querySelector('select');
                         selectElement.required = occupancyTypeField.isRequired;
                         const optionValues = occupancyTypeField.occupancyTypeFieldValues.split('\n');
@@ -255,7 +252,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.confirm({
                     title: 'Confirm Change',
                     message: `Are you sure you want to change the ${los.escapedAliases.occupancy} type?\n
-                        This change affects the additional fields associated with this record, and may also affect the available fees.`,
+                      This change affects the additional fields associated with this record, and may also affect the available fees.`,
                     contextualColorName: 'warning',
                     okButton: {
                         text: 'Yes, Keep the Change',
@@ -421,14 +418,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
         .querySelector('.is-lot-view-button')
         .addEventListener('click', () => {
         const lotId = document.querySelector('#lotOccupancy--lotId').value;
-        if (lotId) {
-            window.open(los.urlPrefix + '/lots/' + lotId);
-        }
-        else {
+        if (lotId === '') {
             bulmaJS.alert({
                 message: `No ${los.escapedAliases.lot} selected.`,
                 contextualColorName: 'info'
             });
+        }
+        else {
+            window.open(los.urlPrefix + '/lots/' + lotId);
         }
     });
     document
@@ -570,7 +567,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function renderLotOccupancyOccupants() {
-        var _a, _b, _c;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         const occupantsContainer = document.querySelector('#container--lotOccupancyOccupants');
         cityssm.clearElement(occupantsContainer);
         if (lotOccupancyOccupants.length === 0) {
@@ -609,27 +606,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '</span>') +
                     '</td>' +
                     ('<td>' +
-                        (lotOccupancyOccupant.occupantAddress1
-                            ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) + '<br />'
-                            : '') +
-                        (lotOccupancyOccupant.occupantAddress2
-                            ? cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2) + '<br />'
-                            : '') +
-                        (lotOccupancyOccupant.occupantCity
-                            ? cityssm.escapeHTML(lotOccupancyOccupant.occupantCity) + ', '
-                            : '') +
-                        cityssm.escapeHTML((_b = lotOccupancyOccupant.occupantProvince) !== null && _b !== void 0 ? _b : '') +
+                        (((_b = lotOccupancyOccupant.occupantAddress1) !== null && _b !== void 0 ? _b : '') === ''
+                            ? ''
+                            : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1) +
+                                '<br />') +
+                        (((_c = lotOccupancyOccupant.occupantAddress2) !== null && _c !== void 0 ? _c : '') === ''
+                            ? ''
+                            : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2) +
+                                '<br />') +
+                        (((_d = lotOccupancyOccupant.occupantCity) !== null && _d !== void 0 ? _d : '') === ''
+                            ? ''
+                            : cityssm.escapeHTML(lotOccupancyOccupant.occupantCity) + ', ') +
+                        cityssm.escapeHTML((_e = lotOccupancyOccupant.occupantProvince) !== null && _e !== void 0 ? _e : '') +
                         '<br />' +
-                        cityssm.escapeHTML((_c = lotOccupancyOccupant.occupantPostalCode) !== null && _c !== void 0 ? _c : '') +
+                        cityssm.escapeHTML((_f = lotOccupancyOccupant.occupantPostalCode) !== null && _f !== void 0 ? _f : '') +
                         '</td>') +
                     ('<td>' +
-                        (lotOccupancyOccupant.occupantPhoneNumber
-                            ? cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber) +
-                                '<br />'
-                            : '') +
-                        (lotOccupancyOccupant.occupantEmailAddress
-                            ? cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress)
-                            : '') +
+                        (((_g = lotOccupancyOccupant.occupantPhoneNumber) !== null && _g !== void 0 ? _g : '') === ''
+                            ? ''
+                            : cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber) +
+                                '<br />') +
+                        (((_h = lotOccupancyOccupant.occupantEmailAddress) !== null && _h !== void 0 ? _h : '') === ''
+                            ? ''
+                            : cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress)) +
                         '</td>') +
                     ('<td>' +
                         cityssm.escapeHTML(lotOccupancyOccupant.occupantComment) +
@@ -730,7 +729,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 searchResultsElement.innerHTML =
                     los.getLoadingParagraphHTML('Searching...');
                 cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doSearchPastOccupants', searchFormElement, (responseJSON) => {
-                    var _a, _b, _c, _d, _e, _f;
+                    var _a, _b, _c, _d, _e, _f, _g, _h;
                     pastOccupantSearchResults = responseJSON.occupants;
                     const panelElement = document.createElement('div');
                     panelElement.className = 'panel';
@@ -747,21 +746,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 ('<div class="column">' +
                                     cityssm.escapeHTML((_b = occupant.occupantAddress1) !== null && _b !== void 0 ? _b : '') +
                                     '<br />' +
-                                    (occupant.occupantAddress2
-                                        ? cityssm.escapeHTML(occupant.occupantAddress2) + '<br />'
-                                        : '') +
-                                    cityssm.escapeHTML((_c = occupant.occupantCity) !== null && _c !== void 0 ? _c : '') +
+                                    (((_c = occupant.occupantAddress2) !== null && _c !== void 0 ? _c : '') === ''
+                                        ? ''
+                                        : cityssm.escapeHTML(occupant.occupantAddress2) +
+                                            '<br />') +
+                                    cityssm.escapeHTML((_d = occupant.occupantCity) !== null && _d !== void 0 ? _d : '') +
                                     ', ' +
-                                    cityssm.escapeHTML((_d = occupant.occupantProvince) !== null && _d !== void 0 ? _d : '') +
+                                    cityssm.escapeHTML((_e = occupant.occupantProvince) !== null && _e !== void 0 ? _e : '') +
                                     '<br />' +
-                                    cityssm.escapeHTML((_e = occupant.occupantPostalCode) !== null && _e !== void 0 ? _e : '') +
+                                    cityssm.escapeHTML((_f = occupant.occupantPostalCode) !== null && _f !== void 0 ? _f : '') +
                                     '</div>') +
                                 ('<div class="column">' +
-                                    (occupant.occupantPhoneNumber
-                                        ? cityssm.escapeHTML(occupant.occupantPhoneNumber) +
-                                            '<br />'
-                                        : '') +
-                                    cityssm.escapeHTML((_f = occupant.occupantEmailAddress) !== null && _f !== void 0 ? _f : '') +
+                                    (((_g = occupant.occupantPhoneNumber) !== null && _g !== void 0 ? _g : '') === ''
+                                        ? ''
+                                        : cityssm.escapeHTML(occupant.occupantPhoneNumber) +
+                                            '<br />') +
+                                    cityssm.escapeHTML((_h = occupant.occupantEmailAddress) !== null && _h !== void 0 ? _h : '') +
                                     '<br />' +
                                     '</div>') +
                                 '</div>';
@@ -906,7 +906,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         function renderLotOccupancyComments() {
-            var _a, _b;
+            var _a, _b, _c;
             const containerElement = document.querySelector('#container--lotOccupancyComments');
             if (lotOccupancyComments.length === 0) {
                 containerElement.innerHTML =
@@ -934,13 +934,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         cityssm.escapeHTML((_a = lotOccupancyComment.recordCreate_userName) !== null && _a !== void 0 ? _a : '') +
                         '</td>' +
                         '<td>' +
-                        lotOccupancyComment.lotOccupancyCommentDateString +
+                        ((_b = lotOccupancyComment.lotOccupancyCommentDateString) !== null && _b !== void 0 ? _b : '') +
                         (lotOccupancyComment.lotOccupancyCommentTime === 0
                             ? ''
                             : ' ' + lotOccupancyComment.lotOccupancyCommentTimeString) +
                         '</td>' +
                         '<td>' +
-                        cityssm.escapeHTML((_b = lotOccupancyComment.lotOccupancyComment) !== null && _b !== void 0 ? _b : '') +
+                        cityssm.escapeHTML((_c = lotOccupancyComment.lotOccupancyComment) !== null && _c !== void 0 ? _c : '') +
                         '</td>' +
                         ('<td class="is-hidden-print">' +
                             '<div class="buttons are-small is-justify-content-end">' +
@@ -1051,7 +1051,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         function renderLotOccupancyFees() {
-            var _a;
+            var _a, _b;
             if (lotOccupancyFees.length === 0) {
                 lotOccupancyFeesContainerElement.innerHTML = `<div class="message is-info">
                 <p class="message-body">There are no fees associated with this record.</p>
@@ -1089,14 +1089,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const tableRowElement = document.createElement('tr');
                 tableRowElement.className = 'container--lotOccupancyFee';
                 tableRowElement.dataset.feeId = lotOccupancyFee.feeId.toString();
-                tableRowElement.dataset.includeQuantity = lotOccupancyFee.includeQuantity
-                    ? '1'
-                    : '0';
+                tableRowElement.dataset.includeQuantity =
+                    ((_a = lotOccupancyFee.includeQuantity) !== null && _a !== void 0 ? _a : false) ? '1' : '0';
                 tableRowElement.innerHTML =
                     '<td colspan="' +
                         (lotOccupancyFee.quantity === 1 ? '5' : '1') +
                         '">' +
-                        cityssm.escapeHTML((_a = lotOccupancyFee.feeName) !== null && _a !== void 0 ? _a : '') +
+                        cityssm.escapeHTML((_b = lotOccupancyFee.feeName) !== null && _b !== void 0 ? _b : '') +
                         '</td>' +
                         (lotOccupancyFee.quantity === 1
                             ? ''
@@ -1186,6 +1185,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
             function tryAddFee(clickEvent) {
+                var _a;
                 clickEvent.preventDefault();
                 const feeId = Number.parseInt(clickEvent.currentTarget.dataset.feeId, 10);
                 const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId, 10);
@@ -1195,7 +1195,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const fee = feeCategory.fees.find((currentFee) => {
                     return currentFee.feeId === feeId;
                 });
-                if (fee.includeQuantity) {
+                if ((_a = fee.includeQuantity) !== null && _a !== void 0 ? _a : false) {
                     doSetQuantityAndAddFee(fee);
                 }
                 else {
@@ -1329,7 +1329,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         function renderLotOccupancyTransactions() {
-            var _a, _b;
+            var _a, _b, _c;
             if (lotOccupancyTransactions.length === 0) {
                 lotOccupancyTransactionsContainerElement.innerHTML =
                     '<div class="message ' +
@@ -1362,13 +1362,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     lotOccupancyTransaction.transactionIndex.toString();
                 tableRowElement.innerHTML =
                     '<td>' +
-                        lotOccupancyTransaction.transactionDateString +
+                        ((_a = lotOccupancyTransaction.transactionDateString) !== null && _a !== void 0 ? _a : '') +
                         '</td>' +
                         ('<td>' +
-                            cityssm.escapeHTML((_a = lotOccupancyTransaction.externalReceiptNumber) !== null && _a !== void 0 ? _a : '') +
+                            cityssm.escapeHTML((_b = lotOccupancyTransaction.externalReceiptNumber) !== null && _b !== void 0 ? _b : '') +
                             '<br />' +
                             '<small>' +
-                            cityssm.escapeHTML((_b = lotOccupancyTransaction.transactionNote) !== null && _b !== void 0 ? _b : '') +
+                            cityssm.escapeHTML((_c = lotOccupancyTransaction.transactionNote) !== null && _c !== void 0 ? _c : '') +
                             '</small>' +
                             '</td>') +
                         ('<td class="has-text-right">$' +

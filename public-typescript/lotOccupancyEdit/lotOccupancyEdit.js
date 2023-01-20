@@ -186,6 +186,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doGetOccupancyTypeFields', {
                 occupancyTypeId: occupancyTypeIdElement.value
             }, (responseJSON) => {
+                var _a;
                 if (responseJSON.occupancyTypeFields.length === 0) {
                     lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
                             <p class="message-body">There are no additional fields for this ${los.escapedAliases.occupancy} type.</p>
@@ -196,9 +197,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 let occupancyTypeFieldIds = '';
                 for (const occupancyTypeField of responseJSON.occupancyTypeFields) {
                     occupancyTypeFieldIds +=
-                        ',' + occupancyTypeField.occupancyTypeFieldId;
+                        ',' + occupancyTypeField.occupancyTypeFieldId.toString();
                     const fieldName = 'lotOccupancyFieldValue_' +
-                        occupancyTypeField.occupancyTypeFieldId;
+                        occupancyTypeField.occupancyTypeFieldId.toString();
                     const fieldId = 'lotOccupancy--' + fieldName;
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
@@ -215,8 +216,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             occupancyTypeField.minimumLength;
                         inputElement.maxLength =
                             occupancyTypeField.maximumLength;
-                        if (occupancyTypeField.pattern &&
-                            occupancyTypeField.pattern !== '') {
+                        if (((_a = occupancyTypeField.pattern) !== null && _a !== void 0 ? _a : '') !== '') {
                             inputElement.pattern = occupancyTypeField.pattern;
                         }
                         ;
@@ -224,14 +224,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                     else {
                         ;
-                        fieldElement.querySelector('.control').innerHTML =
-                            '<div class="select is-fullwidth"><select id="' +
-                                fieldId +
-                                '" name="' +
-                                fieldName +
-                                '">' +
-                                '<option value="">(Not Set)</option>' +
-                                '</select></div>';
+                        fieldElement.querySelector('.control').innerHTML = `<div class="select is-fullwidth">
+                  <select id="${fieldId}" name="${fieldName}">
+                  <option value="">(Not Set)</option>
+                  </select>
+                  </div>`;
                         const selectElement = fieldElement.querySelector('select');
                         selectElement.required = occupancyTypeField.isRequired;
                         const optionValues = occupancyTypeField.occupancyTypeFieldValues.split('\n');
@@ -255,7 +252,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.confirm({
                     title: 'Confirm Change',
                     message: `Are you sure you want to change the ${los.escapedAliases.occupancy} type?\n
-                        This change affects the additional fields associated with this record, and may also affect the available fees.`,
+                      This change affects the additional fields associated with this record, and may also affect the available fees.`,
                     contextualColorName: 'warning',
                     okButton: {
                         text: 'Yes, Keep the Change',
@@ -421,14 +418,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
         .querySelector('.is-lot-view-button')
         .addEventListener('click', () => {
         const lotId = document.querySelector('#lotOccupancy--lotId').value;
-        if (lotId) {
-            window.open(los.urlPrefix + '/lots/' + lotId);
-        }
-        else {
+        if (lotId === '') {
             bulmaJS.alert({
                 message: `No ${los.escapedAliases.lot} selected.`,
                 contextualColorName: 'info'
             });
+        }
+        else {
+            window.open(los.urlPrefix + '/lots/' + lotId);
         }
     });
     document

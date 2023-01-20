@@ -15,10 +15,15 @@ const sass = gulpSass(dartSass)
 
 const publicSCSSDestination = 'public/stylesheets'
 
-const publicSCSSFunction = () => {
+function publicSCSSFunction(): NodeJS.ReadWriteStream {
   return gulp
     .src('public-scss/*.scss')
-    .pipe(sass({ outputStyle: 'compressed', includePaths: ['node_modules'] }).on('error', sass.logError))
+    .pipe(
+      sass({ outputStyle: 'compressed', includePaths: ['node_modules'] }).on(
+        'error',
+        sass.logError
+      )
+    )
     .pipe(gulp.dest(publicSCSSDestination))
 }
 
@@ -30,7 +35,7 @@ gulp.task('public-scss', publicSCSSFunction)
 
 const publicJavascriptsDestination = 'public/javascripts'
 
-const publicJavascriptsMinFunction = () => {
+function publicJavascriptsMinFunction(): NodeJS.ReadWriteStream {
   return gulp
     .src('public-typescript/*.js', { allowEmpty: true })
     .pipe(
@@ -42,21 +47,21 @@ const publicJavascriptsMinFunction = () => {
     .pipe(gulp.dest(publicJavascriptsDestination))
 }
 
-const publicJavascriptsAdminTablesFunction = () => {
+function publicJavascriptsAdminTablesFunction(): NodeJS.ReadWriteStream {
   return gulp
     .src('public-typescript/adminTables/adminTables.js')
     .pipe(include())
     .pipe(gulp.dest('public-typescript'))
 }
 
-const publicJavascriptsLotOccupancyEditFunction = () => {
+function publicJavascriptsLotOccupancyEditFunction(): NodeJS.ReadWriteStream {
   return gulp
     .src('public-typescript/lotOccupancyEdit/lotOccupancyEdit.js')
     .pipe(include())
     .pipe(gulp.dest('public-typescript'))
 }
 
-const publicJavascriptsWorkOrderEditFunction = () => {
+function publicJavascriptsWorkOrderEditFunction(): NodeJS.ReadWriteStream {
   return gulp
     .src('public-typescript/workOrderEdit/workOrderEdit.js')
     .pipe(include())
@@ -64,22 +69,37 @@ const publicJavascriptsWorkOrderEditFunction = () => {
 }
 
 gulp.task('public-javascript-adminTables', publicJavascriptsAdminTablesFunction)
-gulp.task('public-javascript-lotOccupancyEdit', publicJavascriptsLotOccupancyEditFunction)
-gulp.task('public-javascript-workOrderEdit', publicJavascriptsWorkOrderEditFunction)
+gulp.task(
+  'public-javascript-lotOccupancyEdit',
+  publicJavascriptsLotOccupancyEditFunction
+)
+gulp.task(
+  'public-javascript-workOrderEdit',
+  publicJavascriptsWorkOrderEditFunction
+)
 gulp.task('public-javascript-min', publicJavascriptsMinFunction)
 
 /*
  * Watch
  */
 
-const watchFunction = () => {
+function watchFunction(): void {
   gulp.watch('public-scss/*.scss', publicSCSSFunction)
 
-  gulp.watch('public-typescript/adminTables/*.js', publicJavascriptsAdminTablesFunction)
+  gulp.watch(
+    'public-typescript/adminTables/*.js',
+    publicJavascriptsAdminTablesFunction
+  )
 
-  gulp.watch('public-typescript/lotOccupancyEdit/*.js', publicJavascriptsLotOccupancyEditFunction)
+  gulp.watch(
+    'public-typescript/lotOccupancyEdit/*.js',
+    publicJavascriptsLotOccupancyEditFunction
+  )
 
-  gulp.watch('public-typescript/workOrderEdit/*.js', publicJavascriptsWorkOrderEditFunction)
+  gulp.watch(
+    'public-typescript/workOrderEdit/*.js',
+    publicJavascriptsWorkOrderEditFunction
+  )
 
   gulp.watch('public-typescript/*.js', publicJavascriptsMinFunction)
 }

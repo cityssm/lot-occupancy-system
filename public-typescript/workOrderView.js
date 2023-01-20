@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
     const reopenWorkOrderButtonElement = document.querySelector('#button--reopenWorkOrder');
-    if (reopenWorkOrderButtonElement) {
+    if (reopenWorkOrderButtonElement !== null) {
         const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId;
         reopenWorkOrderButtonElement.addEventListener('click', () => {
             function doReopen() {

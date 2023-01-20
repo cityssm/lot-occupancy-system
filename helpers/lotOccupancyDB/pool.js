@@ -5,7 +5,8 @@ import Debug from 'debug';
 const debug = Debug('lot-occupancy-system:lotOccupancyDB:pool');
 const pool = new Pool(databasePath);
 export async function acquireConnection() {
-    return await pool.acquire();
+    const connection = await pool.acquire();
+    return connection;
 }
 exitHook(() => {
     debug('Closing database pool');

@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     let feeCategories = exports.feeCategories;
     delete exports.feeCategories;
     function renderFeeCategories() {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         if (feeCategories.length === 0) {
             feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
         <p class="message-body">There are no available fees.</p>
@@ -61,7 +61,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <div class="message is-info">
               <p class="message-body">
                   There are no fees in the
-                  "${cityssm.escapeHTML(feeCategory.feeCategory || '')}"
+                  "${cityssm.escapeHTML((_b = feeCategory.feeCategory) !== null && _b !== void 0 ? _b : '')}"
                   category.
               </p>
             </div>
@@ -75,39 +75,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const panelBlockElement = document.createElement('div');
                     panelBlockElement.className = 'panel-block is-block container--fee';
                     panelBlockElement.dataset.feeId = fee.feeId.toString();
-                    const hasTagsBlock = fee.isRequired || fee.occupancyTypeId || fee.lotTypeId;
+                    const hasTagsBlock = ((_c = fee.isRequired) !== null && _c !== void 0 ? _c : false) ||
+                        fee.occupancyTypeId !== undefined ||
+                        fee.lotTypeId !== undefined;
                     panelBlockElement.innerHTML =
                         '<div class="columns">' +
                             ('<div class="column is-half">' +
                                 '<p>' +
                                 '<a class="has-text-weight-bold" href="#">' +
-                                cityssm.escapeHTML((_b = fee.feeName) !== null && _b !== void 0 ? _b : '') +
+                                cityssm.escapeHTML((_d = fee.feeName) !== null && _d !== void 0 ? _d : '') +
                                 '</a><br />' +
                                 '<small>' +
                                 cityssm
-                                    .escapeHTML((_c = fee.feeDescription) !== null && _c !== void 0 ? _c : '')
+                                    .escapeHTML((_e = fee.feeDescription) !== null && _e !== void 0 ? _e : '')
                                     .replace(/\n/g, '<br />') +
                                 '</small>' +
                                 '</p>' +
                                 (hasTagsBlock
                                     ? '<p class="tags">' +
-                                        (fee.isRequired
+                                        (((_f = fee.isRequired) !== null && _f !== void 0 ? _f : false)
                                             ? '<span class="tag is-warning">Required</span>'
                                             : '') +
-                                        (fee.occupancyTypeId
-                                            ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
+                                        (fee.occupancyTypeId === undefined
+                                            ? ''
+                                            : ' <span class="tag has-tooltip-bottom" data-tooltip="' +
                                                 los.escapedAliases.Occupancy +
                                                 ' Type Filter">' +
-                                                cityssm.escapeHTML((_d = fee.occupancyType) !== null && _d !== void 0 ? _d : '') +
-                                                '</span>'
-                                            : '') +
-                                        (fee.lotTypeId
-                                            ? ' <span class="tag has-tooltip-bottom" data-tooltip="' +
+                                                cityssm.escapeHTML((_g = fee.occupancyType) !== null && _g !== void 0 ? _g : '') +
+                                                '</span>') +
+                                        (fee.lotTypeId === undefined
+                                            ? ''
+                                            : ' <span class="tag has-tooltip-bottom" data-tooltip="' +
                                                 los.escapedAliases.Lot +
                                                 ' Type Filter">' +
-                                                cityssm.escapeHTML((_e = fee.lotType) !== null && _e !== void 0 ? _e : '') +
-                                                '</span>'
-                                            : '') +
+                                                cityssm.escapeHTML((_h = fee.lotType) !== null && _h !== void 0 ? _h : '') +
+                                                '</span>') +
                                         '</p>'
                                     : '') +
                                 '</div>') +
@@ -131,7 +133,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                     '</div>') +
                                 ('<div class="column has-text-centered">' +
                                     (fee.includeQuantity
-                                        ? cityssm.escapeHTML((_f = fee.quantityUnit) !== null && _f !== void 0 ? _f : '') +
+                                        ? cityssm.escapeHTML((_j = fee.quantityUnit) !== null && _j !== void 0 ? _j : '') +
                                             '<br />' +
                                             '<small>Quantity</small>'
                                         : '') +
@@ -501,7 +503,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('adminFees-editFee', {
             onshow(modalElement) {
-                var _a;
+                var _a, _b, _c;
                 editModalElement = modalElement;
                 modalElement.querySelector('#feeEdit--feeId').value = fee.feeId.toString();
                 const feeCategoryElement = modalElement.querySelector('#feeEdit--feeCategoryId');
@@ -551,13 +553,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 taxPercentageElement.addEventListener('keyup', toggleTaxFields);
                 toggleTaxFields();
                 const includeQuantityElement = modalElement.querySelector('#feeEdit--includeQuantity');
-                if (fee.includeQuantity) {
+                if ((_a = fee.includeQuantity) !== null && _a !== void 0 ? _a : false) {
                     includeQuantityElement.value = '1';
                 }
                 includeQuantityElement.addEventListener('change', toggleQuantityFields);
-                modalElement.querySelector('#feeEdit--quantityUnit').value = (_a = fee.quantityUnit) !== null && _a !== void 0 ? _a : '';
+                modalElement.querySelector('#feeEdit--quantityUnit').value = (_b = fee.quantityUnit) !== null && _b !== void 0 ? _b : '';
                 toggleQuantityFields();
-                if (fee.isRequired) {
+                if ((_c = fee.isRequired) !== null && _c !== void 0 ? _c : false) {
                     ;
                     modalElement.querySelector('#feeEdit--isRequired').value = '1';
                 }
