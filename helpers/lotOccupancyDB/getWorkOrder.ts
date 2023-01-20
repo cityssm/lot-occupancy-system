@@ -34,7 +34,7 @@ async function _getWorkOrder(
   workOrderIdOrWorkOrderNumber: number | string,
   options: WorkOrderOptions,
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.WorkOrder> {
+): Promise<recordTypes.WorkOrder | undefined> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
@@ -43,7 +43,7 @@ async function _getWorkOrder(
     .prepare(sql)
     .get(workOrderIdOrWorkOrderNumber)
 
-  if (workOrder) {
+  if (workOrder !== undefined) {
     if (options.includeLotsAndLotOccupancies) {
       const workOrderLotsResults = await getLots(
         {
@@ -104,7 +104,7 @@ async function _getWorkOrder(
 
 export async function getWorkOrderByWorkOrderNumber(
   workOrderNumber: string
-): Promise<recordTypes.WorkOrder> {
+): Promise<recordTypes.WorkOrder | undefined> {
   return await _getWorkOrder(
     baseSQL + ' and w.workOrderNumber = ?',
     workOrderNumber,
@@ -120,7 +120,7 @@ export async function getWorkOrder(
   workOrderId: number | string,
   options: WorkOrderOptions,
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.WorkOrder> {
+): Promise<recordTypes.WorkOrder | undefined> {
   return await _getWorkOrder(
     baseSQL + ' and w.workOrderId = ?',
     workOrderId,

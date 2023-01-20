@@ -6,7 +6,7 @@ export async function handler(request, response) {
         includeComments: true,
         includeMilestones: true
     });
-    if (!workOrder) {
+    if (workOrder === undefined) {
         response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
             '/workOrders/?error=workOrderIdNotFound');
         return;

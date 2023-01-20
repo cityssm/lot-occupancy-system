@@ -7,7 +7,7 @@ const commaSeparatedNumbersRegex = /^\d+(,\d+)*$/;
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null';
     const sqlParameters = [];
-    if (filters.workOrderId) {
+    if ((filters.workOrderId ?? '') !== '') {
         sqlWhereClause += ' and m.workOrderId = ?';
         sqlParameters.push(filters.workOrderId);
     }
@@ -34,16 +34,16 @@ function buildWhereClause(filters) {
             break;
         }
     }
-    if (filters.workOrderMilestoneDateString) {
+    if ((filters.workOrderMilestoneDateString ?? '') !== '') {
         sqlWhereClause += ' and m.workOrderMilestoneDate = ?';
         sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString));
     }
-    if (filters.workOrderTypeIds &&
+    if ((filters.workOrderTypeIds ?? '') !== '' &&
         commaSeparatedNumbersRegex.test(filters.workOrderTypeIds)) {
         sqlWhereClause +=
             ' and w.workOrderTypeId in (' + filters.workOrderTypeIds + ')';
     }
-    if (filters.workOrderMilestoneTypeIds &&
+    if ((filters.workOrderMilestoneTypeIds ?? '') !== '' &&
         commaSeparatedNumbersRegex.test(filters.workOrderMilestoneTypeIds)) {
         sqlWhereClause +=
             ' and m.workOrderMilestoneTypeId in (' +
@@ -63,17 +63,17 @@ export async function getWorkOrderMilestones(filters, options, connectedDatabase
     let orderByClause = '';
     switch (options.orderBy) {
         case 'completion': {
-            orderByClause =
-                ' order by' +
-                    ' m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime,' +
-                    ' m.workOrderMilestoneDate, case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end,' +
-                    ' t.orderNumber, m.workOrderMilestoneId';
+            orderByClause = ` order by
+          m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime,
+          m.workOrderMilestoneDate,
+          case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end,
+          t.orderNumber, m.workOrderMilestoneId`;
             break;
         }
         case 'date': {
-            orderByClause =
-                ' order by m.workOrderMilestoneDate, case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end,' +
-                    ' t.orderNumber, m.workOrderId, m.workOrderMilestoneId';
+            orderByClause = ` order by m.workOrderMilestoneDate,
+          case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end,
+          t.orderNumber, m.workOrderId, m.workOrderMilestoneId`;
             break;
         }
     }
@@ -84,7 +84,7 @@ export async function getWorkOrderMilestones(filters, options, connectedDatabase
         ' m.workOrderMilestoneDescription,' +
         ' m.workOrderMilestoneCompletionDate, userFn_dateIntegerToString(m.workOrderMilestoneCompletionDate) as workOrderMilestoneCompletionDateString,' +
         ' m.workOrderMilestoneCompletionTime, userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,' +
-        (options.includeWorkOrders
+        (options.includeWorkOrders ?? false
             ? ' m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,' +
                 ' w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,' +
                 ' w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,' +
@@ -101,7 +101,7 @@ export async function getWorkOrderMilestones(filters, options, connectedDatabase
     const workOrderMilestones = database
         .prepare(sql)
         .all(sqlParameters);
-    if (options.includeWorkOrders) {
+    if (options.includeWorkOrders ?? false) {
         for (const workOrderMilestone of workOrderMilestones) {
             const workOrderLotsResults = await getLots({
                 workOrderId: workOrderMilestone.workOrderId

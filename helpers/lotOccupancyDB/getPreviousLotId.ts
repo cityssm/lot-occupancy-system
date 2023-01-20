@@ -26,11 +26,11 @@ export async function getPreviousLotId(
 
   database.release()
 
-  if (result) {
-    return result.lotId
+  if (result === undefined) {
+    return undefined
   }
 
-  return undefined
+  return result.lotId
 }
 
 export default getPreviousLotId

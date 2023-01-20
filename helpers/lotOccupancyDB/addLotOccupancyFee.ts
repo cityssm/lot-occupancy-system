@@ -28,7 +28,15 @@ export async function addLotOccupancyFee(
   let feeAmount: number
   let taxAmount: number
 
-  if (lotOccupancyFeeForm.feeAmount) {
+  if ((lotOccupancyFeeForm.feeAmount ?? '') === '') {
+    const lotOccupancy = (await getLotOccupancy(
+      lotOccupancyFeeForm.lotOccupancyId
+    ))!
+    const fee = await getFee(lotOccupancyFeeForm.feeId)
+
+    feeAmount = calculateFeeAmount(fee, lotOccupancy)
+    taxAmount = calculateTaxAmount(fee, feeAmount)
+  } else {
     feeAmount =
       typeof lotOccupancyFeeForm.feeAmount === 'string'
         ? Number.parseFloat(lotOccupancyFeeForm.feeAmount)
@@ -37,14 +45,6 @@ export async function addLotOccupancyFee(
       typeof lotOccupancyFeeForm.taxAmount === 'string'
         ? Number.parseFloat(lotOccupancyFeeForm.taxAmount)
         : 0
-  } else {
-    const lotOccupancy = (await getLotOccupancy(
-      lotOccupancyFeeForm.lotOccupancyId
-    ))!
-    const fee = await getFee(lotOccupancyFeeForm.feeId)
-
-    feeAmount = calculateFeeAmount(fee, lotOccupancy)
-    taxAmount = calculateTaxAmount(fee, feeAmount)
   }
 
   // Check if record already exists

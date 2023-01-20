@@ -12,7 +12,7 @@ export async function handler(
 
   const nextLotId = await getNextLotId(lotId)
 
-  if (!nextLotId) {
+  if (nextLotId === undefined) {
     response.redirect(
       configFunctions.getProperty('reverseProxy.urlPrefix') +
         '/lots/?error=noNextLotIdFound'

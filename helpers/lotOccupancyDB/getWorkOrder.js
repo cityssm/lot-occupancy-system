@@ -19,7 +19,7 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
     const workOrder = database
         .prepare(sql)
         .get(workOrderIdOrWorkOrderNumber);
-    if (workOrder) {
+    if (workOrder !== undefined) {
         if (options.includeLotsAndLotOccupancies) {
             const workOrderLotsResults = await getLots({
                 workOrderId: workOrder.workOrderId

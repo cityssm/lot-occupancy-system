@@ -28,7 +28,7 @@ export async function getFeeCategories(filters, options) {
         sqlWhereClause +
         ' order by orderNumber, feeCategory')
         .all(sqlParameters);
-    if (options.includeFees) {
+    if (options.includeFees ?? false) {
         let expectedOrderNumber = 0;
         for (const feeCategory of feeCategories) {
             if (updateOrderNumbers &&

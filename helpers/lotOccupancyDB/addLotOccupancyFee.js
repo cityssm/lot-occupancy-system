@@ -7,7 +7,13 @@ export async function addLotOccupancyFee(lotOccupancyFeeForm, requestSession) {
     const rightNowMillis = Date.now();
     let feeAmount;
     let taxAmount;
-    if (lotOccupancyFeeForm.feeAmount) {
+    if ((lotOccupancyFeeForm.feeAmount ?? '') === '') {
+        const lotOccupancy = (await getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId));
+        const fee = await getFee(lotOccupancyFeeForm.feeId);
+        feeAmount = calculateFeeAmount(fee, lotOccupancy);
+        taxAmount = calculateTaxAmount(fee, feeAmount);
+    }
+    else {
         feeAmount =
             typeof lotOccupancyFeeForm.feeAmount === 'string'
                 ? Number.parseFloat(lotOccupancyFeeForm.feeAmount)
@@ -16,12 +22,6 @@ export async function addLotOccupancyFee(lotOccupancyFeeForm, requestSession) {
             typeof lotOccupancyFeeForm.taxAmount === 'string'
                 ? Number.parseFloat(lotOccupancyFeeForm.taxAmount)
                 : 0;
-    }
-    else {
-        const lotOccupancy = (await getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId));
-        const fee = await getFee(lotOccupancyFeeForm.feeId);
-        feeAmount = calculateFeeAmount(fee, lotOccupancy);
-        taxAmount = calculateTaxAmount(fee, feeAmount);
     }
     const record = database
         .prepare(`select feeAmount, taxAmount, recordDelete_timeMillis

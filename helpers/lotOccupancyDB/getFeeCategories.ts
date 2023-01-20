@@ -56,7 +56,7 @@ export async function getFeeCategories(
     )
     .all(sqlParameters)
 
-  if (options.includeFees) {
+  if (options.includeFees ?? false) {
     let expectedOrderNumber = 0
 
     for (const feeCategory of feeCategories) {

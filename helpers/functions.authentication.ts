@@ -17,7 +17,7 @@ async function authenticateViaActiveDirectory(
       ad.authenticate(userDomain + '\\' + userName, password, (error, auth) => {
         let authenticated = false
 
-        if (!error) {
+        if ((error ?? '') === '') {
           authenticated = auth
         }
 

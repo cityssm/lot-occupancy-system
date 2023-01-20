@@ -8,7 +8,7 @@ async function authenticateViaActiveDirectory(userName, password) {
             const ad = new ActiveDirectory(activeDirectoryConfig);
             ad.authenticate(userDomain + '\\' + userName, password, (error, auth) => {
                 let authenticated = false;
-                if (!error) {
+                if ((error ?? '') === '') {
                     authenticated = auth;
                 }
                 resolve(authenticated);

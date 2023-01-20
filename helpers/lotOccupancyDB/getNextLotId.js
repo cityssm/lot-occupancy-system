@@ -12,9 +12,9 @@ export async function getNextLotId(lotId) {
         limit 1`)
         .get(lotId);
     database.release();
-    if (result) {
-        return result.lotId;
+    if (result === undefined) {
+        return undefined;
     }
-    return undefined;
+    return result.lotId;
 }
 export default getNextLotId;

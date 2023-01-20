@@ -5,6 +5,6 @@ interface WorkOrderOptions {
     includeComments: boolean;
     includeMilestones: boolean;
 }
-export declare function getWorkOrderByWorkOrderNumber(workOrderNumber: string): Promise<recordTypes.WorkOrder>;
-export declare function getWorkOrder(workOrderId: number | string, options: WorkOrderOptions, connectedDatabase?: PoolConnection): Promise<recordTypes.WorkOrder>;
+export declare function getWorkOrderByWorkOrderNumber(workOrderNumber: string): Promise<recordTypes.WorkOrder | undefined>;
+export declare function getWorkOrder(workOrderId: number | string, options: WorkOrderOptions, connectedDatabase?: PoolConnection): Promise<recordTypes.WorkOrder | undefined>;
 export default getWorkOrder;

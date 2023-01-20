@@ -82,18 +82,20 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
                 ' group by workOrderId) m on w.workOrderId = m.workOrderId') +
             sqlWhereClause +
             ' order by w.workOrderOpenDate desc, w.workOrderNumber desc' +
-            (options ? ` limit ${options.limit} offset ${options.offset}` : ''))
+            (options === undefined
+                ? ''
+                : ` limit ${options.limit} offset ${options.offset}`))
             .all(sqlParameters);
     }
-    if (options &&
-        (options.includeComments ||
-            options.includeLotsAndLotOccupancies ||
-            options.includeMilestones)) {
+    if (options !== undefined &&
+        ((options.includeComments ?? false) ||
+            (options.includeLotsAndLotOccupancies ?? false) ||
+            (options.includeMilestones ?? false))) {
         for (const workOrder of workOrders) {
-            if (options.includeComments) {
+            if (options.includeComments ?? false) {
                 workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);
             }
-            if (options.includeLotsAndLotOccupancies) {
+            if (options.includeLotsAndLotOccupancies ?? false) {
                 const workOrderLotsResults = await getLots({
                     workOrderId: workOrder.workOrderId
                 }, {
@@ -110,7 +112,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
                 }, database);
                 workOrder.workOrderLotOccupancies = lotOccupancies.lotOccupancies;
             }
-            if (options.includeMilestones) {
+            if (options.includeMilestones ?? false) {
                 workOrder.workOrderMilestones = await getWorkOrderMilestones({
                     workOrderId: workOrder.workOrderId
                 }, {
