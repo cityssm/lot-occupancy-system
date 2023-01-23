@@ -34,10 +34,10 @@ export async function moveLotTypeFieldDownToBottom(lotTypeFieldId) {
         updateRecordOrderNumber('LotTypeFields', lotTypeFieldId, maxOrderNumber + 1, database);
         database
             .prepare(`update LotTypeFields
-            set orderNumber = orderNumber - 1
-            where recordDelete_timeMillis is null
-            and lotTypeId = ?
-            and orderNumber > ?`)
+          set orderNumber = orderNumber - 1
+          where recordDelete_timeMillis is null
+          and lotTypeId = ?
+          and orderNumber > ?`)
             .run(currentField.lotTypeId, currentField.orderNumber);
     }
     database.release();

@@ -13,7 +13,7 @@ type RecordTable =
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
 
-const recordIdColumns: Map<RecordTable, string> = new Map()
+const recordIdColumns = new Map<RecordTable, string>()
 recordIdColumns.set('FeeCategories', 'feeCategoryId')
 recordIdColumns.set('LotOccupantTypes', 'lotOccupantTypeId')
 recordIdColumns.set('LotStatuses', 'lotStatusId')
@@ -30,8 +30,8 @@ function getCurrentOrderNumber(
   const currentOrderNumber: number = database
     .prepare(
       `select orderNumber
-                from ${recordTable}
-                where ${recordIdColumns.get(recordTable)!} = ?`
+        from ${recordTable}
+        where ${recordIdColumns.get(recordTable)!} = ?`
     )
     .get(recordId).orderNumber
 
@@ -99,9 +99,9 @@ export async function moveRecordDownToBottom(
     database
       .prepare(
         `update ${recordTable}
-            set orderNumber = orderNumber - 1
-            where recordDelete_timeMillis is null
-            and orderNumber > ?`
+          set orderNumber = orderNumber - 1
+          where recordDelete_timeMillis is null
+          and orderNumber > ?`
       )
       .run(currentOrderNumber)
   }
@@ -171,9 +171,9 @@ export async function moveRecordUpToTop(
     database
       .prepare(
         `update ${recordTable}
-            set orderNumber = orderNumber + 1
-            where recordDelete_timeMillis is null
-            and orderNumber < ?`
+          set orderNumber = orderNumber + 1
+          where recordDelete_timeMillis is null
+          and orderNumber < ?`
       )
       .run(currentOrderNumber)
   }

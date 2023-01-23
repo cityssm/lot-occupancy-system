@@ -22,13 +22,13 @@ export async function updateLot(lotForm, requestSession) {
         const lotTypeFieldIds = (lotForm.lotTypeFieldIds ?? '').split(',');
         for (const lotTypeFieldId of lotTypeFieldIds) {
             const lotFieldValue = lotForm['lotFieldValue_' + lotTypeFieldId];
-            await (lotFieldValue && lotFieldValue !== ''
-                ? addOrUpdateLotField({
+            await ((lotFieldValue ?? '') === ''
+                ? deleteLotField(lotForm.lotId, lotTypeFieldId, requestSession, database)
+                : addOrUpdateLotField({
                     lotId: lotForm.lotId,
                     lotTypeFieldId,
-                    lotFieldValue
-                }, requestSession, database)
-                : deleteLotField(lotForm.lotId, lotTypeFieldId, requestSession, database));
+                    lotFieldValue: lotFieldValue
+                }, requestSession, database));
         }
     }
     database.release();

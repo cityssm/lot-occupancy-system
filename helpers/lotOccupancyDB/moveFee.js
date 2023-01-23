@@ -61,10 +61,10 @@ export async function moveFeeUpToTop(feeId) {
         updateRecordOrderNumber('Fees', feeId, -1, database);
         database
             .prepare(`update Fees
-            set orderNumber = orderNumber + 1
-            where recordDelete_timeMillis is null
-            and feeCategoryId = ?
-            and orderNumber < ?`)
+          set orderNumber = orderNumber + 1
+          where recordDelete_timeMillis is null
+          and feeCategoryId = ?
+          and orderNumber < ?`)
             .run(currentFee.feeCategoryId, currentFee.orderNumber);
     }
     database.release();

@@ -12,7 +12,7 @@ type RecordTable =
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
 
-const recordIdColumns: Map<RecordTable, string> = new Map()
+const recordIdColumns = new Map<RecordTable, string>()
 recordIdColumns.set('FeeCategories', 'feeCategoryId')
 recordIdColumns.set('Fees', 'feeId')
 recordIdColumns.set('LotOccupantTypes', 'lotOccupantTypeId')

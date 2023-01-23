@@ -62,21 +62,23 @@ export async function updateLot(
     const lotTypeFieldIds = (lotForm.lotTypeFieldIds ?? '').split(',')
 
     for (const lotTypeFieldId of lotTypeFieldIds) {
-      const lotFieldValue = lotForm['lotFieldValue_' + lotTypeFieldId] as string
+      const lotFieldValue = lotForm['lotFieldValue_' + lotTypeFieldId] as
+        | string
+        | undefined
 
-      await (lotFieldValue && lotFieldValue !== ''
-        ? addOrUpdateLotField(
-            {
-              lotId: lotForm.lotId,
-              lotTypeFieldId,
-              lotFieldValue
-            },
+      await ((lotFieldValue ?? '') === ''
+        ? deleteLotField(
+            lotForm.lotId,
+            lotTypeFieldId,
             requestSession,
             database
           )
-        : deleteLotField(
-            lotForm.lotId,
-            lotTypeFieldId,
+        : addOrUpdateLotField(
+            {
+              lotId: lotForm.lotId,
+              lotTypeFieldId,
+              lotFieldValue: lotFieldValue!
+            },
             requestSession,
             database
           ))

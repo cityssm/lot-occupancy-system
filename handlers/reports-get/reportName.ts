@@ -22,7 +22,7 @@ export async function handler(
     }
   }
 
-  if (!rows) {
+  if (rows === undefined) {
     response.status(404).json({
       success: false,
       message: 'Report Not Found'

@@ -29,7 +29,7 @@ export async function handler(
 
   const printConfig = getScreenPrintConfig(printName)
 
-  if (!printConfig) {
+  if (printConfig === undefined) {
     response.redirect(
       configFunctions.getProperty('reverseProxy.urlPrefix') +
         '/dashboard/?error=printConfigNotFound'

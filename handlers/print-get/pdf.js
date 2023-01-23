@@ -20,7 +20,7 @@ export async function handler(request, response, next) {
         return;
     }
     const printConfig = getPdfPrintConfig(printName);
-    if (!printConfig) {
+    if (printConfig === undefined) {
         response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
             '/dashboard/?error=printConfigNotFound');
         return;

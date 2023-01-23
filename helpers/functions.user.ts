@@ -16,35 +16,23 @@ export interface APIRequest {
 }
 
 export function userIsAdmin(request: UserRequest): boolean {
-  const user = request.session?.user
-
-  if (!user?.userProperties) {
-    return false
-  }
-
-  return user.userProperties.isAdmin
+  return request.session?.user?.userProperties?.isAdmin ?? false
 }
 
 export function userCanUpdate(request: UserRequest): boolean {
-  const user = request.session?.user
-
-  if (!user?.userProperties) {
-    return false
-  }
-
-  return user.userProperties.canUpdate
+  return request.session?.user?.userProperties?.canUpdate ?? false
 }
 
 export async function apiKeyIsValid(request: APIRequest): Promise<boolean> {
   const apiKey = request.params?.apiKey
 
-  if (!apiKey) {
+  if (apiKey === undefined) {
     return false
   }
 
   const userName = await getUserNameFromApiKey(apiKey)
 
-  if (!userName) {
+  if (userName === undefined) {
     return false
   }
 

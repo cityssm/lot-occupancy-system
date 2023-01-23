@@ -64,19 +64,19 @@ export async function updateLotOccupancy(
         'lotOccupancyFieldValue_' + occupancyTypeFieldId
       ] as string
 
-      await (lotOccupancyFieldValue && lotOccupancyFieldValue !== ''
-        ? addOrUpdateLotOccupancyField(
+      await ((lotOccupancyFieldValue ?? '') === ''
+        ? deleteLotOccupancyField(
+            lotOccupancyForm.lotOccupancyId,
+            occupancyTypeFieldId,
+            requestSession,
+            database
+          )
+        : addOrUpdateLotOccupancyField(
             {
               lotOccupancyId: lotOccupancyForm.lotOccupancyId,
               occupancyTypeFieldId,
               lotOccupancyFieldValue
             },
-            requestSession,
-            database
-          )
-        : deleteLotOccupancyField(
-            lotOccupancyForm.lotOccupancyId,
-            occupancyTypeFieldId,
             requestSession,
             database
           ))

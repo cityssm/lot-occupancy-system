@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 
 import path from 'node:path'
 import * as ejs from 'ejs'
@@ -22,7 +22,7 @@ const attachmentOrInline = configFunctions.getProperty(
 export async function handler(
   request: Request,
   response: Response,
-  next
+  next: NextFunction
 ): Promise<void> {
   const printName = request.params.printName
 
@@ -43,7 +43,7 @@ export async function handler(
 
   const printConfig = getPdfPrintConfig(printName)
 
-  if (!printConfig) {
+  if (printConfig === undefined) {
     response.redirect(
       configFunctions.getProperty('reverseProxy.urlPrefix') +
         '/dashboard/?error=printConfigNotFound'
@@ -58,7 +58,7 @@ export async function handler(
   function pdfCallbackFunction(pdf: Buffer): void {
     response.setHeader(
       'Content-Disposition',
-      `${attachmentOrInline}; filename=${camelcase(printConfig.title)}.pdf`
+      `${attachmentOrInline}; filename=${camelcase(printConfig!.title)}.pdf`
     )
 
     response.setHeader('Content-Type', 'application/pdf')

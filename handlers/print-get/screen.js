@@ -13,7 +13,7 @@ export async function handler(request, response) {
         return;
     }
     const printConfig = getScreenPrintConfig(printName);
-    if (!printConfig) {
+    if (printConfig === undefined) {
         response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
             '/dashboard/?error=printConfigNotFound');
         return;

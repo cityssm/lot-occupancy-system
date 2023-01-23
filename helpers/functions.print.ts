@@ -18,7 +18,7 @@ const screenPrintConfigs: Record<string, PrintConfig> = {
   }
 }
 
-export function getScreenPrintConfig(printName: string): PrintConfig {
+export function getScreenPrintConfig(printName: string): PrintConfig | undefined {
   return screenPrintConfigs[printName]
 }
 
@@ -43,7 +43,7 @@ const pdfPrintConfigs: Record<string, PrintConfig> = {
   }
 }
 
-export function getPdfPrintConfig(printName: string): PrintConfig {
+export function getPdfPrintConfig(printName: string): PrintConfig | undefined {
   return pdfPrintConfigs[printName]
 }
 

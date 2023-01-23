@@ -26,23 +26,23 @@ export async function moveOccupancyTypePrintDownToBottom(occupancyTypeId, printE
         .get(occupancyTypeId, printEJS).orderNumber;
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
-                from OccupancyTypePrints
-                where recordDelete_timeMillis is null
-                and occupancyTypeId = ?`)
+        from OccupancyTypePrints
+        where recordDelete_timeMillis is null
+        and occupancyTypeId = ?`)
         .get(occupancyTypeId).maxOrderNumber;
     if (currentOrderNumber !== maxOrderNumber) {
         database
             .prepare(`update OccupancyTypePrints
-            set orderNumber = ? + 1
-            where occupancyTypeId = ?
-            and printEJS = ?`)
+          set orderNumber = ? + 1
+          where occupancyTypeId = ?
+          and printEJS = ?`)
             .run(maxOrderNumber, occupancyTypeId, printEJS);
         database
             .prepare(`update OccupancyTypeFields
-            set orderNumber = orderNumber - 1
-            where recordDelete_timeMillis is null
-            and occupancyTypeId = ?
-            and orderNumber > ?`)
+          set orderNumber = orderNumber - 1
+          where recordDelete_timeMillis is null
+          and occupancyTypeId = ?
+          and orderNumber > ?`)
             .run(occupancyTypeId, currentOrderNumber);
     }
     database.release();

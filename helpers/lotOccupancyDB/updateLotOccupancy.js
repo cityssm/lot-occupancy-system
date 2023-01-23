@@ -22,13 +22,13 @@ export async function updateLotOccupancy(lotOccupancyForm, requestSession) {
         const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds ?? '').split(',');
         for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
             const lotOccupancyFieldValue = lotOccupancyForm['lotOccupancyFieldValue_' + occupancyTypeFieldId];
-            await (lotOccupancyFieldValue && lotOccupancyFieldValue !== ''
-                ? addOrUpdateLotOccupancyField({
+            await ((lotOccupancyFieldValue ?? '') === ''
+                ? deleteLotOccupancyField(lotOccupancyForm.lotOccupancyId, occupancyTypeFieldId, requestSession, database)
+                : addOrUpdateLotOccupancyField({
                     lotOccupancyId: lotOccupancyForm.lotOccupancyId,
                     occupancyTypeFieldId,
                     lotOccupancyFieldValue
-                }, requestSession, database)
-                : deleteLotOccupancyField(lotOccupancyForm.lotOccupancyId, occupancyTypeFieldId, requestSession, database));
+                }, requestSession, database));
         }
     }
     database.release();

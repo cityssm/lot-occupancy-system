@@ -73,10 +73,10 @@ export async function moveLotTypeFieldDownToBottom(
     database
       .prepare(
         `update LotTypeFields
-            set orderNumber = orderNumber - 1
-            where recordDelete_timeMillis is null
-            and lotTypeId = ?
-            and orderNumber > ?`
+          set orderNumber = orderNumber - 1
+          where recordDelete_timeMillis is null
+          and lotTypeId = ?
+          and orderNumber > ?`
       )
       .run(currentField.lotTypeId, currentField.orderNumber)
   }
