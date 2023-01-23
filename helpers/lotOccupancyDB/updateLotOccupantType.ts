@@ -7,7 +7,8 @@ import type * as recordTypes from '../../types/recordTypes'
 interface UpdateLotOccupantTypeForm {
   lotOccupantTypeId: number | string
   lotOccupantType: string
-  fontAwesomeIconClass?: string
+  fontAwesomeIconClass: string
+  occupantCommentTitle: string
 }
 
 export async function updateLotOccupantType(
@@ -23,6 +24,7 @@ export async function updateLotOccupantType(
       `update LotOccupantTypes
         set lotOccupantType = ?,
         fontAwesomeIconClass = ?,
+        occupantCommentTitle = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where lotOccupantTypeId = ?
@@ -30,7 +32,8 @@ export async function updateLotOccupantType(
     )
     .run(
       lotOccupantTypeForm.lotOccupantType,
-      lotOccupantTypeForm.fontAwesomeIconClass ?? '',
+      lotOccupantTypeForm.fontAwesomeIconClass,
+      lotOccupantTypeForm.occupantCommentTitle,
       requestSession.user!.userName,
       rightNowMillis,
       lotOccupantTypeForm.lotOccupantTypeId

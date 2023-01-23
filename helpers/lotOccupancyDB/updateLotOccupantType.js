@@ -7,11 +7,12 @@ export async function updateLotOccupantType(lotOccupantTypeForm, requestSession)
         .prepare(`update LotOccupantTypes
         set lotOccupantType = ?,
         fontAwesomeIconClass = ?,
+        occupantCommentTitle = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where lotOccupantTypeId = ?
         and recordDelete_timeMillis is null`)
-        .run(lotOccupantTypeForm.lotOccupantType, lotOccupantTypeForm.fontAwesomeIconClass ?? '', requestSession.user.userName, rightNowMillis, lotOccupantTypeForm.lotOccupantTypeId);
+        .run(lotOccupantTypeForm.lotOccupantType, lotOccupantTypeForm.fontAwesomeIconClass, lotOccupantTypeForm.occupantCommentTitle, requestSession.user.userName, rightNowMillis, lotOccupantTypeForm.lotOccupantTypeId);
     database.release();
     clearCacheByTableName('LotOccupantTypes');
     return result.changes > 0;

@@ -29,7 +29,8 @@ function openEditLotOccupancyOccupant(clickEvent) {
         });
     }
     cityssm.openHtmlModal('lotOccupancy-editOccupant', {
-        onshow: (modalElement) => {
+        onshow(modalElement) {
+            var _a;
             los.populateAliases(modalElement);
             modalElement.querySelector('#lotOccupancyOccupantEdit--lotOccupancyId').value = lotOccupancyId;
             modalElement.querySelector('#lotOccupancyOccupantEdit--lotOccupantIndex').value = lotOccupantIndex.toString();
@@ -39,6 +40,8 @@ function openEditLotOccupancyOccupant(clickEvent) {
                 const optionElement = document.createElement('option');
                 optionElement.value = lotOccupantType.lotOccupantTypeId.toString();
                 optionElement.textContent = lotOccupantType.lotOccupantType;
+                optionElement.dataset.occupantCommentTitle =
+                    lotOccupantType.occupantCommentTitle;
                 if (lotOccupantType.lotOccupantTypeId ===
                     lotOccupancyOccupant.lotOccupantTypeId) {
                     optionElement.selected = true;
@@ -49,8 +52,9 @@ function openEditLotOccupancyOccupant(clickEvent) {
             if (!lotOccupantTypeSelected) {
                 const optionElement = document.createElement('option');
                 optionElement.value = lotOccupancyOccupant.lotOccupantTypeId.toString();
-                optionElement.textContent =
-                    lotOccupancyOccupant.lotOccupantType;
+                optionElement.textContent = lotOccupancyOccupant.lotOccupantType;
+                optionElement.dataset.occupantCommentTitle =
+                    lotOccupancyOccupant.occupantCommentTitle;
                 optionElement.selected = true;
                 lotOccupantTypeSelectElement.append(optionElement);
             }
@@ -63,16 +67,31 @@ function openEditLotOccupancyOccupant(clickEvent) {
             modalElement.querySelector('#lotOccupancyOccupantEdit--occupantPostalCode').value = lotOccupancyOccupant.occupantPostalCode;
             modalElement.querySelector('#lotOccupancyOccupantEdit--occupantPhoneNumber').value = lotOccupancyOccupant.occupantPhoneNumber;
             modalElement.querySelector('#lotOccupancyOccupantEdit--occupantEmailAddress').value = lotOccupancyOccupant.occupantEmailAddress;
+            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantCommentTitle').textContent =
+                ((_a = lotOccupancyOccupant.occupantCommentTitle) !== null && _a !== void 0 ? _a : '') === ''
+                    ? 'Comment'
+                    : lotOccupancyOccupant.occupantCommentTitle;
             modalElement.querySelector('#lotOccupancyOccupantEdit--occupantComment').value = lotOccupancyOccupant.occupantComment;
         },
-        onshown: (modalElement, closeModalFunction) => {
+        onshown(modalElement, closeModalFunction) {
             bulmaJS.toggleHtmlClipped();
-            modalElement.querySelector('#lotOccupancyOccupantEdit--lotOccupantTypeId').focus();
+            const lotOccupantTypeIdElement = modalElement.querySelector('#lotOccupancyOccupantEdit--lotOccupantTypeId');
+            lotOccupantTypeIdElement.focus();
+            lotOccupantTypeIdElement.addEventListener('change', () => {
+                var _a;
+                let occupantCommentTitle = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                    .occupantCommentTitle) !== null && _a !== void 0 ? _a : '';
+                if (occupantCommentTitle === '') {
+                    occupantCommentTitle = 'Comment';
+                }
+                ;
+                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantCommentTitle').textContent = occupantCommentTitle;
+            });
             editFormElement = modalElement.querySelector('form');
             editFormElement.addEventListener('submit', editOccupant);
             editCloseModalFunction = closeModalFunction;
         },
-        onremoved: () => {
+        onremoved() {
             bulmaJS.toggleHtmlClipped();
         }
     });
@@ -109,7 +128,7 @@ function deleteLotOccupancyOccupant(clickEvent) {
     });
 }
 function renderLotOccupancyOccupants() {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     const occupantsContainer = document.querySelector('#container--lotOccupancyOccupants');
     cityssm.clearElement(occupantsContainer);
     if (lotOccupancyOccupants.length === 0) {
@@ -173,7 +192,9 @@ function renderLotOccupancyOccupants() {
                         : cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress)) +
                     '</td>') +
                 ('<td>' +
-                    cityssm.escapeHTML(lotOccupancyOccupant.occupantComment) +
+                    '<span data-tooltip="' + cityssm.escapeHTML(((_j = lotOccupancyOccupant.occupantCommentTitle) !== null && _j !== void 0 ? _j : '') === '' ? 'Comment' : lotOccupancyOccupant.occupantCommentTitle) + '">' +
+                    cityssm.escapeHTML((_k = lotOccupancyOccupant.occupantComment) !== null && _k !== void 0 ? _k : '') +
+                    '</span>' +
                     '</td>') +
                 ('<td class="is-hidden-print">' +
                     '<div class="buttons are-small is-justify-content-end">' +
@@ -315,7 +336,7 @@ else {
             });
         }
         cityssm.openHtmlModal('lotOccupancy-addOccupant', {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
                 los.populateAliases(modalElement);
                 modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupancyId').value = lotOccupancyId;
                 const lotOccupantTypeSelectElement = modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupantTypeId');
@@ -324,6 +345,8 @@ else {
                     const optionElement = document.createElement('option');
                     optionElement.value = lotOccupantType.lotOccupantTypeId.toString();
                     optionElement.textContent = lotOccupantType.lotOccupantType;
+                    optionElement.dataset.occupantCommentTitle =
+                        lotOccupantType.occupantCommentTitle;
                     lotOccupantTypeSelectElement.append(optionElement);
                     lotOccupantTypeCopySelectElement.append(optionElement.cloneNode(true));
                 }
@@ -334,7 +357,17 @@ else {
             onshown: (modalElement, closeModalFunction) => {
                 bulmaJS.toggleHtmlClipped();
                 bulmaJS.init(modalElement);
-                modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupantTypeId').focus();
+                const lotOccupantTypeIdElement = modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupantTypeId');
+                lotOccupantTypeIdElement.focus();
+                lotOccupantTypeIdElement.addEventListener('change', () => {
+                    var _a;
+                    let occupantCommentTitle = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                        .occupantCommentTitle) !== null && _a !== void 0 ? _a : '';
+                    if (occupantCommentTitle === '') {
+                        occupantCommentTitle = 'Comment';
+                    }
+                    modalElement.querySelector('#lotOccupancyOccupantAdd--occupantCommentTitle').textContent = occupantCommentTitle;
+                });
                 addFormElement = modalElement.querySelector('#form--lotOccupancyOccupantAdd');
                 addFormElement.addEventListener('submit', addOccupantFromForm);
                 searchResultsElement = modalElement.querySelector('#lotOccupancyOccupantCopy--searchResults');

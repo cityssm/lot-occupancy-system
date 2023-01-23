@@ -134,6 +134,7 @@ export interface LotOccupantType extends Record {
   lotOccupantTypeId: number
   lotOccupantType: string
   fontAwesomeIconClass: string
+  occupantCommentTitle: string
   orderNumber?: number
 }
 
@@ -199,6 +200,7 @@ export interface LotOccupancyOccupant extends Record {
   lotOccupantTypeId?: number
   lotOccupantType?: string
   fontAwesomeIconClass?: string
+  occupantCommentTitle?: string
 
   occupantName?: string
   occupantAddress1?: string

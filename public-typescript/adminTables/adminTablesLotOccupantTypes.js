@@ -95,8 +95,10 @@ function renderLotOccupantTypes() {
     const containerElement = document.querySelector('#container--lotOccupantTypes');
     if (lotOccupantTypes.length === 0) {
         containerElement.innerHTML = `<tr><td colspan="3">
-            <div class="message is-warning"><p class="message-body">There are no active ${los.escapedAliases.lot} ${los.escapedAliases.occupant} types.</p></div>
-            </td></tr>`;
+      <div class="message is-warning">
+      <p class="message-body">There are no active ${los.escapedAliases.lot} ${los.escapedAliases.occupant} types.</p>
+      </div>
+      </td></tr>`;
         return;
     }
     containerElement.innerHTML = '';
@@ -140,6 +142,21 @@ function renderLotOccupantTypes() {
                     '<i class="fas fa-fw fa-' +
                     cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass) +
                     '"></i></span></div>' +
+                    '</div>') +
+                '</td>' +
+                '<td>' +
+                ('<div class="field">' +
+                    '<div class="control">' +
+                    '<input class="input" name="occupantCommentTitle" type="text"' +
+                    (' value="' +
+                        cityssm.escapeHTML(lotOccupantType.occupantCommentTitle) +
+                        '"') +
+                    (' form="' + formId + '"') +
+                    (' aria-label="' +
+                        los.escapedAliases.Occupant +
+                        ' Comment Title"') +
+                    ' maxlength="50" />' +
+                    '</div>' +
                     '</div>') +
                 '</td>' +
                 ('<td>' +

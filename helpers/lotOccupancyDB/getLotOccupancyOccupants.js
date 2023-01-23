@@ -9,7 +9,7 @@ export async function getLotOccupancyOccupants(lotOccupancyId, connectedDatabase
         o.occupantPhoneNumber, o.occupantEmailAddress,
         o.occupantComment,
         o.lotOccupantTypeId, t.lotOccupantType,
-        t.fontAwesomeIconClass
+        t.fontAwesomeIconClass, t.occupantCommentTitle
         from LotOccupancyOccupants o
         left join LotOccupantTypes t on o.lotOccupantTypeId = t.lotOccupantTypeId
         where o.recordDelete_timeMillis is null

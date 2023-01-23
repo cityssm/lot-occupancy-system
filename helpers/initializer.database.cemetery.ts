@@ -67,6 +67,7 @@ async function initializeCemeteryDatabase(): Promise<void> {
   await addLotOccupantType(
     {
       lotOccupantType: 'Deceased',
+      fontAwesomeIconClass: 'cross',
       orderNumber: 1
     },
     session
@@ -75,6 +76,7 @@ async function initializeCemeteryDatabase(): Promise<void> {
   await addLotOccupantType(
     {
       lotOccupantType: 'Funeral Director',
+      fontAwesomeIconClass: 'church',
       orderNumber: 2
     },
     session
@@ -83,6 +85,7 @@ async function initializeCemeteryDatabase(): Promise<void> {
   await addLotOccupantType(
     {
       lotOccupantType: 'Preneed Owner',
+      fontAwesomeIconClass: 'user',
       orderNumber: 3
     },
     session
@@ -91,6 +94,8 @@ async function initializeCemeteryDatabase(): Promise<void> {
   await addLotOccupantType(
     {
       lotOccupantType: 'Purchaser',
+      fontAwesomeIconClass: 'hand-holding-usd',
+      occupantCommentTitle: 'Relationship to Owner/Deceased',
       orderNumber: 4
     },
     session

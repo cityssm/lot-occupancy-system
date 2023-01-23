@@ -6,6 +6,7 @@ import { clearCacheByTableName } from '../functions.cache.js'
 interface AddLotOccupantTypeForm {
   lotOccupantType: string
   fontAwesomeIconClass?: string
+  occupantCommentTitle?: string
   orderNumber?: number
 }
 
@@ -20,14 +21,15 @@ export async function addLotOccupantType(
   const result = database
     .prepare(
       `insert into LotOccupantTypes (
-        lotOccupantType, fontAwesomeIconClass, orderNumber,
+        lotOccupantType, fontAwesomeIconClass, occupantCommentTitle, orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       lotOccupantTypeForm.lotOccupantType,
       lotOccupantTypeForm.fontAwesomeIconClass ?? '',
+      lotOccupantTypeForm.occupantCommentTitle ?? '',
       lotOccupantTypeForm.orderNumber ?? -1,
       requestSession.user!.userName,
       rightNowMillis,

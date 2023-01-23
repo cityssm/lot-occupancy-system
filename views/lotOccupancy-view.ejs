@@ -1,25 +1,25 @@
 <%- include('_header'); -%>
 
 <nav class="breadcrumb">
-    <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-        <li>
-            <a href="<%= urlPrefix %>/lotOccupancies">
-                <span class="icon is-small">
-                    <span class="fa-layers fa-fw" aria-hidden="true">
-                        <i class="fas fa-vector-square"></i>
-                        <i class="fas fa-user" data-fa-transform="shrink-10"></i>
-                    </span>
-                </span>
-                <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
-            </a>
-        </li>
-        <li class="is-active">
-            <a href="#" aria-current="page">
-                <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
-            </a>
-        </li>
-    </ul>
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+      <a href="<%= urlPrefix %>/lotOccupancies">
+        <span class="icon is-small">
+          <span class="fa-layers fa-fw" aria-hidden="true">
+            <i class="fas fa-vector-square"></i>
+            <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+          </span>
+        </span>
+        <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
+      </a>
+    </li>
+    <li class="is-active">
+      <a href="#" aria-current="page">
+        <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
+      </a>
+    </li>
+  </ul>
 </nav>
 
 <h1 class="title is-1">
@@ -85,95 +85,95 @@
 </div>
 
 <div class="panel">
-    <div class="panel-block is-block">
-        <div class="columns">
-            <div class="column">
-              <p>
-                <strong><%= configFunctions.getProperty("aliases.occupancy") %> Type</strong><br />
-                <%= lotOccupancy.occupancyType %>
+  <div class="panel-block is-block">
+      <div class="columns">
+          <div class="column">
+            <p>
+              <strong><%= configFunctions.getProperty("aliases.occupancy") %> Type</strong><br />
+              <%= lotOccupancy.occupancyType %>
+            </p>
+          </div>
+          <div class="column">
+              <p class="mb-2">
+                  <strong><%= configFunctions.getProperty("aliases.lot") %></strong><br />
+                  <% if (lotOccupancy.lotId) { %>
+                      <a href="<%= urlPrefix %>/lots/<%= lotOccupancy.lotId %>"><%= lotOccupancy.lotName %></a>
+                  <% } else { %>
+                      <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.lot") %>)</span>
+                  <% } %>
               </p>
-            </div>
-            <div class="column">
-                <p class="mb-2">
-                    <strong><%= configFunctions.getProperty("aliases.lot") %></strong><br />
-                    <% if (lotOccupancy.lotId) { %>
-                        <a href="<%= urlPrefix %>/lots/<%= lotOccupancy.lotId %>"><%= lotOccupancy.lotName %></a>
-                    <% } else { %>
-                        <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.lot") %>)</span>
-                    <% } %>
-                </p>
-                <p>
-                    <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
-                    <% if (lotOccupancy.mapId) { %>
-                        <a href="<%= urlPrefix %>/maps/<%= lotOccupancy.mapId %>"><%= lotOccupancy.mapName %></a>
-                    <% } else { %>
-                        <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.map") %>)</span>
-                    <% } %>
-                </p>
-            </div>
-            <div class="column">
-                <p class="mb-2">
-                    <strong><%= configFunctions.getProperty("aliases.occupancyStartDate") %></strong><br />
-                    <%= lotOccupancy.occupancyStartDateString %>
-                </p>
-                <p>
-                    <strong>End Date</strong><br />
-                    <% if (lotOccupancy.occupancyEndDateString === "") { %>
-                        <span class="has-text-grey">(No End Date)</span>
-                    <% } else { %>
-                        <%= lotOccupancy.occupancyEndDateString %>
-                    <% } %>
-                </p>
-            </div>
-            <% if (lotOccupancy.lotOccupancyFields.length > 0) { %>
-                <div class="column">
-                    <% for (const lotOccupancyField of lotOccupancy.lotOccupancyFields) { %>
-                        <p class="mb-2">
-                            <strong><%= lotOccupancyField.occupancyTypeField %></strong><br />
-                            <% if (lotOccupancyField.lotOccupancyFieldValue) { %>
-                                <%= lotOccupancyField.lotOccupancyFieldValue %>
-                            <% } else { %>
-                                <span class="has-text-grey">(No Value)</span>
-                            <% } %>
-                        </p>
-                    <% } %>
-                </div>
-            <% } %>
-        </div>
-    </div>
+              <p>
+                  <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
+                  <% if (lotOccupancy.mapId) { %>
+                      <a href="<%= urlPrefix %>/maps/<%= lotOccupancy.mapId %>"><%= lotOccupancy.mapName %></a>
+                  <% } else { %>
+                      <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.map") %>)</span>
+                  <% } %>
+              </p>
+          </div>
+          <div class="column">
+              <p class="mb-2">
+                  <strong><%= configFunctions.getProperty("aliases.occupancyStartDate") %></strong><br />
+                  <%= lotOccupancy.occupancyStartDateString %>
+              </p>
+              <p>
+                  <strong>End Date</strong><br />
+                  <% if (lotOccupancy.occupancyEndDateString === "") { %>
+                      <span class="has-text-grey">(No End Date)</span>
+                  <% } else { %>
+                      <%= lotOccupancy.occupancyEndDateString %>
+                  <% } %>
+              </p>
+          </div>
+          <% if (lotOccupancy.lotOccupancyFields.length > 0) { %>
+              <div class="column">
+                  <% for (const lotOccupancyField of lotOccupancy.lotOccupancyFields) { %>
+                      <p class="mb-2">
+                          <strong><%= lotOccupancyField.occupancyTypeField %></strong><br />
+                          <% if (lotOccupancyField.lotOccupancyFieldValue) { %>
+                              <%= lotOccupancyField.lotOccupancyFieldValue %>
+                          <% } else { %>
+                              <span class="has-text-grey">(No Value)</span>
+                          <% } %>
+                      </p>
+                  <% } %>
+              </div>
+          <% } %>
+      </div>
+  </div>
 </div>
 
 <div class="panel">
     <h2 class="panel-heading">
-        <%= configFunctions.getProperty("aliases.occupants") %>
+      <%= configFunctions.getProperty("aliases.occupants") %>
     </h2>
     <div class="panel-block is-block">
         <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
         <div class="message is-warning">
-            <p class="message-body">
-                There are no <%= configFunctions.getProperty("aliases.occupants").toLowerCase() %>
-                associated with this record.
-            </p>
+          <p class="message-body">
+            There are no <%= configFunctions.getProperty("aliases.occupants").toLowerCase() %>
+            associated with this record.
+          </p>
         </div>
         <% } else { %>
         <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
-                <tr>
-                    <th><%= configFunctions.getProperty("aliases.occupant") %></th>
-                    <th>Address</th>
-                    <th>Other Contact</th>
-                    <th>Comment</th>
-                </tr>
+              <tr>
+                <th><%= configFunctions.getProperty("aliases.occupant") %></th>
+                <th>Address</th>
+                <th>Other Contact</th>
+                <th>Comment</th>
+              </tr>
             </thead>
             <tbody>
                 <% for (const lotOccupancyOccupant of lotOccupancy.lotOccupancyOccupants) { %>
                 <tr>
                     <td>
-                        <%= lotOccupancyOccupant.occupantName %><br />
-                        <span class="tag">
-                            <i class="fas fa-fw fa-<%= lotOccupancyOccupant.fontAwesomeIconClass %>" aria-hidden="true"></i>
-                            <span class="ml-1"><%= lotOccupancyOccupant.lotOccupantType %></span>
-                        </span>
+                      <%= lotOccupancyOccupant.occupantName %><br />
+                      <span class="tag">
+                        <i class="fas fa-fw fa-<%= lotOccupancyOccupant.fontAwesomeIconClass %>" aria-hidden="true"></i>
+                        <span class="ml-1"><%= lotOccupancyOccupant.lotOccupantType %></span>
+                      </span>
                     </td>
                     <td>
                         <% if (lotOccupancyOccupant.occupantAddress1) { %>
@@ -195,7 +195,9 @@
                         <%= lotOccupancyOccupant.occupantEmailAddress %>
                     </td>
                     <td>
+                        <span data-tooltip="<%= (lotOccupancyOccupant.occupantCommentTitle ?? '') === '' ? 'Comment' : lotOccupancyOccupant.occupantCommentTitle %>">
                         <%= lotOccupancyOccupant.occupantComment %>
+                        </span>
                     </td>
                 </tr>
                 <% } %>

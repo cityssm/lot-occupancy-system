@@ -61,7 +61,7 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
   }
 
   cityssm.openHtmlModal('lotOccupancy-editOccupant', {
-    onshow: (modalElement) => {
+    onshow(modalElement) {
       los.populateAliases(modalElement)
       ;(
         modalElement.querySelector(
@@ -84,6 +84,8 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
         const optionElement = document.createElement('option')
         optionElement.value = lotOccupantType.lotOccupantTypeId.toString()
         optionElement.textContent = lotOccupantType.lotOccupantType
+        optionElement.dataset.occupantCommentTitle =
+          lotOccupantType.occupantCommentTitle
 
         if (
           lotOccupantType.lotOccupantTypeId ===
@@ -100,8 +102,9 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
         const optionElement = document.createElement('option')
 
         optionElement.value = lotOccupancyOccupant.lotOccupantTypeId!.toString()
-        optionElement.textContent =
-          lotOccupancyOccupant.lotOccupantType as string
+        optionElement.textContent = lotOccupancyOccupant.lotOccupantType!
+        optionElement.dataset.occupantCommentTitle =
+          lotOccupancyOccupant.occupantCommentTitle!
         optionElement.selected = true
 
         lotOccupantTypeSelectElement.append(optionElement)
@@ -149,24 +152,48 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
       ).value = lotOccupancyOccupant.occupantEmailAddress!
       ;(
         modalElement.querySelector(
+          '#lotOccupancyOccupantEdit--occupantCommentTitle'
+        ) as HTMLLabelElement
+      ).textContent =
+        (lotOccupancyOccupant.occupantCommentTitle ?? '') === ''
+          ? 'Comment'
+          : lotOccupancyOccupant.occupantCommentTitle!
+      ;(
+        modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantComment'
         ) as HTMLTextAreaElement
       ).value = lotOccupancyOccupant.occupantComment!
     },
-    onshown: (modalElement, closeModalFunction) => {
+    onshown(modalElement, closeModalFunction) {
       bulmaJS.toggleHtmlClipped()
-      ;(
-        modalElement.querySelector(
-          '#lotOccupancyOccupantEdit--lotOccupantTypeId'
-        ) as HTMLInputElement
-      ).focus()
+
+      const lotOccupantTypeIdElement = modalElement.querySelector(
+        '#lotOccupancyOccupantEdit--lotOccupantTypeId'
+      ) as HTMLSelectElement
+
+      lotOccupantTypeIdElement.focus()
+
+      lotOccupantTypeIdElement.addEventListener('change', () => {
+        let occupantCommentTitle =
+          lotOccupantTypeIdElement.selectedOptions[0].dataset
+            .occupantCommentTitle ?? ''
+        if (occupantCommentTitle === '') {
+          occupantCommentTitle = 'Comment'
+        }
+
+        ;(
+          modalElement.querySelector(
+            '#lotOccupancyOccupantEdit--occupantCommentTitle'
+          ) as HTMLLabelElement
+        ).textContent = occupantCommentTitle
+      })
 
       editFormElement = modalElement.querySelector('form')!
       editFormElement.addEventListener('submit', editOccupant)
 
       editCloseModalFunction = closeModalFunction
     },
-    onremoved: () => {
+    onremoved() {
       bulmaJS.toggleHtmlClipped()
     }
   })
@@ -289,7 +316,9 @@ function renderLotOccupancyOccupants(): void {
           : cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress!)) +
         '</td>') +
       ('<td>' +
-        cityssm.escapeHTML(lotOccupancyOccupant.occupantComment!) +
+      '<span data-tooltip="' + cityssm.escapeHTML((lotOccupancyOccupant.occupantCommentTitle ?? '') === '' ? 'Comment' : lotOccupancyOccupant.occupantCommentTitle!) + '">' +
+        cityssm.escapeHTML(lotOccupancyOccupant.occupantComment ?? '') +
+        '</span>' +
         '</td>') +
       ('<td class="is-hidden-print">' +
         '<div class="buttons are-small is-justify-content-end">' +
@@ -489,7 +518,7 @@ if (isCreate) {
       }
 
       cityssm.openHtmlModal('lotOccupancy-addOccupant', {
-        onshow: (modalElement) => {
+        onshow(modalElement) {
           los.populateAliases(modalElement)
           ;(
             modalElement.querySelector(
@@ -509,6 +538,8 @@ if (isCreate) {
             const optionElement = document.createElement('option')
             optionElement.value = lotOccupantType.lotOccupantTypeId.toString()
             optionElement.textContent = lotOccupantType.lotOccupantType
+            optionElement.dataset.occupantCommentTitle =
+              lotOccupantType.occupantCommentTitle
 
             lotOccupantTypeSelectElement.append(optionElement)
 
@@ -531,11 +562,26 @@ if (isCreate) {
         onshown: (modalElement, closeModalFunction) => {
           bulmaJS.toggleHtmlClipped()
           bulmaJS.init(modalElement)
-          ;(
+
+          const lotOccupantTypeIdElement = modalElement.querySelector(
+            '#lotOccupancyOccupantAdd--lotOccupantTypeId'
+          ) as HTMLSelectElement
+
+          lotOccupantTypeIdElement.focus()
+
+          lotOccupantTypeIdElement.addEventListener('change', () => {
+            let occupantCommentTitle =
+              lotOccupantTypeIdElement.selectedOptions[0].dataset
+                .occupantCommentTitle ?? ''
+
+            if (occupantCommentTitle === '') {
+              occupantCommentTitle = 'Comment'
+            }
+
             modalElement.querySelector(
-              '#lotOccupancyOccupantAdd--lotOccupantTypeId'
-            ) as HTMLInputElement
-          ).focus()
+              '#lotOccupancyOccupantAdd--occupantCommentTitle'
+            )!.textContent = occupantCommentTitle
+          })
 
           addFormElement = modalElement.querySelector(
             '#form--lotOccupancyOccupantAdd'

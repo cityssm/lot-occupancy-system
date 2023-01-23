@@ -13,7 +13,8 @@ export async function getLotOccupantTypes(): Promise<
 
   const lotOccupantTypes: recordTypes.LotOccupantType[] = database
     .prepare(
-      `select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass, orderNumber
+      `select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass, occupantCommentTitle,
+        orderNumber
         from LotOccupantTypes
         where recordDelete_timeMillis is null
         order by orderNumber, lotOccupantType`

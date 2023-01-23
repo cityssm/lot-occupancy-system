@@ -3,7 +3,8 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export async function getLotOccupantTypes() {
     const database = await acquireConnection();
     const lotOccupantTypes = database
-        .prepare(`select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass, orderNumber
+        .prepare(`select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass, occupantCommentTitle,
+        orderNumber
         from LotOccupantTypes
         where recordDelete_timeMillis is null
         order by orderNumber, lotOccupantType`)
