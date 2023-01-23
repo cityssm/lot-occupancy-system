@@ -11,7 +11,7 @@ export async function handler(
 ): Promise<void> {
   const lotOccupancy = await getLotOccupancy(request.params.lotOccupancyId)
 
-  if (!lotOccupancy) {
+  if (lotOccupancy === undefined) {
     response.redirect(
       configFunctions.getProperty('reverseProxy.urlPrefix') +
         '/lotOccupancies/?error=lotOccupancyIdNotFound'

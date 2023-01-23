@@ -17,7 +17,7 @@ import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 export async function handler(request: Request, response: Response): Promise<void> {
   const lotOccupancy = await getLotOccupancy(request.params.lotOccupancyId)
 
-  if (!lotOccupancy) {
+  if (lotOccupancy === undefined) {
     response.redirect(
       `${configFunctions.getProperty(
         'reverseProxy.urlPrefix'

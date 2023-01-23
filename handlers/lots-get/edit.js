@@ -4,7 +4,7 @@ import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js';
 import * as cacheFunctions from '../../helpers/functions.cache.js';
 export async function handler(request, response) {
     const lot = await getLot(request.params.lotId);
-    if (!lot) {
+    if (lot === undefined) {
         response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
             '/lots/?error=lotIdNotFound');
         return;

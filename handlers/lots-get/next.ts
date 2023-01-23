@@ -21,7 +21,7 @@ export async function handler(
   }
 
   response.redirect(
-    configFunctions.getProperty('reverseProxy.urlPrefix') + '/lots/' + nextLotId
+    configFunctions.getProperty('reverseProxy.urlPrefix') + '/lots/' + nextLotId.toString()
   )
 }
 

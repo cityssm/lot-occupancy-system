@@ -10,6 +10,6 @@ export async function handler(request, response) {
     }
     response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
         '/lots/' +
-        previousLotId);
+        previousLotId.toString());
 }
 export default handler;

@@ -30,10 +30,10 @@ export async function handler(
     occupancyStartDateString: dateToString(startDate)
   }
 
-  if (request.query.lotId) {
+  if (request.query.lotId !== undefined) {
     const lot = await getLot(request.query.lotId as string)
 
-    if (lot) {
+    if (lot !== undefined) {
       lotOccupancy.lotId = lot.lotId
       lotOccupancy.lotName = lot.lotName
       lotOccupancy.mapId = lot.mapId

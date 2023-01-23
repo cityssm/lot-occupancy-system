@@ -9,9 +9,9 @@ export async function handler(request, response) {
         occupancyStartDate: dateToInteger(startDate),
         occupancyStartDateString: dateToString(startDate)
     };
-    if (request.query.lotId) {
+    if (request.query.lotId !== undefined) {
         const lot = await getLot(request.query.lotId);
-        if (lot) {
+        if (lot !== undefined) {
             lotOccupancy.lotId = lot.lotId;
             lotOccupancy.lotName = lot.lotName;
             lotOccupancy.mapId = lot.mapId;

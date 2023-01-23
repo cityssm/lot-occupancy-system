@@ -108,7 +108,7 @@ async function getMap(dataRow) {
     if (!map) {
         console.log('Creating map: ' + dataRow.cemetery);
         const mapId = await addMap({
-            mapName: cemeteryToMapName[dataRow.cemetery] || dataRow.cemetery,
+            mapName: cemeteryToMapName[dataRow.cemetery] ?? dataRow.cemetery,
             mapDescription: dataRow.cemetery,
             mapSVG: '',
             mapLatitude: '',

@@ -18,14 +18,14 @@ export async function handler(
 
   const maps = await getMaps()
 
-  if (request.query.mapId) {
+  if (request.query.mapId !== undefined) {
     const mapId = Number.parseInt(request.query.mapId as string, 10)
 
     const map = maps.find((possibleMap) => {
       return mapId === possibleMap.mapId
     })
 
-    if (map) {
+    if (map !== undefined) {
       lot.mapId = map.mapId
       lot.mapName = map.mapName
     }

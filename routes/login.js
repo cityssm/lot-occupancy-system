@@ -6,11 +6,10 @@ import { getApiKey } from '../helpers/functions.api.js';
 import Debug from 'debug';
 const debug = Debug('lot-occupancy-system:login');
 export const router = Router();
-router
-    .route('/')
-    .get((request, response) => {
+function getHandler(request, response) {
     const sessionCookieName = configFunctions.getProperty('session.cookieName');
-    if (request.session.user && request.cookies[sessionCookieName]) {
+    if (request.session.user !== undefined &&
+        request.cookies[sessionCookieName] !== undefined) {
         const redirectURL = authenticationFunctions.getSafeRedirectURL((request.query.redirect ?? ''));
         response.redirect(redirectURL);
     }
@@ -22,8 +21,8 @@ router
             useTestDatabases
         });
     }
-})
-    .post(async (request, response) => {
+}
+async function postHandler(request, response) {
     const userName = (typeof request.body.userName === 'string' ? request.body.userName : '');
     const passwordPlain = (typeof request.body.password === 'string' ? request.body.password : '');
     const unsafeRedirectURL = request.body.redirect;
@@ -72,7 +71,7 @@ router
             };
         }
     }
-    if (isAuthenticated && userObject) {
+    if (isAuthenticated && userObject !== undefined) {
         request.session.user = userObject;
         response.redirect(redirectURL);
     }
@@ -84,5 +83,9 @@ router
             useTestDatabases
         });
     }
-});
+}
+router
+    .route('/')
+    .get(getHandler)
+    .post(postHandler);
 export default router;

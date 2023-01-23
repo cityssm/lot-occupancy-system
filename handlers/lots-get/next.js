@@ -8,6 +8,6 @@ export async function handler(request, response) {
             '/lots/?error=noNextLotIdFound');
         return;
     }
-    response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') + '/lots/' + nextLotId);
+    response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') + '/lots/' + nextLotId.toString());
 }
 export default handler;

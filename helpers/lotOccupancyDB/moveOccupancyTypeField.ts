@@ -1,5 +1,3 @@
-import sqlite from 'better-sqlite3'
-
 import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
@@ -35,7 +33,7 @@ export async function moveOccupancyTypeFieldDown(
         ' set orderNumber = orderNumber - 1' +
         ' where recordDelete_timeMillis is null' +
         (currentField.occupancyTypeId
-          ? " and occupancyTypeId = '" + currentField.occupancyTypeId + "'"
+          ? " and occupancyTypeId = '" + currentField.occupancyTypeId.toString() + "'"
           : ' and occupancyTypeId is null') +
         ' and orderNumber = ? + 1'
     )
@@ -127,7 +125,7 @@ export async function moveOccupancyTypeFieldUp(
         ' set orderNumber = orderNumber + 1' +
         ' where recordDelete_timeMillis is null' +
         (currentField.occupancyTypeId
-          ? " and occupancyTypeId = '" + currentField.occupancyTypeId + "'"
+          ? " and occupancyTypeId = '" + currentField.occupancyTypeId.toString() + "'"
           : ' and occupancyTypeId is null') +
         ' and orderNumber = ? - 1'
     )

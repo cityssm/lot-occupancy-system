@@ -1,4 +1,5 @@
 /* eslint-disable unicorn/no-await-expression-member */
+
 import sqlite from 'better-sqlite3'
 import { lotOccupancyDB as databasePath } from '../data/databasePaths.js'
 
@@ -8,7 +9,7 @@ import * as cacheFunctions from '../helpers/functions.cache.js'
  * Fee IDs
  */
 
-const feeCache: Map<string, number> = new Map()
+const feeCache = new Map<string, number>()
 
 export function getFeeIdByFeeDescription(feeDescription: string): number {
   if (feeCache.keys.length === 0) {

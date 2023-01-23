@@ -291,7 +291,7 @@ const cemeteryToMapName = {
   WK: 'West Korah'
 }
 
-const mapCache: Map<string, recordTypes.Map> = new Map()
+const mapCache = new Map<string, recordTypes.Map>()
 
 async function getMap(dataRow: { cemetery: string }): Promise<recordTypes.Map> {
   const mapCacheKey = dataRow.cemetery
@@ -314,7 +314,7 @@ async function getMap(dataRow: { cemetery: string }): Promise<recordTypes.Map> {
 
     const mapId = await addMap(
       {
-        mapName: cemeteryToMapName[dataRow.cemetery] || dataRow.cemetery,
+        mapName: cemeteryToMapName[dataRow.cemetery] ?? dataRow.cemetery,
         mapDescription: dataRow.cemetery,
         mapSVG: '',
         mapLatitude: '',
@@ -329,7 +329,7 @@ async function getMap(dataRow: { cemetery: string }): Promise<recordTypes.Map> {
       user
     )
 
-    map = await getMapFromDatabase(mapId)
+    map = await getMapFromDatabase(mapId) as recordTypes.Map
   }
 
   mapCache.set(mapCacheKey, map)
