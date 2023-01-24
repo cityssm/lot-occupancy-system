@@ -1,207 +1,207 @@
 <%- include('_header'); -%>
 
 <div class="columns">
-    <div class="column is-3 is-hidden-mobile">
-      <%- include('_menu-admin'); -%>
+  <div class="column is-3 is-hidden-mobile">
+    <%- include('_menu-admin'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li>
+            <a href="#">
+    
+                <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
+                <span>Administrator Tools</span>
+            </a>
+        </li>
+        <li class="is-active">
+            <a href="#" aria-current="page">
+                Config Table Management
+            </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <h1 class="title is-1">
+      Config Table Management
+    </h1>
+    
+    <div class="tabs is-boxed">
+      <ul role="presentation">
+        <li class="is-active">
+            <a href="#tab--workOrderTypes">
+                <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
+                <span>Work Order Types</span>
+            </a>
+        </li>
+        <li>
+            <a href="#tab--workOrderMilestoneTypes">
+                <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
+                <span>Work Order Milestone Types</span>
+            </a>
+        </li>
+        <li>
+            <a href="#tab--lotStatuses">
+                <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
+                <span><%= configFunctions.getProperty("aliases.lot") %> Statuses</span>
+            </a>
+        </li>
+        <li>
+            <a href="#tab--lotOccupantTypes">
+                <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
+                <span><%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupant") %> Types</span>
+            </a>
+        </li>
+      </ul>
     </div>
-    <div class="column">
-        <nav class="breadcrumb">
-          <ul>
-            <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-            <li>
-                <a href="#">
-        
-                    <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
-                    <span>Administrator Tools</span>
-                </a>
-            </li>
-            <li class="is-active">
-                <a href="#" aria-current="page">
-                    Config Table Management
-                </a>
-            </li>
-          </ul>
-        </nav>
-        
-        <h1 class="title is-1">
-          Config Table Management
-        </h1>
-        
-        <div class="tabs is-boxed">
-          <ul role="presentation">
-            <li class="is-active">
-                <a href="#tab--workOrderTypes">
-                    <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
-                    <span>Work Order Types</span>
-                </a>
-            </li>
-            <li>
-                <a href="#tab--workOrderMilestoneTypes">
-                    <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
-                    <span>Work Order Milestone Types</span>
-                </a>
-            </li>
-            <li>
-                <a href="#tab--lotStatuses">
-                    <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
-                    <span><%= configFunctions.getProperty("aliases.lot") %> Statuses</span>
-                </a>
-            </li>
-            <li>
-                <a href="#tab--lotOccupantTypes">
-                    <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
-                    <span><%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupant") %> Types</span>
-                </a>
-            </li>
-          </ul>
-        </div>
-        <div class="tabs-container">
-            <div id="tab--workOrderTypes">
-                <h2 class="title is-4">Work Order Types</h2>
-                <table class="table is-striped is-hoverable has-sticky-header">
-                    <thead>
-                        <tr>
-                            <th>Work Order Type</th>
-                            <th class="has-text-centered has-width-1">Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="2">
-                                <form id="form--addWorkOrderType">
-                                    <div class="field has-addons">
-                                        <div class="control is-expanded">
-                                            <input class="input" name="workOrderType" type="text" maxlength="100" placeholder="New Work Order Type" required />
-                                        </div>
-                                        <div class="control">
-                                            <button class="button is-success has-tooltip-bottom" data-tooltip="Add Work Order Type" type="submit" aria-label="Add Work Order Type">
-                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
+    <div class="tabs-container">
+        <div id="tab--workOrderTypes">
+            <h2 class="title is-4">Work Order Types</h2>
+            <table class="table is-striped is-hoverable has-sticky-header">
+                <thead>
+                    <tr>
+                        <th>Work Order Type</th>
+                        <th class="has-text-centered has-width-1">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <form id="form--addWorkOrderType">
+                                <div class="field has-addons">
+                                    <div class="control is-expanded">
+                                        <input class="input" name="workOrderType" type="text" maxlength="100" placeholder="New Work Order Type" required />
                                     </div>
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody id="container--workOrderTypes"></tbody>
-                </table>
-            </div>
-            <div class="is-hidden" id="tab--workOrderMilestoneTypes">
-                <h2 class="title is-4">Work Order Milestone Types</h2>
-                <table class="table is-striped is-hoverable has-sticky-header">
-                    <thead>
-                        <tr>
-                            <th>Work Order Milestone Type</th>
-                            <th class="has-text-centered has-width-1">Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="2">
-                                <form id="form--addWorkOrderMilestoneType">
-                                    <div class="field has-addons">
-                                        <div class="control is-expanded">
-                                            <input class="input" name="workOrderMilestoneType" type="text" maxlength="100" placeholder="New Milestone Type" required />
-                                        </div>
-                                        <div class="control">
-                                            <button class="button is-success has-tooltip-bottom" data-tooltip="Add Work Order Milestone Type" type="submit" aria-label="Add Work Order Milestone Type">
-                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
+                                    <div class="control">
+                                        <button class="button is-success has-tooltip-bottom" data-tooltip="Add Work Order Type" type="submit" aria-label="Add Work Order Type">
+                                            <i class="fas fa-plus" aria-hidden="true"></i>
+                                        </button>
                                     </div>
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody id="container--workOrderMilestoneTypes"></tbody>
-                </table>
-            </div>
-            <div class="is-hidden" id="tab--lotStatuses">
-                <h2 class="title is-4"><%= configFunctions.getProperty("aliases.lot") %> Statuses</h2>
-                <table class="table is-striped is-hoverable has-sticky-header">
-                    <thead>
-                        <tr>
-                            <th><%= configFunctions.getProperty("aliases.lot") %> Status</th>
-                            <th class="has-text-centered has-width-1">Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="2">
-                                <form id="form--addLotStatus">
-                                    <div class="field has-addons">
-                                        <div class="control is-expanded">
-                                            <input class="input" name="lotStatus" type="text" maxlength="100" placeholder="New <%= configFunctions.getProperty("aliases.lot") %> Status" required />
-                                        </div>
-                                        <div class="control">
-                                            <button class="button is-success has-tooltip-bottom" data-tooltip="Add Status" type="submit" aria-label="Add Status">
-                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody id="container--lotStatuses"></tbody>
-                </table>
-            </div>
-            <div class="is-hidden" id="tab--lotOccupantTypes">
-                <h2 class="title is-4"><%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupant") %> Types</h2>
-                <table class="table is-striped is-hoverable has-sticky-header">
-                    <thead>
-                      <tr>
-                          <th><%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupant") %> Type</th>
-                          <th>
-                              Icon Class
-                              <a class="has-text-weight-normal has-tooltip-right" data-tooltip="Search and View Available Icons" href="https://fontawesome.com/v5/search?o=r&m=free&s=solid" target="_blank" rel="noreferrer noopener" aria-label="Search and View Available Icons">
-                                  <i class="fas fa-question-circle" aria-label="Help"></i>
-                              </a>
-                          </th>
-                          <th>Comment Title</th>
-                          <th>&nbsp;</th>
-                          <th class="has-text-centered has-width-1">Options</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td colspan="5">
-                          <form id="form--addLotOccupantType">
-                            <input name="fontAwesomeIconClass" type="hidden" value="user" />
-                            <input name="occupantCommentTitle" type="hidden" value="Comment" />
-                            <div class="field has-addons">
-                              <div class="control is-expanded">
-                                <input class="input" name="lotOccupantType" type="text" maxlength="100" placeholder="New <%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupant") %> Type" required />
-                              </div>
-                              <div class="control">
-                                <button class="button is-success has-tooltip-bottom" data-tooltip="Add Type" type="submit" aria-label="Add Type">
-                                  <i class="fas fa-plus" aria-hidden="true"></i>
-                                </button>
-                              </div>
-                            </div>
-                          </form>
+                                </div>
+                            </form>
                         </td>
-                      </tr>
-                    </tbody>
-                    <tbody id="container--lotOccupantTypes"></tbody>
-                </table>
-            </div>
+                    </tr>
+                </tbody>
+                <tbody id="container--workOrderTypes"></tbody>
+            </table>
         </div>
-        <datalist id="datalist--fontAwesomeIconClass">
-            <% for (const iconClass of fontAwesomeIconClasses) { %>
-                <option value="<%= iconClass %>"></option>
-            <% } %>
-        </datalist>
+        <div class="is-hidden" id="tab--workOrderMilestoneTypes">
+            <h2 class="title is-4">Work Order Milestone Types</h2>
+            <table class="table is-striped is-hoverable has-sticky-header">
+                <thead>
+                    <tr>
+                        <th>Work Order Milestone Type</th>
+                        <th class="has-text-centered has-width-1">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <form id="form--addWorkOrderMilestoneType">
+                                <div class="field has-addons">
+                                    <div class="control is-expanded">
+                                        <input class="input" name="workOrderMilestoneType" type="text" maxlength="100" placeholder="New Milestone Type" required />
+                                    </div>
+                                    <div class="control">
+                                        <button class="button is-success has-tooltip-bottom" data-tooltip="Add Work Order Milestone Type" type="submit" aria-label="Add Work Order Milestone Type">
+                                            <i class="fas fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody id="container--workOrderMilestoneTypes"></tbody>
+            </table>
+        </div>
+        <div class="is-hidden" id="tab--lotStatuses">
+            <h2 class="title is-4"><%= configFunctions.getProperty("aliases.lot") %> Statuses</h2>
+            <table class="table is-striped is-hoverable has-sticky-header">
+                <thead>
+                    <tr>
+                        <th><%= configFunctions.getProperty("aliases.lot") %> Status</th>
+                        <th class="has-text-centered has-width-1">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <form id="form--addLotStatus">
+                                <div class="field has-addons">
+                                    <div class="control is-expanded">
+                                        <input class="input" name="lotStatus" type="text" maxlength="100" placeholder="New <%= configFunctions.getProperty("aliases.lot") %> Status" required />
+                                    </div>
+                                    <div class="control">
+                                        <button class="button is-success has-tooltip-bottom" data-tooltip="Add Status" type="submit" aria-label="Add Status">
+                                            <i class="fas fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody id="container--lotStatuses"></tbody>
+            </table>
+        </div>
+        <div class="is-hidden" id="tab--lotOccupantTypes">
+            <h2 class="title is-4"><%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupant") %> Types</h2>
+            <table class="table is-striped is-hoverable has-sticky-header">
+                <thead>
+                  <tr>
+                    <th><%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupant") %> Type</th>
+                    <th>
+                        Icon Class
+                        <a class="has-text-weight-normal has-tooltip-right" data-tooltip="View Available Icons" href="https://fontawesome.com/v5/search?o=r&m=free&s=solid" target="_blank" rel="noreferrer noopener" aria-label="Search and View Available Icons">
+                        <i class="fas fa-question-circle" aria-label="Help"></i>
+                        </a>
+                    </th>
+                    <th>Comment Title</th>
+                    <th>&nbsp;</th>
+                    <th class="has-text-centered has-width-1">Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="5">
+                      <form id="form--addLotOccupantType">
+                        <input name="fontAwesomeIconClass" type="hidden" value="user" />
+                        <input name="occupantCommentTitle" type="hidden" value="Comment" />
+                        <div class="field has-addons">
+                          <div class="control is-expanded">
+                            <input class="input" name="lotOccupantType" type="text" maxlength="100" placeholder="New <%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupant") %> Type" required />
+                          </div>
+                          <div class="control">
+                            <button class="button is-success has-tooltip-bottom" data-tooltip="Add Type" type="submit" aria-label="Add Type">
+                              <i class="fas fa-plus" aria-hidden="true"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody id="container--lotOccupantTypes"></tbody>
+            </table>
+        </div>
     </div>
+    <datalist id="datalist--fontAwesomeIconClass">
+      <% for (const iconClass of fontAwesomeIconClasses) { %>
+          <option value="<%= iconClass %>"></option>
+      <% } %>
+    </datalist>
+  </div>
 </div>
 
 <%- include('_footerA'); -%>
 
 <script>
-    exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
-    exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
-    exports.lotStatuses = <%- JSON.stringify(lotStatuses) %>;
-    exports.lotOccupantTypes = <%- JSON.stringify(lotOccupantTypes) %>;
+  exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
+  exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
+  exports.lotStatuses = <%- JSON.stringify(lotStatuses) %>;
+  exports.lotOccupantTypes = <%- JSON.stringify(lotOccupantTypes) %>;
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/adminTables.min.js"></script>
