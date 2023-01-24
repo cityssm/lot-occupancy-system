@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import Debug from 'debug'
 
-import * as recordTypes from '../types/recordTypes'
+import type * as recordTypes from '../types/recordTypes'
 
 const debug = Debug('lot-occupancy-system:functions.api')
 

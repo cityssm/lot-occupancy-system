@@ -1,10 +1,10 @@
 /* eslint-disable unicorn/filename-case */
 
-import ical, { ICalEventData, ICalEventStatus } from 'ical-generator'
+import ical, { type ICalEventData, ICalEventStatus } from 'ical-generator'
 
 import {
   getWorkOrderMilestones,
-  WorkOrderMilestoneFilters
+  type WorkOrderMilestoneFilters
 } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
 
 import type { Request, Response } from 'express'

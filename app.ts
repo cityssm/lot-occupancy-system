@@ -1,5 +1,5 @@
 import createError from 'http-errors'
-import express, { RequestHandler } from 'express'
+import express, { type RequestHandler } from 'express'
 
 import compression from 'compression'
 import path from 'node:path'
