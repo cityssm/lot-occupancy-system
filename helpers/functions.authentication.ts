@@ -59,6 +59,9 @@ const safeRedirects = new Set([
   '/reports'
 ])
 
+const recordUrl = /^(\/(maps|lots|lotoccupancies|workorders)\/)\d+(\/edit)?$/
+const printUrl = /^\/print\/(pdf|screen)\/[\d/=?A-Za-z-]+$/
+
 export function getSafeRedirectURL(possibleRedirectURL = ''): string {
   const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix')
 
@@ -71,11 +74,8 @@ export function getSafeRedirectURL(possibleRedirectURL = ''): string {
 
     if (
       safeRedirects.has(urlToCheckLowerCase) ||
-      /^(\/maps\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||
-      /^(\/lots\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||
-      /^(\/lotoccupancies\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||
-      /^(\/workorders\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||
-      /^\/print\/(pdf|screen)\/[\d/=?A-Za-z-]+$/.test(urlToCheck)
+      recordUrl.test(urlToCheckLowerCase) ||
+      printUrl.test(urlToCheck)
     ) {
       return urlPrefix + urlToCheck
     }

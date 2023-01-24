@@ -43,6 +43,8 @@ const safeRedirects = new Set([
     '/workorders/outlook',
     '/reports'
 ]);
+const recordUrl = /^(\/(maps|lots|lotoccupancies|workorders)\/)\d+(\/edit)?$/;
+const printUrl = /^\/print\/(pdf|screen)\/[\d/=?A-Za-z-]+$/;
 export function getSafeRedirectURL(possibleRedirectURL = '') {
     const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
     if (typeof possibleRedirectURL === 'string') {
@@ -51,11 +53,8 @@ export function getSafeRedirectURL(possibleRedirectURL = '') {
             : possibleRedirectURL;
         const urlToCheckLowerCase = urlToCheck.toLowerCase();
         if (safeRedirects.has(urlToCheckLowerCase) ||
-            /^(\/maps\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||
-            /^(\/lots\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||
-            /^(\/lotoccupancies\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||
-            /^(\/workorders\/)\d+(\/edit)?$/.test(urlToCheckLowerCase) ||
-            /^\/print\/(pdf|screen)\/[\d/=?A-Za-z-]+$/.test(urlToCheck)) {
+            recordUrl.test(urlToCheckLowerCase) ||
+            printUrl.test(urlToCheck)) {
             return urlPrefix + urlToCheck;
         }
     }
