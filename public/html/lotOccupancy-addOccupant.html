@@ -1,148 +1,270 @@
 <div class="modal" role="dialog">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <h3 class="modal-card-title">
-                Add <span class="alias" data-alias="Occupant"></span>
-            </h3>
-            <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
-        </header>
-        <section class="modal-card-body">
-            <div class="tabs is-boxed">
-                <ul>
-                    <li class="is-active">
-                        <a href="#tab--lotOccupancyOccupantAdd-new">
-                            Create New
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#tab--lotOccupancyOccupantAdd-copy">
-                            Copy Previous
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="tab-container">
-                <div id="tab--lotOccupancyOccupantAdd-new">
-                    <form id="form--lotOccupancyOccupantAdd">
-                        <input id="lotOccupancyOccupantAdd--lotOccupancyId" name="lotOccupancyId" type="hidden" value="" />
-                        <div class="field">
-                            <label class="label" for="lotOccupancyOccupantAdd--lotOccupantTypeId"><span class="alias" data-alias="Occupant"></span> Type</label>
-                            <div class="control">
-                                <div class="select is-fullwidth">
-                                    <select id="lotOccupancyOccupantAdd--lotOccupantTypeId" name="lotOccupantTypeId" required>
-                                        <option value="">(Select a Type)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label" for="lotOccupancyOccupantAdd--occupantName"><span class="alias" data-alias="Occupant"></span> Name</label>
-                            <div class="control">
-                                <input class="input" id="lotOccupancyOccupantAdd--occupantName" name="occupantName" type="text" maxlength="200" autocomplete="off" required />
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label" for="lotOccupancyOccupantAdd--occupantAddress1">Address</label>
-                            <div class="control">
-                                <input class="input" id="lotOccupancyOccupantAdd--occupantAddress1" name="occupantAddress1" type="text" maxlength="50" placeholder="Line 1" autocomplete="off" />
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="control">
-                                <input class="input" id="lotOccupancyOccupantAdd--occupantAddress2" name="occupantAddress2" type="text" maxlength="50" placeholder="Line 2" autocomplete="off" aria-label="Address Line 2" />
-                            </div>
-                        </div>
-                        <div class="columns">
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="lotOccupancyOccupantAdd--occupantCity">City</label>
-                                    <div class="control">
-                                        <input class="input" id="lotOccupancyOccupantAdd--occupantCity" name="occupantCity" type="text" maxlength="20" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="lotOccupancyOccupantAdd--occupantProvince">Province</label>
-                                    <div class="control">
-                                        <input class="input" id="lotOccupancyOccupantAdd--occupantProvince" name="occupantProvince" type="text" maxlength="2" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="lotOccupancyOccupantAdd--occupantPostalCode">Postal Code</label>
-                                    <div class="control">
-                                        <input class="input" id="lotOccupancyOccupantAdd--occupantPostalCode" name="occupantPostalCode" type="text" maxlength="7" autocomplete="off" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="columns">
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="lotOccupancyOccupantAdd--occupantPhoneNumber">Phone Number</label>
-                                    <div class="control">
-                                        <input class="input" id="lotOccupancyOccupantAdd--occupantPhoneNumber" name="occupantPhoneNumber" type="text" maxlength="30" autocomplete="off" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="lotOccupancyOccupantAdd--occupantEmailAddress">Email Address</label>
-                                    <div class="control">
-                                        <input class="input" id="lotOccupancyOccupantAdd--occupantEmailAddress" name="occupantEmailAddress" type="email" maxlength="200" autocomplete="off" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label" id="lotOccupancyOccupantAdd--occupantCommentTitle" for="lotOccupancyOccupantAdd--occupantComment">Comment</label>
-                            <div class="control">
-                                <textarea class="textarea" id="lotOccupancyOccupantAdd--occupantComment" name="occupantComment"></textarea>
-                            </div>
-                        </div>
-                        <div class="has-text-right">
-                            <button class="button is-success" type="submit">
-                                <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                                <span>Add <span class="alias" data-alias="Occupant"></span></span>
-                            </button>
-                        </div>
-                    </form>
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">
+        Add <span class="alias" data-alias="Occupant"></span>
+      </h3>
+      <button
+        class="delete is-close-modal-button"
+        aria-label="close"
+        type="button"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="tabs is-boxed">
+        <ul>
+          <li class="is-active">
+            <a href="#tab--lotOccupancyOccupantAdd-new">Create New</a>
+          </li>
+          <li>
+            <a href="#tab--lotOccupancyOccupantAdd-copy">Copy Previous</a>
+          </li>
+        </ul>
+      </div>
+      <div class="tab-container">
+        <div id="tab--lotOccupancyOccupantAdd-new">
+          <form id="form--lotOccupancyOccupantAdd">
+            <input
+              id="lotOccupancyOccupantAdd--lotOccupancyId"
+              name="lotOccupancyId"
+              type="hidden"
+              value=""
+            />
+            <div class="field">
+              <label
+                class="label"
+                for="lotOccupancyOccupantAdd--lotOccupantTypeId"
+                ><span class="alias" data-alias="Occupant"></span> Type</label
+              >
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    id="lotOccupancyOccupantAdd--lotOccupantTypeId"
+                    name="lotOccupantTypeId"
+                    required
+                  >
+                    <option value="">(Select a Type)</option>
+                  </select>
                 </div>
-                <div class="is-hidden" id="tab--lotOccupancyOccupantAdd-copy">
-                    <div class="box">
-                        <form id="form--lotOccupancyOccupantCopy">
-                            <input name="limit" type="hidden" value="50" />
-                            <div class="field">
-                                <div class="control has-icons-left">
-                                    <input class="input" id="lotOccupancyOccupantCopy--searchFilter" name="searchFilter" type="text" placeholder="Filter by name or address" />
-                                    <span class="icon is-left">
-                                        <i class="fas fa-filter" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="field">
-                        <label class="label" for="lotOccupancyOccupantCopy--lotOccupantTypeId"><span class="alias" data-alias="Occupant"></span> Type</label>
-                        <div class="control">
-                            <div class="select is-fullwidth">
-                                <select id="lotOccupancyOccupantCopy--lotOccupantTypeId" name="lotOccupantTypeId" required>
-                                    <option value="">(Select a Type)</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="lotOccupancyOccupantCopy--searchResults"></div>
-                </div>
+              </div>
             </div>
-
-            
-        </section>
-        <footer class="modal-card-foot justify-right">
-            <button class="button is-close-modal-button" type="button">Cancel</button>
-        </footer>
-    </div>
+            <div class="field">
+              <label class="label" for="lotOccupancyOccupantAdd--occupantName"
+                ><span class="alias" data-alias="Occupant"></span> Name</label
+              >
+              <div class="control">
+                <input
+                  class="input"
+                  id="lotOccupancyOccupantAdd--occupantName"
+                  name="occupantName"
+                  type="text"
+                  maxlength="200"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label
+                class="label"
+                for="lotOccupancyOccupantAdd--occupantAddress1"
+                >Address</label
+              >
+              <div class="control">
+                <input
+                  class="input"
+                  id="lotOccupancyOccupantAdd--occupantAddress1"
+                  name="occupantAddress1"
+                  type="text"
+                  maxlength="50"
+                  placeholder="Line 1"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <input
+                  class="input"
+                  id="lotOccupancyOccupantAdd--occupantAddress2"
+                  name="occupantAddress2"
+                  type="text"
+                  maxlength="50"
+                  placeholder="Line 2"
+                  autocomplete="off"
+                  aria-label="Address Line 2"
+                />
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <div class="field">
+                  <label
+                    class="label"
+                    for="lotOccupancyOccupantAdd--occupantCity"
+                    >City</label
+                  >
+                  <div class="control">
+                    <input
+                      class="input"
+                      id="lotOccupancyOccupantAdd--occupantCity"
+                      name="occupantCity"
+                      type="text"
+                      maxlength="20"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label
+                    class="label"
+                    for="lotOccupancyOccupantAdd--occupantProvince"
+                    >Province</label
+                  >
+                  <div class="control">
+                    <input
+                      class="input"
+                      id="lotOccupancyOccupantAdd--occupantProvince"
+                      name="occupantProvince"
+                      type="text"
+                      maxlength="2"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label
+                    class="label"
+                    for="lotOccupancyOccupantAdd--occupantPostalCode"
+                    >Postal Code</label
+                  >
+                  <div class="control">
+                    <input
+                      class="input"
+                      id="lotOccupancyOccupantAdd--occupantPostalCode"
+                      name="occupantPostalCode"
+                      type="text"
+                      maxlength="7"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <div class="field">
+                  <label
+                    class="label"
+                    for="lotOccupancyOccupantAdd--occupantPhoneNumber"
+                    >Phone Number</label
+                  >
+                  <div class="control">
+                    <input
+                      class="input"
+                      id="lotOccupancyOccupantAdd--occupantPhoneNumber"
+                      name="occupantPhoneNumber"
+                      type="text"
+                      maxlength="30"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label
+                    class="label"
+                    for="lotOccupancyOccupantAdd--occupantEmailAddress"
+                    >Email Address</label
+                  >
+                  <div class="control">
+                    <input
+                      class="input"
+                      id="lotOccupancyOccupantAdd--occupantEmailAddress"
+                      name="occupantEmailAddress"
+                      type="email"
+                      maxlength="200"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label
+                class="label"
+                id="lotOccupancyOccupantAdd--occupantCommentTitle"
+                for="lotOccupancyOccupantAdd--occupantComment"
+                >Comment</label
+              >
+              <div class="control">
+                <textarea
+                  class="textarea"
+                  id="lotOccupancyOccupantAdd--occupantComment"
+                  name="occupantComment"
+                ></textarea>
+              </div>
+            </div>
+            <div class="has-text-right">
+              <button class="button is-success" type="submit">
+                <span class="icon"
+                  ><i class="fas fa-plus" aria-hidden="true"></i
+                ></span>
+                <span
+                  >Add <span class="alias" data-alias="Occupant"></span
+                ></span>
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="is-hidden" id="tab--lotOccupancyOccupantAdd-copy">
+          <div class="box">
+            <form id="form--lotOccupancyOccupantCopy">
+              <input name="limit" type="hidden" value="50" />
+              <div class="field">
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    id="lotOccupancyOccupantCopy--searchFilter"
+                    name="searchFilter"
+                    type="text"
+                    placeholder="Filter by name or address"
+                  />
+                  <span class="icon is-left">
+                    <i class="fas fa-filter" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="field">
+            <label
+              class="label"
+              for="lotOccupancyOccupantCopy--lotOccupantTypeId"
+              ><span class="alias" data-alias="Occupant"></span> Type</label
+            >
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select
+                  id="lotOccupancyOccupantCopy--lotOccupantTypeId"
+                  name="lotOccupantTypeId"
+                  required
+                >
+                  <option value="">(Select a Type)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div id="lotOccupancyOccupantCopy--searchResults"></div>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot justify-right">
+      <button class="button is-close-modal-button" type="button">Cancel</button>
+    </footer>
+  </div>
 </div>

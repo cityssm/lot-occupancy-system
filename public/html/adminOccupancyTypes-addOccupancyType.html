@@ -1,28 +1,45 @@
 <div class="modal" role="dialog">
-    <div class="modal-background"></div>
-    <div class="modal-card has-width-900">
-        <header class="modal-card-head">
-            <h3 class="modal-card-title">
-                Add <span class="alias" data-alias="Occupancy"></span> Type
-            </h3>
-            <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
-        </header>
-        <section class="modal-card-body">
-            <form id="form--occupancyTypeAdd">
-                <div class="field">
-                    <label class="label" for="occupancyTypeAdd--occupancyType"><span class="alias" data-alias="Occupancy"></span> Type</label>
-                    <div class="control">
-                        <input class="input" id="occupancyTypeAdd--occupancyType" name="occupancyType" type="text" maxlength="100" required />
-                    </div>
-                </div>
-            </form>
-        </section>
-        <footer class="modal-card-foot justify-right">
-            <button class="button is-success" type="submit" form="form--occupancyTypeAdd">
-                <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                <span>Add <span class="alias" data-alias="Occupancy"></span> Type</span>
-            </button>
-            <button class="button is-close-modal-button" type="button">Cancel</button>
-        </footer>
-    </div>
+  <div class="modal-background"></div>
+  <div class="modal-card has-width-900">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">
+        Add <span class="alias" data-alias="Occupancy"></span> Type
+      </h3>
+      <button
+        class="delete is-close-modal-button"
+        aria-label="close"
+        type="button"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--occupancyTypeAdd">
+        <div class="field">
+          <label class="label" for="occupancyTypeAdd--occupancyType"
+            ><span class="alias" data-alias="Occupancy"></span> Type</label
+          >
+          <div class="control">
+            <input
+              class="input"
+              id="occupancyTypeAdd--occupancyType"
+              name="occupancyType"
+              type="text"
+              maxlength="100"
+              required
+            />
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot justify-right">
+      <button
+        class="button is-success"
+        type="submit"
+        form="form--occupancyTypeAdd"
+      >
+        <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+        <span>Add <span class="alias" data-alias="Occupancy"></span> Type</span>
+      </button>
+      <button class="button is-close-modal-button" type="button">Cancel</button>
+    </footer>
+  </div>
 </div>

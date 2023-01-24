@@ -1,34 +1,44 @@
 <div class="modal" role="dialog">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <h3 class="modal-card-title">
-                Add Fee
-            </h3>
-            <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
-        </header>
-        <section class="modal-card-body">
-            <div class="box">
-                <form id="form--feeSelect">
-                    <div class="field">
-                        <div class="control has-icons-left">
-                            <input class="input" id="feeSelect--feeName" name="feeName" type="text" placeholder="Filter Fees" aria-label="Fee Search" disabled />
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-search" aria-hidden="true"></i>
-                            </span>
-                        </div>
-                    </div>
-                </form>
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">Add Fee</h3>
+      <button
+        class="delete is-close-modal-button"
+        aria-label="close"
+        type="button"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="box">
+        <form id="form--feeSelect">
+          <div class="field">
+            <div class="control has-icons-left">
+              <input
+                class="input"
+                id="feeSelect--feeName"
+                name="feeName"
+                type="text"
+                placeholder="Filter Fees"
+                aria-label="Fee Search"
+                disabled
+              />
+              <span class="icon is-small is-left">
+                <i class="fas fa-search" aria-hidden="true"></i>
+              </span>
             </div>
-            <div id="resultsContainer--feeSelect">
-                <p class="has-text-centered">
-                    <i class="fas fa-4x fa-pulse fa-spinner" aria-hidden="true"></i><br />
-                    Loading available fees...
-                </p>
-            </div>
-        </section>
-        <footer class="modal-card-foot justify-right">
-            <button class="button is-close-modal-button" type="button">Close</button>
-        </footer>
-    </div>
+          </div>
+        </form>
+      </div>
+      <div id="resultsContainer--feeSelect">
+        <p class="has-text-centered">
+          <i class="fas fa-4x fa-pulse fa-spinner" aria-hidden="true"></i><br />
+          Loading available fees...
+        </p>
+      </div>
+    </section>
+    <footer class="modal-card-foot justify-right">
+      <button class="button is-close-modal-button" type="button">Close</button>
+    </footer>
+  </div>
 </div>

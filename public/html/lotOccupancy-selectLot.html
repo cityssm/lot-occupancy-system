@@ -1,119 +1,157 @@
 <div class="modal" role="dialog">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <h3 class="modal-card-title">
-                Select a <span class="alias" data-alias="Lot"></span>
-            </h3>
-            <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
-        </header>
-        <section class="modal-card-body">
-            <div class="tabs is-boxed">
-                <ul>
-                    <li class="is-active">
-                        <a href="#tab--lotSelect">From Existing</a>
-                    </li>
-                    <li>
-                        <a href="#tab--lotCreate">Create New</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="tab-container">
-                <div id="tab--lotSelect">
-                    <div class="box">
-                        <form id="form--lotSelect">
-                            <input name="limit" type="hidden" value="100" />
-                            <input name="offset" type="hidden" value="0" />
-                            <div class="field">
-                                <div class="control has-icons-left">
-                                    <input class="input" id="lotSelect--lotName" name="lotName" type="text" />
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-search" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="control has-icons-left">
-                                    <div class="select is-fullwidth">
-                                        <select id="lotSelect--occupancyStatus" name="occupancyStatus">
-                                            <option value="">(All Statuses)</option>
-                                            <option value="unoccupied" selected>Currently Unoccupied</option>
-                                            <option value="occupied">Currently Occupied</option>
-                                        </select>
-                                    </div>
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-filter" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div id="resultsContainer--lotSelect"></div>
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">
+        Select a <span class="alias" data-alias="Lot"></span>
+      </h3>
+      <button
+        class="delete is-close-modal-button"
+        aria-label="close"
+        type="button"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="tabs is-boxed">
+        <ul>
+          <li class="is-active">
+            <a href="#tab--lotSelect">From Existing</a>
+          </li>
+          <li>
+            <a href="#tab--lotCreate">Create New</a>
+          </li>
+        </ul>
+      </div>
+      <div class="tab-container">
+        <div id="tab--lotSelect">
+          <div class="box">
+            <form id="form--lotSelect">
+              <input name="limit" type="hidden" value="100" />
+              <input name="offset" type="hidden" value="0" />
+              <div class="field">
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    id="lotSelect--lotName"
+                    name="lotName"
+                    type="text"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                  </span>
                 </div>
-                <div class="is-hidden" id="tab--lotCreate">
-                    <div class="message is-info is-small">
-                        <p class="message-body">
-                            Be sure to confirm if the <span class="alias" data-alias="lot"></span> exists before creating a new one.
-                        </p>
-                    </div>
-                    <form id="form--lotCreate">
-                        <input name="mapKey" type="hidden" value="" />
-                        <input name="lotLatitude" type="hidden" value="" />
-                        <input name="lotLongitude" type="hidden" value="" />
-                        <div class="field">
-                            <label class="label" for="lotCreate--lotName">New <span class="alias" data-alias="Lot"></span> Name</label>
-                            <div class="control">
-                                <input class="input" id="lotCreate--lotName" name="lotName" maxlength="100" required />
-                            </div>
-                        </div>
-                        <div class="columns">
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="lotCreate--lotTypeId"><span class="alias" data-alias="Lot"></span> Type</label>
-                                    <div class="control">
-                                        <div class="select is-fullwidth">
-                                            <select id="lotCreate--lotTypeId" name="lotTypeId" required>
-                                                <option value="">(No Type)</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="lotCreate--lotStatusId"><span class="alias" data-alias="Lot"></span> Status</label>
-                                    <div class="control">
-                                        <div class="select is-fullwidth">
-                                            <select id="lotCreate--lotStatusId" name="lotStatusId">
-                                                <option value="">(No Status)</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label" for="lotCreate--mapId"><span class="alias" data-alias="Map"></span></label>
-                            <div class="control">
-                                <div class="select is-fullwidth">
-                                    <select id="lotCreate--mapId" name="mapId">
-                                        <option value="">(None Selected)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="has-text-right">
-                            <button class="button is-success" type="submit">
-                                <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                                <span>Create New&nbsp;<span class="alias" data-alias="Lot"></span></span>
-                            </button>
-                        </div>
-                    </form>
+              </div>
+              <div class="field">
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select
+                      id="lotSelect--occupancyStatus"
+                      name="occupancyStatus"
+                    >
+                      <option value="">(All Statuses)</option>
+                      <option value="unoccupied" selected>
+                        Currently Unoccupied
+                      </option>
+                      <option value="occupied">Currently Occupied</option>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-filter" aria-hidden="true"></i>
+                  </span>
                 </div>
+              </div>
+            </form>
+          </div>
+          <div id="resultsContainer--lotSelect"></div>
+        </div>
+        <div class="is-hidden" id="tab--lotCreate">
+          <div class="message is-info is-small">
+            <p class="message-body">
+              Be sure to confirm if the
+              <span class="alias" data-alias="lot"></span> exists before
+              creating a new one.
+            </p>
+          </div>
+          <form id="form--lotCreate">
+            <input name="mapKey" type="hidden" value="" />
+            <input name="lotLatitude" type="hidden" value="" />
+            <input name="lotLongitude" type="hidden" value="" />
+            <div class="field">
+              <label class="label" for="lotCreate--lotName"
+                >New <span class="alias" data-alias="Lot"></span> Name</label
+              >
+              <div class="control">
+                <input
+                  class="input"
+                  id="lotCreate--lotName"
+                  name="lotName"
+                  maxlength="100"
+                  required
+                />
+              </div>
             </div>
-        </section>
-        <footer class="modal-card-foot justify-right">
-            <button class="button is-close-modal-button" type="button">Cancel</button>
-        </footer>
-    </div>
+            <div class="columns">
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="lotCreate--lotTypeId"
+                    ><span class="alias" data-alias="Lot"></span> Type</label
+                  >
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select
+                        id="lotCreate--lotTypeId"
+                        name="lotTypeId"
+                        required
+                      >
+                        <option value="">(No Type)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="lotCreate--lotStatusId"
+                    ><span class="alias" data-alias="Lot"></span> Status</label
+                  >
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select id="lotCreate--lotStatusId" name="lotStatusId">
+                        <option value="">(No Status)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label" for="lotCreate--mapId"
+                ><span class="alias" data-alias="Map"></span
+              ></label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="lotCreate--mapId" name="mapId">
+                    <option value="">(None Selected)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="has-text-right">
+              <button class="button is-success" type="submit">
+                <span class="icon"
+                  ><i class="fas fa-plus" aria-hidden="true"></i
+                ></span>
+                <span
+                  >Create New&nbsp;<span class="alias" data-alias="Lot"></span
+                ></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot justify-right">
+      <button class="button is-close-modal-button" type="button">Cancel</button>
+    </footer>
+  </div>
 </div>
