@@ -5,7 +5,7 @@ import * as configFunctions from '../../helpers/functions.config.js'
 import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 import * as cacheFunctions from '../../helpers/functions.cache.js'
 
-import * as recordTypes from '../../types/recordTypes'
+import type * as recordTypes from '../../types/recordTypes'
 
 export async function handler(
   request: Request,

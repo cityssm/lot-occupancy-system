@@ -51,7 +51,7 @@ export async function getReportData(printConfig, requestQuery) {
     if (printConfig.params.includes('lotOccupancyId') &&
         typeof requestQuery.lotOccupancyId === 'string') {
         const lotOccupancy = await getLotOccupancy(requestQuery.lotOccupancyId);
-        if (lotOccupancy?.lotId) {
+        if ((lotOccupancy?.lotId ?? -1) !== -1) {
             reportData.lot = getLot(lotOccupancy.lotId);
         }
         reportData.lotOccupancy = lotOccupancy;

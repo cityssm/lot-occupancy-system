@@ -18,7 +18,9 @@ const screenPrintConfigs: Record<string, PrintConfig> = {
   }
 }
 
-export function getScreenPrintConfig(printName: string): PrintConfig | undefined {
+export function getScreenPrintConfig(
+  printName: string
+): PrintConfig | undefined {
   return screenPrintConfigs[printName]
 }
 
@@ -78,8 +80,8 @@ export async function getReportData(
   ) {
     const lotOccupancy = await getLotOccupancy(requestQuery.lotOccupancyId)
 
-    if (lotOccupancy?.lotId) {
-      reportData.lot = getLot(lotOccupancy.lotId)
+    if ((lotOccupancy?.lotId ?? -1) !== -1) {
+      reportData.lot = getLot(lotOccupancy!.lotId!)
     }
 
     reportData.lotOccupancy = lotOccupancy

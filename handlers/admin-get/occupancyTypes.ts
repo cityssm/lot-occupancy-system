@@ -24,7 +24,7 @@ export async function handler(
   for (const printEJS of occupancyTypePrints) {
     const printConfig = printFunctions.getPrintConfig(printEJS)
 
-    if (printConfig) {
+    if (printConfig !== undefined) {
       occupancyTypePrintTitles[printEJS] = printConfig.title
     }
   }

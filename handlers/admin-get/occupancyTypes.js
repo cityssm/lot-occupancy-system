@@ -8,7 +8,7 @@ export async function handler(_request, response) {
     const occupancyTypePrintTitles = {};
     for (const printEJS of occupancyTypePrints) {
         const printConfig = printFunctions.getPrintConfig(printEJS);
-        if (printConfig) {
+        if (printConfig !== undefined) {
             occupancyTypePrintTitles[printEJS] = printConfig.title;
         }
     }
