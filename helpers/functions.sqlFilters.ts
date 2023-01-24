@@ -30,6 +30,10 @@ export function getLotNameWhereClause(
       default: {
         const lotNamePieces = lotName.toLowerCase().split(' ')
         for (const lotNamePiece of lotNamePieces) {
+          if (lotNamePiece === '') {
+            continue
+          }
+
           sqlWhereClause +=
             ' and instr(lower(' + lotsTableAlias + '.lotName), ?)'
           sqlParameters.push(lotNamePiece)
@@ -100,6 +104,10 @@ export function getOccupantNameWhereClause(
   if (occupantName !== '') {
     const occupantNamePieces = occupantName.toLowerCase().split(' ')
     for (const occupantNamePiece of occupantNamePieces) {
+      if (occupantNamePiece === '') {
+        continue
+      }
+
       sqlWhereClause += ` and instr(lower(${tableAlias}.occupantName), ?)`
       sqlParameters.push(occupantNamePiece)
     }

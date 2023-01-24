@@ -3,9 +3,12 @@ export async function getPastLotOccupancyOccupants(filters, options) {
     const database = await acquireConnection();
     let sqlWhereClause = ' where o.recordDelete_timeMillis is null and l.recordDelete_timeMillis is null';
     const sqlParameters = [];
-    if (filters.searchFilter) {
+    if (filters.searchFilter !== '') {
         const searchFilterPieces = filters.searchFilter.split(' ');
         for (const searchFilterPiece of searchFilterPieces) {
+            if (searchFilterPiece === '') {
+                continue;
+            }
             sqlWhereClause +=
                 " and (o.occupantName like '%' || ? || '%'" +
                     " or o.occupantAddress1 like '%' || ? || '%'" +

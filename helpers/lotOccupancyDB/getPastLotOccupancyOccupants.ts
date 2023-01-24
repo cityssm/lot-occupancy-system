@@ -21,10 +21,14 @@ export async function getPastLotOccupancyOccupants(
 
   const sqlParameters: unknown[] = []
 
-  if (filters.searchFilter) {
+  if (filters.searchFilter !== '') {
     const searchFilterPieces = filters.searchFilter.split(' ')
 
     for (const searchFilterPiece of searchFilterPieces) {
+      if (searchFilterPiece === '') {
+        continue
+      }
+
       sqlWhereClause +=
         " and (o.occupantName like '%' || ? || '%'" +
         " or o.occupantAddress1 like '%' || ? || '%'" +
