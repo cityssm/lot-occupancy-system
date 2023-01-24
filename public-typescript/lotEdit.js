@@ -86,6 +86,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(los.urlPrefix + '/lots/doGetLotTypeFields', {
                 lotTypeId: lotTypeIdElement.value
             }, (responseJSON) => {
+                var _a;
                 if (responseJSON.lotTypeFields.length === 0) {
                     lotFieldsContainerElement.innerHTML = `<div class="message is-info">
                             <p class="message-body">There are no additional fields for this ${los.escapedAliases.lot} type.</p>
@@ -95,13 +96,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 lotFieldsContainerElement.innerHTML = '';
                 let lotTypeFieldIds = '';
                 for (const lotTypeField of responseJSON.lotTypeFields) {
-                    lotTypeFieldIds += ',' + lotTypeField.lotTypeFieldId;
-                    const fieldName = 'lotFieldValue_' + lotTypeField.lotTypeFieldId;
+                    lotTypeFieldIds += ',' + lotTypeField.lotTypeFieldId.toString();
+                    const fieldName = 'lotFieldValue_' + lotTypeField.lotTypeFieldId.toString();
                     const fieldId = 'lot--' + fieldName;
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
                     fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label>
-                            <div class="control"></div>`;
+              <div class="control"></div>`;
                     fieldElement.querySelector('label').textContent = lotTypeField.lotTypeField;
                     if (lotTypeField.lotTypeFieldValues === '') {
                         const inputElement = document.createElement('input');
@@ -112,7 +113,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         inputElement.required = lotTypeField.isRequired;
                         inputElement.minLength = lotTypeField.minimumLength;
                         inputElement.maxLength = lotTypeField.maximumLength;
-                        if (lotTypeField.pattern && lotTypeField.pattern !== '') {
+                        if (((_a = lotTypeField.pattern) !== null && _a !== void 0 ? _a : '') !== '') {
                             inputElement.pattern = lotTypeField.pattern;
                         }
                         fieldElement.querySelector('.control').append(inputElement);

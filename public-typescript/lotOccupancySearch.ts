@@ -96,17 +96,17 @@ declare const cityssm: cityssmGlobal
             '</a>' +
             '</td>') +
           ('<td>' +
-            (lotOccupancy.lotName
-              ? '<a class="has-tooltip-right" data-tooltip="' +
+            ((lotOccupancy.lotId ?? -1) === -1
+              ? '<span class="has-text-grey">(No ' +
+                los.escapedAliases.Lot +
+                ')</span>'
+              : '<a class="has-tooltip-right" data-tooltip="' +
                 cityssm.escapeHTML(lotOccupancy.lotType ?? '') +
                 '" href="' +
                 los.getLotURL(lotOccupancy.lotId) +
                 '">' +
-                cityssm.escapeHTML(lotOccupancy.lotName) +
-                '</a>'
-              : '<span class="has-text-grey">(No ' +
-                los.escapedAliases.Lot +
-                ')</span>') +
+                cityssm.escapeHTML(lotOccupancy.lotName!) +
+                '</a>') +
             '<br />' +
             ('<span class="is-size-7">' +
               cityssm.escapeHTML(lotOccupancy.mapName ?? '') +
@@ -137,16 +137,16 @@ declare const cityssm: cityssmGlobal
     }
 
     searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
-            <thead><tr>
-            <th class="has-width-1"></th>
-            <th>${los.escapedAliases.Occupancy} Type</th>
-            <th>${los.escapedAliases.Lot}</th>
-            <th>${los.escapedAliases.OccupancyStartDate}</th>
-            <th>End Date</th>
-            <th>${los.escapedAliases.Occupants}</th>
-            <th class="has-width-1"><span class="is-sr-only">Print</span></th>
-            </tr></thead>
-            <table>`
+      <thead><tr>
+      <th class="has-width-1"></th>
+      <th>${los.escapedAliases.Occupancy} Type</th>
+      <th>${los.escapedAliases.Lot}</th>
+      <th>${los.escapedAliases.OccupancyStartDate}</th>
+      <th>End Date</th>
+      <th>${los.escapedAliases.Occupants}</th>
+      <th class="has-width-1"><span class="is-sr-only">Print</span></th>
+      </tr></thead>
+      <table>`
 
     searchResultsContainerElement
       .querySelector('table')!
@@ -211,7 +211,6 @@ declare const cityssm: cityssmGlobal
 
   searchFilterFormElement.addEventListener('submit', (formEvent) => {
     formEvent.preventDefault()
-    resetOffsetAndGetLotOccupancies()
   })
 
   getLotOccupancies()

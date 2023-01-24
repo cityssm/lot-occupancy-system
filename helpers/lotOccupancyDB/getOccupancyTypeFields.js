@@ -3,7 +3,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export async function getOccupancyTypeFields(occupancyTypeId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const sqlParameters = [];
-    if (occupancyTypeId) {
+    if ((occupancyTypeId ?? -1) !== -1) {
         sqlParameters.push(occupancyTypeId);
     }
     const occupancyTypeFields = database
@@ -13,9 +13,9 @@ export async function getOccupancyTypeFields(occupancyTypeId, connectedDatabase)
         ' orderNumber' +
         ' from OccupancyTypeFields' +
         ' where recordDelete_timeMillis is null' +
-        (occupancyTypeId
-            ? ' and occupancyTypeId = ?'
-            : ' and occupancyTypeId is null') +
+        ((occupancyTypeId ?? -1) === -1
+            ? ' and occupancyTypeId is null'
+            : ' and occupancyTypeId = ?') +
         ' order by orderNumber, occupancyTypeField')
         .all(sqlParameters);
     let expectedOrderNumber = 0;

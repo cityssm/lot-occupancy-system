@@ -432,7 +432,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     ('<div class="level-left">' +
                         '<div class="level-item">' +
                         ('<h2 class="title is-4">(All ' +
-                            cityssm.escapeHTML(exports.aliases.occupancy) +
+                            los.escapedAliases.Occupancy +
                             ' Types)</h2>') +
                         '</div>' +
                         '</div>') +

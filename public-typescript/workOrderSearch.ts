@@ -231,7 +231,6 @@ declare const cityssm: cityssmGlobal
 
   searchFilterFormElement.addEventListener('submit', (formEvent) => {
     formEvent.preventDefault()
-    resetOffsetAndGetWorkOrders()
   })
 
   /*

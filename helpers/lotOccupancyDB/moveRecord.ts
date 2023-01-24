@@ -1,4 +1,4 @@
-import sqlite from 'better-sqlite3'
+import type sqlite from 'better-sqlite3'
 
 import { acquireConnection } from './pool.js'
 import { clearCacheByTableName } from '../functions.cache.js'

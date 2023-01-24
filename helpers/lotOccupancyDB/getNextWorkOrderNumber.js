@@ -9,9 +9,9 @@ export async function getNextWorkOrderNumber(connectedDatabase) {
         return regex.test(workOrderNumber) ? 1 : 0;
     });
     const workOrderNumberRecord = database
-        .prepare('select workOrderNumber from WorkOrders' +
-        ' where userFn_matchesWorkOrderNumberSyntax(workOrderNumber) = 1' +
-        " order by cast(substr(workOrderNumber, instr(workOrderNumber, '-') + 1) as integer) desc")
+        .prepare(`select workOrderNumber from WorkOrders
+        where userFn_matchesWorkOrderNumberSyntax(workOrderNumber) = 1
+        order by cast(substr(workOrderNumber, instr(workOrderNumber, '-') + 1) as integer) desc`)
         .get();
     if (connectedDatabase === undefined) {
         database.release();

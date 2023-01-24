@@ -70,10 +70,10 @@ declare const cityssm: cityssmGlobal
           ('<td>' +
             ((map.mapAddress1 ?? '') === ''
               ? ''
-              : cityssm.escapeHTML(map.mapAddress1!) + '<br />') +
+              : cityssm.escapeHTML(map.mapAddress1 ?? '') + '<br />') +
             ((map.mapAddress2 ?? '') === ''
               ? ''
-              : cityssm.escapeHTML(map.mapAddress2!) + '<br />') +
+              : cityssm.escapeHTML(map.mapAddress2 ?? '') + '<br />') +
             (map.mapCity || map.mapProvince
               ? cityssm.escapeHTML(map.mapCity ?? '') +
                 ', ' +
@@ -82,7 +82,7 @@ declare const cityssm: cityssmGlobal
               : '') +
             ((map.mapPostalCode ?? '') === ''
               ? ''
-              : cityssm.escapeHTML(map.mapPostalCode!)) +
+              : cityssm.escapeHTML(map.mapPostalCode ?? '')) +
             '</td>') +
           ('<td>' + cityssm.escapeHTML(map.mapPhoneNumber ?? '') + '</td>') +
           '<td class="has-text-centered">' +

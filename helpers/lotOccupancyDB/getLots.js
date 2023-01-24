@@ -51,8 +51,8 @@ export async function getLots(filters, options, connectedDatabase) {
           left join (
             select lotId, count(lotOccupancyId) as lotOccupancyCount from LotOccupancies
             where recordDelete_timeMillis is null
-            and occupancyStartDate <= ${currentDate}
-            and (occupancyEndDate is null or occupancyEndDate >= ${currentDate})
+            and occupancyStartDate <= ${currentDate.toString()}
+            and (occupancyEndDate is null or occupancyEndDate >= ${currentDate.toString()})
             group by lotId
           ) o on l.lotId = o.lotId
           ${sqlWhereClause}`)
@@ -82,7 +82,9 @@ export async function getLots(filters, options, connectedDatabase) {
                 ') o on l.lotId = o.lotId') +
             sqlWhereClause +
             ' order by userFn_lotNameSortName(l.lotName), l.lotId' +
-            (options.limit === -1 ? '' : ` limit ${options.limit} offset ${options.offset}`))
+            (options.limit === -1
+                ? ''
+                : ` limit ${options.limit.toString()} offset ${options.offset.toString()}`))
             .all(sqlParameters);
         if (options.limit === -1) {
             count = lots.length;

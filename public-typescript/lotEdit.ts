@@ -141,16 +141,17 @@ declare const bulmaJS: BulmaJS
           let lotTypeFieldIds = ''
 
           for (const lotTypeField of responseJSON.lotTypeFields) {
-            lotTypeFieldIds += ',' + lotTypeField.lotTypeFieldId
+            lotTypeFieldIds += ',' + lotTypeField.lotTypeFieldId.toString()
 
-            const fieldName = 'lotFieldValue_' + lotTypeField.lotTypeFieldId
+            const fieldName =
+              'lotFieldValue_' + lotTypeField.lotTypeFieldId.toString()
 
             const fieldId = 'lot--' + fieldName
 
             const fieldElement = document.createElement('div')
             fieldElement.className = 'field'
             fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label>
-                            <div class="control"></div>`
+              <div class="control"></div>`
             ;(
               fieldElement.querySelector('label') as HTMLLabelElement
             ).textContent = lotTypeField.lotTypeField as string
@@ -170,8 +171,8 @@ declare const bulmaJS: BulmaJS
               inputElement.minLength = lotTypeField.minimumLength as number
               inputElement.maxLength = lotTypeField.maximumLength as number
 
-              if (lotTypeField.pattern && lotTypeField.pattern !== '') {
-                inputElement.pattern = lotTypeField.pattern
+              if ((lotTypeField.pattern ?? '') !== '') {
+                inputElement.pattern = lotTypeField.pattern!
               }
 
               fieldElement.querySelector('.control')!.append(inputElement)
@@ -417,10 +418,10 @@ declare const bulmaJS: BulmaJS
         cityssm.escapeHTML(lotComment.recordCreate_userName ?? '') +
         '</td>' +
         '<td>' +
-        lotComment.lotCommentDateString +
+        lotComment.lotCommentDateString! +
         (lotComment.lotCommentTime === 0
           ? ''
-          : ' ' + lotComment.lotCommentTimeString) +
+          : ' ' + lotComment.lotCommentTimeString!) +
         '</td>' +
         '<td>' +
         cityssm.escapeHTML(lotComment.lotComment ?? '') +

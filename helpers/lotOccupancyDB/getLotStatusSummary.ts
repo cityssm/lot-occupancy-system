@@ -25,12 +25,12 @@ export async function getLotStatusSummary(
 
   const lotStatuses: LotStatusSummary[] = database
     .prepare(
-      'select s.lotStatusId, s.lotStatus, count(l.lotId) as lotCount' +
-        ' from Lots l' +
-        ' left join LotStatuses s on l.lotStatusId = s.lotStatusId' +
-        sqlWhereClause +
-        ' group by s.lotStatusId, s.lotStatus, s.orderNumber' +
-        ' order by s.orderNumber'
+      `select s.lotStatusId, s.lotStatus, count(l.lotId) as lotCount
+        from Lots l
+        left join LotStatuses s on l.lotStatusId = s.lotStatusId
+        ${sqlWhereClause}
+        group by s.lotStatusId, s.lotStatus, s.orderNumber
+        order by s.orderNumber`
     )
     .all(sqlParameters)
 

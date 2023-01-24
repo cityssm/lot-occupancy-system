@@ -32,8 +32,8 @@ declare const cityssm: cityssmGlobal
   }): void {
     if (responseJSON.lots.length === 0) {
       searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                <p class="message-body">There are no ${los.escapedAliases.lots} that meet the search criteria.</p>
-                </div>`
+        <p class="message-body">There are no ${los.escapedAliases.lots} that meet the search criteria.</p>
+        </div>`
 
       return
     }
@@ -146,7 +146,6 @@ declare const cityssm: cityssmGlobal
 
   searchFilterFormElement.addEventListener('submit', (formEvent) => {
     formEvent.preventDefault()
-    resetOffsetAndGetLots()
   })
 
   getLots()

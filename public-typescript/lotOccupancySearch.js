@@ -8,7 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
     function renderLotOccupancies(responseJSON) {
-        var _a, _b, _c, _d, _e, _f, _g;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         if (responseJSON.lotOccupancies.length === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">
@@ -62,20 +62,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '</a>' +
                     '</td>') +
                 ('<td>' +
-                    (lotOccupancy.lotName
-                        ? '<a class="has-tooltip-right" data-tooltip="' +
-                            cityssm.escapeHTML((_d = lotOccupancy.lotType) !== null && _d !== void 0 ? _d : '') +
+                    (((_d = lotOccupancy.lotId) !== null && _d !== void 0 ? _d : -1) === -1
+                        ? '<span class="has-text-grey">(No ' +
+                            los.escapedAliases.Lot +
+                            ')</span>'
+                        : '<a class="has-tooltip-right" data-tooltip="' +
+                            cityssm.escapeHTML((_e = lotOccupancy.lotType) !== null && _e !== void 0 ? _e : '') +
                             '" href="' +
                             los.getLotURL(lotOccupancy.lotId) +
                             '">' +
                             cityssm.escapeHTML(lotOccupancy.lotName) +
-                            '</a>'
-                        : '<span class="has-text-grey">(No ' +
-                            los.escapedAliases.Lot +
-                            ')</span>') +
+                            '</a>') +
                     '<br />' +
                     ('<span class="is-size-7">' +
-                        cityssm.escapeHTML((_e = lotOccupancy.mapName) !== null && _e !== void 0 ? _e : '') +
+                        cityssm.escapeHTML((_f = lotOccupancy.mapName) !== null && _f !== void 0 ? _f : '') +
                         '</span>') +
                     '</td>') +
                 ('<td>' + lotOccupancy.occupancyStartDateString + '</td>') +
@@ -101,24 +101,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '</tr>');
         }
         searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
-            <thead><tr>
-            <th class="has-width-1"></th>
-            <th>${los.escapedAliases.Occupancy} Type</th>
-            <th>${los.escapedAliases.Lot}</th>
-            <th>${los.escapedAliases.OccupancyStartDate}</th>
-            <th>End Date</th>
-            <th>${los.escapedAliases.Occupants}</th>
-            <th class="has-width-1"><span class="is-sr-only">Print</span></th>
-            </tr></thead>
-            <table>`;
+      <thead><tr>
+      <th class="has-width-1"></th>
+      <th>${los.escapedAliases.Occupancy} Type</th>
+      <th>${los.escapedAliases.Lot}</th>
+      <th>${los.escapedAliases.OccupancyStartDate}</th>
+      <th>End Date</th>
+      <th>${los.escapedAliases.Occupants}</th>
+      <th class="has-width-1"><span class="is-sr-only">Print</span></th>
+      </tr></thead>
+      <table>`;
         searchResultsContainerElement
             .querySelector('table')
             .append(resultsTbodyElement);
         searchResultsContainerElement.insertAdjacentHTML('beforeend', los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
-        (_f = searchResultsContainerElement
-            .querySelector("button[data-page='previous']")) === null || _f === void 0 ? void 0 : _f.addEventListener('click', previousAndGetLotOccupancies);
         (_g = searchResultsContainerElement
-            .querySelector("button[data-page='next']")) === null || _g === void 0 ? void 0 : _g.addEventListener('click', nextAndGetLotOccupancies);
+            .querySelector("button[data-page='previous']")) === null || _g === void 0 ? void 0 : _g.addEventListener('click', previousAndGetLotOccupancies);
+        (_h = searchResultsContainerElement
+            .querySelector("button[data-page='next']")) === null || _h === void 0 ? void 0 : _h.addEventListener('click', nextAndGetLotOccupancies);
     }
     function getLotOccupancies() {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Occupancies}...`);
@@ -142,7 +142,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     searchFilterFormElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
-        resetOffsetAndGetLotOccupancies();
     });
     getLotOccupancies();
 })();

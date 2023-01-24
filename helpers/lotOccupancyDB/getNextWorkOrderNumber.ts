@@ -24,9 +24,9 @@ export async function getNextWorkOrderNumber(
 
   const workOrderNumberRecord = database
     .prepare(
-      'select workOrderNumber from WorkOrders' +
-        ' where userFn_matchesWorkOrderNumberSyntax(workOrderNumber) = 1' +
-        " order by cast(substr(workOrderNumber, instr(workOrderNumber, '-') + 1) as integer) desc"
+      `select workOrderNumber from WorkOrders
+        where userFn_matchesWorkOrderNumberSyntax(workOrderNumber) = 1
+        order by cast(substr(workOrderNumber, instr(workOrderNumber, '-') + 1) as integer) desc`
     )
     .get()
 

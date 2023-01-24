@@ -1,4 +1,4 @@
-import { Pool, PoolConnection } from 'better-sqlite-pool'
+import { Pool, type PoolConnection } from 'better-sqlite-pool'
 
 import { lotOccupancyDB as databasePath } from '../../data/databasePaths.js'
 

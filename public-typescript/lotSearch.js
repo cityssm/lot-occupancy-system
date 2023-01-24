@@ -11,8 +11,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         var _a, _b, _c, _d;
         if (responseJSON.lots.length === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                <p class="message-body">There are no ${los.escapedAliases.lots} that meet the search criteria.</p>
-                </div>`;
+        <p class="message-body">There are no ${los.escapedAliases.lots} that meet the search criteria.</p>
+        </div>`;
             return;
         }
         const resultsTbodyElement = document.createElement('tbody');
@@ -85,7 +85,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     searchFilterFormElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
-        resetOffsetAndGetLots();
     });
     getLots();
 })();

@@ -159,7 +159,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     searchFilterFormElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
-        resetOffsetAndGetWorkOrders();
     });
     /*
       const workOrderOpenDateStringElement = document.querySelector("#searchFilter--workOrderOpenDateString") as HTMLInputElement;

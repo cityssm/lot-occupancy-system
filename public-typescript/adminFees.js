@@ -132,7 +132,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 '</div>') +
                             ('<div class="column has-text-centered">' +
                                 (fee.taxPercentage
-                                    ? fee.taxPercentage + '%'
+                                    ? fee.taxPercentage.toString() + '%'
                                     : '$' + fee.taxAmount.toFixed(2)) +
                                 '<br /><small>Tax</small>' +
                                 '</div>') +
