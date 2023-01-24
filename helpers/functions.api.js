@@ -33,7 +33,7 @@ export async function getApiKey(userName) {
     if (apiKeys === undefined) {
         await loadApiKeys();
     }
-    if (!Object.hasOwn(apiKeys, userName)) {
+    if (!Object.prototype.hasOwnProperty.call(apiKeys, userName)) {
         await regenerateApiKey(userName);
     }
     return apiKeys[userName];

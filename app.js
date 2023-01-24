@@ -88,15 +88,15 @@ app.use(session({
     }
 }));
 app.use((request, response, next) => {
-    if (Object.hasOwn(request.cookies, sessionCookieName) &&
-        !Object.hasOwn(request.session, 'user')) {
+    if (Object.prototype.hasOwnProperty.call(request.cookies, sessionCookieName) &&
+        !Object.prototype.hasOwnProperty.call(request.session, 'user')) {
         response.clearCookie(sessionCookieName);
     }
     next();
 });
 const sessionChecker = (request, response, next) => {
-    if (Object.hasOwn(request.session, 'user') &&
-        Object.hasOwn(request.cookies, sessionCookieName)) {
+    if (Object.prototype.hasOwnProperty.call(request.session, 'user') &&
+        Object.prototype.hasOwnProperty.call(request.cookies, sessionCookieName)) {
         next();
         return;
     }
@@ -132,8 +132,8 @@ app.all(urlPrefix + '/keepAlive', (_request, response) => {
 });
 app.use(urlPrefix + '/login', routerLogin);
 app.get(urlPrefix + '/logout', (request, response) => {
-    if (Object.hasOwn(request.session, 'user') &&
-        Object.hasOwn(request.cookies, sessionCookieName)) {
+    if (Object.prototype.hasOwnProperty.call(request.session, 'user') &&
+        Object.prototype.hasOwnProperty.call(request.cookies, sessionCookieName)) {
         request.session.destroy(() => {
             response.clearCookie(sessionCookieName);
             response.redirect(urlPrefix + '/');

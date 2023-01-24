@@ -172,8 +172,8 @@ app.use(
 // Clear cookie if no corresponding session
 app.use((request, response, next) => {
   if (
-    Object.hasOwn(request.cookies, sessionCookieName) &&
-    !Object.hasOwn(request.session, 'user')
+    Object.prototype.hasOwnProperty.call(request.cookies, sessionCookieName) &&
+    !Object.prototype.hasOwnProperty.call(request.session, 'user')
   ) {
     response.clearCookie(sessionCookieName)
   }
@@ -188,8 +188,8 @@ const sessionChecker = (
   next: express.NextFunction
 ): void => {
   if (
-    Object.hasOwn(request.session, 'user') &&
-    Object.hasOwn(request.cookies, sessionCookieName)
+    Object.prototype.hasOwnProperty.call(request.session, 'user') &&
+    Object.prototype.hasOwnProperty.call(request.cookies, sessionCookieName)
   ) {
     next()
     return
@@ -257,8 +257,8 @@ app.use(urlPrefix + '/login', routerLogin)
 
 app.get(urlPrefix + '/logout', (request, response) => {
   if (
-    Object.hasOwn(request.session, 'user') &&
-    Object.hasOwn(request.cookies, sessionCookieName)
+    Object.prototype.hasOwnProperty.call(request.session, 'user') &&
+    Object.prototype.hasOwnProperty.call(request.cookies, sessionCookieName)
   ) {
     request.session.destroy(() => {
       response.clearCookie(sessionCookieName)

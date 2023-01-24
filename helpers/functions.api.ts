@@ -42,7 +42,7 @@ export async function getApiKey(userName: string): Promise<string> {
     await loadApiKeys()
   }
 
-  if (!Object.hasOwn(apiKeys, userName)) {
+  if (!Object.prototype.hasOwnProperty.call(apiKeys, userName)) {
     await regenerateApiKey(userName)
   }
 
