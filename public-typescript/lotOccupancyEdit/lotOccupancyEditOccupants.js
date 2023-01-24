@@ -1,7 +1,9 @@
 "use strict";
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-let lotOccupancyOccupants;
+let lotOccupancyOccupants = exports.lotOccupancyOccupants;
+delete exports.lotOccupancyOccupants;
 function openEditLotOccupancyOccupant(clickEvent) {
     const lotOccupantIndex = Number.parseInt(clickEvent.currentTarget.closest('tr').dataset
         .lotOccupantIndex, 10);
@@ -192,7 +194,11 @@ function renderLotOccupancyOccupants() {
                         : cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress)) +
                     '</td>') +
                 ('<td>' +
-                    '<span data-tooltip="' + cityssm.escapeHTML(((_j = lotOccupancyOccupant.occupantCommentTitle) !== null && _j !== void 0 ? _j : '') === '' ? 'Comment' : lotOccupancyOccupant.occupantCommentTitle) + '">' +
+                    '<span data-tooltip="' +
+                    cityssm.escapeHTML(((_j = lotOccupancyOccupant.occupantCommentTitle) !== null && _j !== void 0 ? _j : '') === ''
+                        ? 'Comment'
+                        : lotOccupancyOccupant.occupantCommentTitle) +
+                    '">' +
                     cityssm.escapeHTML((_k = lotOccupancyOccupant.occupantComment) !== null && _k !== void 0 ? _k : '') +
                     '</span>' +
                     '</td>') +
@@ -229,159 +235,155 @@ if (isCreate) {
     });
 }
 else {
-    lotOccupancyOccupants = exports.lotOccupancyOccupants;
-    delete exports.lotOccupancyOccupants;
-    document
-        .querySelector('#button--addOccupant')
-        .addEventListener('click', () => {
-        let addCloseModalFunction;
-        let addFormElement;
-        let searchFormElement;
-        let searchResultsElement;
-        function addOccupant(formOrObject) {
-            cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doAddLotOccupancyOccupant', formOrObject, (responseJSON) => {
-                var _a;
-                if (responseJSON.success) {
-                    lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
-                    addCloseModalFunction();
-                    renderLotOccupancyOccupants();
-                }
-                else {
-                    bulmaJS.alert({
-                        title: `Error Adding ${los.escapedAliases.Occupant}`,
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
-                        contextualColorName: 'danger'
-                    });
-                }
-            });
-        }
-        function addOccupantFromForm(submitEvent) {
-            submitEvent.preventDefault();
-            addOccupant(addFormElement);
-        }
-        let pastOccupantSearchResults = [];
-        function addOccupantFromCopy(clickEvent) {
-            clickEvent.preventDefault();
-            const panelBlockElement = clickEvent.currentTarget;
-            const occupant = pastOccupantSearchResults[Number.parseInt(panelBlockElement.dataset.index, 10)];
-            const lotOccupantTypeId = panelBlockElement
-                .closest('.modal')
-                .querySelector('#lotOccupancyOccupantCopy--lotOccupantTypeId').value;
-            if (lotOccupantTypeId === '') {
-                bulmaJS.alert({
-                    title: `No ${los.escapedAliases.Occupant} Type Selected`,
-                    message: `Select a type to apply to the newly added ${los.escapedAliases.occupant}.`,
-                    contextualColorName: 'warning'
-                });
-            }
-            else {
-                occupant.lotOccupantTypeId = Number.parseInt(lotOccupantTypeId, 10);
-                occupant.lotOccupancyId = Number.parseInt(lotOccupancyId, 10);
-                addOccupant(occupant);
-            }
-        }
-        function searchOccupants(event) {
-            event.preventDefault();
-            if (searchFormElement.querySelector('#lotOccupancyOccupantCopy--searchFilter').value === '') {
-                searchResultsElement.innerHTML =
-                    '<div class="message is-info">' +
-                        '<p class="message-body">Enter a partial name or address in the search field above.</p>' +
-                        '</div>';
-                return;
-            }
-            searchResultsElement.innerHTML =
-                los.getLoadingParagraphHTML('Searching...');
-            cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doSearchPastOccupants', searchFormElement, (responseJSON) => {
-                var _a, _b, _c, _d, _e, _f, _g, _h;
-                pastOccupantSearchResults = responseJSON.occupants;
-                const panelElement = document.createElement('div');
-                panelElement.className = 'panel';
-                for (const [index, occupant] of pastOccupantSearchResults.entries()) {
-                    const panelBlockElement = document.createElement('a');
-                    panelBlockElement.className = 'panel-block is-block';
-                    panelBlockElement.dataset.index = index.toString();
-                    panelBlockElement.innerHTML =
-                        '<strong>' +
-                            cityssm.escapeHTML((_a = occupant.occupantName) !== null && _a !== void 0 ? _a : '') +
-                            '</strong>' +
-                            '<br />' +
-                            '<div class="columns">' +
-                            ('<div class="column">' +
-                                cityssm.escapeHTML((_b = occupant.occupantAddress1) !== null && _b !== void 0 ? _b : '') +
-                                '<br />' +
-                                (((_c = occupant.occupantAddress2) !== null && _c !== void 0 ? _c : '') === ''
-                                    ? ''
-                                    : cityssm.escapeHTML(occupant.occupantAddress2) +
-                                        '<br />') +
-                                cityssm.escapeHTML((_d = occupant.occupantCity) !== null && _d !== void 0 ? _d : '') +
-                                ', ' +
-                                cityssm.escapeHTML((_e = occupant.occupantProvince) !== null && _e !== void 0 ? _e : '') +
-                                '<br />' +
-                                cityssm.escapeHTML((_f = occupant.occupantPostalCode) !== null && _f !== void 0 ? _f : '') +
-                                '</div>') +
-                            ('<div class="column">' +
-                                (((_g = occupant.occupantPhoneNumber) !== null && _g !== void 0 ? _g : '') === ''
-                                    ? ''
-                                    : cityssm.escapeHTML(occupant.occupantPhoneNumber) +
-                                        '<br />') +
-                                cityssm.escapeHTML((_h = occupant.occupantEmailAddress) !== null && _h !== void 0 ? _h : '') +
-                                '<br />' +
-                                '</div>') +
-                            '</div>';
-                    panelBlockElement.addEventListener('click', addOccupantFromCopy);
-                    panelElement.append(panelBlockElement);
-                }
-                searchResultsElement.innerHTML = '';
-                searchResultsElement.append(panelElement);
-            });
-        }
-        cityssm.openHtmlModal('lotOccupancy-addOccupant', {
-            onshow(modalElement) {
-                los.populateAliases(modalElement);
-                modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupancyId').value = lotOccupancyId;
-                const lotOccupantTypeSelectElement = modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupantTypeId');
-                const lotOccupantTypeCopySelectElement = modalElement.querySelector('#lotOccupancyOccupantCopy--lotOccupantTypeId');
-                for (const lotOccupantType of exports.lotOccupantTypes) {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = lotOccupantType.lotOccupantTypeId.toString();
-                    optionElement.textContent = lotOccupantType.lotOccupantType;
-                    optionElement.dataset.occupantCommentTitle =
-                        lotOccupantType.occupantCommentTitle;
-                    lotOccupantTypeSelectElement.append(optionElement);
-                    lotOccupantTypeCopySelectElement.append(optionElement.cloneNode(true));
-                }
-                ;
-                modalElement.querySelector('#lotOccupancyOccupantAdd--occupantCity').value = exports.occupantCityDefault;
-                modalElement.querySelector('#lotOccupancyOccupantAdd--occupantProvince').value = exports.occupantProvinceDefault;
-            },
-            onshown: (modalElement, closeModalFunction) => {
-                bulmaJS.toggleHtmlClipped();
-                bulmaJS.init(modalElement);
-                const lotOccupantTypeIdElement = modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupantTypeId');
-                lotOccupantTypeIdElement.focus();
-                lotOccupantTypeIdElement.addEventListener('change', () => {
-                    var _a;
-                    let occupantCommentTitle = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                        .occupantCommentTitle) !== null && _a !== void 0 ? _a : '';
-                    if (occupantCommentTitle === '') {
-                        occupantCommentTitle = 'Comment';
-                    }
-                    modalElement.querySelector('#lotOccupancyOccupantAdd--occupantCommentTitle').textContent = occupantCommentTitle;
-                });
-                addFormElement = modalElement.querySelector('#form--lotOccupancyOccupantAdd');
-                addFormElement.addEventListener('submit', addOccupantFromForm);
-                searchResultsElement = modalElement.querySelector('#lotOccupancyOccupantCopy--searchResults');
-                searchFormElement = modalElement.querySelector('#form--lotOccupancyOccupantCopy');
-                searchFormElement.addEventListener('submit', (formEvent) => {
-                    formEvent.preventDefault();
-                });
-                modalElement.querySelector('#lotOccupancyOccupantCopy--searchFilter').addEventListener('change', searchOccupants);
-                addCloseModalFunction = closeModalFunction;
-            },
-            onremoved: () => {
-                bulmaJS.toggleHtmlClipped();
-            }
-        });
-    });
     renderLotOccupancyOccupants();
 }
+(_a = document
+    .querySelector('#button--addOccupant')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
+    let addCloseModalFunction;
+    let addFormElement;
+    let searchFormElement;
+    let searchResultsElement;
+    function addOccupant(formOrObject) {
+        cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doAddLotOccupancyOccupant', formOrObject, (responseJSON) => {
+            var _a;
+            if (responseJSON.success) {
+                lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
+                addCloseModalFunction();
+                renderLotOccupancyOccupants();
+            }
+            else {
+                bulmaJS.alert({
+                    title: `Error Adding ${los.escapedAliases.Occupant}`,
+                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    contextualColorName: 'danger'
+                });
+            }
+        });
+    }
+    function addOccupantFromForm(submitEvent) {
+        submitEvent.preventDefault();
+        addOccupant(addFormElement);
+    }
+    let pastOccupantSearchResults = [];
+    function addOccupantFromCopy(clickEvent) {
+        clickEvent.preventDefault();
+        const panelBlockElement = clickEvent.currentTarget;
+        const occupant = pastOccupantSearchResults[Number.parseInt(panelBlockElement.dataset.index, 10)];
+        const lotOccupantTypeId = panelBlockElement
+            .closest('.modal')
+            .querySelector('#lotOccupancyOccupantCopy--lotOccupantTypeId').value;
+        if (lotOccupantTypeId === '') {
+            bulmaJS.alert({
+                title: `No ${los.escapedAliases.Occupant} Type Selected`,
+                message: `Select a type to apply to the newly added ${los.escapedAliases.occupant}.`,
+                contextualColorName: 'warning'
+            });
+        }
+        else {
+            occupant.lotOccupantTypeId = Number.parseInt(lotOccupantTypeId, 10);
+            occupant.lotOccupancyId = Number.parseInt(lotOccupancyId, 10);
+            addOccupant(occupant);
+        }
+    }
+    function searchOccupants(event) {
+        event.preventDefault();
+        if (searchFormElement.querySelector('#lotOccupancyOccupantCopy--searchFilter').value === '') {
+            searchResultsElement.innerHTML =
+                '<div class="message is-info">' +
+                    '<p class="message-body">Enter a partial name or address in the search field above.</p>' +
+                    '</div>';
+            return;
+        }
+        searchResultsElement.innerHTML =
+            los.getLoadingParagraphHTML('Searching...');
+        cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doSearchPastOccupants', searchFormElement, (responseJSON) => {
+            var _a, _b, _c, _d, _e, _f, _g, _h;
+            pastOccupantSearchResults = responseJSON.occupants;
+            const panelElement = document.createElement('div');
+            panelElement.className = 'panel';
+            for (const [index, occupant] of pastOccupantSearchResults.entries()) {
+                const panelBlockElement = document.createElement('a');
+                panelBlockElement.className = 'panel-block is-block';
+                panelBlockElement.dataset.index = index.toString();
+                panelBlockElement.innerHTML =
+                    '<strong>' +
+                        cityssm.escapeHTML((_a = occupant.occupantName) !== null && _a !== void 0 ? _a : '') +
+                        '</strong>' +
+                        '<br />' +
+                        '<div class="columns">' +
+                        ('<div class="column">' +
+                            cityssm.escapeHTML((_b = occupant.occupantAddress1) !== null && _b !== void 0 ? _b : '') +
+                            '<br />' +
+                            (((_c = occupant.occupantAddress2) !== null && _c !== void 0 ? _c : '') === ''
+                                ? ''
+                                : cityssm.escapeHTML(occupant.occupantAddress2) + '<br />') +
+                            cityssm.escapeHTML((_d = occupant.occupantCity) !== null && _d !== void 0 ? _d : '') +
+                            ', ' +
+                            cityssm.escapeHTML((_e = occupant.occupantProvince) !== null && _e !== void 0 ? _e : '') +
+                            '<br />' +
+                            cityssm.escapeHTML((_f = occupant.occupantPostalCode) !== null && _f !== void 0 ? _f : '') +
+                            '</div>') +
+                        ('<div class="column">' +
+                            (((_g = occupant.occupantPhoneNumber) !== null && _g !== void 0 ? _g : '') === ''
+                                ? ''
+                                : cityssm.escapeHTML(occupant.occupantPhoneNumber) +
+                                    '<br />') +
+                            cityssm.escapeHTML((_h = occupant.occupantEmailAddress) !== null && _h !== void 0 ? _h : '') +
+                            '<br />' +
+                            '</div>') +
+                        '</div>';
+                panelBlockElement.addEventListener('click', addOccupantFromCopy);
+                panelElement.append(panelBlockElement);
+            }
+            searchResultsElement.innerHTML = '';
+            searchResultsElement.append(panelElement);
+        });
+    }
+    cityssm.openHtmlModal('lotOccupancy-addOccupant', {
+        onshow(modalElement) {
+            los.populateAliases(modalElement);
+            modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupancyId').value = lotOccupancyId;
+            const lotOccupantTypeSelectElement = modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupantTypeId');
+            const lotOccupantTypeCopySelectElement = modalElement.querySelector('#lotOccupancyOccupantCopy--lotOccupantTypeId');
+            for (const lotOccupantType of exports.lotOccupantTypes) {
+                const optionElement = document.createElement('option');
+                optionElement.value = lotOccupantType.lotOccupantTypeId.toString();
+                optionElement.textContent = lotOccupantType.lotOccupantType;
+                optionElement.dataset.occupantCommentTitle =
+                    lotOccupantType.occupantCommentTitle;
+                lotOccupantTypeSelectElement.append(optionElement);
+                lotOccupantTypeCopySelectElement.append(optionElement.cloneNode(true));
+            }
+            ;
+            modalElement.querySelector('#lotOccupancyOccupantAdd--occupantCity').value = exports.occupantCityDefault;
+            modalElement.querySelector('#lotOccupancyOccupantAdd--occupantProvince').value = exports.occupantProvinceDefault;
+        },
+        onshown: (modalElement, closeModalFunction) => {
+            bulmaJS.toggleHtmlClipped();
+            bulmaJS.init(modalElement);
+            const lotOccupantTypeIdElement = modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupantTypeId');
+            lotOccupantTypeIdElement.focus();
+            lotOccupantTypeIdElement.addEventListener('change', () => {
+                var _a;
+                let occupantCommentTitle = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                    .occupantCommentTitle) !== null && _a !== void 0 ? _a : '';
+                if (occupantCommentTitle === '') {
+                    occupantCommentTitle = 'Comment';
+                }
+                modalElement.querySelector('#lotOccupancyOccupantAdd--occupantCommentTitle').textContent = occupantCommentTitle;
+            });
+            addFormElement = modalElement.querySelector('#form--lotOccupancyOccupantAdd');
+            addFormElement.addEventListener('submit', addOccupantFromForm);
+            searchResultsElement = modalElement.querySelector('#lotOccupancyOccupantCopy--searchResults');
+            searchFormElement = modalElement.querySelector('#form--lotOccupancyOccupantCopy');
+            searchFormElement.addEventListener('submit', (formEvent) => {
+                formEvent.preventDefault();
+            });
+            modalElement.querySelector('#lotOccupancyOccupantCopy--searchFilter').addEventListener('change', searchOccupants);
+            addCloseModalFunction = closeModalFunction;
+        },
+        onremoved: () => {
+            bulmaJS.toggleHtmlClipped();
+        }
+    });
+});

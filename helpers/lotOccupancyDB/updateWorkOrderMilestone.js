@@ -14,9 +14,9 @@ export async function updateWorkOrderMilestone(milestoneForm, requestSession) {
         where workOrderMilestoneId = ?`)
         .run(milestoneForm.workOrderMilestoneTypeId === ''
         ? undefined
-        : milestoneForm.workOrderMilestoneTypeId, dateStringToInteger(milestoneForm.workOrderMilestoneDateString), milestoneForm.workOrderMilestoneTimeString
-        ? timeStringToInteger(milestoneForm.workOrderMilestoneTimeString)
-        : 0, milestoneForm.workOrderMilestoneDescription, requestSession.user.userName, rightNow.getTime(), milestoneForm.workOrderMilestoneId);
+        : milestoneForm.workOrderMilestoneTypeId, dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
+        ? 0
+        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, requestSession.user.userName, rightNow.getTime(), milestoneForm.workOrderMilestoneId);
     database.release();
     return result.changes > 0;
 }
