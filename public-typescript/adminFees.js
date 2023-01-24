@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     let feeCategories = exports.feeCategories;
     delete exports.feeCategories;
     function renderFeeCategories() {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
         if (feeCategories.length === 0) {
             feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
         <p class="message-body">There are no available fees.</p>
@@ -70,88 +70,92 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     .querySelector('.button--deleteFeeCategory')
                     .addEventListener('click', confirmDeleteFeeCategory);
             }
-            else {
-                for (const fee of feeCategory.fees) {
-                    const panelBlockElement = document.createElement('div');
-                    panelBlockElement.className = 'panel-block is-block container--fee';
-                    panelBlockElement.dataset.feeId = fee.feeId.toString();
-                    const hasTagsBlock = ((_c = fee.isRequired) !== null && _c !== void 0 ? _c : false) ||
-                        fee.occupancyTypeId !== undefined ||
-                        fee.lotTypeId !== undefined;
-                    panelBlockElement.innerHTML =
-                        '<div class="columns">' +
-                            ('<div class="column is-half">' +
-                                '<p>' +
-                                '<a class="has-text-weight-bold" href="#">' +
-                                cityssm.escapeHTML((_d = fee.feeName) !== null && _d !== void 0 ? _d : '') +
-                                '</a><br />' +
-                                '<small>' +
-                                cityssm
-                                    .escapeHTML((_e = fee.feeDescription) !== null && _e !== void 0 ? _e : '')
-                                    .replace(/\n/g, '<br />') +
-                                '</small>' +
-                                '</p>' +
-                                (hasTagsBlock
-                                    ? '<p class="tags">' +
-                                        (((_f = fee.isRequired) !== null && _f !== void 0 ? _f : false)
-                                            ? '<span class="tag is-warning">Required</span>'
-                                            : '') +
-                                        (fee.occupancyTypeId === undefined
-                                            ? ''
-                                            : ' <span class="tag has-tooltip-bottom" data-tooltip="' +
-                                                los.escapedAliases.Occupancy +
-                                                ' Type Filter">' +
-                                                cityssm.escapeHTML((_g = fee.occupancyType) !== null && _g !== void 0 ? _g : '') +
-                                                '</span>') +
-                                        (fee.lotTypeId === undefined
-                                            ? ''
-                                            : ' <span class="tag has-tooltip-bottom" data-tooltip="' +
-                                                los.escapedAliases.Lot +
-                                                ' Type Filter">' +
-                                                cityssm.escapeHTML((_h = fee.lotType) !== null && _h !== void 0 ? _h : '') +
-                                                '</span>') +
-                                        '</p>'
+            for (const fee of feeCategory.fees) {
+                const panelBlockElement = document.createElement('div');
+                panelBlockElement.className = 'panel-block is-block container--fee';
+                panelBlockElement.dataset.feeId = fee.feeId.toString();
+                const hasTagsBlock = ((_c = fee.isRequired) !== null && _c !== void 0 ? _c : false) ||
+                    fee.occupancyTypeId !== undefined ||
+                    fee.lotTypeId !== undefined;
+                panelBlockElement.innerHTML =
+                    '<div class="columns">' +
+                        ('<div class="column is-half">' +
+                            '<p>' +
+                            '<a class="has-text-weight-bold" href="#">' +
+                            cityssm.escapeHTML((_d = fee.feeName) !== null && _d !== void 0 ? _d : '') +
+                            '</a><br />' +
+                            '<small>' +
+                            cityssm
+                                .escapeHTML((_e = fee.feeDescription) !== null && _e !== void 0 ? _e : '')
+                                .replace(/\n/g, '<br />') +
+                            '</small>' +
+                            '</p>' +
+                            (hasTagsBlock
+                                ? '<p class="tags">' +
+                                    (((_f = fee.isRequired) !== null && _f !== void 0 ? _f : false)
+                                        ? '<span class="tag is-warning">Required</span>'
+                                        : '') +
+                                    (((_g = fee.occupancyTypeId) !== null && _g !== void 0 ? _g : -1) === -1
+                                        ? ''
+                                        : ' <span class="tag has-tooltip-bottom" data-tooltip="' +
+                                            los.escapedAliases.Occupancy +
+                                            ' Type Filter">' +
+                                            '<span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span> ' +
+                                            '<span>' +
+                                            cityssm.escapeHTML((_h = fee.occupancyType) !== null && _h !== void 0 ? _h : '') +
+                                            '</span>' +
+                                            '</span>') +
+                                    (((_j = fee.lotTypeId) !== null && _j !== void 0 ? _j : -1) === -1
+                                        ? ''
+                                        : ' <span class="tag has-tooltip-bottom" data-tooltip="' +
+                                            los.escapedAliases.Lot +
+                                            ' Type Filter">' +
+                                            '<span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span> ' +
+                                            '<span>' +
+                                            cityssm.escapeHTML((_k = fee.lotType) !== null && _k !== void 0 ? _k : '') +
+                                            '</span>' +
+                                            '</span>') +
+                                    '</p>'
+                                : '') +
+                            '</div>') +
+                        ('<div class="column">' +
+                            '<div class="columns is-mobile">' +
+                            ('<div class="column has-text-centered">' +
+                                (fee.feeFunction
+                                    ? cityssm.escapeHTML(fee.feeFunction) +
+                                        '<br />' +
+                                        '<small>Fee Function</small>'
+                                    : '$' +
+                                        fee.feeAmount.toFixed(2) +
+                                        '<br />' +
+                                        '<small>Fee</small>') +
+                                '</div>') +
+                            ('<div class="column has-text-centered">' +
+                                (fee.taxPercentage
+                                    ? fee.taxPercentage + '%'
+                                    : '$' + fee.taxAmount.toFixed(2)) +
+                                '<br /><small>Tax</small>' +
+                                '</div>') +
+                            ('<div class="column has-text-centered">' +
+                                (fee.includeQuantity
+                                    ? cityssm.escapeHTML((_l = fee.quantityUnit) !== null && _l !== void 0 ? _l : '') +
+                                        '<br />' +
+                                        '<small>Quantity</small>'
                                     : '') +
                                 '</div>') +
-                            ('<div class="column">' +
-                                '<div class="columns is-mobile">' +
-                                ('<div class="column has-text-centered">' +
-                                    (fee.feeFunction
-                                        ? cityssm.escapeHTML(fee.feeFunction) +
-                                            '<br />' +
-                                            '<small>Fee Function</small>'
-                                        : '$' +
-                                            fee.feeAmount.toFixed(2) +
-                                            '<br />' +
-                                            '<small>Fee</small>') +
-                                    '</div>') +
-                                ('<div class="column has-text-centered">' +
-                                    (fee.taxPercentage
-                                        ? fee.taxPercentage + '%'
-                                        : '$' + fee.taxAmount.toFixed(2)) +
-                                    '<br /><small>Tax</small>' +
-                                    '</div>') +
-                                ('<div class="column has-text-centered">' +
-                                    (fee.includeQuantity
-                                        ? cityssm.escapeHTML((_j = fee.quantityUnit) !== null && _j !== void 0 ? _j : '') +
-                                            '<br />' +
-                                            '<small>Quantity</small>'
-                                        : '') +
-                                    '</div>') +
-                                '</div>' +
-                                '</div>') +
-                            ('<div class="column is-narrow">' +
-                                los.getMoveUpDownButtonFieldHTML('button--moveFeeUp', 'button--moveFeeDown') +
-                                '</div>' +
-                                '</div>') +
-                            '</div>';
-                    panelBlockElement
-                        .querySelector('a')
-                        .addEventListener('click', openEditFee);
-                    panelBlockElement.querySelector('.button--moveFeeUp').addEventListener('click', moveFee);
-                    panelBlockElement.querySelector('.button--moveFeeDown').addEventListener('click', moveFee);
-                    feeCategoryContainerElement.append(panelBlockElement);
-                }
+                            '</div>' +
+                            '</div>') +
+                        ('<div class="column is-narrow">' +
+                            los.getMoveUpDownButtonFieldHTML('button--moveFeeUp', 'button--moveFeeDown') +
+                            '</div>' +
+                            '</div>') +
+                        '</div>';
+                panelBlockElement
+                    .querySelector('a')
+                    .addEventListener('click', openEditFee);
+                panelBlockElement.querySelector('.button--moveFeeUp').addEventListener('click', moveFee);
+                panelBlockElement.querySelector('.button--moveFeeDown').addEventListener('click', moveFee);
+                feeCategoryContainerElement.append(panelBlockElement);
             }
             feeCategoryContainerElement
                 .querySelector('.button--editFeeCategory')
