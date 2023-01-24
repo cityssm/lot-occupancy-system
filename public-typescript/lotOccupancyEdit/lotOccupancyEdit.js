@@ -186,11 +186,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doGetOccupancyTypeFields', {
                 occupancyTypeId: occupancyTypeIdElement.value
             }, (responseJSON) => {
-                var _a;
+                var _a, _b;
                 if (responseJSON.occupancyTypeFields.length === 0) {
                     lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
-                            <p class="message-body">There are no additional fields for this ${los.escapedAliases.occupancy} type.</p>
-                            </div>`;
+              <p class="message-body">There are no additional fields for this ${los.escapedAliases.occupancy} type.</p>
+              </div>`;
                     return;
                 }
                 lotOccupancyFieldsContainerElement.innerHTML = '';
@@ -205,7 +205,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     fieldElement.className = 'field';
                     fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label><div class="control"></div>`;
                     fieldElement.querySelector('label').textContent = occupancyTypeField.occupancyTypeField;
-                    if (occupancyTypeField.occupancyTypeFieldValues === '') {
+                    if (((_a = occupancyTypeField.occupancyTypeFieldValues) !== null && _a !== void 0 ? _a : '') === '') {
                         const inputElement = document.createElement('input');
                         inputElement.className = 'input';
                         inputElement.id = fieldId;
@@ -216,7 +216,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             occupancyTypeField.minimumLength;
                         inputElement.maxLength =
                             occupancyTypeField.maximumLength;
-                        if (((_a = occupancyTypeField.pattern) !== null && _a !== void 0 ? _a : '') !== '') {
+                        if (((_b = occupancyTypeField.pattern) !== null && _b !== void 0 ? _b : '') !== '') {
                             inputElement.pattern = occupancyTypeField.pattern;
                         }
                         ;
@@ -239,6 +239,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             selectElement.append(optionElement);
                         }
                     }
+                    console.log(fieldElement);
                     lotOccupancyFieldsContainerElement.append(fieldElement);
                 }
                 lotOccupancyFieldsContainerElement.insertAdjacentHTML('beforeend', `<input name="occupancyTypeFieldIds" type="hidden" value="${occupancyTypeFieldIds.slice(1)}" />`);
@@ -351,10 +352,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         cityssm.openHtmlModal('lotOccupancy-selectLot', {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
                 los.populateAliases(modalElement);
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
                 var _a;
                 bulmaJS.toggleHtmlClipped();
                 lotSelectModalElement = modalElement;
@@ -409,7 +410,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ;
                 modalElement.querySelector('#form--lotCreate').addEventListener('submit', createLotAndSelect);
             },
-            onremoved: () => {
+            onremoved() {
                 bulmaJS.toggleHtmlClipped();
             }
         });

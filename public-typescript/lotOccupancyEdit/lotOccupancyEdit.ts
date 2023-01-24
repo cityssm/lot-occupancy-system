@@ -284,8 +284,8 @@ declare const bulmaJS: BulmaJS
         }) => {
           if (responseJSON.occupancyTypeFields.length === 0) {
             lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
-                            <p class="message-body">There are no additional fields for this ${los.escapedAliases.occupancy} type.</p>
-                            </div>`
+              <p class="message-body">There are no additional fields for this ${los.escapedAliases.occupancy} type.</p>
+              </div>`
 
             return
           }
@@ -311,7 +311,7 @@ declare const bulmaJS: BulmaJS
               fieldElement.querySelector('label') as HTMLLabelElement
             ).textContent = occupancyTypeField.occupancyTypeField as string
 
-            if (occupancyTypeField.occupancyTypeFieldValues === '') {
+            if ((occupancyTypeField.occupancyTypeFieldValues ?? '') === '') {
               const inputElement = document.createElement('input')
 
               inputElement.className = 'input'
@@ -361,6 +361,8 @@ declare const bulmaJS: BulmaJS
                 selectElement.append(optionElement)
               }
             }
+
+            console.log(fieldElement)
 
             lotOccupancyFieldsContainerElement.append(fieldElement)
           }
@@ -529,10 +531,10 @@ declare const bulmaJS: BulmaJS
     }
 
     cityssm.openHtmlModal('lotOccupancy-selectLot', {
-      onshow: (modalElement) => {
+      onshow(modalElement) {
         los.populateAliases(modalElement)
       },
-      onshown: (modalElement, closeModalFunction) => {
+      onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
 
         lotSelectModalElement = modalElement
@@ -628,7 +630,7 @@ declare const bulmaJS: BulmaJS
           modalElement.querySelector('#form--lotCreate') as HTMLFormElement
         ).addEventListener('submit', createLotAndSelect)
       },
-      onremoved: () => {
+      onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
     })
