@@ -15,7 +15,7 @@ interface GetWorkOrdersOptions {
     includeComments?: boolean;
     includeMilestones?: boolean;
 }
-export declare function getWorkOrders(filters: GetWorkOrdersFilters, options?: GetWorkOrdersOptions, connectedDatabase?: PoolConnection): Promise<{
+export declare function getWorkOrders(filters: GetWorkOrdersFilters, options: GetWorkOrdersOptions, connectedDatabase?: PoolConnection): Promise<{
     count: number;
     workOrders: recordTypes.WorkOrder[];
 }>;

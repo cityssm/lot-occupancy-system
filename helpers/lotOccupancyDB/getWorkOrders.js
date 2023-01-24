@@ -82,15 +82,15 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
                 ' group by workOrderId) m on w.workOrderId = m.workOrderId') +
             sqlWhereClause +
             ' order by w.workOrderOpenDate desc, w.workOrderNumber desc' +
-            (options === undefined
+            (options.limit === -1
                 ? ''
                 : ` limit ${options.limit} offset ${options.offset}`))
             .all(sqlParameters);
     }
-    if (options !== undefined &&
-        ((options.includeComments ?? false) ||
-            (options.includeLotsAndLotOccupancies ?? false) ||
-            (options.includeMilestones ?? false))) {
+    const hasInclusions = (options.includeComments ?? false) ||
+        (options.includeLotsAndLotOccupancies ?? false) ||
+        (options.includeMilestones ?? false);
+    if (hasInclusions) {
         for (const workOrder of workOrders) {
             if (options.includeComments ?? false) {
                 workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);
