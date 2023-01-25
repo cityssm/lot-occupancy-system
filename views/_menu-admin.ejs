@@ -28,9 +28,9 @@
             </a>
         </li>
         <li>
-            <a class="<%= (headTitle === "Database Cleanup" ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/cleanup">
-                <span class="icon"><i class="fas fa-fw fa-broom" aria-hidden="true"></i></span>
-                <span>Database Cleanup</span>
+            <a class="<%= (headTitle === "Database Maintenance" ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/database">
+                <span class="icon"><i class="fas fa-fw fa-database" aria-hidden="true"></i></span>
+                <span>Database Maintenance</span>
             </a>
         </li>
         <% if (configFunctions.getProperty("application.ntfyStartup")) { %>

@@ -24,7 +24,7 @@ describe('Update User', () => {
   })
 
   it('Redirects to Dashboard when attempting to access admin area', () => {
-    cy.visit('/admin/cleanup')
+    cy.visit('/admin/tables')
     cy.wait(200)
     cy.location('pathname').should('equal', '/dashboard/')
   })

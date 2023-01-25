@@ -32,4 +32,10 @@ describe('Login Page', () => {
       matchCase: false
     })
   })
+
+  it('Redirects to login when attempting to access dashboard', () => {
+    cy.visit('/dashboard')
+    cy.wait(200)
+    cy.location('pathname').should('contain', '/login')
+  })
 })

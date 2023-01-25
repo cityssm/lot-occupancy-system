@@ -11,7 +11,7 @@
         "strictNullChecks": true
     },
     "files": [
-        "public-typescript/adminCleanup.ts",
+        "public-typescript/adminDatabase.ts",
         "public-typescript/adminFees.ts",
         "public-typescript/adminLotTypes.ts",
         "public-typescript/adminOccupancyTypes.ts",

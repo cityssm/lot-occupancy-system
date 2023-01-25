@@ -6,6 +6,9 @@ cypress/downloads/
 cypress/screenshots/
 cypress/videos/
 
+data/backups/*
+!data/backups/README.md
+
 data/sessions/
 
 node_modules/

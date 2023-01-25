@@ -1,4 +1,4 @@
-import { Router, RequestHandler } from 'express'
+import { Router, type RequestHandler } from 'express'
 
 // Fee Management
 
@@ -81,9 +81,10 @@ import handler_doMoveLotOccupantTypeUp from '../handlers/admin-post/doMoveLotOcc
 import handler_doMoveLotOccupantTypeDown from '../handlers/admin-post/doMoveLotOccupantTypeDown.js'
 import handler_doDeleteLotOccupantType from '../handlers/admin-post/doDeleteLotOccupantType.js'
 
-// Cleanup
+// Database Maintenance
 
-import handler_cleanup from '../handlers/admin-get/cleanup.js'
+import handler_database from '../handlers/admin-get/database.js'
+import handler_doBackupDatabase from '../handlers/admin-post/doBackupDatabase.js'
 import handler_doCleanupDatabase from '../handlers/admin-post/doCleanupDatabase.js'
 
 // Ntfy Startup
@@ -346,9 +347,11 @@ router.post(
   handler_doDeleteLotOccupantType as RequestHandler
 )
 
-// Cleanup
+// Database Maintenance
 
-router.get('/cleanup', handler_cleanup)
+router.get('/database', handler_database)
+
+router.post('/doBackupDatabase', handler_doBackupDatabase as RequestHandler)
 
 router.post('/doCleanupDatabase', handler_doCleanupDatabase as RequestHandler)
 

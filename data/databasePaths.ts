@@ -19,3 +19,5 @@ export const lotOccupancyDBTesting = 'data/lotOccupancy-testing.db'
 export const lotOccupancyDB = useTestDatabases
   ? lotOccupancyDBTesting
   : lotOccupancyDBLive
+
+export const backupFolder = 'data/backups'
