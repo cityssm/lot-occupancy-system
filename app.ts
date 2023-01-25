@@ -1,3 +1,5 @@
+import './helpers/polyfills.js'
+
 import createError from 'http-errors'
 import express, { type RequestHandler } from 'express'
 
@@ -172,8 +174,8 @@ app.use(
 // Clear cookie if no corresponding session
 app.use((request, response, next) => {
   if (
-    Object.prototype.hasOwnProperty.call(request.cookies, sessionCookieName) &&
-    !Object.prototype.hasOwnProperty.call(request.session, 'user')
+    Object.hasOwn(request.cookies, sessionCookieName) &&
+    !Object.hasOwn(request.session, 'user')
   ) {
     response.clearCookie(sessionCookieName)
   }
@@ -188,8 +190,8 @@ const sessionChecker = (
   next: express.NextFunction
 ): void => {
   if (
-    Object.prototype.hasOwnProperty.call(request.session, 'user') &&
-    Object.prototype.hasOwnProperty.call(request.cookies, sessionCookieName)
+    Object.hasOwn(request.session, 'user') &&
+    Object.hasOwn(request.cookies, sessionCookieName)
   ) {
     next()
     return
@@ -257,8 +259,8 @@ app.use(urlPrefix + '/login', routerLogin)
 
 app.get(urlPrefix + '/logout', (request, response) => {
   if (
-    Object.prototype.hasOwnProperty.call(request.session, 'user') &&
-    Object.prototype.hasOwnProperty.call(request.cookies, sessionCookieName)
+    Object.hasOwn(request.session, 'user') &&
+    Object.hasOwn(request.cookies, sessionCookieName)
   ) {
     request.session.destroy(() => {
       response.clearCookie(sessionCookieName)

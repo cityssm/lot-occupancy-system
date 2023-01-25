@@ -1,3 +1,4 @@
+import './polyfills.js';
 import fs from 'node:fs/promises';
 import { v4 as uuidv4 } from 'uuid';
 import Debug from 'debug';
@@ -33,7 +34,7 @@ export async function getApiKey(userName) {
     if (apiKeys === undefined) {
         await loadApiKeys();
     }
-    if (!Object.prototype.hasOwnProperty.call(apiKeys, userName)) {
+    if (!Object.hasOwn(apiKeys, userName)) {
         await regenerateApiKey(userName);
     }
     return apiKeys[userName];

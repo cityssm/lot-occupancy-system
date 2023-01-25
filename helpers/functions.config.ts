@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/indent, node/no-unpublished-import */
 
+import './polyfills.js'
+
 import { config } from '../data/config.js'
 
 import type * as configTypes from '../types/configTypes'
@@ -210,7 +212,7 @@ export function getProperty(propertyName: string): unknown {
   let currentObject = config
 
   for (const propertyNamePiece of propertyNameSplit) {
-    if (Object.prototype.hasOwnProperty.call(currentObject, propertyNamePiece)) {
+    if (Object.hasOwn(currentObject, propertyNamePiece)) {
       currentObject = currentObject[propertyNamePiece]
       continue
     }

@@ -1,3 +1,4 @@
+import './polyfills.js';
 import { config } from '../data/config.js';
 const configFallbackValues = new Map();
 configFallbackValues.set('application.applicationName', 'Lot Occupancy System');
@@ -52,7 +53,7 @@ export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split('.');
     let currentObject = config;
     for (const propertyNamePiece of propertyNameSplit) {
-        if (Object.prototype.hasOwnProperty.call(currentObject, propertyNamePiece)) {
+        if (Object.hasOwn(currentObject, propertyNamePiece)) {
             currentObject = currentObject[propertyNamePiece];
             continue;
         }
