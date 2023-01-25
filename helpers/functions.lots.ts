@@ -6,12 +6,18 @@ import getNextLotIdFromDatabase from './lotOccupancyDB/getNextLotId.js'
 const timeToLiveMinutes = 2
 
 const previousLotIdCache = new NodeCache({
-  stdTTL: timeToLiveMinutes * 60
+  stdTTL: timeToLiveMinutes * 60,
+  useClones: false
 })
 
 const nextLotIdCache = new NodeCache({
   stdTTL: timeToLiveMinutes * 60
 })
+
+function cacheLotIds(lotId: number, nextLotId: number): void {
+  previousLotIdCache.set(nextLotId, lotId)
+  nextLotIdCache.set(lotId, nextLotId)
+}
 
 export async function getNextLotId(lotId: number): Promise<number | undefined> {
   let nextLotId: number | undefined = nextLotIdCache.get(lotId)
@@ -20,8 +26,7 @@ export async function getNextLotId(lotId: number): Promise<number | undefined> {
     nextLotId = await getNextLotIdFromDatabase(lotId)
 
     if (nextLotId !== undefined) {
-      previousLotIdCache.set(nextLotId, lotId)
-      nextLotIdCache.set(lotId, nextLotId)
+      cacheLotIds(lotId, nextLotId)
     }
   }
 
@@ -37,8 +42,7 @@ export async function getPreviousLotId(
     previousLotId = await getPreviousLotIdFromDatabase(lotId)
 
     if (previousLotId !== undefined) {
-      previousLotIdCache.set(lotId, previousLotId)
-      nextLotIdCache.set(previousLotId, lotId)
+      cacheLotIds(previousLotId, lotId)
     }
   }
 
@@ -63,6 +67,6 @@ export function clearNextPreviousLotIdCache(lotId?: number): void {
 
   if (nextLotId !== undefined) {
     previousLotIdCache.del(nextLotId)
-    nextLotIdCache.del(nextLotId)
+    nextLotIdCache.del(lotId)
   }
 }
