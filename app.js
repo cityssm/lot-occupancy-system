@@ -1,3 +1,4 @@
+import './helpers/polyfills.js';
 import createError from 'http-errors';
 import express from 'express';
 import compression from 'compression';

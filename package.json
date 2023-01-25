@@ -60,6 +60,7 @@
     "ical-generator": "^3.6.1",
     "leaflet": "^1.9.3",
     "node-cache": "^5.1.2",
+    "object.hasown": "^1.1.2",
     "papaparse": "^5.3.2",
     "randomcolor": "^0.6.2",
     "session-file-store": "^1.5.0",
