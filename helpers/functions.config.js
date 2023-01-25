@@ -1,3 +1,4 @@
+import './polyfills.js';
 import { config } from '../data/config.js';
 const configFallbackValues = new Map();
 configFallbackValues.set('application.applicationName', 'Lot Occupancy System');
