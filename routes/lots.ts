@@ -1,4 +1,4 @@
-import { RequestHandler, Router } from 'express'
+import { type RequestHandler, Router } from 'express'
 
 import * as permissionHandlers from '../handlers/permissions.js'
 

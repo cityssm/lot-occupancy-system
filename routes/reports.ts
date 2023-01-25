@@ -1,4 +1,4 @@
-import { RequestHandler, Router } from 'express'
+import { type RequestHandler, Router } from 'express'
 
 import handler_search from '../handlers/reports-get/search.js'
 import handler_reportName from '../handlers/reports-get/reportName.js'

@@ -1,4 +1,4 @@
-import { RequestHandler, Router } from 'express'
+import { type RequestHandler, Router } from 'express'
 
 import handler_search from '../handlers/lotOccupancies-get/search.js'
 import handler_doSearchLotOccupancies from '../handlers/lotOccupancies-post/doSearchLotOccupancies.js'

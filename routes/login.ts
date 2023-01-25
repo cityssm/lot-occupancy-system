@@ -1,4 +1,4 @@
-import { Router, RequestHandler, Request, Response } from 'express'
+import { Router, type RequestHandler, type Request, type Response } from 'express'
 
 import * as configFunctions from '../helpers/functions.config.js'
 
