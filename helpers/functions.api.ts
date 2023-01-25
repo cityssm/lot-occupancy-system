@@ -1,4 +1,4 @@
-// import { applyPolyfills } from './polyfills.js'
+import './polyfills.js'
 
 import fs from 'node:fs/promises'
 import { v4 as uuidv4 } from 'uuid'
@@ -8,8 +8,6 @@ import Debug from 'debug'
 import type * as recordTypes from '../types/recordTypes'
 
 const debug = Debug('lot-occupancy-system:functions.api')
-
-// applyPolyfills()
 
 const apiKeyPath = 'data/apiKeys.json'
 let apiKeys: Record<string, string>
