@@ -1,4 +1,4 @@
-import './helpers/polyfills.js';
+import { applyPolyfills } from './helpers/polyfills.js';
 import createError from 'http-errors';
 import express from 'express';
 import compression from 'compression';
@@ -31,6 +31,7 @@ import { getSafeRedirectURL } from './helpers/functions.authentication.js';
 import debug from 'debug';
 import { useTestDatabases } from './data/databasePaths.js';
 const debugApp = debug('lot-occupancy-system:app');
+applyPolyfills();
 databaseInitializer.initializeDatabase();
 const _dirname = '.';
 export const app = express();

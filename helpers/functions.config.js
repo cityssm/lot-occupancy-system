@@ -1,5 +1,6 @@
-import './polyfills.js';
+import { applyPolyfills } from './polyfills.js';
 import { config } from '../data/config.js';
+applyPolyfills();
 const configFallbackValues = new Map();
 configFallbackValues.set('application.applicationName', 'Lot Occupancy System');
 configFallbackValues.set('application.backgroundURL', '/images/cemetery-background.jpg');

@@ -1,4 +1,3 @@
-import './polyfills.js';
 import type * as configTypes from '../types/configTypes';
 export declare function getProperty(propertyName: 'application.applicationName'): string;
 export declare function getProperty(propertyName: 'application.logoURL'): string;

@@ -1,8 +1,9 @@
-import './polyfills.js';
+import { applyPolyfills } from './polyfills.js';
 import fs from 'node:fs/promises';
 import { v4 as uuidv4 } from 'uuid';
 import Debug from 'debug';
 const debug = Debug('lot-occupancy-system:functions.api');
+applyPolyfills();
 const apiKeyPath = 'data/apiKeys.json';
 let apiKeys;
 async function loadApiKeys() {
