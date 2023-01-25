@@ -8,6 +8,7 @@ jobs:
   Coverage:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node: [ 14, 16, 18 ]
     env:
