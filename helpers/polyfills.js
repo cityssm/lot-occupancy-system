@@ -4,7 +4,7 @@ const debug = Debug('lot-occupancy-system:polyfills');
 export function applyPolyfills() {
     if (Object.hasOwn === undefined) {
         debug('Applying Object.hasOwn(o, v) polyfill');
-        hasOwn.shim();
+        Object.hasOwn = hasOwn;
     }
 }
 applyPolyfills();
