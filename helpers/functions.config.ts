@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/indent, node/no-unpublished-import */
 
-import { applyPolyfills } from './polyfills.js'
+// import { applyPolyfills } from './polyfills.js'
 
 import { config } from '../data/config.js'
 
 import type * as configTypes from '../types/configTypes'
 
-applyPolyfills()
+// applyPolyfills()
 
 /*
  * SET UP FALLBACK VALUES

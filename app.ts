@@ -1,4 +1,4 @@
-import { applyPolyfills } from './helpers/polyfills.js'
+// import { applyPolyfills } from './helpers/polyfills.js'
 
 import createError from 'http-errors'
 import express, { type RequestHandler } from 'express'
@@ -45,7 +45,7 @@ const debugApp = debug('lot-occupancy-system:app')
  * Apply Polyfills
  */
 
-applyPolyfills()
+// applyPolyfills()
 
 /*
  * INITIALIZE THE DATABASE
