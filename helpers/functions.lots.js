@@ -1,14 +1,12 @@
 import NodeCache from 'node-cache';
 import getPreviousLotIdFromDatabase from './lotOccupancyDB/getPreviousLotId.js';
 import getNextLotIdFromDatabase from './lotOccupancyDB/getNextLotId.js';
-const timeToLiveMinutes = 2;
-const previousLotIdCache = new NodeCache({
-    stdTTL: timeToLiveMinutes * 60,
+const cacheOptions = {
+    stdTTL: 2 * 60,
     useClones: false
-});
-const nextLotIdCache = new NodeCache({
-    stdTTL: timeToLiveMinutes * 60
-});
+};
+const previousLotIdCache = new NodeCache(cacheOptions);
+const nextLotIdCache = new NodeCache(cacheOptions);
 function cacheLotIds(lotId, nextLotId) {
     previousLotIdCache.set(nextLotId, lotId);
     nextLotIdCache.set(lotId, nextLotId);
