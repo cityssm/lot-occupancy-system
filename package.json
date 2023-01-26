@@ -16,6 +16,7 @@
     "dev:live": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* nodemon ./bin/www.js",
     "cy:open": "cypress open --config-file cypress.config.js",
     "cy:run": "cypress run --config-file cypress.config.js",
+    "cy:run:firefox": "cypress run --config-file cypress.config.js --browser firefox",
     "test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true mocha --timeout 30000 --exit",
     "coverage": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 30000 --exit",
     "temp:legacy:importFromCsv": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true node ./temp/legacy.importFromCsv.js",

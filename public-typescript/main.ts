@@ -181,7 +181,7 @@ declare const bulmaJS: BulmaJS
           clearButtonElement.remove()
         } else {
           clearButtonElement.dataset.tooltip = 'Clear'
-          clearButtonElement.ariaLabel = 'Clear'
+          clearButtonElement.setAttribute('aria-label', 'Clear')
           clearButtonElement.innerHTML =
             '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>'
         }
@@ -193,9 +193,9 @@ declare const bulmaJS: BulmaJS
       )
 
       if (labelElement !== null) {
-        datepickerElement.querySelector(
-          '.datetimepicker-dummy-input'
-        )!.ariaLabel = labelElement.textContent
+        datepickerElement
+          .querySelector('.datetimepicker-dummy-input')!
+          .setAttribute('aria-label', labelElement.textContent ?? '')
       }
     }
   }

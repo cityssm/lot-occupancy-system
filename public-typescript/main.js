@@ -80,7 +80,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         displayMode: 'dialog'
     };
     function initializeDatePickers(containerElement) {
-        var _a;
+        var _a, _b;
         const dateElements = containerElement.querySelectorAll("input[type='date']");
         for (const dateElement of dateElements) {
             const datePickerOptions = Object.assign({}, datePickerBaseOptions);
@@ -125,7 +125,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     clearButtonElement.dataset.tooltip = 'Clear';
-                    clearButtonElement.ariaLabel = 'Clear';
+                    clearButtonElement.setAttribute('aria-label', 'Clear');
                     clearButtonElement.innerHTML =
                         '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
                 }
@@ -133,7 +133,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // Apply a label
             const labelElement = document.querySelector("label[for='" + dateElement.id + "']");
             if (labelElement !== null) {
-                datepickerElement.querySelector('.datetimepicker-dummy-input').ariaLabel = labelElement.textContent;
+                datepickerElement
+                    .querySelector('.datetimepicker-dummy-input')
+                    .setAttribute('aria-label', (_b = labelElement.textContent) !== null && _b !== void 0 ? _b : '');
             }
         }
     }
