@@ -144,67 +144,81 @@
 </div>
 
 <div class="panel">
-    <h2 class="panel-heading">
-      <%= configFunctions.getProperty("aliases.occupants") %>
-    </h2>
-    <div class="panel-block is-block">
-        <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
-        <div class="message is-warning">
-          <p class="message-body">
-            There are no <%= configFunctions.getProperty("aliases.occupants").toLowerCase() %>
-            associated with this record.
-          </p>
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="title is-4"><%= configFunctions.getProperty("aliases.occupants") %></h2>
         </div>
-        <% } else { %>
-        <table class="table is-fullwidth is-striped is-hoverable">
-            <thead>
-              <tr>
-                <th><%= configFunctions.getProperty("aliases.occupant") %></th>
-                <th>Address</th>
-                <th>Other Contact</th>
-                <th>Comment</th>
-              </tr>
-            </thead>
-            <tbody>
-                <% for (const lotOccupancyOccupant of lotOccupancy.lotOccupancyOccupants) { %>
-                <tr>
-                    <td>
-                      <%= lotOccupancyOccupant.occupantName %><br />
-                      <span class="tag">
-                        <i class="fas fa-fw fa-<%= lotOccupancyOccupant.fontAwesomeIconClass %>" aria-hidden="true"></i>
-                        <span class="ml-1"><%= lotOccupancyOccupant.lotOccupantType %></span>
-                      </span>
-                    </td>
-                    <td>
-                        <% if (lotOccupancyOccupant.occupantAddress1) { %>
-                            <%= lotOccupancyOccupant.occupantAddress1 %><br />
-                        <% } %>
-                        <% if (lotOccupancyOccupant.occupantAddress2) { %>
-                            <%= lotOccupancyOccupant.occupantAddress2 %><br />
-                        <% } %>
-                        <% if (lotOccupancyOccupant.occupantCity) { %>
-                            <%= lotOccupancyOccupant.occupantCity %>, 
-                        <% } %>
-                        <%= lotOccupancyOccupant.occupantProvince %><br />
-                        <%= lotOccupancyOccupant.occupantPostalCode %>
-                    </td>
-                    <td>
-                        <% if (lotOccupancyOccupant.occupantPhoneNumber) { %>
-                            <%= lotOccupancyOccupant.occupantPhoneNumber %><br />
-                        <% } %>
-                        <%= lotOccupancyOccupant.occupantEmailAddress %>
-                    </td>
-                    <td>
-                        <span data-tooltip="<%= (lotOccupancyOccupant.occupantCommentTitle ?? '') === '' ? 'Comment' : lotOccupancyOccupant.occupantCommentTitle %>">
-                        <%= lotOccupancyOccupant.occupantComment %>
-                        </span>
-                    </td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
-        <% } %>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <a class="button is-link is-small is-hidden-print has-text-weight-normal" href="<%= urlPrefix %>/reports/lotOccupancyOccupants-byLotOccupancyId/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>"  target="_blank" download>
+            <span class="icon is-small"><i class="fas fa-download" aria-hidden="true"></i></span>
+            <span>Export</span>
+          </a>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="panel-block is-block">
+      <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
+      <div class="message is-warning">
+        <p class="message-body">
+          There are no <%= configFunctions.getProperty("aliases.occupants").toLowerCase() %>
+          associated with this record.
+        </p>
+      </div>
+      <% } else { %>
+      <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th><%= configFunctions.getProperty("aliases.occupant") %></th>
+              <th>Address</th>
+              <th>Other Contact</th>
+              <th>Comment</th>
+            </tr>
+          </thead>
+          <tbody>
+              <% for (const lotOccupancyOccupant of lotOccupancy.lotOccupancyOccupants) { %>
+              <tr>
+                  <td>
+                    <%= lotOccupancyOccupant.occupantName %><br />
+                    <span class="tag">
+                      <i class="fas fa-fw fa-<%= lotOccupancyOccupant.fontAwesomeIconClass %>" aria-hidden="true"></i>
+                      <span class="ml-1"><%= lotOccupancyOccupant.lotOccupantType %></span>
+                    </span>
+                  </td>
+                  <td>
+                      <% if (lotOccupancyOccupant.occupantAddress1) { %>
+                          <%= lotOccupancyOccupant.occupantAddress1 %><br />
+                      <% } %>
+                      <% if (lotOccupancyOccupant.occupantAddress2) { %>
+                          <%= lotOccupancyOccupant.occupantAddress2 %><br />
+                      <% } %>
+                      <% if (lotOccupancyOccupant.occupantCity) { %>
+                          <%= lotOccupancyOccupant.occupantCity %>, 
+                      <% } %>
+                      <%= lotOccupancyOccupant.occupantProvince %><br />
+                      <%= lotOccupancyOccupant.occupantPostalCode %>
+                  </td>
+                  <td>
+                      <% if (lotOccupancyOccupant.occupantPhoneNumber) { %>
+                          <%= lotOccupancyOccupant.occupantPhoneNumber %><br />
+                      <% } %>
+                      <%= lotOccupancyOccupant.occupantEmailAddress %>
+                  </td>
+                  <td>
+                      <span data-tooltip="<%= (lotOccupancyOccupant.occupantCommentTitle ?? '') === '' ? 'Comment' : lotOccupancyOccupant.occupantCommentTitle %>">
+                      <%= lotOccupancyOccupant.occupantComment %>
+                      </span>
+                  </td>
+              </tr>
+              <% } %>
+          </tbody>
+      </table>
+      <% } %>
+  </div>
 </div>
 
 <% if (lotOccupancy.lotOccupancyComments.length > 0) { %>

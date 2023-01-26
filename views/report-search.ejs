@@ -1,625 +1,624 @@
 <%- include('_header'); -%>
 
-
 <div class="columns">
-    <div class="column is-3">
-        <aside class="menu">
-            <h2 class="menu-label">
-                Reports
-            </h2>
-            <ul class="menu-list">
-                <li>
-                    <a class="is-active" href="#tab--workOrders">
-                        <span class="icon"><i class="fas fa-fw fa-hard-hat" aria-hidden="true"></i></span>
-                        <span>Work Orders</span>
-                    </a>
-                </li> 
-                <li>
-                    <a href="#tab--lotOccupancies">
-                        <span class="icon"><i class="fas fa-fw fa-user" aria-hidden="true"></i></span>
-                        <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
-                    </a>
-                </li> 
-                <li>
-                    <a href="#tab--lots">
-                        <span class="icon"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
-                        <span><%= configFunctions.getProperty("aliases.lots") %></span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#tab--maps">
-                        <span class="icon"><i class="far fa-fw fa-map" aria-hidden="true"></i></span>
-                        <span><%= configFunctions.getProperty("aliases.maps") %></span>
-                    </a>
-                </li>
-            </ul>
-            <h2 class="menu-label">
-                Table Exports
-            </h2>
-            <ul class="menu-list">
-                <li>
-                    <a href="#tab--dataTableExports">
-                        <span class="icon"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
-                        <span>Data Tables</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#tab--configTableExports">
-                        <span class="icon"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
-                        <span>Config Tables</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
-    </div>
-    <div class="column">
-        <nav class="breadcrumb">
-            <ul>
-                <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-                <li class="is-active">
-                    <a href="#" aria-current="page">
-                        <span class="icon is-small"><i class="fas fa-file" aria-hidden="true"></i></span>
-                        <span>Reports</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+  <div class="column is-3">
+    <aside class="menu">
+        <h2 class="menu-label">
+            Reports
+        </h2>
+        <ul class="menu-list">
+            <li>
+                <a class="is-active" href="#tab--workOrders">
+                    <span class="icon"><i class="fas fa-fw fa-hard-hat" aria-hidden="true"></i></span>
+                    <span>Work Orders</span>
+                </a>
+            </li> 
+            <li>
+                <a href="#tab--lotOccupancies">
+                    <span class="icon"><i class="fas fa-fw fa-user" aria-hidden="true"></i></span>
+                    <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
+                </a>
+            </li> 
+            <li>
+                <a href="#tab--lots">
+                    <span class="icon"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
+                    <span><%= configFunctions.getProperty("aliases.lots") %></span>
+                </a>
+            </li>
+            <li>
+                <a href="#tab--maps">
+                    <span class="icon"><i class="far fa-fw fa-map" aria-hidden="true"></i></span>
+                    <span><%= configFunctions.getProperty("aliases.maps") %></span>
+                </a>
+            </li>
+        </ul>
+        <h2 class="menu-label">
+            Table Exports
+        </h2>
+        <ul class="menu-list">
+            <li>
+                <a href="#tab--dataTableExports">
+                    <span class="icon"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
+                    <span>Data Tables</span>
+                </a>
+            </li>
+            <li>
+                <a href="#tab--configTableExports">
+                    <span class="icon"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
+                    <span>Config Tables</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            <span class="icon is-small"><i class="fas fa-file" aria-hidden="true"></i></span>
+            <span>Reports</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
 
-        <div class="tabs-container">
-            <div id="tab--workOrders">
-                <h1 class="title is-1">Work Order Reports</h1>
-                <div class="columns">
-                    <div class="column">
-                        <div class="panel">
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrders-open" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Open Work Orders</h3>
-                                    <p>
-                                        All active work orders without completion dates.
-                                    </p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="panel">
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/workOrders/outlook">
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-calendar" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">ICS</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Work Order Milestone Calendar</h3>
-                                    <p>
-                                        Upcoming and recently passed work order milestones,
-                                        compatible with Microsoft Outlook and other calendar tools.
-                                    </p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-               
-            <div class="is-hidden" id="tab--lotOccupancies">
-                <h1 class="title is-1"><%= configFunctions.getProperty("aliases.occupancy") %> Reports</h1>
+    <div class="tabs-container">
+      <div id="tab--workOrders">
+          <h1 class="title is-1">Work Order Reports</h1>
+          <div class="columns">
+              <div class="column">
+                  <div class="panel">
+                      <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrders-open" download>
+                          <div class="has-text-centered my-2 ml-2 mr-3">
+                              <span class="icon has-text-info">
+                                  <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                              </span><br />
+                              <span class="tag is-info">CSV</span>
+                          </div>
+                          <div>
+                              <h3 class="title is-5 is-marginless">Open Work Orders</h3>
+                              <p>
+                                  All active work orders without completion dates.
+                              </p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+              <div class="column">
+                  <div class="panel">
+                      <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/workOrders/outlook">
+                          <div class="has-text-centered my-2 ml-2 mr-3">
+                              <span class="icon has-text-info">
+                                  <i class="fas fa-2x fa-calendar" aria-hidden="true"></i>
+                              </span><br />
+                              <span class="tag is-info">ICS</span>
+                          </div>
+                          <div>
+                              <h3 class="title is-5 is-marginless">Work Order Milestone Calendar</h3>
+                              <p>
+                                  Upcoming and recently passed work order milestones,
+                                  compatible with Microsoft Outlook and other calendar tools.
+                              </p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </div>
+          
+      <div class="is-hidden" id="tab--lotOccupancies">
+          <h1 class="title is-1"><%= configFunctions.getProperty("aliases.occupancy") %> Reports</h1>
 
-                <div class="panel">
-                    <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lotOccupancies-current-byMapId">
-                        <div class="has-text-centered my-2 ml-2 mr-3">
-                            <span class="icon has-text-info">
-                                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                            </span><br />
-                            <span class="tag is-info">CSV</span>
-                        </div>
-                        <div>
-                            <h3 class="title is-5 is-marginless">Current <%= configFunctions.getProperty("aliases.occupancy") %> By <%= configFunctions.getProperty("aliases.map") %></h3>
-                            <div class="field has-addons mt-2">
-                                <div class="control">
-                                    <label class="button is-small is-static" for="lotOccupancies-current-byMapId--mapId">
-                                        <%= configFunctions.getProperty("aliases.map") %>
-                                    </label>
-                                </div>
-                                <div class="control is-expanded">
-                                    <div class="select is-small is-fullwidth">
-                                        <select id="lotOccupancies-current-byMapId--mapId" name="mapId">
-                                            <% for (const map of maps) { %>
-                                                <option value="<%= map.mapId %>">
-                                                    <%= map.mapName || "(No Name)" %>
-                                                </option>
-                                            <% } %>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="control">
-                                    <button class="button is-small is-primary" type="submit">
-                                        Export
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lotOccupancyTransactions-byTransactionDateString">
-                        <div class="has-text-centered my-2 ml-2 mr-3">
-                            <span class="icon has-text-info">
-                                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                            </span><br />
-                            <span class="tag is-info">CSV</span>
-                        </div>
-                        <div>
-                            <h3 class="title is-5 is-marginless">Transactions by Date</h3>
-                            <div class="field has-addons mt-2">
-                                <div class="control">
-                                    <label class="button is-small is-static" for="lotOccupancyTransactions-byTransactionDateString--transactionDateString">
-                                        Transaction Date
-                                    </label>
-                                </div>
-                                <div class="control is-expanded">
-                                    <input class="input is-small" id="lotOccupancyTransactions-byTransactionDateString--transactionDateString" name="transactionDateString" type="date" value="<%= dateTimeFunctions.dateToString(new Date()) %>" required />
-                                </div>
-                                <div class="control">
-                                    <button class="button is-small is-primary" type="submit">
-                                        Export
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="is-hidden" id="tab--lots">
-                <h1 class="title is-1"><%= configFunctions.getProperty("aliases.lot") %> Reports</h1>
+          <div class="panel">
+              <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lotOccupancies-current-byMapId">
+                  <div class="has-text-centered my-2 ml-2 mr-3">
+                      <span class="icon has-text-info">
+                          <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                      </span><br />
+                      <span class="tag is-info">CSV</span>
+                  </div>
+                  <div>
+                      <h3 class="title is-5 is-marginless">Current <%= configFunctions.getProperty("aliases.occupancy") %> By <%= configFunctions.getProperty("aliases.map") %></h3>
+                      <div class="field has-addons mt-2">
+                          <div class="control">
+                              <label class="button is-small is-static" for="lotOccupancies-current-byMapId--mapId">
+                                  <%= configFunctions.getProperty("aliases.map") %>
+                              </label>
+                          </div>
+                          <div class="control is-expanded">
+                              <div class="select is-small is-fullwidth">
+                                  <select id="lotOccupancies-current-byMapId--mapId" name="mapId">
+                                      <% for (const map of maps) { %>
+                                          <option value="<%= map.mapId %>">
+                                              <%= map.mapName || "(No Name)" %>
+                                          </option>
+                                      <% } %>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="control">
+                              <button class="button is-small is-primary" type="submit">
+                                  Export
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+              <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lotOccupancyTransactions-byTransactionDateString">
+                  <div class="has-text-centered my-2 ml-2 mr-3">
+                      <span class="icon has-text-info">
+                          <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                      </span><br />
+                      <span class="tag is-info">CSV</span>
+                  </div>
+                  <div>
+                      <h3 class="title is-5 is-marginless">Transactions by Date</h3>
+                      <div class="field has-addons mt-2">
+                          <div class="control">
+                              <label class="button is-small is-static" for="lotOccupancyTransactions-byTransactionDateString--transactionDateString">
+                                  Transaction Date
+                              </label>
+                          </div>
+                          <div class="control is-expanded">
+                              <input class="input is-small" id="lotOccupancyTransactions-byTransactionDateString--transactionDateString" name="transactionDateString" type="date" value="<%= dateTimeFunctions.dateToString(new Date()) %>" required />
+                          </div>
+                          <div class="control">
+                              <button class="button is-small is-primary" type="submit">
+                                  Export
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+      <div class="is-hidden" id="tab--lots">
+          <h1 class="title is-1"><%= configFunctions.getProperty("aliases.lot") %> Reports</h1>
 
-                <div class="panel">
-                    <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byMapId">
-                        <div class="has-text-centered my-2 ml-2 mr-3">
-                            <span class="icon has-text-info">
-                                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                            </span><br />
-                            <span class="tag is-info">CSV</span>
-                        </div>
-                        <div>
-                            <h3 class="title is-5 is-marginless"><%= configFunctions.getProperty("aliases.lots") %> By <%= configFunctions.getProperty("aliases.map") %></h3>
-                            <div class="field has-addons mt-2">
-                                <div class="control">
-                                    <label class="button is-small is-static" for="lots-byMapId--mapId">
-                                        <%= configFunctions.getProperty("aliases.map") %>
-                                    </label>
-                                </div>
-                                <div class="control is-expanded">
-                                    <div class="select is-small is-fullwidth">
-                                        <select id="lots-byMapId--mapId" name="mapId">
-                                            <% for (const map of maps) { %>
-                                                <option value="<%= map.mapId %>">
-                                                    <%= map.mapName || "(No Name)" %>
-                                                </option>
-                                            <% } %>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="control">
-                                    <button class="button is-small is-primary" type="submit">
-                                        Export
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byLotTypeId">
-                        <div class="has-text-centered my-2 ml-2 mr-3">
-                            <span class="icon has-text-info">
-                                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                            </span><br />
-                            <span class="tag is-info">CSV</span>
-                        </div>
-                        <div>
-                            <h3 class="title is-5 is-marginless"><%= configFunctions.getProperty("aliases.lots") %> By Type</h3>
-                            <div class="field has-addons mt-2">
-                                <div class="control">
-                                    <label class="button is-small is-static" for="lots-byLotTypeId--lotTypeId">
-                                        <%= configFunctions.getProperty("aliases.lot") %> Type
-                                    </label>
-                                </div>
-                                <div class="control is-expanded">
-                                    <div class="select is-small is-fullwidth">
-                                        <select id="lots-byLotTypeId--lotTypeId" name="lotTypeId">
-                                            <% for (const lotType of lotTypes) { %>
-                                                <option value="<%= lotType.lotTypeId %>">
-                                                    <%= lotType.lotType %>
-                                                </option>
-                                            <% } %>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="control">
-                                    <button class="button is-small is-primary" type="submit">
-                                        Export
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byLotStatusId">
-                        <div class="has-text-centered my-2 ml-2 mr-3">
-                            <span class="icon has-text-info">
-                                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                            </span><br />
-                            <span class="tag is-info">CSV</span>
-                        </div>
-                        <div>
-                            <h3 class="title is-5 is-marginless"><%= configFunctions.getProperty("aliases.lots") %> By Status</h3>
-                            <div class="field has-addons mt-2">
-                                <div class="control">
-                                    <label class="button is-small is-static" for="lots-byLotStatusId--lotStatusId">
-                                        <%= configFunctions.getProperty("aliases.lot") %> Status
-                                    </label>
-                                </div>
-                                <div class="control is-expanded">
-                                    <div class="select is-small is-fullwidth">
-                                        <select id="lots-byLotStatusId--lotStatusId" name="lotStatusId">
-                                            <% for (const lotStatus of lotStatuses) { %>
-                                                <option value="<%= lotStatus.lotStatusId %>">
-                                                    <%= lotStatus.lotStatus %>
-                                                </option>
-                                            <% } %>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="control">
-                                    <button class="button is-small is-primary" type="submit">
-                                        Export
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="is-hidden" id="tab--maps">
-                <h1 class="title is-1"><%= configFunctions.getProperty("aliases.map") %> Reports</h1>
-                <div class="panel">
-                    <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/maps-formatted" download>
-                        <div class="has-text-centered my-2 ml-2 mr-3">
-                            <span class="icon has-text-info">
-                                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                            </span><br />
-                            <span class="tag is-info">CSV</span>
-                        </div>
-                        <div>
-                            <h3 class="title is-5 is-marginless">Full <%= configFunctions.getProperty("aliases.map") %> List</h3>
-                            <p>
-                                All active <%= configFunctions.getProperty("aliases.maps").toLowerCase() %>.
-                            </p>
-                        </div>
-                    </a>
-                </div>
-            </div>
+          <div class="panel">
+              <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byMapId">
+                  <div class="has-text-centered my-2 ml-2 mr-3">
+                      <span class="icon has-text-info">
+                          <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                      </span><br />
+                      <span class="tag is-info">CSV</span>
+                  </div>
+                  <div>
+                      <h3 class="title is-5 is-marginless"><%= configFunctions.getProperty("aliases.lots") %> By <%= configFunctions.getProperty("aliases.map") %></h3>
+                      <div class="field has-addons mt-2">
+                          <div class="control">
+                              <label class="button is-small is-static" for="lots-byMapId--mapId">
+                                  <%= configFunctions.getProperty("aliases.map") %>
+                              </label>
+                          </div>
+                          <div class="control is-expanded">
+                              <div class="select is-small is-fullwidth">
+                                  <select id="lots-byMapId--mapId" name="mapId">
+                                      <% for (const map of maps) { %>
+                                          <option value="<%= map.mapId %>">
+                                              <%= map.mapName || "(No Name)" %>
+                                          </option>
+                                      <% } %>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="control">
+                              <button class="button is-small is-primary" type="submit">
+                                  Export
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+              <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byLotTypeId">
+                  <div class="has-text-centered my-2 ml-2 mr-3">
+                      <span class="icon has-text-info">
+                          <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                      </span><br />
+                      <span class="tag is-info">CSV</span>
+                  </div>
+                  <div>
+                      <h3 class="title is-5 is-marginless"><%= configFunctions.getProperty("aliases.lots") %> By Type</h3>
+                      <div class="field has-addons mt-2">
+                          <div class="control">
+                              <label class="button is-small is-static" for="lots-byLotTypeId--lotTypeId">
+                                  <%= configFunctions.getProperty("aliases.lot") %> Type
+                              </label>
+                          </div>
+                          <div class="control is-expanded">
+                              <div class="select is-small is-fullwidth">
+                                  <select id="lots-byLotTypeId--lotTypeId" name="lotTypeId">
+                                      <% for (const lotType of lotTypes) { %>
+                                          <option value="<%= lotType.lotTypeId %>">
+                                              <%= lotType.lotType %>
+                                          </option>
+                                      <% } %>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="control">
+                              <button class="button is-small is-primary" type="submit">
+                                  Export
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+              <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byLotStatusId">
+                  <div class="has-text-centered my-2 ml-2 mr-3">
+                      <span class="icon has-text-info">
+                          <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                      </span><br />
+                      <span class="tag is-info">CSV</span>
+                  </div>
+                  <div>
+                      <h3 class="title is-5 is-marginless"><%= configFunctions.getProperty("aliases.lots") %> By Status</h3>
+                      <div class="field has-addons mt-2">
+                          <div class="control">
+                              <label class="button is-small is-static" for="lots-byLotStatusId--lotStatusId">
+                                  <%= configFunctions.getProperty("aliases.lot") %> Status
+                              </label>
+                          </div>
+                          <div class="control is-expanded">
+                              <div class="select is-small is-fullwidth">
+                                  <select id="lots-byLotStatusId--lotStatusId" name="lotStatusId">
+                                      <% for (const lotStatus of lotStatuses) { %>
+                                          <option value="<%= lotStatus.lotStatusId %>">
+                                              <%= lotStatus.lotStatus %>
+                                          </option>
+                                      <% } %>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="control">
+                              <button class="button is-small is-primary" type="submit">
+                                  Export
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+      <div class="is-hidden" id="tab--maps">
+          <h1 class="title is-1"><%= configFunctions.getProperty("aliases.map") %> Reports</h1>
+          <div class="panel">
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/maps-formatted" download>
+                  <div class="has-text-centered my-2 ml-2 mr-3">
+                      <span class="icon has-text-info">
+                          <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                      </span><br />
+                      <span class="tag is-info">CSV</span>
+                  </div>
+                  <div>
+                      <h3 class="title is-5 is-marginless">Full <%= configFunctions.getProperty("aliases.map") %> List</h3>
+                      <p>
+                          All active <%= configFunctions.getProperty("aliases.maps").toLowerCase() %>.
+                      </p>
+                  </div>
+              </a>
+          </div>
+      </div>
 
-            <div class="is-hidden" id="tab--dataTableExports">
-                <h1 class="title is-1">Data Table Exports</h1>
-                <div class="message is-info">
-                    <p class="message-body">
-                        Note that table exports are full, unfiltered, and unformatted exports.
-                        They may contain deleted records that have not been fully purged.
-                    </p>
-                </div>
-                <div class="columns">
-                    <div class="column">
-                        <div class="panel">
-                            <h3 class="panel-heading">Lot Occupancy (<%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupancy") %>) Tables</h3>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancies-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full LotOccupancies Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyComments-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full LotOccupancyComments Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyFees-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full LotOccupancyFees Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyFields-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full LotOccupancyFields Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyOccupants-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full LotOccupancyOccupants Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyTransactions-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full LotOccupancyTransactions Table</h3>
-                                </div>
-                            </a>
-                        </div>
+      <div class="is-hidden" id="tab--dataTableExports">
+        <h1 class="title is-1">Data Table Exports</h1>
+        <div class="message is-info">
+          <p class="message-body">
+            Note that table exports are full, unfiltered, and unformatted exports.
+            They may contain deleted records that have not been fully purged.
+          </p>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="panel">
+                <h3 class="panel-heading">Occupancy (<%= configFunctions.getProperty("aliases.occupancy") %>) Tables</h3>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancies-all" download>
+                    <div class="has-text-centered my-2 ml-2 mr-3">
+                        <span class="icon has-text-info">
+                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                        </span><br />
+                        <span class="tag is-info">CSV</span>
                     </div>
-                    <div class="column">
-                        <div class="panel">
-                            <h3 class="panel-heading">Work Order Tables</h3>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrders-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full WorkOrders Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderComments-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full WorkOrderComments Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderLots-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full WorkOrderLots Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderMilestones-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full WorkOrderMilestones Table</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="panel">
-                            <h3 class="panel-heading">Lot (<%= configFunctions.getProperty("aliases.lot") %>) Tables</h3>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/maps-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full Maps Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lots-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full Lots Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotComments-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full LotComments Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotFields-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full LotFields Table</h3>
-                                </div>
-                            </a>
-                        </div>
+                    <div>
+                        <h3 class="title is-5 is-marginless">Full LotOccupancies Table</h3>
                     </div>
-                </div>
+                </a>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyComments-all" download>
+                    <div class="has-text-centered my-2 ml-2 mr-3">
+                        <span class="icon has-text-info">
+                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                        </span><br />
+                        <span class="tag is-info">CSV</span>
+                    </div>
+                    <div>
+                        <h3 class="title is-5 is-marginless">Full LotOccupancyComments Table</h3>
+                    </div>
+                </a>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyFees-all" download>
+                    <div class="has-text-centered my-2 ml-2 mr-3">
+                        <span class="icon has-text-info">
+                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                        </span><br />
+                        <span class="tag is-info">CSV</span>
+                    </div>
+                    <div>
+                        <h3 class="title is-5 is-marginless">Full LotOccupancyFees Table</h3>
+                    </div>
+                </a>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyFields-all" download>
+                    <div class="has-text-centered my-2 ml-2 mr-3">
+                        <span class="icon has-text-info">
+                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                        </span><br />
+                        <span class="tag is-info">CSV</span>
+                    </div>
+                    <div>
+                        <h3 class="title is-5 is-marginless">Full LotOccupancyFields Table</h3>
+                    </div>
+                </a>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyOccupants-all" download>
+                    <div class="has-text-centered my-2 ml-2 mr-3">
+                        <span class="icon has-text-info">
+                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                        </span><br />
+                        <span class="tag is-info">CSV</span>
+                    </div>
+                    <div>
+                        <h3 class="title is-5 is-marginless">Full LotOccupancyOccupants Table</h3>
+                    </div>
+                </a>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyTransactions-all" download>
+                    <div class="has-text-centered my-2 ml-2 mr-3">
+                        <span class="icon has-text-info">
+                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                        </span><br />
+                        <span class="tag is-info">CSV</span>
+                    </div>
+                    <div>
+                        <h3 class="title is-5 is-marginless">Full LotOccupancyTransactions Table</h3>
+                    </div>
+                </a>
             </div>
-            <div class="is-hidden" id="tab--configTableExports">
-                <h1 class="title is-1">Config Table Exports</h1>
-                <div class="message is-info">
-                    <p class="message-body">
-                        Note that table exports are full, unfiltered, and unformatted exports.
-                        They may contain deleted records that have not been fully purged.
-                    </p>
-                </div>
-                <div class="columns">
-                    <div class="column">
-                        <div class="panel">
-                            <h3 class="panel-heading">Fee Tables</h3>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/fees-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full Fees Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/feeCategories-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full FeeCategories Table</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="panel">
-                            <h3 class="panel-heading">Lot (<%= configFunctions.getProperty("aliases.lot") %>) Tables</h3>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotTypes-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full LotTypes Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotTypeFields-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full LotTypeFields Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotStatuses-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full LotStatuses Table</h3>
-                                </div>
-                            </a>
-                        </div>
+          </div>
+          <div class="column">
+              <div class="panel">
+                  <h3 class="panel-heading">Work Order Tables</h3>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrders-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full WorkOrders Table</h3>
+                      </div>
+                  </a>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderComments-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full WorkOrderComments Table</h3>
+                      </div>
+                  </a>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderLots-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full WorkOrderLots Table</h3>
+                      </div>
+                  </a>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderMilestones-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full WorkOrderMilestones Table</h3>
+                      </div>
+                  </a>
+              </div>
+              <div class="panel">
+                  <h3 class="panel-heading">Lot (<%= configFunctions.getProperty("aliases.lot") %>) Tables</h3>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/maps-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full Maps Table</h3>
+                      </div>
+                  </a>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lots-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full Lots Table</h3>
+                      </div>
+                  </a>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotComments-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full LotComments Table</h3>
+                      </div>
+                  </a>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotFields-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full LotFields Table</h3>
+                      </div>
+                  </a>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="is-hidden" id="tab--configTableExports">
+        <h1 class="title is-1">Config Table Exports</h1>
+        <div class="message is-info">
+          <p class="message-body">
+            Note that table exports are full, unfiltered, and unformatted exports.
+            They may contain deleted records that have not been fully purged.
+          </p>
+        </div>
+        <div class="columns">
+          <div class="column">
+              <div class="panel">
+                  <h3 class="panel-heading">Fee Tables</h3>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/fees-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full Fees Table</h3>
+                      </div>
+                  </a>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/feeCategories-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full FeeCategories Table</h3>
+                      </div>
+                  </a>
+              </div>
+              <div class="panel">
+                  <h3 class="panel-heading">Lot (<%= configFunctions.getProperty("aliases.lot") %>) Tables</h3>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotTypes-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full LotTypes Table</h3>
+                      </div>
+                  </a>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotTypeFields-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full LotTypeFields Table</h3>
+                      </div>
+                  </a>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotStatuses-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full LotStatuses Table</h3>
+                      </div>
+                  </a>
+              </div>
+          </div>
+          <div class="column">
+              <div class="panel">
+                <h3 class="panel-heading">Occupancy (<%= configFunctions.getProperty("aliases.occupancy") %>) Tables</h3>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/occupancyTypes-all" download>
+                    <div class="has-text-centered my-2 ml-2 mr-3">
+                        <span class="icon has-text-info">
+                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                        </span><br />
+                        <span class="tag is-info">CSV</span>
                     </div>
-                    <div class="column">
-                        <div class="panel">
-                            <h3 class="panel-heading">Lot Occupancy (<%= configFunctions.getProperty("aliases.lot") %> <%= configFunctions.getProperty("aliases.occupancy") %>) Tables</h3>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/occupancyTypes-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full OccupancyTypes Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/occupancyTypeFields-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full OccupancyTypeFields Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupantTypes-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full LotOccupantTypes Table</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="panel">
-                            <h3 class="panel-heading">Work Order Tables</h3>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderTypes-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full WorkOrderTypes Table</h3>
-                                </div>
-                            </a>
-                            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderMilestoneTypes-all" download>
-                                <div class="has-text-centered my-2 ml-2 mr-3">
-                                    <span class="icon has-text-info">
-                                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                                    </span><br />
-                                    <span class="tag is-info">CSV</span>
-                                </div>
-                                <div>
-                                    <h3 class="title is-5 is-marginless">Full WorkOrderMilestoneTypes Table</h3>
-                                </div>
-                            </a>
-                        </div>
+                    <div>
+                        <h3 class="title is-5 is-marginless">Full OccupancyTypes Table</h3>
                     </div>
-                </div>
-            </div>
-        </div>        
-    </div>
+                </a>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/occupancyTypeFields-all" download>
+                    <div class="has-text-centered my-2 ml-2 mr-3">
+                        <span class="icon has-text-info">
+                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                        </span><br />
+                        <span class="tag is-info">CSV</span>
+                    </div>
+                    <div>
+                        <h3 class="title is-5 is-marginless">Full OccupancyTypeFields Table</h3>
+                    </div>
+                </a>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupantTypes-all" download>
+                    <div class="has-text-centered my-2 ml-2 mr-3">
+                        <span class="icon has-text-info">
+                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                        </span><br />
+                        <span class="tag is-info">CSV</span>
+                    </div>
+                    <div>
+                        <h3 class="title is-5 is-marginless">Full LotOccupantTypes Table</h3>
+                    </div>
+                </a>
+              </div>
+              <div class="panel">
+                  <h3 class="panel-heading">Work Order Tables</h3>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderTypes-all" download>
+                    <div class="has-text-centered my-2 ml-2 mr-3">
+                      <span class="icon has-text-info">
+                        <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                      </span><br />
+                      <span class="tag is-info">CSV</span>
+                    </div>
+                    <div>
+                      <h3 class="title is-5 is-marginless">Full WorkOrderTypes Table</h3>
+                    </div>
+                  </a>
+                  <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderMilestoneTypes-all" download>
+                      <div class="has-text-centered my-2 ml-2 mr-3">
+                          <span class="icon has-text-info">
+                              <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                          </span><br />
+                          <span class="tag is-info">CSV</span>
+                      </div>
+                      <div>
+                          <h3 class="title is-5 is-marginless">Full WorkOrderMilestoneTypes Table</h3>
+                      </div>
+                  </a>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>        
+  </div>
 </div>
 
 <%- include('_footerA'); -%>

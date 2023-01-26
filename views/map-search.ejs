@@ -1,44 +1,60 @@
 <%- include('_header'); -%>
 
 <nav class="breadcrumb">
-    <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-        <li class="is-active"><a href="#" aria-current="page">
-                <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
-                <span><%= configFunctions.getProperty("aliases.maps") %></span>
-            </a></li>
-    </ul>
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li class="is-active">
+      <a href="#" aria-current="page">
+        <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
+        <span><%= configFunctions.getProperty("aliases.maps") %></span>
+      </a>
+    </li>
+  </ul>
 </nav>
 
-<h1 class="title is-1">
-    Find a <%= configFunctions.getProperty("aliases.map") %>
-</h1>
+<div class="level is-mobile">
+  <div class="level-left">
+    <div class="level-item">
+      <h1 class="title is-1">
+        Find a <%= configFunctions.getProperty("aliases.map") %>
+      </h1>
+    </div>
+  </div>
+  <div class="level-right">
+    <div class="level-item">
+      <a class="button" href="<%= urlPrefix %>/reports/maps-formatted" target="_blank" download>
+        <span class="icon is-small"><i class="fas fa-download" aria-hidden="true"></i></span>
+        <span>Export</span>
+      </a>
+    </div>
+  </div>
+</div>
 
 <% if (user.userProperties.canUpdate) { %>
 <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-    <a class="button is-circle is-primary has-tooltip-left"
-        data-tooltip="Create a New <%= configFunctions.getProperty("aliases.map") %>"
-        href="<%= urlPrefix %>/maps/new"
-        accesskey="n">
-        <i class="fas fa-plus" aria-hidden="true"></i>
-        <span class="sr-only">Create a New <%= configFunctions.getProperty("aliases.map") %></span>
-    </a>
+  <a class="button is-circle is-primary has-tooltip-left"
+    data-tooltip="Create a New <%= configFunctions.getProperty("aliases.map") %>"
+    href="<%= urlPrefix %>/maps/new"
+    accesskey="n">
+    <i class="fas fa-plus" aria-hidden="true"></i>
+    <span class="sr-only">Create a New <%= configFunctions.getProperty("aliases.map") %></span>
+  </a>
 </div>
 <% } %>
 
 <div class="box">
-    <form id="form--searchFilters">
-        <div class="field">
-            <div class="control has-icons-left">
-                <input class="input" id="searchFilter--map" type="text"
-                    placeholder="Search <%= configFunctions.getProperty("aliases.map").toLowerCase() %> name, description, and address"
-                    accesskey="f" />
-                <span class="icon is-small is-left">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                </span>
-            </div>
-        </div>
-    </form>
+  <form id="form--searchFilters">
+    <div class="field">
+      <div class="control has-icons-left">
+        <input class="input" id="searchFilter--map" type="text"
+          placeholder="Search <%= configFunctions.getProperty("aliases.map").toLowerCase() %> name, description, and address"
+          accesskey="f" />
+        <span class="icon is-small is-left">
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+  </form>
 </div>
 
 <div id="container--searchResults"></div>
@@ -46,7 +62,7 @@
 <%- include('_footerA'); -%>
 
 <script>
-    exports.maps = <%- JSON.stringify(maps) %>;
+  exports.maps = <%- JSON.stringify(maps) %>;
 </script>
 <script src="<%= urlPrefix %>/javascripts/mapSearch.min.js"></script>
 

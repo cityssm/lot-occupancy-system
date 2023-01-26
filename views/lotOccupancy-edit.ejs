@@ -411,26 +411,32 @@
 
 <% if (!isCreate) { %>
     <div class="panel mt-5">
-        <div class="panel-heading">
-            <div class="level is-mobile">
-                <div class="level-left">
-                    <div class="level-item">
-                        <h2 class="title is-4">
-                            <%= configFunctions.getProperty("aliases.occupants") %>
-                        </h2>
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <button class="button is-small is-success is-hidden-print" id="button--addOccupant" type="button">
-                            <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                            <span>Add <%= configFunctions.getProperty("aliases.occupant") %></span>
-                        </button>
-                    </div>
-                </div>
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="title is-4">
+                <%= configFunctions.getProperty("aliases.occupants") %>
+              </h2>
             </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <button class="button is-small is-success is-hidden-print" id="button--addOccupant" type="button">
+                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add <%= configFunctions.getProperty("aliases.occupant") %></span>
+              </button>
+            </div>
+            <div class="level-item">
+              <a class="button is-link is-small is-hidden-print has-text-weight-normal" href="<%= urlPrefix %>/reports/lotOccupancyOccupants-byLotOccupancyId/?lotOccupancyId=<%= lotOccupancy.lotOccupancyId %>"  target="_blank" download>
+                <span class="icon is-small"><i class="fas fa-download" aria-hidden="true"></i></span>
+                <span>Export</span>
+              </a>
+            </div>
+          </div>
         </div>
-        <div class="panel-block is-block" id="container--lotOccupancyOccupants"></div>
+      </div>
+      <div class="panel-block is-block" id="container--lotOccupancyOccupants"></div>
     </div>
 
     <div class="panel">

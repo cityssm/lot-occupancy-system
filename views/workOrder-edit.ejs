@@ -124,93 +124,93 @@
 
 <div class="columns is-desktop">
     <div class="column">
-        <form id="form--workOrderEdit">
-            <input id="workOrderEdit--workOrderId" name="workOrderId" type="hidden" value="<%= workOrder.workOrderId %>" />
-            <div class="panel">
-                <div class="panel-block is-block">
-                    <div class="columns">
-                        <div class="column">
-                            <label class="label" for="workOrderEdit--workOrderNumber">Work Order Number</label>
-                            <div class="field has-addons">
-                                <div class="control is-expanded">
-                                    <input class="input <%= (isCreate ? "" : " is-readonly") %>" id="workOrderEdit--workOrderNumber" name="workOrderNumber" type="text" value="<%= workOrder.workOrderNumber %>" maxlength="50" readonly accesskey="f" <%= (isCreate ? "" : " required") %> />
-                                </div>
-                                <div class="control">
-                                    <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
-                                        <i class="fas fa-unlock" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <% if (isCreate) { %>
-                                <p class="help">Leave work order number blank to autopopulate.</p>
-                            <% } %>
-                        </div>
-                        <div class="column">
-                            <div class="field">
-                                <label class="label" for="workOrderEdit--workOrderTypeId">Work Order Type</label>
-                                <div class="control">
-                                    <div class="select is-fullwidth">
-                                        <select id="workOrderEdit--workOrderTypeId" name="workOrderTypeId" required <%= (isCreate ? " autofocus" : "") %>>
-                                            <% if (isCreate && workOrderTypes.length > 1) { %>
-                                                <option value="">(Select Type)</option>
-                                            <% } %>
-                                            <% for (const workOrderType of workOrderTypes) { %>
-                                                <option value="<%= workOrderType.workOrderTypeId %>" <%= (workOrder.workOrderTypeId === workOrderType.workOrderTypeId ? " selected" : "") %>>
-                                                    <%= workOrderType.workOrderType %>
-                                                </option>
-                                            <% } %>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label" for="workOrderEdit--workOrderDescription">Description</label>
-                        <div class="control">
-                            <textarea class="textarea" id="workOrderEdit--workOrderDescription" name="workOrderDescription"><%= workOrder.workOrderDescription %></textarea>
-                        </div>
-                    </div>
-                    <div class="columns">
-                        <div class="column">
-                            <div class="field">
-                                <label class="label" for="workOrderEdit--workOrderOpenDateString"><%= configFunctions.getProperty("aliases.workOrderOpenDate") %></label>
-                                <div class="control has-icons-left">
-                                    <%
-                                        const currentDateString = dateTimeFunctions.dateToString(new Date());
-                                    %>
-                                    <input class="input" id="workOrderEdit--workOrderOpenDateString" name="workOrderOpenDateString" type="date" 
-                                        value="<%= workOrder.workOrderOpenDateString %>"
-                                        max="<%= workOrder.workOrderOpenDateString > currentDateString ? workOrder.workOrderOpenDateString : currentDateString %>"
-                                        required />
-                                    <span class="icon is-left">
-                                        <i class="fas fa-calendar" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="column">
-                          <label class="label" for="workOrderEdit--workOrderCloseDateString"><%= configFunctions.getProperty("aliases.workOrderCloseDate") %></label>
-                            <div class="field has-addons">
-                                <div class="control is-expanded">
-                                    <input class="input" id="workOrderEdit--workOrderCloseDateString" name="workOrderCloseDateString" type="date" value="<%= workOrder.workOrderCloseDateString %>" disabled readonly />
-                                </div>
-                                <div class="control">
-                                  <button class="button is-light is-success is-outlined" id="button--closeWorkOrder" type="button">
-                                    <span class="icon is-small"><i class="fas fa-stop-circle" aria-hidden="true"></i></span>
-                                    <span>
-                                        Close
-                                    </span>
+      <form id="form--workOrderEdit">
+          <input id="workOrderEdit--workOrderId" name="workOrderId" type="hidden" value="<%= workOrder.workOrderId %>" />
+          <div class="panel">
+              <div class="panel-block is-block">
+                  <div class="columns">
+                      <div class="column">
+                          <label class="label" for="workOrderEdit--workOrderNumber">Work Order Number</label>
+                          <div class="field has-addons">
+                              <div class="control is-expanded">
+                                  <input class="input <%= (isCreate ? "" : " is-readonly") %>" id="workOrderEdit--workOrderNumber" name="workOrderNumber" type="text" value="<%= workOrder.workOrderNumber %>" maxlength="50" readonly accesskey="f" <%= (isCreate ? "" : " required") %> />
+                              </div>
+                              <div class="control">
+                                  <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
+                                      <i class="fas fa-unlock" aria-hidden="true"></i>
                                   </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-        
-        <% if (!isCreate) { %>
+                              </div>
+                          </div>
+                          <% if (isCreate) { %>
+                              <p class="help">Leave work order number blank to autopopulate.</p>
+                          <% } %>
+                      </div>
+                      <div class="column">
+                          <div class="field">
+                              <label class="label" for="workOrderEdit--workOrderTypeId">Work Order Type</label>
+                              <div class="control">
+                                  <div class="select is-fullwidth">
+                                      <select id="workOrderEdit--workOrderTypeId" name="workOrderTypeId" required <%= (isCreate ? " autofocus" : "") %>>
+                                          <% if (isCreate && workOrderTypes.length > 1) { %>
+                                              <option value="">(Select Type)</option>
+                                          <% } %>
+                                          <% for (const workOrderType of workOrderTypes) { %>
+                                              <option value="<%= workOrderType.workOrderTypeId %>" <%= (workOrder.workOrderTypeId === workOrderType.workOrderTypeId ? " selected" : "") %>>
+                                                  <%= workOrderType.workOrderType %>
+                                              </option>
+                                          <% } %>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="field">
+                      <label class="label" for="workOrderEdit--workOrderDescription">Description</label>
+                      <div class="control">
+                          <textarea class="textarea" id="workOrderEdit--workOrderDescription" name="workOrderDescription"><%= workOrder.workOrderDescription %></textarea>
+                      </div>
+                  </div>
+                  <div class="columns">
+                      <div class="column">
+                          <div class="field">
+                              <label class="label" for="workOrderEdit--workOrderOpenDateString"><%= configFunctions.getProperty("aliases.workOrderOpenDate") %></label>
+                              <div class="control has-icons-left">
+                                  <%
+                                      const currentDateString = dateTimeFunctions.dateToString(new Date());
+                                  %>
+                                  <input class="input" id="workOrderEdit--workOrderOpenDateString" name="workOrderOpenDateString" type="date" 
+                                      value="<%= workOrder.workOrderOpenDateString %>"
+                                      max="<%= workOrder.workOrderOpenDateString > currentDateString ? workOrder.workOrderOpenDateString : currentDateString %>"
+                                      required />
+                                  <span class="icon is-left">
+                                      <i class="fas fa-calendar" aria-hidden="true"></i>
+                                  </span>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="column">
+                        <label class="label" for="workOrderEdit--workOrderCloseDateString"><%= configFunctions.getProperty("aliases.workOrderCloseDate") %></label>
+                          <div class="field has-addons">
+                              <div class="control is-expanded">
+                                  <input class="input" id="workOrderEdit--workOrderCloseDateString" name="workOrderCloseDateString" type="date" value="<%= workOrder.workOrderCloseDateString %>" disabled readonly />
+                              </div>
+                              <div class="control">
+                                <button class="button is-light is-success is-outlined" id="button--closeWorkOrder" type="button">
+                                  <span class="icon is-small"><i class="fas fa-stop-circle" aria-hidden="true"></i></span>
+                                  <span>
+                                      Close
+                                  </span>
+                                </button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </form>
+      
+      <% if (!isCreate) { %>
         <div class="panel mt-4">
             <h2 class="panel-heading">Related <%= configFunctions.getProperty("aliases.lots") %></h2>
             <div class="panel-block is-block">
@@ -255,72 +255,76 @@
                 </div>
             </div>
         </div>
-        <% } %>
+      <% } %>
 
-        <% if (!isCreate) { %>
-            <div class="panel">
-                <div class="panel-heading">
-                    <div class="level is-mobile">
-                        <div class="level-left">
-                            <div class="level-item">
-                                <h2 class="has-text-weight-bold is-size-5">
-                                    Comments
-                                </h2>
-                            </div>
+      <% if (!isCreate) { %>
+        <div class="panel">
+            <div class="panel-heading">
+                <div class="level is-mobile">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <h2 class="has-text-weight-bold is-size-5">
+                                Comments
+                            </h2>
                         </div>
-                        <div class="level-right">
-                            <div class="level-item">
-                                <button class="button is-small is-success" id="workOrderComments--add" type="button">
-                                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                                    <span>Add a Comment</span>
-                                </button>
-                            </div>
+                    </div>
+                    <div class="level-right">
+                        <div class="level-item">
+                            <button class="button is-small is-success" id="workOrderComments--add" type="button">
+                                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                                <span>Add a Comment</span>
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="panel-block is-block" id="container--workOrderComments"></div>
             </div>
-        <% } %>
+            <div class="panel-block is-block" id="container--workOrderComments"></div>
+        </div>
+      <% } %>
     </div>
     <% if (!isCreate) { %>
-        <div class="column is-4-desktop">
-            <div class="panel" id="panel--milestones">
-                <div class="panel-heading">
-                    <div class="level is-mobile">
-                        <div class="level-left">
-                            <div class="level-item">
-                                <h2 class="title has-text-weight-bold is-5">Milestones</h2>
-                            </div>
-                        </div>
-                        <div class="level-right">
-                            <div class="level-item">
-                              <button class="button is-small is-success" id="button--addMilestone" type="button">
-                                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                                <span>Add Milestone</span>
-                              </button>
-                            </div>
-                            <div class="level-item">
-                                <div class="dropdown is-right has-text-weight-normal">
-                                    <div class="dropdown-trigger">
-                                      <button class="button is-small has-tooltip-left" data-tooltip="Milestone Options" type="button" aria-label="Options">
-                                        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
-                                      </button>
-                                    </div>
-                                    <div class="dropdown-menu">
-                                      <div class="dropdown-content">
-                                          <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
-                                            <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
-                                            <span>Download iCalendar</span>
-                                          </a>
-                                      </div>
-                                    </div>
+      <div class="column is-4-desktop">
+        <div class="panel" id="panel--milestones">
+          <div class="panel-heading">
+              <div class="level is-mobile">
+                  <div class="level-left">
+                      <div class="level-item">
+                          <h2 class="title has-text-weight-bold is-5">Milestones</h2>
+                      </div>
+                  </div>
+                  <div class="level-right">
+                      <div class="level-item">
+                        <button class="button is-small is-success" id="button--addMilestone" type="button">
+                          <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                          <span>Add Milestone</span>
+                        </button>
+                      </div>
+                      <div class="level-item">
+                          <div class="dropdown is-right has-text-weight-normal">
+                              <div class="dropdown-trigger">
+                                <button class="button is-small has-tooltip-left" data-tooltip="Milestone Options" type="button" aria-label="Options">
+                                  <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                                </button>
+                              </div>
+                              <div class="dropdown-menu">
+                                <div class="dropdown-content">
+                                    <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
+                                      <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+                                      <span>Download iCalendar</span>
+                                    </a>
+                                    <a class="dropdown-item" href="<%= urlPrefix %>/reports/workOrderMilestones-byWorkOrderId/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" download>
+                                      <span class="icon is-small"><i class="fas fa-download" aria-hidden="true"></i></span>
+                                      <span>Export as CSV</span>
+                                    </a>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
         </div>
+      </div>
     <% } %>
 </div>
 

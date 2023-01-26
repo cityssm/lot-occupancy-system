@@ -21,6 +21,19 @@ const lotOccupancyIdAlias = occupancyCamelCase + 'Id';
 const occupancyTypeAlias = occupancyCamelCase + 'Type';
 const occupancyStartDateAlias = occupancyCamelCase + 'StartDate';
 const occupancyEndDateAlias = occupancyCamelCase + 'EndDate';
+const occupantCamelCase = camelCase(configFunctions.getProperty('aliases.occupant'));
+const lotOccupantIndexAlias = occupantCamelCase + 'Index';
+const lotOccupantTypeAlias = occupantCamelCase + 'Type';
+const occupantNameAlias = occupantCamelCase + 'Name';
+const occupantAddress1Alias = occupantCamelCase + 'Address1';
+const occupantAddress2Alias = occupantCamelCase + 'Address2';
+const occupantCityAlias = occupantCamelCase + 'City';
+const occupantProvinceAlias = occupantCamelCase + 'Province';
+const occupantPostalCodeAlias = occupantCamelCase + 'PostalCode';
+const occupantPhoneNumberAlias = occupantCamelCase + 'PhoneNumber';
+const occupantEmailAddressAlias = occupantCamelCase + 'EmailAddress';
+const occupantCommentTitleAlias = occupantCamelCase + 'CommentTitle';
+const occupantCommentAlias = occupantCamelCase + 'Comment';
 export async function getReportData(reportName, reportParameters = {}) {
     let sql;
     const sqlParameters = [];
@@ -137,6 +150,26 @@ export async function getReportData(reportName, reportParameters = {}) {
             sql = 'select * from LotOccupancyOccupants';
             break;
         }
+        case 'lotOccupancyOccupants-byLotOccupancyId': {
+            sql = `select o.lotOccupantIndex as ${lotOccupantIndexAlias},
+        t.lotOccupantType as ${lotOccupantTypeAlias},
+        o.occupantName as ${occupantNameAlias},
+        o.occupantAddress1 as ${occupantAddress1Alias},
+        o.occupantAddress2 as ${occupantAddress2Alias},
+        o.occupantCity as ${occupantCityAlias},
+        o.occupantProvince as ${occupantProvinceAlias},
+        o.occupantPostalCode as ${occupantPostalCodeAlias},
+        o.occupantPhoneNumber as ${occupantPhoneNumberAlias},
+        o.occupantEmailAddress as ${occupantEmailAddressAlias},
+        t.occupantCommentTitle as ${occupantCommentTitleAlias},
+        o.occupantComment as ${occupantCommentAlias}
+        from LotOccupancyOccupants o
+        left join LotOccupantTypes t on o.lotOccupantTypeId = t.lotOccupantTypeId
+        where o.recordDelete_timeMillis is null
+        and o.lotOccupancyId = ?`;
+            sqlParameters.push(reportParameters.lotOccupancyId);
+            break;
+        }
         case 'lotOccupancyTransactions-all': {
             sql = 'select * from LotOccupancyTransactions';
             break;
@@ -185,6 +218,20 @@ export async function getReportData(reportName, reportParameters = {}) {
         }
         case 'workOrderMilestones-all': {
             sql = 'select * from WorkOrderMilestones';
+            break;
+        }
+        case 'workOrderMilestones-byWorkOrderId': {
+            sql = `select t.workOrderMilestoneType,
+        m.workOrderMilestoneDate,
+        m.workOrderMilestoneTime,
+        m.workOrderMilestoneDescription,
+        m.workOrderMilestoneCompletionDate,
+        m.workOrderMilestoneCompletionTime
+        from WorkOrderMilestones m
+        left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
+        where m.recordDelete_timeMillis is null
+        and m.workOrderId = ?`;
+            sqlParameters.push(reportParameters.workOrderId);
             break;
         }
         case 'fees-all': {
