@@ -14,6 +14,7 @@ jobs:
     env:
       CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
       CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
     name: Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v3
@@ -21,29 +22,38 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
+
       - name: Install Application
         run: |
           npm ci
           npm install -g mocha c8 cypress@12
+
       - name: Copy Test Config
         run: cp ./data/config.testing.js ./data/config.js
+
       - name: Initialize Database
         run: npm run init:cemetery:test
-      - name: Verify Cypress
-        run: cypress verify
-        env:
-          CYPRESS_VERIFY_TIMEOUT: 600000
-      - name: Run Coverage Testing
-        run: c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-      - name: Code Climate
+
+      - name: Code Climate (Before)
         if: ${{ github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' && matrix.node == 16 }}
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./codeclimate-test-reporter
           chmod +x codeclimate-test-reporter
           ./codeclimate-test-reporter before-build
+
+      - name: Verify Cypress
+        run: cypress verify
+        env:
+          CYPRESS_VERIFY_TIMEOUT: 600000
+
+      - name: Run Coverage Testing
+        run: c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit
+
+      - name: Code Climate (After)
+        if: ${{ github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' && matrix.node == 16 }}
+        run: |
           ./codeclimate-test-reporter after-build -t lcov --exit-code $?
+          
       - name: Codacy
         if: ${{ github.event_name != 'pull_request' && env.CODACY_PROJECT_TOKEN != '' && matrix.node == 16 }}
         run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
