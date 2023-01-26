@@ -330,9 +330,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 'Displaying ' +
                 (offset + 1).toString() +
                 ' to ' +
-                Math.min(count, limit + offset) +
+                Math.min(count, limit + offset).toString() +
                 ' of ' +
-                count +
+                count.toString() +
                 '</div>' +
                 '</div>') +
             ('<div class="level-right">' +
