@@ -4,6 +4,7 @@ import fs from 'node:fs'
 
 import * as userFunctions from '../helpers/functions.user.js'
 import * as sqlFilterFunctions from '../helpers/functions.sqlFilters.js'
+import * as iconFunctions from '../helpers/functions.icons.js'
 
 describe('functions.user', () => {
   describe('unauthenticated, no user in session', () => {
@@ -284,5 +285,13 @@ describe('functions.sqlFilters', () => {
       assert.strictEqual(filter.sqlWhereClause, '')
       assert.strictEqual(filter.sqlParameters.length, 0)
     })
+  })
+})
+
+describe('functions.icons', () => {
+  it('returns a list of icon classes', async () => {
+    const iconClasses = await iconFunctions.getSolidIconClasses()
+
+    assert.ok(iconClasses.includes('save'))
   })
 })
