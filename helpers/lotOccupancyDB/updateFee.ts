@@ -52,7 +52,9 @@ export async function updateFee(
       feeForm.feeDescription,
       feeForm.occupancyTypeId === '' ? undefined : feeForm.occupancyTypeId,
       feeForm.lotTypeId === '' ? undefined : feeForm.lotTypeId,
-      feeForm.feeAmount ?? undefined,
+      feeForm.feeAmount === undefined || feeForm.feeAmount === ''
+        ? 0
+        : feeForm.feeAmount,
       feeForm.feeFunction ?? undefined,
       feeForm.taxAmount ?? undefined,
       feeForm.taxPercentage ?? undefined,

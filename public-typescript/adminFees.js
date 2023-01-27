@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     let feeCategories = exports.feeCategories;
     delete exports.feeCategories;
     function renderFeeCategories() {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
         if (feeCategories.length === 0) {
             feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
         <p class="message-body">There are no available fees.</p>
@@ -126,19 +126,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                         '<br />' +
                                         '<small>Fee Function</small>'
                                     : '$' +
-                                        fee.feeAmount.toFixed(2) +
+                                        ((_l = fee.feeAmount) !== null && _l !== void 0 ? _l : 0).toFixed(2) +
                                         '<br />' +
                                         '<small>Fee</small>') +
                                 '</div>') +
                             ('<div class="column has-text-centered">' +
                                 (fee.taxPercentage
                                     ? fee.taxPercentage.toString() + '%'
-                                    : '$' + fee.taxAmount.toFixed(2)) +
+                                    : '$' + ((_m = fee.taxAmount) !== null && _m !== void 0 ? _m : 0).toFixed(2)) +
                                 '<br /><small>Tax</small>' +
                                 '</div>') +
                             ('<div class="column has-text-centered">' +
                                 (fee.includeQuantity
-                                    ? cityssm.escapeHTML((_l = fee.quantityUnit) !== null && _l !== void 0 ? _l : '') +
+                                    ? cityssm.escapeHTML((_o = fee.quantityUnit) !== null && _o !== void 0 ? _o : '') +
                                         '<br />' +
                                         '<small>Quantity</small>'
                                     : '') +

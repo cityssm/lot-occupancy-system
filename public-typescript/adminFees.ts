@@ -157,14 +157,14 @@ declare const bulmaJS: BulmaJS
                   '<br />' +
                   '<small>Fee Function</small>'
                 : '$' +
-                  fee.feeAmount!.toFixed(2) +
+                  (fee.feeAmount ?? 0).toFixed(2) +
                   '<br />' +
                   '<small>Fee</small>') +
               '</div>') +
             ('<div class="column has-text-centered">' +
               (fee.taxPercentage
                 ? fee.taxPercentage.toString() + '%'
-                : '$' + fee.taxAmount!.toFixed(2)) +
+                : '$' + (fee.taxAmount ?? 0).toFixed(2)) +
               '<br /><small>Tax</small>' +
               '</div>') +
             ('<div class="column has-text-centered">' +
