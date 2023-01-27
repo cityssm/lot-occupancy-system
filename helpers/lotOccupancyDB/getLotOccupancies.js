@@ -4,6 +4,8 @@ import * as configFunctions from '../functions.config.js';
 import { getOccupancyTypeById } from '../functions.cache.js';
 import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js';
 import { getLotNameWhereClause, getOccupancyTimeWhereClause, getOccupantNameWhereClause } from '../functions.sqlFilters.js';
+import getLotOccupancyFees from './getLotOccupancyFees.js';
+import getLotOccupancyTransactions from './getLotOccupancyTransactions.js';
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where o.recordDelete_timeMillis is null';
     const sqlParameters = [];
@@ -102,6 +104,13 @@ export async function getLotOccupancies(filters, options, connectedDatabase) {
                 lotOccupancy.printEJS = (occupancyType.occupancyTypePrints ?? []).includes('*')
                     ? configFunctions.getProperty('settings.lotOccupancy.prints')[0]
                     : occupancyType.occupancyTypePrints[0];
+            }
+            if (options.includeFees) {
+                lotOccupancy.lotOccupancyFees = await getLotOccupancyFees(lotOccupancy.lotOccupancyId, database);
+            }
+            if (options.includeTransactions) {
+                lotOccupancy.lotOccupancyTransactions =
+                    await getLotOccupancyTransactions(lotOccupancy.lotOccupancyId, database);
             }
             if (options.includeOccupants) {
                 lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(lotOccupancy.lotOccupancyId, database);

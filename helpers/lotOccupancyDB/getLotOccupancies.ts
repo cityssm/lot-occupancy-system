@@ -19,6 +19,8 @@ import {
   getOccupancyTimeWhereClause,
   getOccupantNameWhereClause
 } from '../functions.sqlFilters.js'
+import getLotOccupancyFees from './getLotOccupancyFees.js'
+import getLotOccupancyTransactions from './getLotOccupancyTransactions.js'
 
 interface GetLotOccupanciesFilters {
   lotId?: number | string
@@ -39,6 +41,8 @@ interface GetLotOccupanciesOptions {
   limit: -1 | number
   offset: number
   includeOccupants: boolean
+  includeFees: boolean
+  includeTransactions: boolean
 }
 
 function buildWhereClause(filters: GetLotOccupanciesFilters): {
@@ -190,6 +194,21 @@ export async function getLotOccupancies(
         ).includes('*')
           ? configFunctions.getProperty('settings.lotOccupancy.prints')[0]
           : occupancyType.occupancyTypePrints![0]
+      }
+
+      if (options.includeFees) {
+        lotOccupancy.lotOccupancyFees = await getLotOccupancyFees(
+          lotOccupancy.lotOccupancyId!,
+          database
+        )
+      }
+
+      if (options.includeTransactions) {
+        lotOccupancy.lotOccupancyTransactions =
+          await getLotOccupancyTransactions(
+            lotOccupancy.lotOccupancyId!,
+            database
+          )
       }
 
       if (options.includeOccupants) {

@@ -84,6 +84,35 @@ declare const cityssm: cityssmGlobal
           '</span><br />'
       }
 
+      const feeTotal =
+        (lotOccupancy.lotOccupancyFees?.reduce((soFar, currentFee): number => {
+          return (
+            soFar +
+            ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
+              (currentFee.quantity ?? 0)
+          )
+        }, 0) ?? 0).toFixed(2)
+
+      const transactionTotal =
+        (lotOccupancy.lotOccupancyTransactions?.reduce(
+          (soFar, currentTransaction): number => {
+            return soFar + currentTransaction.transactionAmount
+          },
+          0
+        ) ?? 0).toFixed(2)
+
+      let feeIconHTML = ''
+
+      if (feeTotal !== '0.00' || transactionTotal !== '0.00') {
+        feeIconHTML = `<span class="icon"
+          data-tooltip="Total Fees: $${feeTotal}"
+          aria-label="Total Fees: $${feeTotal}">
+          <i class="fas fa-dollar-sign ${
+          feeTotal === transactionTotal ? 'has-text-success' : 'has-text-danger'
+          }" aria-hidden="true"></i>
+        </span>`
+      }
+
       resultsTbodyElement.insertAdjacentHTML(
         'beforeend',
         '<tr>' +
@@ -112,13 +141,14 @@ declare const cityssm: cityssmGlobal
               cityssm.escapeHTML(lotOccupancy.mapName ?? '') +
               '</span>') +
             '</td>') +
-          ('<td>' + lotOccupancy.occupancyStartDateString + '</td>') +
+          ('<td>' + lotOccupancy.occupancyStartDateString! + '</td>') +
           ('<td>' +
             (lotOccupancy.occupancyEndDate
               ? lotOccupancy.occupancyEndDateString
               : '<span class="has-text-grey">(No End Date)</span>') +
             '</td>') +
           ('<td>' + occupantsHTML + '</td>') +
+          ('<td>' + feeIconHTML + '</td>') +
           '<td>' +
           (lotOccupancy.printEJS
             ? '<a class="button is-small" data-tooltip="Print" href="' +
@@ -144,6 +174,7 @@ declare const cityssm: cityssmGlobal
       <th>${los.escapedAliases.OccupancyStartDate}</th>
       <th>End Date</th>
       <th>${los.escapedAliases.Occupants}</th>
+      <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
       <th class="has-width-1"><span class="is-sr-only">Print</span></th>
       </tr></thead>
       <table>`

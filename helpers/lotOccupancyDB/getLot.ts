@@ -32,6 +32,8 @@ async function _getLot(
       },
       {
         includeOccupants: true,
+        includeFees: false,
+        includeTransactions: false,
         limit: -1,
         offset: 0
       },

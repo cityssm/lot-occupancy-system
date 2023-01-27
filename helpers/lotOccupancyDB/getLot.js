@@ -18,6 +18,8 @@ async function _getLot(sql, lotIdOrLotName) {
             lotId: lot.lotId
         }, {
             includeOccupants: true,
+            includeFees: false,
+            includeTransactions: false,
             limit: -1,
             offset: 0
         }, database);

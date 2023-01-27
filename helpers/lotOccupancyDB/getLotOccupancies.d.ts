@@ -18,6 +18,8 @@ interface GetLotOccupanciesOptions {
     limit: -1 | number;
     offset: number;
     includeOccupants: boolean;
+    includeFees: boolean;
+    includeTransactions: boolean;
 }
 export declare function getLotOccupancies(filters: GetLotOccupanciesFilters, options: GetLotOccupanciesOptions, connectedDatabase?: PoolConnection): Promise<{
     count: number;
