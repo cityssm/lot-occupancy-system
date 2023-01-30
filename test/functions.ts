@@ -8,12 +8,16 @@ import * as iconFunctions from '../helpers/functions.icons.js'
 import * as sqlFilterFunctions from '../helpers/functions.sqlFilters.js'
 import * as userFunctions from '../helpers/functions.user.js'
 
+import * as polyfills from '../helpers/polyfills.js'
+
 describe('config.cemetery.ssm', () => {
   it('Sorts burial site names', () => {
-    const grave2 = 'XX-B1-G2'
+    const grave2 = 'XX-B1-G2A'
     const grave10 = 'XX-B1-G10'
 
-    assert.ok(lotNameSortNameFunction(grave2) < lotNameSortNameFunction(grave10))
+    assert.ok(
+      lotNameSortNameFunction(grave2) < lotNameSortNameFunction(grave10)
+    )
   })
 })
 
@@ -509,5 +513,19 @@ describe('functions.user', () => {
 
       assert.strictEqual(await userFunctions.apiKeyIsValid(apiRequest), false)
     })
+  })
+})
+
+describe('plyfills', () => {
+  it('applys Object.hasOwn polyfill', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (Object as any).hasOwn
+    assert.ok(Object.hasOwn === undefined)
+
+    polyfills.applyPolyfills()
+    assert.ok(Object.hasOwn !== undefined)
+
+    const testObject = { foo: 'bar' }
+    assert.ok(Object.hasOwn(testObject, 'foo'))
   })
 })
