@@ -516,7 +516,7 @@ describe('functions.user', () => {
   })
 })
 
-describe('plyfills', () => {
+describe('polyfills', () => {
   it('applys Object.hasOwn polyfill', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     delete (Object as any).hasOwn

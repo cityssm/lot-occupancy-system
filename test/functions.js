@@ -335,7 +335,7 @@ describe('functions.user', () => {
         });
     });
 });
-describe('plyfills', () => {
+describe('polyfills', () => {
     it('applys Object.hasOwn polyfill', () => {
         delete Object.hasOwn;
         assert.ok(Object.hasOwn === undefined);

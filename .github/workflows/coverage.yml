@@ -32,9 +32,6 @@ jobs:
       - name: Copy Test Config
         run: cp ./data/config.testing.js ./data/config.js
 
-      - name: Initialize Database
-        run: npm run init:cemetery:test
-
       - name: Code Climate (Before)
         if: ${{ github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' && matrix.node == 16 }}
         run: |

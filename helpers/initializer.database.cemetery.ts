@@ -6,10 +6,11 @@ import { addOccupancyTypeField } from './lotOccupancyDB/addOccupancyTypeField.js
 
 import { addLotOccupantType } from './lotOccupancyDB/addLotOccupantType.js'
 
+import { addRecord } from './lotOccupancyDB/addRecord.js'
+
 import type { PartialSession } from '../types/recordTypes.js'
 
 import Debug from 'debug'
-import { addRecord } from './lotOccupancyDB/addRecord.js'
 const debug = Debug('lot-occupancy-system:initialize')
 
 const session: PartialSession = {
@@ -23,7 +24,7 @@ const session: PartialSession = {
   }
 }
 
-async function initializeCemeteryDatabase(): Promise<void> {
+export async function initializeCemeteryDatabase(): Promise<boolean> {
   /*
    * Ensure database does not already exist
    */
@@ -36,7 +37,7 @@ async function initializeCemeteryDatabase(): Promise<void> {
       'Database already created.\n' +
         'To initialize this database with cemetery types, delete the database file first, then rerun this script.'
     )
-    return
+    return false
   }
 
   debug('New database file created.  Proceeding with initialization.')
@@ -295,6 +296,6 @@ async function initializeCemeteryDatabase(): Promise<void> {
   await addRecord('WorkOrderMilestoneTypes', 'Arrival', 2, session)
   await addRecord('WorkOrderMilestoneTypes', 'Cremation', 3, session)
   await addRecord('WorkOrderMilestoneTypes', 'Interment', 4, session)
-}
 
-await initializeCemeteryDatabase()
+  return true
+}

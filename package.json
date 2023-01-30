@@ -9,8 +9,6 @@
   },
   "scripts": {
     "build:version": "npx genversion --es6 --semi version.js",
-    "init:cemetery": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* node ./helpers/initializer.database.cemetery.js",
-    "init:cemetery:test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true node ./helpers/initializer.database.cemetery.js",
     "start": "cross-env NODE_ENV=production node ./bin/www",
     "dev:test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true nodemon ./bin/www.js",
     "dev:live": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* nodemon ./bin/www.js",

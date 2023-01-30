@@ -2,8 +2,8 @@ import { lotOccupancyDB as databasePath } from '../data/databasePaths.js';
 import { initializeDatabase } from './initializer.database.js';
 import { addOccupancyTypeField } from './lotOccupancyDB/addOccupancyTypeField.js';
 import { addLotOccupantType } from './lotOccupancyDB/addLotOccupantType.js';
-import Debug from 'debug';
 import { addRecord } from './lotOccupancyDB/addRecord.js';
+import Debug from 'debug';
 const debug = Debug('lot-occupancy-system:initialize');
 const session = {
     user: {
@@ -15,13 +15,13 @@ const session = {
         }
     }
 };
-async function initializeCemeteryDatabase() {
+export async function initializeCemeteryDatabase() {
     debug('Checking for ' + databasePath + '...');
     const databaseInitialized = initializeDatabase();
     if (!databaseInitialized) {
         debug('Database already created.\n' +
             'To initialize this database with cemetery types, delete the database file first, then rerun this script.');
-        return;
+        return false;
     }
     debug('New database file created.  Proceeding with initialization.');
     await addRecord('LotTypes', 'Casket Grave', 1, session);
@@ -167,5 +167,5 @@ async function initializeCemeteryDatabase() {
     await addRecord('WorkOrderMilestoneTypes', 'Arrival', 2, session);
     await addRecord('WorkOrderMilestoneTypes', 'Cremation', 3, session);
     await addRecord('WorkOrderMilestoneTypes', 'Interment', 4, session);
+    return true;
 }
-await initializeCemeteryDatabase();

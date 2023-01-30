@@ -1,1 +1,1 @@
-export {};
+export declare function initializeCemeteryDatabase(): Promise<boolean>;
