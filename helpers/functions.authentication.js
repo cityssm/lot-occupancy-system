@@ -58,5 +58,5 @@ export function getSafeRedirectURL(possibleRedirectURL = '') {
             return urlPrefix + urlToCheck;
         }
     }
-    return urlPrefix + '/dashboard';
+    return urlPrefix + '/dashboard/';
 }

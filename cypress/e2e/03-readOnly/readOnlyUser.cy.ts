@@ -46,6 +46,12 @@ describe('Read Only User', () => {
     cy.get("a[href*='/new']").should('not.exist')
   })
 
+  it('Redirects to Dashboard when attempting to access the login page while authenticated', () => {
+    cy.visit('/login')
+    cy.wait(200)
+    cy.location('pathname').should('equal', '/dashboard/')
+  })
+
   it('Redirects to Dashboard when attempting to create a work order', () => {
     cy.visit('/workOrders/new')
     cy.wait(200)

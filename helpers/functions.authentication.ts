@@ -81,5 +81,5 @@ export function getSafeRedirectURL(possibleRedirectURL = ''): string {
     }
   }
 
-  return urlPrefix + '/dashboard'
+  return urlPrefix + '/dashboard/'
 }
