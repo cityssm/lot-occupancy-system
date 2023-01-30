@@ -7,7 +7,7 @@ config.settings.lot.lotNamePattern =
 config.settings.lot.lotNameHelpText = `Two digit cemetery-Block-Range-Lot-Grave, Interment number\n
     ex. XX-BA-R41-L15-G3A, Interment 1`;
 const numericPadding = '00000';
-config.settings.lot.lotNameSortNameFunction = (lotName) => {
+export function lotNameSortNameFunction(lotName) {
     try {
         const lotNameSplit = lotName.toUpperCase().split('-');
         const cleanLotNamePieces = [];
@@ -37,7 +37,8 @@ config.settings.lot.lotNameSortNameFunction = (lotName) => {
     catch {
         return lotName;
     }
-};
+}
+config.settings.lot.lotNameSortNameFunction = lotNameSortNameFunction;
 config.settings.lotOccupancy.occupantCityDefault = 'Sault Ste. Marie';
 config.settings.lotOccupancy.prints = [
     'pdf/ssm.cemetery.burialPermit',

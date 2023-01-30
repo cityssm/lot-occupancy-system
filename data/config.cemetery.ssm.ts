@@ -13,7 +13,7 @@ config.settings.lot.lotNameHelpText = `Two digit cemetery-Block-Range-Lot-Grave,
 
 const numericPadding = '00000'
 
-config.settings.lot.lotNameSortNameFunction = (lotName) => {
+export function lotNameSortNameFunction(lotName: string): string {
   try {
     const lotNameSplit = lotName.toUpperCase().split('-')
 
@@ -41,8 +41,8 @@ config.settings.lot.lotNameSortNameFunction = (lotName) => {
 
       cleanLotNamePieces.push(
         firstLetter +
-          numericPiece.slice(-1 * numericPadding.length) +
-          letterPiece
+        numericPiece.slice(-1 * numericPadding.length) +
+        letterPiece
       )
     }
 
@@ -51,6 +51,8 @@ config.settings.lot.lotNameSortNameFunction = (lotName) => {
     return lotName
   }
 }
+
+config.settings.lot.lotNameSortNameFunction = lotNameSortNameFunction
 
 config.settings.lotOccupancy.occupantCityDefault = 'Sault Ste. Marie'
 config.settings.lotOccupancy.prints = [
