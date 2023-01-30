@@ -283,7 +283,18 @@ async function initializeCemeteryDatabase(): Promise<void> {
   await addRecord('FeeCategories', 'Cremation Services', 2, session)
   await addRecord('FeeCategories', 'Burial Charges', 3, session)
   await addRecord('FeeCategories', 'Disinterment of Human Remains', 4, session)
-  await addRecord('FeeCategories', 'Additional Services', 4, session)
+  await addRecord('FeeCategories', 'Additional Services', 5, session)
+
+  /*
+   * Work Orders
+   */
+
+  await addRecord('WorkOrderTypes', 'Cemetry Work Order', 1, session)
+
+  await addRecord('WorkOrderMilestoneTypes', 'Funeral', 1, session)
+  await addRecord('WorkOrderMilestoneTypes', 'Arrival', 2, session)
+  await addRecord('WorkOrderMilestoneTypes', 'Cremation', 3, session)
+  await addRecord('WorkOrderMilestoneTypes', 'Interment', 4, session)
 }
 
 await initializeCemeteryDatabase()
