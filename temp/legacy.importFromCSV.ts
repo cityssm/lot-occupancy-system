@@ -882,6 +882,8 @@ async function importFromPrepaidCSV(): Promise<void> {
           },
           {
             includeOccupants: false,
+            includeFees: false,
+            includeTransactions: false,
             limit: -1,
             offset: 0
           }

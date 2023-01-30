@@ -7,7 +7,9 @@ export async function handler(request, response) {
     }, {
         limit: -1,
         offset: 0,
-        includeOccupants: true
+        includeOccupants: true,
+        includeFees: false,
+        includeTransactions: false
     });
     response.json({
         success,

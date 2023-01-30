@@ -33,7 +33,9 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
             }, {
                 limit: -1,
                 offset: 0,
-                includeOccupants: true
+                includeOccupants: true,
+                includeFees: false,
+                includeTransactions: false
             }, database);
             workOrder.workOrderLotOccupancies =
                 workOrderLotOccupanciesResults.lotOccupancies;

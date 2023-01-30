@@ -65,7 +65,9 @@ async function _getWorkOrder(
         {
           limit: -1,
           offset: 0,
-          includeOccupants: true
+          includeOccupants: true,
+          includeFees: false,
+          includeTransactions: false
         },
         database
       )

@@ -17,7 +17,9 @@ export async function handler(request: Request, response: Response): Promise<voi
     {
       limit: -1,
       offset: 0,
-      includeOccupants: true
+      includeOccupants: true,
+      includeFees: false,
+      includeTransactions: false
     }
   )
 

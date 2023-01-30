@@ -16,6 +16,6 @@ export declare function getOccupancyTypePrintsById(occupancyTypeId: number): Pro
 export declare function getWorkOrderTypes(): Promise<recordTypes.WorkOrderType[]>;
 export declare function getWorkOrderTypeById(workOrderTypeId: number): Promise<recordTypes.WorkOrderType | undefined>;
 export declare function getWorkOrderMilestoneTypes(): Promise<recordTypes.WorkOrderMilestoneType[]>;
-export declare function getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(workOrderMilestoneTypeId: number): Promise<recordTypes.WorkOrderMilestoneType | undefined>;
+export declare function getWorkOrderMilestoneTypeById(workOrderMilestoneTypeId: number): Promise<recordTypes.WorkOrderMilestoneType | undefined>;
 export declare function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString: string): Promise<recordTypes.WorkOrderMilestoneType | undefined>;
 export declare function clearCacheByTableName(tableName: string): void;

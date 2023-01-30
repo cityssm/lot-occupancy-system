@@ -108,7 +108,9 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
                 }, {
                     limit: -1,
                     offset: 0,
-                    includeOccupants: true
+                    includeOccupants: true,
+                    includeFees: false,
+                    includeTransactions: false
                 }, database);
                 workOrder.workOrderLotOccupancies = lotOccupancies.lotOccupancies;
             }

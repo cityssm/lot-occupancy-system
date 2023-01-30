@@ -263,7 +263,7 @@ export async function getWorkOrderMilestoneTypes(): Promise<
   return workOrderMilestoneTypes
 }
 
-export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(
+export async function getWorkOrderMilestoneTypeById(
   workOrderMilestoneTypeId: number
 ): Promise<recordTypes.WorkOrderMilestoneType | undefined> {
   const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes()

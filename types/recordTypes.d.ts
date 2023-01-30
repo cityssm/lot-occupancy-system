@@ -202,7 +202,7 @@ export interface LotOccupancy extends Record {
     workOrders?: WorkOrder[];
 }
 export interface WorkOrderType extends Record {
-    workOrderTypeId?: number;
+    workOrderTypeId: number;
     workOrderType?: string;
     orderNumber?: number;
 }

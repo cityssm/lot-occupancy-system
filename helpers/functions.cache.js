@@ -142,7 +142,7 @@ export async function getWorkOrderMilestoneTypes() {
     }
     return workOrderMilestoneTypes;
 }
-export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneTypeId(workOrderMilestoneTypeId) {
+export async function getWorkOrderMilestoneTypeById(workOrderMilestoneTypeId) {
     const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => {
         return (currentWorkOrderMilestoneType.workOrderMilestoneTypeId ===
