@@ -251,9 +251,11 @@ app.use(
   routerAdmin
 )
 
-app.all(urlPrefix + '/keepAlive', (_request, response) => {
-  response.json(true)
-})
+if (configFunctions.getProperty('session.doKeepAlive')) {
+  app.all(urlPrefix + '/keepAlive', (_request, response) => {
+    response.json(true)
+  })
+}
 
 app.use(urlPrefix + '/login', routerLogin)
 

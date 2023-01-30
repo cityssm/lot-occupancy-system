@@ -128,9 +128,11 @@ app.use(urlPrefix + '/lotOccupancies', sessionChecker, routerLotOccupancies);
 app.use(urlPrefix + '/workOrders', sessionChecker, routerWorkOrders);
 app.use(urlPrefix + '/reports', sessionChecker, routerReports);
 app.use(urlPrefix + '/admin', sessionChecker, permissionHandlers.adminGetHandler, routerAdmin);
-app.all(urlPrefix + '/keepAlive', (_request, response) => {
-    response.json(true);
-});
+if (configFunctions.getProperty('session.doKeepAlive')) {
+    app.all(urlPrefix + '/keepAlive', (_request, response) => {
+        response.json(true);
+    });
+}
 app.use(urlPrefix + '/login', routerLogin);
 app.get(urlPrefix + '/logout', (request, response) => {
     if (Object.hasOwn(request.session, 'user') &&
