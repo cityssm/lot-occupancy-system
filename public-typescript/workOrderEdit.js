@@ -2,7 +2,7 @@
 /* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a, _b;
+    var _a, _b, _c;
     const los = exports.los;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     const isCreate = workOrderId === '';
@@ -136,7 +136,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     if (!isCreate) {
         "use strict";
+        /* eslint-disable @typescript-eslint/indent */
         /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+        var _a, _b;
         Object.defineProperty(exports, "__esModule", { value: true });
         let workOrderLots = exports.workOrderLots;
         delete exports.workOrderLots;
@@ -502,9 +504,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         }
-        document
-            .querySelector('#button--addLotOccupancy')
-            .addEventListener('click', () => {
+        (_a = document
+            .querySelector('#button--addLotOccupancy')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
             let searchFormElement;
             let searchResultsContainerElement;
             function doSearch(event) {
@@ -517,8 +518,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     var _a, _b;
                     if (responseJSON.lotOccupancies.length === 0) {
                         searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                                <p class="message-body">There are no records that meet the search criteria.</p>
-                                </div>`;
+                      <p class="message-body">There are no records that meet the search criteria.</p>
+                      </div>`;
                         return;
                     }
                     searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
@@ -593,12 +594,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onshown(modalElement) {
                     bulmaJS.toggleHtmlClipped();
-                    modalElement.querySelector('#lotOccupancySearch--occupantName').addEventListener('change', doSearch);
+                    const occupantNameElement = modalElement.querySelector('#lotOccupancySearch--occupantName');
+                    occupantNameElement.addEventListener('change', doSearch);
+                    occupantNameElement.focus();
                     modalElement.querySelector('#lotOccupancySearch--lotName').addEventListener('change', doSearch);
                     searchFormElement.addEventListener('submit', doSearch);
                 },
                 onremoved() {
                     bulmaJS.toggleHtmlClipped();
+                    document.querySelector('#button--addLotOccupancy').focus();
                 }
             });
         });
@@ -611,7 +615,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         }
-        document.querySelector('#button--addLot').addEventListener('click', () => {
+        (_b = document.querySelector('#button--addLot')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => {
             let searchFormElement;
             let searchResultsContainerElement;
             function doSearch(event) {
@@ -683,9 +687,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onshown(modalElement) {
                     bulmaJS.toggleHtmlClipped();
-                    modalElement
-                        .querySelector('#lotSearch--lotName')
-                        .addEventListener('change', doSearch);
+                    const lotNameElement = modalElement.querySelector('#lotSearch--lotName');
+                    lotNameElement.addEventListener('change', doSearch);
+                    lotNameElement.focus();
                     modalElement
                         .querySelector('#lotSearch--lotStatusId')
                         .addEventListener('change', doSearch);
@@ -693,6 +697,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onremoved() {
                     bulmaJS.toggleHtmlClipped();
+                    document.querySelector('#button--addLot').focus();
                 }
             });
         });
@@ -799,17 +804,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const containerElement = document.querySelector('#container--workOrderComments');
         if (workOrderComments.length === 0) {
             containerElement.innerHTML = `<div class="message is-info">
-                <p class="message-body">There are no comments to display.</p>
-                </div>`;
+          <p class="message-body">There are no comments to display.</p>
+          </div>`;
             return;
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
         tableElement.innerHTML = `<thead><tr>
-            <th>Commentor</th>
-            <th>Comment Date</th>
-            <th>Comment</th>
-            <th class="is-hidden-print"><span class="is-sr-only">Options</span></th></tr></thead><tbody></tbody>`;
+        <th>Commentor</th>
+        <th>Comment Date</th>
+        <th>Comment</th>
+        <th class="is-hidden-print"><span class="is-sr-only">Options</span></th></tr></thead><tbody></tbody>`;
         for (const workOrderComment of workOrderComments) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.workOrderCommentId =
@@ -1122,9 +1127,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             exports.workOrderMilestones;
         delete exports.workOrderMilestones;
         renderMilestones();
-        document
-            .querySelector('#button--addMilestone')
-            .addEventListener('click', () => {
+        (_c = document
+            .querySelector('#button--addMilestone')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', () => {
             let addModalElement;
             let addFormElement;
             let addCloseModalFunction;
@@ -1177,11 +1181,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     los.initializeDatePickers(modalElement);
                     // los.initializeTimePickers(modalElement);
                     bulmaJS.toggleHtmlClipped();
+                    modalElement.querySelector('#milestoneAdd--workOrderMilestoneTypeId').focus();
                     addFormElement = modalElement.querySelector('form');
                     addFormElement.addEventListener('submit', doAdd);
                 },
                 onremoved() {
                     bulmaJS.toggleHtmlClipped();
+                    document.querySelector('#button--addMilestone').focus();
                 }
             });
         });

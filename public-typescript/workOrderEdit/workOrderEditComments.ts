@@ -167,18 +167,18 @@ function renderWorkOrderComments(): void {
 
   if (workOrderComments.length === 0) {
     containerElement.innerHTML = `<div class="message is-info">
-            <p class="message-body">There are no comments to display.</p>
-            </div>`
+      <p class="message-body">There are no comments to display.</p>
+      </div>`
     return
   }
 
   const tableElement = document.createElement('table')
   tableElement.className = 'table is-fullwidth is-striped is-hoverable'
   tableElement.innerHTML = `<thead><tr>
-        <th>Commentor</th>
-        <th>Comment Date</th>
-        <th>Comment</th>
-        <th class="is-hidden-print"><span class="is-sr-only">Options</span></th></tr></thead><tbody></tbody>`
+    <th>Commentor</th>
+    <th>Comment Date</th>
+    <th>Comment</th>
+    <th class="is-hidden-print"><span class="is-sr-only">Options</span></th></tr></thead><tbody></tbody>`
 
   for (const workOrderComment of workOrderComments) {
     const tableRowElement = document.createElement('tr')

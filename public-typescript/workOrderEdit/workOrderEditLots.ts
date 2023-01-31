@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
@@ -526,8 +527,8 @@ function doAddLotOccupancy(clickEvent: Event): void {
 }
 
 document
-  .querySelector('#button--addLotOccupancy')!
-  .addEventListener('click', () => {
+  .querySelector('#button--addLotOccupancy')
+  ?.addEventListener('click', () => {
     let searchFormElement: HTMLFormElement
     let searchResultsContainerElement: HTMLElement
 
@@ -545,8 +546,8 @@ document
         (responseJSON: { lotOccupancies: recordTypes.LotOccupancy[] }) => {
           if (responseJSON.lotOccupancies.length === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                        <p class="message-body">There are no records that meet the search criteria.</p>
-                        </div>`
+              <p class="message-body">There are no records that meet the search criteria.</p>
+              </div>`
 
             return
           }
@@ -658,11 +659,13 @@ document
       },
       onshown(modalElement) {
         bulmaJS.toggleHtmlClipped()
-        ;(
-          modalElement.querySelector(
-            '#lotOccupancySearch--occupantName'
-          ) as HTMLInputElement
-        ).addEventListener('change', doSearch)
+
+        const occupantNameElement = modalElement.querySelector(
+          '#lotOccupancySearch--occupantName'
+        ) as HTMLInputElement
+
+        occupantNameElement.addEventListener('change', doSearch)
+        occupantNameElement.focus()
         ;(
           modalElement.querySelector(
             '#lotOccupancySearch--lotName'
@@ -673,6 +676,11 @@ document
       },
       onremoved() {
         bulmaJS.toggleHtmlClipped()
+        ;(
+          document.querySelector(
+            '#button--addLotOccupancy'
+          ) as HTMLButtonElement
+        ).focus()
       }
     })
   })
@@ -689,7 +697,7 @@ function doAddLot(clickEvent: Event): void {
   })
 }
 
-document.querySelector('#button--addLot')!.addEventListener('click', () => {
+document.querySelector('#button--addLot')?.addEventListener('click', () => {
   let searchFormElement: HTMLFormElement
   let searchResultsContainerElement: HTMLElement
 
@@ -788,9 +796,12 @@ document.querySelector('#button--addLot')!.addEventListener('click', () => {
     onshown(modalElement) {
       bulmaJS.toggleHtmlClipped()
 
-      modalElement
-        .querySelector('#lotSearch--lotName')!
-        .addEventListener('change', doSearch)
+      const lotNameElement = modalElement.querySelector(
+        '#lotSearch--lotName'
+      ) as HTMLInputElement
+
+      lotNameElement.addEventListener('change', doSearch)
+      lotNameElement.focus()
 
       modalElement
         .querySelector('#lotSearch--lotStatusId')!
@@ -800,6 +811,8 @@ document.querySelector('#button--addLot')!.addEventListener('click', () => {
     },
     onremoved() {
       bulmaJS.toggleHtmlClipped()
+
+      ;(document.querySelector('#button--addLot') as HTMLButtonElement).focus()
     }
   })
 })

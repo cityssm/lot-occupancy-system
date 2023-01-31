@@ -548,8 +548,8 @@ declare const bulmaJS: BulmaJS
     renderMilestones()
 
     document
-      .querySelector('#button--addMilestone')!
-      .addEventListener('click', () => {
+      .querySelector('#button--addMilestone')
+      ?.addEventListener('click', () => {
         let addModalElement: HTMLElement
         let addFormElement: HTMLFormElement
         let addCloseModalFunction: () => void
@@ -579,14 +579,17 @@ declare const bulmaJS: BulmaJS
             )
           }
 
-          if ((
-            addModalElement.querySelector(
-              '#milestoneAdd--workOrderMilestoneDateString'
-            ) as HTMLInputElement
-          ).value < currentDateString) {
+          if (
+            (
+              addModalElement.querySelector(
+                '#milestoneAdd--workOrderMilestoneDateString'
+              ) as HTMLInputElement
+            ).value < currentDateString
+          ) {
             bulmaJS.confirm({
               title: 'Milestone Date in the Past',
-              message: 'Are you sure you want to create a milestone with a date in the past?',
+              message:
+                'Are you sure you want to create a milestone with a date in the past?',
               contextualColorName: 'warning',
               okButton: {
                 text: 'Yes, Create a Past Milestone',
@@ -634,12 +637,22 @@ declare const bulmaJS: BulmaJS
             // los.initializeTimePickers(modalElement);
 
             bulmaJS.toggleHtmlClipped()
+            ;(
+              modalElement.querySelector(
+                '#milestoneAdd--workOrderMilestoneTypeId'
+              ) as HTMLSelectElement
+            ).focus()
 
             addFormElement = modalElement.querySelector('form')!
             addFormElement.addEventListener('submit', doAdd)
           },
           onremoved() {
             bulmaJS.toggleHtmlClipped()
+            ;(
+              document.querySelector(
+                '#button--addMilestone'
+              ) as HTMLButtonElement
+            ).focus()
           }
         })
       })

@@ -1,5 +1,7 @@
 "use strict";
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 let workOrderLots = exports.workOrderLots;
 delete exports.workOrderLots;
@@ -365,9 +367,8 @@ function doAddLotOccupancy(clickEvent) {
         }
     });
 }
-document
-    .querySelector('#button--addLotOccupancy')
-    .addEventListener('click', () => {
+(_a = document
+    .querySelector('#button--addLotOccupancy')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
     let searchFormElement;
     let searchResultsContainerElement;
     function doSearch(event) {
@@ -380,8 +381,8 @@ document
             var _a, _b;
             if (responseJSON.lotOccupancies.length === 0) {
                 searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                        <p class="message-body">There are no records that meet the search criteria.</p>
-                        </div>`;
+              <p class="message-body">There are no records that meet the search criteria.</p>
+              </div>`;
                 return;
             }
             searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
@@ -456,12 +457,15 @@ document
         },
         onshown(modalElement) {
             bulmaJS.toggleHtmlClipped();
-            modalElement.querySelector('#lotOccupancySearch--occupantName').addEventListener('change', doSearch);
+            const occupantNameElement = modalElement.querySelector('#lotOccupancySearch--occupantName');
+            occupantNameElement.addEventListener('change', doSearch);
+            occupantNameElement.focus();
             modalElement.querySelector('#lotOccupancySearch--lotName').addEventListener('change', doSearch);
             searchFormElement.addEventListener('submit', doSearch);
         },
         onremoved() {
             bulmaJS.toggleHtmlClipped();
+            document.querySelector('#button--addLotOccupancy').focus();
         }
     });
 });
@@ -474,7 +478,7 @@ function doAddLot(clickEvent) {
         }
     });
 }
-document.querySelector('#button--addLot').addEventListener('click', () => {
+(_b = document.querySelector('#button--addLot')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => {
     let searchFormElement;
     let searchResultsContainerElement;
     function doSearch(event) {
@@ -546,9 +550,9 @@ document.querySelector('#button--addLot').addEventListener('click', () => {
         },
         onshown(modalElement) {
             bulmaJS.toggleHtmlClipped();
-            modalElement
-                .querySelector('#lotSearch--lotName')
-                .addEventListener('change', doSearch);
+            const lotNameElement = modalElement.querySelector('#lotSearch--lotName');
+            lotNameElement.addEventListener('change', doSearch);
+            lotNameElement.focus();
             modalElement
                 .querySelector('#lotSearch--lotStatusId')
                 .addEventListener('change', doSearch);
@@ -556,6 +560,7 @@ document.querySelector('#button--addLot').addEventListener('click', () => {
         },
         onremoved() {
             bulmaJS.toggleHtmlClipped();
+            document.querySelector('#button--addLot').focus();
         }
     });
 });

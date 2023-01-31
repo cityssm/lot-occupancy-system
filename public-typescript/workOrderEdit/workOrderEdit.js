@@ -2,7 +2,7 @@
 /* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a, _b;
+    var _a, _b, _c;
     const los = exports.los;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     const isCreate = workOrderId === '';
@@ -377,9 +377,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             exports.workOrderMilestones;
         delete exports.workOrderMilestones;
         renderMilestones();
-        document
-            .querySelector('#button--addMilestone')
-            .addEventListener('click', () => {
+        (_c = document
+            .querySelector('#button--addMilestone')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', () => {
             let addModalElement;
             let addFormElement;
             let addCloseModalFunction;
@@ -432,11 +431,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     los.initializeDatePickers(modalElement);
                     // los.initializeTimePickers(modalElement);
                     bulmaJS.toggleHtmlClipped();
+                    modalElement.querySelector('#milestoneAdd--workOrderMilestoneTypeId').focus();
                     addFormElement = modalElement.querySelector('form');
                     addFormElement.addEventListener('submit', doAdd);
                 },
                 onremoved() {
                     bulmaJS.toggleHtmlClipped();
+                    document.querySelector('#button--addMilestone').focus();
                 }
             });
         });
