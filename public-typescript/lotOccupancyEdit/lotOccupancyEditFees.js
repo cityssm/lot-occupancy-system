@@ -1,5 +1,6 @@
 "use strict";
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/indent, unicorn/prefer-module */
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 let lotOccupancyFees = exports.lotOccupancyFees;
 delete exports.lotOccupancyFees;
@@ -45,7 +46,7 @@ function deleteLotOccupancyFee(clickEvent) {
     });
 }
 function renderLotOccupancyFees() {
-    var _a, _b;
+    var _a, _b, _c;
     if (lotOccupancyFees.length === 0) {
         lotOccupancyFeesContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no fees associated with this record.</p>
@@ -90,6 +91,10 @@ function renderLotOccupancyFees() {
                 (lotOccupancyFee.quantity === 1 ? '5' : '1') +
                 '">' +
                 cityssm.escapeHTML((_b = lotOccupancyFee.feeName) !== null && _b !== void 0 ? _b : '') +
+                '<br />' +
+                '<span class="tag">' +
+                cityssm.escapeHTML((_c = lotOccupancyFee.feeCategory) !== null && _c !== void 0 ? _c : '') +
+                '</span>' +
                 '</td>' +
                 (lotOccupancyFee.quantity === 1
                     ? ''
@@ -124,7 +129,7 @@ function renderLotOccupancyFees() {
     lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--grandTotal').textContent = '$' + (feeAmountTotal + taxAmountTotal).toFixed(2);
     renderLotOccupancyTransactions();
 }
-document.querySelector('#button--addFee').addEventListener('click', () => {
+(_a = document.querySelector('#button--addFee')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
     if (los.hasUnsavedChanges()) {
         bulmaJS.alert({
             message: 'Please save all unsaved changes before adding fees.',
@@ -359,8 +364,9 @@ function renderLotOccupancyTransactions() {
                 ((_a = lotOccupancyTransaction.transactionDateString) !== null && _a !== void 0 ? _a : '') +
                 '</td>' +
                 ('<td>' +
-                    cityssm.escapeHTML((_b = lotOccupancyTransaction.externalReceiptNumber) !== null && _b !== void 0 ? _b : '') +
-                    '<br />' +
+                    (lotOccupancyTransaction.externalReceiptNumber === ''
+                        ? ''
+                        : cityssm.escapeHTML((_b = lotOccupancyTransaction.externalReceiptNumber) !== null && _b !== void 0 ? _b : '') + '<br />') +
                     '<small>' +
                     cityssm.escapeHTML((_c = lotOccupancyTransaction.transactionNote) !== null && _c !== void 0 ? _c : '') +
                     '</small>' +

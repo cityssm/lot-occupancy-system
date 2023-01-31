@@ -145,6 +145,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('lotOccupancy-createWorkOrder', {
             onshow(modalElement) {
+                var _a;
                 ;
                 modalElement.querySelector('#workOrderCreate--lotOccupancyId').value = lotOccupancyId;
                 modalElement.querySelector('#workOrderCreate--workOrderOpenDateString').value = cityssm.dateToString(new Date());
@@ -156,7 +157,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 for (const workOrderType of workOrderTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value = workOrderType.workOrderTypeId.toString();
-                    optionElement.textContent = workOrderType.workOrderType;
+                    optionElement.textContent = (_a = workOrderType.workOrderType) !== null && _a !== void 0 ? _a : '';
                     workOrderTypeSelectElement.append(optionElement);
                 }
             },
@@ -164,11 +165,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 var _a;
                 createCloseModalFunction = closeModalFunction;
                 bulmaJS.toggleHtmlClipped();
+                modalElement.querySelector('#workOrderCreate--workOrderTypeId').focus();
                 (_a = modalElement
                     .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doCreate);
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();
+                document.querySelector('#button--createWorkOrder').focus();
             }
         });
     });
@@ -817,7 +820,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector('#lotOccupancyOccupantAdd--occupantCity').value = exports.occupantCityDefault;
                 modalElement.querySelector('#lotOccupancyOccupantAdd--occupantProvince').value = exports.occupantProvinceDefault;
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 bulmaJS.init(modalElement);
                 const lotOccupantTypeIdElement = modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupantTypeId');
@@ -841,8 +844,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector('#lotOccupancyOccupantCopy--searchFilter').addEventListener('change', searchOccupants);
                 addCloseModalFunction = closeModalFunction;
             },
-            onremoved: () => {
+            onremoved() {
                 bulmaJS.toggleHtmlClipped();
+                document.querySelector('#button--addOccupant').focus();
             }
         });
     });
@@ -850,6 +854,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     if (!isCreate) {
         "use strict";
         /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+        var _a;
         Object.defineProperty(exports, "__esModule", { value: true });
         let lotOccupancyComments = exports.lotOccupancyComments;
         delete exports.lotOccupancyComments;
@@ -881,7 +886,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
             cityssm.openHtmlModal('lotOccupancy-editComment', {
-                onshow: (modalElement) => {
+                onshow(modalElement) {
                     los.populateAliases(modalElement);
                     modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyId').value = lotOccupancyId;
                     modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyCommentId').value = lotOccupancyCommentId.toString();
@@ -896,7 +901,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             : lotOccupancyComment.lotOccupancyCommentDateString;
                     modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyCommentTimeString').value = lotOccupancyComment.lotOccupancyCommentTimeString;
                 },
-                onshown: (modalElement, closeModalFunction) => {
+                onshown(modalElement, closeModalFunction) {
                     bulmaJS.toggleHtmlClipped();
                     los.initializeDatePickers(modalElement);
                     modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyComment').focus();
@@ -904,7 +909,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     editFormElement.addEventListener('submit', editComment);
                     editCloseModalFunction = closeModalFunction;
                 },
-                onremoved: () => {
+                onremoved() {
                     bulmaJS.toggleHtmlClipped();
                 }
             });
@@ -1000,7 +1005,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             containerElement.innerHTML = '';
             containerElement.append(tableElement);
         }
-        document.querySelector('#button--addComment').addEventListener('click', () => {
+        (_a = document.querySelector('#button--addComment')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
             let addFormElement;
             let addCloseModalFunction;
             function addComment(submitEvent) {
@@ -1022,11 +1027,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
             cityssm.openHtmlModal('lotOccupancy-addComment', {
-                onshow: (modalElement) => {
+                onshow(modalElement) {
                     los.populateAliases(modalElement);
                     modalElement.querySelector('#lotOccupancyCommentAdd--lotOccupancyId').value = lotOccupancyId;
                 },
-                onshown: (modalElement, closeModalFunction) => {
+                onshown(modalElement, closeModalFunction) {
                     bulmaJS.toggleHtmlClipped();
                     modalElement.querySelector('#lotOccupancyCommentAdd--lotOccupancyComment').focus();
                     addFormElement = modalElement.querySelector('form');
@@ -1035,13 +1040,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onremoved: () => {
                     bulmaJS.toggleHtmlClipped();
+                    document.querySelector('#button--addComment').focus();
                 }
             });
         });
         renderLotOccupancyComments();
         
         "use strict";
-        /* eslint-disable unicorn/prefer-module */
+        /* eslint-disable @typescript-eslint/indent, unicorn/prefer-module */
+        var _a;
         Object.defineProperty(exports, "__esModule", { value: true });
         let lotOccupancyFees = exports.lotOccupancyFees;
         delete exports.lotOccupancyFees;
@@ -1087,7 +1094,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         function renderLotOccupancyFees() {
-            var _a, _b;
+            var _a, _b, _c;
             if (lotOccupancyFees.length === 0) {
                 lotOccupancyFeesContainerElement.innerHTML = `<div class="message is-info">
                 <p class="message-body">There are no fees associated with this record.</p>
@@ -1132,6 +1139,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         (lotOccupancyFee.quantity === 1 ? '5' : '1') +
                         '">' +
                         cityssm.escapeHTML((_b = lotOccupancyFee.feeName) !== null && _b !== void 0 ? _b : '') +
+                        '<br />' +
+                        '<span class="tag">' +
+                        cityssm.escapeHTML((_c = lotOccupancyFee.feeCategory) !== null && _c !== void 0 ? _c : '') +
+                        '</span>' +
                         '</td>' +
                         (lotOccupancyFee.quantity === 1
                             ? ''
@@ -1166,7 +1177,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--grandTotal').textContent = '$' + (feeAmountTotal + taxAmountTotal).toFixed(2);
             renderLotOccupancyTransactions();
         }
-        document.querySelector('#button--addFee').addEventListener('click', () => {
+        (_a = document.querySelector('#button--addFee')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
             if (los.hasUnsavedChanges()) {
                 bulmaJS.alert({
                     message: 'Please save all unsaved changes before adding fees.',
@@ -1401,8 +1412,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         ((_a = lotOccupancyTransaction.transactionDateString) !== null && _a !== void 0 ? _a : '') +
                         '</td>' +
                         ('<td>' +
-                            cityssm.escapeHTML((_b = lotOccupancyTransaction.externalReceiptNumber) !== null && _b !== void 0 ? _b : '') +
-                            '<br />' +
+                            (lotOccupancyTransaction.externalReceiptNumber === ''
+                                ? ''
+                                : cityssm.escapeHTML((_b = lotOccupancyTransaction.externalReceiptNumber) !== null && _b !== void 0 ? _b : '') + '<br />') +
                             '<small>' +
                             cityssm.escapeHTML((_c = lotOccupancyTransaction.transactionNote) !== null && _c !== void 0 ? _c : '') +
                             '</small>' +

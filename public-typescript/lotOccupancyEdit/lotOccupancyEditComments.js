@@ -1,5 +1,6 @@
 "use strict";
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 let lotOccupancyComments = exports.lotOccupancyComments;
 delete exports.lotOccupancyComments;
@@ -31,7 +32,7 @@ function openEditLotOccupancyComment(clickEvent) {
         });
     }
     cityssm.openHtmlModal('lotOccupancy-editComment', {
-        onshow: (modalElement) => {
+        onshow(modalElement) {
             los.populateAliases(modalElement);
             modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyId').value = lotOccupancyId;
             modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyCommentId').value = lotOccupancyCommentId.toString();
@@ -46,7 +47,7 @@ function openEditLotOccupancyComment(clickEvent) {
                     : lotOccupancyComment.lotOccupancyCommentDateString;
             modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyCommentTimeString').value = lotOccupancyComment.lotOccupancyCommentTimeString;
         },
-        onshown: (modalElement, closeModalFunction) => {
+        onshown(modalElement, closeModalFunction) {
             bulmaJS.toggleHtmlClipped();
             los.initializeDatePickers(modalElement);
             modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyComment').focus();
@@ -54,7 +55,7 @@ function openEditLotOccupancyComment(clickEvent) {
             editFormElement.addEventListener('submit', editComment);
             editCloseModalFunction = closeModalFunction;
         },
-        onremoved: () => {
+        onremoved() {
             bulmaJS.toggleHtmlClipped();
         }
     });
@@ -150,7 +151,7 @@ function renderLotOccupancyComments() {
     containerElement.innerHTML = '';
     containerElement.append(tableElement);
 }
-document.querySelector('#button--addComment').addEventListener('click', () => {
+(_a = document.querySelector('#button--addComment')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
     let addFormElement;
     let addCloseModalFunction;
     function addComment(submitEvent) {
@@ -172,11 +173,11 @@ document.querySelector('#button--addComment').addEventListener('click', () => {
         });
     }
     cityssm.openHtmlModal('lotOccupancy-addComment', {
-        onshow: (modalElement) => {
+        onshow(modalElement) {
             los.populateAliases(modalElement);
             modalElement.querySelector('#lotOccupancyCommentAdd--lotOccupancyId').value = lotOccupancyId;
         },
-        onshown: (modalElement, closeModalFunction) => {
+        onshown(modalElement, closeModalFunction) {
             bulmaJS.toggleHtmlClipped();
             modalElement.querySelector('#lotOccupancyCommentAdd--lotOccupancyComment').focus();
             addFormElement = modalElement.querySelector('form');
@@ -185,6 +186,7 @@ document.querySelector('#button--addComment').addEventListener('click', () => {
         },
         onremoved: () => {
             bulmaJS.toggleHtmlClipped();
+            document.querySelector('#button--addComment').focus();
         }
     });
 });

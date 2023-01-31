@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/indent, unicorn/prefer-module */
 
 import type * as globalTypes from '../../types/globalTypes'
 import type * as recordTypes from '../../types/recordTypes'
@@ -128,6 +128,10 @@ function renderLotOccupancyFees(): void {
       (lotOccupancyFee.quantity === 1 ? '5' : '1') +
       '">' +
       cityssm.escapeHTML(lotOccupancyFee.feeName ?? '') +
+      '<br />' +
+      '<span class="tag">' +
+      cityssm.escapeHTML(lotOccupancyFee.feeCategory ?? '') +
+      '</span>' +
       '</td>' +
       (lotOccupancyFee.quantity === 1
         ? ''
@@ -179,7 +183,7 @@ function renderLotOccupancyFees(): void {
   renderLotOccupancyTransactions()
 }
 
-document.querySelector('#button--addFee')!.addEventListener('click', () => {
+document.querySelector('#button--addFee')?.addEventListener('click', () => {
   if (los.hasUnsavedChanges()) {
     bulmaJS.alert({
       message: 'Please save all unsaved changes before adding fees.',
@@ -504,10 +508,11 @@ function renderLotOccupancyTransactions(): void {
       (lotOccupancyTransaction.transactionDateString ?? '') +
       '</td>' +
       ('<td>' +
-        cityssm.escapeHTML(
-          lotOccupancyTransaction.externalReceiptNumber ?? ''
-        ) +
-        '<br />' +
+        (lotOccupancyTransaction.externalReceiptNumber === ''
+          ? ''
+          : cityssm.escapeHTML(
+              lotOccupancyTransaction.externalReceiptNumber ?? ''
+            ) + '<br />') +
         '<small>' +
         cityssm.escapeHTML(lotOccupancyTransaction.transactionNote ?? '') +
         '</small>' +

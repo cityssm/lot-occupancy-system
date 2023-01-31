@@ -318,14 +318,14 @@
                     %>
                     <table class="table is-fullwidth is-striped is-hoverable">
                         <thead>
-                            <tr>
-                                <th>Fee</th>
-                                <th class="has-text-right"><span class="is-sr-only">Unit Cost</span></th>
-                                <th class="has-width-1"><span class="is-sr-only">&times;</span></th>
-                                <th class="has-width-1 has-text-right"><span class="is-sr-only">Quantity</span></th>
-                                <th class="has-width-1"><span class="is-sr-only">=</span></th>
-                                <th class="has-width-1 has-text-right">Total</th>
-                            </tr>
+                          <tr>
+                            <th>Fee</th>
+                            <th class="has-text-right"><span class="is-sr-only">Unit Cost</span></th>
+                            <th class="has-width-1"><span class="is-sr-only">&times;</span></th>
+                            <th class="has-width-1 has-text-right"><span class="is-sr-only">Quantity</span></th>
+                            <th class="has-width-1"><span class="is-sr-only">=</span></th>
+                            <th class="has-width-1 has-text-right">Total</th>
+                          </tr>
                         </thead>
                         <tbody>
                             <% for (const lotOccupancyFee of lotOccupancy.lotOccupancyFees) { %>
@@ -335,7 +335,8 @@
                                 %>
                                 <tr>
                                     <td colspan="<%= (lotOccupancyFee.quantity === 1 ? "5" : "1") %>">
-                                        <%= lotOccupancyFee.feeName %>
+                                        <%= lotOccupancyFee.feeName %><br />
+                                        <span class="tag"><%= lotOccupancyFee.feeCategory %></span>
                                     </td>
                                     <% if (lotOccupancyFee.quantity !== 1) { %>
                                         <td class="has-text-right">$<%= lotOccupancyFee.feeAmount.toFixed(2) %></td>
@@ -392,8 +393,10 @@
                                 <tr>
                                     <td><%= lotOccupancyTransaction.transactionDateString %></td>
                                     <td>
+                                      <% if (lotOccupancyTransaction.externalReceiptNumber !== '') { %>
                                         <%= lotOccupancyTransaction.externalReceiptNumber %><br />
-                                        <small><%= lotOccupancyTransaction.transactionNote %></small>
+                                      <% } %>
+                                      <small><%= lotOccupancyTransaction.transactionNote %></small>
                                     </td>
                                     <td class="has-text-right">
                                         $<%= lotOccupancyTransaction.transactionAmount.toFixed(2) %>

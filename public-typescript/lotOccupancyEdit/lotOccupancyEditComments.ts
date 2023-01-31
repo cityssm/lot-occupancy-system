@@ -64,7 +64,7 @@ function openEditLotOccupancyComment(clickEvent: Event): void {
   }
 
   cityssm.openHtmlModal('lotOccupancy-editComment', {
-    onshow: (modalElement) => {
+    onshow(modalElement) {
       los.populateAliases(modalElement)
       ;(
         modalElement.querySelector(
@@ -101,7 +101,7 @@ function openEditLotOccupancyComment(clickEvent: Event): void {
         ) as HTMLInputElement
       ).value = lotOccupancyComment.lotOccupancyCommentTimeString!
     },
-    onshown: (modalElement, closeModalFunction) => {
+    onshown(modalElement, closeModalFunction) {
       bulmaJS.toggleHtmlClipped()
 
       los.initializeDatePickers(modalElement)
@@ -116,7 +116,7 @@ function openEditLotOccupancyComment(clickEvent: Event): void {
 
       editCloseModalFunction = closeModalFunction
     },
-    onremoved: () => {
+    onremoved() {
       bulmaJS.toggleHtmlClipped()
     }
   })
@@ -235,7 +235,7 @@ function renderLotOccupancyComments(): void {
   containerElement.append(tableElement)
 }
 
-document.querySelector('#button--addComment')!.addEventListener('click', () => {
+document.querySelector('#button--addComment')?.addEventListener('click', () => {
   let addFormElement: HTMLFormElement
   let addCloseModalFunction: () => void
 
@@ -266,7 +266,7 @@ document.querySelector('#button--addComment')!.addEventListener('click', () => {
   }
 
   cityssm.openHtmlModal('lotOccupancy-addComment', {
-    onshow: (modalElement) => {
+    onshow(modalElement) {
       los.populateAliases(modalElement)
       ;(
         modalElement.querySelector(
@@ -274,7 +274,7 @@ document.querySelector('#button--addComment')!.addEventListener('click', () => {
         ) as HTMLInputElement
       ).value = lotOccupancyId
     },
-    onshown: (modalElement, closeModalFunction) => {
+    onshown(modalElement, closeModalFunction) {
       bulmaJS.toggleHtmlClipped()
       ;(
         modalElement.querySelector(
@@ -289,6 +289,9 @@ document.querySelector('#button--addComment')!.addEventListener('click', () => {
     },
     onremoved: () => {
       bulmaJS.toggleHtmlClipped()
+      ;(
+        document.querySelector('#button--addComment') as HTMLButtonElement
+      ).focus()
     }
   })
 })

@@ -561,7 +561,7 @@ document
           ) as HTMLInputElement
         ).value = exports.occupantProvinceDefault
       },
-      onshown: (modalElement, closeModalFunction) => {
+      onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
         bulmaJS.init(modalElement)
 
@@ -608,8 +608,11 @@ document
 
         addCloseModalFunction = closeModalFunction
       },
-      onremoved: () => {
+      onremoved() {
         bulmaJS.toggleHtmlClipped()
+        ;(
+          document.querySelector('#button--addOccupant') as HTMLButtonElement
+        ).focus()
       }
     })
   })

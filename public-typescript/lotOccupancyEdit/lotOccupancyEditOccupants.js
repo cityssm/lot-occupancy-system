@@ -358,7 +358,7 @@ else {
             modalElement.querySelector('#lotOccupancyOccupantAdd--occupantCity').value = exports.occupantCityDefault;
             modalElement.querySelector('#lotOccupancyOccupantAdd--occupantProvince').value = exports.occupantProvinceDefault;
         },
-        onshown: (modalElement, closeModalFunction) => {
+        onshown(modalElement, closeModalFunction) {
             bulmaJS.toggleHtmlClipped();
             bulmaJS.init(modalElement);
             const lotOccupantTypeIdElement = modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupantTypeId');
@@ -382,8 +382,9 @@ else {
             modalElement.querySelector('#lotOccupancyOccupantCopy--searchFilter').addEventListener('change', searchOccupants);
             addCloseModalFunction = closeModalFunction;
         },
-        onremoved: () => {
+        onremoved() {
             bulmaJS.toggleHtmlClipped();
+            document.querySelector('#button--addOccupant').focus();
         }
     });
 });

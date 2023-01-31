@@ -233,16 +233,19 @@ declare const bulmaJS: BulmaJS
 
           for (const workOrderType of workOrderTypes) {
             const optionElement = document.createElement('option')
-            optionElement.value = (
-              workOrderType.workOrderTypeId as number
-            ).toString()
-            optionElement.textContent = workOrderType.workOrderType as string
+            optionElement.value = workOrderType.workOrderTypeId.toString()
+            optionElement.textContent = workOrderType.workOrderType ?? ''
             workOrderTypeSelectElement.append(optionElement)
           }
         },
         onshown(modalElement, closeModalFunction) {
           createCloseModalFunction = closeModalFunction
           bulmaJS.toggleHtmlClipped()
+          ;(
+            modalElement.querySelector(
+              '#workOrderCreate--workOrderTypeId'
+            ) as HTMLSelectElement
+          ).focus()
 
           modalElement
             .querySelector('form')
@@ -250,6 +253,11 @@ declare const bulmaJS: BulmaJS
         },
         onremoved() {
           bulmaJS.toggleHtmlClipped()
+          ;(
+            document.querySelector(
+              '#button--createWorkOrder'
+            ) as HTMLButtonElement
+          ).focus()
         }
       })
     })

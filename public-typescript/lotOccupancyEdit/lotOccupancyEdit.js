@@ -145,6 +145,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('lotOccupancy-createWorkOrder', {
             onshow(modalElement) {
+                var _a;
                 ;
                 modalElement.querySelector('#workOrderCreate--lotOccupancyId').value = lotOccupancyId;
                 modalElement.querySelector('#workOrderCreate--workOrderOpenDateString').value = cityssm.dateToString(new Date());
@@ -156,7 +157,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 for (const workOrderType of workOrderTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value = workOrderType.workOrderTypeId.toString();
-                    optionElement.textContent = workOrderType.workOrderType;
+                    optionElement.textContent = (_a = workOrderType.workOrderType) !== null && _a !== void 0 ? _a : '';
                     workOrderTypeSelectElement.append(optionElement);
                 }
             },
@@ -164,11 +165,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 var _a;
                 createCloseModalFunction = closeModalFunction;
                 bulmaJS.toggleHtmlClipped();
+                modalElement.querySelector('#workOrderCreate--workOrderTypeId').focus();
                 (_a = modalElement
                     .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doCreate);
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();
+                document.querySelector('#button--createWorkOrder').focus();
             }
         });
     });
