@@ -1,6 +1,6 @@
 {
   "name": "lot-occupancy-system",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "type": "module",
   "description": "A system for managing the occupancy of lots. (i.e. Cemetery management)",
   "exports": "./app.js",
