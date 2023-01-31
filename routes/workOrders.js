@@ -32,7 +32,7 @@ router.post('/doSearchWorkOrders', handler_doSearchWorkOrders);
 router.get('/milestoneCalendar', handler_milestoneCalendar);
 router.post('/doGetWorkOrderMilestones', handler_doGetWorkOrderMilestones);
 router.get('/outlook', handler_outlook);
-router.get('/new', permissionHandlers.adminGetHandler, handler_new);
+router.get('/new', permissionHandlers.updateGetHandler, handler_new);
 router.post('/doCreateWorkOrder', permissionHandlers.updatePostHandler, handler_doCreateWorkOrder);
 router.get('/:workOrderId', handler_view);
 router.post('/doReopenWorkOrder', permissionHandlers.updatePostHandler, handler_doReopenWorkOrder);

@@ -63,7 +63,7 @@ router.get('/outlook', handler_outlook as RequestHandler)
 
 router.get(
   '/new',
-  permissionHandlers.adminGetHandler,
+  permissionHandlers.updateGetHandler,
   handler_new as RequestHandler
 )
 
