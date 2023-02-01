@@ -17,6 +17,7 @@ for assistance identifying the combination for your web browser - operating syst
 
 | Shortcut Key | Description                          |
 | ------------ | ------------------------------------ |
+| <kbd>0</kbd> | Go to main dashboard.                |
 | <kbd>1</kbd> | Go to Work Order search.             |
 | <kbd>2</kbd> | Go to Occupancy search.              |
 | <kbd>3</kbd> | Go to Lot search.                    |
