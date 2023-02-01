@@ -392,6 +392,17 @@ if (isCreate) {
     for (const occupantField of occupantFields) {
       occupantField.disabled = lotOccupantTypeIdElement.value === ''
     }
+
+    let occupantCommentTitle =
+      lotOccupantTypeIdElement.selectedOptions[0].dataset
+        .occupantCommentTitle ?? ''
+    if (occupantCommentTitle === '') {
+      occupantCommentTitle = 'Comment'
+    }
+
+    formElement.querySelector(
+      '#lotOccupancy--occupantCommentTitle'
+    )!.textContent = occupantCommentTitle
   })
 } else {
   renderLotOccupancyOccupants()

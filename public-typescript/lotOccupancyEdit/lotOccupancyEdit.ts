@@ -276,8 +276,8 @@ declare const bulmaJS: BulmaJS
     occupancyTypeIdElement.addEventListener('change', () => {
       if (occupancyTypeIdElement.value === '') {
         lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
-                    <p class="message-body">Select the ${los.escapedAliases.occupancy} type to load the available fields.</p>
-                    </div>`
+          <p class="message-body">Select the ${los.escapedAliases.occupancy} type to load the available fields.</p>
+          </div>`
 
         return
       }
@@ -392,7 +392,7 @@ declare const bulmaJS: BulmaJS
         bulmaJS.confirm({
           title: 'Confirm Change',
           message: `Are you sure you want to change the ${los.escapedAliases.occupancy} type?\n
-                      This change affects the additional fields associated with this record, and may also affect the available fees.`,
+            This change affects the additional fields associated with this record, and may also affect the available fees.`,
           contextualColorName: 'warning',
           okButton: {
             text: 'Yes, Keep the Change',
@@ -645,8 +645,8 @@ declare const bulmaJS: BulmaJS
   })
 
   document
-    .querySelector('.is-lot-view-button')!
-    .addEventListener('click', () => {
+    .querySelector('.is-lot-view-button')
+    ?.addEventListener('click', () => {
       const lotId = (
         document.querySelector('#lotOccupancy--lotId') as HTMLInputElement
       ).value
@@ -662,8 +662,8 @@ declare const bulmaJS: BulmaJS
     })
 
   document
-    .querySelector('.is-clear-lot-button')!
-    .addEventListener('click', () => {
+    .querySelector('.is-clear-lot-button')
+    ?.addEventListener('click', () => {
       if (lotNameElement.disabled) {
         bulmaJS.alert({
           message: 'You need to unlock the field before clearing it.',
@@ -683,8 +683,8 @@ declare const bulmaJS: BulmaJS
   los.initializeDatePickers(formElement)
 
   document
-    .querySelector('#lotOccupancy--occupancyStartDateString')!
-    .addEventListener('change', () => {
+    .querySelector('#lotOccupancy--occupancyStartDateString')
+    ?.addEventListener('change', () => {
       const endDatePicker = (
         document.querySelector(
           '#lotOccupancy--occupancyEndDateString'

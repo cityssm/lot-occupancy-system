@@ -237,10 +237,17 @@ function renderLotOccupancyOccupants() {
 if (isCreate) {
     const lotOccupantTypeIdElement = document.querySelector('#lotOccupancy--lotOccupantTypeId');
     lotOccupantTypeIdElement.addEventListener('change', () => {
+        var _a;
         const occupantFields = formElement.querySelectorAll("[data-table='LotOccupancyOccupant']");
         for (const occupantField of occupantFields) {
             occupantField.disabled = lotOccupantTypeIdElement.value === '';
         }
+        let occupantCommentTitle = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
+            .occupantCommentTitle) !== null && _a !== void 0 ? _a : '';
+        if (occupantCommentTitle === '') {
+            occupantCommentTitle = 'Comment';
+        }
+        formElement.querySelector('#lotOccupancy--occupantCommentTitle').textContent = occupantCommentTitle;
     });
 }
 else {

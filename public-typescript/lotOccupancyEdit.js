@@ -2,7 +2,7 @@
 /* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e, _f;
     const los = exports.los;
     const lotOccupancyId = document.querySelector('#lotOccupancy--lotOccupancyId').value;
     const isCreate = lotOccupancyId === '';
@@ -182,8 +182,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         occupancyTypeIdElement.addEventListener('change', () => {
             if (occupancyTypeIdElement.value === '') {
                 lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
-                    <p class="message-body">Select the ${los.escapedAliases.occupancy} type to load the available fields.</p>
-                    </div>`;
+          <p class="message-body">Select the ${los.escapedAliases.occupancy} type to load the available fields.</p>
+          </div>`;
                 return;
             }
             cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doGetOccupancyTypeFields', {
@@ -256,7 +256,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.confirm({
                     title: 'Confirm Change',
                     message: `Are you sure you want to change the ${los.escapedAliases.occupancy} type?\n
-                      This change affects the additional fields associated with this record, and may also affect the available fees.`,
+            This change affects the additional fields associated with this record, and may also affect the available fees.`,
                     contextualColorName: 'warning',
                     okButton: {
                         text: 'Yes, Keep the Change',
@@ -418,9 +418,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    document
-        .querySelector('.is-lot-view-button')
-        .addEventListener('click', () => {
+    (_d = document
+        .querySelector('.is-lot-view-button')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', () => {
         const lotId = document.querySelector('#lotOccupancy--lotId').value;
         if (lotId === '') {
             bulmaJS.alert({
@@ -432,9 +431,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             window.open(los.urlPrefix + '/lots/' + lotId);
         }
     });
-    document
-        .querySelector('.is-clear-lot-button')
-        .addEventListener('click', () => {
+    (_e = document
+        .querySelector('.is-clear-lot-button')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', () => {
         if (lotNameElement.disabled) {
             bulmaJS.alert({
                 message: 'You need to unlock the field before clearing it.',
@@ -449,9 +447,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     });
     // Start Date
     los.initializeDatePickers(formElement);
-    document
-        .querySelector('#lotOccupancy--occupancyStartDateString')
-        .addEventListener('change', () => {
+    (_f = document
+        .querySelector('#lotOccupancy--occupancyStartDateString')) === null || _f === void 0 ? void 0 : _f.addEventListener('change', () => {
         const endDatePicker = document.querySelector('#lotOccupancy--occupancyEndDateString').bulmaCalendar.datePicker;
         endDatePicker.min = document.querySelector('#lotOccupancy--occupancyStartDateString').value;
         endDatePicker.refresh();
@@ -699,10 +696,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
     if (isCreate) {
         const lotOccupantTypeIdElement = document.querySelector('#lotOccupancy--lotOccupantTypeId');
         lotOccupantTypeIdElement.addEventListener('change', () => {
+            var _a;
             const occupantFields = formElement.querySelectorAll("[data-table='LotOccupancyOccupant']");
             for (const occupantField of occupantFields) {
                 occupantField.disabled = lotOccupantTypeIdElement.value === '';
             }
+            let occupantCommentTitle = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                .occupantCommentTitle) !== null && _a !== void 0 ? _a : '';
+            if (occupantCommentTitle === '') {
+                occupantCommentTitle = 'Comment';
+            }
+            formElement.querySelector('#lotOccupancy--occupantCommentTitle').textContent = occupantCommentTitle;
         });
     }
     else {
