@@ -42,11 +42,13 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
     cityssm.postJSON(
       los.urlPrefix + '/lotOccupancies/doUpdateLotOccupancyOccupant',
       editFormElement,
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        lotOccupancyOccupants?: recordTypes.LotOccupancyOccupant[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          lotOccupancyOccupants?: recordTypes.LotOccupancyOccupant[]
+        }
+
         if (responseJSON.success) {
           lotOccupancyOccupants = responseJSON.lotOccupancyOccupants!
           editCloseModalFunction()
@@ -86,8 +88,12 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
         const optionElement = document.createElement('option')
         optionElement.value = lotOccupantType.lotOccupantTypeId.toString()
         optionElement.textContent = lotOccupantType.lotOccupantType
+
         optionElement.dataset.occupantCommentTitle =
           lotOccupantType.occupantCommentTitle
+
+        optionElement.dataset.fontAwesomeIconClass =
+          lotOccupantType.fontAwesomeIconClass
 
         if (
           lotOccupantType.lotOccupantTypeId ===
@@ -105,13 +111,21 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
 
         optionElement.value = lotOccupancyOccupant.lotOccupantTypeId!.toString()
         optionElement.textContent = lotOccupancyOccupant.lotOccupantType!
+
         optionElement.dataset.occupantCommentTitle =
           lotOccupancyOccupant.occupantCommentTitle!
+
+        optionElement.dataset.fontAwesomeIconClass =
+          lotOccupancyOccupant.fontAwesomeIconClass!
+
         optionElement.selected = true
 
         lotOccupantTypeSelectElement.append(optionElement)
       }
 
+      modalElement.querySelector(
+        '#lotOccupancyOccupantEdit--fontAwesomeIconClass'
+      )!.innerHTML = `<i class="fas fa-fw fa-${lotOccupancyOccupant.fontAwesomeIconClass!}" aria-hidden="true"></i>`
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantName'
@@ -176,6 +190,14 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
       lotOccupantTypeIdElement.focus()
 
       lotOccupantTypeIdElement.addEventListener('change', () => {
+        const fontAwesomeIconClass =
+          lotOccupantTypeIdElement.selectedOptions[0].dataset
+            .fontAwesomeIconClass ?? 'user'
+
+        modalElement.querySelector(
+          '#lotOccupancyOccupantEdit--fontAwesomeIconClass'
+        )!.innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`
+
         let occupantCommentTitle =
           lotOccupantTypeIdElement.selectedOptions[0].dataset
             .occupantCommentTitle ?? ''
@@ -213,11 +235,13 @@ function deleteLotOccupancyOccupant(clickEvent: Event): void {
         lotOccupancyId,
         lotOccupantIndex
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[]
+        }
+
         if (responseJSON.success) {
           lotOccupancyOccupants = responseJSON.lotOccupancyOccupants
           renderLotOccupancyOccupants()
@@ -389,11 +413,13 @@ document
       cityssm.postJSON(
         los.urlPrefix + '/lotOccupancies/doAddLotOccupancyOccupant',
         formOrObject,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          lotOccupancyOccupants?: recordTypes.LotOccupancyOccupant[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            errorMessage?: string
+            lotOccupancyOccupants?: recordTypes.LotOccupancyOccupant[]
+          }
+
           if (responseJSON.success) {
             lotOccupancyOccupants = responseJSON.lotOccupancyOccupants!
             addCloseModalFunction()
@@ -471,7 +497,11 @@ document
       cityssm.postJSON(
         los.urlPrefix + '/lotOccupancies/doSearchPastOccupants',
         searchFormElement,
-        (responseJSON: { occupants: recordTypes.LotOccupancyOccupant[] }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            occupants: recordTypes.LotOccupancyOccupant[]
+          }
+
           pastOccupantSearchResults = responseJSON.occupants
 
           const panelElement = document.createElement('div')
@@ -542,8 +572,12 @@ document
           const optionElement = document.createElement('option')
           optionElement.value = lotOccupantType.lotOccupantTypeId.toString()
           optionElement.textContent = lotOccupantType.lotOccupantType
+
           optionElement.dataset.occupantCommentTitle =
             lotOccupantType.occupantCommentTitle
+
+          optionElement.dataset.fontAwesomeIconClass =
+            lotOccupantType.fontAwesomeIconClass
 
           lotOccupantTypeSelectElement.append(optionElement)
 
@@ -572,6 +606,14 @@ document
         lotOccupantTypeIdElement.focus()
 
         lotOccupantTypeIdElement.addEventListener('change', () => {
+          const fontAwesomeIconClass =
+            lotOccupantTypeIdElement.selectedOptions[0].dataset
+              .fontAwesomeIconClass ?? 'user'
+
+          modalElement.querySelector(
+            '#lotOccupancyOccupantAdd--fontAwesomeIconClass'
+          )!.innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`
+
           let occupantCommentTitle =
             lotOccupantTypeIdElement.selectedOptions[0].dataset
               .occupantCommentTitle ?? ''

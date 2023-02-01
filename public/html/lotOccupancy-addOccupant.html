@@ -15,10 +15,20 @@
       <div class="tabs is-boxed">
         <ul>
           <li class="is-active">
-            <a href="#tab--lotOccupancyOccupantAdd-new">Create New</a>
+            <a href="#tab--lotOccupancyOccupantAdd-new">
+              <span class="icon is-small">
+                <i class="fas fa-plus" aria-hidden="true"></i>
+              </span>
+              <span>Create New</span>
+            </a>
           </li>
           <li>
-            <a href="#tab--lotOccupancyOccupantAdd-copy">Copy Previous</a>
+            <a href="#tab--lotOccupancyOccupantAdd-copy">
+              <span class="icon is-small">
+                <i class="fas fa-copy" aria-hidden="true"></i>
+              </span>
+              <span>Copy Previous</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -31,22 +41,27 @@
               type="hidden"
               value=""
             />
-            <div class="field">
-              <label
-                class="label"
-                for="lotOccupancyOccupantAdd--lotOccupantTypeId"
-                ><span class="alias" data-alias="Occupant"></span> Type</label
-              >
-              <div class="control">
+            <label
+              class="label"
+              for="lotOccupancyOccupantAdd--lotOccupantTypeId"
+              ><span class="alias" data-alias="Occupant"></span> Type</label
+            >
+            <div class="field has-addons">
+              <div class="control is-expanded">
                 <div class="select is-fullwidth">
                   <select
                     id="lotOccupancyOccupantAdd--lotOccupantTypeId"
                     name="lotOccupantTypeId"
                     required
                   >
-                    <option value="">(Select a Type)</option>
+                    <option value="" data-font-awesome-icon-class="user">(Select a Type)</option>
                   </select>
                 </div>
+              </div>
+              <div class="control">
+                <span class="button is-static" id="lotOccupancyOccupantAdd--fontAwesomeIconClass">
+                  <i class="fas fa-fw fa-user" aria-hidden="true"></i>
+                </span>
               </div>
             </div>
             <div class="field">
@@ -156,13 +171,13 @@
             </div>
             <div class="columns">
               <div class="column">
+                <label
+                  class="label"
+                  for="lotOccupancyOccupantAdd--occupantPhoneNumber"
+                  >Phone Number</label
+                >
                 <div class="field">
-                  <label
-                    class="label"
-                    for="lotOccupancyOccupantAdd--occupantPhoneNumber"
-                    >Phone Number</label
-                  >
-                  <div class="control">
+                  <div class="control has-icons-left">
                     <input
                       class="input"
                       id="lotOccupancyOccupantAdd--occupantPhoneNumber"
@@ -171,17 +186,20 @@
                       maxlength="30"
                       autocomplete="off"
                     />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-phone" aria-hidden="true"></i>
+                    </span>
                   </div>
                 </div>
               </div>
               <div class="column">
+                <label
+                  class="label"
+                  for="lotOccupancyOccupantAdd--occupantEmailAddress"
+                  >Email Address</label
+                >
                 <div class="field">
-                  <label
-                    class="label"
-                    for="lotOccupancyOccupantAdd--occupantEmailAddress"
-                    >Email Address</label
-                  >
-                  <div class="control">
+                  <div class="control has-icons-left">
                     <input
                       class="input"
                       id="lotOccupancyOccupantAdd--occupantEmailAddress"
@@ -190,6 +208,9 @@
                       maxlength="200"
                       autocomplete="off"
                     />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-envelope" aria-hidden="true"></i>
+                    </span>
                   </div>
                 </div>
               </div>

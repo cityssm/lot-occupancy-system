@@ -476,8 +476,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         function editOccupant(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doUpdateLotOccupancyOccupant', editFormElement, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doUpdateLotOccupancyOccupant', editFormElement, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
                     editCloseModalFunction();
@@ -506,6 +507,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     optionElement.textContent = lotOccupantType.lotOccupantType;
                     optionElement.dataset.occupantCommentTitle =
                         lotOccupantType.occupantCommentTitle;
+                    optionElement.dataset.fontAwesomeIconClass =
+                        lotOccupantType.fontAwesomeIconClass;
                     if (lotOccupantType.lotOccupantTypeId ===
                         lotOccupancyOccupant.lotOccupantTypeId) {
                         optionElement.selected = true;
@@ -519,10 +522,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     optionElement.textContent = lotOccupancyOccupant.lotOccupantType;
                     optionElement.dataset.occupantCommentTitle =
                         lotOccupancyOccupant.occupantCommentTitle;
+                    optionElement.dataset.fontAwesomeIconClass =
+                        lotOccupancyOccupant.fontAwesomeIconClass;
                     optionElement.selected = true;
                     lotOccupantTypeSelectElement.append(optionElement);
                 }
-                ;
+                modalElement.querySelector('#lotOccupancyOccupantEdit--fontAwesomeIconClass').innerHTML = `<i class="fas fa-fw fa-${lotOccupancyOccupant.fontAwesomeIconClass}" aria-hidden="true"></i>`;
                 modalElement.querySelector('#lotOccupancyOccupantEdit--occupantName').value = lotOccupancyOccupant.occupantName;
                 modalElement.querySelector('#lotOccupancyOccupantEdit--occupantAddress1').value = lotOccupancyOccupant.occupantAddress1;
                 modalElement.querySelector('#lotOccupancyOccupantEdit--occupantAddress2').value = lotOccupancyOccupant.occupantAddress2;
@@ -542,9 +547,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const lotOccupantTypeIdElement = modalElement.querySelector('#lotOccupancyOccupantEdit--lotOccupantTypeId');
                 lotOccupantTypeIdElement.focus();
                 lotOccupantTypeIdElement.addEventListener('change', () => {
-                    var _a;
-                    let occupantCommentTitle = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                        .occupantCommentTitle) !== null && _a !== void 0 ? _a : '';
+                    var _a, _b;
+                    const fontAwesomeIconClass = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                        .fontAwesomeIconClass) !== null && _a !== void 0 ? _a : 'user';
+                    modalElement.querySelector('#lotOccupancyOccupantEdit--fontAwesomeIconClass').innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
+                    let occupantCommentTitle = (_b = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                        .occupantCommentTitle) !== null && _b !== void 0 ? _b : '';
                     if (occupantCommentTitle === '') {
                         occupantCommentTitle = 'Comment';
                     }
@@ -566,8 +574,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancyOccupant', {
                 lotOccupancyId,
                 lotOccupantIndex
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
                     renderLotOccupancyOccupants();
@@ -706,8 +715,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let searchFormElement;
         let searchResultsElement;
         function addOccupant(formOrObject) {
-            cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doAddLotOccupancyOccupant', formOrObject, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doAddLotOccupancyOccupant', formOrObject, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
                     addCloseModalFunction();
@@ -758,8 +768,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             searchResultsElement.innerHTML =
                 los.getLoadingParagraphHTML('Searching...');
-            cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doSearchPastOccupants', searchFormElement, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doSearchPastOccupants', searchFormElement, (rawResponseJSON) => {
                 var _a, _b, _c, _d, _e, _f, _g, _h;
+                const responseJSON = rawResponseJSON;
                 pastOccupantSearchResults = responseJSON.occupants;
                 const panelElement = document.createElement('div');
                 panelElement.className = 'panel';
@@ -813,6 +824,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     optionElement.textContent = lotOccupantType.lotOccupantType;
                     optionElement.dataset.occupantCommentTitle =
                         lotOccupantType.occupantCommentTitle;
+                    optionElement.dataset.fontAwesomeIconClass =
+                        lotOccupantType.fontAwesomeIconClass;
                     lotOccupantTypeSelectElement.append(optionElement);
                     lotOccupantTypeCopySelectElement.append(optionElement.cloneNode(true));
                 }
@@ -826,9 +839,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const lotOccupantTypeIdElement = modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupantTypeId');
                 lotOccupantTypeIdElement.focus();
                 lotOccupantTypeIdElement.addEventListener('change', () => {
-                    var _a;
-                    let occupantCommentTitle = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                        .occupantCommentTitle) !== null && _a !== void 0 ? _a : '';
+                    var _a, _b;
+                    const fontAwesomeIconClass = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                        .fontAwesomeIconClass) !== null && _a !== void 0 ? _a : 'user';
+                    modalElement.querySelector('#lotOccupancyOccupantAdd--fontAwesomeIconClass').innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
+                    let occupantCommentTitle = (_b = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                        .occupantCommentTitle) !== null && _b !== void 0 ? _b : '';
                     if (occupantCommentTitle === '') {
                         occupantCommentTitle = 'Comment';
                     }

@@ -25,11 +25,11 @@
           type="hidden"
           value=""
         />
-        <div class="field">
-          <label class="label" for="lotOccupancyOccupantEdit--lotOccupantTypeId"
-            ><span class="alias" data-alias="Occupant"></span> Type</label
-          >
-          <div class="control">
+        <label class="label" for="lotOccupancyOccupantEdit--lotOccupantTypeId"
+          ><span class="alias" data-alias="Occupant"></span> Type</label
+        >
+        <div class="field has-addons">
+          <div class="control is-expanded">
             <div class="select is-fullwidth">
               <select
                 id="lotOccupancyOccupantEdit--lotOccupantTypeId"
@@ -37,6 +37,9 @@
                 required
               ></select>
             </div>
+          </div>
+          <div class="control">
+            <span class="button is-static" id="lotOccupancyOccupantEdit--fontAwesomeIconClass"></span>
           </div>
         </div>
         <div class="field">
@@ -142,13 +145,13 @@
         </div>
         <div class="columns">
           <div class="column">
+            <label
+              class="label"
+              for="lotOccupancyOccupantEdit--occupantPhoneNumber"
+              >Phone Number</label
+            >
             <div class="field">
-              <label
-                class="label"
-                for="lotOccupancyOccupantEdit--occupantPhoneNumber"
-                >Phone Number</label
-              >
-              <div class="control">
+              <div class="control has-icons-left">
                 <input
                   class="input"
                   id="lotOccupancyOccupantEdit--occupantPhoneNumber"
@@ -157,17 +160,20 @@
                   maxlength="30"
                   autocomplete="off"
                 />
+                <span class="icon is-small is-left">
+                  <i class="fas fa-phone" aria-hidden="true"></i>
+                </span>
               </div>
             </div>
           </div>
           <div class="column">
+            <label
+              class="label"
+              for="lotOccupancyOccupantEdit--occupantEmailAddress"
+              >Email Address</label
+            >
             <div class="field">
-              <label
-                class="label"
-                for="lotOccupancyOccupantEdit--occupantEmailAddress"
-                >Email Address</label
-              >
-              <div class="control">
+              <div class="control has-icons-left">
                 <input
                   class="input"
                   id="lotOccupancyOccupantEdit--occupantEmailAddress"
@@ -176,6 +182,9 @@
                   maxlength="200"
                   autocomplete="off"
                 />
+                <span class="icon is-small is-left">
+                  <i class="fas fa-envelope" aria-hidden="true"></i>
+                </span>
               </div>
             </div>
           </div>
