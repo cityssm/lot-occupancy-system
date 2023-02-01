@@ -5,6 +5,9 @@ import * as permissionHandlers from '../handlers/permissions.js'
 import handler_search from '../handlers/maps-get/search.js'
 
 import handler_view from '../handlers/maps-get/view.js'
+import handler_next from '../handlers/maps-get/next.js'
+import handler_previous from '../handlers/maps-get/previous.js'
+
 import handler_new from '../handlers/maps-get/new.js'
 import handler_edit from '../handlers/maps-get/edit.js'
 
@@ -23,6 +26,10 @@ router.get(
 )
 
 router.get('/:mapId', handler_view as RequestHandler)
+
+router.get('/:mapId/next', handler_next as RequestHandler)
+
+router.get('/:mapId/previous', handler_previous as RequestHandler)
 
 router.get(
   '/:mapId/edit',

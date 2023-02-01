@@ -2,28 +2,28 @@ import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
 
-import { getNextLotId } from '../../helpers/functions.lots.js'
+import { getNextMapId } from '../../helpers/lotOccupancyDB/getNextMapId.js'
 
 export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lotId = Number.parseInt(request.params.lotId, 10)
+  const mapId = Number.parseInt(request.params.mapId, 10)
 
-  const nextLotId = await getNextLotId(lotId)
+  const nextMapId = await getNextMapId(mapId)
 
-  if (nextLotId === undefined) {
+  if (nextMapId === undefined) {
     response.redirect(
       configFunctions.getProperty('reverseProxy.urlPrefix') +
-        '/lots/?error=noNextLotIdFound'
+        '/maps/?error=noNextMapIdFound'
     )
     return
   }
 
   response.redirect(
     configFunctions.getProperty('reverseProxy.urlPrefix') +
-      '/lots/' +
-      nextLotId.toString()
+      '/maps/' +
+      nextMapId.toString()
   )
 }
 

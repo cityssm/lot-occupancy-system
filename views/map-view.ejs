@@ -21,14 +21,33 @@
     <%= map.mapName || "(No Name)" %>
 </h1>
 
-<% if (user.userProperties.canUpdate) { %>
-  <div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
-    <div class="level-left">
-      <span class="level-item has-text-weight-bold">
-        <%= map.mapName || "(No Name)" %>
-      </span>
+
+<div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
+  <div class="level-left">
+    <span class="level-item has-text-weight-bold">
+      <%= map.mapName || "(No Name)" %>
+    </span>
+  </div>
+  <div class="level-right">
+    <div class="level-item">
+      <a class="button is-link is-outlined has-tooltip-left"
+          data-tooltip="Previous <%= configFunctions.getProperty("aliases.map") %>"
+          href="<%= urlPrefix %>/maps/<%= map.mapId %>/previous"
+          accesskey=",">
+          <i class="fas fa-arrow-left" aria-hidden="true"></i>
+          <span class="sr-only">Previous <%= configFunctions.getProperty("aliases.map") %></span>
+      </a>
     </div>
-    <div class="level-right">
+    <div class="level-item">
+      <a class="button is-link has-tooltip-left"
+          data-tooltip="Next <%= configFunctions.getProperty("aliases.map") %>"
+          href="<%= urlPrefix %>/maps/<%= map.mapId %>/next"
+          accesskey=".">
+          <span>Next</span>
+          <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+      </a>
+    </div>
+    <% if (user.userProperties.canUpdate) { %>
       <div class="level-item">
         <a class="button is-primary"
             href="<%= urlPrefix %>/maps/<%= map.mapId %>/edit"
@@ -37,9 +56,9 @@
             <span>Switch to Edit Mode</span>
         </a>
       </div>
-    </div>
+    <% } %>
   </div>
-<% } %>
+</div>
 
 <div class="panel">
     <div class="panel-block is-block">

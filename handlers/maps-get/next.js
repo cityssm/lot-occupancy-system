@@ -1,15 +1,15 @@
 import * as configFunctions from '../../helpers/functions.config.js';
-import { getNextLotId } from '../../helpers/functions.lots.js';
+import { getNextMapId } from '../../helpers/lotOccupancyDB/getNextMapId.js';
 export async function handler(request, response) {
-    const lotId = Number.parseInt(request.params.lotId, 10);
-    const nextLotId = await getNextLotId(lotId);
-    if (nextLotId === undefined) {
+    const mapId = Number.parseInt(request.params.mapId, 10);
+    const nextMapId = await getNextMapId(mapId);
+    if (nextMapId === undefined) {
         response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
-            '/lots/?error=noNextLotIdFound');
+            '/maps/?error=noNextMapIdFound');
         return;
     }
     response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
-        '/lots/' +
-        nextLotId.toString());
+        '/maps/' +
+        nextMapId.toString());
 }
 export default handler;
