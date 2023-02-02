@@ -26,7 +26,6 @@ export async function handler(request, response, next) {
         return;
     }
     const reportData = await getReportData(printConfig, request.query);
-    console.log(reportData);
     const reportPath = path.join('views', 'print', 'pdf', printName + '.ejs');
     function pdfCallbackFunction(pdf) {
         response.setHeader('Content-Disposition', `${attachmentOrInline}; filename=${camelcase(printConfig.title)}.pdf`);
