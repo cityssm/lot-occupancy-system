@@ -14,7 +14,9 @@ export async function updateWorkOrderMilestone(milestoneForm, requestSession) {
         where workOrderMilestoneId = ?`)
         .run(milestoneForm.workOrderMilestoneTypeId === ''
         ? undefined
-        : milestoneForm.workOrderMilestoneTypeId, dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
+        : milestoneForm.workOrderMilestoneTypeId, milestoneForm.workOrderMilestoneDateString === ''
+        ? 0
+        : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
         ? 0
         : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, requestSession.user.userName, rightNow.getTime(), milestoneForm.workOrderMilestoneId);
     database.release();

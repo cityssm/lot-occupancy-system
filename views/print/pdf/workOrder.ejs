@@ -11,24 +11,24 @@
             <h2 class="mb-0"><%= configFunctions.getProperty("aliases.lots") %></h2>
 
             <table class="data-table">
-                <thead>
-                    <tr>
-                        <th><%= configFunctions.getProperty("aliases.lot") %></th>
-                        <th><%= configFunctions.getProperty("aliases.map") %></th>
-                        <th><%= configFunctions.getProperty("aliases.lot") %> Type</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (const lot of workOrder.workOrderLots) { %>
-                        <tr>
-                            <td><%= lot.lotName %></td>
-                            <td><%= lot.mapName %></td>
-                            <td><%= lot.lotType %></td>
-                            <td><%= lot.lotStatus %></td>
-                        </tr>
-                    <% } %>
-                </tbody>
+              <thead>
+                <tr>
+                  <th><%= configFunctions.getProperty("aliases.lot") %></th>
+                  <th><%= configFunctions.getProperty("aliases.map") %></th>
+                  <th><%= configFunctions.getProperty("aliases.lot") %> Type</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (const lot of workOrder.workOrderLots) { %>
+                  <tr>
+                    <td><%= lot.lotName %></td>
+                    <td><%= lot.mapName %></td>
+                    <td><%= lot.lotType %></td>
+                    <td><%= lot.lotStatus %></td>
+                  </tr>
+                <% } %>
+              </tbody>
             </table>
         <% } %>
 
@@ -37,13 +37,13 @@
 
             <table class="data-table">
                 <thead>
-                    <tr>
-                        <th><%= configFunctions.getProperty("aliases.occupancy") %> Type</th>
-                        <th><%= configFunctions.getProperty("aliases.lot") %></th>
-                        <th><%= configFunctions.getProperty("aliases.occupancyStartDate") %></th>
-                        <th>End Date</th>
-                        <th><%= configFunctions.getProperty("aliases.occupants") %></th>
-                    </tr>
+                  <tr>
+                    <th><%= configFunctions.getProperty("aliases.occupancy") %> Type</th>
+                    <th><%= configFunctions.getProperty("aliases.lot") %></th>
+                    <th><%= configFunctions.getProperty("aliases.occupancyStartDate") %></th>
+                    <th>End Date</th>
+                    <th><%= configFunctions.getProperty("aliases.occupants") %></th>
+                  </tr>
                 </thead>
                 <tbody>
                     <% for (const occupancy of workOrder.workOrderLotOccupancies) { %>
@@ -94,7 +94,11 @@
                                 <%= milestone.workOrderMilestoneDescription %>
                             </td>
                             <td>
-                                <%= milestone.workOrderMilestoneDateString %>
+                                <% if (milestone.workOrderMilestoneDate === 0) { %>
+                                  (No Set Date)
+                                <% } else { %>
+                                  <%= milestone.workOrderMilestoneDateString %>
+                                <% } %>
                                 <% if (milestone.workOrderMilestoneTime) { %>
                                     <%= milestone.workOrderMilestoneTimeString %>
                                 <% } %>

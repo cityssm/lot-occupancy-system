@@ -174,7 +174,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         bulmaJS.confirm({
             title: 'Complete Milestone',
             message: 'Are you sure you want to complete this milestone?' +
-                (workOrderMilestone.workOrderMilestoneDateString > currentDateString
+                (workOrderMilestone.workOrderMilestoneDateString !== '' &&
+                    workOrderMilestone.workOrderMilestoneDateString > currentDateString
                     ? '<br /><strong>Note that this milestone is expected to be completed in the future.</strong>'
                     : ''),
             messageIsHtml: true,
@@ -322,7 +323,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 cityssm.escapeHTML((_a = milestone.workOrderMilestoneType) !== null && _a !== void 0 ? _a : '') +
                                 '</strong><br />'
                             : '') +
-                        milestone.workOrderMilestoneDateString +
+                        (milestone.workOrderMilestoneDate === 0
+                            ? '<span class="has-text-grey">(No Set Date)</span>'
+                            : milestone.workOrderMilestoneDateString) +
                         (milestone.workOrderMilestoneTime
                             ? ' ' + milestone.workOrderMilestoneTimeString
                             : '') +
@@ -395,7 +398,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         }
                     });
                 }
-                if (addModalElement.querySelector('#milestoneAdd--workOrderMilestoneDateString').value < currentDateString) {
+                const milestoneDateString = addModalElement.querySelector('#milestoneAdd--workOrderMilestoneDateString').value;
+                if (milestoneDateString !== '' &&
+                    milestoneDateString < currentDateString) {
                     bulmaJS.confirm({
                         title: 'Milestone Date in the Past',
                         message: 'Are you sure you want to create a milestone with a date in the past?',

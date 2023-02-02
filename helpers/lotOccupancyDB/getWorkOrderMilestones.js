@@ -33,6 +33,14 @@ function buildWhereClause(filters) {
             sqlParameters.push(recentBeforeDateNumber, recentAfterDateNumber);
             break;
         }
+        case 'blank': {
+            sqlWhereClause += ' and m.workOrderMilestoneDate = 0';
+            break;
+        }
+        case 'notBlank': {
+            sqlWhereClause += ' and m.workOrderMilestoneDate > 0';
+            break;
+        }
     }
     if ((filters.workOrderMilestoneDateString ?? '') !== '') {
         sqlWhereClause += ' and m.workOrderMilestoneDate = ?';
@@ -64,16 +72,16 @@ export async function getWorkOrderMilestones(filters, options, connectedDatabase
     switch (options.orderBy) {
         case 'completion': {
             orderByClause = ` order by
-          m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime,
-          m.workOrderMilestoneDate,
-          case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end,
-          t.orderNumber, m.workOrderMilestoneId`;
+        m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime,
+        m.workOrderMilestoneDate,
+        case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end,
+        t.orderNumber, m.workOrderMilestoneId`;
             break;
         }
         case 'date': {
             orderByClause = ` order by m.workOrderMilestoneDate,
-          case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end,
-          t.orderNumber, m.workOrderId, m.workOrderMilestoneId`;
+        case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end,
+        t.orderNumber, m.workOrderId, m.workOrderMilestoneId`;
             break;
         }
     }

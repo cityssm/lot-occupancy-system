@@ -294,6 +294,7 @@ export async function handler(
 
   if (request.query.workOrderId) {
     workOrderMilestoneFilters.workOrderId = request.query.workOrderId as string
+    workOrderMilestoneFilters.workOrderMilestoneDateFilter = 'notBlank'
   } else {
     workOrderMilestoneFilters.workOrderMilestoneDateFilter = 'recent'
   }

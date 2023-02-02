@@ -244,7 +244,8 @@ declare const bulmaJS: BulmaJS
       title: 'Complete Milestone',
       message:
         'Are you sure you want to complete this milestone?' +
-        (workOrderMilestone.workOrderMilestoneDateString! > currentDateString
+        (workOrderMilestone.workOrderMilestoneDateString !== '' &&
+        workOrderMilestone.workOrderMilestoneDateString! > currentDateString
           ? '<br /><strong>Note that this milestone is expected to be completed in the future.</strong>'
           : ''),
       messageIsHtml: true,
@@ -481,7 +482,9 @@ declare const bulmaJS: BulmaJS
               cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '') +
               '</strong><br />'
             : '') +
-          milestone.workOrderMilestoneDateString +
+          (milestone.workOrderMilestoneDate === 0
+            ? '<span class="has-text-grey">(No Set Date)</span>'
+            : milestone.workOrderMilestoneDateString) +
           (milestone.workOrderMilestoneTime
             ? ' ' + milestone.workOrderMilestoneTimeString
             : '') +
@@ -579,12 +582,15 @@ declare const bulmaJS: BulmaJS
             )
           }
 
+          const milestoneDateString = (
+            addModalElement.querySelector(
+              '#milestoneAdd--workOrderMilestoneDateString'
+            ) as HTMLInputElement
+          ).value
+
           if (
-            (
-              addModalElement.querySelector(
-                '#milestoneAdd--workOrderMilestoneDateString'
-              ) as HTMLInputElement
-            ).value < currentDateString
+            milestoneDateString !== '' &&
+            milestoneDateString < currentDateString
           ) {
             bulmaJS.confirm({
               title: 'Milestone Date in the Past',

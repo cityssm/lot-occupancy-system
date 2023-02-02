@@ -18,7 +18,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         milestoneCalendarContainerElement.innerHTML = '';
         const currentDate = cityssm.dateToString(new Date());
         let currentPanelElement;
-        let currentPanelDateString = '';
+        let currentPanelDateString = 'x';
         for (const milestone of workOrderMilestones) {
             if (currentPanelDateString !== milestone.workOrderMilestoneDateString) {
                 if (currentPanelElement) {
@@ -26,12 +26,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 currentPanelElement = document.createElement('div');
                 currentPanelElement.className = 'panel';
-                currentPanelElement.innerHTML = `<h2 class="panel-heading">${milestone.workOrderMilestoneDateString}</h2>`;
+                currentPanelElement.innerHTML = `<h2 class="panel-heading">
+          ${milestone.workOrderMilestoneDate === 0
+                    ? 'No Set Date'
+                    : milestone.workOrderMilestoneDateString}
+          </h2>`;
                 currentPanelDateString = milestone.workOrderMilestoneDateString;
             }
             const panelBlockElement = document.createElement('div');
             panelBlockElement.className = 'panel-block is-block';
             if (!milestone.workOrderMilestoneCompletionDate &&
+                milestone.workOrderMilestoneDateString !== '' &&
                 milestone.workOrderMilestoneDateString < currentDate) {
                 panelBlockElement.classList.add('has-background-warning-light');
             }

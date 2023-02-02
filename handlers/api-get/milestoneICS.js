@@ -195,6 +195,7 @@ export async function handler(request, response) {
     };
     if (request.query.workOrderId) {
         workOrderMilestoneFilters.workOrderId = request.query.workOrderId;
+        workOrderMilestoneFilters.workOrderMilestoneDateFilter = 'notBlank';
     }
     else {
         workOrderMilestoneFilters.workOrderMilestoneDateFilter = 'recent';

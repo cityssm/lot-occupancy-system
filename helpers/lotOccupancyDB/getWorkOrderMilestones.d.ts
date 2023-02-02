@@ -2,7 +2,7 @@ import type { PoolConnection } from 'better-sqlite-pool';
 import type * as recordTypes from '../../types/recordTypes';
 export interface WorkOrderMilestoneFilters {
     workOrderId?: number | string;
-    workOrderMilestoneDateFilter?: 'upcomingMissed' | 'recent' | 'date';
+    workOrderMilestoneDateFilter?: 'upcomingMissed' | 'recent' | 'date' | 'blank' | 'notBlank';
     workOrderMilestoneDateString?: string;
     workOrderTypeIds?: string;
     workOrderMilestoneTypeIds?: string;

@@ -41,7 +41,7 @@ declare const cityssm: cityssmGlobal
     const currentDate = cityssm.dateToString(new Date())
 
     let currentPanelElement: HTMLElement | undefined
-    let currentPanelDateString = ''
+    let currentPanelDateString = 'x'
 
     for (const milestone of workOrderMilestones) {
       if (currentPanelDateString !== milestone.workOrderMilestoneDateString) {
@@ -52,7 +52,13 @@ declare const cityssm: cityssmGlobal
         currentPanelElement = document.createElement('div')
         currentPanelElement.className = 'panel'
 
-        currentPanelElement.innerHTML = `<h2 class="panel-heading">${milestone.workOrderMilestoneDateString!}</h2>`
+        currentPanelElement.innerHTML = `<h2 class="panel-heading">
+          ${
+            milestone.workOrderMilestoneDate === 0
+              ? 'No Set Date'
+              : milestone.workOrderMilestoneDateString!
+          }
+          </h2>`
 
         currentPanelDateString = milestone.workOrderMilestoneDateString!
       }
@@ -63,6 +69,7 @@ declare const cityssm: cityssmGlobal
 
       if (
         !milestone.workOrderMilestoneCompletionDate &&
+        milestone.workOrderMilestoneDateString !== '' &&
         milestone.workOrderMilestoneDateString! < currentDate
       ) {
         panelBlockElement.classList.add('has-background-warning-light')

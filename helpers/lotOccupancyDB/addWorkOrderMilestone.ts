@@ -41,7 +41,9 @@ export async function addWorkOrderMilestone(
     .run(
       milestoneForm.workOrderId,
       milestoneForm.workOrderMilestoneTypeId ?? undefined,
-      dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
+      milestoneForm.workOrderMilestoneDateString === ''
+        ? 0
+        : dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
       milestoneForm.workOrderMilestoneTimeString
         ? timeStringToInteger(milestoneForm.workOrderMilestoneTimeString)
         : 0,

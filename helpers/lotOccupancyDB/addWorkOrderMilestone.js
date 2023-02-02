@@ -12,7 +12,9 @@ export async function addWorkOrderMilestone(milestoneForm, requestSession) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(milestoneForm.workOrderId, milestoneForm.workOrderMilestoneTypeId ?? undefined, dateStringToInteger(milestoneForm.workOrderMilestoneDateString), milestoneForm.workOrderMilestoneTimeString
+        .run(milestoneForm.workOrderId, milestoneForm.workOrderMilestoneTypeId ?? undefined, milestoneForm.workOrderMilestoneDateString === ''
+        ? 0
+        : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), milestoneForm.workOrderMilestoneTimeString
         ? timeStringToInteger(milestoneForm.workOrderMilestoneTimeString)
         : 0, milestoneForm.workOrderMilestoneDescription, milestoneForm.workOrderMilestoneCompletionDateString
         ? dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString)
