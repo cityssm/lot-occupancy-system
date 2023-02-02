@@ -93,6 +93,8 @@ declare const cityssm: cityssmGlobal
             los.escapedAliases.Occupancy +
             '"></i> ' +
             cityssm.escapeHTML(occupant.occupantName ?? '') +
+            ' ' +
+            cityssm.escapeHTML(occupant.occupantFamilyName ?? '') +
             '</span>' +
             '<br />'
         }

@@ -27,25 +27,25 @@
         </p>
 
         <p class="has-text-centered">
-            <% if (funeralDirectorOccupants.length > 0) { %>
-                <% const funeralDirector = funeralDirectorOccupants[0]; %>
-                <strong><%= funeralDirector.occupantName %></strong><br />
-                <%= funeralDirector.occupantAddress1 %><br />
-                <% if (funeralDirector.occupantAddress2) { %><%= funeralDirector.occupantAddress2 %><br /><% } %>
-                <%= funeralDirector.occupantCity %>, <%= funeralDirector.occupantProvince %><br />
-                <%= funeralDirector.occupantPostalCode %>
-            <% } %>
+          <% if (funeralDirectorOccupants.length > 0) { %>
+            <% const funeralDirector = funeralDirectorOccupants[0]; %>
+            <strong><%= funeralDirector.occupantName %> <%= funeralDirector.occupantFamilyName %></strong><br />
+            <%= funeralDirector.occupantAddress1 %><br />
+            <% if (funeralDirector.occupantAddress2) { %><%= funeralDirector.occupantAddress2 %><br /><% } %>
+            <%= funeralDirector.occupantCity %>, <%= funeralDirector.occupantProvince %><br />
+            <%= funeralDirector.occupantPostalCode %>
+          <% } %>
         </p>
 
         <p class="mt-4">
-            for the purpose of the burial or other disposition of the body of:
+          for the purpose of the burial or other disposition of the body of:
         </p>
 
         <p class="has-text-centered">
-            <% if (deceasedOccupants.length > 0) { %>
-                <% const deceased = deceasedOccupants[0]; %>
-                <strong><%= deceased.occupantName %></strong>
-            <% } %>
+          <% if (deceasedOccupants.length > 0) { %>
+            <% const deceased = deceasedOccupants[0]; %>
+            <strong><%= deceased.occupantName %> <%= deceased.occupantFamilyName %></strong>
+          <% } %>
         </p>
 
         <p>
@@ -65,16 +65,16 @@
         </p>
 
         <p class="has-text-right mt-6">
-            <span class="field mb-1" style="width:300px">&nbsp;</span><br />
-            <span class="is-8pt">(Signature of Division Registrar)</span>
+          <span class="field mb-1" style="width:300px">&nbsp;</span><br />
+          <span class="is-8pt">(Signature of Division Registrar)</span>
         </p>
 
         <p class="has-text-right">
-            Sault Ste. Marie
-            &nbsp;
-            &nbsp;
-            &nbsp;
-            5724
+          Sault Ste. Marie
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          5724
         </p>
 
         <p class="has-text-right mt-4">

@@ -5,6 +5,7 @@ export async function updateLotOccupancyOccupant(lotOccupancyOccupantForm, reque
     const results = database
         .prepare(`update LotOccupancyOccupants
         set occupantName = ?,
+        occupantFamilyName = ?,
         occupantAddress1 = ?,
         occupantAddress2 = ?,
         occupantCity = ?,
@@ -19,7 +20,7 @@ export async function updateLotOccupancyOccupant(lotOccupancyOccupantForm, reque
         where recordDelete_timeMillis is null
         and lotOccupancyId = ?
         and lotOccupantIndex = ?`)
-        .run(lotOccupancyOccupantForm.occupantName, lotOccupancyOccupantForm.occupantAddress1, lotOccupancyOccupantForm.occupantAddress2, lotOccupancyOccupantForm.occupantCity, lotOccupancyOccupantForm.occupantProvince, lotOccupancyOccupantForm.occupantPostalCode, lotOccupancyOccupantForm.occupantPhoneNumber, lotOccupancyOccupantForm.occupantEmailAddress, lotOccupancyOccupantForm.occupantComment, lotOccupancyOccupantForm.lotOccupantTypeId, requestSession.user.userName, rightNowMillis, lotOccupancyOccupantForm.lotOccupancyId, lotOccupancyOccupantForm.lotOccupantIndex);
+        .run(lotOccupancyOccupantForm.occupantName, lotOccupancyOccupantForm.occupantFamilyName, lotOccupancyOccupantForm.occupantAddress1, lotOccupancyOccupantForm.occupantAddress2, lotOccupancyOccupantForm.occupantCity, lotOccupancyOccupantForm.occupantProvince, lotOccupancyOccupantForm.occupantPostalCode, lotOccupancyOccupantForm.occupantPhoneNumber, lotOccupancyOccupantForm.occupantEmailAddress, lotOccupancyOccupantForm.occupantComment, lotOccupancyOccupantForm.lotOccupantTypeId, requestSession.user.userName, rightNowMillis, lotOccupancyOccupantForm.lotOccupancyId, lotOccupancyOccupantForm.lotOccupantIndex);
     database.release();
     return results.changes > 0;
 }

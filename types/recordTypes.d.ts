@@ -154,6 +154,7 @@ export interface LotOccupancyOccupant extends Record {
     fontAwesomeIconClass?: string;
     occupantCommentTitle?: string;
     occupantName?: string;
+    occupantFamilyName?: string;
     occupantAddress1?: string;
     occupantAddress2?: string;
     occupantCity?: string;

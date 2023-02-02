@@ -7,6 +7,7 @@ interface UpdateLotOccupancyOccupantForm {
   lotOccupantIndex: string | number
   lotOccupantTypeId: string | number
   occupantName: string
+  occupantFamilyName: string
   occupantAddress1: string
   occupantAddress2: string
   occupantCity: string
@@ -29,6 +30,7 @@ export async function updateLotOccupancyOccupant(
     .prepare(
       `update LotOccupancyOccupants
         set occupantName = ?,
+        occupantFamilyName = ?,
         occupantAddress1 = ?,
         occupantAddress2 = ?,
         occupantCity = ?,
@@ -46,6 +48,7 @@ export async function updateLotOccupancyOccupant(
     )
     .run(
       lotOccupancyOccupantForm.occupantName,
+      lotOccupancyOccupantForm.occupantFamilyName,
       lotOccupancyOccupantForm.occupantAddress1,
       lotOccupancyOccupantForm.occupantAddress2,
       lotOccupancyOccupantForm.occupantCity,

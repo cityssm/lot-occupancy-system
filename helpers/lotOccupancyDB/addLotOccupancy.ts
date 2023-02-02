@@ -20,6 +20,7 @@ interface AddLotOccupancyForm {
 
   lotOccupantTypeId?: string
   occupantName?: string
+  occupantFamilyName?: string
   occupantAddress1?: string
   occupantAddress2?: string
   occupantCity?: string
@@ -102,6 +103,7 @@ export async function addLotOccupancy(
         lotOccupancyId,
         lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId!,
         occupantName: lotOccupancyForm.occupantName!,
+        occupantFamilyName: lotOccupancyForm.occupantFamilyName!,
         occupantAddress1: lotOccupancyForm.occupantAddress1!,
         occupantAddress2: lotOccupancyForm.occupantAddress2!,
         occupantCity: lotOccupancyForm.occupantCity!,

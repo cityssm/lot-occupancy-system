@@ -49,9 +49,9 @@ function getWorkOrderUrl(
 function buildEventSummary(milestone: recordTypes.WorkOrderMilestone): string {
   let summary =
     (milestone.workOrderMilestoneCompletionDate ? '✔ ' : '') +
-    (milestone.workOrderMilestoneTypeId
-      ? milestone.workOrderMilestoneType
-      : milestone.workOrderMilestoneDescription
+    ((milestone.workOrderMilestoneTypeId ?? -1) === -1
+      ? (milestone.workOrderMilestoneDescription ?? '')
+      : (milestone.workOrderMilestoneType ?? '')
     ).trim()
 
   let occupantCount = 0
@@ -65,7 +65,7 @@ function buildEventSummary(milestone: recordTypes.WorkOrderMilestone): string {
           summary += ': '
         }
 
-        summary += occupant.occupantName ?? ''
+        summary += (occupant.occupantName ?? '') + ' ' + (occupant.occupantFamilyName ?? '')
       }
     }
   }
@@ -129,6 +129,8 @@ function buildEventDescriptionHTML_occupancies(
           escapeHTML(occupant.lotOccupantType!) +
           ': ' +
           escapeHTML(occupant.occupantName!) +
+          ' ' +
+          escapeHTML(occupant.occupantFamilyName!) +
           '<br />'
       }
 
@@ -403,14 +405,14 @@ export async function handler(
         for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
           if (organizerSet) {
             calendarEvent.createAttendee({
-              name: occupant.occupantName,
+              name: occupant.occupantName + ' ' + occupant.occupantFamilyName,
               email: configFunctions.getProperty(
                 'settings.workOrders.calendarEmailAddress'
               )
             })
           } else {
             calendarEvent.organizer({
-              name: occupant.occupantName,
+              name: occupant.occupantName + ' ' + occupant.occupantFamilyName,
               email: configFunctions.getProperty(
                 'settings.workOrders.calendarEmailAddress'
               )

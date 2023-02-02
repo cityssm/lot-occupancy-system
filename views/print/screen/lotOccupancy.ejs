@@ -76,7 +76,7 @@
                 <% for (const lotOccupancyOccupant of lotOccupancy.lotOccupancyOccupants) { %>
                 <tr>
                     <td><%= lotOccupancyOccupant.lotOccupantType %></td>
-                    <td><%= lotOccupancyOccupant.occupantName %></td>
+                    <td><%= lotOccupancyOccupant.occupantName %> <%= lotOccupancyOccupant.occupantFamilyName %></td>
                     <td>
                         <%= lotOccupancyOccupant.occupantAddress1 %><br />
                         <% if (lotOccupancyOccupant.occupantAddress2 && lotOccupancyOccupant.occupantAddress2 !== "") { %>

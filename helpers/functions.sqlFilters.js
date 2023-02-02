@@ -76,8 +76,9 @@ export function getOccupantNameWhereClause(occupantName = '', tableAlias = 'o') 
             if (occupantNamePiece === '') {
                 continue;
             }
-            sqlWhereClause += ` and instr(lower(${tableAlias}.occupantName), ?)`;
-            sqlParameters.push(occupantNamePiece);
+            sqlWhereClause += ` and (instr(lower(${tableAlias}.occupantName), ?)
+        or instr(lower(${tableAlias}.occupantFamilyName), ?))`;
+            sqlParameters.push(occupantNamePiece, occupantNamePiece);
         }
     }
     return {

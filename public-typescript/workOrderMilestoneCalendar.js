@@ -8,7 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const workOrderMilestoneDateStringElement = workOrderSearchFiltersFormElement.querySelector('#searchFilter--workOrderMilestoneDateString');
     const milestoneCalendarContainerElement = document.querySelector('#container--milestoneCalendar');
     function renderMilestones(workOrderMilestones) {
-        var _a, _b, _c, _d, _e, _f, _g;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         if (workOrderMilestones.length === 0) {
             milestoneCalendarContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no milestones that meet the search criteria.</p>
@@ -58,6 +58,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             los.escapedAliases.Occupancy +
                             '"></i> ' +
                             cityssm.escapeHTML((_d = occupant.occupantName) !== null && _d !== void 0 ? _d : '') +
+                            ' ' +
+                            cityssm.escapeHTML((_e = occupant.occupantFamilyName) !== null && _e !== void 0 ? _e : '') +
                             '</span>' +
                             '<br />';
                 }
@@ -86,15 +88,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '</div>') +
                     ('<div class="column">' +
                         '<i class="fas fa-circle" style="color:' +
-                        los.getRandomColor((_e = milestone.workOrderNumber) !== null && _e !== void 0 ? _e : '') +
+                        los.getRandomColor((_f = milestone.workOrderNumber) !== null && _f !== void 0 ? _f : '') +
                         '" aria-hidden="true"></i>' +
                         ' <a class="has-text-weight-bold" href="' +
                         los.getWorkOrderURL(milestone.workOrderId) +
                         '">' +
-                        cityssm.escapeHTML((_f = milestone.workOrderNumber) !== null && _f !== void 0 ? _f : '') +
+                        cityssm.escapeHTML((_g = milestone.workOrderNumber) !== null && _g !== void 0 ? _g : '') +
                         '</a><br />' +
                         '<span class="is-size-7">' +
-                        cityssm.escapeHTML((_g = milestone.workOrderDescription) !== null && _g !== void 0 ? _g : '') +
+                        cityssm.escapeHTML((_h = milestone.workOrderDescription) !== null && _h !== void 0 ? _h : '') +
                         '</span>' +
                         '</div>') +
                     ('<div class="column is-size-7">' + lotOccupancyHTML + '</div>') +

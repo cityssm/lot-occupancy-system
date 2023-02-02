@@ -133,6 +133,11 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
       ).value = lotOccupancyOccupant.occupantName!
       ;(
         modalElement.querySelector(
+          '#lotOccupancyOccupantEdit--occupantFamilyName'
+        ) as HTMLInputElement
+      ).value = lotOccupancyOccupant.occupantFamilyName!
+      ;(
+        modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantAddress1'
         ) as HTMLInputElement
       ).value = lotOccupancyOccupant.occupantAddress1!
@@ -302,9 +307,9 @@ function renderLotOccupancyOccupants(): void {
     tableRowElement.innerHTML =
       '<td>' +
       cityssm.escapeHTML(
-        (lotOccupancyOccupant.occupantName ?? '') === ''
+        (lotOccupancyOccupant.occupantName ?? '') === '' && (lotOccupancyOccupant.occupantFamilyName ?? '') === ''
           ? '(No Name)'
-          : lotOccupancyOccupant.occupantName!
+          : lotOccupancyOccupant.occupantName! + ' ' + lotOccupancyOccupant.occupantFamilyName!
       ) +
       '<br />' +
       ('<span class="tag">' +
@@ -526,6 +531,8 @@ document
             panelBlockElement.innerHTML =
               '<strong>' +
               cityssm.escapeHTML(occupant.occupantName ?? '') +
+              ' ' +
+              cityssm.escapeHTML(occupant.occupantFamilyName ?? '') +
               '</strong>' +
               '<br />' +
               '<div class="columns">' +

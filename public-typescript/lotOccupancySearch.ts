@@ -81,25 +81,29 @@ declare const cityssm: cityssmGlobal
             ) +
             '" aria-hidden="true"></i> ') +
           cityssm.escapeHTML(occupant.occupantName ?? '') +
+          ' ' +
+          cityssm.escapeHTML(occupant.occupantFamilyName ?? '') +
           '</span><br />'
       }
 
-      const feeTotal =
-        (lotOccupancy.lotOccupancyFees?.reduce((soFar, currentFee): number => {
+      const feeTotal = (
+        lotOccupancy.lotOccupancyFees?.reduce((soFar, currentFee): number => {
           return (
             soFar +
             ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
               (currentFee.quantity ?? 0)
           )
-        }, 0) ?? 0).toFixed(2)
+        }, 0) ?? 0
+      ).toFixed(2)
 
-      const transactionTotal =
-        (lotOccupancy.lotOccupancyTransactions?.reduce(
+      const transactionTotal = (
+        lotOccupancy.lotOccupancyTransactions?.reduce(
           (soFar, currentTransaction): number => {
             return soFar + currentTransaction.transactionAmount
           },
           0
-        ) ?? 0).toFixed(2)
+        ) ?? 0
+      ).toFixed(2)
 
       let feeIconHTML = ''
 
@@ -108,7 +112,9 @@ declare const cityssm: cityssmGlobal
           data-tooltip="Total Fees: $${feeTotal}"
           aria-label="Total Fees: $${feeTotal}">
           <i class="fas fa-dollar-sign ${
-          feeTotal === transactionTotal ? 'has-text-success' : 'has-text-danger'
+            feeTotal === transactionTotal
+              ? 'has-text-success'
+              : 'has-text-danger'
           }" aria-hidden="true"></i>
         </span>`
       }

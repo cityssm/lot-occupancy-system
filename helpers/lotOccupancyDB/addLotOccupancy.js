@@ -36,6 +36,7 @@ export async function addLotOccupancy(lotOccupancyForm, requestSession, connecte
             lotOccupancyId,
             lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId,
             occupantName: lotOccupancyForm.occupantName,
+            occupantFamilyName: lotOccupancyForm.occupantFamilyName,
             occupantAddress1: lotOccupancyForm.occupantAddress1,
             occupantAddress2: lotOccupancyForm.occupantAddress2,
             occupantCity: lotOccupancyForm.occupantCity,

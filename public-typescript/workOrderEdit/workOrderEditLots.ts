@@ -263,6 +263,8 @@ function renderRelatedOccupancies(): void {
                   los.escapedAliases.Occupant +
                   '"></i> ' +
                   cityssm.escapeHTML(occupant.occupantName!) +
+                  ' ' +
+                  cityssm.escapeHTML(occupant.occupantFamilyName!) +
                   '</span><br />'
                 )
               }, '')) +
@@ -610,7 +612,10 @@ document
                       cityssm.escapeHTML(los.escapedAliases.Occupants) +
                       ')</span>'
                     : cityssm.escapeHTML(
-                        lotOccupancy.lotOccupancyOccupants![0].occupantName!
+                        lotOccupancy.lotOccupancyOccupants![0].occupantName! +
+                          ' ' +
+                          lotOccupancy.lotOccupancyOccupants![0]
+                            .occupantFamilyName!
                       ) +
                       (lotOccupancy.lotOccupancyOccupants!.length > 1
                         ? ' plus ' +
@@ -811,7 +816,6 @@ document.querySelector('#button--addLot')?.addEventListener('click', () => {
     },
     onremoved() {
       bulmaJS.toggleHtmlClipped()
-
       ;(document.querySelector('#button--addLot') as HTMLButtonElement).focus()
     }
   })

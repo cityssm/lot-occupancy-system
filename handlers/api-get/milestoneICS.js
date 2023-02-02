@@ -21,9 +21,9 @@ function getWorkOrderUrl(request, milestone) {
 }
 function buildEventSummary(milestone) {
     let summary = (milestone.workOrderMilestoneCompletionDate ? '✔ ' : '') +
-        (milestone.workOrderMilestoneTypeId
-            ? milestone.workOrderMilestoneType
-            : milestone.workOrderMilestoneDescription).trim();
+        ((milestone.workOrderMilestoneTypeId ?? -1) === -1
+            ? (milestone.workOrderMilestoneDescription ?? '')
+            : (milestone.workOrderMilestoneType ?? '')).trim();
     let occupantCount = 0;
     for (const lotOccupancy of milestone.workOrderLotOccupancies) {
         for (const occupant of lotOccupancy.lotOccupancyOccupants) {
@@ -32,7 +32,7 @@ function buildEventSummary(milestone) {
                 if (summary !== '') {
                     summary += ': ';
                 }
-                summary += occupant.occupantName ?? '';
+                summary += (occupant.occupantName ?? '') + ' ' + (occupant.occupantFamilyName ?? '');
             }
         }
     }
@@ -81,6 +81,8 @@ function buildEventDescriptionHTML_occupancies(request, milestone) {
                     escapeHTML(occupant.lotOccupantType) +
                         ': ' +
                         escapeHTML(occupant.occupantName) +
+                        ' ' +
+                        escapeHTML(occupant.occupantFamilyName) +
                         '<br />';
             }
             descriptionHTML += '</td></tr>';
@@ -257,13 +259,13 @@ export async function handler(request, response) {
                 for (const occupant of lotOccupancy.lotOccupancyOccupants) {
                     if (organizerSet) {
                         calendarEvent.createAttendee({
-                            name: occupant.occupantName,
+                            name: occupant.occupantName + ' ' + occupant.occupantFamilyName,
                             email: configFunctions.getProperty('settings.workOrders.calendarEmailAddress')
                         });
                     }
                     else {
                         calendarEvent.organizer({
-                            name: occupant.occupantName,
+                            name: occupant.occupantName + ' ' + occupant.occupantFamilyName,
                             email: configFunctions.getProperty('settings.workOrders.calendarEmailAddress')
                         });
                         organizerSet = true;

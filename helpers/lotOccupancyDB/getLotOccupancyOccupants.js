@@ -3,7 +3,7 @@ export async function getLotOccupancyOccupants(lotOccupancyId, connectedDatabase
     const database = connectedDatabase ?? (await acquireConnection());
     const lotOccupancyOccupants = database
         .prepare(`select o.lotOccupancyId, o.lotOccupantIndex,
-        o.occupantName,
+        o.occupantName, o.occupantFamilyName,
         o.occupantAddress1, o.occupantAddress2,
         o.occupantCity, o.occupantProvince, o.occupantPostalCode,
         o.occupantPhoneNumber, o.occupantEmailAddress,

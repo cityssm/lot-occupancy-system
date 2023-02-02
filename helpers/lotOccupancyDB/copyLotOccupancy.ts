@@ -63,6 +63,7 @@ export async function copyLotOccupancy(
         lotOccupancyId: newLotOccupancyId,
         lotOccupantTypeId: occupant.lotOccupantTypeId!,
         occupantName: occupant.occupantName!,
+        occupantFamilyName: occupant.occupantFamilyName!,
         occupantAddress1: occupant.occupantAddress1!,
         occupantAddress2: occupant.occupantAddress2!,
         occupantCity: occupant.occupantCity!,

@@ -322,6 +322,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                     los.escapedAliases.Occupant +
                                     '"></i> ' +
                                     cityssm.escapeHTML(occupant.occupantName) +
+                                    ' ' +
+                                    cityssm.escapeHTML(occupant.occupantFamilyName) +
                                     '</span><br />');
                             }, '')) +
                         '</td>') +
@@ -568,7 +570,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                     ? '<span class="has-text-grey">(No ' +
                                         cityssm.escapeHTML(los.escapedAliases.Occupants) +
                                         ')</span>'
-                                    : cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0].occupantName) +
+                                    : cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0].occupantName +
+                                        ' ' +
+                                        lotOccupancy.lotOccupancyOccupants[0]
+                                            .occupantFamilyName) +
                                         (lotOccupancy.lotOccupancyOccupants.length > 1
                                             ? ' plus ' +
                                                 (lotOccupancy.lotOccupancyOccupants.length - 1)

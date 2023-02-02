@@ -39,6 +39,7 @@ const occupantCamelCase = camelCase(
 const lotOccupantIndexAlias = occupantCamelCase + 'Index'
 const lotOccupantTypeAlias = occupantCamelCase + 'Type'
 const occupantNameAlias = occupantCamelCase + 'Name'
+const occupantFamilyNameAlias = occupantCamelCase + 'FamilyName'
 const occupantAddress1Alias = occupantCamelCase + 'Address1'
 const occupantAddress2Alias = occupantCamelCase + 'Address2'
 const occupantCityAlias = occupantCamelCase + 'City'
@@ -199,6 +200,7 @@ export async function getReportData(
       sql = `select o.lotOccupantIndex as ${lotOccupantIndexAlias},
         t.lotOccupantType as ${lotOccupantTypeAlias},
         o.occupantName as ${occupantNameAlias},
+        o.occupantFamilyName as ${occupantFamilyNameAlias},
         o.occupantAddress1 as ${occupantAddress1Alias},
         o.occupantAddress2 as ${occupantAddress2Alias},
         o.occupantCity as ${occupantCityAlias},

@@ -3,10 +3,10 @@
 
   let purchaserOccupants = [];
   for (const purchaserLotOccupantType of purchaserLotOccupantTypes) {
-      purchaserOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, purchaserLotOccupantType);
-      if (purchaserOccupants.length > 0) {
-          break;
-      }
+    purchaserOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, purchaserLotOccupantType);
+    if (purchaserOccupants.length > 0) {
+      break;
+    }
   }
 
   const purchaser = purchaserOccupants.length > 0 ? purchaserOccupants[0] : undefined;
@@ -15,10 +15,10 @@
 
   let recipientOccupants = [];
   for (const recipientLotOccupantType of recipientLotOccupantTypes) {
-      recipientOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, recipientLotOccupantType);
-      if (recipientOccupants.length > 0) {
-          break;
-      }
+    recipientOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, recipientLotOccupantType);
+    if (recipientOccupants.length > 0) {
+      break;
+    }
   }
 
   const recipient = recipientOccupants.length > 0 ? recipientOccupants[0] : undefined;
@@ -73,18 +73,18 @@
   </head>
   <body class="is-10pt">
       <h1 class="is-12pt has-text-centered is-capitalized">
-          Contract for the Purchase of Interment Rights or<br />
-          Cemetery Services
+        Contract for the Purchase of Interment Rights or<br />
+        Cemetery Services
       </h1>
       <p class="has-text-centered">
-          in
-          <span class="field" style="width:300px">
-              <%= lotOccupancy.mapName %>
-          </span>
-          cemetery<br />
-          <span class="is-capitalized">operated by</span><br />
-          The Corporation of the City of Sault Ste. Marie, 99 Foster Drive<br />
-          Sault Ste. Marie Ontario &nbsp; P6A 5X6
+        in
+        <span class="field" style="width:300px">
+            <%= lotOccupancy.mapName %>
+        </span>
+        cemetery<br />
+        <span class="is-capitalized">operated by</span><br />
+        The Corporation of the City of Sault Ste. Marie, 99 Foster Drive<br />
+        Sault Ste. Marie Ontario &nbsp; P6A 5X6
       </p>
       <p>
           Contract No.
@@ -105,71 +105,75 @@
           <tbody>
               <tr>
                   <td>
-                      <h2 class="is-10pt">Purchaser</h2>
-                      <table class="is-10pt layout-table">
-                          <tbody>
-                              <tr>
-                                  <th class="has-text-left">Name:</th>
-                                  <td class="has-border-bottom"><%= purchaser ? purchaser.occupantName : "" %></td>
-                              </tr><tr>
-                                  <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
-                                  <td class="has-border-bottom"><%= purchaser ? purchaser.occupantAddress1 : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <td class="has-border-bottom"><%= purchaser ? purchaser.occupantAddress2 : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <th class="has-text-left">City:</th>
-                                  <td class="has-border-bottom"><%= purchaser ? purchaser.occupantCity : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <th class="has-text-left">Province:</th>
-                                  <td class="has-border-bottom"><%= purchaser ? purchaser.occupantProvince : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <th class="has-text-left has-text-nowrap">Postal Code:</th>
-                                  <td class="has-border-bottom" style="width:100%"><%= purchaser ? purchaser.occupantPostalCode : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <th class="has-text-left">Telephone:</th>
-                                  <td class="has-border-bottom"><%= purchaser ? purchaser.occupantPhoneNumber : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <th class="has-text-left">E-mail:</th>
-                                  <td class="has-border-bottom"><%= purchaser ? purchaser.occupantEmailAddress : "" %>&nbsp;</td>
-                              </tr>
-                          </tbody>
-                      </table>
+                    <h2 class="is-10pt">Purchaser</h2>
+                    <table class="is-10pt layout-table">
+                      <tbody>
+                        <tr>
+                          <th class="has-text-left">Name:</th>
+                          <td class="has-border-bottom">
+                            <%= purchaser ? purchaser.occupantName + ' ' + purchaser.occupantFamilyName : "" %>
+                          </td>
+                        </tr><tr>
+                          <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
+                          <td class="has-border-bottom"><%= purchaser ? purchaser.occupantAddress1 : "" %>&nbsp;</td>
+                        </tr><tr>
+                          <td class="has-border-bottom"><%= purchaser ? purchaser.occupantAddress2 : "" %>&nbsp;</td>
+                        </tr><tr>
+                          <th class="has-text-left">City:</th>
+                          <td class="has-border-bottom"><%= purchaser ? purchaser.occupantCity : "" %>&nbsp;</td>
+                        </tr><tr>
+                          <th class="has-text-left">Province:</th>
+                          <td class="has-border-bottom"><%= purchaser ? purchaser.occupantProvince : "" %>&nbsp;</td>
+                        </tr><tr>
+                          <th class="has-text-left has-text-nowrap">Postal Code:</th>
+                          <td class="has-border-bottom" style="width:100%"><%= purchaser ? purchaser.occupantPostalCode : "" %>&nbsp;</td>
+                        </tr><tr>
+                          <th class="has-text-left">Telephone:</th>
+                          <td class="has-border-bottom"><%= purchaser ? purchaser.occupantPhoneNumber : "" %>&nbsp;</td>
+                        </tr><tr>
+                          <th class="has-text-left">E-mail:</th>
+                          <td class="has-border-bottom"><%= purchaser ? purchaser.occupantEmailAddress : "" %>&nbsp;</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </td>
                   <td>
                       <h2 class="is-10pt">Recipient</h2>
                       <table class="is-10pt layout-table">
-                          <tbody>
-                              <tr>
-                                  <th class="has-text-left">Name:</th>
-                                  <td class="has-border-bottom"><%= recipient ? recipient.occupantName : "" %></td>
-                              </tr><tr>
-                                  <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
-                                  <td class="has-border-bottom"><%= recipient ? recipient.occupantAddress1 : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <td class="has-border-bottom"><%= recipient ? recipient.occupantAddress2 : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <th class="has-text-left">City:</th>
-                                  <td class="has-border-bottom"><%= recipient ? recipient.occupantCity : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <th class="has-text-left">Province:</th>
-                                  <td class="has-border-bottom"><%= recipient ? recipient.occupantProvince : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <th class="has-text-left">Postal Code:</th>
-                                  <td class="has-border-bottom"><%= recipient ? recipient.occupantPostalCode : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <th class="has-text-left">Telephone:</th>
-                                  <td class="has-border-bottom"><%= recipient ? recipient.occupantPhoneNumber : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <th class="has-text-left">E-mail:</th>
-                                  <td class="has-border-bottom"><%= recipient ? recipient.occupantEmailAddress : "" %>&nbsp;</td>
-                              </tr><tr>
-                                  <th class="has-text-left">Date of birth:</th>
-                                  <td class="has-border-bottom">&nbsp;</td>
-                              </tr><tr>
-                                  <th class="has-text-left has-text-nowrap">Place of birth:</th>
-                                  <td class="has-border-bottom" style="width:100%">&nbsp;</td>
-                              </tr>
-                          </tbody>
+                        <tbody>
+                          <tr>
+                              <th class="has-text-left">Name:</th>
+                              <td class="has-border-bottom">
+                                <%= recipient ? recipient.occupantName + ' ' + recipient.occupantFamilyName : "" %>
+                              </td>
+                          </tr><tr>
+                              <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
+                              <td class="has-border-bottom"><%= recipient ? recipient.occupantAddress1 : "" %>&nbsp;</td>
+                          </tr><tr>
+                              <td class="has-border-bottom"><%= recipient ? recipient.occupantAddress2 : "" %>&nbsp;</td>
+                          </tr><tr>
+                              <th class="has-text-left">City:</th>
+                              <td class="has-border-bottom"><%= recipient ? recipient.occupantCity : "" %>&nbsp;</td>
+                          </tr><tr>
+                              <th class="has-text-left">Province:</th>
+                              <td class="has-border-bottom"><%= recipient ? recipient.occupantProvince : "" %>&nbsp;</td>
+                          </tr><tr>
+                              <th class="has-text-left">Postal Code:</th>
+                              <td class="has-border-bottom"><%= recipient ? recipient.occupantPostalCode : "" %>&nbsp;</td>
+                          </tr><tr>
+                              <th class="has-text-left">Telephone:</th>
+                              <td class="has-border-bottom"><%= recipient ? recipient.occupantPhoneNumber : "" %>&nbsp;</td>
+                          </tr><tr>
+                              <th class="has-text-left">E-mail:</th>
+                              <td class="has-border-bottom"><%= recipient ? recipient.occupantEmailAddress : "" %>&nbsp;</td>
+                          </tr><tr>
+                              <th class="has-text-left">Date of birth:</th>
+                              <td class="has-border-bottom">&nbsp;</td>
+                          </tr><tr>
+                              <th class="has-text-left has-text-nowrap">Place of birth:</th>
+                              <td class="has-border-bottom" style="width:100%">&nbsp;</td>
+                          </tr>
+                        </tbody>
                       </table>
                   </td>
               </tr>
@@ -183,45 +187,45 @@
         </span>
       </p>
       <p>
-          This Contract for Purchase of Interment Rights or Cemetery Services
-          is between the Purchaser and The Corporation of the City of Sault Ste. Marie (Corporation)
-          concerning interment rights or cemetery services for the Recipient(s)
-          as identified in this Contract.
+        This Contract for Purchase of Interment Rights or Cemetery Services
+        is between the Purchaser and The Corporation of the City of Sault Ste. Marie (Corporation)
+        concerning interment rights or cemetery services for the Recipient(s)
+        as identified in this Contract.
       </p>
       <p>
-          The Purchaser (if different than the Recipient)
-          represents being legally authorized or charged with the responsibility for
-          the Recipient's interment rights and prepaid cemetery services 
-          specified in this Contract. This Contract will be enforceable to
-          the benefit of and be binding upon the parties hereto 
-          and their respective heirs, executors, administrators, successors, and assigns.
+        The Purchaser (if different than the Recipient)
+        represents being legally authorized or charged with the responsibility for
+        the Recipient's interment rights and prepaid cemetery services 
+        specified in this Contract. This Contract will be enforceable to
+        the benefit of and be binding upon the parties hereto 
+        and their respective heirs, executors, administrators, successors, and assigns.
       </p>
       <table class="layout-table" style="table-layout:fixed">
           <tr>
               <td>
-                  <h2 class="is-10pt is-capitalized">Details</h2>
-                  <table class="is-10pt data-table">
+                <h2 class="is-10pt is-capitalized">Details</h2>
+                <table class="is-10pt data-table">
+                  <tr>
+                      <td><%= configFunctions.getProperty("aliases.map") %></td>
+                      <td><%= lotOccupancy.mapName %></td>
+                  </tr>
+                  <tr>
+                      <td><%= configFunctions.getProperty("aliases.lot") %></td>
+                      <td><%= lotOccupancy.lotName %></td>
+                  </tr>
+                  <% 
+                      for (const field of lotOccupancy.lotOccupancyFields) { 
+                          if (field.lotOccupancyFieldValue) {
+                  %>
                       <tr>
-                          <td><%= configFunctions.getProperty("aliases.map") %></td>
-                          <td><%= lotOccupancy.mapName %></td>
+                          <td><%= field.occupancyTypeField %></td>
+                          <td><%= field.lotOccupancyFieldValue %></td>
                       </tr>
-                      <tr>
-                          <td><%= configFunctions.getProperty("aliases.lot") %></td>
-                          <td><%= lotOccupancy.lotName %></td>
-                      </tr>
-                      <% 
-                          for (const field of lotOccupancy.lotOccupancyFields) { 
-                              if (field.lotOccupancyFieldValue) {
-                      %>
-                          <tr>
-                              <td><%= field.occupancyTypeField %></td>
-                              <td><%= field.lotOccupancyFieldValue %></td>
-                          </tr>
-                      <% 
-                              }
+                  <% 
                           }
-                      %>
-                  </table>
+                      }
+                  %>
+                </table>
               </td>
               <td>
                   <h2 class="is-10pt is-capitalized">Interment Rights and Services</h2>

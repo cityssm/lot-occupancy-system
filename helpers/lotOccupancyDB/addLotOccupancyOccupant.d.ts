@@ -4,6 +4,7 @@ interface AddLotOccupancyOccupantForm {
     lotOccupancyId: string | number;
     lotOccupantTypeId: string | number;
     occupantName: string;
+    occupantFamilyName: string;
     occupantAddress1: string;
     occupantAddress2: string;
     occupantCity: string;

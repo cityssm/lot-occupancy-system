@@ -9,6 +9,7 @@ interface AddLotOccupancyForm {
     [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown;
     lotOccupantTypeId?: string;
     occupantName?: string;
+    occupantFamilyName?: string;
     occupantAddress1?: string;
     occupantAddress2?: string;
     occupantCity?: string;

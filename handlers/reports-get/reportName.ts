@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import {
   getReportData,
-  ReportParameters
+  type ReportParameters
 } from '../../helpers/lotOccupancyDB/getReportData.js'
 
 import papaparse from 'papaparse'

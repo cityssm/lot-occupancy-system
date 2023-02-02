@@ -31,6 +31,7 @@ export async function getPastLotOccupancyOccupants(
 
       sqlWhereClause +=
         " and (o.occupantName like '%' || ? || '%'" +
+        " or o.occupantFamilyName like '%' || ? || '%'" +
         " or o.occupantAddress1 like '%' || ? || '%'" +
         " or o.occupantAddress2 like '%' || ? || '%'" +
         " or o.occupantCity like '%' || ? || '%')"
@@ -39,12 +40,13 @@ export async function getPastLotOccupancyOccupants(
         searchFilterPiece,
         searchFilterPiece,
         searchFilterPiece,
+        searchFilterPiece,
         searchFilterPiece
       )
     }
   }
 
-  const sql = `select o.occupantName,
+  const sql = `select o.occupantName, o.occupantFamilyName,
       o.occupantAddress1, o.occupantAddress2,
       o.occupantCity, o.occupantProvince, o.occupantPostalCode,
       o.occupantPhoneNumber, o.occupantEmailAddress,

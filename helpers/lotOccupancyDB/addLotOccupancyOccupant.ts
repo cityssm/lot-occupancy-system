@@ -7,6 +7,7 @@ interface AddLotOccupancyOccupantForm {
   lotOccupancyId: string | number
   lotOccupantTypeId: string | number
   occupantName: string
+  occupantFamilyName: string
   occupantAddress1: string
   occupantAddress2: string
   occupantCity: string
@@ -46,7 +47,7 @@ export async function addLotOccupancyOccupant(
     .prepare(
       `insert into LotOccupancyOccupants (
         lotOccupancyId, lotOccupantIndex,
-        occupantName,
+        occupantName, occupantFamilyName,
         occupantAddress1, occupantAddress2,
         occupantCity, occupantProvince, occupantPostalCode,
         occupantPhoneNumber, occupantEmailAddress,
@@ -54,12 +55,13 @@ export async function addLotOccupancyOccupant(
         lotOccupantTypeId,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       lotOccupancyOccupantForm.lotOccupancyId,
       lotOccupantIndex,
       lotOccupancyOccupantForm.occupantName,
+      lotOccupancyOccupantForm.occupantFamilyName,
       lotOccupancyOccupantForm.occupantAddress1,
       lotOccupancyOccupantForm.occupantAddress2,
       lotOccupancyOccupantForm.occupantCity,

@@ -8,7 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
     function renderLotOccupancies(responseJSON) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
         if (responseJSON.lotOccupancies.length === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">
@@ -50,23 +50,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 : occupant.fontAwesomeIconClass) +
                             '" aria-hidden="true"></i> ') +
                         cityssm.escapeHTML((_c = occupant.occupantName) !== null && _c !== void 0 ? _c : '') +
+                        ' ' +
+                        cityssm.escapeHTML((_d = occupant.occupantFamilyName) !== null && _d !== void 0 ? _d : '') +
                         '</span><br />';
             }
-            const feeTotal = ((_e = (_d = lotOccupancy.lotOccupancyFees) === null || _d === void 0 ? void 0 : _d.reduce((soFar, currentFee) => {
+            const feeTotal = ((_f = (_e = lotOccupancy.lotOccupancyFees) === null || _e === void 0 ? void 0 : _e.reduce((soFar, currentFee) => {
                 var _a, _b, _c;
                 return (soFar +
                     (((_a = currentFee.feeAmount) !== null && _a !== void 0 ? _a : 0) + ((_b = currentFee.taxAmount) !== null && _b !== void 0 ? _b : 0)) *
                         ((_c = currentFee.quantity) !== null && _c !== void 0 ? _c : 0));
-            }, 0)) !== null && _e !== void 0 ? _e : 0).toFixed(2);
-            const transactionTotal = ((_g = (_f = lotOccupancy.lotOccupancyTransactions) === null || _f === void 0 ? void 0 : _f.reduce((soFar, currentTransaction) => {
+            }, 0)) !== null && _f !== void 0 ? _f : 0).toFixed(2);
+            const transactionTotal = ((_h = (_g = lotOccupancy.lotOccupancyTransactions) === null || _g === void 0 ? void 0 : _g.reduce((soFar, currentTransaction) => {
                 return soFar + currentTransaction.transactionAmount;
-            }, 0)) !== null && _g !== void 0 ? _g : 0).toFixed(2);
+            }, 0)) !== null && _h !== void 0 ? _h : 0).toFixed(2);
             let feeIconHTML = '';
             if (feeTotal !== '0.00' || transactionTotal !== '0.00') {
                 feeIconHTML = `<span class="icon"
           data-tooltip="Total Fees: $${feeTotal}"
           aria-label="Total Fees: $${feeTotal}">
-          <i class="fas fa-dollar-sign ${feeTotal === transactionTotal ? 'has-text-success' : 'has-text-danger'}" aria-hidden="true"></i>
+          <i class="fas fa-dollar-sign ${feeTotal === transactionTotal
+                    ? 'has-text-success'
+                    : 'has-text-danger'}" aria-hidden="true"></i>
         </span>`;
             }
             resultsTbodyElement.insertAdjacentHTML('beforeend', '<tr>' +
@@ -79,12 +83,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '</a>' +
                     '</td>') +
                 ('<td>' +
-                    (((_h = lotOccupancy.lotId) !== null && _h !== void 0 ? _h : -1) === -1
+                    (((_j = lotOccupancy.lotId) !== null && _j !== void 0 ? _j : -1) === -1
                         ? '<span class="has-text-grey">(No ' +
                             los.escapedAliases.Lot +
                             ')</span>'
                         : '<a class="has-tooltip-right" data-tooltip="' +
-                            cityssm.escapeHTML((_j = lotOccupancy.lotType) !== null && _j !== void 0 ? _j : '') +
+                            cityssm.escapeHTML((_k = lotOccupancy.lotType) !== null && _k !== void 0 ? _k : '') +
                             '" href="' +
                             los.getLotURL(lotOccupancy.lotId) +
                             '">' +
@@ -92,7 +96,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             '</a>') +
                     '<br />' +
                     ('<span class="is-size-7">' +
-                        cityssm.escapeHTML((_k = lotOccupancy.mapName) !== null && _k !== void 0 ? _k : '') +
+                        cityssm.escapeHTML((_l = lotOccupancy.mapName) !== null && _l !== void 0 ? _l : '') +
                         '</span>') +
                     '</td>') +
                 ('<td>' + lotOccupancy.occupancyStartDateString + '</td>') +
@@ -134,10 +138,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .querySelector('table')
             .append(resultsTbodyElement);
         searchResultsContainerElement.insertAdjacentHTML('beforeend', los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
-        (_l = searchResultsContainerElement
-            .querySelector("button[data-page='previous']")) === null || _l === void 0 ? void 0 : _l.addEventListener('click', previousAndGetLotOccupancies);
         (_m = searchResultsContainerElement
-            .querySelector("button[data-page='next']")) === null || _m === void 0 ? void 0 : _m.addEventListener('click', nextAndGetLotOccupancies);
+            .querySelector("button[data-page='previous']")) === null || _m === void 0 ? void 0 : _m.addEventListener('click', previousAndGetLotOccupancies);
+        (_o = searchResultsContainerElement
+            .querySelector("button[data-page='next']")) === null || _o === void 0 ? void 0 : _o.addEventListener('click', nextAndGetLotOccupancies);
     }
     function getLotOccupancies() {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Occupancies}...`);

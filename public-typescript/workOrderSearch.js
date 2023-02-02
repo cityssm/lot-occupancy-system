@@ -10,7 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
     function renderWorkOrders(responseJSON) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
         if (responseJSON.workOrders.length === 0) {
             searchResultsContainerElement.innerHTML =
                 '<div class="message is-info">' +
@@ -47,9 +47,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             '" aria-label="' +
                             los.escapedAliases.occupant +
                             '"></i> ' +
-                            cityssm.escapeHTML(((_e = occupant.occupantName) !== null && _e !== void 0 ? _e : '') === ''
+                            cityssm.escapeHTML(((_e = occupant.occupantName) !== null && _e !== void 0 ? _e : '') === '' && ((_f = occupant.occupantFamilyName) !== null && _f !== void 0 ? _f : '') === ''
                                 ? '(No Name)'
-                                : occupant.occupantName) +
+                                : occupant.occupantName + ' ' + occupant.occupantFamilyName) +
                             '</span><br />';
                 }
             }
@@ -59,15 +59,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     los.getWorkOrderURL(workOrder.workOrderId) +
                     '">' +
                     (workOrder.workOrderNumber.trim()
-                        ? cityssm.escapeHTML((_f = workOrder.workOrderNumber) !== null && _f !== void 0 ? _f : '')
+                        ? cityssm.escapeHTML((_g = workOrder.workOrderNumber) !== null && _g !== void 0 ? _g : '')
                         : '(No Number)') +
                     '</a>' +
                     '</td>') +
                 ('<td>' +
-                    cityssm.escapeHTML((_g = workOrder.workOrderType) !== null && _g !== void 0 ? _g : '') +
+                    cityssm.escapeHTML((_h = workOrder.workOrderType) !== null && _h !== void 0 ? _h : '') +
                     '<br />' +
                     '<span class="is-size-7">' +
-                    cityssm.escapeHTML((_h = workOrder.workOrderDescription) !== null && _h !== void 0 ? _h : '') +
+                    cityssm.escapeHTML((_j = workOrder.workOrderDescription) !== null && _j !== void 0 ? _j : '') +
                     '</span>' +
                     '</td>') +
                 ('<td class="is-nowrap"><span class="is-size-7">' +
@@ -132,10 +132,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         searchResultsContainerElement
             .querySelector('table')
             .append(resultsTbodyElement);
-        (_j = searchResultsContainerElement
-            .querySelector("button[data-page='previous']")) === null || _j === void 0 ? void 0 : _j.addEventListener('click', previousAndGetWorkOrders);
         (_k = searchResultsContainerElement
-            .querySelector("button[data-page='next']")) === null || _k === void 0 ? void 0 : _k.addEventListener('click', nextAndGetWorkOrders);
+            .querySelector("button[data-page='previous']")) === null || _k === void 0 ? void 0 : _k.addEventListener('click', previousAndGetWorkOrders);
+        (_l = searchResultsContainerElement
+            .querySelector("button[data-page='next']")) === null || _l === void 0 ? void 0 : _l.addEventListener('click', nextAndGetWorkOrders);
     }
     function getWorkOrders() {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML('Loading Work Orders...');

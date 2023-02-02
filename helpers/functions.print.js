@@ -58,7 +58,7 @@ export async function getReportData(printConfig, requestQuery) {
     }
     if (printConfig.params.includes('workOrderId') &&
         typeof requestQuery.workOrderId === 'string') {
-        reportData.workOrder = getWorkOrder(requestQuery.workOrderId, {
+        reportData.workOrder = await getWorkOrder(requestQuery.workOrderId, {
             includeLotsAndLotOccupancies: true,
             includeComments: true,
             includeMilestones: true

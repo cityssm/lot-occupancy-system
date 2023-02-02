@@ -53,6 +53,8 @@ export async function handler(
 
   const reportData = await getReportData(printConfig, request.query)
 
+  console.log(reportData)
+
   const reportPath = path.join('views', 'print', 'pdf', printName + '.ejs')
 
   function pdfCallbackFunction(pdf: Buffer): void {

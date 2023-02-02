@@ -80,9 +80,9 @@ declare const cityssm: cityssmGlobal
             los.escapedAliases.occupant +
             '"></i> ' +
             cityssm.escapeHTML(
-              (occupant.occupantName ?? '') === ''
+              (occupant.occupantName ?? '') === '' && (occupant.occupantFamilyName ?? '') === ''
                 ? '(No Name)'
-                : occupant.occupantName!
+                : occupant.occupantName! + ' ' + occupant.occupantFamilyName!
             ) +
             '</span><br />'
         }
