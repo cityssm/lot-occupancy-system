@@ -346,8 +346,10 @@ describe('functions.sqlFilters', () => {
 
       assert.strictEqual(
         filter.sqlWhereClause,
-        ' and instr(lower(o.occupantName), ?) and instr(lower(o.occupantName), ?)'
+        ' and (instr(lower(o.occupantName), ?) or instr(lower(o.occupantFamilyName), ?)) and (instr(lower(o.occupantName), ?) or instr(lower(o.occupantFamilyName), ?))'
       )
+
+      assert.ok(filter.sqlParameters.length === 4)
 
       assert.ok(filter.sqlParameters.includes('test1'))
       assert.ok(filter.sqlParameters.includes('test2'))

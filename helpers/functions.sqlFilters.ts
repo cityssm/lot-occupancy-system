@@ -108,8 +108,7 @@ export function getOccupantNameWhereClause(
         continue
       }
 
-      sqlWhereClause += ` and (instr(lower(${tableAlias}.occupantName), ?)
-        or instr(lower(${tableAlias}.occupantFamilyName), ?))`
+      sqlWhereClause += ` and (instr(lower(${tableAlias}.occupantName), ?) or instr(lower(${tableAlias}.occupantFamilyName), ?))`
       sqlParameters.push(occupantNamePiece, occupantNamePiece)
     }
   }

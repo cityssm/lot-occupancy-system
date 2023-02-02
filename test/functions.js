@@ -200,7 +200,8 @@ describe('functions.sqlFilters', () => {
     describe('OccupantName filter', () => {
         it('returns filter', () => {
             const filter = sqlFilterFunctions.getOccupantNameWhereClause('TEST1 TEST2', 'o');
-            assert.strictEqual(filter.sqlWhereClause, ' and instr(lower(o.occupantName), ?) and instr(lower(o.occupantName), ?)');
+            assert.strictEqual(filter.sqlWhereClause, ' and (instr(lower(o.occupantName), ?) or instr(lower(o.occupantFamilyName), ?)) and (instr(lower(o.occupantName), ?) or instr(lower(o.occupantFamilyName), ?))');
+            assert.ok(filter.sqlParameters.length === 4);
             assert.ok(filter.sqlParameters.includes('test1'));
             assert.ok(filter.sqlParameters.includes('test2'));
         });
