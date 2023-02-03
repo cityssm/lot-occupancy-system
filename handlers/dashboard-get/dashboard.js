@@ -1,6 +1,7 @@
 import { dateToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js';
 import { getWorkOrders } from '../../helpers/lotOccupancyDB/getWorkOrders.js';
+import { getLotOccupancies } from '../../helpers/lotOccupancyDB/getLotOccupancies.js';
 export async function handler(_request, response) {
     const currentDateString = dateToString(new Date());
     const workOrderMilestones = await getWorkOrderMilestones({
@@ -16,10 +17,20 @@ export async function handler(_request, response) {
         limit: 1,
         offset: 0
     });
+    const lotOccupancyResults = await getLotOccupancies({
+        occupancyStartDateString: currentDateString
+    }, {
+        limit: 1,
+        offset: 0,
+        includeFees: false,
+        includeOccupants: false,
+        includeTransactions: false
+    });
     response.render('dashboard', {
         headTitle: 'Dashboard',
         workOrderMilestones,
-        workOrderCount: workOrderResults.count
+        workOrderCount: workOrderResults.count,
+        lotOccupancyCount: lotOccupancyResults.count
     });
 }
 export default handler;

@@ -155,6 +155,9 @@
                     <span class="fa-layers fa-4x fa-fw" aria-hidden="true">
                       <i class="fas fa-vector-square"></i>
                       <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+                      <% if (lotOccupancyCount > 0) { %>
+                        <span class="fa-layers-counter has-background-success"><%= lotOccupancyCount %></span>
+                      <% } %>
                     </span>
                   </div>
                   <div class="media-content has-text-black">

@@ -3,9 +3,9 @@ import { dateIntegerToString, dateStringToInteger } from '@cityssm/expressjs-ser
 import * as configFunctions from '../functions.config.js';
 import { getOccupancyTypeById } from '../functions.cache.js';
 import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js';
+import { getLotOccupancyFees } from './getLotOccupancyFees.js';
+import { getLotOccupancyTransactions } from './getLotOccupancyTransactions.js';
 import { getLotNameWhereClause, getOccupancyTimeWhereClause, getOccupantNameWhereClause } from '../functions.sqlFilters.js';
-import getLotOccupancyFees from './getLotOccupancyFees.js';
-import getLotOccupancyTransactions from './getLotOccupancyTransactions.js';
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where o.recordDelete_timeMillis is null';
     const sqlParameters = [];
