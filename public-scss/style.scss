@@ -216,3 +216,12 @@ span.button.is-static {
     }
   }
 }
+
+.is-hover-container:hover,
+.is-hover-container:focus,
+.is-hover-container:focus-within {
+  .is-visible-hover,
+  &.is-visible-hover {
+    visibility: visible !important;
+  }
+}
