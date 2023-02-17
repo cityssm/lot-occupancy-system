@@ -20,6 +20,7 @@ configFallbackValues.set(
 configFallbackValues.set('application.logoURL', '/images/cemetery-logo.png')
 configFallbackValues.set('application.httpPort', 7000)
 configFallbackValues.set('application.useTestDatabases', false)
+configFallbackValues.set('application.maximumProcesses', 4)
 
 configFallbackValues.set('reverseProxy.disableCompression', false)
 configFallbackValues.set('reverseProxy.disableEtag', false)
@@ -112,6 +113,10 @@ export function getProperty(
 export function getProperty(
   propertyName: 'activeDirectory'
 ): configTypes.ConfigActiveDirectory
+
+export function getProperty(
+  propertyName: 'application.maximumProcesses'
+): number
 
 export function getProperty(propertyName: 'users.testing'): string[]
 export function getProperty(propertyName: 'users.canLogin'): string[]

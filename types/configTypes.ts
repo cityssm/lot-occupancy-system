@@ -71,6 +71,7 @@ interface ConfigApplication {
   userDomain?: string
   useTestDatabases?: boolean
   ntfyStartup?: ConfigNtfyStartup
+  maximumProcesses?: number
 }
 
 export interface ConfigNtfyStartup {

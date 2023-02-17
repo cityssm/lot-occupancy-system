@@ -15,6 +15,11 @@ import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from './lotOccupan
 
 import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from './lotOccupancyDB/getWorkOrderMilestoneTypes.js'
 
+import { getConfigTableMaxTimeMillis } from './lotOccupancyDB/getConfigTableMaxTimeMillis.js'
+
+import { setIntervalAsync, clearIntervalAsync } from 'set-interval-async'
+import { asyncExitHook } from 'exit-hook'
+
 import type * as recordTypes from '../types/recordTypes'
 
 /*
@@ -332,3 +337,38 @@ export function clearCacheByTableName(tableName: string): void {
     }
   }
 }
+
+function clearAllCaches(): void {
+  clearLotOccupantTypesCache()
+  clearLotStatusesCache()
+  clearLotTypesCache()
+  clearOccupancyTypesCache()
+  clearWorkOrderMilestoneTypesCache()
+  clearWorkOrderTypesCache()
+}
+
+/*
+ * Config Time Millis
+ */
+
+let configTimeMillis = 0
+
+async function checkCacheIntegrity(): Promise<void> {
+  const timeMillis = await getConfigTableMaxTimeMillis()
+
+  if (timeMillis > configTimeMillis) {
+    configTimeMillis = timeMillis
+    clearAllCaches()
+  }
+}
+
+const cacheTimer = setIntervalAsync(checkCacheIntegrity, 10 * 60 * 1000)
+
+asyncExitHook(
+  async () => {
+    await clearIntervalAsync(cacheTimer)
+  },
+  {
+    minimumWait: 250
+  }
+)

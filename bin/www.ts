@@ -1,8 +1,7 @@
-/* eslint-disable no-process-exit, unicorn/no-process-exit */
-
-import { app } from '../app.js'
-
-import http from 'node:http'
+import cluster from 'node:cluster'
+import os from 'node:os'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 import * as configFunctions from '../helpers/functions.config.js'
 
@@ -14,72 +13,31 @@ import type * as ntfyTypes from '@cityssm/ntfy-publish/types'
 import Debug from 'debug'
 const debug = Debug('lot-occupancy-system:www')
 
-interface ServerError extends Error {
-  syscall: string
-  code: string
+const directoryName = dirname(fileURLToPath(import.meta.url))
+
+const processCount = Math.min(
+  configFunctions.getProperty('application.maximumProcesses'),
+  os.cpus().length
+)
+
+debug(`Primary pid: ${process.pid}`)
+debug(`Launching ${processCount} processes`)
+
+cluster.setupPrimary({
+  exec: directoryName + '/wwwProcess.js'
+})
+
+for (let index = 0; index < processCount; index += 1) {
+  cluster.fork()
 }
 
-function onError(error: ServerError): void {
-  if (error.syscall !== 'listen') {
-    throw error
-  }
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    // eslint-disable-next-line no-fallthrough
-    case 'EACCES': {
-      debug('Requires elevated privileges')
-      process.exit(1)
-      // break;
-    }
-
-    // eslint-disable-next-line no-fallthrough
-    case 'EADDRINUSE': {
-      debug('Port is already in use.')
-      process.exit(1)
-      // break;
-    }
-
-    // eslint-disable-next-line no-fallthrough
-    default: {
-      throw error
-    }
-  }
-}
-
-function onListening(server: http.Server): void {
-  const addr = server.address()
-
-  if (addr !== null) {
-    const bind =
-      typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port.toString()
-    debug('Listening on ' + bind)
-  }
-}
-
-/*
- * Initialize HTTP
- */
+cluster.on('exit', (worker, code, signal) => {
+  console.log(`Worker ${worker.process.pid!.toString()} has been killed`)
+  console.log('Starting another worker')
+  cluster.fork()
+})
 
 const ntfyStartupConfig = configFunctions.getProperty('application.ntfyStartup')
-
-const httpPort = configFunctions.getProperty('application.httpPort')
-
-const httpServer = http.createServer(app)
-
-httpServer.listen(httpPort)
-
-httpServer.on('error', onError)
-httpServer.on('listening', () => {
-  onListening(httpServer)
-})
-
-debug('HTTP listening on ' + httpPort.toString())
-
-exitHook(() => {
-  debug('Closing HTTP')
-  httpServer.close()
-})
 
 if (ntfyStartupConfig) {
   const topic = ntfyStartupConfig.topic

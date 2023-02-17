@@ -4,9 +4,9 @@ import { exec } from 'node:child_process';
 import * as http from 'node:http';
 import { app } from '../app.js';
 function runCypress(browser, done) {
-    let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser} --tag "${browser},${process.version}"`;
+    let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}"`;
     if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '') {
-        cypressCommand += ' --record';
+        cypressCommand += ` --tag "${browser},${process.version} --record`;
     }
     const childProcess = exec(cypressCommand);
     childProcess.stdout?.on('data', (data) => {

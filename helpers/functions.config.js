@@ -6,6 +6,7 @@ configFallbackValues.set('application.backgroundURL', '/images/cemetery-backgrou
 configFallbackValues.set('application.logoURL', '/images/cemetery-logo.png');
 configFallbackValues.set('application.httpPort', 7000);
 configFallbackValues.set('application.useTestDatabases', false);
+configFallbackValues.set('application.maximumProcesses', 4);
 configFallbackValues.set('reverseProxy.disableCompression', false);
 configFallbackValues.set('reverseProxy.disableEtag', false);
 configFallbackValues.set('reverseProxy.urlPrefix', '');

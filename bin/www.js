@@ -1,48 +1,28 @@
-import { app } from '../app.js';
-import http from 'node:http';
+import cluster from 'node:cluster';
+import os from 'node:os';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import * as configFunctions from '../helpers/functions.config.js';
 import exitHook from 'exit-hook';
 import ntfyPublish from '@cityssm/ntfy-publish';
 import Debug from 'debug';
 const debug = Debug('lot-occupancy-system:www');
-function onError(error) {
-    if (error.syscall !== 'listen') {
-        throw error;
-    }
-    switch (error.code) {
-        case 'EACCES': {
-            debug('Requires elevated privileges');
-            process.exit(1);
-        }
-        case 'EADDRINUSE': {
-            debug('Port is already in use.');
-            process.exit(1);
-        }
-        default: {
-            throw error;
-        }
-    }
+const directoryName = dirname(fileURLToPath(import.meta.url));
+const processCount = Math.min(configFunctions.getProperty('application.maximumProcesses'), os.cpus().length);
+debug(`Primary pid: ${process.pid}`);
+debug(`Launching ${processCount} processes`);
+cluster.setupPrimary({
+    exec: directoryName + '/wwwProcess.js'
+});
+for (let index = 0; index < processCount; index += 1) {
+    cluster.fork();
 }
-function onListening(server) {
-    const addr = server.address();
-    if (addr !== null) {
-        const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port.toString();
-        debug('Listening on ' + bind);
-    }
-}
+cluster.on('exit', (worker, code, signal) => {
+    console.log(`Worker ${worker.process.pid.toString()} has been killed`);
+    console.log('Starting another worker');
+    cluster.fork();
+});
 const ntfyStartupConfig = configFunctions.getProperty('application.ntfyStartup');
-const httpPort = configFunctions.getProperty('application.httpPort');
-const httpServer = http.createServer(app);
-httpServer.listen(httpPort);
-httpServer.on('error', onError);
-httpServer.on('listening', () => {
-    onListening(httpServer);
-});
-debug('HTTP listening on ' + httpPort.toString());
-exitHook(() => {
-    debug('Closing HTTP');
-    httpServer.close();
-});
 if (ntfyStartupConfig) {
     const topic = ntfyStartupConfig.topic;
     const server = ntfyStartupConfig.server;

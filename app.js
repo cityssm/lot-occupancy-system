@@ -30,7 +30,7 @@ import { apiGetHandler } from './handlers/permissions.js';
 import { getSafeRedirectURL } from './helpers/functions.authentication.js';
 import debug from 'debug';
 import { useTestDatabases } from './data/databasePaths.js';
-const debugApp = debug('lot-occupancy-system:app');
+const debugApp = debug(`lot-occupancy-system:app:${process.pid}`);
 databaseInitializer.initializeDatabase();
 const _dirname = '.';
 export const app = express();

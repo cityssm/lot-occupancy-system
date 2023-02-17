@@ -6,6 +6,9 @@ import { getOccupancyTypes as getOccupancyTypesFromDatabase } from './lotOccupan
 import { getOccupancyTypeFields as getOccupancyTypeFieldsFromDatabase } from './lotOccupancyDB/getOccupancyTypeFields.js';
 import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from './lotOccupancyDB/getWorkOrderTypes.js';
 import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from './lotOccupancyDB/getWorkOrderMilestoneTypes.js';
+import { getConfigTableMaxTimeMillis } from './lotOccupancyDB/getConfigTableMaxTimeMillis.js';
+import { setIntervalAsync, clearIntervalAsync } from 'set-interval-async';
+import { asyncExitHook } from 'exit-hook';
 let lotOccupantTypes;
 export async function getLotOccupantTypes() {
     if (lotOccupantTypes === undefined) {
@@ -191,3 +194,25 @@ export function clearCacheByTableName(tableName) {
         }
     }
 }
+function clearAllCaches() {
+    clearLotOccupantTypesCache();
+    clearLotStatusesCache();
+    clearLotTypesCache();
+    clearOccupancyTypesCache();
+    clearWorkOrderMilestoneTypesCache();
+    clearWorkOrderTypesCache();
+}
+let configTimeMillis = 0;
+async function checkCacheIntegrity() {
+    const timeMillis = await getConfigTableMaxTimeMillis();
+    if (timeMillis > configTimeMillis) {
+        configTimeMillis = timeMillis;
+        clearAllCaches();
+    }
+}
+const cacheTimer = setIntervalAsync(checkCacheIntegrity, 10 * 60 * 1000);
+asyncExitHook(async () => {
+    await clearIntervalAsync(cacheTimer);
+}, {
+    minimumWait: 250
+});

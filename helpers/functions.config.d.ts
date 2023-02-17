@@ -7,6 +7,7 @@ export declare function getProperty(propertyName: 'application.userDomain'): str
 export declare function getProperty(propertyName: 'application.useTestDatabases'): boolean;
 export declare function getProperty(propertyName: 'application.ntfyStartup'): configTypes.ConfigNtfyStartup | undefined;
 export declare function getProperty(propertyName: 'activeDirectory'): configTypes.ConfigActiveDirectory;
+export declare function getProperty(propertyName: 'application.maximumProcesses'): number;
 export declare function getProperty(propertyName: 'users.testing'): string[];
 export declare function getProperty(propertyName: 'users.canLogin'): string[];
 export declare function getProperty(propertyName: 'users.canUpdate'): string[];
