@@ -10,7 +10,7 @@ import * as http from 'node:http'
 import { app } from '../app.js'
 
 function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {
-  let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}"`
+  let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}`
 
   if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '') {
     cypressCommand += ` --tag "${browser},${process.version} --record`
