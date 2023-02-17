@@ -32,8 +32,8 @@ for (let index = 0; index < processCount; index += 1) {
 }
 
 cluster.on('exit', (worker, code, signal) => {
-  console.log(`Worker ${worker.process.pid!.toString()} has been killed`)
-  console.log('Starting another worker')
+  debug(`Worker ${worker.process.pid!.toString()} has been killed`)
+  debug('Starting another worker')
   cluster.fork()
 })
 
