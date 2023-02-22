@@ -1,7 +1,7 @@
 import type * as recordTypes from '../../types/recordTypes';
 interface AddWorkOrderMilestoneForm {
     workOrderId: string | number;
-    workOrderMilestoneTypeId?: number | string;
+    workOrderMilestoneTypeId: number | string;
     workOrderMilestoneDateString: string;
     workOrderMilestoneTimeString?: string;
     workOrderMilestoneDescription: string;

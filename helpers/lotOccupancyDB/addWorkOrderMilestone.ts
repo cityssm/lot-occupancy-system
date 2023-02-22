@@ -11,7 +11,7 @@ import type * as recordTypes from '../../types/recordTypes'
 
 interface AddWorkOrderMilestoneForm {
   workOrderId: string | number
-  workOrderMilestoneTypeId?: number | string
+  workOrderMilestoneTypeId: number | string
   workOrderMilestoneDateString: string
   workOrderMilestoneTimeString?: string
   workOrderMilestoneDescription: string
@@ -40,7 +40,7 @@ export async function addWorkOrderMilestone(
     )
     .run(
       milestoneForm.workOrderId,
-      milestoneForm.workOrderMilestoneTypeId ?? undefined,
+      milestoneForm.workOrderMilestoneTypeId === '' ? undefined : milestoneForm.workOrderMilestoneTypeId,
       milestoneForm.workOrderMilestoneDateString === ''
         ? 0
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
