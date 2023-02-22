@@ -120,12 +120,16 @@ app.use(
 
 app.use(
   urlPrefix + '/lib/cityssm-bulma-js/bulma-js.js',
-  express.static(path.join('node_modules', '@cityssm', 'bulma-js', 'dist', 'bulma-js.js'))
+  express.static(
+    path.join('node_modules', '@cityssm', 'bulma-js', 'dist', 'bulma-js.js')
+  )
 )
 
 app.use(
   urlPrefix + '/lib/cityssm-bulma-webapp-js',
-  express.static(path.join('node_modules', '@cityssm', 'bulma-webapp-js', 'dist'))
+  express.static(
+    path.join('node_modules', '@cityssm', 'bulma-webapp-js', 'dist')
+  )
 )
 
 app.use(
