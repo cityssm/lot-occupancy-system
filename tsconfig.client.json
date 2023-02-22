@@ -8,6 +8,7 @@
         "noImplicitAny": false,
         "removeComments": false,
         "allowUnreachableCode": false,
+        "skipLibCheck": true,
         "strictNullChecks": true
     },
     "files": [
