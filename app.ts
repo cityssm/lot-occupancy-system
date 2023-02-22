@@ -277,7 +277,7 @@ app.get(urlPrefix + '/logout', (request, response) => {
 // Catch 404 and forward to error handler
 app.use((request, _response, next) => {
   debugApp(request.url)
-  next(createError(404, 'File not found.'))
+  next(createError(404, 'File not found: ' + request.url))
 })
 
 export default app
