@@ -65,8 +65,8 @@ if (urlPrefix !== '') {
 }
 app.use(urlPrefix, express.static(path.join('public')));
 app.use(urlPrefix + '/lib/bulma-calendar', express.static(path.join('node_modules', 'bulma-calendar', 'dist')));
-app.use(urlPrefix + '/lib/cityssm-bulma-js', express.static(path.join('node_modules', '@cityssm', 'bulma-js', 'dist')));
-app.use(urlPrefix + '/lib/cityssm-bulma-webapp-js', express.static(path.join('node_modules', '@cityssm', 'bulma-webapp-js')));
+app.use(urlPrefix + '/lib/cityssm-bulma-js/bulma-js.js', express.static(path.join('node_modules', '@cityssm', 'bulma-js', 'dist', 'bulma-js.js')));
+app.use(urlPrefix + '/lib/cityssm-bulma-webapp-js', express.static(path.join('node_modules', '@cityssm', 'bulma-webapp-js', 'dist')));
 app.use(urlPrefix + '/lib/fa', express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free')));
 app.use(urlPrefix + '/lib/leaflet', express.static(path.join('node_modules', 'leaflet', 'dist')));
 app.use(urlPrefix + '/lib/randomcolor/randomColor.js', express.static(path.join('node_modules', 'randomcolor', 'randomColor.js')));
