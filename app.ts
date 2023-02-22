@@ -139,8 +139,8 @@ app.use(
 )
 
 app.use(
-  urlPrefix + '/lib/randomcolor',
-  express.static(path.join('node_modules', 'randomcolor'))
+  urlPrefix + '/lib/randomcolor/randomColor.js',
+  express.static(path.join('node_modules', 'randomcolor', 'randomColor.js'))
 )
 
 /*

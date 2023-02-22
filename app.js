@@ -69,7 +69,7 @@ app.use(urlPrefix + '/lib/cityssm-bulma-js', express.static(path.join('node_modu
 app.use(urlPrefix + '/lib/cityssm-bulma-webapp-js', express.static(path.join('node_modules', '@cityssm', 'bulma-webapp-js')));
 app.use(urlPrefix + '/lib/fa', express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free')));
 app.use(urlPrefix + '/lib/leaflet', express.static(path.join('node_modules', 'leaflet', 'dist')));
-app.use(urlPrefix + '/lib/randomcolor', express.static(path.join('node_modules', 'randomcolor')));
+app.use(urlPrefix + '/lib/randomcolor/randomColor.js', express.static(path.join('node_modules', 'randomcolor', 'randomColor.js')));
 const sessionCookieName = configFunctions.getProperty('session.cookieName');
 const FileStoreSession = FileStore(session);
 app.use(session({
