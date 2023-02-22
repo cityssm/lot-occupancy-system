@@ -1,7 +1,7 @@
 # Lot Occupancy System
 
-[![Codacy grade](https://img.shields.io/codacy/grade/87f68ffeb2524c1fb0991d544e6afffb)](https://app.codacy.com/gh/cityssm/lot-occupancy-system/dashboard?branch=main)
-[![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/cityssm/lot-occupancy-system)](https://codeclimate.com/github/cityssm/lot-occupancy-system)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/87f68ffeb2524c1fb0991d544e6afffb)](https://www.codacy.com/gh/cityssm/lot-occupancy-system/dashboard?utm_source=github.com&utm_medium=referral&utm_content=cityssm/lot-occupancy-system&utm_campaign=Badge_Grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/11a8975b332f66e6eec7/maintainability)](https://codeclimate.com/github/cityssm/lot-occupancy-system/maintainability)
 [![codecov](https://codecov.io/gh/cityssm/lot-occupancy-system/branch/main/graph/badge.svg?token=1M38ZVCLKE)](https://codecov.io/gh/cityssm/lot-occupancy-system)
 [![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/cityssm/lot-occupancy-system)](https://app.snyk.io/org/cityssm/project/ea456d07-9674-4c74-b3d1-1452a8183153)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cityssm/lot-occupancy-system/coverage.yml?branch=main)](https://github.com/cityssm/lot-occupancy-system/actions/workflows/coverage.yml)
@@ -26,10 +26,10 @@ This system can run "out-of-the-box" without maps, with the option to add them w
 
 ## About this Project
 
--   [Code of Conduct](CODE_OF_CONDUCT.md)
--   [Contributing Guidelines](CONTRIBUTING.md)
--   [Security Policy](SECURITY.md)
--   [MIT Licence](LICENSE.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Security Policy](SECURITY.md)
+- [MIT Licence](LICENSE.md)
 
 Although the system is quite niche, it's being released in an open source environment in hopes to pool developer resources from other municipalities looking to move away from older, legacy systems.
 
