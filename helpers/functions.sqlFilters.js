@@ -15,13 +15,14 @@ export function getLotNameWhereClause(lotName = '', lotNameSearchType, lotsTable
                 break;
             }
             default: {
+                const usedPieces = new Set();
                 const lotNamePieces = lotName.toLowerCase().split(' ');
                 for (const lotNamePiece of lotNamePieces) {
-                    if (lotNamePiece === '') {
+                    if (lotNamePiece === '' || usedPieces.has(lotNamePiece)) {
                         continue;
                     }
-                    sqlWhereClause +=
-                        ' and instr(lower(' + lotsTableAlias + '.lotName), ?)';
+                    usedPieces.add(lotNamePiece);
+                    sqlWhereClause += ` and instr(lower(${lotsTableAlias}.lotName), ?)`;
                     sqlParameters.push(lotNamePiece);
                 }
             }
@@ -70,15 +71,15 @@ export function getOccupancyTimeWhereClause(occupancyTime, lotOccupanciesTableAl
 export function getOccupantNameWhereClause(occupantName = '', tableAlias = 'o') {
     let sqlWhereClause = '';
     const sqlParameters = [];
-    if (occupantName !== '') {
-        const occupantNamePieces = occupantName.toLowerCase().split(' ');
-        for (const occupantNamePiece of occupantNamePieces) {
-            if (occupantNamePiece === '') {
-                continue;
-            }
-            sqlWhereClause += ` and (instr(lower(${tableAlias}.occupantName), ?) or instr(lower(${tableAlias}.occupantFamilyName), ?))`;
-            sqlParameters.push(occupantNamePiece, occupantNamePiece);
+    const usedPieces = new Set();
+    const occupantNamePieces = occupantName.toLowerCase().split(' ');
+    for (const occupantNamePiece of occupantNamePieces) {
+        if (occupantNamePiece === '' || usedPieces.has(occupantNamePiece)) {
+            continue;
         }
+        usedPieces.add(occupantNamePiece);
+        sqlWhereClause += ` and (instr(lower(${tableAlias}.occupantName), ?) or instr(lower(${tableAlias}.occupantFamilyName), ?))`;
+        sqlParameters.push(occupantNamePiece, occupantNamePiece);
     }
     return {
         sqlWhereClause,

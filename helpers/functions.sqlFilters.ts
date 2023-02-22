@@ -28,14 +28,18 @@ export function getLotNameWhereClause(
         break
       }
       default: {
+        const usedPieces = new Set<string>()
+
         const lotNamePieces = lotName.toLowerCase().split(' ')
+
         for (const lotNamePiece of lotNamePieces) {
-          if (lotNamePiece === '') {
+          if (lotNamePiece === '' || usedPieces.has(lotNamePiece)) {
             continue
           }
 
-          sqlWhereClause +=
-            ' and instr(lower(' + lotsTableAlias + '.lotName), ?)'
+          usedPieces.add(lotNamePiece)
+
+          sqlWhereClause += ` and instr(lower(${lotsTableAlias}.lotName), ?)`
           sqlParameters.push(lotNamePiece)
         }
       }
@@ -101,16 +105,18 @@ export function getOccupantNameWhereClause(
   let sqlWhereClause = ''
   const sqlParameters: unknown[] = []
 
-  if (occupantName !== '') {
-    const occupantNamePieces = occupantName.toLowerCase().split(' ')
-    for (const occupantNamePiece of occupantNamePieces) {
-      if (occupantNamePiece === '') {
-        continue
-      }
+  const usedPieces = new Set<string>()
 
-      sqlWhereClause += ` and (instr(lower(${tableAlias}.occupantName), ?) or instr(lower(${tableAlias}.occupantFamilyName), ?))`
-      sqlParameters.push(occupantNamePiece, occupantNamePiece)
+  const occupantNamePieces = occupantName.toLowerCase().split(' ')
+  for (const occupantNamePiece of occupantNamePieces) {
+    if (occupantNamePiece === '' || usedPieces.has(occupantNamePiece)) {
+      continue
     }
+
+    usedPieces.add(occupantNamePiece)
+
+    sqlWhereClause += ` and (instr(lower(${tableAlias}.occupantName), ?) or instr(lower(${tableAlias}.occupantFamilyName), ?))`
+    sqlParameters.push(occupantNamePiece, occupantNamePiece)
   }
 
   return {
