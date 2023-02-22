@@ -50,8 +50,8 @@ function buildEventSummary(milestone: recordTypes.WorkOrderMilestone): string {
   let summary =
     (milestone.workOrderMilestoneCompletionDate ? '✔ ' : '') +
     ((milestone.workOrderMilestoneTypeId ?? -1) === -1
-      ? (milestone.workOrderMilestoneDescription ?? '')
-      : (milestone.workOrderMilestoneType ?? '')
+      ? milestone.workOrderMilestoneDescription ?? ''
+      : milestone.workOrderMilestoneType ?? ''
     ).trim()
 
   let occupantCount = 0
@@ -65,7 +65,10 @@ function buildEventSummary(milestone: recordTypes.WorkOrderMilestone): string {
           summary += ': '
         }
 
-        summary += (occupant.occupantName ?? '') + ' ' + (occupant.occupantFamilyName ?? '')
+        summary +=
+          (occupant.occupantName ?? '') +
+          ' ' +
+          (occupant.occupantFamilyName ?? '')
       }
     }
   }
@@ -355,12 +358,12 @@ export async function handler(
     // Create event
     const eventData: ICalEventData = {
       start: milestoneDate,
-      created: new Date(milestone.recordCreate_timeMillis),
-      stamp: new Date(milestone.recordCreate_timeMillis),
+      created: new Date(milestone.recordCreate_timeMillis!),
+      stamp: new Date(milestone.recordCreate_timeMillis!),
       lastModified: new Date(
         Math.max(
-          milestone.recordUpdate_timeMillis,
-          milestone.workOrderRecordUpdate_timeMillis
+          milestone.recordUpdate_timeMillis!,
+          milestone.workOrderRecordUpdate_timeMillis!
         )
       ),
       allDay: !milestone.workOrderMilestoneTime,
@@ -406,14 +409,18 @@ export async function handler(
         for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
           if (organizerSet) {
             calendarEvent.createAttendee({
-              name: occupant.occupantName + ' ' + occupant.occupantFamilyName,
+              name: `${occupant.occupantName ?? ''} ${
+                occupant.occupantFamilyName ?? ''
+              }`,
               email: configFunctions.getProperty(
                 'settings.workOrders.calendarEmailAddress'
               )
             })
           } else {
             calendarEvent.organizer({
-              name: occupant.occupantName + ' ' + occupant.occupantFamilyName,
+              name: `${occupant.occupantName ?? ''} ${
+                occupant.occupantFamilyName ?? ''
+              }`,
               email: configFunctions.getProperty(
                 'settings.workOrders.calendarEmailAddress'
               )
@@ -424,7 +431,7 @@ export async function handler(
       }
     } else {
       calendarEvent.organizer({
-        name: milestone.recordCreate_userName,
+        name: milestone.recordCreate_userName!,
         email: configFunctions.getProperty(
           'settings.workOrders.calendarEmailAddress'
         )

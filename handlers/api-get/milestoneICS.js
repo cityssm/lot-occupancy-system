@@ -22,8 +22,8 @@ function getWorkOrderUrl(request, milestone) {
 function buildEventSummary(milestone) {
     let summary = (milestone.workOrderMilestoneCompletionDate ? '✔ ' : '') +
         ((milestone.workOrderMilestoneTypeId ?? -1) === -1
-            ? (milestone.workOrderMilestoneDescription ?? '')
-            : (milestone.workOrderMilestoneType ?? '')).trim();
+            ? milestone.workOrderMilestoneDescription ?? ''
+            : milestone.workOrderMilestoneType ?? '').trim();
     let occupantCount = 0;
     for (const lotOccupancy of milestone.workOrderLotOccupancies) {
         for (const occupant of lotOccupancy.lotOccupancyOccupants) {
@@ -32,7 +32,10 @@ function buildEventSummary(milestone) {
                 if (summary !== '') {
                     summary += ': ';
                 }
-                summary += (occupant.occupantName ?? '') + ' ' + (occupant.occupantFamilyName ?? '');
+                summary +=
+                    (occupant.occupantName ?? '') +
+                        ' ' +
+                        (occupant.occupantFamilyName ?? '');
             }
         }
     }
@@ -260,13 +263,13 @@ export async function handler(request, response) {
                 for (const occupant of lotOccupancy.lotOccupancyOccupants) {
                     if (organizerSet) {
                         calendarEvent.createAttendee({
-                            name: occupant.occupantName + ' ' + occupant.occupantFamilyName,
+                            name: `${occupant.occupantName ?? ''} ${occupant.occupantFamilyName ?? ''}`,
                             email: configFunctions.getProperty('settings.workOrders.calendarEmailAddress')
                         });
                     }
                     else {
                         calendarEvent.organizer({
-                            name: occupant.occupantName + ' ' + occupant.occupantFamilyName,
+                            name: `${occupant.occupantName ?? ''} ${occupant.occupantFamilyName ?? ''}`,
                             email: configFunctions.getProperty('settings.workOrders.calendarEmailAddress')
                         });
                         organizerSet = true;
