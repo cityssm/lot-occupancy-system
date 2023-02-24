@@ -51,7 +51,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }, (responseJSON) => {
             var _a;
             if (responseJSON.success) {
-                window.location.href = los.urlPrefix + '/workOrders/' + workOrderId;
+                window.location.href = los.getWorkOrderURL(workOrderId);
             }
             else {
                 bulmaJS.alert({
@@ -557,9 +557,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         else {
                             rowElement.insertAdjacentHTML('beforeend', `<td><span class="has-text-grey">(No ${los.escapedAliases.Lot})</span></td>`);
                         }
-                        rowElement.insertAdjacentHTML('beforeend', '<td>' +
-                            lotOccupancy.occupancyStartDateString +
-                            '</td>' +
+                        rowElement.insertAdjacentHTML('beforeend', `<td>${lotOccupancy.occupancyStartDateString}</td>` +
                             ('<td>' +
                                 (lotOccupancy.occupancyEndDate
                                     ? lotOccupancy.occupancyEndDateString
@@ -567,9 +565,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 '</td>') +
                             ('<td>' +
                                 (lotOccupancy.lotOccupancyOccupants.length === 0
-                                    ? '<span class="has-text-grey">(No ' +
-                                        cityssm.escapeHTML(los.escapedAliases.Occupants) +
-                                        ')</span>'
+                                    ? `<span class="has-text-grey">(No ${cityssm.escapeHTML(los.escapedAliases.Occupants)})</span>`
                                     : cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0].occupantName +
                                         ' ' +
                                         lotOccupancy.lotOccupancyOccupants[0]

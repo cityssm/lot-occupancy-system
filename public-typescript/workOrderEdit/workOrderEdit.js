@@ -51,7 +51,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }, (responseJSON) => {
             var _a;
             if (responseJSON.success) {
-                window.location.href = los.urlPrefix + '/workOrders/' + workOrderId;
+                window.location.href = los.getWorkOrderURL(workOrderId);
             }
             else {
                 bulmaJS.alert({

@@ -598,19 +598,17 @@ document
 
             rowElement.insertAdjacentHTML(
               'beforeend',
-              '<td>' +
-                lotOccupancy.occupancyStartDateString +
-                '</td>' +
+              `<td>${lotOccupancy.occupancyStartDateString!}</td>` +
                 ('<td>' +
                   (lotOccupancy.occupancyEndDate
-                    ? lotOccupancy.occupancyEndDateString
+                    ? lotOccupancy.occupancyEndDateString!
                     : '<span class="has-text-grey">(No End Date)</span>') +
                   '</td>') +
                 ('<td>' +
                   (lotOccupancy.lotOccupancyOccupants!.length === 0
-                    ? '<span class="has-text-grey">(No ' +
-                      cityssm.escapeHTML(los.escapedAliases.Occupants) +
-                      ')</span>'
+                    ? `<span class="has-text-grey">(No ${cityssm.escapeHTML(
+                        los.escapedAliases.Occupants
+                      )})</span>`
                     : cityssm.escapeHTML(
                         lotOccupancy.lotOccupancyOccupants![0].occupantName! +
                           ' ' +
