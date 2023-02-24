@@ -1,4 +1,4 @@
-import * as recordTypes from '../types/recordTypes'
+import type * as recordTypes from '../types/recordTypes'
 
 export const calculateFeeAmount = (
   fee: recordTypes.Fee,
