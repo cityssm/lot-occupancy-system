@@ -8,7 +8,6 @@
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "scripts": {
-    "build:version": "npx genversion --es6 --semi version.js",
     "start": "cross-env NODE_ENV=production node ./bin/www",
     "dev:test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true nodemon ./bin/www.js",
     "dev:test:process": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true nodemon ./bin/wwwProcess.js",
