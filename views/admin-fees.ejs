@@ -1,58 +1,57 @@
 <%- include('_header'); -%>
 
 <div class="columns">
-    <div class="column is-3 is-hidden-mobile">
-        <%- include('_menu-admin'); -%>
-    </div>
-    <div class="column">
-        <nav class="breadcrumb">
-          <ul>
-            <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-            <li>
-                <a href="#">
-        
-                    <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
-                    <span>Administrator Tools</span>
-                </a>
-            </li>
-            <li class="is-active">
-                <a href="#" aria-current="page">
-                    Fee Management
-                </a>
-            </li>
-          </ul>
-        </nav>
-        
-        <div class="level">
-            <div class="level-left">
-                <div class="level-item is-justify-content-start">
-                    <h1 class="title is-1">
-                        Fee Management
-                    </h1>
-                </div>
-            </div>
-            <div class="level-right">
-                <div class="level-item is-justify-content-end">
-                    <button class="button is-success" id="button--addFeeCategory" data-cy="addFeeCategory" type="button" accesskey="n">
-                        <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                        <span>Add Fee Category</span>
-                    </button>
-                </div>
-            </div>
+  <div class="column is-3 is-hidden-mobile">
+    <%- include('_menu-admin'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li>
+          <a href="#">
+            <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
+            <span>Administrator Tools</span>
+          </a>
+        </li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            Fee Management
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item is-justify-content-start">
+          <h1 class="title is-1">
+            Fee Management
+          </h1>
         </div>
-        
-        <div id="container--feeCategories"></div>
+      </div>
+      <div class="level-right">
+        <div class="level-item is-justify-content-end">
+          <button class="button is-success" id="button--addFeeCategory" data-cy="addFeeCategory" type="button" accesskey="n">
+            <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+            <span>Add Fee Category</span>
+          </button>
+        </div>
+      </div>
     </div>
+    
+    <div id="container--feeCategories"></div>
+  </div>
 </div>
 
 <%- include('_footerA'); -%>
 
 <script>
-    exports.feeCategories = <%- JSON.stringify(feeCategories) %>;
-    exports.occupancyTypes = <%- JSON.stringify(occupancyTypes) %>;
-    exports.lotTypes = <%- JSON.stringify(lotTypes) %>;
+  exports.feeCategories = <%- JSON.stringify(feeCategories) %>;
+  exports.occupancyTypes = <%- JSON.stringify(occupancyTypes) %>;
+  exports.lotTypes = <%- JSON.stringify(lotTypes) %>;
 
-    exports.taxPercentageDefault = <%= configFunctions.getProperty("settings.fees.taxPercentageDefault") %>;
+  exports.taxPercentageDefault = <%= configFunctions.getProperty("settings.fees.taxPercentageDefault") %>;
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/adminFees.min.js"></script>
