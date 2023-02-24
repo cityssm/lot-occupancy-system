@@ -11,9 +11,15 @@ const directoryName = dirname(fileURLToPath(import.meta.url));
 const processCount = Math.min(configFunctions.getProperty('application.maximumProcesses'), os.cpus().length);
 debug(`Primary pid: ${process.pid}`);
 debug(`Launching ${processCount} processes`);
-cluster.setupPrimary({
+const clusterSettings = {
     exec: directoryName + '/wwwProcess.js'
-});
+};
+if (cluster.setupPrimary) {
+    cluster.setupPrimary(clusterSettings);
+}
+else {
+    cluster.setupMaster(clusterSettings);
+}
 for (let index = 0; index < processCount; index += 1) {
     cluster.fork();
 }
@@ -47,4 +53,12 @@ if (ntfyStartupConfig) {
         debug('Sending ntfy notification');
         void ntfyPublish(ntfyShutdownMessage);
     });
+}
+if (process.env.STARTUP_TEST === 'true') {
+    const killSeconds = 10;
+    debug(`Killing processes in ${killSeconds} seconds...`);
+    setTimeout(() => {
+        debug('Killing processes');
+        process.exit(0);
+    }, 10000);
 }

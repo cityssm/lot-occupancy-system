@@ -31,6 +31,9 @@ jobs:
 
       - name: Copy Test Config
         run: cp ./data/config.testing.js ./data/config.js
+        
+      - name: Test Application Startup
+        run: npm run test:startup
 
       - name: Code Climate (Before)
         if: ${{ github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' && matrix.node == 16 }}

@@ -23,9 +23,15 @@ const processCount = Math.min(
 debug(`Primary pid: ${process.pid}`)
 debug(`Launching ${processCount} processes`)
 
-cluster.setupPrimary({
+const clusterSettings = {
   exec: directoryName + '/wwwProcess.js'
-})
+}
+
+if (cluster.setupPrimary) {
+  cluster.setupPrimary(clusterSettings)
+} else {
+  cluster.setupMaster(clusterSettings)
+}
 
 for (let index = 0; index < processCount; index += 1) {
   cluster.fork()
@@ -68,4 +74,17 @@ if (ntfyStartupConfig) {
     debug('Sending ntfy notification')
     void ntfyPublish(ntfyShutdownMessage)
   })
+}
+
+if (process.env.STARTUP_TEST === 'true') {
+  const killSeconds = 10
+
+  debug(`Killing processes in ${killSeconds} seconds...`)
+
+  setTimeout(() => {
+    debug('Killing processes')
+
+    // eslint-disable-next-line no-process-exit, unicorn/no-process-exit
+    process.exit(0)
+  }, 10_000)
 }
