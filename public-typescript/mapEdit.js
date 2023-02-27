@@ -8,12 +8,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
         .value;
     const isCreate = mapId === '';
     const mapForm = document.querySelector('#form--map');
+    function setUnsavedChanges() {
+        var _a;
+        los.setUnsavedChanges();
+        (_a = document
+            .querySelector("button[type='submit'][form='form--map']")) === null || _a === void 0 ? void 0 : _a.classList.remove('is-light');
+    }
+    function clearUnsavedChanges() {
+        var _a;
+        los.clearUnsavedChanges();
+        (_a = document
+            .querySelector("button[type='submit'][form='form--map']")) === null || _a === void 0 ? void 0 : _a.classList.add('is-light');
+    }
     function updateMap(formEvent) {
         formEvent.preventDefault();
-        cityssm.postJSON(los.urlPrefix + '/maps/' + (isCreate ? 'doCreateMap' : 'doUpdateMap'), mapForm, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/maps/' + (isCreate ? 'doCreateMap' : 'doUpdateMap'), mapForm, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
-                cityssm.disableNavBlocker();
+                clearUnsavedChanges();
                 if (isCreate) {
                     window.location.href = los.getMapURL(responseJSON.mapId, true);
                 }
@@ -36,7 +49,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     mapForm.addEventListener('submit', updateMap);
     const inputElements = mapForm.querySelectorAll('input, select');
     for (const inputElement of inputElements) {
-        inputElement.addEventListener('change', cityssm.enableNavBlocker);
+        inputElement.addEventListener('change', setUnsavedChanges);
     }
     (_a = document
         .querySelector('#button--deleteMap')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (clickEvent) => {
@@ -44,8 +57,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/maps/doDeleteMap', {
                 mapId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     window.location.href = los.getMapURL();
                 }

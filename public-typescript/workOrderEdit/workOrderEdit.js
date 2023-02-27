@@ -11,14 +11,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
         .querySelector('#workOrderEdit--workOrderOpenDateString')
         .closest('.field'));
     los.initializeUnlockFieldButtons(workOrderFormElement);
+    function setUnsavedChanges() {
+        var _a;
+        los.setUnsavedChanges();
+        (_a = document
+            .querySelector("button[type='submit'][form='form--workOrderEdit']")) === null || _a === void 0 ? void 0 : _a.classList.remove('is-light');
+    }
+    function clearUnsavedChanges() {
+        var _a;
+        los.clearUnsavedChanges();
+        (_a = document
+            .querySelector("button[type='submit'][form='form--workOrderEdit']")) === null || _a === void 0 ? void 0 : _a.classList.add('is-light');
+    }
     workOrderFormElement.addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix +
             '/workOrders/' +
-            (isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'), submitEvent.currentTarget, (responseJSON) => {
+            (isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'), submitEvent.currentTarget, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
-                cityssm.disableNavBlocker();
+                clearUnsavedChanges();
                 if (isCreate) {
                     window.location.href = los.getWorkOrderURL(responseJSON.workOrderId, true);
                 }
@@ -38,9 +51,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    const inputElements = workOrderFormElement.querySelectorAll('input, select');
+    const inputElements = workOrderFormElement.querySelectorAll('input, select, textarea');
     for (const inputElement of inputElements) {
-        inputElement.addEventListener('change', cityssm.enableNavBlocker);
+        inputElement.addEventListener('change', setUnsavedChanges);
     }
     /*
      * Work Order Options
@@ -48,9 +61,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function doClose() {
         cityssm.postJSON(los.urlPrefix + '/workOrders/doCloseWorkOrder', {
             workOrderId
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
+                clearUnsavedChanges();
                 window.location.href = los.getWorkOrderURL(workOrderId);
             }
             else {
@@ -65,9 +80,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function doDelete() {
         cityssm.postJSON(los.urlPrefix + '/workOrders/doDeleteWorkOrder', {
             workOrderId
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
+                clearUnsavedChanges();
                 window.location.href = los.urlPrefix + '/workOrders';
             }
             else {
@@ -89,28 +106,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
             bulmaJS.alert({
                 title: 'Outstanding Milestones',
                 message: `You cannot close a work order with outstanding milestones.
-                        Either complete the outstanding milestones, or remove them from the work order.`,
+            Either complete the outstanding milestones, or remove them from the work order.`,
                 contextualColorName: 'warning'
             });
             /*
               // Disable closing work orders with open milestones
               bulmaJS.confirm({
-                  title: "Close Work Order with Outstanding Milestones",
-                  message:
-                      "Are you sure you want to close this work order with outstanding milestones?",
-                  contextualColorName: "danger",
-                  okButton: {
-                      text: "Yes, Close Work Order",
-                      callbackFunction: doClose
-                  }
+                title: "Close Work Order with Outstanding Milestones",
+                message:
+                  "Are you sure you want to close this work order with outstanding milestones?",
+                contextualColorName: "danger",
+                okButton: {
+                  text: "Yes, Close Work Order",
+                  callbackFunction: doClose
+                }
               });
           */
         }
         else {
             bulmaJS.confirm({
                 title: 'Close Work Order',
-                message: 'Are you sure you want to close this work order?',
-                contextualColorName: 'info',
+                message: los.hasUnsavedChanges()
+                    ? 'Are you sure you want to close this work order with unsaved changes?'
+                    : 'Are you sure you want to close this work order?',
+                contextualColorName: los.hasUnsavedChanges() ? 'warning' : 'info',
                 okButton: {
                     text: 'Yes, Close Work Order',
                     callbackFunction: doClose
@@ -144,8 +163,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * Milestones
      */
-    function processMilestoneResponse(responseJSON) {
+    function processMilestoneResponse(rawResponseJSON) {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderMilestones = responseJSON.workOrderMilestones;
             renderMilestones();

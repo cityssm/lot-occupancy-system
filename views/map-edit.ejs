@@ -4,36 +4,36 @@
   <ul>
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li>
-        <a href="<%= urlPrefix %>/maps">
-            <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
-            <span><%= configFunctions.getProperty("aliases.maps") %></span>
-        </a>
+      <a href="<%= urlPrefix %>/maps">
+        <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
+        <span><%= configFunctions.getProperty("aliases.maps") %></span>
+      </a>
     </li>
     <% if (!isCreate) { %>
-        <li>
-            <a href="<%= urlPrefix %>/maps/<%= map.mapId %>" accesskey="v">
-                <%= map.mapName || "(No Name)" %>
-            </a>
-        </li>
+      <li>
+        <a href="<%= urlPrefix %>/maps/<%= map.mapId %>" accesskey="v">
+          <%= map.mapName || "(No Name)" %>
+        </a>
+      </li>
     <% } %>
     <li class="is-active">
-        <a href="#" aria-current="page">
-            <% if (isCreate) { %>
-                Create a New <%= configFunctions.getProperty("aliases.map") %>
-            <% } else { %>
-                Update
-            <% } %>
-        </a>
+      <a href="#" aria-current="page">
+        <% if (isCreate) { %>
+          Create a New <%= configFunctions.getProperty("aliases.map") %>
+        <% } else { %>
+          Update
+        <% } %>
+    </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-    <% if (isCreate) { %>
+  <% if (isCreate) { %>
     Create a New <%= configFunctions.getProperty("aliases.map") %>
-    <% } else { %>
+  <% } else { %>
     Update <%= configFunctions.getProperty("aliases.map") %>
-    <% } %>
+  <% } %>
 </h1>
 
 <div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
@@ -48,27 +48,27 @@
     <% if (!isCreate) { %>
       <div class="level-item">
         <div class="dropdown is-right is-up">
-            <div class="dropdown-trigger">
-              <button class="button" type="button">
-                <span>More Options</span>
-                <span class="icon is-small">
-                    <i class="fas fa-angle-up" aria-hidden="true"></i>
-                </span>
-              </button>
+          <div class="dropdown-trigger">
+            <button class="button" type="button">
+              <span>More Options</span>
+              <span class="icon is-small">
+                  <i class="fas fa-angle-up" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu">
+            <div class="dropdown-content">
+              <a class="dropdown-item" id="button--deleteMap" href="#">
+                <span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
+                <span>Delete <%= configFunctions.getProperty("aliases.map") %></span>
+              </a>
             </div>
-            <div class="dropdown-menu">
-              <div class="dropdown-content">
-                <a class="dropdown-item" id="button--deleteMap" href="#">
-                    <span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
-                    <span>Delete <%= configFunctions.getProperty("aliases.map") %></span>
-                </a>
-              </div>
-            </div>
+          </div>
         </div>
       </div>
     <% } %>
     <div class="level-item">
-      <button class="button is-primary" type="submit" form="form--map">
+      <button class="button is-primary is-light" type="submit" form="form--map">
         <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
         <span>
             <%= (isCreate ? "Create": "Update") %>

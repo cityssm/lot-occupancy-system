@@ -16,19 +16,35 @@ declare const bulmaJS: BulmaJS
 
   const mapForm = document.querySelector('#form--map') as HTMLFormElement
 
+  function setUnsavedChanges(): void {
+    los.setUnsavedChanges()
+    document
+      .querySelector("button[type='submit'][form='form--map']")
+      ?.classList.remove('is-light')
+  }
+
+  function clearUnsavedChanges(): void {
+    los.clearUnsavedChanges()
+    document
+      .querySelector("button[type='submit'][form='form--map']")
+      ?.classList.add('is-light')
+  }
+
   function updateMap(formEvent: SubmitEvent): void {
     formEvent.preventDefault()
 
     cityssm.postJSON(
       los.urlPrefix + '/maps/' + (isCreate ? 'doCreateMap' : 'doUpdateMap'),
       mapForm,
-      (responseJSON: {
-        success: boolean
-        mapId?: number
-        errorMessage?: string
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          mapId?: number
+          errorMessage?: string
+        }
+
         if (responseJSON.success) {
-          cityssm.disableNavBlocker()
+          clearUnsavedChanges()
 
           if (isCreate) {
             window.location.href = los.getMapURL(responseJSON.mapId, true)
@@ -55,7 +71,7 @@ declare const bulmaJS: BulmaJS
     mapForm.querySelectorAll('input, select')
 
   for (const inputElement of inputElements) {
-    inputElement.addEventListener('change', cityssm.enableNavBlocker)
+    inputElement.addEventListener('change', setUnsavedChanges)
   }
 
   document
@@ -69,7 +85,12 @@ declare const bulmaJS: BulmaJS
           {
             mapId
           },
-          (responseJSON: { success: boolean; errorMessage?: string }) => {
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+            }
+
             if (responseJSON.success) {
               window.location.href = los.getMapURL()
             } else {

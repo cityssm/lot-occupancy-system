@@ -20,6 +20,20 @@ declare const bulmaJS: BulmaJS
 
   let refreshAfterSave = isCreate
 
+  function setUnsavedChanges(): void {
+    los.setUnsavedChanges()
+    document
+      .querySelector("button[type='submit'][form='form--lot']")
+      ?.classList.remove('is-light')
+  }
+
+  function clearUnsavedChanges(): void {
+    los.clearUnsavedChanges()
+    document
+      .querySelector("button[type='submit'][form='form--lot']")
+      ?.classList.add('is-light')
+  }
+
   const formElement = document.querySelector('#form--lot') as HTMLFormElement
 
   function updateLot(formEvent: SubmitEvent): void {
@@ -28,13 +42,15 @@ declare const bulmaJS: BulmaJS
     cityssm.postJSON(
       los.urlPrefix + '/lots/' + (isCreate ? 'doCreateLot' : 'doUpdateLot'),
       formElement,
-      (responseJSON: {
-        success: boolean
-        lotId?: number
-        errorMessage?: string
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          lotId?: number
+          errorMessage?: string
+        }
+
         if (responseJSON.success) {
-          los.clearUnsavedChanges()
+          clearUnsavedChanges()
 
           if (isCreate || refreshAfterSave) {
             window.location.href = los.getLotURL(responseJSON.lotId, true, true)
@@ -60,7 +76,7 @@ declare const bulmaJS: BulmaJS
   const formInputElements = formElement.querySelectorAll('input, select')
 
   for (const formInputElement of formInputElements) {
-    formInputElement.addEventListener('change', los.setUnsavedChanges)
+    formInputElement.addEventListener('change', setUnsavedChanges)
   }
 
   los.initializeUnlockFieldButtons(formElement)
@@ -130,8 +146,8 @@ declare const bulmaJS: BulmaJS
         (responseJSON: { lotTypeFields: recordTypes.LotTypeField[] }) => {
           if (responseJSON.lotTypeFields.length === 0) {
             lotFieldsContainerElement.innerHTML = `<div class="message is-info">
-                            <p class="message-body">There are no additional fields for this ${los.escapedAliases.lot} type.</p>
-                            </div>`
+              <p class="message-body">There are no additional fields for this ${los.escapedAliases.lot} type.</p>
+              </div>`
 
             return
           }

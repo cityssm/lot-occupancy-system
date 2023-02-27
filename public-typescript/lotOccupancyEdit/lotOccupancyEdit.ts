@@ -23,6 +23,20 @@ declare const bulmaJS: BulmaJS
 
   let refreshAfterSave = isCreate
 
+  function setUnsavedChanges(): void {
+    los.setUnsavedChanges()
+    document
+      .querySelector("button[type='submit'][form='form--lotOccupancy']")
+      ?.classList.remove('is-light')
+  }
+
+  function clearUnsavedChanges(): void {
+    los.clearUnsavedChanges()
+    document
+      .querySelector("button[type='submit'][form='form--lotOccupancy']")
+      ?.classList.add('is-light')
+  }
+
   const formElement = document.querySelector(
     '#form--lotOccupancy'
   ) as HTMLFormElement
@@ -35,13 +49,15 @@ declare const bulmaJS: BulmaJS
         '/lotOccupancies/' +
         (isCreate ? 'doCreateLotOccupancy' : 'doUpdateLotOccupancy'),
       formElement,
-      (responseJSON: {
-        success: boolean
-        lotOccupancyId?: number
-        errorMessage?: string
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          lotOccupancyId?: number
+          errorMessage?: string
+        }
+
         if (responseJSON.success) {
-          los.clearUnsavedChanges()
+          clearUnsavedChanges()
 
           if (isCreate || refreshAfterSave) {
             window.location.href = los.getLotOccupancyURL(
@@ -69,7 +85,7 @@ declare const bulmaJS: BulmaJS
   const formInputElements = formElement.querySelectorAll('input, select')
 
   for (const formInputElement of formInputElements) {
-    formInputElement.addEventListener('change', los.setUnsavedChanges)
+    formInputElement.addEventListener('change', setUnsavedChanges)
   }
 
   function doCopy(): void {
@@ -78,13 +94,16 @@ declare const bulmaJS: BulmaJS
       {
         lotOccupancyId
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        lotOccupancyId?: number
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          lotOccupancyId?: number
+        }
+
         if (responseJSON.success) {
-          cityssm.disableNavBlocker()
+          clearUnsavedChanges()
+
           window.location.href = los.getLotOccupancyURL(
             responseJSON.lotOccupancyId,
             true
@@ -135,9 +154,14 @@ declare const bulmaJS: BulmaJS
           {
             lotOccupancyId
           },
-          (responseJSON: { success: boolean; errorMessage?: string }) => {
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+            }
+
             if (responseJSON.success) {
-              cityssm.disableNavBlocker()
+              clearUnsavedChanges()
               window.location.href = los.getLotOccupancyURL()
             } else {
               bulmaJS.alert({
@@ -174,11 +198,13 @@ declare const bulmaJS: BulmaJS
         cityssm.postJSON(
           los.urlPrefix + '/workOrders/doCreateWorkOrder',
           formEvent.currentTarget,
-          (responseJSON: {
-            success: boolean
-            errorMessage?: string
-            workOrderId?: number
-          }) => {
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+              workOrderId?: number
+            }
+
             if (responseJSON.success) {
               createCloseModalFunction()
 
@@ -287,9 +313,11 @@ declare const bulmaJS: BulmaJS
         {
           occupancyTypeId: occupancyTypeIdElement.value
         },
-        (responseJSON: {
-          occupancyTypeFields: recordTypes.OccupancyTypeField[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            occupancyTypeFields: recordTypes.OccupancyTypeField[]
+          }
+
           if (responseJSON.occupancyTypeFields.length === 0) {
             lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
               <p class="message-body">There are no additional fields for this ${los.escapedAliases.occupancy} type.</p>
@@ -459,7 +487,12 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/lots/doSearchLots',
         lotSelectFormElement,
-        (responseJSON: { count: number; lots: recordTypes.Lot[] }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            count: number
+            lots: recordTypes.Lot[]
+          }
+
           if (responseJSON.count === 0) {
             lotSelectResultsElement.innerHTML = `<div class="message is-info">
               <p class="message-body">No results.</p>
@@ -520,11 +553,13 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/lots/doCreateLot',
         submitEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          lotId?: number
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            errorMessage?: string
+            lotId?: number
+          }
+
           if (responseJSON.success) {
             renderSelectedLotAndClose(responseJSON.lotId!, lotName)
           } else {

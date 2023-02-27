@@ -9,13 +9,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const isCreate = lotId === '';
     // Main form
     let refreshAfterSave = isCreate;
+    function setUnsavedChanges() {
+        var _a;
+        los.setUnsavedChanges();
+        (_a = document
+            .querySelector("button[type='submit'][form='form--lot']")) === null || _a === void 0 ? void 0 : _a.classList.remove('is-light');
+    }
+    function clearUnsavedChanges() {
+        var _a;
+        los.clearUnsavedChanges();
+        (_a = document
+            .querySelector("button[type='submit'][form='form--lot']")) === null || _a === void 0 ? void 0 : _a.classList.add('is-light');
+    }
     const formElement = document.querySelector('#form--lot');
     function updateLot(formEvent) {
         formEvent.preventDefault();
-        cityssm.postJSON(los.urlPrefix + '/lots/' + (isCreate ? 'doCreateLot' : 'doUpdateLot'), formElement, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/lots/' + (isCreate ? 'doCreateLot' : 'doUpdateLot'), formElement, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
-                los.clearUnsavedChanges();
+                clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
                     window.location.href = los.getLotURL(responseJSON.lotId, true, true);
                 }
@@ -38,7 +51,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     formElement.addEventListener('submit', updateLot);
     const formInputElements = formElement.querySelectorAll('input, select');
     for (const formInputElement of formInputElements) {
-        formInputElement.addEventListener('change', los.setUnsavedChanges);
+        formInputElement.addEventListener('change', setUnsavedChanges);
     }
     los.initializeUnlockFieldButtons(formElement);
     (_a = document
@@ -89,8 +102,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 var _a;
                 if (responseJSON.lotTypeFields.length === 0) {
                     lotFieldsContainerElement.innerHTML = `<div class="message is-info">
-                            <p class="message-body">There are no additional fields for this ${los.escapedAliases.lot} type.</p>
-                            </div>`;
+              <p class="message-body">There are no additional fields for this ${los.escapedAliases.lot} type.</p>
+              </div>`;
                     return;
                 }
                 lotFieldsContainerElement.innerHTML = '';

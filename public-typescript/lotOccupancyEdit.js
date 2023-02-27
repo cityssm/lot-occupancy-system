@@ -10,15 +10,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * Main form
      */
     let refreshAfterSave = isCreate;
+    function setUnsavedChanges() {
+        var _a;
+        los.setUnsavedChanges();
+        (_a = document
+            .querySelector("button[type='submit'][form='form--lotOccupancy']")) === null || _a === void 0 ? void 0 : _a.classList.remove('is-light');
+    }
+    function clearUnsavedChanges() {
+        var _a;
+        los.clearUnsavedChanges();
+        (_a = document
+            .querySelector("button[type='submit'][form='form--lotOccupancy']")) === null || _a === void 0 ? void 0 : _a.classList.add('is-light');
+    }
     const formElement = document.querySelector('#form--lotOccupancy');
     formElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
         cityssm.postJSON(los.urlPrefix +
             '/lotOccupancies/' +
-            (isCreate ? 'doCreateLotOccupancy' : 'doUpdateLotOccupancy'), formElement, (responseJSON) => {
+            (isCreate ? 'doCreateLotOccupancy' : 'doUpdateLotOccupancy'), formElement, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
-                los.clearUnsavedChanges();
+                clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
                     window.location.href = los.getLotOccupancyURL(responseJSON.lotOccupancyId, true, true);
                 }
@@ -40,15 +53,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
     });
     const formInputElements = formElement.querySelectorAll('input, select');
     for (const formInputElement of formInputElements) {
-        formInputElement.addEventListener('change', los.setUnsavedChanges);
+        formInputElement.addEventListener('change', setUnsavedChanges);
     }
     function doCopy() {
         cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doCopyLotOccupancy', {
             lotOccupancyId
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
-                cityssm.disableNavBlocker();
+                clearUnsavedChanges();
                 window.location.href = los.getLotOccupancyURL(responseJSON.lotOccupancyId, true);
             }
             else {
@@ -88,10 +102,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancy', {
                 lotOccupancyId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    cityssm.disableNavBlocker();
+                    clearUnsavedChanges();
                     window.location.href = los.getLotOccupancyURL();
                 }
                 else {
@@ -119,7 +134,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let createCloseModalFunction;
         function doCreate(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/workOrders/doCreateWorkOrder', formEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/workOrders/doCreateWorkOrder', formEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     createCloseModalFunction();
                     bulmaJS.confirm({
@@ -188,8 +204,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doGetOccupancyTypeFields', {
                 occupancyTypeId: occupancyTypeIdElement.value
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a, _b;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.occupancyTypeFields.length === 0) {
                     lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
               <p class="message-body">There are no additional fields for this ${los.escapedAliases.occupancy} type.</p>
@@ -297,8 +314,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function searchLots() {
             lotSelectResultsElement.innerHTML =
                 los.getLoadingParagraphHTML('Searching...');
-            cityssm.postJSON(los.urlPrefix + '/lots/doSearchLots', lotSelectFormElement, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/lots/doSearchLots', lotSelectFormElement, (rawResponseJSON) => {
                 var _a, _b;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.count === 0) {
                     lotSelectResultsElement.innerHTML = `<div class="message is-info">
               <p class="message-body">No results.</p>
@@ -340,8 +358,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function createLotAndSelect(submitEvent) {
             submitEvent.preventDefault();
             const lotName = lotSelectModalElement.querySelector('#lotCreate--lotName').value;
-            cityssm.postJSON(los.urlPrefix + '/lots/doCreateLot', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/lots/doCreateLot', submitEvent.currentTarget, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     renderSelectedLotAndClose(responseJSON.lotId, lotName);
                 }

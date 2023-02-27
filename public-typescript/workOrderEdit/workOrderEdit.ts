@@ -28,6 +28,20 @@ declare const bulmaJS: BulmaJS
   )
   los.initializeUnlockFieldButtons(workOrderFormElement)
 
+  function setUnsavedChanges(): void {
+    los.setUnsavedChanges()
+    document
+      .querySelector("button[type='submit'][form='form--workOrderEdit']")
+      ?.classList.remove('is-light')
+  }
+
+  function clearUnsavedChanges(): void {
+    los.clearUnsavedChanges()
+    document
+      .querySelector("button[type='submit'][form='form--workOrderEdit']")
+      ?.classList.add('is-light')
+  }
+
   workOrderFormElement.addEventListener('submit', (submitEvent) => {
     submitEvent.preventDefault()
 
@@ -36,13 +50,15 @@ declare const bulmaJS: BulmaJS
         '/workOrders/' +
         (isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'),
       submitEvent.currentTarget,
-      (responseJSON: {
-        success: boolean
-        workOrderId?: number
-        errorMessage?: string
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          workOrderId?: number
+          errorMessage?: string
+        }
+
         if (responseJSON.success) {
-          cityssm.disableNavBlocker()
+          clearUnsavedChanges()
 
           if (isCreate) {
             window.location.href = los.getWorkOrderURL(
@@ -66,11 +82,11 @@ declare const bulmaJS: BulmaJS
     )
   })
 
-  const inputElements: NodeListOf<HTMLInputElement | HTMLSelectElement> =
-    workOrderFormElement.querySelectorAll('input, select')
+  const inputElements: NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> =
+    workOrderFormElement.querySelectorAll('input, select, textarea')
 
   for (const inputElement of inputElements) {
-    inputElement.addEventListener('change', cityssm.enableNavBlocker)
+    inputElement.addEventListener('change', setUnsavedChanges)
   }
 
   /*
@@ -83,8 +99,14 @@ declare const bulmaJS: BulmaJS
       {
         workOrderId
       },
-      (responseJSON: { success: boolean; errorMessage?: string }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+        }
+
         if (responseJSON.success) {
+          clearUnsavedChanges()
           window.location.href = los.getWorkOrderURL(workOrderId)
         } else {
           bulmaJS.alert({
@@ -103,8 +125,14 @@ declare const bulmaJS: BulmaJS
       {
         workOrderId
       },
-      (responseJSON: { success: boolean; errorMessage?: string }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+        }
+
         if (responseJSON.success) {
+          clearUnsavedChanges()
           window.location.href = los.urlPrefix + '/workOrders'
         } else {
           bulmaJS.alert({
@@ -130,28 +158,30 @@ declare const bulmaJS: BulmaJS
         bulmaJS.alert({
           title: 'Outstanding Milestones',
           message: `You cannot close a work order with outstanding milestones.
-                        Either complete the outstanding milestones, or remove them from the work order.`,
+            Either complete the outstanding milestones, or remove them from the work order.`,
           contextualColorName: 'warning'
         })
 
         /*
           // Disable closing work orders with open milestones
           bulmaJS.confirm({
-              title: "Close Work Order with Outstanding Milestones",
-              message:
-                  "Are you sure you want to close this work order with outstanding milestones?",
-              contextualColorName: "danger",
-              okButton: {
-                  text: "Yes, Close Work Order",
-                  callbackFunction: doClose
-              }
+            title: "Close Work Order with Outstanding Milestones",
+            message:
+              "Are you sure you want to close this work order with outstanding milestones?",
+            contextualColorName: "danger",
+            okButton: {
+              text: "Yes, Close Work Order",
+              callbackFunction: doClose
+            }
           });
       */
       } else {
         bulmaJS.confirm({
           title: 'Close Work Order',
-          message: 'Are you sure you want to close this work order?',
-          contextualColorName: 'info',
+          message: los.hasUnsavedChanges()
+            ? 'Are you sure you want to close this work order with unsaved changes?'
+            : 'Are you sure you want to close this work order?',
+          contextualColorName: los.hasUnsavedChanges() ? 'warning' : 'info',
           okButton: {
             text: 'Yes, Close Work Order',
             callbackFunction: doClose
@@ -194,11 +224,13 @@ declare const bulmaJS: BulmaJS
    * Milestones
    */
 
-  function processMilestoneResponse(responseJSON: {
-    success: boolean
-    errorMessage?: string
-    workOrderMilestones?: recordTypes.WorkOrderMilestone[]
-  }): void {
+  function processMilestoneResponse(rawResponseJSON: unknown): void {
+    const responseJSON = rawResponseJSON as {
+      success: boolean
+      errorMessage?: string
+      workOrderMilestones?: recordTypes.WorkOrderMilestone[]
+    }
+
     if (responseJSON.success) {
       workOrderMilestones = responseJSON.workOrderMilestones!
       renderMilestones()
