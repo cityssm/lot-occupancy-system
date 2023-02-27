@@ -32,42 +32,42 @@
         <%- include('style.css'); %>
 
         body {
-            margin: 0 50px;
+          margin: 0 50px;
         }
 
         @page {
-            margin: 50px 0;
+          margin: 50px 0;
         }
 
         .termsList {
-            counter-reset: list;
+          counter-reset: list;
         }
 
         .termsList > li {
-            list-style: none;
-            position: relative;
-            padding-bottom: 10px;
+          list-style: none;
+          position: relative;
+          padding-bottom: 10px;
         }
 
         .termsList > li::before {
-            content: "(" counter(list, lower-alpha) ")";
-            counter-increment: list;
-            position: absolute;
-            left: -1.8em;
+          content: "(" counter(list, lower-alpha) ")";
+          counter-increment: list;
+          position: absolute;
+          left: -1.8em;
         }
 
         .confirmList > li {
-            list-style: none;
-            position: relative;
-            padding-bottom: 10px;
+          list-style: none;
+          position: relative;
+          padding-bottom: 10px;
         }
 
         .confirmList > li::before {
-            content: "▢";
-            position: absolute;
-            left: -1.4em;
-            top: -0.2em;
-            font-size: 15pt;
+          content: "▢";
+          position: absolute;
+          left: -1.4em;
+          top: -0.2em;
+          font-size: 15pt;
         }
     </style>
   </head>
@@ -79,7 +79,7 @@
       <p class="has-text-centered">
         in
         <span class="field" style="width:300px">
-            <%= lotOccupancy.mapName %>
+          <%= lotOccupancy.mapName %>
         </span>
         cemetery<br />
         <span class="is-capitalized">operated by</span><br />
@@ -103,80 +103,80 @@
       </p>
       <table class="layout-table is-10pt" style="table-layout:fixed">
           <tbody>
-              <tr>
-                  <td>
-                    <h2 class="is-10pt">Purchaser</h2>
+            <tr>
+                <td>
+                  <h2 class="is-10pt">Purchaser</h2>
+                  <table class="is-10pt layout-table">
+                    <tbody>
+                      <tr>
+                        <th class="has-text-left">Name:</th>
+                        <td class="has-border-bottom">
+                          <%= purchaser ? purchaser.occupantName + ' ' + purchaser.occupantFamilyName : "" %>
+                        </td>
+                      </tr><tr>
+                        <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
+                        <td class="has-border-bottom"><%= purchaser ? purchaser.occupantAddress1 : "" %>&nbsp;</td>
+                      </tr><tr>
+                        <td class="has-border-bottom"><%= purchaser ? purchaser.occupantAddress2 : "" %>&nbsp;</td>
+                      </tr><tr>
+                        <th class="has-text-left">City:</th>
+                        <td class="has-border-bottom"><%= purchaser ? purchaser.occupantCity : "" %>&nbsp;</td>
+                      </tr><tr>
+                        <th class="has-text-left">Province:</th>
+                        <td class="has-border-bottom"><%= purchaser ? purchaser.occupantProvince : "" %>&nbsp;</td>
+                      </tr><tr>
+                        <th class="has-text-left has-text-nowrap">Postal Code:</th>
+                        <td class="has-border-bottom" style="width:100%"><%= purchaser ? purchaser.occupantPostalCode : "" %>&nbsp;</td>
+                      </tr><tr>
+                        <th class="has-text-left">Telephone:</th>
+                        <td class="has-border-bottom"><%= purchaser ? purchaser.occupantPhoneNumber : "" %>&nbsp;</td>
+                      </tr><tr>
+                        <th class="has-text-left">E-mail:</th>
+                        <td class="has-border-bottom"><%= purchaser ? purchaser.occupantEmailAddress : "" %>&nbsp;</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td>
+                    <h2 class="is-10pt">Recipient</h2>
                     <table class="is-10pt layout-table">
                       <tbody>
                         <tr>
-                          <th class="has-text-left">Name:</th>
-                          <td class="has-border-bottom">
-                            <%= purchaser ? purchaser.occupantName + ' ' + purchaser.occupantFamilyName : "" %>
-                          </td>
+                            <th class="has-text-left">Name:</th>
+                            <td class="has-border-bottom">
+                              <%= recipient ? recipient.occupantName + ' ' + recipient.occupantFamilyName : "" %>
+                            </td>
                         </tr><tr>
-                          <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
-                          <td class="has-border-bottom"><%= purchaser ? purchaser.occupantAddress1 : "" %>&nbsp;</td>
+                            <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
+                            <td class="has-border-bottom"><%= recipient ? recipient.occupantAddress1 : "" %>&nbsp;</td>
                         </tr><tr>
-                          <td class="has-border-bottom"><%= purchaser ? purchaser.occupantAddress2 : "" %>&nbsp;</td>
+                            <td class="has-border-bottom"><%= recipient ? recipient.occupantAddress2 : "" %>&nbsp;</td>
                         </tr><tr>
-                          <th class="has-text-left">City:</th>
-                          <td class="has-border-bottom"><%= purchaser ? purchaser.occupantCity : "" %>&nbsp;</td>
+                            <th class="has-text-left">City:</th>
+                            <td class="has-border-bottom"><%= recipient ? recipient.occupantCity : "" %>&nbsp;</td>
                         </tr><tr>
-                          <th class="has-text-left">Province:</th>
-                          <td class="has-border-bottom"><%= purchaser ? purchaser.occupantProvince : "" %>&nbsp;</td>
+                            <th class="has-text-left">Province:</th>
+                            <td class="has-border-bottom"><%= recipient ? recipient.occupantProvince : "" %>&nbsp;</td>
                         </tr><tr>
-                          <th class="has-text-left has-text-nowrap">Postal Code:</th>
-                          <td class="has-border-bottom" style="width:100%"><%= purchaser ? purchaser.occupantPostalCode : "" %>&nbsp;</td>
+                            <th class="has-text-left">Postal Code:</th>
+                            <td class="has-border-bottom"><%= recipient ? recipient.occupantPostalCode : "" %>&nbsp;</td>
                         </tr><tr>
-                          <th class="has-text-left">Telephone:</th>
-                          <td class="has-border-bottom"><%= purchaser ? purchaser.occupantPhoneNumber : "" %>&nbsp;</td>
+                            <th class="has-text-left">Telephone:</th>
+                            <td class="has-border-bottom"><%= recipient ? recipient.occupantPhoneNumber : "" %>&nbsp;</td>
                         </tr><tr>
-                          <th class="has-text-left">E-mail:</th>
-                          <td class="has-border-bottom"><%= purchaser ? purchaser.occupantEmailAddress : "" %>&nbsp;</td>
+                            <th class="has-text-left">E-mail:</th>
+                            <td class="has-border-bottom"><%= recipient ? recipient.occupantEmailAddress : "" %>&nbsp;</td>
+                        </tr><tr>
+                            <th class="has-text-left">Date of birth:</th>
+                            <td class="has-border-bottom">&nbsp;</td>
+                        </tr><tr>
+                            <th class="has-text-left has-text-nowrap">Place of birth:</th>
+                            <td class="has-border-bottom" style="width:100%">&nbsp;</td>
                         </tr>
                       </tbody>
                     </table>
-                  </td>
-                  <td>
-                      <h2 class="is-10pt">Recipient</h2>
-                      <table class="is-10pt layout-table">
-                        <tbody>
-                          <tr>
-                              <th class="has-text-left">Name:</th>
-                              <td class="has-border-bottom">
-                                <%= recipient ? recipient.occupantName + ' ' + recipient.occupantFamilyName : "" %>
-                              </td>
-                          </tr><tr>
-                              <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
-                              <td class="has-border-bottom"><%= recipient ? recipient.occupantAddress1 : "" %>&nbsp;</td>
-                          </tr><tr>
-                              <td class="has-border-bottom"><%= recipient ? recipient.occupantAddress2 : "" %>&nbsp;</td>
-                          </tr><tr>
-                              <th class="has-text-left">City:</th>
-                              <td class="has-border-bottom"><%= recipient ? recipient.occupantCity : "" %>&nbsp;</td>
-                          </tr><tr>
-                              <th class="has-text-left">Province:</th>
-                              <td class="has-border-bottom"><%= recipient ? recipient.occupantProvince : "" %>&nbsp;</td>
-                          </tr><tr>
-                              <th class="has-text-left">Postal Code:</th>
-                              <td class="has-border-bottom"><%= recipient ? recipient.occupantPostalCode : "" %>&nbsp;</td>
-                          </tr><tr>
-                              <th class="has-text-left">Telephone:</th>
-                              <td class="has-border-bottom"><%= recipient ? recipient.occupantPhoneNumber : "" %>&nbsp;</td>
-                          </tr><tr>
-                              <th class="has-text-left">E-mail:</th>
-                              <td class="has-border-bottom"><%= recipient ? recipient.occupantEmailAddress : "" %>&nbsp;</td>
-                          </tr><tr>
-                              <th class="has-text-left">Date of birth:</th>
-                              <td class="has-border-bottom">&nbsp;</td>
-                          </tr><tr>
-                              <th class="has-text-left has-text-nowrap">Place of birth:</th>
-                              <td class="has-border-bottom" style="width:100%">&nbsp;</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                  </td>
-              </tr>
+                </td>
+            </tr>
           </tbody>
       </table>
       <p>
@@ -206,81 +206,88 @@
                 <h2 class="is-10pt is-capitalized">Details</h2>
                 <table class="is-10pt data-table">
                   <tr>
-                      <td><%= configFunctions.getProperty("aliases.map") %></td>
-                      <td><%= lotOccupancy.mapName %></td>
+                    <td><%= configFunctions.getProperty("aliases.map") %></td>
+                    <td><%= lotOccupancy.mapName ?? '(No ' + configFunctions.getProperty("aliases.map") + ')' %></td>
                   </tr>
                   <tr>
-                      <td><%= configFunctions.getProperty("aliases.lot") %></td>
-                      <td><%= lotOccupancy.lotName %></td>
+                    <td><%= configFunctions.getProperty("aliases.lot") %></td>
+                    <td><%= lotOccupancy.lotName ?? '(No ' + configFunctions.getProperty("aliases.lot") + ')' %></td>
                   </tr>
                   <% 
-                      for (const field of lotOccupancy.lotOccupancyFields) { 
-                          if (field.lotOccupancyFieldValue) {
+                    for (const field of lotOccupancy.lotOccupancyFields) { 
+                      if (field.lotOccupancyFieldValue) {
                   %>
                       <tr>
-                          <td><%= field.occupancyTypeField %></td>
-                          <td><%= field.lotOccupancyFieldValue %></td>
+                        <td><%= field.occupancyTypeField %></td>
+                        <td><%= field.lotOccupancyFieldValue %></td>
                       </tr>
                   <% 
-                          }
                       }
+                    }
                   %>
                 </table>
               </td>
               <td>
-                  <h2 class="is-10pt is-capitalized">Interment Rights and Services</h2>
-                  <table class="is-10pt data-table">
-                      <tbody>
-                          <%
-                              let currentFeeCategory = "";
-                              let feeAmountTotal = 0;
-                              let taxAmountTotal = 0;
-                          %>
-                          <% for (const fee of lotOccupancy.lotOccupancyFees) { %>
-                              <% if (currentFeeCategory !== fee.feeCategory) { %>
-                                  <tr>
-                                      <td colspan="2">
-                                          <strong><%= fee.feeCategory %></strong>
-                                      </td>
-                                  </tr>
-                                  <% currentFeeCategory = fee.feeCategory; %>
-                              <% } %>
+                <h2 class="is-10pt is-capitalized">Interment Rights and Services</h2>
+                <table class="is-10pt data-table">
+                    <tbody>
+                        <%
+                          let currentFeeCategory = "";
+                          let feeAmountTotal = 0;
+                          let taxAmountTotal = 0;
+                        %>
+                        <% for (const fee of lotOccupancy.lotOccupancyFees) { %>
+                            <% if (currentFeeCategory !== fee.feeCategory) { %>
                               <tr>
-                                  <td>
-                                      <%= fee.feeName %>
-                                  </td>
-                                  <td class="has-text-right">
-                                      $<%= fee.feeAmount.toFixed(2) %>
-                                  </td>
+                                <td colspan="3">
+                                  <strong><%= fee.feeCategory %></strong>
+                                </td>
                               </tr>
-                              <%
-                                  feeAmountTotal += fee.feeAmount;
-                                  taxAmountTotal += fee.taxAmount;
-                              %>
-                          <% } %>
-                          <tr>
-                              <td><strong>Sub Total</strong></td>
-                              <td class="has-text-right">
-                                  <strong>$<%= feeAmountTotal.toFixed(2) %></strong>
+                              <% currentFeeCategory = fee.feeCategory; %>
+                            <% } %>
+                            <tr>
+                              <td <% if (fee.quantity === 1) { %>colspan="2"<% } %>>
+                                <%= fee.feeName %>
                               </td>
-                          </tr><tr>
-                              <td>HST</td>
+                              <% if (fee.quantity !== 1) { %>
+                                <td class="has-text-right is-8pt has-text-nowrap">
+                                  $<%= fee.feeAmount.toFixed(2) %>
+                                  &times;
+                                  <%= fee.quantity %>
+                                </td>
+                              <% } %>
                               <td class="has-text-right">
-                                  $<%= taxAmountTotal.toFixed(2) %>
+                                $<%= fee.feeAmount.toFixed(2) %>
                               </td>
-                          </tr><tr>
-                              <td><strong>Total Sale</strong></td>
-                              <td class="has-text-right">
-                                  <strong>$<%= (feeAmountTotal + taxAmountTotal).toFixed(2) %></strong>
-                              </td>
-                          </tr><tr>
-                              <td><strong>Balance Owing</strong></td>
-                              <td class="has-text-right">
-                                  <strong>$<%= (feeAmountTotal + taxAmountTotal - lotOccupancyFunctions.getTransactionTotal(lotOccupancy)).toFixed(2) %></strong>
-                              </td>
-                          </tr>
-                      </tfoot>
-                  </table>
+                            </tr>
+                            <%
+                              feeAmountTotal += fee.feeAmount * fee.quantity;
+                              taxAmountTotal += fee.taxAmount * fee.quantity;
+                            %>
+                        <% } %>
+                        <tr>
+                          <td colspan="2"><strong>Sub Total</strong></td>
+                          <td class="has-text-right">
+                            <strong>$<%= feeAmountTotal.toFixed(2) %></strong>
+                          </td>
+                        </tr><tr>
+                          <td colspan="2">HST</td>
+                          <td class="has-text-right">
+                            $<%= taxAmountTotal.toFixed(2) %>
+                          </td>
+                        </tr><tr>
+                          <td colspan="2"><strong>Total Sale</strong></td>
+                          <td class="has-text-right">
+                            <strong>$<%= (feeAmountTotal + taxAmountTotal).toFixed(2) %></strong>
+                          </td>
+                        </tr><tr>
+                          <td colspan="2"><strong>Balance Owing</strong></td>
+                          <td class="has-text-right">
+                            <strong>$<%= (feeAmountTotal + taxAmountTotal - lotOccupancyFunctions.getTransactionTotal(lotOccupancy)).toFixed(2) %></strong>
+                          </td>
+                        </tr>
+                    </tbody>
+                </table>
               </td>
           </tr>
       </table>
@@ -288,36 +295,36 @@
       <!-- PAGE BREAK -->
 
       <h2 class="is-10pt" style="page-break-before:always">
-          Contribution Levels to the Care and Maintenance Fund<br />
-          (based on the price of Interment Rights and as prescribed by the <em>Funeral, Burial and Cremation Services Act</em>)
+        Contribution Levels to the Care and Maintenance Fund<br />
+        (based on the price of Interment Rights and as prescribed by the <em>Funeral, Burial and Cremation Services Act</em>)
       </h2>
 
       <table class="layout-table is-10pt">
-          <tr>
-              <td>Niches</td>
-              <td>the greater of 15% and $100</td>
-          </tr>
-          <tr>
-              <td>Crypts</td>
-              <td>the greater of 20% and $500</td>
-          </tr>
-          <tr>
-              <td>
-                  In-ground grave (2.23 sq.m. or 24 sq.ft. or larger)
-              </td>
-              <td>
-                  the greater of 40% and $250
-              </td>
-          </tr>
-          <tr>
-              <td>In-ground grave (smaller than 2.23 sq.m. or 24 sq ft)</td>
-              <td>the greater of 40% and $150</td>
-          </tr>
+        <tr>
+          <td>Niches</td>
+          <td>the greater of 15% and $100</td>
+        </tr>
+        <tr>
+          <td>Crypts</td>
+          <td>the greater of 20% and $500</td>
+        </tr>
+        <tr>
+          <td>
+            In-ground grave (2.23 sq.m. or 24 sq.ft. or larger)
+          </td>
+          <td>
+            the greater of 40% and $250
+          </td>
+        </tr>
+        <tr>
+          <td>In-ground grave (smaller than 2.23 sq.m. or 24 sq ft)</td>
+          <td>the greater of 40% and $150</td>
+        </tr>
       </table>
       
       <h2 class="is-10pt">
-          Contribution Levels to the Care and Maintenance Fund - Markers<br />
-          (as prescribed by the <em>Funeral, Burial and Cremation Services Act</em>)
+        Contribution Levels to the Care and Maintenance Fund - Markers<br />
+        (as prescribed by the <em>Funeral, Burial and Cremation Services Act</em>)
       </h2>
 
       <table class="layout-table is-10pt">
