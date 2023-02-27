@@ -1091,8 +1091,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancyFee', {
                     lotOccupancyId,
                     feeId
-                }, (responseJSON) => {
+                }, (rawResponseJSON) => {
                     var _a;
+                    const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         lotOccupancyFees = responseJSON.lotOccupancyFees;
                         renderLotOccupancyFees();
@@ -1174,7 +1175,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 '</td>' +
                                 '<td>&times;</td>' +
                                 '<td class="has-text-right">' +
-                                lotOccupancyFee.quantity +
+                                lotOccupancyFee.quantity.toString() +
                                 '</td>' +
                                 '<td>=</td>') +
                         '<td class="has-text-right">$' +
@@ -1216,8 +1217,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     lotOccupancyId,
                     feeId,
                     quantity
-                }, (responseJSON) => {
+                }, (rawResponseJSON) => {
                     var _a;
+                    const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         lotOccupancyFees = responseJSON.lotOccupancyFees;
                         renderLotOccupancyFees();
@@ -1273,7 +1275,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             }
             function filterFees() {
-                var _a, _b, _c, _d, _e;
+                var _a, _b, _c, _d, _e, _f;
                 const filterStringPieces = feeFilterElement.value
                     .trim()
                     .toLowerCase()
@@ -1296,9 +1298,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             continue;
                         }
                         let includeFee = true;
-                        const feeSearchString = (((_b = fee.feeName) !== null && _b !== void 0 ? _b : '') +
+                        const feeSearchString = (((_b = feeCategory.feeCategory) !== null && _b !== void 0 ? _b : '') +
                             ' ' +
-                            ((_c = fee.feeDescription) !== null && _c !== void 0 ? _c : '')).toLowerCase();
+                            ((_c = fee.feeName) !== null && _c !== void 0 ? _c : '') +
+                            ' ' +
+                            ((_d = fee.feeDescription) !== null && _d !== void 0 ? _d : '')).toLowerCase();
                         for (const filterStringPiece of filterStringPieces) {
                             if (!feeSearchString.includes(filterStringPiece)) {
                                 includeFee = false;
@@ -1317,11 +1321,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         panelBlockElement.href = '#';
                         panelBlockElement.innerHTML =
                             '<strong>' +
-                                cityssm.escapeHTML((_d = fee.feeName) !== null && _d !== void 0 ? _d : '') +
+                                cityssm.escapeHTML((_e = fee.feeName) !== null && _e !== void 0 ? _e : '') +
                                 '</strong><br />' +
                                 '<small>' +
                                 cityssm
-                                    .escapeHTML((_e = fee.feeDescription) !== null && _e !== void 0 ? _e : '')
+                                    .escapeHTML((_f = fee.feeDescription) !== null && _f !== void 0 ? _f : '')
                                     .replace(/\n/g, '<br />') +
                                 '</small>';
                         panelBlockElement.addEventListener('click', tryAddFee);
@@ -1338,7 +1342,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     feeFilterResultsElement = modalElement.querySelector('#resultsContainer--feeSelect');
                     cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doGetFees', {
                         lotOccupancyId
-                    }, (responseJSON) => {
+                    }, (rawResponseJSON) => {
+                        const responseJSON = rawResponseJSON;
                         feeCategories = responseJSON.feeCategories;
                         feeFilterElement.disabled = false;
                         feeFilterElement.addEventListener('keyup', filterFees);
@@ -1373,8 +1378,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancyTransaction', {
                     lotOccupancyId,
                     transactionIndex
-                }, (responseJSON) => {
+                }, (rawResponseJSON) => {
                     var _a;
+                    const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         lotOccupancyTransactions = responseJSON.lotOccupancyTransactions;
                         renderLotOccupancyTransactions();
@@ -1460,7 +1466,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ;
             lotOccupancyTransactionsContainerElement.querySelector('#lotOccupancyTransactions--grandTotal').textContent = '$' + transactionGrandTotal.toFixed(2);
             const feeGrandTotal = getFeeGrandTotal();
-            if (feeGrandTotal > transactionGrandTotal) {
+            if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
                 lotOccupancyTransactionsContainerElement.insertAdjacentHTML('afterbegin', '<div class="message is-warning">' +
                     '<div class="message-body">' +
                     '<div class="level">' +
@@ -1479,8 +1485,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             let addCloseModalFunction;
             function doAddTransaction(submitEvent) {
                 submitEvent.preventDefault();
-                cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doAddLotOccupancyTransaction', submitEvent.currentTarget, (responseJSON) => {
+                cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doAddLotOccupancyTransaction', submitEvent.currentTarget, (rawResponseJSON) => {
                     var _a;
+                    const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         lotOccupancyTransactions = responseJSON.lotOccupancyTransactions;
                         addCloseModalFunction();

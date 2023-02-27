@@ -47,11 +47,13 @@ function deleteLotOccupancyFee(clickEvent: Event): void {
         lotOccupancyId,
         feeId
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        lotOccupancyFees?: recordTypes.LotOccupancyFee[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          lotOccupancyFees?: recordTypes.LotOccupancyFee[]
+        }
+
         if (responseJSON.success) {
           lotOccupancyFees = responseJSON.lotOccupancyFees!
           renderLotOccupancyFees()
@@ -140,7 +142,7 @@ function renderLotOccupancyFees(): void {
           '</td>' +
           '<td>&times;</td>' +
           '<td class="has-text-right">' +
-          lotOccupancyFee.quantity +
+          lotOccupancyFee.quantity!.toString() +
           '</td>' +
           '<td>=</td>') +
       '<td class="has-text-right">$' +
@@ -205,11 +207,13 @@ document.querySelector('#button--addFee')?.addEventListener('click', () => {
         feeId,
         quantity
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        lotOccupancyFees?: recordTypes.LotOccupancyFee[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          lotOccupancyFees?: recordTypes.LotOccupancyFee[]
+        }
+
         if (responseJSON.success) {
           lotOccupancyFees = responseJSON.lotOccupancyFees!
           renderLotOccupancyFees()
@@ -321,6 +325,8 @@ document.querySelector('#button--addFee')?.addEventListener('click', () => {
         let includeFee = true
 
         const feeSearchString = (
+          (feeCategory.feeCategory ?? '') +
+          ' ' +
           (fee.feeName ?? '') +
           ' ' +
           (fee.feeDescription ?? '')
@@ -381,7 +387,11 @@ document.querySelector('#button--addFee')?.addEventListener('click', () => {
         {
           lotOccupancyId
         },
-        (responseJSON: { feeCategories: recordTypes.FeeCategory[] }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            feeCategories: recordTypes.FeeCategory[]
+          }
+
           feeCategories = responseJSON.feeCategories
 
           feeFilterElement.disabled = false
@@ -436,11 +446,13 @@ function deleteLotOccupancyTransaction(clickEvent: Event): void {
         lotOccupancyId,
         transactionIndex
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        lotOccupancyTransactions?: recordTypes.LotOccupancyTransaction[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          lotOccupancyTransactions?: recordTypes.LotOccupancyTransaction[]
+        }
+
         if (responseJSON.success) {
           lotOccupancyTransactions = responseJSON.lotOccupancyTransactions!
           renderLotOccupancyTransactions()
@@ -543,7 +555,7 @@ function renderLotOccupancyTransactions(): void {
 
   const feeGrandTotal = getFeeGrandTotal()
 
-  if (feeGrandTotal > transactionGrandTotal) {
+  if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
     lotOccupancyTransactionsContainerElement.insertAdjacentHTML(
       'afterbegin',
       '<div class="message is-warning">' +
@@ -571,11 +583,13 @@ document
       cityssm.postJSON(
         los.urlPrefix + '/lotOccupancies/doAddLotOccupancyTransaction',
         submitEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          lotOccupancyTransactions?: recordTypes.LotOccupancyTransaction[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            errorMessage?: string
+            lotOccupancyTransactions?: recordTypes.LotOccupancyTransaction[]
+          }
+
           if (responseJSON.success) {
             lotOccupancyTransactions = responseJSON.lotOccupancyTransactions!
             addCloseModalFunction()
