@@ -26,11 +26,13 @@ declare const cityssm: cityssmGlobal
     '#searchFilter--offset'
   ) as HTMLInputElement
 
-  function renderLotOccupancies(responseJSON: {
-    count: number
-    offset: number
-    lotOccupancies: recordTypes.LotOccupancy[]
-  }): void {
+  function renderLotOccupancies(rawResponseJSON: unknown): void {
+    const responseJSON = rawResponseJSON as {
+      count: number
+      offset: number
+      lotOccupancies: recordTypes.LotOccupancy[]
+    }
+
     if (responseJSON.lotOccupancies.length === 0) {
       searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">
@@ -128,7 +130,8 @@ declare const cityssm: cityssmGlobal
             los.getLotOccupancyURL(lotOccupancy.lotOccupancyId) +
             '">' +
             cityssm.escapeHTML(lotOccupancy.occupancyType as string) +
-            '</a>' +
+            '</a><br />' +
+            `<span class="is-size-7">#${lotOccupancy.lotOccupancyId!}</span>` +
             '</td>') +
           ('<td>' +
             ((lotOccupancy.lotId ?? -1) === -1
@@ -162,7 +165,7 @@ declare const cityssm: cityssmGlobal
               '/print/' +
               lotOccupancy.printEJS +
               '/?lotOccupancyId=' +
-              lotOccupancy.lotOccupancyId +
+              lotOccupancy.lotOccupancyId!.toString() +
               '" target="_blank">' +
               '<i class="fas fa-print" aria-label="Print"></i>' +
               '</a>'

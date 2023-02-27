@@ -35,11 +35,13 @@ function deleteLotOccupancy(clickEvent: Event): void {
         workOrderId,
         lotOccupancyId
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        workOrderLotOccupancies?: recordTypes.LotOccupancy[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          workOrderLotOccupancies?: recordTypes.LotOccupancy[]
+        }
+
         if (responseJSON.success) {
           workOrderLotOccupancies = responseJSON.workOrderLotOccupancies!
           renderRelatedLotsAndOccupancies()
@@ -67,7 +69,7 @@ function deleteLotOccupancy(clickEvent: Event): void {
 
 function addLot(
   lotId: number | string,
-  callbackFunction?: (success?: boolean) => void
+  callbackFunction?: (success: boolean) => void
 ): void {
   cityssm.postJSON(
     los.urlPrefix + '/workOrders/doAddWorkOrderLot',
@@ -75,11 +77,13 @@ function addLot(
       workOrderId,
       lotId
     },
-    (responseJSON: {
-      success: boolean
-      errorMessage?: string
-      workOrderLots?: recordTypes.Lot[]
-    }) => {
+    (rawResponseJSON) => {
+      const responseJSON = rawResponseJSON as {
+        success: boolean
+        errorMessage?: string
+        workOrderLots?: recordTypes.Lot[]
+      }
+
       if (responseJSON.success) {
         workOrderLots = responseJSON.workOrderLots!
         renderRelatedLotsAndOccupancies()
@@ -91,7 +95,7 @@ function addLot(
         })
       }
 
-      if (callbackFunction) {
+      if (callbackFunction !== undefined) {
         callbackFunction(responseJSON.success)
       }
     }
@@ -108,11 +112,13 @@ function addLotOccupancy(
       workOrderId,
       lotOccupancyId
     },
-    (responseJSON: {
-      success: boolean
-      errorMessage?: string
-      workOrderLotOccupancies?: recordTypes.LotOccupancy[]
-    }) => {
+    (rawResponseJSON) => {
+      const responseJSON = rawResponseJSON as {
+        success: boolean
+        errorMessage?: string
+        workOrderLotOccupancies?: recordTypes.LotOccupancy[]
+      }
+
       if (responseJSON.success) {
         workOrderLotOccupancies = responseJSON.workOrderLotOccupancies!
         renderRelatedLotsAndOccupancies()
@@ -124,7 +130,7 @@ function addLotOccupancy(
         })
       }
 
-      if (callbackFunction) {
+      if (callbackFunction !== undefined) {
         callbackFunction(responseJSON.success)
       }
     }
@@ -201,7 +207,8 @@ function renderRelatedOccupancies(): void {
         los.getLotOccupancyURL(lotOccupancy.lotOccupancyId) +
         '">' +
         cityssm.escapeHTML(lotOccupancy.occupancyType ?? '') +
-        '</a>' +
+        '</a><br />' +
+        `<span class="is-size-7">#${lotOccupancy.lotOccupancyId!}</span>` +
         '</td>')
 
     if (lotOccupancy.lotId) {
@@ -213,7 +220,7 @@ function renderRelatedOccupancies(): void {
             ? ''
             : ' <button class="button is-small is-light is-success button--addLot"' +
               ' data-lot-id="' +
-              lotOccupancy.lotId +
+              lotOccupancy.lotId.toString() +
               '"' +
               ' data-tooltip="Add ' +
               los.escapedAliases.Lot +
@@ -310,11 +317,13 @@ function openEditLotStatus(clickEvent: Event): void {
     cityssm.postJSON(
       los.urlPrefix + '/workOrders/doUpdateLotStatus',
       submitEvent.currentTarget,
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        workOrderLots?: recordTypes.Lot[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          workOrderLots?: recordTypes.Lot[]
+        }
+
         if (responseJSON.success) {
           workOrderLots = responseJSON.workOrderLots!
           renderRelatedLotsAndOccupancies()
@@ -407,11 +416,13 @@ function deleteLot(clickEvent: Event): void {
         workOrderId,
         lotId
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        workOrderLots?: recordTypes.Lot[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          workOrderLots?: recordTypes.Lot[]
+        }
+
         if (responseJSON.success) {
           workOrderLots = responseJSON.workOrderLots!
           renderRelatedLotsAndOccupancies()
@@ -481,21 +492,21 @@ function renderRelatedLots(): void {
       cityssm.escapeHTML(lot.lotName ?? '') +
       '</a>' +
       '</td>' +
-      ('<td>' + cityssm.escapeHTML(lot.mapName ?? '') + '</td>') +
-      ('<td>' + cityssm.escapeHTML(lot.lotType ?? '') + '</td>') +
+      `<td>${cityssm.escapeHTML(lot.mapName ?? '')}</td>` +
+      `<td>${cityssm.escapeHTML(lot.lotType ?? '')}</td>` +
       ('<td>' +
         (lot.lotStatusId
           ? cityssm.escapeHTML(lot.lotStatus ?? '')
           : '<span class="has-text-grey">(No Status)</span>') +
         '</td>') +
-      ('<td class="is-nowrap">' +
-        '<button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">' +
-        '<i class="fas fa-pencil-alt" aria-hidden="true"></i>' +
-        '</button>' +
-        ' <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">' +
-        '<i class="fas fa-trash" aria-hidden="true"></i>' +
-        '</button>' +
-        '</td>')
+      `<td class="is-nowrap">
+        <button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">
+        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+        </button>
+        <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">
+        <i class="fas fa-trash" aria-hidden="true"></i>
+        </button>
+        </td>`
 
     rowElement
       .querySelector('.button--editLotStatus')!
@@ -545,7 +556,11 @@ document
       cityssm.postJSON(
         los.urlPrefix + '/lotOccupancies/doSearchLotOccupancies',
         searchFormElement,
-        (responseJSON: { lotOccupancies: recordTypes.LotOccupancy[] }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            lotOccupancies: recordTypes.LotOccupancy[]
+          }
+
           if (responseJSON.lotOccupancies.length === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
               <p class="message-body">There are no records that meet the search criteria.</p>
@@ -572,15 +587,14 @@ document
             rowElement.dataset.lotOccupancyId =
               lotOccupancy.lotOccupancyId!.toString()
 
-            rowElement.innerHTML =
-              '<td class="has-text-centered">' +
-              '<button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">' +
-              '<i class="fas fa-plus" aria-hidden="true"></i>' +
-              '</button>' +
-              '</td>' +
-              ('<td class="has-text-weight-bold">' +
-                cityssm.escapeHTML(lotOccupancy.occupancyType ?? '') +
-                '</td>')
+            rowElement.innerHTML = `<td class="has-text-centered">
+                <button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                </button>
+              </td>
+              <td class="has-text-weight-bold">
+                ${cityssm.escapeHTML(lotOccupancy.occupancyType ?? '')}
+              </td>`
 
             if (lotOccupancy.lotId) {
               rowElement.insertAdjacentHTML(
@@ -715,7 +729,9 @@ document.querySelector('#button--addLot')?.addEventListener('click', () => {
     cityssm.postJSON(
       los.urlPrefix + '/lots/doSearchLots',
       searchFormElement,
-      (responseJSON: { lots: recordTypes.Lot[] }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as { lots: recordTypes.Lot[] }
+
         if (responseJSON.lots.length === 0) {
           searchResultsContainerElement.innerHTML =
             '<div class="message is-info">' +

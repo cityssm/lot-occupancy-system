@@ -7,8 +7,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
-    function renderLotOccupancies(responseJSON) {
+    function renderLotOccupancies(rawResponseJSON) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.lotOccupancies.length === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">
@@ -80,7 +81,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     los.getLotOccupancyURL(lotOccupancy.lotOccupancyId) +
                     '">' +
                     cityssm.escapeHTML(lotOccupancy.occupancyType) +
-                    '</a>' +
+                    '</a><br />' +
+                    `<span class="is-size-7">#${lotOccupancy.lotOccupancyId}</span>` +
                     '</td>') +
                 ('<td>' +
                     (((_j = lotOccupancy.lotId) !== null && _j !== void 0 ? _j : -1) === -1
@@ -114,7 +116,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '/print/' +
                         lotOccupancy.printEJS +
                         '/?lotOccupancyId=' +
-                        lotOccupancy.lotOccupancyId +
+                        lotOccupancy.lotOccupancyId.toString() +
                         '" target="_blank">' +
                         '<i class="fas fa-print" aria-label="Print"></i>' +
                         '</a>'

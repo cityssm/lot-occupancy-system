@@ -13,8 +13,9 @@ function deleteLotOccupancy(clickEvent) {
         cityssm.postJSON(los.urlPrefix + '/workOrders/doDeleteWorkOrderLotOccupancy', {
             workOrderId,
             lotOccupancyId
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderLotOccupancies = responseJSON.workOrderLotOccupancies;
                 renderRelatedLotsAndOccupancies();
@@ -42,8 +43,9 @@ function addLot(lotId, callbackFunction) {
     cityssm.postJSON(los.urlPrefix + '/workOrders/doAddWorkOrderLot', {
         workOrderId,
         lotId
-    }, (responseJSON) => {
+    }, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderLots = responseJSON.workOrderLots;
             renderRelatedLotsAndOccupancies();
@@ -55,7 +57,7 @@ function addLot(lotId, callbackFunction) {
                 contextualColorName: 'danger'
             });
         }
-        if (callbackFunction) {
+        if (callbackFunction !== undefined) {
             callbackFunction(responseJSON.success);
         }
     });
@@ -64,8 +66,9 @@ function addLotOccupancy(lotOccupancyId, callbackFunction) {
     cityssm.postJSON(los.urlPrefix + '/workOrders/doAddWorkOrderLotOccupancy', {
         workOrderId,
         lotOccupancyId
-    }, (responseJSON) => {
+    }, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderLotOccupancies = responseJSON.workOrderLotOccupancies;
             renderRelatedLotsAndOccupancies();
@@ -77,7 +80,7 @@ function addLotOccupancy(lotOccupancyId, callbackFunction) {
                 contextualColorName: 'danger'
             });
         }
-        if (callbackFunction) {
+        if (callbackFunction !== undefined) {
             callbackFunction(responseJSON.success);
         }
     });
@@ -134,7 +137,8 @@ function renderRelatedOccupancies() {
                     los.getLotOccupancyURL(lotOccupancy.lotOccupancyId) +
                     '">' +
                     cityssm.escapeHTML((_a = lotOccupancy.occupancyType) !== null && _a !== void 0 ? _a : '') +
-                    '</a>' +
+                    '</a><br />' +
+                    `<span class="is-size-7">#${lotOccupancy.lotOccupancyId}</span>` +
                     '</td>');
         if (lotOccupancy.lotId) {
             rowElement.insertAdjacentHTML('beforeend', '<td>' +
@@ -143,7 +147,7 @@ function renderRelatedOccupancies() {
                     ? ''
                     : ' <button class="button is-small is-light is-success button--addLot"' +
                         ' data-lot-id="' +
-                        lotOccupancy.lotId +
+                        lotOccupancy.lotId.toString() +
                         '"' +
                         ' data-tooltip="Add ' +
                         los.escapedAliases.Lot +
@@ -211,8 +215,9 @@ function openEditLotStatus(clickEvent) {
     let editCloseModalFunction;
     function doUpdateLotStatus(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(los.urlPrefix + '/workOrders/doUpdateLotStatus', submitEvent.currentTarget, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/workOrders/doUpdateLotStatus', submitEvent.currentTarget, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderLots = responseJSON.workOrderLots;
                 renderRelatedLotsAndOccupancies();
@@ -274,8 +279,9 @@ function deleteLot(clickEvent) {
         cityssm.postJSON(los.urlPrefix + '/workOrders/doDeleteWorkOrderLot', {
             workOrderId,
             lotId
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderLots = responseJSON.workOrderLots;
                 renderRelatedLotsAndOccupancies();
@@ -331,21 +337,21 @@ function renderRelatedLots() {
                 cityssm.escapeHTML((_a = lot.lotName) !== null && _a !== void 0 ? _a : '') +
                 '</a>' +
                 '</td>' +
-                ('<td>' + cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '') + '</td>') +
-                ('<td>' + cityssm.escapeHTML((_c = lot.lotType) !== null && _c !== void 0 ? _c : '') + '</td>') +
+                `<td>${cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '')}</td>` +
+                `<td>${cityssm.escapeHTML((_c = lot.lotType) !== null && _c !== void 0 ? _c : '')}</td>` +
                 ('<td>' +
                     (lot.lotStatusId
                         ? cityssm.escapeHTML((_d = lot.lotStatus) !== null && _d !== void 0 ? _d : '')
                         : '<span class="has-text-grey">(No Status)</span>') +
                     '</td>') +
-                ('<td class="is-nowrap">' +
-                    '<button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">' +
-                    '<i class="fas fa-pencil-alt" aria-hidden="true"></i>' +
-                    '</button>' +
-                    ' <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">' +
-                    '<i class="fas fa-trash" aria-hidden="true"></i>' +
-                    '</button>' +
-                    '</td>');
+                `<td class="is-nowrap">
+        <button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">
+        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+        </button>
+        <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">
+        <i class="fas fa-trash" aria-hidden="true"></i>
+        </button>
+        </td>`;
         rowElement
             .querySelector('.button--editLotStatus')
             .addEventListener('click', openEditLotStatus);
@@ -379,8 +385,9 @@ function doAddLotOccupancy(clickEvent) {
         }
         searchResultsContainerElement.innerHTML =
             los.getLoadingParagraphHTML('Searching...');
-        cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doSearchLotOccupancies', searchFormElement, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doSearchLotOccupancies', searchFormElement, (rawResponseJSON) => {
             var _a, _b;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.lotOccupancies.length === 0) {
                 searchResultsContainerElement.innerHTML = `<div class="message is-info">
               <p class="message-body">There are no records that meet the search criteria.</p>
@@ -403,15 +410,14 @@ function doAddLotOccupancy(clickEvent) {
                 rowElement.className = 'container--lotOccupancy';
                 rowElement.dataset.lotOccupancyId =
                     lotOccupancy.lotOccupancyId.toString();
-                rowElement.innerHTML =
-                    '<td class="has-text-centered">' +
-                        '<button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">' +
-                        '<i class="fas fa-plus" aria-hidden="true"></i>' +
-                        '</button>' +
-                        '</td>' +
-                        ('<td class="has-text-weight-bold">' +
-                            cityssm.escapeHTML((_a = lotOccupancy.occupancyType) !== null && _a !== void 0 ? _a : '') +
-                            '</td>');
+                rowElement.innerHTML = `<td class="has-text-centered">
+                <button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                </button>
+              </td>
+              <td class="has-text-weight-bold">
+                ${cityssm.escapeHTML((_a = lotOccupancy.occupancyType) !== null && _a !== void 0 ? _a : '')}
+              </td>`;
                 if (lotOccupancy.lotId) {
                     rowElement.insertAdjacentHTML('beforeend', '<td>' +
                         cityssm.escapeHTML((_b = lotOccupancy.lotName) !== null && _b !== void 0 ? _b : '') +
@@ -488,8 +494,9 @@ function doAddLot(clickEvent) {
         }
         searchResultsContainerElement.innerHTML =
             los.getLoadingParagraphHTML('Searching...');
-        cityssm.postJSON(los.urlPrefix + '/lots/doSearchLots', searchFormElement, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/lots/doSearchLots', searchFormElement, (rawResponseJSON) => {
             var _a, _b, _c, _d;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.lots.length === 0) {
                 searchResultsContainerElement.innerHTML =
                     '<div class="message is-info">' +

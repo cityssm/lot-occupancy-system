@@ -150,8 +150,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 cityssm.postJSON(los.urlPrefix + '/workOrders/doDeleteWorkOrderLotOccupancy', {
                     workOrderId,
                     lotOccupancyId
-                }, (responseJSON) => {
+                }, (rawResponseJSON) => {
                     var _a;
+                    const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         workOrderLotOccupancies = responseJSON.workOrderLotOccupancies;
                         renderRelatedLotsAndOccupancies();
@@ -179,8 +180,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(los.urlPrefix + '/workOrders/doAddWorkOrderLot', {
                 workOrderId,
                 lotId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     workOrderLots = responseJSON.workOrderLots;
                     renderRelatedLotsAndOccupancies();
@@ -192,7 +194,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         contextualColorName: 'danger'
                     });
                 }
-                if (callbackFunction) {
+                if (callbackFunction !== undefined) {
                     callbackFunction(responseJSON.success);
                 }
             });
@@ -201,8 +203,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(los.urlPrefix + '/workOrders/doAddWorkOrderLotOccupancy', {
                 workOrderId,
                 lotOccupancyId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     workOrderLotOccupancies = responseJSON.workOrderLotOccupancies;
                     renderRelatedLotsAndOccupancies();
@@ -214,7 +217,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         contextualColorName: 'danger'
                     });
                 }
-                if (callbackFunction) {
+                if (callbackFunction !== undefined) {
                     callbackFunction(responseJSON.success);
                 }
             });
@@ -271,7 +274,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             los.getLotOccupancyURL(lotOccupancy.lotOccupancyId) +
                             '">' +
                             cityssm.escapeHTML((_a = lotOccupancy.occupancyType) !== null && _a !== void 0 ? _a : '') +
-                            '</a>' +
+                            '</a><br />' +
+                            `<span class="is-size-7">#${lotOccupancy.lotOccupancyId}</span>` +
                             '</td>');
                 if (lotOccupancy.lotId) {
                     rowElement.insertAdjacentHTML('beforeend', '<td>' +
@@ -280,7 +284,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             ? ''
                             : ' <button class="button is-small is-light is-success button--addLot"' +
                                 ' data-lot-id="' +
-                                lotOccupancy.lotId +
+                                lotOccupancy.lotId.toString() +
                                 '"' +
                                 ' data-tooltip="Add ' +
                                 los.escapedAliases.Lot +
@@ -348,8 +352,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             let editCloseModalFunction;
             function doUpdateLotStatus(submitEvent) {
                 submitEvent.preventDefault();
-                cityssm.postJSON(los.urlPrefix + '/workOrders/doUpdateLotStatus', submitEvent.currentTarget, (responseJSON) => {
+                cityssm.postJSON(los.urlPrefix + '/workOrders/doUpdateLotStatus', submitEvent.currentTarget, (rawResponseJSON) => {
                     var _a;
+                    const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         workOrderLots = responseJSON.workOrderLots;
                         renderRelatedLotsAndOccupancies();
@@ -411,8 +416,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 cityssm.postJSON(los.urlPrefix + '/workOrders/doDeleteWorkOrderLot', {
                     workOrderId,
                     lotId
-                }, (responseJSON) => {
+                }, (rawResponseJSON) => {
                     var _a;
+                    const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         workOrderLots = responseJSON.workOrderLots;
                         renderRelatedLotsAndOccupancies();
@@ -468,21 +474,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         cityssm.escapeHTML((_a = lot.lotName) !== null && _a !== void 0 ? _a : '') +
                         '</a>' +
                         '</td>' +
-                        ('<td>' + cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '') + '</td>') +
-                        ('<td>' + cityssm.escapeHTML((_c = lot.lotType) !== null && _c !== void 0 ? _c : '') + '</td>') +
+                        `<td>${cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '')}</td>` +
+                        `<td>${cityssm.escapeHTML((_c = lot.lotType) !== null && _c !== void 0 ? _c : '')}</td>` +
                         ('<td>' +
                             (lot.lotStatusId
                                 ? cityssm.escapeHTML((_d = lot.lotStatus) !== null && _d !== void 0 ? _d : '')
                                 : '<span class="has-text-grey">(No Status)</span>') +
                             '</td>') +
-                        ('<td class="is-nowrap">' +
-                            '<button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">' +
-                            '<i class="fas fa-pencil-alt" aria-hidden="true"></i>' +
-                            '</button>' +
-                            ' <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">' +
-                            '<i class="fas fa-trash" aria-hidden="true"></i>' +
-                            '</button>' +
-                            '</td>');
+                        `<td class="is-nowrap">
+                <button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">
+                <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                </button>
+                <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+                </button>
+                </td>`;
                 rowElement
                     .querySelector('.button--editLotStatus')
                     .addEventListener('click', openEditLotStatus);
@@ -516,8 +522,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 searchResultsContainerElement.innerHTML =
                     los.getLoadingParagraphHTML('Searching...');
-                cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doSearchLotOccupancies', searchFormElement, (responseJSON) => {
+                cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doSearchLotOccupancies', searchFormElement, (rawResponseJSON) => {
                     var _a, _b;
+                    const responseJSON = rawResponseJSON;
                     if (responseJSON.lotOccupancies.length === 0) {
                         searchResultsContainerElement.innerHTML = `<div class="message is-info">
                       <p class="message-body">There are no records that meet the search criteria.</p>
@@ -540,15 +547,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         rowElement.className = 'container--lotOccupancy';
                         rowElement.dataset.lotOccupancyId =
                             lotOccupancy.lotOccupancyId.toString();
-                        rowElement.innerHTML =
-                            '<td class="has-text-centered">' +
-                                '<button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">' +
-                                '<i class="fas fa-plus" aria-hidden="true"></i>' +
-                                '</button>' +
-                                '</td>' +
-                                ('<td class="has-text-weight-bold">' +
-                                    cityssm.escapeHTML((_a = lotOccupancy.occupancyType) !== null && _a !== void 0 ? _a : '') +
-                                    '</td>');
+                        rowElement.innerHTML = `<td class="has-text-centered">
+                        <button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">
+                          <i class="fas fa-plus" aria-hidden="true"></i>
+                        </button>
+                      </td>
+                      <td class="has-text-weight-bold">
+                        ${cityssm.escapeHTML((_a = lotOccupancy.occupancyType) !== null && _a !== void 0 ? _a : '')}
+                      </td>`;
                         if (lotOccupancy.lotId) {
                             rowElement.insertAdjacentHTML('beforeend', '<td>' +
                                 cityssm.escapeHTML((_b = lotOccupancy.lotName) !== null && _b !== void 0 ? _b : '') +
@@ -625,8 +631,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 searchResultsContainerElement.innerHTML =
                     los.getLoadingParagraphHTML('Searching...');
-                cityssm.postJSON(los.urlPrefix + '/lots/doSearchLots', searchFormElement, (responseJSON) => {
+                cityssm.postJSON(los.urlPrefix + '/lots/doSearchLots', searchFormElement, (rawResponseJSON) => {
                     var _a, _b, _c, _d;
+                    const responseJSON = rawResponseJSON;
                     if (responseJSON.lots.length === 0) {
                         searchResultsContainerElement.innerHTML =
                             '<div class="message is-info">' +

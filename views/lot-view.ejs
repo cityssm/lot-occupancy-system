@@ -30,29 +30,29 @@
   <div class="level-right">
     <div class="level-item">
       <a class="button is-link is-outlined has-tooltip-left"
-          data-tooltip="Previous <%= configFunctions.getProperty("aliases.lot") %>"
-          href="<%= urlPrefix %>/lots/<%= lot.lotId %>/previous"
-          accesskey=",">
-          <i class="fas fa-arrow-left" aria-hidden="true"></i>
-          <span class="sr-only">Previous <%= configFunctions.getProperty("aliases.lot") %></span>
+        data-tooltip="Previous <%= configFunctions.getProperty("aliases.lot") %>"
+        href="<%= urlPrefix %>/lots/<%= lot.lotId %>/previous"
+        accesskey=",">
+        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+        <span class="sr-only">Previous <%= configFunctions.getProperty("aliases.lot") %></span>
       </a>
     </div>
     <div class="level-item">
       <a class="button is-link has-tooltip-left"
-          data-tooltip="Next <%= configFunctions.getProperty("aliases.lot") %>"
-          href="<%= urlPrefix %>/lots/<%= lot.lotId %>/next"
-          accesskey=".">
-          <span>Next</span>
-          <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+        data-tooltip="Next <%= configFunctions.getProperty("aliases.lot") %>"
+        href="<%= urlPrefix %>/lots/<%= lot.lotId %>/next"
+        accesskey=".">
+        <span>Next</span>
+        <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
       </a>
     </div>
     <% if (user.userProperties.canUpdate) { %>
       <div class="level-item">
         <a class="button is-primary"
-            href="<%= urlPrefix %>/lots/<%= lot.lotId %>/edit"
-            accesskey="e">
-            <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-            <span>Switch to Edit Mode</span>
+          href="<%= urlPrefix %>/lots/<%= lot.lotId %>/edit"
+          accesskey="e">
+          <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+          <span>Switch to Edit Mode</span>
         </a>
       </div>
     <% } %>
@@ -60,155 +60,158 @@
 </div>
 
 <div class="columns">
+  <div class="column">
+      <div class="panel">
+          <div class="panel-block is-block">
+              <div class="columns">
+                  <div class="column">
+                      <p class="mb-2">
+                          <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
+                          <a href="<%= urlPrefix %>/maps/<%= lot.mapId %>">
+                              <%= lot.mapName || "(No Name)" %>
+                          </a>
+                      </p>
+                      <p class="mb-2">
+                          <strong><%= configFunctions.getProperty("aliases.lot") %> Type</strong><br />
+                          <%= lot.lotType %>
+                      </p>
+                      <p>
+                          <strong>Status</strong><br />
+                          <%= lot.lotStatus %>
+                      </p>
+                  </div>
+                  <% if (lot.lotFields.length > 0) { %>
+                      <div class="column">
+                          <% for (const lotField of lot.lotFields) { %>
+                              <p class="mb-2">
+                                  <strong><%= lotField.lotTypeField %></strong><br />
+                                  <% if (lotField.lotFieldValue) { %>
+                                      <%= lotField.lotFieldValue %>
+                                  <% } else { %>
+                                      <span class="has-text-grey">(No Value)</span>
+                                  <% } %>
+                              </p>
+                          <% } %>
+                      </div>
+                  <% } %>
+              </div>
+          </div>
+      </div>
+  </div>
+  <% if (lot.mapSVG) { %>
     <div class="column">
-        <div class="panel">
-            <div class="panel-block is-block">
-                <div class="columns">
-                    <div class="column">
-                        <p class="mb-2">
-                            <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
-                            <a href="<%= urlPrefix %>/maps/<%= lot.mapId %>">
-                                <%= lot.mapName || "(No Name)" %>
-                            </a>
-                        </p>
-                        <p class="mb-2">
-                            <strong><%= configFunctions.getProperty("aliases.lot") %> Type</strong><br />
-                            <%= lot.lotType %>
-                        </p>
-                        <p>
-                            <strong>Status</strong><br />
-                            <%= lot.lotStatus %>
-                        </p>
-                    </div>
-                    <% if (lot.lotFields.length > 0) { %>
-                        <div class="column">
-                            <% for (const lotField of lot.lotFields) { %>
-                                <p class="mb-2">
-                                    <strong><%= lotField.lotTypeField %></strong><br />
-                                    <% if (lotField.lotFieldValue) { %>
-                                        <%= lotField.lotFieldValue %>
-                                    <% } else { %>
-                                        <span class="has-text-grey">(No Value)</span>
-                                    <% } %>
-                                </p>
-                            <% } %>
-                        </div>
-                    <% } %>
-                </div>
-            </div>
-        </div>
+      <div class="panel">
+        <h2 class="panel-heading">Image</h2>
+        <div class="panel-block is-block">
+          <% const imageURL = urlPrefix + "/images/maps/" + lot.mapSVG %>
+          <div class="image" id="lot--map" data-map-key="<%= lot.mapKey %>">
+            <%- include('../public/images/maps/' + lot.mapSVG); -%>
+          </div>
+      </div>
+      </div>
     </div>
-    <% if (lot.mapSVG) { %>
-        <div class="column">
-            <div class="panel">
-                <h2 class="panel-heading">Image</h2>
-                <div class="panel-block is-block">
-                    <% const imageURL = urlPrefix + "/images/maps/" + lot.mapSVG %>
-                    <div class="image" id="lot--map" data-map-key="<%= lot.mapKey %>">
-                        <%- include('../public/images/maps/' + lot.mapSVG); -%>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <% } %>
+  <% } %>
 </div>
 
 
 <% if (lot.lotComments.length > 0) { %>
-    <div class="panel">
-        <h2 class="panel-heading">Comments</h2>
-        <div class="panel-block is-block">
-            <table class="table is-fullwidth is-striped is-hoverable">
-                <thead>
-                    <tr>
-                        <th>Commentor</th>
-                        <th>Comment Date</th>
-                        <th>Comment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (const lotComment of lot.lotComments) { %>
-                        <tr>
-                            <td><%= lotComment.recordCreate_userName %></td>
-                            <td>
-                                <%= lotComment.lotCommentDateString %>
-                                <%= (lotComment.lotCommentTime === 0 ? "" : lotComment.lotCommentTimeString) %>
-                            </td>
-                            <td><%= lotComment.lotComment %></td>
-                        </tr>
-                    <% } %>
-                </tbody>
-            </table>
-        </div>
-    </div>
+  <div class="panel">
+      <h2 class="panel-heading">Comments</h2>
+      <div class="panel-block is-block">
+          <table class="table is-fullwidth is-striped is-hoverable">
+              <thead>
+                  <tr>
+                      <th>Commentor</th>
+                      <th>Comment Date</th>
+                      <th>Comment</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <% for (const lotComment of lot.lotComments) { %>
+                      <tr>
+                          <td><%= lotComment.recordCreate_userName %></td>
+                          <td>
+                              <%= lotComment.lotCommentDateString %>
+                              <%= (lotComment.lotCommentTime === 0 ? "" : lotComment.lotCommentTimeString) %>
+                          </td>
+                          <td><%= lotComment.lotComment %></td>
+                      </tr>
+                  <% } %>
+              </tbody>
+          </table>
+      </div>
+  </div>
 <% } %>
 
 <div class="panel">
-    <h2 class="panel-heading">
-        <%= configFunctions.getProperty("aliases.occupancies") %>
-        <span class="tag"><%= lot.lotOccupancies.length %></span>
-    </h2>
-    <div class="panel-block is-block">
-        <% if (lot.lotOccupancies.length === 0) { %>
-            <div class="message is-info">
-                <p class="message-body">There are no occupancy records asscociated with this
-                    <%= configFunctions.getProperty("aliases.lot") %>.</p>
-            </div>
-        <% } else { %>
-            <table class="table is-fullwidth is-striped is-hoverable">
-                <thead>
-                    <tr>
-                        <th class="has-width-10">&nbsp;</th>
-                        <th><%= configFunctions.getProperty("aliases.occupancy") %> Type</th>
-                        <th><%= configFunctions.getProperty("aliases.occupancyStartDate") %></th>
-                        <th>End Date</th>
-                        <th><%= configFunctions.getProperty("aliases.occupants") %></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
-                    <% for (const lotOccupancy of lot.lotOccupancies) { %>
-                    <% const isActive = !(lotOccupancy.occupancyEndDate && lotOccupancy.occupancyEndDate < currentDate); %>
-                    <tr>
-                        <td class="has-text-centered">
-                            <% if (isActive) { %>
-                            <i class="fas fa-play" title="Current <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
-                            <% } else { %>
-                            <i class="fas fa-stop" title="Previous <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
-                            <% } %>
-                        </td>
-                        <td>
-                            <a class="has-text-weight-bold"
-                                href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
-                                <%= lotOccupancy.occupancyType %>
-                            </a>
-                        </td>
-                        <td><%= lotOccupancy.occupancyStartDateString %></td>
-                        <td>
-                            <% if (lotOccupancy.occupancyEndDate) { %>
-                                <%= lotOccupancy.occupancyEndDateString %>
-                            <% } else { %>
-                                <span class="has-text-grey">(No End Date)</span>
-                            <% } %>
-                        </td>
-                        <td>
-                            <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
-                                <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.occupants") %>)</span>
-                            <% } else { %>
-                                <% for (const occupant of lotOccupancy.lotOccupancyOccupants) { %>
-                                    <span class="has-tooltip-left" data-tooltip="<%= occupant.lotOccupantType %>">
-                                        <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-hidden="true"></i>
-                                        <%= occupant.occupantName + ' ' + occupant.occupantFamilyName %>
-                                    </span><br />
-                                <% } %>
-                            <% } %>
-                        </td>
-                    </tr>
-                    <% } %>
-                </tbody>
-            </table>
-        <% } %>
-    </div>
+  <h2 class="panel-heading">
+    <%= configFunctions.getProperty("aliases.occupancies") %>
+    <span class="tag"><%= lot.lotOccupancies.length %></span>
+  </h2>
+  <div class="panel-block is-block">
+      <% if (lot.lotOccupancies.length === 0) { %>
+        <div class="message is-info">
+          <p class="message-body">
+            There are no occupancy records asscociated with this
+            <%= configFunctions.getProperty("aliases.lot") %>.
+          </p>
+        </div>
+      <% } else { %>
+          <table class="table is-fullwidth is-striped is-hoverable">
+              <thead>
+                <tr>
+                  <th class="has-width-10">&nbsp;</th>
+                  <th><%= configFunctions.getProperty("aliases.occupancy") %> Type</th>
+                  <th><%= configFunctions.getProperty("aliases.occupancyStartDate") %></th>
+                  <th>End Date</th>
+                  <th><%= configFunctions.getProperty("aliases.occupants") %></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
+                <% for (const lotOccupancy of lot.lotOccupancies) { %>
+                  <% const isActive = !(lotOccupancy.occupancyEndDate && lotOccupancy.occupancyEndDate < currentDate); %>
+                  <tr>
+                      <td class="has-text-centered">
+                        <% if (isActive) { %>
+                          <i class="fas fa-play" title="Current <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
+                        <% } else { %>
+                          <i class="fas fa-stop" title="Previous <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
+                        <% } %>
+                      </td>
+                      <td>
+                        <a class="has-text-weight-bold"
+                          href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
+                          <%= lotOccupancy.occupancyType %>
+                        </a><br />
+                        <span class="is-size-7">#<%= lotOccupancy.lotOccupancyId %></span>
+                      </td>
+                      <td><%= lotOccupancy.occupancyStartDateString %></td>
+                      <td>
+                          <% if (lotOccupancy.occupancyEndDate) { %>
+                              <%= lotOccupancy.occupancyEndDateString %>
+                          <% } else { %>
+                              <span class="has-text-grey">(No End Date)</span>
+                          <% } %>
+                      </td>
+                      <td>
+                        <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
+                          <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.occupants") %>)</span>
+                        <% } else { %>
+                          <% for (const occupant of lotOccupancy.lotOccupancyOccupants) { %>
+                            <span class="has-tooltip-left" data-tooltip="<%= occupant.lotOccupantType %>">
+                              <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-hidden="true"></i>
+                              <%= occupant.occupantName + ' ' + occupant.occupantFamilyName %>
+                            </span><br />
+                          <% } %>
+                        <% } %>
+                      </td>
+                  </tr>
+                <% } %>
+              </tbody>
+          </table>
+      <% } %>
+  </div>
 </div>
 
 <%- include('_footerA'); -%>

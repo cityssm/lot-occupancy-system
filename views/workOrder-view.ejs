@@ -89,34 +89,36 @@
     <div class="panel">
       <div class="panel-block is-block">
           <div class="columns">
-              <div class="column">
-                  <p class="mb-2">
-                      <strong>Work Order Type</strong><br />
-                      <%= workOrder.workOrderType %>
-                  </p>
-                  <p>
-                      <strong>Description</strong><br />
-                      <% if (workOrder.workOrderDescription) { %>
-                          <%= workOrder.workOrderDescription %>
-                      <% } else { %>
-                          <span class="has-text-grey">(No Description)</span>
-                      <% } %>
-                  </p>
-              </div>
-              <div class="column">
-                  <p class="mb-2">
-                      <strong><%= configFunctions.getProperty("aliases.workOrderOpenDate") %></strong><br />
-                      <%= workOrder.workOrderOpenDateString %>
-                  </p>
-                  <p>
-                      <strong><%= configFunctions.getProperty("aliases.workOrderCloseDate") %></strong><br />
-                      <% if (workOrder.workOrderCloseDate) { %>
-                          <%= workOrder.workOrderCloseDateString %>
-                      <% } else { %>
-                          <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.workOrderCloseDate") %>)</span>
-                      <% } %>
-                  </p>
-              </div>
+            <div class="column">
+              <p class="mb-2">
+                <strong>Work Order Type</strong><br />
+                <%= workOrder.workOrderType %>
+              </p>
+              <p>
+                <strong>Description</strong><br />
+                <% if (workOrder.workOrderDescription) { %>
+                  <%= workOrder.workOrderDescription %>
+                <% } else { %>
+                  <span class="has-text-grey">(No Description)</span>
+                <% } %>
+              </p>
+            </div>
+            <div class="column">
+              <p class="mb-2">
+                <strong><%= configFunctions.getProperty("aliases.workOrderOpenDate") %></strong><br />
+                <%= workOrder.workOrderOpenDateString %>
+              </p>
+              <p>
+                <strong><%= configFunctions.getProperty("aliases.workOrderCloseDate") %></strong><br />
+                <% if (workOrder.workOrderCloseDate) { %>
+                  <%= workOrder.workOrderCloseDateString %>
+                <% } else { %>
+                  <span class="has-text-grey">
+                    (No <%= configFunctions.getProperty("aliases.workOrderCloseDate") %>)
+                  </span>
+                <% } %>
+              </p>
+            </div>
           </div>
       </div>
     </div>
@@ -129,18 +131,18 @@
           %>
           <div class="tabs is-boxed">
             <ul>
-                <li class="<%= (tabToSelect === "lotOccupancies" ? "is-active" : "") %>">
-                    <a href="#relatedTab--lotOccupancies">
-                        <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
-                        <span class="ml-2 tag"><%= workOrder.workOrderLotOccupancies.length %></span>
-                    </a>
-                </li>
-                <li class="<%= (tabToSelect === "lots" ? "is-active" : "") %>">
-                    <a href="#relatedTab--lots">
-                        <span><%= configFunctions.getProperty("aliases.lots") %></span>
-                        <span class="ml-2 tag"><%= workOrder.workOrderLots.length %></span>
-                    </a>
-                </li>
+              <li class="<%= (tabToSelect === "lotOccupancies" ? "is-active" : "") %>">
+                <a href="#relatedTab--lotOccupancies">
+                  <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
+                  <span class="ml-2 tag"><%= workOrder.workOrderLotOccupancies.length %></span>
+                </a>
+              </li>
+              <li class="<%= (tabToSelect === "lots" ? "is-active" : "") %>">
+                <a href="#relatedTab--lots">
+                  <span><%= configFunctions.getProperty("aliases.lots") %></span>
+                  <span class="ml-2 tag"><%= workOrder.workOrderLots.length %></span>
+                </a>
+              </li>
             </ul>
           </div>
           <div class="tab-container">
@@ -179,10 +181,13 @@
                                         <% } %>
                                       </td>
                                       <td>
-                                          <a class="has-text-weight-bold"
-                                              href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
-                                              <%= lotOccupancy.occupancyType %>
-                                          </a>
+                                        <a class="has-text-weight-bold"
+                                          href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
+                                          <%= lotOccupancy.occupancyType %>
+                                        </a><br />
+                                        <span class="is-size-7">
+                                          #<%= lotOccupancy.lotOccupancyId %>
+                                        </span>
                                       </td>
                                       <td>
                                           <% if (lotOccupancy.lotId) { %>
