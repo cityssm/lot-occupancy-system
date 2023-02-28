@@ -1,4 +1,3 @@
-import cluster from 'node:cluster'
 import hasOwn from 'object.hasown'
 
 import Debug from 'debug'
@@ -8,11 +7,6 @@ export function applyPolyfills(): void {
   if (Object.hasOwn === undefined) {
     debug('Applying Object.hasOwn(o, v) polyfill')
     Object.hasOwn = hasOwn
-  }
-
-  if (cluster.setupPrimary === undefined && cluster.setupMaster !== undefined) {
-    debug('Applying cluster.setupPrimary() polyfill')
-    cluster.setupPrimary = cluster.setupMaster
   }
 }
 

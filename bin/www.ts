@@ -4,7 +4,6 @@ import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import * as configFunctions from '../helpers/functions.config.js'
-import '../helpers/polyfills.js'
 
 import exitHook from 'exit-hook'
 
@@ -24,9 +23,17 @@ const processCount = Math.min(
 debug(`Primary pid: ${process.pid}`)
 debug(`Launching ${processCount} processes`)
 
-cluster.setupPrimary({
+const clusterSettings = {
   exec: directoryName + '/wwwProcess.js'
-})
+}
+
+// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+if (cluster.setupPrimary) {
+  cluster.setupPrimary(clusterSettings)
+} else {
+  // Maintain Node 14 support
+  cluster.setupMaster(clusterSettings)
+}
 
 for (let index = 0; index < processCount; index += 1) {
   cluster.fork()

@@ -3,7 +3,6 @@ import os from 'node:os';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as configFunctions from '../helpers/functions.config.js';
-import '../helpers/polyfills.js';
 import exitHook from 'exit-hook';
 import ntfyPublish from '@cityssm/ntfy-publish';
 import Debug from 'debug';
@@ -12,9 +11,15 @@ const directoryName = dirname(fileURLToPath(import.meta.url));
 const processCount = Math.min(configFunctions.getProperty('application.maximumProcesses'), os.cpus().length);
 debug(`Primary pid: ${process.pid}`);
 debug(`Launching ${processCount} processes`);
-cluster.setupPrimary({
+const clusterSettings = {
     exec: directoryName + '/wwwProcess.js'
-});
+};
+if (cluster.setupPrimary) {
+    cluster.setupPrimary(clusterSettings);
+}
+else {
+    cluster.setupMaster(clusterSettings);
+}
 for (let index = 0; index < processCount; index += 1) {
     cluster.fork();
 }
