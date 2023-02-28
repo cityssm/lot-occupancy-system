@@ -1,1 +1,1 @@
-export {};
+import '../helpers/polyfills.js';
