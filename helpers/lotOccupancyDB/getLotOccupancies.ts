@@ -98,7 +98,10 @@ function buildWhereClause(filters: GetLotOccupanciesFilters): {
 
   if ((filters.occupancyEffectiveDateString ?? '') !== '') {
     sqlWhereClause +=
-      ' and (o.occupancyStartDate <= ? and (o.occupancyEndDate is null or o.occupancyEndDate >= ?))'
+      ` and (
+        o.occupancyEndDate is null
+        or (o.occupancyStartDate <= ? and o.occupancyEndDate >= ?)
+      )`
     sqlParameters.push(
       dateStringToInteger(filters.occupancyEffectiveDateString!),
       dateStringToInteger(filters.occupancyEffectiveDateString!)
