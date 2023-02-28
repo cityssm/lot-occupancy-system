@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/indent, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from '../types/globalTypes'
 
@@ -15,15 +15,21 @@ declare const bulmaJS: BulmaJS
     cityssm.postJSON(
       los.urlPrefix + '/admin/doBackupDatabase',
       {},
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        fileName?: string
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as
+          | {
+              success: true
+              fileName: string
+            }
+          | {
+              success: false
+              errorMessage: string
+            }
+
         if (responseJSON.success) {
           bulmaJS.alert({
             title: 'Database Backed Up Successfully',
-            message: `Backed up to ${responseJSON.fileName!}`,
+            message: `Backed up to ${responseJSON.fileName}`,
             contextualColorName: 'success'
           })
         } else {
@@ -41,16 +47,22 @@ declare const bulmaJS: BulmaJS
     cityssm.postJSON(
       los.urlPrefix + '/admin/doCleanupDatabase',
       {},
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        inactivedRecordCount: number
-        purgedRecordCount: number
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as
+          | {
+              success: true
+              inactivatedRecordCount: number
+              purgedRecordCount: number
+            }
+          | {
+              success: false
+              errorMessage: string
+            }
+
         if (responseJSON.success) {
           bulmaJS.alert({
             title: 'Database Cleaned Up Successfully',
-            message: `${responseJSON.inactivedRecordCount} records inactivated,
+            message: `${responseJSON.inactivatedRecordCount} records inactivated,
               ${responseJSON.purgedRecordCount} permanently deleted.`,
             contextualColorName: 'success'
           })

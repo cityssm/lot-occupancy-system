@@ -3,7 +3,7 @@ export async function handler(request, response) {
     const recordCounts = await cleanupDatabase(request.session);
     response.json({
         success: true,
-        inactivedRecordCount: recordCounts.inactivedRecordCount,
+        inactivatedRecordCount: recordCounts.inactivatedRecordCount,
         purgedRecordCount: recordCounts.purgedRecordCount
     });
 }

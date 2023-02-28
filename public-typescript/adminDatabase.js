@@ -1,12 +1,13 @@
 "use strict";
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/indent, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     var _a, _b;
     const los = exports.los;
     function doBackup() {
-        cityssm.postJSON(los.urlPrefix + '/admin/doBackupDatabase', {}, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/admin/doBackupDatabase', {}, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 bulmaJS.alert({
                     title: 'Database Backed Up Successfully',
@@ -24,12 +25,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function doCleanup() {
-        cityssm.postJSON(los.urlPrefix + '/admin/doCleanupDatabase', {}, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/admin/doCleanupDatabase', {}, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 bulmaJS.alert({
                     title: 'Database Cleaned Up Successfully',
-                    message: `${responseJSON.inactivedRecordCount} records inactivated,
+                    message: `${responseJSON.inactivatedRecordCount} records inactivated,
               ${responseJSON.purgedRecordCount} permanently deleted.`,
                     contextualColorName: 'success'
                 });

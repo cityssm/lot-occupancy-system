@@ -6,7 +6,7 @@ import type * as recordTypes from '../../types/recordTypes'
 
 export async function cleanupDatabase(
   requestSession: recordTypes.PartialSession
-): Promise<{ inactivedRecordCount: number; purgedRecordCount: number }> {
+): Promise<{ inactivatedRecordCount: number; purgedRecordCount: number }> {
   const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
@@ -16,14 +16,14 @@ export async function cleanupDatabase(
       86_400 *
       1000
 
-  let inactivedRecordCount = 0
+  let inactivatedRecordCount = 0
   let purgedRecordCount = 0
 
   /*
    * Work Order Comments
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update WorkOrderComments
         set recordDelete_userName = ?,
@@ -42,7 +42,7 @@ export async function cleanupDatabase(
    * Work Order Lot Occupancies
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update WorkOrderLotOccupancies
         set recordDelete_userName = ?,
@@ -63,7 +63,7 @@ export async function cleanupDatabase(
    * Work Order Lots
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update WorkOrderLots
         set recordDelete_userName = ?,
@@ -82,7 +82,7 @@ export async function cleanupDatabase(
    * Work Order Milestones
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update WorkOrderMilestones
         set recordDelete_userName = ?,
@@ -143,7 +143,7 @@ export async function cleanupDatabase(
    * Lot Occupancy Comments
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update LotOccupancyComments
         set recordDelete_userName = ?,
@@ -164,7 +164,7 @@ export async function cleanupDatabase(
    * Lot Occupancy Fields
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update LotOccupancyFields
         set recordDelete_userName = ?,
@@ -184,7 +184,7 @@ export async function cleanupDatabase(
    * Lot Occupancy Occupants
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update LotOccupancyOccupants
         set recordDelete_userName = ?,
@@ -236,7 +236,7 @@ export async function cleanupDatabase(
    * Fees
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update Fees
         set recordDelete_userName = ?,
@@ -270,7 +270,7 @@ export async function cleanupDatabase(
    * Occupancy Type Fields
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update OccupancyTypeFields
         set recordDelete_userName = ?,
@@ -292,7 +292,7 @@ export async function cleanupDatabase(
    * Occupancy Type Prints
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update OccupancyTypePrints
         set recordDelete_userName = ?,
@@ -339,7 +339,7 @@ export async function cleanupDatabase(
    * Lot Comments
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update LotComments
         set recordDelete_userName = ?,
@@ -357,7 +357,7 @@ export async function cleanupDatabase(
    * Lot Fields
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update LotFields
         set recordDelete_userName = ?,
@@ -375,7 +375,7 @@ export async function cleanupDatabase(
    * Lots
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update Lots
         set recordDelete_userName = ?,
@@ -412,7 +412,7 @@ export async function cleanupDatabase(
    * Lot Type Fields
    */
 
-  inactivedRecordCount += database
+  inactivatedRecordCount += database
     .prepare(
       `update LotTypeFields
         set recordDelete_userName = ?,
@@ -445,7 +445,7 @@ export async function cleanupDatabase(
   database.release()
 
   return {
-    inactivedRecordCount,
+    inactivatedRecordCount,
     purgedRecordCount
   }
 }
