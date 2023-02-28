@@ -60,10 +60,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/lots/doDeleteLot', {
                 lotId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    cityssm.disableNavBlocker();
+                    clearUnsavedChanges();
                     window.location.href = los.getLotURL();
                 }
                 else {
@@ -98,8 +99,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             cityssm.postJSON(los.urlPrefix + '/lots/doGetLotTypeFields', {
                 lotTypeId: lotTypeIdElement.value
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.lotTypeFields.length === 0) {
                     lotFieldsContainerElement.innerHTML = `<div class="message is-info">
               <p class="message-body">There are no additional fields for this ${los.escapedAliases.lot} type.</p>
@@ -190,8 +192,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         function editComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/lots/doUpdateLotComment', editFormElement, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/lots/doUpdateLotComment', editFormElement, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotComments = responseJSON.lotComments;
                     editCloseModalFunction();
@@ -241,8 +244,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(los.urlPrefix + '/lots/doDeleteLotComment', {
                 lotId,
                 lotCommentId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotComments = responseJSON.lotComments;
                     renderLotComments();
@@ -326,7 +330,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCommentCloseModalFunction;
         function doAddComment(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/lots/doAddLotComment', formEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/lots/doAddLotComment', formEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotComments = responseJSON.lotComments;
                     renderLotComments();

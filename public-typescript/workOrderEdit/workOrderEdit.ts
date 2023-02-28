@@ -1,4 +1,4 @@
-/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable spaced-comment, @typescript-eslint/indent, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
 import type { BulmaJS } from '@cityssm/bulma-js/types'
@@ -82,8 +82,9 @@ declare const bulmaJS: BulmaJS
     )
   })
 
-  const inputElements: NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> =
-    workOrderFormElement.querySelectorAll('input, select, textarea')
+  const inputElements: NodeListOf<
+    HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+  > = workOrderFormElement.querySelectorAll('input, select, textarea')
 
   for (const inputElement of inputElements) {
     inputElement.addEventListener('change', setUnsavedChanges)
@@ -376,11 +377,13 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/workOrders/doUpdateWorkOrderMilestone',
         submitEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          workOrderMilestones?: recordTypes.WorkOrderMilestone[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            errorMessage?: string
+            workOrderMilestones?: recordTypes.WorkOrderMilestone[]
+          }
+
           processMilestoneResponse(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -498,9 +501,9 @@ declare const bulmaJS: BulmaJS
         ('<div class="column is-narrow">' +
           (milestone.workOrderMilestoneCompletionDate
             ? '<span class="button is-static" data-tooltip="Completed ' +
-              milestone.workOrderMilestoneCompletionDateString +
+              milestone.workOrderMilestoneCompletionDateString! +
               '" aria-label="Completed ' +
-              milestone.workOrderMilestoneCompletionDateString +
+              milestone.workOrderMilestoneCompletionDateString! +
               '">' +
               '<span class="icon is-small"><i class="fas fa-check" aria-hidden="true"></i></span>' +
               '</span>'
@@ -518,7 +521,7 @@ declare const bulmaJS: BulmaJS
             ? '<span class="has-text-grey">(No Set Date)</span>'
             : milestone.workOrderMilestoneDateString) +
           (milestone.workOrderMilestoneTime
-            ? ' ' + milestone.workOrderMilestoneTimeString
+            ? ' ' + milestone.workOrderMilestoneTimeString!
             : '') +
           '<br />' +
           '<span class="is-size-7">' +
@@ -600,11 +603,13 @@ declare const bulmaJS: BulmaJS
             cityssm.postJSON(
               los.urlPrefix + '/workOrders/doAddWorkOrderMilestone',
               addFormElement,
-              (responseJSON: {
-                success: boolean
-                errorMessage?: string
-                workOrderMilestones?: recordTypes.WorkOrderMilestone[]
-              }) => {
+              (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON as {
+                  success: boolean
+                  errorMessage?: string
+                  workOrderMilestones?: recordTypes.WorkOrderMilestone[]
+                }
+
                 processMilestoneResponse(responseJSON)
 
                 if (responseJSON.success) {

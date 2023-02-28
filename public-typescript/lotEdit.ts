@@ -92,9 +92,14 @@ declare const bulmaJS: BulmaJS
           {
             lotId
           },
-          (responseJSON: { success: boolean; errorMessage?: string }) => {
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+            }
+
             if (responseJSON.success) {
-              cityssm.disableNavBlocker()
+              clearUnsavedChanges()
               window.location.href = los.getLotURL()
             } else {
               bulmaJS.alert({
@@ -143,7 +148,11 @@ declare const bulmaJS: BulmaJS
         {
           lotTypeId: lotTypeIdElement.value
         },
-        (responseJSON: { lotTypeFields: recordTypes.LotTypeField[] }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            lotTypeFields: recordTypes.LotTypeField[]
+          }
+
           if (responseJSON.lotTypeFields.length === 0) {
             lotFieldsContainerElement.innerHTML = `<div class="message is-info">
               <p class="message-body">There are no additional fields for this ${los.escapedAliases.lot} type.</p>
@@ -280,11 +289,13 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/lots/doUpdateLotComment',
         editFormElement,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          lotComments?: recordTypes.LotComment[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            errorMessage?: string
+            lotComments?: recordTypes.LotComment[]
+          }
+
           if (responseJSON.success) {
             lotComments = responseJSON.lotComments!
             editCloseModalFunction()
@@ -373,11 +384,13 @@ declare const bulmaJS: BulmaJS
           lotId,
           lotCommentId
         },
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          lotComments: recordTypes.LotComment[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            errorMessage?: string
+            lotComments: recordTypes.LotComment[]
+          }
+
           if (responseJSON.success) {
             lotComments = responseJSON.lotComments
             renderLotComments()
@@ -478,10 +491,12 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/lots/doAddLotComment',
         formEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          lotComments?: recordTypes.LotComment[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            lotComments?: recordTypes.LotComment[]
+          }
+
           if (responseJSON.success) {
             lotComments = responseJSON.lotComments!
             renderLotComments()

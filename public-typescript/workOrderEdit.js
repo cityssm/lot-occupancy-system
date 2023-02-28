@@ -1,5 +1,5 @@
 "use strict";
-/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable spaced-comment, @typescript-eslint/indent, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     var _a, _b, _c;
@@ -1011,7 +1011,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/workOrders/doUpdateWorkOrderMilestone', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/workOrders/doUpdateWorkOrderMilestone', submitEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 processMilestoneResponse(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -1169,7 +1170,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 const currentDateString = cityssm.dateToString(new Date());
                 function _doAdd() {
-                    cityssm.postJSON(los.urlPrefix + '/workOrders/doAddWorkOrderMilestone', addFormElement, (responseJSON) => {
+                    cityssm.postJSON(los.urlPrefix + '/workOrders/doAddWorkOrderMilestone', addFormElement, (rawResponseJSON) => {
+                        const responseJSON = rawResponseJSON;
                         processMilestoneResponse(responseJSON);
                         if (responseJSON.success) {
                             addCloseModalFunction();
