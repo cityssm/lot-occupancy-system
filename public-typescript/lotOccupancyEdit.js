@@ -303,7 +303,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ;
             document.querySelector('#lotOccupancy--lotId').value = lotId.toString();
             document.querySelector('#lotOccupancy--lotName').value = lotName;
-            los.setUnsavedChanges();
+            setUnsavedChanges();
             lotSelectCloseModalFunction();
         }
         function selectExistingLot(clickEvent) {
@@ -461,7 +461,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         else {
             lotNameElement.value = `(No ${los.escapedAliases.Lot})`;
             document.querySelector('#lotOccupancy--lotId').value = '';
-            los.setUnsavedChanges();
+            setUnsavedChanges();
         }
     });
     // Start Date

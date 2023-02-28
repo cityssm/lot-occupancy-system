@@ -465,7 +465,7 @@ declare const bulmaJS: BulmaJS
         document.querySelector('#lotOccupancy--lotName') as HTMLInputElement
       ).value = lotName
 
-      los.setUnsavedChanges()
+      setUnsavedChanges()
       lotSelectCloseModalFunction()
     }
 
@@ -709,7 +709,8 @@ declare const bulmaJS: BulmaJS
         ;(
           document.querySelector('#lotOccupancy--lotId') as HTMLInputElement
         ).value = ''
-        los.setUnsavedChanges()
+
+        setUnsavedChanges()
       }
     })
 
