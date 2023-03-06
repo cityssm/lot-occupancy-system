@@ -117,7 +117,7 @@
     "gulp-include": "^2.4.1",
     "gulp-minify": "^3.1.0",
     "gulp-sass": "^5.1.0",
-    "nodemon": "^2.0.20",
+    "nodemon": "^2.0.21",
     "sass": "^1.58.3"
   }
 }
