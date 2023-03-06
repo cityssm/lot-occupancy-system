@@ -31,6 +31,7 @@ export interface LOS {
         WorkOrderCloseDate: string;
         workOrderCloseDate: string;
     };
+    dynamicsGPIntegrationIsEnabled: boolean;
     getRandomColor: (seedString: string) => string;
     setUnsavedChanges: () => void;
     clearUnsavedChanges: () => void;

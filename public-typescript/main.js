@@ -379,11 +379,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
         return getRecordURL('workOrders', workOrderId, edit, time);
     }
     /*
+     * Settings
+     */
+    const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled;
+    /*
      * Declare LOS
      */
     const los = {
         urlPrefix,
         apiKey: document.querySelector('main').dataset.apiKey,
+        dynamicsGPIntegrationIsEnabled,
         highlightMap,
         initializeUnlockFieldButtons,
         initializeDatePickers,

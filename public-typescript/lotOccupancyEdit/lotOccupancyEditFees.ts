@@ -515,16 +515,45 @@ function renderLotOccupancyTransactions(): void {
     tableRowElement.dataset.transactionIndex =
       lotOccupancyTransaction.transactionIndex!.toString()
 
+    let externalReceiptNumberHTML = ''
+
+    if (lotOccupancyTransaction.externalReceiptNumber !== '') {
+      externalReceiptNumberHTML = cityssm.escapeHTML(
+        lotOccupancyTransaction.externalReceiptNumber ?? ''
+      )
+
+      if (los.dynamicsGPIntegrationIsEnabled) {
+        if (lotOccupancyTransaction.dynamicsGPDocument === undefined) {
+          externalReceiptNumberHTML += ` <span data-tooltip="No Matching Document Found">
+            <i class="fas fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
+            </span>`
+        } else {
+          externalReceiptNumberHTML +=
+            lotOccupancyTransaction.dynamicsGPDocument.documentTotal.toFixed(
+              2
+            ) === lotOccupancyTransaction.transactionAmount.toFixed(2)
+              ? ` <span data-tooltip="Matching Document Found">
+              <i class="fas fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
+              </span>`
+              : ` <span data-tooltip="Matching Document: $${lotOccupancyTransaction.dynamicsGPDocument.documentTotal.toFixed(
+                  2
+                )}">
+              <i class="fas fa-check-circle has-text-warning" aria-label="Matching Document: $${lotOccupancyTransaction.dynamicsGPDocument.documentTotal.toFixed(
+                2
+              )}"></i>
+              </span>`
+        }
+      }
+
+      externalReceiptNumberHTML += '<br />'
+    }
+
     tableRowElement.innerHTML =
       '<td>' +
       (lotOccupancyTransaction.transactionDateString ?? '') +
       '</td>' +
       ('<td>' +
-        (lotOccupancyTransaction.externalReceiptNumber === ''
-          ? ''
-          : cityssm.escapeHTML(
-              lotOccupancyTransaction.externalReceiptNumber ?? ''
-            ) + '<br />') +
+        externalReceiptNumberHTML +
         '<small>' +
         cityssm.escapeHTML(lotOccupancyTransaction.transactionNote ?? '') +
         '</small>' +

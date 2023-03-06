@@ -48,4 +48,8 @@ config.settings.map.mapCityDefault = 'Sault Ste. Marie';
 config.settings.workOrders.workOrderNumberLength = 6;
 config.settings.workOrders.workOrderMilestoneDateRecentBeforeDays = 7;
 config.settings.workOrders.workOrderMilestoneDateRecentAfterDays = 30;
+config.settings.dynamicsGP = {
+    integrationIsEnabled: true,
+    lookupOrder: ['diamond/cashReceipt', 'invoice']
+};
 export default config;

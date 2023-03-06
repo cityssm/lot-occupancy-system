@@ -8,4 +8,5 @@ config.users = {
     canUpdate: ['*testUpdate'],
     isAdmin: ['*testAdmin']
 };
+config.settings.dynamicsGP.integrationIsEnabled = false;
 export default config;

@@ -13,7 +13,10 @@ export const config: Config = {
     lotOccupancy: {},
     workOrders: {},
     adminCleanup: {},
-    printPdf: {}
+    printPdf: {},
+    dynamicsGP: {
+      integrationIsEnabled: false
+    }
   }
 }
 

@@ -365,14 +365,34 @@ function renderLotOccupancyTransactions() {
         tableRowElement.className = 'container--lotOccupancyTransaction';
         tableRowElement.dataset.transactionIndex =
             lotOccupancyTransaction.transactionIndex.toString();
+        let externalReceiptNumberHTML = '';
+        if (lotOccupancyTransaction.externalReceiptNumber !== '') {
+            externalReceiptNumberHTML = cityssm.escapeHTML((_a = lotOccupancyTransaction.externalReceiptNumber) !== null && _a !== void 0 ? _a : '');
+            if (los.dynamicsGPIntegrationIsEnabled) {
+                if (lotOccupancyTransaction.dynamicsGPDocument === undefined) {
+                    externalReceiptNumberHTML += ` <span data-tooltip="No Matching Document Found">
+            <i class="fas fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
+            </span>`;
+                }
+                else {
+                    externalReceiptNumberHTML +=
+                        lotOccupancyTransaction.dynamicsGPDocument.documentTotal.toFixed(2) === lotOccupancyTransaction.transactionAmount.toFixed(2)
+                            ? ` <span data-tooltip="Matching Document Found">
+              <i class="fas fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
+              </span>`
+                            : ` <span data-tooltip="Matching Document: $${lotOccupancyTransaction.dynamicsGPDocument.documentTotal.toFixed(2)}">
+              <i class="fas fa-check-circle has-text-warning" aria-label="Matching Document: $${lotOccupancyTransaction.dynamicsGPDocument.documentTotal.toFixed(2)}"></i>
+              </span>`;
+                }
+            }
+            externalReceiptNumberHTML += '<br />';
+        }
         tableRowElement.innerHTML =
             '<td>' +
-                ((_a = lotOccupancyTransaction.transactionDateString) !== null && _a !== void 0 ? _a : '') +
+                ((_b = lotOccupancyTransaction.transactionDateString) !== null && _b !== void 0 ? _b : '') +
                 '</td>' +
                 ('<td>' +
-                    (lotOccupancyTransaction.externalReceiptNumber === ''
-                        ? ''
-                        : cityssm.escapeHTML((_b = lotOccupancyTransaction.externalReceiptNumber) !== null && _b !== void 0 ? _b : '') + '<br />') +
+                    externalReceiptNumberHTML +
                     '<small>' +
                     cityssm.escapeHTML((_c = lotOccupancyTransaction.transactionNote) !== null && _c !== void 0 ? _c : '') +
                     '</small>' +

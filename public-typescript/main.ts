@@ -521,12 +521,19 @@ declare const bulmaJS: BulmaJS
   }
 
   /*
+   * Settings
+   */
+
+  const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled as boolean
+
+  /*
    * Declare LOS
    */
 
   const los: globalTypes.LOS = {
     urlPrefix,
     apiKey: document.querySelector('main')!.dataset.apiKey!,
+    dynamicsGPIntegrationIsEnabled,
     highlightMap,
     initializeUnlockFieldButtons,
     initializeDatePickers,

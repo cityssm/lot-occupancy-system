@@ -1,5 +1,6 @@
 import './polyfills.js';
 import type * as configTypes from '../types/configTypes';
+import type { config as MSSQLConfig } from 'mssql';
 export declare function getProperty(propertyName: 'application.applicationName'): string;
 export declare function getProperty(propertyName: 'application.logoURL'): string;
 export declare function getProperty(propertyName: 'application.httpPort'): number;
@@ -48,4 +49,7 @@ export declare function getProperty(propertyName: 'settings.workOrders.calendarE
 export declare function getProperty(propertyName: 'settings.workOrders.prints'): string[];
 export declare function getProperty(propertyName: 'settings.adminCleanup.recordDeleteAgeDays'): number;
 export declare function getProperty(propertyName: 'settings.printPdf.contentDisposition'): 'attachment' | 'inline';
+export declare function getProperty(propertyName: 'settings.dynamicsGP.integrationIsEnabled'): boolean;
+export declare function getProperty(propertyName: 'settings.dynamicsGP.mssqlConfig'): MSSQLConfig;
+export declare function getProperty(propertyName: 'settings.dynamicsGP.lookupOrder'): configTypes.DynamicsGPLookup[];
 export declare const keepAliveMillis: number;

@@ -50,6 +50,8 @@ configFallbackValues.set('settings.workOrders.prints', [
 ]);
 configFallbackValues.set('settings.adminCleanup.recordDeleteAgeDays', 60);
 configFallbackValues.set('settings.printPdf.contentDisposition', 'attachment');
+configFallbackValues.set('settings.dynamicsGP.integrationIsEnabled', false);
+configFallbackValues.set('settings.dynamicsGP.lookupOrder', ['invoice']);
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split('.');
     let currentObject = config;

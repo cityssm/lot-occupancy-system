@@ -1,3 +1,4 @@
+import type { config as MSSQLConfig } from 'mssql';
 export interface Config {
     application: ConfigApplication;
     session: ConfigSession;
@@ -60,8 +61,14 @@ export interface Config {
         printPdf: {
             contentDisposition?: 'attachment' | 'inline';
         };
+        dynamicsGP?: {
+            integrationIsEnabled: boolean;
+            mssqlConfig?: MSSQLConfig;
+            lookupOrder?: DynamicsGPLookup[];
+        };
     };
 }
+export type DynamicsGPLookup = 'diamond/cashReceipt' | 'invoice';
 interface ConfigApplication {
     applicationName?: string;
     backgroundURL?: string;

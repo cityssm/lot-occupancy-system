@@ -6,6 +6,9 @@ import {
   timeIntegerToString
 } from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
+import * as configFunctions from '../functions.config.js'
+import * as gpFunctions from '../functions.dynamicsGP.js'
+
 import type * as recordTypes from '../../types/recordTypes'
 
 export async function getLotOccupancyTransactions(
@@ -33,6 +36,20 @@ export async function getLotOccupancyTransactions(
 
   if (connectedDatabase === undefined) {
     database.release()
+  }
+
+  if (configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
+    for (const transaction of lotOccupancyTransactions) {
+      if ((transaction.externalReceiptNumber ?? '') !== '') {
+        const gpDocument = await gpFunctions.getDynamicsGPDocument(
+          transaction.externalReceiptNumber!
+        )
+
+        if (gpDocument !== undefined) {
+          transaction.dynamicsGPDocument = gpDocument
+        }
+      }
+    }
   }
 
   return lotOccupancyTransactions

@@ -6,6 +6,9 @@ import { config } from '../data/config.js'
 
 import type * as configTypes from '../types/configTypes'
 
+// eslint-disable-next-line node/no-extraneous-import
+import type { config as MSSQLConfig } from 'mssql'
+
 /*
  * SET UP FALLBACK VALUES
  */
@@ -93,6 +96,9 @@ configFallbackValues.set('settings.workOrders.prints', [
 configFallbackValues.set('settings.adminCleanup.recordDeleteAgeDays', 60)
 
 configFallbackValues.set('settings.printPdf.contentDisposition', 'attachment')
+
+configFallbackValues.set('settings.dynamicsGP.integrationIsEnabled', false)
+configFallbackValues.set('settings.dynamicsGP.lookupOrder', ['invoice'])
 
 /*
  * Set up function overloads
@@ -210,6 +216,18 @@ export function getProperty(
 export function getProperty(
   propertyName: 'settings.printPdf.contentDisposition'
 ): 'attachment' | 'inline'
+
+export function getProperty(
+  propertyName: 'settings.dynamicsGP.integrationIsEnabled'
+): boolean
+
+export function getProperty(
+  propertyName: 'settings.dynamicsGP.mssqlConfig'
+): MSSQLConfig
+
+export function getProperty(
+  propertyName: 'settings.dynamicsGP.lookupOrder'
+): configTypes.DynamicsGPLookup[]
 
 export function getProperty(propertyName: string): unknown {
   const propertyNameSplit = propertyName.split('.')

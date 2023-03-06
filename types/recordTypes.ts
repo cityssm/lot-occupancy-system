@@ -191,6 +191,15 @@ export interface LotOccupancyTransaction extends Record {
   transactionAmount: number
   externalReceiptNumber?: string
   transactionNote?: string
+  dynamicsGPDocument?: DynamicsGPDocument
+}
+
+export interface DynamicsGPDocument {
+  documentType: 'Invoice' | 'Cash Receipt'
+  documentNumber: string
+  documentDate: Date
+  documentDescription: string[]
+  documentTotal: number
 }
 
 export interface LotOccupancyOccupant extends Record {
