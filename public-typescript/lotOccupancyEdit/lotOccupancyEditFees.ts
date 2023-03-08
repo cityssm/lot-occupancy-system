@@ -527,21 +527,22 @@ function renderLotOccupancyTransactions(): void {
           externalReceiptNumberHTML += ` <span data-tooltip="No Matching Document Found">
             <i class="fas fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
             </span>`
+        } else if (
+          lotOccupancyTransaction.dynamicsGPDocument.documentTotal.toFixed(
+            2
+          ) === lotOccupancyTransaction.transactionAmount.toFixed(2)
+        ) {
+          externalReceiptNumberHTML += ` <span data-tooltip="Matching Document Found">
+            <i class="fas fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
+            </span>`
         } else {
-          externalReceiptNumberHTML +=
-            lotOccupancyTransaction.dynamicsGPDocument.documentTotal.toFixed(
+          externalReceiptNumberHTML += ` <span data-tooltip="Matching Document: $${lotOccupancyTransaction.dynamicsGPDocument.documentTotal.toFixed(
+            2
+          )}">
+            <i class="fas fa-check-circle has-text-warning" aria-label="Matching Document: $${lotOccupancyTransaction.dynamicsGPDocument.documentTotal.toFixed(
               2
-            ) === lotOccupancyTransaction.transactionAmount.toFixed(2)
-              ? ` <span data-tooltip="Matching Document Found">
-              <i class="fas fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
-              </span>`
-              : ` <span data-tooltip="Matching Document: $${lotOccupancyTransaction.dynamicsGPDocument.documentTotal.toFixed(
-                  2
-                )}">
-              <i class="fas fa-check-circle has-text-warning" aria-label="Matching Document: $${lotOccupancyTransaction.dynamicsGPDocument.documentTotal.toFixed(
-                2
-              )}"></i>
-              </span>`
+            )}"></i>
+            </span>`
         }
       }
 
@@ -604,6 +605,9 @@ function renderLotOccupancyTransactions(): void {
 document
   .querySelector('#button--addTransaction')!
   .addEventListener('click', () => {
+    let transactionAmountElement: HTMLInputElement
+    let externalReceiptNumberElement: HTMLInputElement
+
     let addCloseModalFunction: () => void
 
     function doAddTransaction(submitEvent: SubmitEvent): void {
@@ -634,6 +638,61 @@ document
       )
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    function dynamicsGP_refreshExternalReceiptNumberIcon(): void {
+      const externalReceiptNumber = externalReceiptNumberElement.value
+
+      const iconElement = externalReceiptNumberElement
+        .closest('.control')!
+        .querySelector('.icon') as HTMLElement
+
+      const helpTextElement = externalReceiptNumberElement
+        .closest('.field')!
+        .querySelector('.help') as HTMLElement
+
+      if (externalReceiptNumber === '') {
+        helpTextElement.innerHTML = '&nbsp;'
+        iconElement.innerHTML =
+          '<i class="fas fa-minus" aria-hidden="true"></i>'
+        return
+      }
+
+      cityssm.postJSON(
+        los.urlPrefix + '/lotOccupancies/doGetDynamicsGPDocument',
+        {
+          externalReceiptNumber
+        },
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            dynamicsGPDocument?: recordTypes.DynamicsGPDocument
+          }
+
+          if (
+            !responseJSON.success ||
+            responseJSON.dynamicsGPDocument === undefined
+          ) {
+            helpTextElement.textContent = 'No Matching Document Found'
+            iconElement.innerHTML =
+              '<i class="fas fa-times-circle" aria-hidden="true"></i>'
+          } else if (
+            transactionAmountElement.valueAsNumber ===
+            responseJSON.dynamicsGPDocument.documentTotal
+          ) {
+            helpTextElement.textContent = 'Matching Document Found'
+            iconElement.innerHTML =
+              '<i class="fas fa-check-circle" aria-hidden="true"></i>'
+          } else {
+            helpTextElement.textContent =
+              'Matching Document: $' +
+              responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)
+            iconElement.innerHTML =
+              '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i>'
+          }
+        }
+      )
+    }
+
     cityssm.openHtmlModal('lotOccupancy-addTransaction', {
       onshow(modalElement) {
         los.populateAliases(modalElement)
@@ -646,19 +705,54 @@ document
         const feeGrandTotal = getFeeGrandTotal()
         const transactionGrandTotal = getTransactionGrandTotal()
 
-        const transactionAmountElement = modalElement.querySelector(
+        transactionAmountElement = modalElement.querySelector(
           '#lotOccupancyTransactionAdd--transactionAmount'
         ) as HTMLInputElement
 
         transactionAmountElement.min = (-1 * transactionGrandTotal).toFixed(2)
+
         transactionAmountElement.max = Math.max(
           feeGrandTotal - transactionGrandTotal,
           0
         ).toFixed(2)
+
         transactionAmountElement.value = Math.max(
           feeGrandTotal - transactionGrandTotal,
           0
         ).toFixed(2)
+
+        if (los.dynamicsGPIntegrationIsEnabled) {
+          externalReceiptNumberElement = modalElement.querySelector(
+            '#lotOccupancyTransactionAdd--externalReceiptNumber'
+          )!
+
+          const externalReceiptNumberControlElement =
+            externalReceiptNumberElement.closest('.control')!
+
+          externalReceiptNumberControlElement.classList.add('has-icons-right')
+
+          externalReceiptNumberControlElement.insertAdjacentHTML(
+            'beforeend',
+            '<span class="icon is-small is-right"></span>'
+          )
+
+          externalReceiptNumberControlElement.insertAdjacentHTML(
+            'afterend',
+            '<p class="help has-text-right"></p>'
+          )
+
+          externalReceiptNumberElement.addEventListener(
+            'change',
+            dynamicsGP_refreshExternalReceiptNumberIcon
+          )
+
+          transactionAmountElement.addEventListener(
+            'change',
+            dynamicsGP_refreshExternalReceiptNumberIcon
+          )
+
+          dynamicsGP_refreshExternalReceiptNumberIcon()
+        }
       },
       onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()

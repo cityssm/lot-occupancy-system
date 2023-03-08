@@ -27,10 +27,13 @@ import handler_doGetFees from '../handlers/lotOccupancies-post/doGetFees.js'
 import handler_doAddLotOccupancyFee from '../handlers/lotOccupancies-post/doAddLotOccupancyFee.js'
 import handler_doDeleteLotOccupancyFee from '../handlers/lotOccupancies-post/doDeleteLotOccupancyFee.js'
 
+import handler_doGetDynamicsGPDocument from '../handlers/lotOccupancies-post/doGetDynamicsGPDocument.js'
 import handler_doAddLotOccupancyTransaction from '../handlers/lotOccupancies-post/doAddLotOccupancyTransaction.js'
 import handler_doDeleteLotOccupancyTransaction from '../handlers/lotOccupancies-post/doDeleteLotOccupancyTransaction.js'
 
 import * as permissionHandlers from '../handlers/permissions.js'
+
+import * as configFunctions from '../helpers/functions.config.js'
 
 export const router = Router()
 
@@ -160,6 +163,14 @@ router.post(
 )
 
 // Transactions
+
+if (configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
+  router.post(
+    '/doGetDynamicsGPDocument',
+    permissionHandlers.updatePostHandler,
+    handler_doGetDynamicsGPDocument as RequestHandler
+  )
+}
 
 router.post(
   '/doAddLotOccupancyTransaction',
