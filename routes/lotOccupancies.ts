@@ -25,6 +25,7 @@ import handler_doDeleteLotOccupancyComment from '../handlers/lotOccupancies-post
 
 import handler_doGetFees from '../handlers/lotOccupancies-post/doGetFees.js'
 import handler_doAddLotOccupancyFee from '../handlers/lotOccupancies-post/doAddLotOccupancyFee.js'
+import handler_doUpdateLotOccupancyFeeQuantity from '../handlers/lotOccupancies-post/doUpdateLotOccupancyFeeQuantity.js'
 import handler_doDeleteLotOccupancyFee from '../handlers/lotOccupancies-post/doDeleteLotOccupancyFee.js'
 
 import handler_doGetDynamicsGPDocument from '../handlers/lotOccupancies-post/doGetDynamicsGPDocument.js'
@@ -154,6 +155,12 @@ router.post(
   '/doAddLotOccupancyFee',
   permissionHandlers.updatePostHandler,
   handler_doAddLotOccupancyFee as RequestHandler
+)
+
+router.post(
+  '/doUpdateLotOccupancyFeeQuantity',
+  permissionHandlers.updatePostHandler,
+  handler_doUpdateLotOccupancyFeeQuantity as RequestHandler
 )
 
 router.post(

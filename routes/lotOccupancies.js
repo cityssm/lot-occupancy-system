@@ -18,6 +18,7 @@ import handler_doUpdateLotOccupancyComment from '../handlers/lotOccupancies-post
 import handler_doDeleteLotOccupancyComment from '../handlers/lotOccupancies-post/doDeleteLotOccupancyComment.js';
 import handler_doGetFees from '../handlers/lotOccupancies-post/doGetFees.js';
 import handler_doAddLotOccupancyFee from '../handlers/lotOccupancies-post/doAddLotOccupancyFee.js';
+import handler_doUpdateLotOccupancyFeeQuantity from '../handlers/lotOccupancies-post/doUpdateLotOccupancyFeeQuantity.js';
 import handler_doDeleteLotOccupancyFee from '../handlers/lotOccupancies-post/doDeleteLotOccupancyFee.js';
 import handler_doGetDynamicsGPDocument from '../handlers/lotOccupancies-post/doGetDynamicsGPDocument.js';
 import handler_doAddLotOccupancyTransaction from '../handlers/lotOccupancies-post/doAddLotOccupancyTransaction.js';
@@ -44,6 +45,7 @@ router.post('/doUpdateLotOccupancyComment', permissionHandlers.updatePostHandler
 router.post('/doDeleteLotOccupancyComment', permissionHandlers.updatePostHandler, handler_doDeleteLotOccupancyComment);
 router.post('/doGetFees', permissionHandlers.updatePostHandler, handler_doGetFees);
 router.post('/doAddLotOccupancyFee', permissionHandlers.updatePostHandler, handler_doAddLotOccupancyFee);
+router.post('/doUpdateLotOccupancyFeeQuantity', permissionHandlers.updatePostHandler, handler_doUpdateLotOccupancyFeeQuantity);
 router.post('/doDeleteLotOccupancyFee', permissionHandlers.updatePostHandler, handler_doDeleteLotOccupancyFee);
 if (configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
     router.post('/doGetDynamicsGPDocument', permissionHandlers.updatePostHandler, handler_doGetDynamicsGPDocument);

@@ -33,6 +33,92 @@ function getFeeGrandTotal(): number {
   return feeGrandTotal
 }
 
+function editLotOccupancyFeeQuantity(clickEvent: Event): void {
+  const feeId = Number.parseInt(
+    (clickEvent.currentTarget as HTMLButtonElement).closest('tr')!.dataset
+      .feeId!,
+    10
+  )
+  const fee = lotOccupancyFees.find((possibleFee) => {
+    return possibleFee.feeId === feeId
+  })
+
+  if (fee === undefined) {
+    bulmaJS.alert({
+      title: 'Fee Not Found',
+      message: 'Please refresh the page',
+      contextualColorName: 'danger'
+    })
+    return
+  }
+
+  let updateCloseModalFunction: () => void
+
+  function doUpdateQuantity(formEvent: SubmitEvent): void {
+    formEvent.preventDefault()
+
+    cityssm.postJSON(
+      los.urlPrefix + '/lotOccupancies/doUpdateLotOccupancyFeeQuantity',
+      formEvent.currentTarget,
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          lotOccupancyFees?: recordTypes.LotOccupancyFee[]
+        }
+
+        if (responseJSON.success) {
+          lotOccupancyFees = responseJSON.lotOccupancyFees!
+          renderLotOccupancyFees()
+          updateCloseModalFunction()
+        } else {
+          bulmaJS.alert({
+            title: 'Error Updating Quantity',
+            message: 'Please try again.',
+            contextualColorName: 'danger'
+          })
+        }
+      }
+    )
+  }
+
+  cityssm.openHtmlModal('lotOccupancy-editFeeQuantity', {
+    onshow(modalElement) {
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyFeeQuantity--lotOccupancyId'
+        ) as HTMLInputElement
+      ).value = lotOccupancyId
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyFeeQuantity--feeId'
+        ) as HTMLInputElement
+      ).value = fee.feeId.toString()
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyFeeQuantity--quantity'
+        ) as HTMLInputElement
+      ).valueAsNumber = fee.quantity!
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyFeeQuantity--quantityUnit'
+        ) as HTMLElement
+      ).textContent = fee.quantityUnit!
+    },
+    onshown(modalElement, closeModalFunction) {
+      updateCloseModalFunction = closeModalFunction
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyFeeQuantity--quantity'
+        ) as HTMLInputElement
+      ).focus()
+
+      modalElement
+        .querySelector('form')
+        ?.addEventListener('submit', doUpdateQuantity)
+    }
+  })
+}
+
 function deleteLotOccupancyFee(clickEvent: Event): void {
   const feeId = (
     (clickEvent.currentTarget as HTMLElement).closest(
@@ -149,18 +235,27 @@ function renderLotOccupancyFees(): void {
       (lotOccupancyFee.feeAmount! * lotOccupancyFee.quantity!).toFixed(2) +
       '</td>' +
       ('<td class="is-hidden-print">' +
-        '<button class="button is-small is-danger is-light" data-tooltip="Delete Fee" type="button">' +
+        '<div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">' +
+        (lotOccupancyFee.includeQuantity ?? false
+          ? '<button class="button is-primary button--editQuantity"><span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span><span>Edit</span></button>'
+          : '') +
+        '<button class="button is-danger is-light button--delete" data-tooltip="Delete Fee" type="button">' +
         '<i class="fas fa-trash" aria-hidden="true"></i>' +
         '</button>' +
+        '</div>' +
         '</td>')
 
     tableRowElement
-      .querySelector('button')!
-      .addEventListener('click', deleteLotOccupancyFee)
+      .querySelector('.button--editQuantity')
+      ?.addEventListener('click', editLotOccupancyFeeQuantity)
+
+    tableRowElement
+      .querySelector('.button--delete')
+      ?.addEventListener('click', deleteLotOccupancyFee)
 
     lotOccupancyFeesContainerElement
-      .querySelector('tbody')!
-      .append(tableRowElement)
+      .querySelector('tbody')
+      ?.append(tableRowElement)
 
     feeAmountTotal += lotOccupancyFee.feeAmount! * lotOccupancyFee.quantity!
     taxAmountTotal += lotOccupancyFee.taxAmount! * lotOccupancyFee.quantity!
@@ -185,7 +280,9 @@ function renderLotOccupancyFees(): void {
   renderLotOccupancyTransactions()
 }
 
-const addFeeButtonElement = document.querySelector('#button--addFee') as HTMLButtonElement
+const addFeeButtonElement = document.querySelector(
+  '#button--addFee'
+) as HTMLButtonElement
 
 addFeeButtonElement.addEventListener('click', () => {
   if (los.hasUnsavedChanges()) {

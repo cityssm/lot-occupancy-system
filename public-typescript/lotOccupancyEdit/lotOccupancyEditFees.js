@@ -13,6 +13,56 @@ function getFeeGrandTotal() {
     }
     return feeGrandTotal;
 }
+function editLotOccupancyFeeQuantity(clickEvent) {
+    const feeId = Number.parseInt(clickEvent.currentTarget.closest('tr').dataset
+        .feeId, 10);
+    const fee = lotOccupancyFees.find((possibleFee) => {
+        return possibleFee.feeId === feeId;
+    });
+    if (fee === undefined) {
+        bulmaJS.alert({
+            title: 'Fee Not Found',
+            message: 'Please refresh the page',
+            contextualColorName: 'danger'
+        });
+        return;
+    }
+    let updateCloseModalFunction;
+    function doUpdateQuantity(formEvent) {
+        formEvent.preventDefault();
+        cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doUpdateLotOccupancyFeeQuantity', formEvent.currentTarget, (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON;
+            if (responseJSON.success) {
+                lotOccupancyFees = responseJSON.lotOccupancyFees;
+                renderLotOccupancyFees();
+                updateCloseModalFunction();
+            }
+            else {
+                bulmaJS.alert({
+                    title: 'Error Updating Quantity',
+                    message: 'Please try again.',
+                    contextualColorName: 'danger'
+                });
+            }
+        });
+    }
+    cityssm.openHtmlModal('lotOccupancy-editFeeQuantity', {
+        onshow(modalElement) {
+            ;
+            modalElement.querySelector('#lotOccupancyFeeQuantity--lotOccupancyId').value = lotOccupancyId;
+            modalElement.querySelector('#lotOccupancyFeeQuantity--feeId').value = fee.feeId.toString();
+            modalElement.querySelector('#lotOccupancyFeeQuantity--quantity').valueAsNumber = fee.quantity;
+            modalElement.querySelector('#lotOccupancyFeeQuantity--quantityUnit').textContent = fee.quantityUnit;
+        },
+        onshown(modalElement, closeModalFunction) {
+            var _a;
+            updateCloseModalFunction = closeModalFunction;
+            modalElement.querySelector('#lotOccupancyFeeQuantity--quantity').focus();
+            (_a = modalElement
+                .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doUpdateQuantity);
+        }
+    });
+}
 function deleteLotOccupancyFee(clickEvent) {
     const feeId = clickEvent.currentTarget.closest('.container--lotOccupancyFee').dataset.feeId;
     function doDelete() {
@@ -46,7 +96,7 @@ function deleteLotOccupancyFee(clickEvent) {
     });
 }
 function renderLotOccupancyFees() {
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e, _f, _g;
     if (lotOccupancyFees.length === 0) {
         lotOccupancyFeesContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no fees associated with this record.</p>
@@ -110,16 +160,21 @@ function renderLotOccupancyFees() {
                 (lotOccupancyFee.feeAmount * lotOccupancyFee.quantity).toFixed(2) +
                 '</td>' +
                 ('<td class="is-hidden-print">' +
-                    '<button class="button is-small is-danger is-light" data-tooltip="Delete Fee" type="button">' +
+                    '<div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">' +
+                    (((_d = lotOccupancyFee.includeQuantity) !== null && _d !== void 0 ? _d : false)
+                        ? '<button class="button is-primary button--editQuantity"><span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span><span>Edit</span></button>'
+                        : '') +
+                    '<button class="button is-danger is-light button--delete" data-tooltip="Delete Fee" type="button">' +
                     '<i class="fas fa-trash" aria-hidden="true"></i>' +
                     '</button>' +
+                    '</div>' +
                     '</td>');
-        tableRowElement
-            .querySelector('button')
-            .addEventListener('click', deleteLotOccupancyFee);
-        lotOccupancyFeesContainerElement
-            .querySelector('tbody')
-            .append(tableRowElement);
+        (_e = tableRowElement
+            .querySelector('.button--editQuantity')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', editLotOccupancyFeeQuantity);
+        (_f = tableRowElement
+            .querySelector('.button--delete')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', deleteLotOccupancyFee);
+        (_g = lotOccupancyFeesContainerElement
+            .querySelector('tbody')) === null || _g === void 0 ? void 0 : _g.append(tableRowElement);
         feeAmountTotal += lotOccupancyFee.feeAmount * lotOccupancyFee.quantity;
         taxAmountTotal += lotOccupancyFee.taxAmount * lotOccupancyFee.quantity;
     }

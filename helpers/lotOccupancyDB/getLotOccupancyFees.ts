@@ -13,7 +13,7 @@ export async function getLotOccupancyFees(
     .prepare(
       `select o.lotOccupancyId, o.feeId,
         c.feeCategory, f.feeName,
-        f.includeQuantity, o.feeAmount, o.taxAmount, o.quantity
+        f.includeQuantity, o.feeAmount, o.taxAmount, o.quantity, f.quantityUnit
         from LotOccupancyFees o
         left join Fees f on o.feeId = f.feeId
         left join FeeCategories c on f.feeCategoryId = c.feeCategoryId
