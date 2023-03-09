@@ -185,7 +185,9 @@ function renderLotOccupancyFees(): void {
   renderLotOccupancyTransactions()
 }
 
-document.querySelector('#button--addFee')?.addEventListener('click', () => {
+const addFeeButtonElement = document.querySelector('#button--addFee') as HTMLButtonElement
+
+addFeeButtonElement.addEventListener('click', () => {
   if (los.hasUnsavedChanges()) {
     bulmaJS.alert({
       message: 'Please save all unsaved changes before adding fees.',
@@ -410,6 +412,7 @@ document.querySelector('#button--addFee')?.addEventListener('click', () => {
     },
     onremoved() {
       bulmaJS.toggleHtmlClipped()
+      addFeeButtonElement.focus()
     }
   })
 })
@@ -602,171 +605,175 @@ function renderLotOccupancyTransactions(): void {
   }
 }
 
-document
-  .querySelector('#button--addTransaction')!
-  .addEventListener('click', () => {
-    let transactionAmountElement: HTMLInputElement
-    let externalReceiptNumberElement: HTMLInputElement
+const addTransactionButtonElement = document.querySelector(
+  '#button--addTransaction'
+) as HTMLButtonElement
 
-    let addCloseModalFunction: () => void
+addTransactionButtonElement.addEventListener('click', () => {
+  let transactionAmountElement: HTMLInputElement
+  let externalReceiptNumberElement: HTMLInputElement
 
-    function doAddTransaction(submitEvent: SubmitEvent): void {
-      submitEvent.preventDefault()
+  let addCloseModalFunction: () => void
 
-      cityssm.postJSON(
-        los.urlPrefix + '/lotOccupancies/doAddLotOccupancyTransaction',
-        submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-            errorMessage?: string
-            lotOccupancyTransactions?: recordTypes.LotOccupancyTransaction[]
-          }
+  function doAddTransaction(submitEvent: SubmitEvent): void {
+    submitEvent.preventDefault()
 
-          if (responseJSON.success) {
-            lotOccupancyTransactions = responseJSON.lotOccupancyTransactions!
-            addCloseModalFunction()
-            renderLotOccupancyTransactions()
-          } else {
-            bulmaJS.confirm({
-              title: 'Error Adding Transaction',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
-            })
-          }
+    cityssm.postJSON(
+      los.urlPrefix + '/lotOccupancies/doAddLotOccupancyTransaction',
+      submitEvent.currentTarget,
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          lotOccupancyTransactions?: recordTypes.LotOccupancyTransaction[]
         }
-      )
-    }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    function dynamicsGP_refreshExternalReceiptNumberIcon(): void {
-      const externalReceiptNumber = externalReceiptNumberElement.value
-
-      const iconElement = externalReceiptNumberElement
-        .closest('.control')!
-        .querySelector('.icon') as HTMLElement
-
-      const helpTextElement = externalReceiptNumberElement
-        .closest('.field')!
-        .querySelector('.help') as HTMLElement
-
-      if (externalReceiptNumber === '') {
-        helpTextElement.innerHTML = '&nbsp;'
-        iconElement.innerHTML =
-          '<i class="fas fa-minus" aria-hidden="true"></i>'
-        return
+        if (responseJSON.success) {
+          lotOccupancyTransactions = responseJSON.lotOccupancyTransactions!
+          addCloseModalFunction()
+          renderLotOccupancyTransactions()
+        } else {
+          bulmaJS.confirm({
+            title: 'Error Adding Transaction',
+            message: responseJSON.errorMessage ?? '',
+            contextualColorName: 'danger'
+          })
+        }
       }
+    )
+  }
 
-      cityssm.postJSON(
-        los.urlPrefix + '/lotOccupancies/doGetDynamicsGPDocument',
-        {
-          externalReceiptNumber
-        },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-            dynamicsGPDocument?: recordTypes.DynamicsGPDocument
-          }
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  function dynamicsGP_refreshExternalReceiptNumberIcon(): void {
+    const externalReceiptNumber = externalReceiptNumberElement.value
 
-          if (
-            !responseJSON.success ||
-            responseJSON.dynamicsGPDocument === undefined
-          ) {
-            helpTextElement.textContent = 'No Matching Document Found'
-            iconElement.innerHTML =
-              '<i class="fas fa-times-circle" aria-hidden="true"></i>'
-          } else if (
-            transactionAmountElement.valueAsNumber ===
-            responseJSON.dynamicsGPDocument.documentTotal
-          ) {
-            helpTextElement.textContent = 'Matching Document Found'
-            iconElement.innerHTML =
-              '<i class="fas fa-check-circle" aria-hidden="true"></i>'
-          } else {
-            helpTextElement.textContent =
-              'Matching Document: $' +
-              responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)
-            iconElement.innerHTML =
-              '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i>'
-          }
-        }
-      )
+    const iconElement = externalReceiptNumberElement
+      .closest('.control')!
+      .querySelector('.icon') as HTMLElement
+
+    const helpTextElement = externalReceiptNumberElement
+      .closest('.field')!
+      .querySelector('.help') as HTMLElement
+
+    if (externalReceiptNumber === '') {
+      helpTextElement.innerHTML = '&nbsp;'
+      iconElement.innerHTML = '<i class="fas fa-minus" aria-hidden="true"></i>'
+      return
     }
 
-    cityssm.openHtmlModal('lotOccupancy-addTransaction', {
-      onshow(modalElement) {
-        los.populateAliases(modalElement)
-        ;(
-          modalElement.querySelector(
-            '#lotOccupancyTransactionAdd--lotOccupancyId'
-          ) as HTMLInputElement
-        ).value = lotOccupancyId.toString()
+    cityssm.postJSON(
+      los.urlPrefix + '/lotOccupancies/doGetDynamicsGPDocument',
+      {
+        externalReceiptNumber
+      },
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          dynamicsGPDocument?: recordTypes.DynamicsGPDocument
+        }
 
-        const feeGrandTotal = getFeeGrandTotal()
-        const transactionGrandTotal = getTransactionGrandTotal()
+        if (
+          !responseJSON.success ||
+          responseJSON.dynamicsGPDocument === undefined
+        ) {
+          helpTextElement.textContent = 'No Matching Document Found'
+          iconElement.innerHTML =
+            '<i class="fas fa-times-circle" aria-hidden="true"></i>'
+        } else if (
+          transactionAmountElement.valueAsNumber ===
+          responseJSON.dynamicsGPDocument.documentTotal
+        ) {
+          helpTextElement.textContent = 'Matching Document Found'
+          iconElement.innerHTML =
+            '<i class="fas fa-check-circle" aria-hidden="true"></i>'
+        } else {
+          helpTextElement.textContent =
+            'Matching Document: $' +
+            responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)
+          iconElement.innerHTML =
+            '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i>'
+        }
+      }
+    )
+  }
 
-        transactionAmountElement = modalElement.querySelector(
-          '#lotOccupancyTransactionAdd--transactionAmount'
+  cityssm.openHtmlModal('lotOccupancy-addTransaction', {
+    onshow(modalElement) {
+      los.populateAliases(modalElement)
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyTransactionAdd--lotOccupancyId'
         ) as HTMLInputElement
+      ).value = lotOccupancyId.toString()
 
-        transactionAmountElement.min = (-1 * transactionGrandTotal).toFixed(2)
+      const feeGrandTotal = getFeeGrandTotal()
+      const transactionGrandTotal = getTransactionGrandTotal()
 
-        transactionAmountElement.max = Math.max(
-          feeGrandTotal - transactionGrandTotal,
-          0
-        ).toFixed(2)
+      transactionAmountElement = modalElement.querySelector(
+        '#lotOccupancyTransactionAdd--transactionAmount'
+      ) as HTMLInputElement
 
-        transactionAmountElement.value = Math.max(
-          feeGrandTotal - transactionGrandTotal,
-          0
-        ).toFixed(2)
+      transactionAmountElement.min = (-1 * transactionGrandTotal).toFixed(2)
 
-        if (los.dynamicsGPIntegrationIsEnabled) {
-          externalReceiptNumberElement = modalElement.querySelector(
-            '#lotOccupancyTransactionAdd--externalReceiptNumber'
-          )!
+      transactionAmountElement.max = Math.max(
+        feeGrandTotal - transactionGrandTotal,
+        0
+      ).toFixed(2)
 
-          const externalReceiptNumberControlElement =
-            externalReceiptNumberElement.closest('.control')!
+      transactionAmountElement.value = Math.max(
+        feeGrandTotal - transactionGrandTotal,
+        0
+      ).toFixed(2)
 
-          externalReceiptNumberControlElement.classList.add('has-icons-right')
+      if (los.dynamicsGPIntegrationIsEnabled) {
+        externalReceiptNumberElement = modalElement.querySelector(
+          '#lotOccupancyTransactionAdd--externalReceiptNumber'
+        )!
 
-          externalReceiptNumberControlElement.insertAdjacentHTML(
-            'beforeend',
-            '<span class="icon is-small is-right"></span>'
-          )
+        const externalReceiptNumberControlElement =
+          externalReceiptNumberElement.closest('.control')!
 
-          externalReceiptNumberControlElement.insertAdjacentHTML(
-            'afterend',
-            '<p class="help has-text-right"></p>'
-          )
+        externalReceiptNumberControlElement.classList.add('has-icons-right')
 
-          externalReceiptNumberElement.addEventListener(
-            'change',
-            dynamicsGP_refreshExternalReceiptNumberIcon
-          )
+        externalReceiptNumberControlElement.insertAdjacentHTML(
+          'beforeend',
+          '<span class="icon is-small is-right"></span>'
+        )
 
-          transactionAmountElement.addEventListener(
-            'change',
-            dynamicsGP_refreshExternalReceiptNumberIcon
-          )
+        externalReceiptNumberControlElement.insertAdjacentHTML(
+          'afterend',
+          '<p class="help has-text-right"></p>'
+        )
 
-          dynamicsGP_refreshExternalReceiptNumberIcon()
-        }
-      },
-      onshown(modalElement, closeModalFunction) {
-        bulmaJS.toggleHtmlClipped()
+        externalReceiptNumberElement.addEventListener(
+          'change',
+          dynamicsGP_refreshExternalReceiptNumberIcon
+        )
 
-        addCloseModalFunction = closeModalFunction
+        transactionAmountElement.addEventListener(
+          'change',
+          dynamicsGP_refreshExternalReceiptNumberIcon
+        )
 
-        modalElement
-          .querySelector('form')!
-          .addEventListener('submit', doAddTransaction)
-      },
-      onremoved() {
-        bulmaJS.toggleHtmlClipped()
+        dynamicsGP_refreshExternalReceiptNumberIcon()
       }
-    })
+    },
+    onshown(modalElement, closeModalFunction) {
+      bulmaJS.toggleHtmlClipped()
+
+      transactionAmountElement.focus()
+
+      addCloseModalFunction = closeModalFunction
+
+      modalElement
+        .querySelector('form')!
+        .addEventListener('submit', doAddTransaction)
+    },
+    onremoved() {
+      bulmaJS.toggleHtmlClipped()
+      addTransactionButtonElement.focus()
+    }
   })
+})
 
 renderLotOccupancyFees()

@@ -1,6 +1,5 @@
 "use strict";
 /* eslint-disable @typescript-eslint/indent, unicorn/prefer-module */
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 let lotOccupancyFees = exports.lotOccupancyFees;
 delete exports.lotOccupancyFees;
@@ -130,7 +129,8 @@ function renderLotOccupancyFees() {
     lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--grandTotal').textContent = '$' + (feeAmountTotal + taxAmountTotal).toFixed(2);
     renderLotOccupancyTransactions();
 }
-(_a = document.querySelector('#button--addFee')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
+const addFeeButtonElement = document.querySelector('#button--addFee');
+addFeeButtonElement.addEventListener('click', () => {
     if (los.hasUnsavedChanges()) {
         bulmaJS.alert({
             message: 'Please save all unsaved changes before adding fees.',
@@ -288,6 +288,7 @@ function renderLotOccupancyFees() {
         },
         onremoved() {
             bulmaJS.toggleHtmlClipped();
+            addFeeButtonElement.focus();
         }
     });
 });
@@ -428,9 +429,8 @@ function renderLotOccupancyTransactions() {
             '</div>');
     }
 }
-document
-    .querySelector('#button--addTransaction')
-    .addEventListener('click', () => {
+const addTransactionButtonElement = document.querySelector('#button--addTransaction');
+addTransactionButtonElement.addEventListener('click', () => {
     let transactionAmountElement;
     let externalReceiptNumberElement;
     let addCloseModalFunction;
@@ -464,8 +464,7 @@ document
             .querySelector('.help');
         if (externalReceiptNumber === '') {
             helpTextElement.innerHTML = '&nbsp;';
-            iconElement.innerHTML =
-                '<i class="fas fa-minus" aria-hidden="true"></i>';
+            iconElement.innerHTML = '<i class="fas fa-minus" aria-hidden="true"></i>';
             return;
         }
         cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doGetDynamicsGPDocument', {
@@ -516,6 +515,7 @@ document
         },
         onshown(modalElement, closeModalFunction) {
             bulmaJS.toggleHtmlClipped();
+            transactionAmountElement.focus();
             addCloseModalFunction = closeModalFunction;
             modalElement
                 .querySelector('form')
@@ -523,6 +523,7 @@ document
         },
         onremoved() {
             bulmaJS.toggleHtmlClipped();
+            addTransactionButtonElement.focus();
         }
     });
 });
