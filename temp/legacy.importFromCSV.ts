@@ -507,6 +507,18 @@ async function importFromMasterCSV(): Promise<void> {
           )
         }
 
+        if (masterRow.CM_WORK_ORDER.trim() !== '') {
+          await addLotOccupancyComment(
+            {
+              lotOccupancyId: preneedLotOccupancyId,
+              lotOccupancyCommentDateString: preneedOccupancyStartDateString,
+              lotOccupancyCommentTimeString: '00:00',
+              lotOccupancyComment: 'Imported Contract #' + masterRow.CM_WORK_ORDER
+            },
+            user
+          )
+        }
+
         if (occupancyEndDateString === '') {
           await updateLotStatus(lotId, importIds.reservedLotStatusId, user)
         }
@@ -757,6 +769,18 @@ async function importFromMasterCSV(): Promise<void> {
               lotOccupancyCommentDateString: deceasedOccupancyStartDateString,
               lotOccupancyCommentTimeString: '00:00',
               lotOccupancyComment: masterRow.CM_REMARK2
+            },
+            user
+          )
+        }
+
+        if (masterRow.CM_WORK_ORDER.trim() !== '') {
+          await addLotOccupancyComment(
+            {
+              lotOccupancyId: deceasedLotOccupancyId,
+              lotOccupancyCommentDateString: deceasedOccupancyStartDateString,
+              lotOccupancyCommentTimeString: '00:00',
+              lotOccupancyComment: 'Imported Contract #' + masterRow.CM_WORK_ORDER
             },
             user
           )
