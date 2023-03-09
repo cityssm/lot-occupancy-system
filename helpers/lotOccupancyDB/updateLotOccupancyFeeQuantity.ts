@@ -1,10 +1,5 @@
 import { acquireConnection } from './pool.js'
 
-import {
-  dateStringToInteger,
-  timeStringToInteger
-} from '@cityssm/expressjs-server-js/dateTimeFns.js'
-
 import type * as recordTypes from '../../types/recordTypes'
 
 interface UpdateLotOccupancyFeeQuantityForm {
