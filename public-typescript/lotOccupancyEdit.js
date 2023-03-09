@@ -1109,14 +1109,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const fee = lotOccupancyFees.find((possibleFee) => {
                 return possibleFee.feeId === feeId;
             });
-            if (fee === undefined) {
-                bulmaJS.alert({
-                    title: 'Fee Not Found',
-                    message: 'Please refresh the page',
-                    contextualColorName: 'danger'
-                });
-                return;
-            }
             let updateCloseModalFunction;
             function doUpdateQuantity(formEvent) {
                 formEvent.preventDefault();
@@ -1146,10 +1138,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onshown(modalElement, closeModalFunction) {
                     var _a;
+                    bulmaJS.toggleHtmlClipped();
                     updateCloseModalFunction = closeModalFunction;
                     modalElement.querySelector('#lotOccupancyFeeQuantity--quantity').focus();
                     (_a = modalElement
                         .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doUpdateQuantity);
+                },
+                onremoved() {
+                    bulmaJS.toggleHtmlClipped();
                 }
             });
         }
@@ -1447,6 +1443,56 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             return transactionGrandTotal;
         }
+        function editLotOccupancyTransaction(clickEvent) {
+            const transactionIndex = Number.parseInt(clickEvent.currentTarget.closest('tr').dataset
+                .transactionIndex, 10);
+            const transaction = lotOccupancyTransactions.find((possibleTransaction) => {
+                return possibleTransaction.transactionIndex === transactionIndex;
+            });
+            let editCloseModalFunction;
+            function doEdit(formEvent) {
+                formEvent.preventDefault();
+                cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doUpdateLotOccupancyTransaction', formEvent.currentTarget, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        lotOccupancyTransactions = responseJSON.lotOccupancyTransactions;
+                        renderLotOccupancyTransactions();
+                        editCloseModalFunction();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: 'Error Updating Transaction',
+                            message: 'Please try again.',
+                            contextualColorName: 'danger'
+                        });
+                    }
+                });
+            }
+            cityssm.openHtmlModal('lotOccupancy-editTransaction', {
+                onshow(modalElement) {
+                    var _a, _b, _c, _d;
+                    los.populateAliases(modalElement);
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--lotOccupancyId').value = lotOccupancyId;
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionIndex').value = transaction.transactionIndex.toString();
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionAmount').value = transaction.transactionAmount.toFixed(2);
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--externalReceiptNumber').value = (_a = transaction.externalReceiptNumber) !== null && _a !== void 0 ? _a : '';
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionNote').value = (_b = transaction.transactionNote) !== null && _b !== void 0 ? _b : '';
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionDateString').value = (_c = transaction.transactionDateString) !== null && _c !== void 0 ? _c : '';
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionTimeString').value = (_d = transaction.transactionTimeString) !== null && _d !== void 0 ? _d : '';
+                },
+                onshown(modalElement, closeModalFunction) {
+                    var _a;
+                    bulmaJS.toggleHtmlClipped();
+                    los.initializeDatePickers(modalElement);
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionAmount').focus();
+                    (_a = modalElement.querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doEdit);
+                    editCloseModalFunction = closeModalFunction;
+                },
+                onremoved() {
+                    bulmaJS.toggleHtmlClipped();
+                }
+            });
+        }
         function deleteLotOccupancyTransaction(clickEvent) {
             const transactionIndex = clickEvent.currentTarget.closest('.container--lotOccupancyTransaction').dataset.transactionIndex;
             function doDelete() {
@@ -1480,7 +1526,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         function renderLotOccupancyTransactions() {
-            var _a, _b, _c;
+            var _a, _b, _c, _d, _e;
             if (lotOccupancyTransactions.length === 0) {
                 lotOccupancyTransactionsContainerElement.innerHTML =
                     '<div class="message ' +
@@ -1547,13 +1593,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             lotOccupancyTransaction.transactionAmount.toFixed(2) +
                             '</td>') +
                         ('<td class="is-hidden-print">' +
-                            '<button class="button is-small is-danger is-light" data-tooltip="Delete Transaction" type="button">' +
+                            '<div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">' +
+                            '<button class="button is-primary button--edit" type="button">' +
+                            '<span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
+                            '<span>Edit</span>' +
+                            '</button>' +
+                            '<button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">' +
                             '<i class="fas fa-trash" aria-hidden="true"></i>' +
                             '</button>' +
+                            '</div>' +
                             '</td>');
-                tableRowElement
-                    .querySelector('button')
-                    .addEventListener('click', deleteLotOccupancyTransaction);
+                (_d = tableRowElement
+                    .querySelector('.button--edit')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', editLotOccupancyTransaction);
+                (_e = tableRowElement
+                    .querySelector('.button--delete')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', deleteLotOccupancyTransaction);
                 lotOccupancyTransactionsContainerElement
                     .querySelector('tbody')
                     .append(tableRowElement);

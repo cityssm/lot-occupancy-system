@@ -1,0 +1,134 @@
+<div class="modal" role="dialog">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">Edit Transaction</h3>
+      <button
+        class="delete is-close-modal-button"
+        aria-label="close"
+        type="button"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--lotOccupancyTransactionEdit">
+        <input
+          id="lotOccupancyTransactionEdit--lotOccupancyId"
+          name="lotOccupancyId"
+          type="hidden"
+          value=""
+        />
+        <input
+          id="lotOccupancyTransactionEdit--transactionIndex"
+          name="transactionIndex"
+          type="hidden"
+          value=""
+        />
+
+        <div class="field">
+          <label
+            class="label"
+            for="lotOccupancyTransactionEdit--transactionAmount"
+            >Transaction Amount</label
+          >
+          <div class="control has-icons-left">
+            <input
+              class="input has-text-right"
+              id="lotOccupancyTransactionEdit--transactionAmount"
+              name="transactionAmount"
+              type="number"
+              step="0.01"
+              required
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label
+            class="label"
+            for="lotOccupancyTransactionEdit--externalReceiptNumber"
+          >
+            <span class="alias" data-alias="ExternalReceiptNumber"></span>
+          </label>
+          <div class="control">
+            <input
+              class="input"
+              id="lotOccupancyTransactionEdit--externalReceiptNumber"
+              name="externalReceiptNumber"
+              maxlength="100"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="lotOccupancyTransactionEdit--transactionNote"
+            >Note</label
+          >
+          <div class="control">
+            <textarea
+              class="textarea"
+              id="lotOccupancyTransactionEdit--transactionNote"
+              name="transactionNote"
+            ></textarea>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label
+                class="label"
+                for="lotOccupancyTransactionEdit--transactionDateString"
+                >Transaction Date</label
+              >
+              <div class="control has-icons-left">
+                <input
+                  class="input"
+                  id="lotOccupancyTransactionEdit--transactionDateString"
+                  name="transactionDateString"
+                  type="date"
+                  required
+                />
+                <span class="icon is-left">
+                  <i class="fas fa-calendar" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label
+                class="label"
+                for="lotOccupancyTransactionEdit--transactionTimeString"
+                >Transaction Time</label
+              >
+              <div class="control has-icons-left">
+                <input
+                  class="input"
+                  id="lotOccupancyTransactionEdit--transactionTimeString"
+                  name="transactionTimeString"
+                  type="time"
+                  required
+                />
+                <span class="icon is-left">
+                  <i class="fas fa-clock" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot justify-right">
+      <button
+        class="button is-success"
+        type="submit"
+        form="form--lotOccupancyTransactionEdit"
+      >
+        <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
+        <span>Update Transaction</span>
+      </button>
+      <button class="button is-close-modal-button" type="button">Cancel</button>
+    </footer>
+  </div>
+</div>

@@ -41,16 +41,7 @@ function editLotOccupancyFeeQuantity(clickEvent: Event): void {
   )
   const fee = lotOccupancyFees.find((possibleFee) => {
     return possibleFee.feeId === feeId
-  })
-
-  if (fee === undefined) {
-    bulmaJS.alert({
-      title: 'Fee Not Found',
-      message: 'Please refresh the page',
-      contextualColorName: 'danger'
-    })
-    return
-  }
+  })!
 
   let updateCloseModalFunction: () => void
 
@@ -105,6 +96,8 @@ function editLotOccupancyFeeQuantity(clickEvent: Event): void {
       ).textContent = fee.quantityUnit!
     },
     onshown(modalElement, closeModalFunction) {
+      bulmaJS.toggleHtmlClipped()
+
       updateCloseModalFunction = closeModalFunction
       ;(
         modalElement.querySelector(
@@ -115,6 +108,9 @@ function editLotOccupancyFeeQuantity(clickEvent: Event): void {
       modalElement
         .querySelector('form')
         ?.addEventListener('submit', doUpdateQuantity)
+    },
+    onremoved() {
+      bulmaJS.toggleHtmlClipped()
     }
   })
 }
@@ -532,6 +528,105 @@ function getTransactionGrandTotal(): number {
   return transactionGrandTotal
 }
 
+function editLotOccupancyTransaction(clickEvent: Event): void {
+  const transactionIndex = Number.parseInt(
+    (clickEvent.currentTarget as HTMLButtonElement).closest('tr')!.dataset
+      .transactionIndex!,
+    10
+  )
+
+  const transaction = lotOccupancyTransactions.find((possibleTransaction) => {
+    return possibleTransaction.transactionIndex === transactionIndex
+  })!
+
+  let editCloseModalFunction: () => void
+
+  function doEdit(formEvent: SubmitEvent): void {
+    formEvent.preventDefault()
+
+    cityssm.postJSON(
+      los.urlPrefix + '/lotOccupancies/doUpdateLotOccupancyTransaction',
+      formEvent.currentTarget,
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          lotOccupancyTransactions: recordTypes.LotOccupancyTransaction[]
+        }
+
+        if (responseJSON.success) {
+          lotOccupancyTransactions = responseJSON.lotOccupancyTransactions
+          renderLotOccupancyTransactions()
+          editCloseModalFunction()
+        } else {
+          bulmaJS.alert({
+            title: 'Error Updating Transaction',
+            message: 'Please try again.',
+            contextualColorName: 'danger'
+          })
+        }
+      }
+    )
+  }
+
+  cityssm.openHtmlModal('lotOccupancy-editTransaction', {
+    onshow(modalElement) {
+      los.populateAliases(modalElement)
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyTransactionEdit--lotOccupancyId'
+        ) as HTMLInputElement
+      ).value = lotOccupancyId
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyTransactionEdit--transactionIndex'
+        ) as HTMLInputElement
+      ).value = transaction.transactionIndex!.toString()
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyTransactionEdit--transactionAmount'
+        ) as HTMLInputElement
+      ).value = transaction.transactionAmount.toFixed(2)
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyTransactionEdit--externalReceiptNumber'
+        ) as HTMLInputElement
+      ).value = transaction.externalReceiptNumber ?? ''
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyTransactionEdit--transactionNote'
+        ) as HTMLTextAreaElement
+      ).value = transaction.transactionNote ?? ''
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyTransactionEdit--transactionDateString'
+        ) as HTMLInputElement
+      ).value = transaction.transactionDateString ?? ''
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyTransactionEdit--transactionTimeString'
+        ) as HTMLInputElement
+      ).value = transaction.transactionTimeString ?? ''
+    },
+    onshown(modalElement, closeModalFunction) {
+      bulmaJS.toggleHtmlClipped()
+
+      los.initializeDatePickers(modalElement)
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyTransactionEdit--transactionAmount'
+        ) as HTMLInputElement
+      ).focus()
+
+      modalElement.querySelector('form')?.addEventListener('submit', doEdit)
+
+      editCloseModalFunction = closeModalFunction
+    },
+    onremoved() {
+      bulmaJS.toggleHtmlClipped()
+    }
+  })
+}
+
 function deleteLotOccupancyTransaction(clickEvent: Event): void {
   const transactionIndex = (
     (clickEvent.currentTarget as HTMLElement).closest(
@@ -663,14 +758,24 @@ function renderLotOccupancyTransactions(): void {
         lotOccupancyTransaction.transactionAmount.toFixed(2) +
         '</td>') +
       ('<td class="is-hidden-print">' +
-        '<button class="button is-small is-danger is-light" data-tooltip="Delete Transaction" type="button">' +
+        '<div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">' +
+        '<button class="button is-primary button--edit" type="button">' +
+        '<span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
+        '<span>Edit</span>' +
+        '</button>' +
+        '<button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">' +
         '<i class="fas fa-trash" aria-hidden="true"></i>' +
         '</button>' +
+        '</div>' +
         '</td>')
 
     tableRowElement
-      .querySelector('button')!
-      .addEventListener('click', deleteLotOccupancyTransaction)
+      .querySelector('.button--edit')
+      ?.addEventListener('click', editLotOccupancyTransaction)
+
+    tableRowElement
+      .querySelector('.button--delete')
+      ?.addEventListener('click', deleteLotOccupancyTransaction)
 
     lotOccupancyTransactionsContainerElement
       .querySelector('tbody')!
