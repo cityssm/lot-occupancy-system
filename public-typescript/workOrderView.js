@@ -10,8 +10,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             function doReopen() {
                 cityssm.postJSON(los.urlPrefix + '/workOrders/doReopenWorkOrder', {
                     workOrderId
-                }, (responseJSON) => {
+                }, (rawResponseJSON) => {
                     var _a;
+                    const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         window.location.href = los.getWorkOrderURL(workOrderId, true, true);
                     }

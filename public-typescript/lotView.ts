@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
-import * as globalTypes from '../types/globalTypes'
+import type * as globalTypes from '../types/globalTypes'
 ;(() => {
   const mapContainerElement: HTMLElement | null =
     document.querySelector('#lot--map')

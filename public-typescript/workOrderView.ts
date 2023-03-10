@@ -24,7 +24,12 @@ declare const bulmaJS: BulmaJS
           {
             workOrderId
           },
-          (responseJSON: { success: boolean; errorMessage?: string }) => {
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+            }
+
             if (responseJSON.success) {
               window.location.href = los.getWorkOrderURL(
                 workOrderId,
