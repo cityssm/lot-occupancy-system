@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from '../types/globalTypes'
@@ -18,6 +19,16 @@ declare const bulmaJS: BulmaJS
 
   let feeCategories: recordTypes.FeeCategory[] = exports.feeCategories
   delete exports.feeCategories
+
+  type ResponseJSON =
+    | {
+        success: true
+        feeCategories: recordTypes.FeeCategory[]
+      }
+    | {
+        success: false
+        errorMessage: string
+      }
 
   function renderFeeCategories(): void {
     if (feeCategories.length === 0) {
@@ -84,9 +95,9 @@ declare const bulmaJS: BulmaJS
           `<div class="panel-block is-block">
             <div class="message is-info">
               <p class="message-body">
-                  There are no fees in the
-                  "${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}"
-                  category.
+                There are no fees in the
+                "${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}"
+                category.
               </p>
             </div>
             </div>`
@@ -239,11 +250,9 @@ declare const bulmaJS: BulmaJS
         cityssm.postJSON(
           los.urlPrefix + '/admin/doAddFeeCategory',
           submitEvent.currentTarget,
-          (responseJSON: {
-            success: boolean
-            errorMessage?: string
-            feeCategories: recordTypes.FeeCategory[]
-          }) => {
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as ResponseJSON
+
             if (responseJSON.success) {
               feeCategories = responseJSON.feeCategories
               addCloseModalFunction()
@@ -306,11 +315,9 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/admin/doUpdateFeeCategory',
         submitEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          feeCategories: recordTypes.FeeCategory[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
             editCloseModalFunction()
@@ -375,11 +382,9 @@ declare const bulmaJS: BulmaJS
         {
           feeCategoryId
         },
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          feeCategories?: recordTypes.FeeCategory[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories!
             renderFeeCategories()
@@ -422,11 +427,9 @@ declare const bulmaJS: BulmaJS
         feeCategoryId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        feeCategories?: recordTypes.FeeCategory[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as ResponseJSON
+
         if (responseJSON.success) {
           feeCategories = responseJSON.feeCategories!
           renderFeeCategories()
@@ -463,11 +466,9 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/admin/doAddFee',
         submitEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          feeCategories: recordTypes.FeeCategory[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
             addCloseModalFunction()
@@ -641,11 +642,9 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/admin/doUpdateFee',
         submitEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          feeCategories?: recordTypes.FeeCategory[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories!
             editCloseModalFunction()
@@ -670,11 +669,9 @@ declare const bulmaJS: BulmaJS
           {
             feeId
           },
-          (responseJSON: {
-            success: boolean
-            errorMessage?: string
-            feeCategories?: recordTypes.FeeCategory[]
-          }) => {
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as ResponseJSON
+
             if (responseJSON.success) {
               feeCategories = responseJSON.feeCategories!
               editCloseModalFunction()
@@ -913,11 +910,9 @@ declare const bulmaJS: BulmaJS
         feeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        feeCategories?: recordTypes.FeeCategory[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as ResponseJSON
+
         if (responseJSON.success) {
           feeCategories = responseJSON.feeCategories!
           renderFeeCategories()

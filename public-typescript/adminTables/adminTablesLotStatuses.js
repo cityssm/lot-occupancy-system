@@ -1,12 +1,14 @@
 "use strict";
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 let lotStatuses = exports.lotStatuses;
 delete exports.lotStatuses;
 function updateLotStatus(submitEvent) {
     submitEvent.preventDefault();
-    cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotStatus', submitEvent.currentTarget, (responseJSON) => {
+    cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotStatus', submitEvent.currentTarget, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             lotStatuses = responseJSON.lotStatuses;
             bulmaJS.alert({
@@ -29,8 +31,9 @@ function deleteLotStatus(clickEvent) {
     function doDelete() {
         cityssm.postJSON(los.urlPrefix + '/admin/doDeleteLotStatus', {
             lotStatusId
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotStatuses = responseJSON.lotStatuses;
                 if (lotStatuses.length === 0) {
@@ -76,8 +79,9 @@ function moveLotStatus(clickEvent) {
             : 'doMoveLotStatusDown'), {
         lotStatusId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
-    }, (responseJSON) => {
+    }, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             lotStatuses = responseJSON.lotStatuses;
             renderLotStatuses();
@@ -151,8 +155,9 @@ function renderLotStatuses() {
 document.querySelector('#form--addLotStatus').addEventListener('submit', (submitEvent) => {
     submitEvent.preventDefault();
     const formElement = submitEvent.currentTarget;
-    cityssm.postJSON(los.urlPrefix + '/admin/doAddLotStatus', formElement, (responseJSON) => {
+    cityssm.postJSON(los.urlPrefix + '/admin/doAddLotStatus', formElement, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             lotStatuses = responseJSON.lotStatuses;
             renderLotStatuses();

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from '../../types/globalTypes'
@@ -16,17 +17,25 @@ declare const refreshFontAwesomeIcon: (changeEvent: Event) => void
 let lotOccupantTypes: recordTypes.LotOccupantType[] = exports.lotOccupantTypes
 delete exports.lotOccupantTypes
 
+type ResponseJSON =
+  | {
+      success: true
+      lotOccupantTypes: recordTypes.LotOccupantType[]
+    }
+  | {
+      success: false
+      errorMessage: string
+    }
+
 function updateLotOccupantType(submitEvent: SubmitEvent): void {
   submitEvent.preventDefault()
 
   cityssm.postJSON(
     los.urlPrefix + '/admin/doUpdateLotOccupantType',
     submitEvent.currentTarget,
-    (responseJSON: {
-      success: boolean
-      errorMessage?: string
-      lotOccupantTypes?: recordTypes.LotOccupantType[]
-    }) => {
+    (rawResponseJSON) => {
+      const responseJSON = rawResponseJSON as ResponseJSON
+
       if (responseJSON.success) {
         lotOccupantTypes = responseJSON.lotOccupantTypes!
 
@@ -58,11 +67,9 @@ function deleteLotOccupantType(clickEvent: Event): void {
       {
         lotOccupantTypeId
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        lotOccupantTypes?: recordTypes.LotOccupantType[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as ResponseJSON
+
         if (responseJSON.success) {
           lotOccupantTypes = responseJSON.lotOccupantTypes!
 
@@ -117,11 +124,9 @@ function moveLotOccupantType(clickEvent: MouseEvent): void {
       lotOccupantTypeId,
       moveToEnd: clickEvent.shiftKey ? '1' : '0'
     },
-    (responseJSON: {
-      success: boolean
-      errorMessage?: string
-      lotOccupantTypes?: recordTypes.LotOccupantType[]
-    }) => {
+    (rawResponseJSON) => {
+      const responseJSON = rawResponseJSON as ResponseJSON
+
       if (responseJSON.success) {
         lotOccupantTypes = responseJSON.lotOccupantTypes!
         renderLotOccupantTypes()
@@ -207,9 +212,7 @@ function renderLotOccupantTypes(): void {
           cityssm.escapeHTML(lotOccupantType.occupantCommentTitle) +
           '"') +
         (' form="' + formId + '"') +
-        (' aria-label="' +
-          los.escapedAliases.Occupant +
-          ' Comment Title"') +
+        (' aria-label="' + los.escapedAliases.Occupant + ' Comment Title"') +
         ' maxlength="50" />' +
         '</div>' +
         '</div>') +
@@ -287,11 +290,9 @@ function renderLotOccupantTypes(): void {
   cityssm.postJSON(
     los.urlPrefix + '/admin/doAddLotOccupantType',
     formElement,
-    (responseJSON: {
-      success: boolean
-      errorMessage?: string
-      lotOccupantTypes?: recordTypes.LotOccupantType[]
-    }) => {
+    (rawResponseJSON) => {
+      const responseJSON = rawResponseJSON as ResponseJSON
+
       if (responseJSON.success) {
         lotOccupantTypes = responseJSON.lotOccupantTypes!
         renderLotOccupantTypes()

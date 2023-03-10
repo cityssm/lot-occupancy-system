@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from '../types/globalTypes'
@@ -9,6 +10,17 @@ import type { BulmaJS } from '@cityssm/bulma-js/types'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+
+type ResponseJSON =
+  | {
+      success: true
+      lotTypes: recordTypes.LotType[]
+      lotTypeFieldId?: number
+    }
+  | {
+      success: false
+      errorMessage: string
+    }
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -47,11 +59,7 @@ declare const bulmaJS: BulmaJS
     }
   }
 
-  function lotTypeResponseHandler(responseJSON: {
-    success: boolean
-    errorMessage?: string
-    lotTypes?: recordTypes.LotType[]
-  }): void {
+  function lotTypeResponseHandler(responseJSON: ResponseJSON): void {
     if (responseJSON.success) {
       lotTypes = responseJSON.lotTypes!
       renderLotTypes()
@@ -117,11 +125,9 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/admin/doUpdateLotType',
         submitEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          occupancyTypes?: recordTypes.OccupancyType[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           lotTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -180,12 +186,9 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/admin/doAddLotTypeField',
         submitEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          lotTypes?: recordTypes.LotType[]
-          lotTypeFieldId?: number
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           expandedLotTypes.add(lotTypeId)
           lotTypeResponseHandler(responseJSON)
 
@@ -289,11 +292,9 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/admin/doUpdateLotTypeField',
         submitEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          occupancyTypes?: recordTypes.OccupancyType[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           lotTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -308,11 +309,9 @@ declare const bulmaJS: BulmaJS
         {
           lotTypeFieldId
         },
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          lotTypes?: recordTypes.LotType[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           lotTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -632,11 +631,9 @@ declare const bulmaJS: BulmaJS
         cityssm.postJSON(
           los.urlPrefix + '/admin/doAddLotType',
           submitEvent.currentTarget,
-          (responseJSON: {
-            success: boolean
-            errorMessage?: string
-            lotTypes?: recordTypes.LotType[]
-          }) => {
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as ResponseJSON
+
             if (responseJSON.success) {
               addCloseModalFunction()
               lotTypes = responseJSON.lotTypes!

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from '../types/globalTypes'
@@ -9,6 +10,18 @@ import type { BulmaJS } from '@cityssm/bulma-js/types'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+
+type ResponseJSON =
+  | {
+      success: true
+      occupancyTypes: recordTypes.OccupancyType[]
+      allOccupancyTypeFields: recordTypes.OccupancyTypeField[]
+      occupancyTypeFieldId?: number
+    }
+  | {
+      success: false
+      errorMessage: string
+    }
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -131,12 +144,9 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/admin/doUpdateOccupancyType',
         submitEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          occupancyTypes?: recordTypes.OccupancyType[]
-          allOccupancyTypeFields?: recordTypes.OccupancyTypeField[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           occupancyTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -195,13 +205,9 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/admin/doAddOccupancyTypeField',
         submitEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          occupancyTypes?: recordTypes.OccupancyType[]
-          allOccupancyTypeFields?: recordTypes.OccupancyTypeField[]
-          occupancyTypeFieldId?: number
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           expandedOccupancyTypes.add(occupancyTypeId)
           occupancyTypeResponseHandler(responseJSON)
 
@@ -320,11 +326,9 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/admin/doUpdateOccupancyTypeField',
         submitEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          occupancyTypes?: recordTypes.OccupancyType[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           occupancyTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -339,11 +343,9 @@ declare const bulmaJS: BulmaJS
         {
           occupancyTypeFieldId
         },
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          occupancyTypes?: recordTypes.OccupancyType[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           occupancyTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -572,12 +574,9 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         los.urlPrefix + '/admin/doAddOccupancyTypePrint',
         formEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          occupancyTypes?: recordTypes.OccupancyType[]
-          allOccupancyTypeFields?: recordTypes.OccupancyTypeField[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
           if (responseJSON.success) {
             closeAddModalFunction()
           }
@@ -968,11 +967,9 @@ declare const bulmaJS: BulmaJS
         cityssm.postJSON(
           los.urlPrefix + '/admin/doAddOccupancyType',
           submitEvent.currentTarget,
-          (responseJSON: {
-            success: boolean
-            errorMessage?: string
-            occupancyTypes?: recordTypes.OccupancyType[]
-          }) => {
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as ResponseJSON
+
             if (responseJSON.success) {
               addCloseModalFunction()
               occupancyTypes = responseJSON.occupancyTypes!

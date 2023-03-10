@@ -1,12 +1,14 @@
 "use strict";
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 let workOrderMilestoneTypes = exports.workOrderMilestoneTypes;
 delete exports.workOrderMilestoneTypes;
 function updateWorkOrderMilestoneType(submitEvent) {
     submitEvent.preventDefault();
-    cityssm.postJSON(los.urlPrefix + '/admin/doUpdateWorkOrderMilestoneType', submitEvent.currentTarget, (responseJSON) => {
+    cityssm.postJSON(los.urlPrefix + '/admin/doUpdateWorkOrderMilestoneType', submitEvent.currentTarget, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
             bulmaJS.alert({
@@ -29,8 +31,9 @@ function deleteWorkOrderMilestoneType(clickEvent) {
     function doDelete() {
         cityssm.postJSON(los.urlPrefix + '/admin/doDeleteWorkOrderMilestoneType', {
             workOrderMilestoneTypeId
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 if (workOrderMilestoneTypes.length === 0) {
@@ -76,8 +79,9 @@ function moveWorkOrderMilestoneType(clickEvent) {
             : 'doMoveWorkOrderMilestoneTypeDown'), {
         workOrderMilestoneTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
-    }, (responseJSON) => {
+    }, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
             renderWorkOrderMilestoneTypes();
@@ -149,8 +153,9 @@ function renderWorkOrderMilestoneTypes() {
 document.querySelector('#form--addWorkOrderMilestoneType').addEventListener('submit', (submitEvent) => {
     submitEvent.preventDefault();
     const formElement = submitEvent.currentTarget;
-    cityssm.postJSON(los.urlPrefix + '/admin/doAddWorkOrderMilestoneType', formElement, (responseJSON) => {
+    cityssm.postJSON(los.urlPrefix + '/admin/doAddWorkOrderMilestoneType', formElement, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
             renderWorkOrderMilestoneTypes();

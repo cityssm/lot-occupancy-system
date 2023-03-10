@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from '../../types/globalTypes'
@@ -16,17 +17,25 @@ let workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[] =
   exports.workOrderMilestoneTypes
 delete exports.workOrderMilestoneTypes
 
+type ResponseJSON =
+  | {
+      success: true
+      workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[]
+    }
+  | {
+      success: false
+      errorMessage: string
+    }
+
 function updateWorkOrderMilestoneType(submitEvent: SubmitEvent): void {
   submitEvent.preventDefault()
 
   cityssm.postJSON(
     los.urlPrefix + '/admin/doUpdateWorkOrderMilestoneType',
     submitEvent.currentTarget,
-    (responseJSON: {
-      success: boolean
-      errorMessage?: string
-      workOrderMilestoneTypes?: recordTypes.WorkOrderMilestoneType[]
-    }) => {
+    (rawResponseJSON) => {
+      const responseJSON = rawResponseJSON as ResponseJSON
+
       if (responseJSON.success) {
         workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes!
 
@@ -59,11 +68,9 @@ function deleteWorkOrderMilestoneType(clickEvent: Event): void {
       {
         workOrderMilestoneTypeId
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        workOrderMilestoneTypes?: recordTypes.WorkOrderMilestoneType[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as ResponseJSON
+
         if (responseJSON.success) {
           workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes!
 
@@ -119,11 +126,9 @@ function moveWorkOrderMilestoneType(clickEvent: MouseEvent): void {
       workOrderMilestoneTypeId,
       moveToEnd: clickEvent.shiftKey ? '1' : '0'
     },
-    (responseJSON: {
-      success: boolean
-      errorMessage?: string
-      workOrderMilestoneTypes?: recordTypes.WorkOrderMilestoneType[]
-    }) => {
+    (rawResponseJSON) => {
+      const responseJSON = rawResponseJSON as ResponseJSON
+
       if (responseJSON.success) {
         workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes!
         renderWorkOrderMilestoneTypes()
@@ -225,11 +230,9 @@ function renderWorkOrderMilestoneTypes(): void {
   cityssm.postJSON(
     los.urlPrefix + '/admin/doAddWorkOrderMilestoneType',
     formElement,
-    (responseJSON: {
-      success: boolean
-      errorMessage?: string
-      workOrderMilestoneTypes?: recordTypes.WorkOrderMilestoneType[]
-    }) => {
+    (rawResponseJSON) => {
+      const responseJSON = rawResponseJSON as ResponseJSON
+
       if (responseJSON.success) {
         workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes!
         renderWorkOrderMilestoneTypes()

@@ -1,12 +1,14 @@
 "use strict";
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 let lotOccupantTypes = exports.lotOccupantTypes;
 delete exports.lotOccupantTypes;
 function updateLotOccupantType(submitEvent) {
     submitEvent.preventDefault();
-    cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotOccupantType', submitEvent.currentTarget, (responseJSON) => {
+    cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotOccupantType', submitEvent.currentTarget, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             lotOccupantTypes = responseJSON.lotOccupantTypes;
             bulmaJS.alert({
@@ -29,8 +31,9 @@ function deleteLotOccupantType(clickEvent) {
     function doDelete() {
         cityssm.postJSON(los.urlPrefix + '/admin/doDeleteLotOccupantType', {
             lotOccupantTypeId
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
                 if (lotOccupantTypes.length === 0) {
@@ -76,8 +79,9 @@ function moveLotOccupantType(clickEvent) {
             : 'doMoveLotOccupantTypeDown'), {
         lotOccupantTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
-    }, (responseJSON) => {
+    }, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             lotOccupantTypes = responseJSON.lotOccupantTypes;
             renderLotOccupantTypes();
@@ -152,9 +156,7 @@ function renderLotOccupantTypes() {
                         cityssm.escapeHTML(lotOccupantType.occupantCommentTitle) +
                         '"') +
                     (' form="' + formId + '"') +
-                    (' aria-label="' +
-                        los.escapedAliases.Occupant +
-                        ' Comment Title"') +
+                    (' aria-label="' + los.escapedAliases.Occupant + ' Comment Title"') +
                     ' maxlength="50" />' +
                     '</div>' +
                     '</div>') +
@@ -207,8 +209,9 @@ function renderLotOccupantTypes() {
 document.querySelector('#form--addLotOccupantType').addEventListener('submit', (submitEvent) => {
     submitEvent.preventDefault();
     const formElement = submitEvent.currentTarget;
-    cityssm.postJSON(los.urlPrefix + '/admin/doAddLotOccupantType', formElement, (responseJSON) => {
+    cityssm.postJSON(los.urlPrefix + '/admin/doAddLotOccupantType', formElement, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             lotOccupantTypes = responseJSON.lotOccupantTypes;
             renderLotOccupantTypes();

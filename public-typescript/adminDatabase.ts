@@ -29,7 +29,9 @@ declare const bulmaJS: BulmaJS
         if (responseJSON.success) {
           bulmaJS.alert({
             title: 'Database Backed Up Successfully',
-            message: `Backed up to ${responseJSON.fileName}`,
+            message: `Backed up to <strong>${responseJSON.fileName}</strong><br />
+              To request a copy of the backup, contact your application administrator.`,
+            messageIsHtml: true,
             contextualColorName: 'success'
           })
         } else {

@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
@@ -60,9 +61,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 feeCategoryContainerElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
             <div class="message is-info">
               <p class="message-body">
-                  There are no fees in the
-                  "${cityssm.escapeHTML((_b = feeCategory.feeCategory) !== null && _b !== void 0 ? _b : '')}"
-                  category.
+                There are no fees in the
+                "${cityssm.escapeHTML((_b = feeCategory.feeCategory) !== null && _b !== void 0 ? _b : '')}"
+                category.
               </p>
             </div>
             </div>`);
@@ -177,8 +178,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAddFeeCategory(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doAddFeeCategory', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doAddFeeCategory', submitEvent.currentTarget, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     addCloseModalFunction();
@@ -216,8 +218,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         function doUpdateFeeCategory(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doUpdateFeeCategory', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doUpdateFeeCategory', submitEvent.currentTarget, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     editCloseModalFunction();
@@ -256,8 +259,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/admin/doDeleteFeeCategory', {
                 feeCategoryId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     renderFeeCategories();
@@ -291,8 +295,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : 'doMoveFeeCategoryDown'), {
             feeCategoryId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 feeCategories = responseJSON.feeCategories;
                 renderFeeCategories();
@@ -314,8 +319,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAddFee(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doAddFee', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doAddFee', submitEvent.currentTarget, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     addCloseModalFunction();
@@ -426,8 +432,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editModalElement;
         function doUpdateFee(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doUpdateFee', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doUpdateFee', submitEvent.currentTarget, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     editCloseModalFunction();
@@ -447,8 +454,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             function doDelete() {
                 cityssm.postJSON(los.urlPrefix + '/admin/doDeleteFee', {
                     feeId
-                }, (responseJSON) => {
+                }, (rawResponseJSON) => {
                     var _a;
+                    const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         feeCategories = responseJSON.feeCategories;
                         editCloseModalFunction();
@@ -596,8 +604,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : 'doMoveFeeDown'), {
             feeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 feeCategories = responseJSON.feeCategories;
                 renderFeeCategories();

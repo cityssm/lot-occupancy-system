@@ -1,12 +1,14 @@
 "use strict";
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 let workOrderTypes = exports.workOrderTypes;
 delete exports.workOrderTypes;
 function updateWorkOrderType(submitEvent) {
     submitEvent.preventDefault();
-    cityssm.postJSON(los.urlPrefix + '/admin/doUpdateWorkOrderType', submitEvent.currentTarget, (responseJSON) => {
+    cityssm.postJSON(los.urlPrefix + '/admin/doUpdateWorkOrderType', submitEvent.currentTarget, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderTypes = responseJSON.workOrderTypes;
             bulmaJS.alert({
@@ -29,8 +31,9 @@ const deleteWorkOrderType = (clickEvent) => {
     function doDelete() {
         cityssm.postJSON(los.urlPrefix + '/admin/doDeleteWorkOrderType', {
             workOrderTypeId
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 if (workOrderTypes.length === 0) {
@@ -71,11 +74,14 @@ function moveWorkOrderType(clickEvent) {
     const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
     cityssm.postJSON(los.urlPrefix +
         '/admin/' +
-        (buttonElement.dataset.direction === 'up' ? 'doMoveWorkOrderTypeUp' : 'doMoveWorkOrderTypeDown'), {
+        (buttonElement.dataset.direction === 'up'
+            ? 'doMoveWorkOrderTypeUp'
+            : 'doMoveWorkOrderTypeDown'), {
         workOrderTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
-    }, (responseJSON) => {
+    }, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderTypes = responseJSON.workOrderTypes;
             renderWorkOrderTypes();
@@ -101,7 +107,8 @@ function renderWorkOrderTypes() {
     containerElement.innerHTML = '';
     for (const workOrderType of workOrderTypes) {
         const tableRowElement = document.createElement('tr');
-        tableRowElement.dataset.workOrderTypeId = workOrderType.workOrderTypeId.toString();
+        tableRowElement.dataset.workOrderTypeId =
+            workOrderType.workOrderTypeId.toString();
         tableRowElement.innerHTML =
             '<td>' +
                 '<form>' +
@@ -132,7 +139,9 @@ function renderWorkOrderTypes() {
                 '</div>' +
                 '</div>' +
                 '</td>';
-        tableRowElement.querySelector('form').addEventListener('submit', updateWorkOrderType);
+        tableRowElement
+            .querySelector('form')
+            .addEventListener('submit', updateWorkOrderType);
         tableRowElement.querySelector('.button--moveWorkOrderTypeUp').addEventListener('click', moveWorkOrderType);
         tableRowElement.querySelector('.button--moveWorkOrderTypeDown').addEventListener('click', moveWorkOrderType);
         tableRowElement
@@ -141,11 +150,13 @@ function renderWorkOrderTypes() {
         containerElement.append(tableRowElement);
     }
 }
+;
 document.querySelector('#form--addWorkOrderType').addEventListener('submit', (submitEvent) => {
     submitEvent.preventDefault();
     const formElement = submitEvent.currentTarget;
-    cityssm.postJSON(los.urlPrefix + '/admin/doAddWorkOrderType', formElement, (responseJSON) => {
+    cityssm.postJSON(los.urlPrefix + '/admin/doAddWorkOrderType', formElement, (rawResponseJSON) => {
         var _a;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderTypes = responseJSON.workOrderTypes;
             renderWorkOrderTypes();

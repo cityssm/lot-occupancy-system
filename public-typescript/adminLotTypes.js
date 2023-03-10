@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
@@ -64,7 +65,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotType', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotType', submitEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 lotTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -93,7 +95,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doAddLotTypeField', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doAddLotTypeField', submitEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 expandedLotTypes.add(lotTypeId);
                 lotTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
@@ -162,7 +165,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         function doUpdate(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotTypeField', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotTypeField', submitEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 lotTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -172,7 +176,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/admin/doDeleteLotTypeField', {
                 lotTypeFieldId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 lotTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -368,8 +373,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doAddLotType', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doAddLotType', submitEvent.currentTarget, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     addCloseModalFunction();
                     lotTypes = responseJSON.lotTypes;

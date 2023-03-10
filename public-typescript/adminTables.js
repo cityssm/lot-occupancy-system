@@ -13,14 +13,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .querySelectorAll('.button.is-static')[1].innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
     }
     "use strict";
+    /* eslint-disable @typescript-eslint/indent */
     /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
     Object.defineProperty(exports, "__esModule", { value: true });
     let workOrderTypes = exports.workOrderTypes;
     delete exports.workOrderTypes;
     function updateWorkOrderType(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(los.urlPrefix + '/admin/doUpdateWorkOrderType', submitEvent.currentTarget, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/admin/doUpdateWorkOrderType', submitEvent.currentTarget, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 bulmaJS.alert({
@@ -43,8 +45,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/admin/doDeleteWorkOrderType', {
                 workOrderTypeId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     workOrderTypes = responseJSON.workOrderTypes;
                     if (workOrderTypes.length === 0) {
@@ -85,11 +88,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const workOrderTypeId = tableRowElement.dataset.workOrderTypeId;
         cityssm.postJSON(los.urlPrefix +
             '/admin/' +
-            (buttonElement.dataset.direction === 'up' ? 'doMoveWorkOrderTypeUp' : 'doMoveWorkOrderTypeDown'), {
+            (buttonElement.dataset.direction === 'up'
+                ? 'doMoveWorkOrderTypeUp'
+                : 'doMoveWorkOrderTypeDown'), {
             workOrderTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 renderWorkOrderTypes();
@@ -115,7 +121,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         containerElement.innerHTML = '';
         for (const workOrderType of workOrderTypes) {
             const tableRowElement = document.createElement('tr');
-            tableRowElement.dataset.workOrderTypeId = workOrderType.workOrderTypeId.toString();
+            tableRowElement.dataset.workOrderTypeId =
+                workOrderType.workOrderTypeId.toString();
             tableRowElement.innerHTML =
                 '<td>' +
                     '<form>' +
@@ -146,7 +153,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '</div>' +
                     '</div>' +
                     '</td>';
-            tableRowElement.querySelector('form').addEventListener('submit', updateWorkOrderType);
+            tableRowElement
+                .querySelector('form')
+                .addEventListener('submit', updateWorkOrderType);
             tableRowElement.querySelector('.button--moveWorkOrderTypeUp').addEventListener('click', moveWorkOrderType);
             tableRowElement.querySelector('.button--moveWorkOrderTypeDown').addEventListener('click', moveWorkOrderType);
             tableRowElement
@@ -155,11 +164,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             containerElement.append(tableRowElement);
         }
     }
+    ;
     document.querySelector('#form--addWorkOrderType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(los.urlPrefix + '/admin/doAddWorkOrderType', formElement, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/admin/doAddWorkOrderType', formElement, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 renderWorkOrderTypes();
@@ -178,14 +189,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
     renderWorkOrderTypes();
     
     "use strict";
+    /* eslint-disable @typescript-eslint/indent */
     /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
     Object.defineProperty(exports, "__esModule", { value: true });
     let workOrderMilestoneTypes = exports.workOrderMilestoneTypes;
     delete exports.workOrderMilestoneTypes;
     function updateWorkOrderMilestoneType(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(los.urlPrefix + '/admin/doUpdateWorkOrderMilestoneType', submitEvent.currentTarget, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/admin/doUpdateWorkOrderMilestoneType', submitEvent.currentTarget, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 bulmaJS.alert({
@@ -208,8 +221,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/admin/doDeleteWorkOrderMilestoneType', {
                 workOrderMilestoneTypeId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                     if (workOrderMilestoneTypes.length === 0) {
@@ -255,8 +269,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : 'doMoveWorkOrderMilestoneTypeDown'), {
             workOrderMilestoneTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 renderWorkOrderMilestoneTypes();
@@ -328,8 +343,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     document.querySelector('#form--addWorkOrderMilestoneType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(los.urlPrefix + '/admin/doAddWorkOrderMilestoneType', formElement, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/admin/doAddWorkOrderMilestoneType', formElement, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 renderWorkOrderMilestoneTypes();
@@ -348,14 +364,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
     renderWorkOrderMilestoneTypes();
     
     "use strict";
+    /* eslint-disable @typescript-eslint/indent */
     /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
     Object.defineProperty(exports, "__esModule", { value: true });
     let lotStatuses = exports.lotStatuses;
     delete exports.lotStatuses;
     function updateLotStatus(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotStatus', submitEvent.currentTarget, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotStatus', submitEvent.currentTarget, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotStatuses = responseJSON.lotStatuses;
                 bulmaJS.alert({
@@ -378,8 +396,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/admin/doDeleteLotStatus', {
                 lotStatusId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotStatuses = responseJSON.lotStatuses;
                     if (lotStatuses.length === 0) {
@@ -425,8 +444,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : 'doMoveLotStatusDown'), {
             lotStatusId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotStatuses = responseJSON.lotStatuses;
                 renderLotStatuses();
@@ -500,8 +520,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     document.querySelector('#form--addLotStatus').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(los.urlPrefix + '/admin/doAddLotStatus', formElement, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/admin/doAddLotStatus', formElement, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotStatuses = responseJSON.lotStatuses;
                 renderLotStatuses();
@@ -520,14 +541,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
     renderLotStatuses();
     
     "use strict";
+    /* eslint-disable @typescript-eslint/indent */
     /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
     Object.defineProperty(exports, "__esModule", { value: true });
     let lotOccupantTypes = exports.lotOccupantTypes;
     delete exports.lotOccupantTypes;
     function updateLotOccupantType(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotOccupantType', submitEvent.currentTarget, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/admin/doUpdateLotOccupantType', submitEvent.currentTarget, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
                 bulmaJS.alert({
@@ -550,8 +573,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/admin/doDeleteLotOccupantType', {
                 lotOccupantTypeId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotOccupantTypes = responseJSON.lotOccupantTypes;
                     if (lotOccupantTypes.length === 0) {
@@ -597,8 +621,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : 'doMoveLotOccupantTypeDown'), {
             lotOccupantTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
                 renderLotOccupantTypes();
@@ -673,9 +698,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             cityssm.escapeHTML(lotOccupantType.occupantCommentTitle) +
                             '"') +
                         (' form="' + formId + '"') +
-                        (' aria-label="' +
-                            los.escapedAliases.Occupant +
-                            ' Comment Title"') +
+                        (' aria-label="' + los.escapedAliases.Occupant + ' Comment Title"') +
                         ' maxlength="50" />' +
                         '</div>' +
                         '</div>') +
@@ -728,8 +751,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     document.querySelector('#form--addLotOccupantType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(los.urlPrefix + '/admin/doAddLotOccupantType', formElement, (responseJSON) => {
+        cityssm.postJSON(los.urlPrefix + '/admin/doAddLotOccupantType', formElement, (rawResponseJSON) => {
             var _a;
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
                 renderLotOccupantTypes();

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from '../../types/globalTypes'
@@ -15,17 +16,25 @@ declare const los: globalTypes.LOS
 let lotStatuses: recordTypes.LotStatus[] = exports.lotStatuses
 delete exports.lotStatuses
 
+type ResponseJSON =
+  | {
+      success: true
+      lotStatuses: recordTypes.LotStatus[]
+    }
+  | {
+      success: false
+      errorMessage: string
+    }
+
 function updateLotStatus(submitEvent: SubmitEvent): void {
   submitEvent.preventDefault()
 
   cityssm.postJSON(
     los.urlPrefix + '/admin/doUpdateLotStatus',
     submitEvent.currentTarget,
-    (responseJSON: {
-      success: boolean
-      errorMessage?: string
-      lotStatuses?: recordTypes.LotStatus[]
-    }) => {
+    (rawResponseJSON) => {
+      const responseJSON = rawResponseJSON as ResponseJSON
+
       if (responseJSON.success) {
         lotStatuses = responseJSON.lotStatuses!
 
@@ -57,11 +66,9 @@ function deleteLotStatus(clickEvent: Event): void {
       {
         lotStatusId
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        lotStatuses?: recordTypes.LotStatus[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as ResponseJSON
+
         if (responseJSON.success) {
           lotStatuses = responseJSON.lotStatuses!
 
@@ -116,11 +123,9 @@ function moveLotStatus(clickEvent: MouseEvent): void {
       lotStatusId,
       moveToEnd: clickEvent.shiftKey ? '1' : '0'
     },
-    (responseJSON: {
-      success: boolean
-      errorMessage?: string
-      lotStatuses?: recordTypes.LotStatus[]
-    }) => {
+    (rawResponseJSON) => {
+      const responseJSON = rawResponseJSON as ResponseJSON
+
       if (responseJSON.success) {
         lotStatuses = responseJSON.lotStatuses!
         renderLotStatuses()
@@ -224,11 +229,9 @@ function renderLotStatuses(): void {
   cityssm.postJSON(
     los.urlPrefix + '/admin/doAddLotStatus',
     formElement,
-    (responseJSON: {
-      success: boolean
-      errorMessage?: string
-      lotStatuses?: recordTypes.LotStatus[]
-    }) => {
+    (rawResponseJSON) => {
+      const responseJSON = rawResponseJSON as ResponseJSON
+
       if (responseJSON.success) {
         lotStatuses = responseJSON.lotStatuses!
         renderLotStatuses()

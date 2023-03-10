@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
@@ -68,7 +69,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doUpdateOccupancyType', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doUpdateOccupancyType', submitEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 occupancyTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -97,7 +99,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doAddOccupancyTypeField', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doAddOccupancyTypeField', submitEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 expandedOccupancyTypes.add(occupancyTypeId);
                 occupancyTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
@@ -171,7 +174,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         function doUpdate(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doUpdateOccupancyTypeField', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doUpdateOccupancyTypeField', submitEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 occupancyTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -181,7 +185,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doDelete() {
             cityssm.postJSON(los.urlPrefix + '/admin/doDeleteOccupancyTypeField', {
                 occupancyTypeFieldId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 occupancyTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -307,7 +312,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let closeAddModalFunction;
         function doAdd(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doAddOccupancyTypePrint', formEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doAddOccupancyTypePrint', formEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     closeAddModalFunction();
                 }
@@ -570,8 +576,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doAddOccupancyType', submitEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(los.urlPrefix + '/admin/doAddOccupancyType', submitEvent.currentTarget, (rawResponseJSON) => {
                 var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     addCloseModalFunction();
                     occupancyTypes = responseJSON.occupancyTypes;
