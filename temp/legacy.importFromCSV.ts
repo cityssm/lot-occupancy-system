@@ -213,26 +213,32 @@ const user: recordTypes.PartialSession = {
 function purgeTables(): void {
   console.time('purgeTables')
 
+  const tablesToPurge = [
+    'WorkOrderMilestones',
+    'WorkOrderComments',
+    'WorkOrderLots',
+    'WorkOrderLotOccupancies',
+    'WorkOrders',
+    'LotOccupancyTransactions',
+    'LotOccupancyFees',
+    'LotOccupancyFields',
+    'LotOccupancyComments',
+    'LotOccupancyOccupants',
+    'LotOccupancies',
+    'LotFields',
+    'LotComments',
+    'Lots'
+  ]
+
   const database = sqlite(databasePath)
-  database.prepare('delete from WorkOrderMilestones').run()
-  database.prepare('delete from WorkOrderComments').run()
-  database.prepare('delete from WorkOrderLots').run()
-  database.prepare('delete from WorkOrderLotOccupancies').run()
-  database.prepare('delete from WorkOrders').run()
-  database.prepare('delete from LotOccupancyTransactions').run()
-  database.prepare('delete from LotOccupancyFees').run()
-  database.prepare('delete from LotOccupancyFields').run()
-  database.prepare('delete from LotOccupancyComments').run()
-  database.prepare('delete from LotOccupancyOccupants').run()
-  database.prepare('delete from LotOccupancies').run()
-  database.prepare('delete from LotFields').run()
-  database.prepare('delete from LotComments').run()
-  database.prepare('delete from Lots').run()
-  database
-    .prepare(
-      "delete from sqlite_sequence where name in ('Lots', 'LotComments', 'LotOccupancies', 'LotOccupancyComments', 'WorkOrders', 'WorkOrderComments', 'WorkOrderMilestones')"
-    )
-    .run()
+
+  for (const tableName of tablesToPurge) {
+    database.prepare(`delete from ${tableName}`).run()
+    database
+      .prepare('delete from sqlite_sequence where name = ?')
+      .run(tableName)
+  }
+
   database.close()
 
   console.timeEnd('purgeTables')
@@ -329,7 +335,7 @@ async function getMap(dataRow: { cemetery: string }): Promise<recordTypes.Map> {
       user
     )
 
-    map = await getMapFromDatabase(mapId) as recordTypes.Map
+    map = (await getMapFromDatabase(mapId)) as recordTypes.Map
   }
 
   mapCache.set(mapCacheKey, map)
@@ -513,7 +519,8 @@ async function importFromMasterCSV(): Promise<void> {
               lotOccupancyId: preneedLotOccupancyId,
               lotOccupancyCommentDateString: preneedOccupancyStartDateString,
               lotOccupancyCommentTimeString: '00:00',
-              lotOccupancyComment: 'Imported Contract #' + masterRow.CM_WORK_ORDER
+              lotOccupancyComment:
+                'Imported Contract #' + masterRow.CM_WORK_ORDER
             },
             user
           )
@@ -780,7 +787,8 @@ async function importFromMasterCSV(): Promise<void> {
               lotOccupancyId: deceasedLotOccupancyId,
               lotOccupancyCommentDateString: deceasedOccupancyStartDateString,
               lotOccupancyCommentTimeString: '00:00',
-              lotOccupancyComment: 'Imported Contract #' + masterRow.CM_WORK_ORDER
+              lotOccupancyComment:
+                'Imported Contract #' + masterRow.CM_WORK_ORDER
             },
             user
           )

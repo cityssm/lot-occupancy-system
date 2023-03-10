@@ -36,24 +36,29 @@ const user = {
 };
 function purgeTables() {
     console.time('purgeTables');
+    const tablesToPurge = [
+        'WorkOrderMilestones',
+        'WorkOrderComments',
+        'WorkOrderLots',
+        'WorkOrderLotOccupancies',
+        'WorkOrders',
+        'LotOccupancyTransactions',
+        'LotOccupancyFees',
+        'LotOccupancyFields',
+        'LotOccupancyComments',
+        'LotOccupancyOccupants',
+        'LotOccupancies',
+        'LotFields',
+        'LotComments',
+        'Lots'
+    ];
     const database = sqlite(databasePath);
-    database.prepare('delete from WorkOrderMilestones').run();
-    database.prepare('delete from WorkOrderComments').run();
-    database.prepare('delete from WorkOrderLots').run();
-    database.prepare('delete from WorkOrderLotOccupancies').run();
-    database.prepare('delete from WorkOrders').run();
-    database.prepare('delete from LotOccupancyTransactions').run();
-    database.prepare('delete from LotOccupancyFees').run();
-    database.prepare('delete from LotOccupancyFields').run();
-    database.prepare('delete from LotOccupancyComments').run();
-    database.prepare('delete from LotOccupancyOccupants').run();
-    database.prepare('delete from LotOccupancies').run();
-    database.prepare('delete from LotFields').run();
-    database.prepare('delete from LotComments').run();
-    database.prepare('delete from Lots').run();
-    database
-        .prepare("delete from sqlite_sequence where name in ('Lots', 'LotComments', 'LotOccupancies', 'LotOccupancyComments', 'WorkOrders', 'WorkOrderComments', 'WorkOrderMilestones')")
-        .run();
+    for (const tableName of tablesToPurge) {
+        database.prepare(`delete from ${tableName}`).run();
+        database
+            .prepare('delete from sqlite_sequence where name = ?')
+            .run(tableName);
+    }
     database.close();
     console.timeEnd('purgeTables');
 }
@@ -120,7 +125,7 @@ async function getMap(dataRow) {
             mapPostalCode: '',
             mapPhoneNumber: ''
         }, user);
-        map = await getMapFromDatabase(mapId);
+        map = (await getMapFromDatabase(mapId));
     }
     mapCache.set(mapCacheKey, map);
     return map;

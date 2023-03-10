@@ -5,13 +5,21 @@ import * as sql from '@cityssm/mssql-multi-pool'
 import { soMSSQL } from './config.js'
 import type * as sqlTypes from 'mssql'
 
+interface MapLayer {
+  mapId: string
+  mapName: string
+  layerId: string
+  layerName: string
+  layerImage: string
+}
+
 async function importMaps(): Promise<void> {
-  let pool: sqlTypes.ConnectionPool
+  let pool: sqlTypes.ConnectionPool | undefined
 
   try {
     pool = await sql.connect(soMSSQL)
 
-    const result = await pool.query(
+    const result: sqlTypes.IResult<MapLayer> = await pool.query(
       'select m.ID as mapId, m.Name as mapName,' +
         ' l.ID as layerId, l.Name as layerName, l.Image as layerImage' +
         ' from Legacy_Maps m' +
@@ -19,7 +27,7 @@ async function importMaps(): Promise<void> {
     )
 
     for (const layer of result.recordset) {
-      const imageBuffer: Buffer = layer.layerImage
+      const imageBuffer = layer.layerImage as unknown as Buffer
 
       const fileName = `${layer.mapName} - ${layer.layerName} (${layer.mapId}, ${layer.layerId}).wmf`
 
@@ -33,7 +41,9 @@ async function importMaps(): Promise<void> {
     // ignore
   } finally {
     try {
-      pool.close()
+      if (pool !== undefined) {
+        await pool.close()
+      }
     } catch {
       // ignore
     }

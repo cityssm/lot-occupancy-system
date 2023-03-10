@@ -23,7 +23,9 @@ async function importMaps() {
     }
     finally {
         try {
-            pool.close();
+            if (pool !== undefined) {
+                await pool.close();
+            }
         }
         catch {
         }
