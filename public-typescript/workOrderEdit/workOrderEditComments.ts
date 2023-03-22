@@ -193,7 +193,7 @@ function renderWorkOrderComments(): void {
       workOrderComment.workOrderCommentDateString +
       (workOrderComment.workOrderCommentTime === 0
         ? ''
-        : ' ' + workOrderComment.workOrderCommentTimeString) +
+        : ' ' + workOrderComment.workOrderCommentTimePeriodString!) +
       '</td>' +
       '<td>' +
       cityssm.escapeHTML(workOrderComment.workOrderComment ?? '') +

@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 export async function completeWorkOrderMilestone(milestoneForm, requestSession) {
     const rightNow = new Date();
     const database = await acquireConnection();

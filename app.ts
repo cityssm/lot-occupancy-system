@@ -26,7 +26,7 @@ import routerAdmin from './routes/admin.js'
 
 import * as configFunctions from './helpers/functions.config.js'
 import * as printFunctions from './helpers/functions.print.js'
-import * as dateTimeFns from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import * as dateTimeFns from '@cityssm/utils-datetime'
 import * as stringFns from '@cityssm/expressjs-server-js/stringFns.js'
 import * as htmlFns from '@cityssm/expressjs-server-js/htmlFns.js'
 

@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js'
 
-import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import * as dateTimeFunctions from '@cityssm/utils-datetime'
 
 import type * as recordTypes from '../../types/recordTypes'
 

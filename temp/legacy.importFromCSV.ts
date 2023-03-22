@@ -52,7 +52,7 @@ import { closeWorkOrder } from '../helpers/lotOccupancyDB/closeWorkOrder.js'
 import {
   dateIntegerToString,
   dateToString
-} from '@cityssm/expressjs-server-js/dateTimeFns.js'
+} from '@cityssm/utils-datetime'
 
 import type * as recordTypes from '../types/recordTypes'
 

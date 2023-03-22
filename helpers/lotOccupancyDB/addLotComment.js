@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import * as dateTimeFunctions from '@cityssm/utils-datetime';
 export async function addLotComment(lotCommentForm, requestSession) {
     const database = await acquireConnection();
     const rightNow = new Date();

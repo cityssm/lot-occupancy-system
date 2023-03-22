@@ -1020,7 +1020,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         ((_b = lotOccupancyComment.lotOccupancyCommentDateString) !== null && _b !== void 0 ? _b : '') +
                         (lotOccupancyComment.lotOccupancyCommentTime === 0
                             ? ''
-                            : ' ' + lotOccupancyComment.lotOccupancyCommentTimeString) +
+                            : ' ' + lotOccupancyComment.lotOccupancyCommentTimePeriodString) +
                         '</td>' +
                         '<td>' +
                         cityssm.escapeHTML((_c = lotOccupancyComment.lotOccupancyComment) !== null && _c !== void 0 ? _c : '') +

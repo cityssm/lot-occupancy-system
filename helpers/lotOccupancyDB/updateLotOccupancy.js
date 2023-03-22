@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-import { dateStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import { dateStringToInteger } from '@cityssm/utils-datetime';
 import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js';
 import { deleteLotOccupancyField } from './deleteLotOccupancyField.js';
 export async function updateLotOccupancy(lotOccupancyForm, requestSession) {

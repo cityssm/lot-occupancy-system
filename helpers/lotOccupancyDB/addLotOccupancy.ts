@@ -1,7 +1,7 @@
 import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import * as dateTimeFunctions from '@cityssm/utils-datetime'
 
 import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js'
 import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js'

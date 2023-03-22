@@ -6,7 +6,7 @@ import {
   dateStringToInteger,
   dateToInteger,
   timeIntegerToString
-} from '@cityssm/expressjs-server-js/dateTimeFns.js'
+} from '@cityssm/utils-datetime'
 
 import * as configFunctions from '../functions.config.js'
 

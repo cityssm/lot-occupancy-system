@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import * as dateTimeFunctions from '@cityssm/utils-datetime'
 
 import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 import { getLotStatuses, getLotTypes } from '../../helpers/functions.cache.js'

@@ -450,7 +450,7 @@ declare const bulmaJS: BulmaJS
         lotComment.lotCommentDateString! +
         (lotComment.lotCommentTime === 0
           ? ''
-          : ' ' + lotComment.lotCommentTimeString!) +
+          : ' ' + lotComment.lotCommentTimePeriodString!) +
         '</td>' +
         '<td>' +
         cityssm.escapeHTML(lotComment.lotComment ?? '') +

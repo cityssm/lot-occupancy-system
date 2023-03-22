@@ -1,4 +1,4 @@
-import { dateToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import { dateToInteger } from '@cityssm/utils-datetime'
 
 type LotNameSearchType = 'startsWith' | 'endsWith' | ''
 

@@ -13,7 +13,9 @@ export async function handler(
     request.session
   )
 
-  const lotOccupancyFees = await getLotOccupancyFees(request.body.lotOccupancyId)
+  const lotOccupancyFees = await getLotOccupancyFees(
+    request.body.lotOccupancyId
+  )
 
   response.json({
     success,

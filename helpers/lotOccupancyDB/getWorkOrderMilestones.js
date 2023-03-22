@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToString } from '@cityssm/utils-datetime';
 import * as configFunctions from '../functions.config.js';
 import { getLots } from './getLots.js';
 import { getLotOccupancies } from './getLotOccupancies.js';

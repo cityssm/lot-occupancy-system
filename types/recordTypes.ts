@@ -101,6 +101,7 @@ export interface LotComment extends Record {
 
   lotCommentTime?: number
   lotCommentTimeString?: string
+  lotCommentTimePeriodString?: string
 
   lotComment?: string
 }
@@ -237,6 +238,7 @@ export interface LotOccupancyComment extends Record {
 
   lotOccupancyCommentTime?: number
   lotOccupancyCommentTimeString?: string
+  lotOccupancyCommentTimePeriodString?: string
 
   lotOccupancyComment?: string
 }
@@ -301,6 +303,7 @@ export interface WorkOrderComment extends Record {
 
   workOrderCommentTime?: number
   workOrderCommentTimeString?: string
+  workOrderCommentTimePeriodString?: string
 
   workOrderComment?: string
 }

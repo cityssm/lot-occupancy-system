@@ -1,4 +1,4 @@
-import { dateToInteger, dateToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import { dateToInteger, dateToString } from '@cityssm/utils-datetime';
 import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypes } from '../../helpers/functions.cache.js';
 import { getLot } from '../../helpers/lotOccupancyDB/getLot.js';
 import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js';

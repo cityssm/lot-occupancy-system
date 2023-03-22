@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-import { dateIntegerToString, timeIntegerToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import { dateIntegerToString, timeIntegerToString } from '@cityssm/utils-datetime';
 import * as configFunctions from '../functions.config.js';
 import * as gpFunctions from '../functions.dynamicsGP.js';
 export async function getLotOccupancyTransactions(lotOccupancyId, connectedDatabase) {

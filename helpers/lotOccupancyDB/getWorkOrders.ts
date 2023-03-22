@@ -6,7 +6,7 @@ import type { PoolConnection } from 'better-sqlite-pool'
 import {
   dateIntegerToString,
   dateStringToInteger
-} from '@cityssm/expressjs-server-js/dateTimeFns.js'
+} from '@cityssm/utils-datetime'
 
 import { getWorkOrderComments } from './getWorkOrderComments.js'
 import { getLots } from './getLots.js'

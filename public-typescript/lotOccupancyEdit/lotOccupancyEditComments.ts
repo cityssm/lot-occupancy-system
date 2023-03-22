@@ -203,7 +203,7 @@ function renderLotOccupancyComments(): void {
       (lotOccupancyComment.lotOccupancyCommentDateString ?? '') +
       (lotOccupancyComment.lotOccupancyCommentTime === 0
         ? ''
-        : ' ' + lotOccupancyComment.lotOccupancyCommentTimeString!) +
+        : ' ' + lotOccupancyComment.lotOccupancyCommentTimePeriodString!) +
       '</td>' +
       '<td>' +
       cityssm.escapeHTML(lotOccupancyComment.lotOccupancyComment ?? '') +

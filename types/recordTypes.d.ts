@@ -74,6 +74,7 @@ export interface LotComment extends Record {
     lotCommentDateString?: string;
     lotCommentTime?: number;
     lotCommentTimeString?: string;
+    lotCommentTimePeriodString?: string;
     lotComment?: string;
 }
 export interface LotField extends LotTypeField, Record {
@@ -181,6 +182,7 @@ export interface LotOccupancyComment extends Record {
     lotOccupancyCommentDateString?: string;
     lotOccupancyCommentTime?: number;
     lotOccupancyCommentTimeString?: string;
+    lotOccupancyCommentTimePeriodString?: string;
     lotOccupancyComment?: string;
 }
 export interface LotOccupancyField extends OccupancyTypeField, Record {
@@ -227,6 +229,7 @@ export interface WorkOrderComment extends Record {
     workOrderCommentDateString?: string;
     workOrderCommentTime?: number;
     workOrderCommentTimeString?: string;
+    workOrderCommentTimePeriodString?: string;
     workOrderComment?: string;
 }
 export interface WorkOrderMilestone extends Record, WorkOrder {

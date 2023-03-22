@@ -10,7 +10,7 @@ export async function handler(
 ): Promise<void> {
   await addWorkOrderComment(request.body, request.session)
 
-  const workOrderComments = getWorkOrderComments(request.body.workOrderId)
+  const workOrderComments = await getWorkOrderComments(request.body.workOrderId)
 
   response.json({
     success: true,

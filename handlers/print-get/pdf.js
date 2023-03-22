@@ -1,7 +1,7 @@
 import path from 'node:path';
 import * as ejs from 'ejs';
 import * as configFunctions from '../../helpers/functions.config.js';
-import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import * as lotOccupancyFunctions from '../../helpers/functions.lotOccupancy.js';
 import { getReportData, getPdfPrintConfig } from '../../helpers/functions.print.js';
 import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer';

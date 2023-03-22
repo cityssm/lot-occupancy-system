@@ -3,7 +3,7 @@
 import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import { dateToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import { dateToInteger } from '@cityssm/utils-datetime'
 
 import * as configFunctions from '../functions.config.js'
 

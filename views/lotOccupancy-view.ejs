@@ -226,25 +226,25 @@
       <h2 class="panel-heading">Comments</h2>
       <div class="panel-block is-block">
           <table class="table is-fullwidth is-striped is-hoverable">
-              <thead>
-                  <tr>
-                      <th>Commentor</th>
-                      <th>Comment Date</th>
-                      <th>Comment</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <% for (const lotOccupancyComment of lotOccupancy.lotOccupancyComments) { %>
-                      <tr>
-                          <td><%= lotOccupancyComment.recordCreate_userName %></td>
-                          <td>
-                              <%= lotOccupancyComment.lotOccupancyCommentDateString %>
-                              <%= (lotOccupancyComment.lotOccupancyCommentTime === 0 ? "" : lotOccupancyComment.lotOccupancyCommentTimeString) %>
-                          </td>
-                          <td><%= lotOccupancyComment.lotOccupancyComment %></td>
-                      </tr>
-                  <% } %>
-              </tbody>
+            <thead>
+              <tr>
+                <th>Commentor</th>
+                <th>Comment Date</th>
+                <th>Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (const lotOccupancyComment of lotOccupancy.lotOccupancyComments) { %>
+                <tr>
+                  <td><%= lotOccupancyComment.recordCreate_userName %></td>
+                  <td>
+                    <%= lotOccupancyComment.lotOccupancyCommentDateString %>
+                    <%= (lotOccupancyComment.lotOccupancyCommentTime === 0 ? "" : lotOccupancyComment.lotOccupancyCommentTimePeriodString) %>
+                  </td>
+                  <td><%= lotOccupancyComment.lotOccupancyComment %></td>
+                </tr>
+              <% } %>
+            </tbody>
           </table>
       </div>
     </div>
@@ -252,8 +252,8 @@
 
 <% if (lotOccupancy.workOrders.length > 0) { %>
     <%
-        const workOrderOpenDateAlias = configFunctions.getProperty("aliases.workOrderOpenDate");
-        const workOrderCloseDateAlias = configFunctions.getProperty("aliases.workOrderCloseDate");
+      const workOrderOpenDateAlias = configFunctions.getProperty("aliases.workOrderOpenDate");
+      const workOrderCloseDateAlias = configFunctions.getProperty("aliases.workOrderCloseDate");
     %>
     <div class="panel">
         <h2 class="panel-heading">Work Orders</h2>
@@ -267,33 +267,33 @@
                 </tr>
               </thead>
               <tbody>
-                  <% for (const workOrder of lotOccupancy.workOrders) { %>
-                      <tr>
-                          <td>
-                              <a class="has-text-weight-bold" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
-                                  <%= workOrder.workOrderNumber %>
-                              </a>
-                          </td>
-                          <td>
-                              <%= workOrder.workOrderType %><br />
-                              <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
-                          </td>
-                          <td class="is-nowrap">
-                              <span class="has-tooltip-left" data-tooltip="<%= workOrderOpenDateAlias %>">
-                                  <i class="fas fa-fw fa-play" aria-label="<%= workOrderOpenDateAlias %>"></i>
-                                  <%= workOrder.workOrderOpenDateString %>
-                              </span><br />
-                              <span class="has-tooltip-left" data-tooltip="<%= workOrderCloseDateAlias %>">
-                                  <i class="fas fa-fw fa-stop" aria-label="<%= workOrderCloseDateAlias %>"></i>
-                                  <% if (workOrder.workOrderCloseDate) { %>
-                                      <%= workOrder.workOrderCloseDateString %>
-                                  <% } else { %>
-                                      <span class="has-text-grey">(No <%= workOrderCloseDateAlias %>)</span>
-                                  <% } %>
-                              </span>
-                          </td>
-                      </tr>
-                  <% } %>
+                <% for (const workOrder of lotOccupancy.workOrders) { %>
+                  <tr>
+                      <td>
+                          <a class="has-text-weight-bold" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
+                              <%= workOrder.workOrderNumber %>
+                          </a>
+                      </td>
+                      <td>
+                          <%= workOrder.workOrderType %><br />
+                          <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
+                      </td>
+                      <td class="is-nowrap">
+                          <span class="has-tooltip-left" data-tooltip="<%= workOrderOpenDateAlias %>">
+                              <i class="fas fa-fw fa-play" aria-label="<%= workOrderOpenDateAlias %>"></i>
+                              <%= workOrder.workOrderOpenDateString %>
+                          </span><br />
+                          <span class="has-tooltip-left" data-tooltip="<%= workOrderCloseDateAlias %>">
+                              <i class="fas fa-fw fa-stop" aria-label="<%= workOrderCloseDateAlias %>"></i>
+                              <% if (workOrder.workOrderCloseDate) { %>
+                                  <%= workOrder.workOrderCloseDateString %>
+                              <% } else { %>
+                                  <span class="has-text-grey">(No <%= workOrderCloseDateAlias %>)</span>
+                              <% } %>
+                          </span>
+                      </td>
+                  </tr>
+                <% } %>
               </tbody>
           </table>
         </div>

@@ -23,7 +23,7 @@ import { getWorkOrder, getWorkOrderByWorkOrderNumber } from '../helpers/lotOccup
 import { reopenWorkOrder } from '../helpers/lotOccupancyDB/reopenWorkOrder.js';
 import { addWorkOrderMilestone } from '../helpers/lotOccupancyDB/addWorkOrderMilestone.js';
 import { closeWorkOrder } from '../helpers/lotOccupancyDB/closeWorkOrder.js';
-import { dateIntegerToString, dateToString } from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime';
 const user = {
     user: {
         userName: 'import.unix',

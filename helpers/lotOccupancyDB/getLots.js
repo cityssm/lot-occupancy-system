@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-import { dateToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import { dateToInteger } from '@cityssm/utils-datetime';
 import * as configFunctions from '../functions.config.js';
 import { getLotNameWhereClause } from '../functions.sqlFilters.js';
 function buildWhereClause(filters) {

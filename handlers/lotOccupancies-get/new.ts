@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import {
   dateToInteger,
   dateToString
-} from '@cityssm/expressjs-server-js/dateTimeFns.js'
+} from '@cityssm/utils-datetime'
 
 import {
   getLotOccupantTypes,

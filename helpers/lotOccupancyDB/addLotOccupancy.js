@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js';
 import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js';
 export async function addLotOccupancy(lotOccupancyForm, requestSession, connectedDatabase) {

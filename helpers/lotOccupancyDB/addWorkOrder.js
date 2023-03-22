@@ -1,7 +1,7 @@
 import { acquireConnection } from './pool.js';
 import { getNextWorkOrderNumber } from './getNextWorkOrderNumber.js';
 import { addWorkOrderLotOccupancy } from './addWorkOrderLotOccupancy.js';
-import { dateStringToInteger, dateToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
 export async function addWorkOrder(workOrderForm, requestSession) {
     const database = await acquireConnection();
     const rightNow = new Date();

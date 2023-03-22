@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { dateToString } from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import { dateToString } from '@cityssm/utils-datetime'
 
 import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
 import { getWorkOrders } from '../../helpers/lotOccupancyDB/getWorkOrders.js'

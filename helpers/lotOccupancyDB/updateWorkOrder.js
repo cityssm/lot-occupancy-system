@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-import { dateStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import { dateStringToInteger } from '@cityssm/utils-datetime';
 export async function updateWorkOrder(workOrderForm, requestSession) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();

@@ -20,13 +20,13 @@
                         <th>Comment</th>
                     </tr>
                 </thead>
-            <tbody>
-                <% for (const comment of workOrder.workOrderComments) { %>
-                    <tr>
-                        <td><%= comment.recordUpdate_userName %></td>
-                        <td><%= comment.workOrderCommentDateString %> <%= comment.workOrderCommentTimeString %></td>
-                        <td><%= comment.workOrderComment %></td>
-                    </tr>
+                <tbody>
+                    <% for (const comment of workOrder.workOrderComments) { %>
+                        <tr>
+                            <td><%= comment.recordUpdate_userName %></td>
+                            <td><%= comment.workOrderCommentDateString %> <%= comment.workOrderCommentTimePeriodString %></td>
+                            <td><%= comment.workOrderComment %></td>
+                        </tr>
                     <% } %>
                 </tbody>
             </table>

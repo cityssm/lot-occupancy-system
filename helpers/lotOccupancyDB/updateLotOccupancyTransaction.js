@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-import { dateStringToInteger, timeStringToInteger } from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 export async function updateLotOccupancyTransaction(lotOccupancyTransactionForm, requestSession) {
     const database = await acquireConnection();
     const result = database

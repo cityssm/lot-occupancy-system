@@ -299,7 +299,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     lotComment.lotCommentDateString +
                     (lotComment.lotCommentTime === 0
                         ? ''
-                        : ' ' + lotComment.lotCommentTimeString) +
+                        : ' ' + lotComment.lotCommentTimePeriodString) +
                     '</td>' +
                     '<td>' +
                     cityssm.escapeHTML((_b = lotComment.lotComment) !== null && _b !== void 0 ? _b : '') +

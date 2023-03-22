@@ -3,7 +3,7 @@ import { acquireConnection } from './pool.js'
 import {
   dateStringToInteger,
   timeStringToInteger
-} from '@cityssm/expressjs-server-js/dateTimeFns.js'
+} from '@cityssm/utils-datetime'
 
 import type * as recordTypes from '../../types/recordTypes'
 

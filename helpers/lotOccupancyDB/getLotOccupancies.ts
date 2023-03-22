@@ -6,7 +6,7 @@ import type { PoolConnection } from 'better-sqlite-pool'
 import {
   dateIntegerToString,
   dateStringToInteger
-} from '@cityssm/expressjs-server-js/dateTimeFns.js'
+} from '@cityssm/utils-datetime'
 
 import * as configFunctions from '../functions.config.js'
 

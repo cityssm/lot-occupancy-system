@@ -1,7 +1,7 @@
 import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import { dateIntegerToString } from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import { dateIntegerToString } from '@cityssm/utils-datetime'
 
 import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js'
 import { getLotOccupancyComments } from './getLotOccupancyComments.js'

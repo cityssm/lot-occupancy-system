@@ -1,12 +1,12 @@
 import {
   dateToInteger,
   dateToString
-} from '@cityssm/expressjs-server-js/dateTimeFns.js'
+} from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js'
 
-import * as recordTypes from '../../types/recordTypes'
+import type * as recordTypes from '../../types/recordTypes'
 
 export async function handler(
   request: Request,

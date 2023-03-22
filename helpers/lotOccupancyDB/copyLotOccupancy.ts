@@ -4,7 +4,7 @@ import { getLotOccupancy } from './getLotOccupancy.js'
 import { addLotOccupancy } from './addLotOccupancy.js'
 import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js'
 
-import { dateToString } from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import { dateToString } from '@cityssm/utils-datetime'
 
 import type * as recordTypes from '../../types/recordTypes'
 
