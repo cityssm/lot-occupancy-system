@@ -36,7 +36,7 @@
     "@cityssm/bulma-js": "^0.4.0",
     "@cityssm/bulma-webapp-js": "^1.5.0",
     "@cityssm/date-diff": "^2.2.3",
-    "@cityssm/dynamics-gp": "^0.3.0",
+    "@cityssm/dynamics-gp": "^0.4.0",
     "@cityssm/expressjs-server-js": "^2.3.3",
     "@cityssm/ntfy-publish": "^0.2.1",
     "@cityssm/pdf-puppeteer": "^2.0.0-beta.1",
@@ -63,7 +63,7 @@
     "leaflet": "^1.9.3",
     "node-cache": "^5.1.2",
     "object.hasown": "^1.1.2",
-    "papaparse": "^5.4.0",
+    "papaparse": "^5.4.1",
     "randomcolor": "^0.6.2",
     "session-file-store": "^1.5.0",
     "set-interval-async": "^3.0.3",
@@ -120,7 +120,7 @@
     "gulp-include": "^2.4.1",
     "gulp-minify": "^3.1.0",
     "gulp-sass": "^5.1.0",
-    "nodemon": "^2.0.21",
+    "nodemon": "^2.0.22",
     "sass": "^1.59.3"
   }
 }
