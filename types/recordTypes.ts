@@ -319,6 +319,7 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
 
   workOrderMilestoneTime?: number
   workOrderMilestoneTimeString?: string
+  workOrderMilestoneTimePeriodString?: string
 
   workOrderMilestoneDescription?: string
 
@@ -327,6 +328,7 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
 
   workOrderMilestoneCompletionTime?: number
   workOrderMilestoneCompletionTimeString?: string
+  workOrderMilestoneCompletionTimePeriodString?: string
 
   workOrderRecordUpdate_timeMillis?: number
 }

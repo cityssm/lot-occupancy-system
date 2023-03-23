@@ -521,7 +521,7 @@ declare const bulmaJS: BulmaJS
             ? '<span class="has-text-grey">(No Set Date)</span>'
             : milestone.workOrderMilestoneDateString) +
           (milestone.workOrderMilestoneTime
-            ? ' ' + milestone.workOrderMilestoneTimeString!
+            ? ' ' + milestone.workOrderMilestoneTimePeriodString!
             : '') +
           '<br />' +
           '<span class="is-size-7">' +

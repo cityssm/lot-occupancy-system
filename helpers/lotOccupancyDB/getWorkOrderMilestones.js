@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToString } from '@cityssm/utils-datetime';
+import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToString, timeIntegerToPeriodString } from '@cityssm/utils-datetime';
 import * as configFunctions from '../functions.config.js';
 import { getLots } from './getLots.js';
 import { getLotOccupancies } from './getLotOccupancies.js';
@@ -67,6 +67,7 @@ export async function getWorkOrderMilestones(filters, options, connectedDatabase
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
+    database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
     let orderByClause = '';
     switch (options.orderBy) {
@@ -88,10 +89,14 @@ export async function getWorkOrderMilestones(filters, options, connectedDatabase
     const sql = 'select m.workOrderMilestoneId,' +
         ' m.workOrderMilestoneTypeId, t.workOrderMilestoneType,' +
         ' m.workOrderMilestoneDate, userFn_dateIntegerToString(m.workOrderMilestoneDate) as workOrderMilestoneDateString,' +
-        ' m.workOrderMilestoneTime, userFn_timeIntegerToString(m.workOrderMilestoneTime) as workOrderMilestoneTimeString,' +
+        ' m.workOrderMilestoneTime,' +
+        ' userFn_timeIntegerToString(m.workOrderMilestoneTime) as workOrderMilestoneTimeString,' +
+        ' userFn_timeIntegerToPeriodString(m.workOrderMilestoneTime) as workOrderMilestoneTimePeriodString,' +
         ' m.workOrderMilestoneDescription,' +
         ' m.workOrderMilestoneCompletionDate, userFn_dateIntegerToString(m.workOrderMilestoneCompletionDate) as workOrderMilestoneCompletionDateString,' +
-        ' m.workOrderMilestoneCompletionTime, userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,' +
+        ' m.workOrderMilestoneCompletionTime,' +
+        ' userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,' +
+        ' userFn_timeIntegerToPeriodString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimePeriodString,' +
         (options.includeWorkOrders ?? false
             ? ' m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,' +
                 ' w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,' +

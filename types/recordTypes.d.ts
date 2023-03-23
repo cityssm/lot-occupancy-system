@@ -240,11 +240,13 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
     workOrderMilestoneDateString?: string;
     workOrderMilestoneTime?: number;
     workOrderMilestoneTimeString?: string;
+    workOrderMilestoneTimePeriodString?: string;
     workOrderMilestoneDescription?: string;
     workOrderMilestoneCompletionDate?: number;
     workOrderMilestoneCompletionDateString?: string;
     workOrderMilestoneCompletionTime?: number;
     workOrderMilestoneCompletionTimeString?: string;
+    workOrderMilestoneCompletionTimePeriodString?: string;
     workOrderRecordUpdate_timeMillis?: number;
 }
 export interface WorkOrder extends Record {

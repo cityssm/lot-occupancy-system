@@ -340,19 +340,19 @@
                   <% } %>
               </div>
               <div class="column">
-                  <% if (milestone.workOrderMilestoneTypeId) { %>
-                      <strong><%= milestone.workOrderMilestoneType %></strong><br />
-                  <% } %>
-                  <% if (milestone.workOrderMilestoneDate === 0) { %>
-                    <span class="has-text-grey">(No Set Date)</span>
-                  <% } else { %>
-                    <%= milestone.workOrderMilestoneDateString %>
-                  <% } %>
-                  <% if (milestone.workOrderMilestoneTime !== 0) { %>
-                      <%= milestone.workOrderMilestoneTimeString %>
-                  <% } %>
-                  <br />
-                  <span class="is-size-7"><%= milestone.workOrderMilestoneDescription %></span>
+                <% if (milestone.workOrderMilestoneTypeId) { %>
+                    <strong><%= milestone.workOrderMilestoneType %></strong><br />
+                <% } %>
+                <% if (milestone.workOrderMilestoneDate === 0) { %>
+                  <span class="has-text-grey">(No Set Date)</span>
+                <% } else { %>
+                  <%= milestone.workOrderMilestoneDateString %>
+                <% } %>
+                <% if (milestone.workOrderMilestoneTime !== 0) { %>
+                  <%= milestone.workOrderMilestoneTimePeriodString %>
+                <% } %>
+                <br />
+                <span class="is-size-7"><%= milestone.workOrderMilestoneDescription %></span>
               </div>
             </div>
           </div>

@@ -5,7 +5,8 @@ import {
   dateIntegerToString,
   dateStringToInteger,
   dateToInteger,
-  timeIntegerToString
+  timeIntegerToString,
+  timeIntegerToPeriodString
 } from '@cityssm/utils-datetime'
 
 import * as configFunctions from '../functions.config.js'
@@ -133,6 +134,7 @@ export async function getWorkOrderMilestones(
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
+  database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString)
 
   // Filters
   const { sqlWhereClause, sqlParameters } = buildWhereClause(filters)
@@ -163,10 +165,14 @@ export async function getWorkOrderMilestones(
     'select m.workOrderMilestoneId,' +
     ' m.workOrderMilestoneTypeId, t.workOrderMilestoneType,' +
     ' m.workOrderMilestoneDate, userFn_dateIntegerToString(m.workOrderMilestoneDate) as workOrderMilestoneDateString,' +
-    ' m.workOrderMilestoneTime, userFn_timeIntegerToString(m.workOrderMilestoneTime) as workOrderMilestoneTimeString,' +
+    ' m.workOrderMilestoneTime,' +
+    ' userFn_timeIntegerToString(m.workOrderMilestoneTime) as workOrderMilestoneTimeString,' +
+    ' userFn_timeIntegerToPeriodString(m.workOrderMilestoneTime) as workOrderMilestoneTimePeriodString,' +
     ' m.workOrderMilestoneDescription,' +
     ' m.workOrderMilestoneCompletionDate, userFn_dateIntegerToString(m.workOrderMilestoneCompletionDate) as workOrderMilestoneCompletionDateString,' +
-    ' m.workOrderMilestoneCompletionTime, userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,' +
+    ' m.workOrderMilestoneCompletionTime,' +
+    ' userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,' +
+    ' userFn_timeIntegerToPeriodString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimePeriodString,' +
     (options.includeWorkOrders ?? false
       ? ' m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,' +
         ' w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,' +

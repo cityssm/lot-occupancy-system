@@ -119,7 +119,7 @@ declare const cityssm: cityssmGlobal
         ('<div class="column">' +
           (milestone.workOrderMilestoneTime === 0
             ? ''
-            : milestone.workOrderMilestoneTimeString + '<br />') +
+            : milestone.workOrderMilestoneTimePeriodString! + '<br />') +
           (milestone.workOrderMilestoneTypeId
             ? '<strong>' +
               cityssm.escapeHTML(milestone.workOrderMilestoneType!) +

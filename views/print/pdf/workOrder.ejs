@@ -46,22 +46,22 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <% for (const occupancy of workOrder.workOrderLotOccupancies) { %>
-                        <tr>
-                            <td><%= occupancy.occupancyType %></td>
-                            <td><%= occupancy.lotName %></td>
-                            <td><%= occupancy.occupancyStartDateString %></td>
-                            <td><%= occupancy.occupancyStartEndString %></td>
-                            <td>
-                                <% for (const occupant of occupancy.lotOccupancyOccupants) { %>
-                                    <%= occupant.lotOccupantType %>:
-                                    <%= occupant.occupantName %>
-                                    <%= occupant.occupantFamilyName %>
-                                    <br />
-                                <% } %>
-                            </td>
-                        </tr>
-                    <% } %>
+                  <% for (const occupancy of workOrder.workOrderLotOccupancies) { %>
+                    <tr>
+                      <td><%= occupancy.occupancyType %></td>
+                      <td><%= occupancy.lotName %></td>
+                      <td><%= occupancy.occupancyStartDateString %></td>
+                      <td><%= occupancy.occupancyStartEndString %></td>
+                      <td>
+                        <% for (const occupant of occupancy.lotOccupancyOccupants) { %>
+                          <%= occupant.lotOccupantType %>:
+                          <%= occupant.occupantName %>
+                          <%= occupant.occupantFamilyName %>
+                          <br />
+                        <% } %>
+                      </td>
+                    </tr>
+                  <% } %>
                 </tbody>
             </table>
         <% } %>
@@ -71,11 +71,11 @@
 
             <table class="data-table">
                 <thead>
-                    <tr>
-                        <th class="is-width-1"></th>
-                        <th>Milestone Description</th>
-                        <th>Due Date</th>
-                    </tr>
+                  <tr>
+                    <th class="is-width-1"></th>
+                    <th>Milestone Description</th>
+                    <th>Due Date</th>
+                  </tr>
                 </thead>
                 <tbody>
                     <% for (const milestone of workOrder.workOrderMilestones) { %>
@@ -100,7 +100,7 @@
                                   <%= milestone.workOrderMilestoneDateString %>
                                 <% } %>
                                 <% if (milestone.workOrderMilestoneTime) { %>
-                                    <%= milestone.workOrderMilestoneTimeString %>
+                                    <%= milestone.workOrderMilestoneTimePeriodString %>
                                 <% } %>
                             </td>
                         </tr>
@@ -116,8 +116,8 @@
                 const recordCreateDate = new Date(workOrder.recordCreate_timeMillis);
                 const currentDate = new Date();
             %>
-            Work order created <%= dateTimeFunctions.dateToString(recordCreateDate) %> at <%= dateTimeFunctions.dateToTimeString(recordCreateDate) %>.
-            Printed <%= dateTimeFunctions.dateToString(currentDate) %> at <%= dateTimeFunctions.dateToTimeString(currentDate) %>.<br />
+            Work order created <%= dateTimeFunctions.dateToString(recordCreateDate) %> at <%= dateTimeFunctions.dateToTimePeriodString(recordCreateDate) %>.
+            Printed <%= dateTimeFunctions.dateToString(currentDate) %> at <%= dateTimeFunctions.dateToTimePeriodString(currentDate) %>.<br />
             workOrderId = <%= workOrder.workOrderId %>            
         </p>
     </body>
