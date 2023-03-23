@@ -1,3 +1,4 @@
+import '../helpers/polyfills.js';
 import cluster from 'node:cluster';
 import os from 'node:os';
 import { dirname } from 'node:path';
@@ -14,12 +15,7 @@ debug(`Launching ${processCount} processes`);
 const clusterSettings = {
     exec: directoryName + '/wwwProcess.js'
 };
-if (cluster.setupPrimary) {
-    cluster.setupPrimary(clusterSettings);
-}
-else {
-    cluster.setupMaster(clusterSettings);
-}
+cluster.setupPrimary(clusterSettings);
 for (let index = 0; index < processCount; index += 1) {
     cluster.fork();
 }
