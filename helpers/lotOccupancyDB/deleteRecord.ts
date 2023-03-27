@@ -24,7 +24,7 @@ type RecordTable =
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
 
-const recordIdColumns: Map<RecordTable, string> = new Map()
+const recordIdColumns = new Map<RecordTable, string>()
 recordIdColumns.set('FeeCategories', 'feeCategoryId')
 recordIdColumns.set('Fees', 'feeId')
 recordIdColumns.set('Lots', 'lotId')
@@ -44,7 +44,7 @@ recordIdColumns.set('WorkOrderMilestones', 'workOrderMilestoneId')
 recordIdColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId')
 recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId')
 
-const relatedTables: Map<RecordTable, string[]> = new Map()
+const relatedTables = new Map<RecordTable, string[]>()
 relatedTables.set('FeeCategories', ['Fees'])
 relatedTables.set('Lots', ['LotFields', 'LotComments'])
 relatedTables.set('LotOccupancies', [

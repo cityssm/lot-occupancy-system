@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
+
 import cluster from 'node:cluster'
 
 import NodeCache from 'node-cache'

@@ -50,7 +50,7 @@ cluster.on('message', (worker, message: WorkerMessage) => {
       continue
     }
 
-    debug('Relaying message to workers')
+    debug(`Relaying message to worker: ${pid}`)
     worker.send(message)
   }
 })

@@ -1,7 +1,6 @@
 import { acquireConnection } from './pool.js';
 import { addOrUpdateLotField } from './addOrUpdateLotField.js';
 import { deleteLotField } from './deleteLotField.js';
-import { clearNextPreviousLotIdCache } from '../functions.lots.js';
 export async function updateLot(lotForm, requestSession) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
@@ -33,9 +32,6 @@ export async function updateLot(lotForm, requestSession) {
         }
     }
     database.release();
-    clearNextPreviousLotIdCache(typeof lotForm.lotId === 'number'
-        ? lotForm.lotId
-        : Number.parseInt(lotForm.lotId, 10));
     return result.changes > 0;
 }
 export async function updateLotStatus(lotId, lotStatusId, requestSession) {

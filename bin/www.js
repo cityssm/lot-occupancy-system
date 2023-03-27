@@ -29,7 +29,7 @@ cluster.on('message', (worker, message) => {
         if (worker === undefined || pid === message.pid) {
             continue;
         }
-        debug('Relaying message to workers');
+        debug(`Relaying message to worker: ${pid}`);
         worker.send(message);
     }
 });

@@ -7,7 +7,7 @@ export async function handler(request, response) {
         lotId
     });
     response.on('finish', () => {
-        clearNextPreviousLotIdCache();
+        clearNextPreviousLotIdCache(-1);
     });
 }
 export default handler;
