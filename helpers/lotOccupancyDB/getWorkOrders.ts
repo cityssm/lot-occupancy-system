@@ -191,15 +191,18 @@ export async function getWorkOrders(
       }
 
       if (options.includeMilestones ?? false) {
-        workOrder.workOrderMilestones = await getWorkOrderMilestones(
-          {
-            workOrderId: workOrder.workOrderId
-          },
-          {
-            orderBy: 'date'
-          },
-          database
-        )
+        workOrder.workOrderMilestones =
+          workOrder.workOrderMilestoneCount === 0
+            ? []
+            : await getWorkOrderMilestones(
+                {
+                  workOrderId: workOrder.workOrderId
+                },
+                {
+                  orderBy: 'date'
+                },
+                database
+              )
       }
     }
   }
