@@ -8,8 +8,8 @@
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=production node ./bin/www",
-    "dev:test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:*,dynamics-gp:* TEST_DATABASES=true nodemon ./bin/www.js",
+    "start": "cross-env NODE_ENV=production node ./bin/www.js",
+    "dev:test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:*,dynamics-gp:* TEST_DATABASES=true nodemon --inspect ./bin/www.js",
     "dev:test:process": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true nodemon ./bin/wwwProcess.js",
     "dev:live": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* nodemon ./bin/www.js",
     "cy:open": "cypress open --config-file cypress.config.js",

@@ -7,20 +7,37 @@ import * as configFunctions from '../helpers/functions.config.js';
 import exitHook from 'exit-hook';
 import ntfyPublish from '@cityssm/ntfy-publish';
 import Debug from 'debug';
-const debug = Debug('lot-occupancy-system:www');
+const debug = Debug(`lot-occupancy-system:www:${process.pid}`);
 const directoryName = dirname(fileURLToPath(import.meta.url));
 const processCount = Math.min(configFunctions.getProperty('application.maximumProcesses'), os.cpus().length);
-debug(`Primary pid: ${process.pid}`);
+process.title =
+    configFunctions.getProperty('application.applicationName') + ' (Primary)';
+debug(`Primary pid:   ${process.pid}`);
+debug(`Primary title: ${process.title}`);
 debug(`Launching ${processCount} processes`);
 const clusterSettings = {
     exec: directoryName + '/wwwProcess.js'
 };
 cluster.setupPrimary(clusterSettings);
+const activeWorkers = new Map();
 for (let index = 0; index < processCount; index += 1) {
-    cluster.fork();
+    const worker = cluster.fork();
+    activeWorkers.set(worker.process.pid, worker);
 }
+cluster.on('message', (worker, message) => {
+    if (message?.messageType === 'clearCache') {
+        for (const [pid, worker] of activeWorkers.entries()) {
+            if (worker === undefined || pid === message.pid) {
+                continue;
+            }
+            debug('Relaying message to workers');
+            worker.send(message);
+        }
+    }
+});
 cluster.on('exit', (worker, code, signal) => {
     debug(`Worker ${worker.process.pid.toString()} has been killed`);
+    activeWorkers.delete(worker.process.pid);
     debug('Starting another worker');
     cluster.fork();
 });

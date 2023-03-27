@@ -1,3 +1,4 @@
+import cluster from 'node:cluster';
 import * as configFunctions from './functions.config.js';
 import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from './lotOccupancyDB/getLotOccupantTypes.js';
 import { getLotStatuses as getLotStatusesFromDatabase } from './lotOccupancyDB/getLotStatuses.js';
@@ -6,9 +7,8 @@ import { getOccupancyTypes as getOccupancyTypesFromDatabase } from './lotOccupan
 import { getOccupancyTypeFields as getOccupancyTypeFieldsFromDatabase } from './lotOccupancyDB/getOccupancyTypeFields.js';
 import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from './lotOccupancyDB/getWorkOrderTypes.js';
 import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from './lotOccupancyDB/getWorkOrderMilestoneTypes.js';
-import { getConfigTableMaxTimeMillis } from './lotOccupancyDB/getConfigTableMaxTimeMillis.js';
-import { setIntervalAsync, clearIntervalAsync } from 'set-interval-async';
-import { asyncExitHook } from 'exit-hook';
+import Debug from 'debug';
+const debug = Debug(`lot-occupancy-system:functions.cache:${process.pid}`);
 let lotOccupantTypes;
 export async function getLotOccupantTypes() {
     if (lotOccupantTypes === undefined) {
@@ -163,7 +163,7 @@ export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrde
 function clearWorkOrderMilestoneTypesCache() {
     workOrderMilestoneTypes = undefined;
 }
-export function clearCacheByTableName(tableName) {
+export function clearCacheByTableName(tableName, relayMessage = true) {
     switch (tableName) {
         case 'LotOccupantTypes': {
             clearLotOccupantTypesCache();
@@ -193,26 +193,23 @@ export function clearCacheByTableName(tableName) {
             break;
         }
     }
-}
-function clearAllCaches() {
-    clearLotOccupantTypesCache();
-    clearLotStatusesCache();
-    clearLotTypesCache();
-    clearOccupancyTypesCache();
-    clearWorkOrderMilestoneTypesCache();
-    clearWorkOrderTypesCache();
-}
-let configTimeMillis = 0;
-async function checkCacheIntegrity() {
-    const timeMillis = await getConfigTableMaxTimeMillis();
-    if (timeMillis > configTimeMillis) {
-        configTimeMillis = timeMillis;
-        clearAllCaches();
+    try {
+        if (relayMessage && cluster.isWorker) {
+            const workerMessage = {
+                messageType: 'clearCache',
+                tableName,
+                timeMillis: Date.now(),
+                pid: process.pid
+            };
+            debug(`Sending clear cache from worker: ${tableName}`);
+            process.send(workerMessage);
+        }
     }
+    catch { }
 }
-const cacheTimer = setIntervalAsync(checkCacheIntegrity, 10 * 60 * 1000);
-asyncExitHook(async () => {
-    await clearIntervalAsync(cacheTimer);
-}, {
-    minimumWait: 250
+process.on('message', (message) => {
+    if (message.messageType === 'clearCache' && message.pid !== process.pid) {
+        debug(`Clearing cache: ${message.tableName}`);
+        clearCacheByTableName(message.tableName, false);
+    }
 });

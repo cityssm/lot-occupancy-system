@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
 
+import cluster from 'node:cluster'
+
 import * as configFunctions from './functions.config.js'
 
 import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from './lotOccupancyDB/getLotOccupantTypes.js'
@@ -15,12 +17,11 @@ import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from './lotOccupan
 
 import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from './lotOccupancyDB/getWorkOrderMilestoneTypes.js'
 
-import { getConfigTableMaxTimeMillis } from './lotOccupancyDB/getConfigTableMaxTimeMillis.js'
-
-import { setIntervalAsync, clearIntervalAsync } from 'set-interval-async'
-import { asyncExitHook } from 'exit-hook'
-
 import type * as recordTypes from '../types/recordTypes'
+import type { WorkerMessage } from '../types/applicationTypes'
+
+import Debug from 'debug'
+const debug = Debug(`lot-occupancy-system:functions.cache:${process.pid}`)
 
 /*
  * Lot Occupant Types
@@ -301,7 +302,10 @@ function clearWorkOrderMilestoneTypesCache(): void {
   workOrderMilestoneTypes = undefined
 }
 
-export function clearCacheByTableName(tableName: string): void {
+export function clearCacheByTableName(
+  tableName: string,
+  relayMessage = true
+): void {
   switch (tableName) {
     case 'LotOccupantTypes': {
       clearLotOccupantTypesCache()
@@ -336,39 +340,26 @@ export function clearCacheByTableName(tableName: string): void {
       break
     }
   }
+
+  try {
+    if (relayMessage && cluster.isWorker) {
+      const workerMessage: WorkerMessage = {
+        messageType: 'clearCache',
+        tableName,
+        timeMillis: Date.now(),
+        pid: process.pid
+      }
+
+      debug(`Sending clear cache from worker: ${tableName}`)
+
+      process.send!(workerMessage)
+    }
+  } catch {}
 }
 
-function clearAllCaches(): void {
-  clearLotOccupantTypesCache()
-  clearLotStatusesCache()
-  clearLotTypesCache()
-  clearOccupancyTypesCache()
-  clearWorkOrderMilestoneTypesCache()
-  clearWorkOrderTypesCache()
-}
-
-/*
- * Config Time Millis
- */
-
-let configTimeMillis = 0
-
-async function checkCacheIntegrity(): Promise<void> {
-  const timeMillis = await getConfigTableMaxTimeMillis()
-
-  if (timeMillis > configTimeMillis) {
-    configTimeMillis = timeMillis
-    clearAllCaches()
+process.on('message', (message: WorkerMessage) => {
+  if (message.messageType === 'clearCache' && message.pid !== process.pid) {
+    debug(`Clearing cache: ${message.tableName}`)
+    clearCacheByTableName(message.tableName, false)
   }
-}
-
-const cacheTimer = setIntervalAsync(checkCacheIntegrity, 10 * 60 * 1000)
-
-asyncExitHook(
-  async () => {
-    await clearIntervalAsync(cacheTimer)
-  },
-  {
-    minimumWait: 250
-  }
-)
+})

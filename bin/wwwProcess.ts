@@ -58,6 +58,8 @@ function onListening(server: http.Server): void {
  * Initialize HTTP
  */
 
+process.title = configFunctions.getProperty('application.applicationName') + ' (Worker)'
+
 const httpPort = configFunctions.getProperty('application.httpPort')
 
 const httpServer = http.createServer(app)
