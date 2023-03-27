@@ -161,7 +161,7 @@ app.use(
   session({
     store: new FileStoreSession({
       path: './data/sessions',
-      logFn: debug('lot-occupancy-system:session'),
+      logFn: debug(`lot-occupancy-system:session:${process.pid}`),
       retries: 20
     }),
     name: sessionCookieName,
