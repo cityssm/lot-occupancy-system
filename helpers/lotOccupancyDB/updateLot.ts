@@ -5,6 +5,7 @@ import { addOrUpdateLotField } from './addOrUpdateLotField.js'
 import { deleteLotField } from './deleteLotField.js'
 
 import type * as recordTypes from '../../types/recordTypes'
+import { clearNextPreviousLotIdCache } from '../functions.lots.js'
 
 interface UpdateLotForm {
   lotId: string | number
@@ -86,6 +87,12 @@ export async function updateLot(
   }
 
   database.release()
+
+  clearNextPreviousLotIdCache(
+    typeof lotForm.lotId === 'number'
+      ? lotForm.lotId
+      : Number.parseInt(lotForm.lotId, 10)
+  )
 
   return result.changes > 0
 }

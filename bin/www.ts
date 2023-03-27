@@ -45,15 +45,13 @@ for (let index = 0; index < processCount; index += 1) {
 }
 
 cluster.on('message', (worker, message: WorkerMessage) => {
-  if (message?.messageType === 'clearCache') {
-    for (const [pid, worker] of activeWorkers.entries()) {
-      if (worker === undefined || pid === message.pid) {
-        continue
-      }
-
-      debug('Relaying message to workers')
-      worker.send(message)
+  for (const [pid, worker] of activeWorkers.entries()) {
+    if (worker === undefined || pid === message.pid) {
+      continue
     }
+
+    debug('Relaying message to workers')
+    worker.send(message)
   }
 })
 

@@ -1,15 +1,32 @@
+import cluster from 'node:cluster';
 import NodeCache from 'node-cache';
 import getPreviousLotIdFromDatabase from './lotOccupancyDB/getPreviousLotId.js';
 import getNextLotIdFromDatabase from './lotOccupancyDB/getNextLotId.js';
+import Debug from 'debug';
+const debug = Debug(`lot-occupancy-system:functions.lots:${process.pid}`);
 const cacheOptions = {
     stdTTL: 2 * 60,
     useClones: false
 };
 const previousLotIdCache = new NodeCache(cacheOptions);
 const nextLotIdCache = new NodeCache(cacheOptions);
-function cacheLotIds(lotId, nextLotId) {
+function cacheLotIds(lotId, nextLotId, relayMessage = true) {
     previousLotIdCache.set(nextLotId, lotId);
     nextLotIdCache.set(lotId, nextLotId);
+    try {
+        if (relayMessage && cluster.isWorker) {
+            const workerMessage = {
+                messageType: 'cacheLotIds',
+                lotId,
+                nextLotId,
+                timeMillis: Date.now(),
+                pid: process.pid
+            };
+            debug(`Sending cache lot ids from worker: (${lotId}, ${nextLotId})`);
+            process.send(workerMessage);
+        }
+    }
+    catch { }
 }
 export async function getNextLotId(lotId) {
     let nextLotId = nextLotIdCache.get(lotId);
@@ -31,8 +48,8 @@ export async function getPreviousLotId(lotId) {
     }
     return previousLotId;
 }
-export function clearNextPreviousLotIdCache(lotId) {
-    if (lotId === undefined) {
+export function clearNextPreviousLotIdCache(lotId, relayMessage = true) {
+    if (lotId === undefined || lotId === -1) {
         previousLotIdCache.flushAll();
         nextLotIdCache.flushAll();
         return;
@@ -47,4 +64,33 @@ export function clearNextPreviousLotIdCache(lotId) {
         previousLotIdCache.del(nextLotId);
         nextLotIdCache.del(lotId);
     }
+    try {
+        if (relayMessage && cluster.isWorker) {
+            const workerMessage = {
+                messageType: 'clearNextPreviousLotIdCache',
+                lotId,
+                timeMillis: Date.now(),
+                pid: process.pid
+            };
+            debug(`Sending clear next/previous lot cache from worker: ${lotId}`);
+            process.send(workerMessage);
+        }
+    }
+    catch { }
 }
+process.on('message', (message) => {
+    if (message.pid !== process.pid) {
+        switch (message.messageType) {
+            case 'cacheLotIds': {
+                debug(`Caching lot ids: (${message.lotId}, ${message.nextLotId})`);
+                cacheLotIds(message.lotId, message.nextLotId, false);
+                break;
+            }
+            case 'clearNextPreviousLotIdCache': {
+                debug(`Clearing next/previous lot cache: ${message.lotId}`);
+                clearNextPreviousLotIdCache(message.lotId, false);
+                break;
+            }
+        }
+    }
+});

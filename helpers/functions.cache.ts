@@ -18,7 +18,7 @@ import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from './lotOccupan
 import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from './lotOccupancyDB/getWorkOrderMilestoneTypes.js'
 
 import type * as recordTypes from '../types/recordTypes'
-import type { WorkerMessage } from '../types/applicationTypes'
+import type { ClearCacheWorkerMessage } from '../types/applicationTypes'
 
 import Debug from 'debug'
 const debug = Debug(`lot-occupancy-system:functions.cache:${process.pid}`)
@@ -343,7 +343,7 @@ export function clearCacheByTableName(
 
   try {
     if (relayMessage && cluster.isWorker) {
-      const workerMessage: WorkerMessage = {
+      const workerMessage: ClearCacheWorkerMessage = {
         messageType: 'clearCache',
         tableName,
         timeMillis: Date.now(),
@@ -357,7 +357,7 @@ export function clearCacheByTableName(
   } catch {}
 }
 
-process.on('message', (message: WorkerMessage) => {
+process.on('message', (message: ClearCacheWorkerMessage) => {
   if (message.messageType === 'clearCache' && message.pid !== process.pid) {
     debug(`Clearing cache: ${message.tableName}`)
     clearCacheByTableName(message.tableName, false)

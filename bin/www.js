@@ -25,14 +25,12 @@ for (let index = 0; index < processCount; index += 1) {
     activeWorkers.set(worker.process.pid, worker);
 }
 cluster.on('message', (worker, message) => {
-    if (message?.messageType === 'clearCache') {
-        for (const [pid, worker] of activeWorkers.entries()) {
-            if (worker === undefined || pid === message.pid) {
-                continue;
-            }
-            debug('Relaying message to workers');
-            worker.send(message);
+    for (const [pid, worker] of activeWorkers.entries()) {
+        if (worker === undefined || pid === message.pid) {
+            continue;
         }
+        debug('Relaying message to workers');
+        worker.send(message);
     }
 });
 cluster.on('exit', (worker, code, signal) => {
