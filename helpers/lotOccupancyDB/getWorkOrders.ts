@@ -99,6 +99,72 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
   }
 }
 
+async function addInclusions(
+  workOrder: recordTypes.WorkOrder,
+  options: GetWorkOrdersOptions,
+  database: PoolConnection
+): Promise<recordTypes.WorkOrder> {
+  if (options.includeComments ?? false) {
+    workOrder.workOrderComments = await getWorkOrderComments(
+      workOrder.workOrderId!,
+      database
+    )
+  }
+
+  if (options.includeLotsAndLotOccupancies ?? false) {
+    if (workOrder.workOrderLotCount === 0) {
+      workOrder.workOrderLots = []
+    } else {
+      const workOrderLotsResults = await getLots(
+        {
+          workOrderId: workOrder.workOrderId
+        },
+        {
+          limit: -1,
+          offset: 0,
+          includeLotOccupancyCount: false
+        },
+        database
+      )
+
+      workOrder.workOrderLots = workOrderLotsResults.lots
+    }
+
+    const lotOccupancies = await getLotOccupancies(
+      {
+        workOrderId: workOrder.workOrderId
+      },
+      {
+        limit: -1,
+        offset: 0,
+        includeOccupants: true,
+        includeFees: false,
+        includeTransactions: false
+      },
+      database
+    )
+
+    workOrder.workOrderLotOccupancies = lotOccupancies.lotOccupancies
+  }
+
+  if (options.includeMilestones ?? false) {
+    workOrder.workOrderMilestones =
+      workOrder.workOrderMilestoneCount === 0
+        ? []
+        : await getWorkOrderMilestones(
+            {
+              workOrderId: workOrder.workOrderId
+            },
+            {
+              orderBy: 'date'
+            },
+            database
+          )
+  }
+
+  return workOrder
+}
+
 export async function getWorkOrders(
   filters: GetWorkOrdersFilters,
   options: GetWorkOrdersOptions,
@@ -112,7 +178,9 @@ export async function getWorkOrders(
 
   const count: number = database
     .prepare(
-      'select count(*) as recordCount from WorkOrders w' + sqlWhereClause
+      `select count(*) as recordCount
+        from WorkOrders w
+        ${sqlWhereClause}`
     )
     .get(sqlParameters).recordCount
 
@@ -161,63 +229,7 @@ export async function getWorkOrders(
 
   if (hasInclusions) {
     for (const workOrder of workOrders) {
-      if (options.includeComments ?? false) {
-        workOrder.workOrderComments = await getWorkOrderComments(
-          workOrder.workOrderId!,
-          database
-        )
-      }
-
-      if (options.includeLotsAndLotOccupancies ?? false) {
-        if (workOrder.workOrderLotCount === 0) {
-          workOrder.workOrderLots = []
-        } else {
-          const workOrderLotsResults = await getLots(
-            {
-              workOrderId: workOrder.workOrderId
-            },
-            {
-              limit: -1,
-              offset: 0,
-              includeLotOccupancyCount: false
-            },
-            database
-          )
-
-          workOrder.workOrderLots = workOrderLotsResults.lots
-        }
-
-        const lotOccupancies = await getLotOccupancies(
-          {
-            workOrderId: workOrder.workOrderId
-          },
-          {
-            limit: -1,
-            offset: 0,
-            includeOccupants: true,
-            includeFees: false,
-            includeTransactions: false
-          },
-          database
-        )
-
-        workOrder.workOrderLotOccupancies = lotOccupancies.lotOccupancies
-      }
-
-      if (options.includeMilestones ?? false) {
-        workOrder.workOrderMilestones =
-          workOrder.workOrderMilestoneCount === 0
-            ? []
-            : await getWorkOrderMilestones(
-                {
-                  workOrderId: workOrder.workOrderId
-                },
-                {
-                  orderBy: 'date'
-                },
-                database
-              )
-      }
+      await addInclusions(workOrder, options, database)
     }
   }
 

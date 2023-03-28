@@ -55,12 +55,55 @@ function buildWhereClause(filters) {
         sqlParameters
     };
 }
+async function addInclusions(workOrder, options, database) {
+    if (options.includeComments ?? false) {
+        workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);
+    }
+    if (options.includeLotsAndLotOccupancies ?? false) {
+        if (workOrder.workOrderLotCount === 0) {
+            workOrder.workOrderLots = [];
+        }
+        else {
+            const workOrderLotsResults = await getLots({
+                workOrderId: workOrder.workOrderId
+            }, {
+                limit: -1,
+                offset: 0,
+                includeLotOccupancyCount: false
+            }, database);
+            workOrder.workOrderLots = workOrderLotsResults.lots;
+        }
+        const lotOccupancies = await getLotOccupancies({
+            workOrderId: workOrder.workOrderId
+        }, {
+            limit: -1,
+            offset: 0,
+            includeOccupants: true,
+            includeFees: false,
+            includeTransactions: false
+        }, database);
+        workOrder.workOrderLotOccupancies = lotOccupancies.lotOccupancies;
+    }
+    if (options.includeMilestones ?? false) {
+        workOrder.workOrderMilestones =
+            workOrder.workOrderMilestoneCount === 0
+                ? []
+                : await getWorkOrderMilestones({
+                    workOrderId: workOrder.workOrderId
+                }, {
+                    orderBy: 'date'
+                }, database);
+    }
+    return workOrder;
+}
 export async function getWorkOrders(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
     const count = database
-        .prepare('select count(*) as recordCount from WorkOrders w' + sqlWhereClause)
+        .prepare(`select count(*) as recordCount
+        from WorkOrders w
+        ${sqlWhereClause}`)
         .get(sqlParameters).recordCount;
     let workOrders = [];
     if (count > 0) {
@@ -99,44 +142,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
         (options.includeMilestones ?? false);
     if (hasInclusions) {
         for (const workOrder of workOrders) {
-            if (options.includeComments ?? false) {
-                workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);
-            }
-            if (options.includeLotsAndLotOccupancies ?? false) {
-                if (workOrder.workOrderLotCount === 0) {
-                    workOrder.workOrderLots = [];
-                }
-                else {
-                    const workOrderLotsResults = await getLots({
-                        workOrderId: workOrder.workOrderId
-                    }, {
-                        limit: -1,
-                        offset: 0,
-                        includeLotOccupancyCount: false
-                    }, database);
-                    workOrder.workOrderLots = workOrderLotsResults.lots;
-                }
-                const lotOccupancies = await getLotOccupancies({
-                    workOrderId: workOrder.workOrderId
-                }, {
-                    limit: -1,
-                    offset: 0,
-                    includeOccupants: true,
-                    includeFees: false,
-                    includeTransactions: false
-                }, database);
-                workOrder.workOrderLotOccupancies = lotOccupancies.lotOccupancies;
-            }
-            if (options.includeMilestones ?? false) {
-                workOrder.workOrderMilestones =
-                    workOrder.workOrderMilestoneCount === 0
-                        ? []
-                        : await getWorkOrderMilestones({
-                            workOrderId: workOrder.workOrderId
-                        }, {
-                            orderBy: 'date'
-                        }, database);
-            }
+            await addInclusions(workOrder, options, database);
         }
     }
     if (connectedDatabase === undefined) {
