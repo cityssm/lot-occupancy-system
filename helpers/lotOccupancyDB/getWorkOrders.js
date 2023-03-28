@@ -65,26 +65,33 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
     let workOrders = [];
     if (count > 0) {
         workOrders = database
-            .prepare('select w.workOrderId,' +
-            ' w.workOrderTypeId, t.workOrderType,' +
-            ' w.workOrderNumber, w.workOrderDescription,' +
-            ' w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,' +
-            ' w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,' +
-            ' ifnull(m.workOrderMilestoneCount, 0) as workOrderMilestoneCount,' +
-            ' ifnull(m.workOrderMilestoneCompletionCount, 0) as workOrderMilestoneCompletionCount' +
-            ' from WorkOrders w' +
-            ' left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId' +
-            (' left join (select workOrderId,' +
-                ' count(workOrderMilestoneId) as workOrderMilestoneCount,' +
-                ' sum(case when workOrderMilestoneCompletionDate is null then 0 else 1 end) as workOrderMilestoneCompletionCount' +
-                ' from WorkOrderMilestones' +
-                ' where recordDelete_timeMillis is null' +
-                ' group by workOrderId) m on w.workOrderId = m.workOrderId') +
-            sqlWhereClause +
-            ' order by w.workOrderOpenDate desc, w.workOrderNumber desc' +
-            (options.limit === -1
-                ? ''
-                : ` limit ${options.limit} offset ${options.offset}`))
+            .prepare(`select w.workOrderId,
+          w.workOrderTypeId, t.workOrderType,
+          w.workOrderNumber, w.workOrderDescription,
+          w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
+          w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
+          ifnull(m.workOrderMilestoneCount, 0) as workOrderMilestoneCount,
+          ifnull(m.workOrderMilestoneCompletionCount, 0) as workOrderMilestoneCompletionCount,
+          ifnull(l.workOrderLotCount, 0) as workOrderLotCount
+          from WorkOrders w
+          left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
+          left join (
+            select workOrderId,
+            count(workOrderMilestoneId) as workOrderMilestoneCount,
+            sum(case when workOrderMilestoneCompletionDate is null then 0 else 1 end) as workOrderMilestoneCompletionCount
+            from WorkOrderMilestones
+            where recordDelete_timeMillis is null
+            group by workOrderId) m on w.workOrderId = m.workOrderId
+          left join (
+            select workOrderId, count(lotId) as workOrderLotCount
+            from WorkOrderLots
+            where recordDelete_timeMillis is null
+            group by workOrderId) l on w.workOrderId = l.workOrderId
+          ${sqlWhereClause}
+          order by w.workOrderOpenDate desc, w.workOrderNumber desc
+          ${options.limit === -1
+            ? ''
+            : ` limit ${options.limit} offset ${options.offset}`}`)
             .all(sqlParameters);
     }
     const hasInclusions = (options.includeComments ?? false) ||
@@ -96,13 +103,18 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
                 workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);
             }
             if (options.includeLotsAndLotOccupancies ?? false) {
-                const workOrderLotsResults = await getLots({
-                    workOrderId: workOrder.workOrderId
-                }, {
-                    limit: -1,
-                    offset: 0
-                }, database);
-                workOrder.workOrderLots = workOrderLotsResults.lots;
+                if (workOrder.workOrderLotCount === 0) {
+                    workOrder.workOrderLots = [];
+                }
+                else {
+                    const workOrderLotsResults = await getLots({
+                        workOrderId: workOrder.workOrderId
+                    }, {
+                        limit: -1,
+                        offset: 0
+                    }, database);
+                    workOrder.workOrderLots = workOrderLotsResults.lots;
+                }
                 const lotOccupancies = await getLotOccupancies({
                     workOrderId: workOrder.workOrderId
                 }, {

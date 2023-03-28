@@ -353,7 +353,10 @@ export interface WorkOrder extends Record {
   workOrderMilestoneCompletionCount?: number
 
   workOrderComments?: WorkOrderComment[]
+
   workOrderLots?: Lot[]
+  workOrderLotCount?: number
+
   workOrderLotOccupancies?: LotOccupancy[]
 }
 
