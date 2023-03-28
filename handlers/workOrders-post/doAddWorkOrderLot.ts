@@ -21,7 +21,8 @@ export async function handler(
     },
     {
       limit: -1,
-      offset: 0
+      offset: 0,
+      includeLotOccupancyCount: false
     }
   )
 

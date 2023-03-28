@@ -12,6 +12,7 @@ interface GetLotsFilters {
 interface GetLotsOptions {
     limit: -1 | number;
     offset: number;
+    includeLotOccupancyCount?: boolean;
 }
 export declare function getLots(filters: GetLotsFilters, options: GetLotsOptions, connectedDatabase?: PoolConnection): Promise<{
     count: number;

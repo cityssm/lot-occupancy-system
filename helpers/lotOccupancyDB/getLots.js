@@ -60,31 +60,37 @@ export async function getLots(filters, options, connectedDatabase) {
     }
     let lots = [];
     if (options.limit === -1 || count > 0) {
+        const includeLotOccupancyCount = options.includeLotOccupancyCount ?? true;
         database.function('userFn_lotNameSortName', configFunctions.getProperty('settings.lot.lotNameSortNameFunction'));
-        sqlParameters.unshift(currentDate, currentDate);
+        if (includeLotOccupancyCount) {
+            sqlParameters.unshift(currentDate, currentDate);
+        }
         lots = database
-            .prepare('select l.lotId, l.lotName,' +
-            ' t.lotType,' +
-            ' l.mapId, m.mapName, l.mapKey,' +
-            ' l.lotStatusId, s.lotStatus,' +
-            ' ifnull(o.lotOccupancyCount, 0) as lotOccupancyCount' +
-            ' from Lots l' +
-            ' left join LotTypes t on l.lotTypeId = t.lotTypeId' +
-            ' left join LotStatuses s on l.lotStatusId = s.lotStatusId' +
-            ' left join Maps m on l.mapId = m.mapId' +
-            (' left join (' +
-                'select lotId, count(lotOccupancyId) as lotOccupancyCount' +
-                ' from LotOccupancies' +
-                ' where recordDelete_timeMillis is null' +
-                ' and occupancyStartDate <= ?' +
-                ' and (occupancyEndDate is null or occupancyEndDate >= ?)' +
-                ' group by lotId' +
-                ') o on l.lotId = o.lotId') +
-            sqlWhereClause +
-            ' order by userFn_lotNameSortName(l.lotName), l.lotId' +
-            (options.limit === -1
-                ? ''
-                : ` limit ${options.limit.toString()} offset ${options.offset.toString()}`))
+            .prepare(`select l.lotId, l.lotName,
+          t.lotType,
+          l.mapId, m.mapName, l.mapKey,
+          l.lotStatusId, s.lotStatus
+          ${includeLotOccupancyCount
+            ? ', ifnull(o.lotOccupancyCount, 0) as lotOccupancyCount'
+            : ''}
+          from Lots l
+          left join LotTypes t on l.lotTypeId = t.lotTypeId
+          left join LotStatuses s on l.lotStatusId = s.lotStatusId
+          left join Maps m on l.mapId = m.mapId
+          ${includeLotOccupancyCount
+            ? `left join (
+                  select lotId, count(lotOccupancyId) as lotOccupancyCount
+                  from LotOccupancies
+                  where recordDelete_timeMillis is null
+                  and occupancyStartDate <= ?
+                  and (occupancyEndDate is null or occupancyEndDate >= ?)
+                  group by lotId) o on l.lotId = o.lotId`
+            : ''}
+          ${sqlWhereClause}
+          order by userFn_lotNameSortName(l.lotName), l.lotId
+          ${options.limit === -1
+            ? ''
+            : ` limit ${options.limit.toString()} offset ${options.offset.toString()}`}`)
             .all(sqlParameters);
         if (options.limit === -1) {
             count = lots.length;

@@ -9,7 +9,8 @@ export async function handler(request, response) {
         workOrderId: request.body.workOrderId
     }, {
         limit: -1,
-        offset: 0
+        offset: 0,
+        includeLotOccupancyCount: false
     });
     response.json({
         success,

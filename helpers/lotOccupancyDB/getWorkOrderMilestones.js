@@ -120,7 +120,8 @@ export async function getWorkOrderMilestones(filters, options, connectedDatabase
                 workOrderId: workOrderMilestone.workOrderId
             }, {
                 limit: -1,
-                offset: 0
+                offset: 0,
+                includeLotOccupancyCount: false
             }, database);
             workOrderMilestone.workOrderLots = workOrderLotsResults.lots;
             const lotOccupancies = await getLotOccupancies({

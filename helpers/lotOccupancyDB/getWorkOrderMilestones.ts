@@ -200,7 +200,8 @@ export async function getWorkOrderMilestones(
         },
         {
           limit: -1,
-          offset: 0
+          offset: 0,
+          includeLotOccupancyCount: false
         },
         database
       )

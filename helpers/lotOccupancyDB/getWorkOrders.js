@@ -111,7 +111,8 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
                         workOrderId: workOrder.workOrderId
                     }, {
                         limit: -1,
-                        offset: 0
+                        offset: 0,
+                        includeLotOccupancyCount: false
                     }, database);
                     workOrder.workOrderLots = workOrderLotsResults.lots;
                 }
