@@ -1,3 +1,5 @@
+import NodeCache from 'node-cache'
+
 import { config as cemeteryConfig } from './config.cemetery.ontario.js'
 
 export const config = Object.assign({}, cemeteryConfig)
@@ -13,43 +15,56 @@ config.settings.lot.lotNameHelpText = `Two digit cemetery-Block-Range-Lot-Grave,
 
 const numericPadding = '00000'
 
+const lotNameSortNameCache = new NodeCache({
+  stdTTL: 5 * 60,
+  useClones: false
+})
+
 export function lotNameSortNameFunction(lotName: string): string {
-  try {
-    const lotNameSplit = lotName.toUpperCase().split('-')
+  let sortName: string = lotNameSortNameCache.get(lotName) ?? ''
 
-    const cleanLotNamePieces: string[] = []
+  if (sortName === '') {
+    try {
+      const lotNameSplit = lotName.toUpperCase().split('-')
 
-    for (let lotNamePiece of lotNameSplit) {
-      if (cleanLotNamePieces.length === 0) {
-        cleanLotNamePieces.push(lotNamePiece)
-        continue
-      }
+      const cleanLotNamePieces: string[] = []
 
-      let numericPiece = numericPadding
-      let letterPiece = ''
-
-      const firstLetter = lotNamePiece.charAt(0)
-      lotNamePiece = lotNamePiece.slice(1)
-
-      for (const letter of lotNamePiece) {
-        if (letterPiece === '' && '0123456789'.includes(letter)) {
-          numericPiece += letter
-        } else {
-          letterPiece += letter
+      for (let lotNamePiece of lotNameSplit) {
+        if (cleanLotNamePieces.length === 0) {
+          cleanLotNamePieces.push(lotNamePiece)
+          continue
         }
+
+        let numericPiece = numericPadding
+        let letterPiece = ''
+
+        const firstLetter = lotNamePiece.charAt(0)
+        lotNamePiece = lotNamePiece.slice(1)
+
+        for (const letter of lotNamePiece) {
+          if (letterPiece === '' && '0123456789'.includes(letter)) {
+            numericPiece += letter
+          } else {
+            letterPiece += letter
+          }
+        }
+
+        cleanLotNamePieces.push(
+          firstLetter +
+            numericPiece.slice(-1 * numericPadding.length) +
+            letterPiece
+        )
       }
 
-      cleanLotNamePieces.push(
-        firstLetter +
-        numericPiece.slice(-1 * numericPadding.length) +
-        letterPiece
-      )
+      sortName = cleanLotNamePieces.join('-')
+    } catch {
+      sortName = lotName
     }
 
-    return cleanLotNamePieces.join('-')
-  } catch {
-    return lotName
+    lotNameSortNameCache.set(lotName, sortName)
   }
+
+  return sortName
 }
 
 config.settings.lot.lotNameSortNameFunction = lotNameSortNameFunction

@@ -1,3 +1,4 @@
+import NodeCache from 'node-cache';
 import { config as cemeteryConfig } from './config.cemetery.ontario.js';
 export const config = Object.assign({}, cemeteryConfig);
 config.aliases.occupancyStartDate = 'Purchase Date';
@@ -7,36 +8,45 @@ config.settings.lot.lotNamePattern =
 config.settings.lot.lotNameHelpText = `Two digit cemetery-Block-Range-Lot-Grave, Interment number\n
     ex. XX-BA-R41-L15-G3A, Interment 1`;
 const numericPadding = '00000';
+const lotNameSortNameCache = new NodeCache({
+    stdTTL: 5 * 60,
+    useClones: false
+});
 export function lotNameSortNameFunction(lotName) {
-    try {
-        const lotNameSplit = lotName.toUpperCase().split('-');
-        const cleanLotNamePieces = [];
-        for (let lotNamePiece of lotNameSplit) {
-            if (cleanLotNamePieces.length === 0) {
-                cleanLotNamePieces.push(lotNamePiece);
-                continue;
-            }
-            let numericPiece = numericPadding;
-            let letterPiece = '';
-            const firstLetter = lotNamePiece.charAt(0);
-            lotNamePiece = lotNamePiece.slice(1);
-            for (const letter of lotNamePiece) {
-                if (letterPiece === '' && '0123456789'.includes(letter)) {
-                    numericPiece += letter;
+    let sortName = lotNameSortNameCache.get(lotName) ?? '';
+    if (sortName === '') {
+        try {
+            const lotNameSplit = lotName.toUpperCase().split('-');
+            const cleanLotNamePieces = [];
+            for (let lotNamePiece of lotNameSplit) {
+                if (cleanLotNamePieces.length === 0) {
+                    cleanLotNamePieces.push(lotNamePiece);
+                    continue;
                 }
-                else {
-                    letterPiece += letter;
+                let numericPiece = numericPadding;
+                let letterPiece = '';
+                const firstLetter = lotNamePiece.charAt(0);
+                lotNamePiece = lotNamePiece.slice(1);
+                for (const letter of lotNamePiece) {
+                    if (letterPiece === '' && '0123456789'.includes(letter)) {
+                        numericPiece += letter;
+                    }
+                    else {
+                        letterPiece += letter;
+                    }
                 }
+                cleanLotNamePieces.push(firstLetter +
+                    numericPiece.slice(-1 * numericPadding.length) +
+                    letterPiece);
             }
-            cleanLotNamePieces.push(firstLetter +
-                numericPiece.slice(-1 * numericPadding.length) +
-                letterPiece);
+            sortName = cleanLotNamePieces.join('-');
         }
-        return cleanLotNamePieces.join('-');
+        catch {
+            sortName = lotName;
+        }
+        lotNameSortNameCache.set(lotName, sortName);
     }
-    catch {
-        return lotName;
-    }
+    return sortName;
 }
 config.settings.lot.lotNameSortNameFunction = lotNameSortNameFunction;
 config.settings.lotOccupancy.occupantCityDefault = 'Sault Ste. Marie';
