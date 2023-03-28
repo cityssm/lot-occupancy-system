@@ -28,9 +28,9 @@ import { version } from './version.js';
 import * as databaseInitializer from './helpers/initializer.database.js';
 import { apiGetHandler } from './handlers/permissions.js';
 import { getSafeRedirectURL } from './helpers/functions.authentication.js';
-import debug from 'debug';
 import { useTestDatabases } from './data/databasePaths.js';
-const debugApp = debug(`lot-occupancy-system:app:${process.pid}`);
+import Debug from 'debug';
+const debug = Debug(`lot-occupancy-system:app:${process.pid}`);
 databaseInitializer.initializeDatabase();
 const _dirname = '.';
 export const app = express();
@@ -44,7 +44,7 @@ if (!configFunctions.getProperty('reverseProxy.disableCompression')) {
     app.use(compression());
 }
 app.use((request, _response, next) => {
-    debugApp(`${request.method} ${request.url}`);
+    debug(`${request.method} ${request.url}`);
     next();
 });
 app.use(express.json());
@@ -61,7 +61,7 @@ app.use(rateLimit({
 }));
 const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
 if (urlPrefix !== '') {
-    debugApp('urlPrefix = ' + urlPrefix);
+    debug('urlPrefix = ' + urlPrefix);
 }
 app.use(urlPrefix, express.static(path.join('public')));
 app.use(urlPrefix + '/lib/bulma-calendar', express.static(path.join('node_modules', 'bulma-calendar', 'dist')));
@@ -75,7 +75,7 @@ const FileStoreSession = FileStore(session);
 app.use(session({
     store: new FileStoreSession({
         path: './data/sessions',
-        logFn: debug(`lot-occupancy-system:session:${process.pid}`),
+        logFn: Debug(`lot-occupancy-system:session:${process.pid}`),
         retries: 20
     }),
     name: sessionCookieName,
@@ -147,7 +147,7 @@ app.get(urlPrefix + '/logout', (request, response) => {
     }
 });
 app.use((request, _response, next) => {
-    debugApp(request.url);
+    debug(request.url);
     next(createError(404, 'File not found: ' + request.url));
 });
 export default app;
