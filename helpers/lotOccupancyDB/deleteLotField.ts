@@ -11,8 +11,6 @@ export async function deleteLotField(
 ): Promise<boolean> {
   const database = connectedDatabase ?? (await acquireConnection())
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update LotFields
@@ -21,7 +19,7 @@ export async function deleteLotField(
         where lotId = ?
         and lotTypeFieldId = ?`
     )
-    .run(requestSession.user!.userName, rightNowMillis, lotId, lotTypeFieldId)
+    .run(requestSession.user!.userName, Date.now(), lotId, lotTypeFieldId)
 
   if (connectedDatabase === undefined) {
     database.release()

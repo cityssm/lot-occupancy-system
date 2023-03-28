@@ -12,7 +12,6 @@ recordNameIdColumns.set('WorkOrderMilestoneTypes', [
 recordNameIdColumns.set('WorkOrderTypes', ['workOrderType', 'workOrderTypeId']);
 export async function updateRecord(recordTable, recordId, recordName, requestSession) {
     const database = await acquireConnection();
-    const rightNowMillis = Date.now();
     const result = database
         .prepare(`update ${recordTable}
         set ${recordNameIdColumns.get(recordTable)[0]} = ?,
@@ -20,7 +19,7 @@ export async function updateRecord(recordTable, recordId, recordName, requestSes
         recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
         and ${recordNameIdColumns.get(recordTable)[1]} = ?`)
-        .run(recordName, requestSession.user.userName, rightNowMillis, recordId);
+        .run(recordName, requestSession.user.userName, Date.now(), recordId);
     database.release();
     clearCacheByTableName(recordTable);
     return result.changes > 0;

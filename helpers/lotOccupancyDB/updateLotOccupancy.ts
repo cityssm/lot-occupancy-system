@@ -28,8 +28,6 @@ export async function updateLotOccupancy(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update LotOccupancies
@@ -50,7 +48,7 @@ export async function updateLotOccupancy(
         ? undefined
         : dateStringToInteger(lotOccupancyForm.occupancyEndDateString),
       requestSession.user!.userName,
-      rightNowMillis,
+      Date.now(),
       lotOccupancyForm.lotOccupancyId
     )
 

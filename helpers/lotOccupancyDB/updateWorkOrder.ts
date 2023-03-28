@@ -18,8 +18,6 @@ export async function updateWorkOrder(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update WorkOrders
@@ -38,7 +36,7 @@ export async function updateWorkOrder(
       workOrderForm.workOrderDescription,
       dateStringToInteger(workOrderForm.workOrderOpenDateString),
       requestSession.user!.userName,
-      rightNowMillis,
+      Date.now(),
       workOrderForm.workOrderId
     )
 

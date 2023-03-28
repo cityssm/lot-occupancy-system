@@ -24,8 +24,6 @@ export async function updateFee(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update Fees
@@ -62,7 +60,7 @@ export async function updateFee(
       feeForm.quantityUnit,
       feeForm.isRequired === '' ? 0 : 1,
       requestSession.user!.userName,
-      rightNowMillis,
+      Date.now(),
       feeForm.feeId
     )
 

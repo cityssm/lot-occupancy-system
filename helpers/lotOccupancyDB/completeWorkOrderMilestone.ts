@@ -35,16 +35,16 @@ export async function completeWorkOrderMilestone(
         where workOrderMilestoneId = ?`
     )
     .run(
-      milestoneForm.workOrderMilestoneCompletionDateString
-        ? dateStringToInteger(
-            milestoneForm.workOrderMilestoneCompletionDateString
-          )
-        : dateToInteger(rightNow),
-      milestoneForm.workOrderMilestoneCompletionTimeString
-        ? timeStringToInteger(
-            milestoneForm.workOrderMilestoneCompletionTimeString
-          )
-        : dateToTimeInteger(rightNow),
+      (milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
+        ? dateToInteger(rightNow)
+        : dateStringToInteger(
+            milestoneForm.workOrderMilestoneCompletionDateString!
+          ),
+      (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
+        ? dateToTimeInteger(rightNow)
+        : timeStringToInteger(
+            milestoneForm.workOrderMilestoneCompletionTimeString!
+          ),
       requestSession.user!.userName,
       rightNow.getTime(),
       milestoneForm.workOrderMilestoneId

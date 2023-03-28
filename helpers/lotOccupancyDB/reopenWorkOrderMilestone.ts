@@ -8,8 +8,6 @@ export async function reopenWorkOrderMilestone(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update WorkOrderMilestones
@@ -20,7 +18,7 @@ export async function reopenWorkOrderMilestone(
         where workOrderMilestoneId = ?
         and workOrderMilestoneCompletionDate is not null`
     )
-    .run(requestSession.user!.userName, rightNowMillis, workOrderMilestoneId)
+    .run(requestSession.user!.userName, Date.now(), workOrderMilestoneId)
 
   database.release()
 

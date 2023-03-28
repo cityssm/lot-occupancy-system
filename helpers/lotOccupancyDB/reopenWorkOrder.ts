@@ -8,8 +8,6 @@ export async function reopenWorkOrder(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update WorkOrders
@@ -19,7 +17,7 @@ export async function reopenWorkOrder(
         where workOrderId = ?
         and workOrderCloseDate is not null`
     )
-    .run(requestSession.user!.userName, rightNowMillis, workOrderId)
+    .run(requestSession.user!.userName, Date.now(), workOrderId)
 
   database.release()
 

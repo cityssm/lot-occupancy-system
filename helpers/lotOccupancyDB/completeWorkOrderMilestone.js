@@ -10,11 +10,11 @@ export async function completeWorkOrderMilestone(milestoneForm, requestSession) 
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where workOrderMilestoneId = ?`)
-        .run(milestoneForm.workOrderMilestoneCompletionDateString
-        ? dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString)
-        : dateToInteger(rightNow), milestoneForm.workOrderMilestoneCompletionTimeString
-        ? timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString)
-        : dateToTimeInteger(rightNow), requestSession.user.userName, rightNow.getTime(), milestoneForm.workOrderMilestoneId);
+        .run((milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
+        ? dateToInteger(rightNow)
+        : dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString), (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
+        ? dateToTimeInteger(rightNow)
+        : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), requestSession.user.userName, rightNow.getTime(), milestoneForm.workOrderMilestoneId);
     database.release();
     return result.changes > 0;
 }

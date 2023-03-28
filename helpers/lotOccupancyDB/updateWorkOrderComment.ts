@@ -18,8 +18,6 @@ export async function updateWorkOrderComment(
   commentForm: UpdateWorkOrderCommentForm,
   requestSession: recordTypes.PartialSession
 ): Promise<boolean> {
-  const rightNowMillis = Date.now()
-
   const database = await acquireConnection()
 
   const result = database
@@ -38,7 +36,7 @@ export async function updateWorkOrderComment(
       timeStringToInteger(commentForm.workOrderCommentTimeString),
       commentForm.workOrderComment,
       requestSession.user!.userName,
-      rightNowMillis,
+      Date.now(),
       commentForm.workOrderCommentId
     )
 

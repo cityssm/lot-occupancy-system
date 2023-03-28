@@ -9,8 +9,6 @@ export async function deleteWorkOrderLot(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update WorkOrderLots
@@ -19,7 +17,7 @@ export async function deleteWorkOrderLot(
         where workOrderId = ?
         and lotId = ?`
     )
-    .run(requestSession.user!.userName, rightNowMillis, workOrderId, lotId)
+    .run(requestSession.user!.userName, Date.now(), workOrderId, lotId)
 
   database.release()
 

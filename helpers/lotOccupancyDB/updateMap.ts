@@ -23,8 +23,6 @@ export async function updateMap(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update Maps
@@ -57,7 +55,7 @@ export async function updateMap(
       mapForm.mapPostalCode,
       mapForm.mapPhoneNumber,
       requestSession.user!.userName,
-      rightNowMillis,
+      Date.now(),
       mapForm.mapId
     )
 

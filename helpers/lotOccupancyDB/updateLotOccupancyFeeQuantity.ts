@@ -12,8 +12,6 @@ export async function updateLotOccupancyFeeQuantity(
   feeQuantityForm: UpdateLotOccupancyFeeQuantityForm,
   requestSession: recordTypes.PartialSession
 ): Promise<boolean> {
-  const rightNowMillis = Date.now()
-
   const database = await acquireConnection()
 
   const result = database
@@ -29,7 +27,7 @@ export async function updateLotOccupancyFeeQuantity(
     .run(
       feeQuantityForm.quantity,
       requestSession.user!.userName,
-      rightNowMillis,
+      Date.now(),
       feeQuantityForm.lotOccupancyId,
       feeQuantityForm.feeId
     )

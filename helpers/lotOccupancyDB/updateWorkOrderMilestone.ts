@@ -19,8 +19,6 @@ export async function updateWorkOrderMilestone(
   milestoneForm: UpdateWorkOrderMilestoneForm,
   requestSession: recordTypes.PartialSession
 ): Promise<boolean> {
-  const rightNow = new Date()
-
   const database = await acquireConnection()
 
   const result = database
@@ -47,7 +45,7 @@ export async function updateWorkOrderMilestone(
       milestoneForm.workOrderMilestoneDescription,
 
       requestSession.user!.userName,
-      rightNow.getTime(),
+      Date.now(),
       milestoneForm.workOrderMilestoneId
     )
 

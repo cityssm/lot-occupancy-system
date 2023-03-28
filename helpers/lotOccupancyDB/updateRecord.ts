@@ -31,8 +31,6 @@ export async function updateRecord(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update ${recordTable}
@@ -42,7 +40,7 @@ export async function updateRecord(
         where recordDelete_timeMillis is null
         and ${recordNameIdColumns.get(recordTable)![1]} = ?`
     )
-    .run(recordName, requestSession.user!.userName, rightNowMillis, recordId)
+    .run(recordName, requestSession.user!.userName, Date.now(), recordId)
 
   database.release()
 

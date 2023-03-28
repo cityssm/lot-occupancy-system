@@ -11,8 +11,6 @@ export async function deleteOccupancyTypePrint(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update OccupancyTypePrints
@@ -23,7 +21,7 @@ export async function deleteOccupancyTypePrint(
     )
     .run(
       requestSession.user!.userName,
-      rightNowMillis,
+      Date.now(),
       occupancyTypeId,
       printEJS
     )

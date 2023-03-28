@@ -28,8 +28,6 @@ export async function updateLot(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update Lots
@@ -54,7 +52,7 @@ export async function updateLot(
       lotForm.lotLatitude === '' ? undefined : lotForm.lotLatitude,
       lotForm.lotLongitude === '' ? undefined : lotForm.lotLongitude,
       requestSession.user!.userName,
-      rightNowMillis,
+      Date.now(),
       lotForm.lotId
     )
 

@@ -18,8 +18,6 @@ export async function updateLotComment(
   commentForm: UpdateLotCommentForm,
   requestSession: recordTypes.PartialSession
 ): Promise<boolean> {
-  const rightNowMillis = Date.now()
-
   const database = await acquireConnection()
 
   const result = database
@@ -38,7 +36,7 @@ export async function updateLotComment(
       timeStringToInteger(commentForm.lotCommentTimeString),
       commentForm.lotComment,
       requestSession.user!.userName,
-      rightNowMillis,
+      Date.now(),
       commentForm.lotCommentId
     )
 

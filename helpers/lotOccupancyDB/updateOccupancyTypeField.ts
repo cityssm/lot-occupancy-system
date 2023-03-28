@@ -20,8 +20,6 @@ export async function updateOccupancyTypeField(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update OccupancyTypeFields
@@ -44,7 +42,7 @@ export async function updateOccupancyTypeField(
       occupancyTypeFieldForm.pattern ?? '',
       occupancyTypeFieldForm.occupancyTypeFieldValues,
       requestSession.user!.userName,
-      rightNowMillis,
+      Date.now(),
       occupancyTypeFieldForm.occupancyTypeFieldId
     )
 

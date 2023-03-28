@@ -4,7 +4,6 @@ import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js'
 import { deleteLotOccupancyField } from './deleteLotOccupancyField.js';
 export async function updateLotOccupancy(lotOccupancyForm, requestSession) {
     const database = await acquireConnection();
-    const rightNowMillis = Date.now();
     const result = database
         .prepare(`update LotOccupancies
         set occupancyTypeId = ?,
@@ -17,7 +16,7 @@ export async function updateLotOccupancy(lotOccupancyForm, requestSession) {
         and recordDelete_timeMillis is null`)
         .run(lotOccupancyForm.occupancyTypeId, lotOccupancyForm.lotId === '' ? undefined : lotOccupancyForm.lotId, dateStringToInteger(lotOccupancyForm.occupancyStartDateString), lotOccupancyForm.occupancyEndDateString === ''
         ? undefined
-        : dateStringToInteger(lotOccupancyForm.occupancyEndDateString), requestSession.user.userName, rightNowMillis, lotOccupancyForm.lotOccupancyId);
+        : dateStringToInteger(lotOccupancyForm.occupancyEndDateString), requestSession.user.userName, Date.now(), lotOccupancyForm.lotOccupancyId);
     if (result.changes > 0) {
         const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds ?? '').split(',');
         for (const occupancyTypeFieldId of occupancyTypeFieldIds) {

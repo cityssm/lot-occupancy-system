@@ -20,8 +20,6 @@ export async function updateLotTypeField(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update LotTypeFields
@@ -44,7 +42,7 @@ export async function updateLotTypeField(
       lotTypeFieldForm.pattern ?? '',
       lotTypeFieldForm.lotTypeFieldValues,
       requestSession.user!.userName,
-      rightNowMillis,
+      Date.now(),
       lotTypeFieldForm.lotTypeFieldId
     )
 

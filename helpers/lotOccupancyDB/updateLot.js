@@ -3,7 +3,6 @@ import { addOrUpdateLotField } from './addOrUpdateLotField.js';
 import { deleteLotField } from './deleteLotField.js';
 export async function updateLot(lotForm, requestSession) {
     const database = await acquireConnection();
-    const rightNowMillis = Date.now();
     const result = database
         .prepare(`update Lots
         set lotName = ?,
@@ -17,7 +16,7 @@ export async function updateLot(lotForm, requestSession) {
         recordUpdate_timeMillis = ?
         where lotId = ?
         and recordDelete_timeMillis is null`)
-        .run(lotForm.lotName, lotForm.lotTypeId, lotForm.lotStatusId === '' ? undefined : lotForm.lotStatusId, lotForm.mapId === '' ? undefined : lotForm.mapId, lotForm.mapKey, lotForm.lotLatitude === '' ? undefined : lotForm.lotLatitude, lotForm.lotLongitude === '' ? undefined : lotForm.lotLongitude, requestSession.user.userName, rightNowMillis, lotForm.lotId);
+        .run(lotForm.lotName, lotForm.lotTypeId, lotForm.lotStatusId === '' ? undefined : lotForm.lotStatusId, lotForm.mapId === '' ? undefined : lotForm.mapId, lotForm.mapKey, lotForm.lotLatitude === '' ? undefined : lotForm.lotLatitude, lotForm.lotLongitude === '' ? undefined : lotForm.lotLongitude, requestSession.user.userName, Date.now(), lotForm.lotId);
     if (result.changes > 0) {
         const lotTypeFieldIds = (lotForm.lotTypeFieldIds ?? '').split(',');
         for (const lotTypeFieldId of lotTypeFieldIds) {

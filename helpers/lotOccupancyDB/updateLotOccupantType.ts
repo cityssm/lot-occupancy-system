@@ -17,8 +17,6 @@ export async function updateLotOccupantType(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const rightNowMillis = Date.now()
-
   const result = database
     .prepare(
       `update LotOccupantTypes
@@ -35,7 +33,7 @@ export async function updateLotOccupantType(
       lotOccupantTypeForm.fontAwesomeIconClass,
       lotOccupantTypeForm.occupantCommentTitle,
       requestSession.user!.userName,
-      rightNowMillis,
+      Date.now(),
       lotOccupantTypeForm.lotOccupantTypeId
     )
 

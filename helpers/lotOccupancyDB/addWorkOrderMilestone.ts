@@ -23,7 +23,7 @@ export async function addWorkOrderMilestone(
   milestoneForm: AddWorkOrderMilestoneForm,
   requestSession: recordTypes.PartialSession
 ): Promise<number> {
-  const rightNow = new Date()
+  const rightNowMillis = Date.now()
 
   const database = await acquireConnection()
 
@@ -40,28 +40,30 @@ export async function addWorkOrderMilestone(
     )
     .run(
       milestoneForm.workOrderId,
-      milestoneForm.workOrderMilestoneTypeId === '' ? undefined : milestoneForm.workOrderMilestoneTypeId,
+      milestoneForm.workOrderMilestoneTypeId === ''
+        ? undefined
+        : milestoneForm.workOrderMilestoneTypeId,
       milestoneForm.workOrderMilestoneDateString === ''
         ? 0
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
-      milestoneForm.workOrderMilestoneTimeString
-        ? timeStringToInteger(milestoneForm.workOrderMilestoneTimeString)
-        : 0,
+      (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
+        ? 0
+        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString!),
       milestoneForm.workOrderMilestoneDescription,
-      milestoneForm.workOrderMilestoneCompletionDateString
-        ? dateStringToInteger(
-            milestoneForm.workOrderMilestoneCompletionDateString
-          )
-        : undefined,
-      milestoneForm.workOrderMilestoneCompletionTimeString
-        ? timeStringToInteger(
-            milestoneForm.workOrderMilestoneCompletionTimeString
-          )
-        : undefined,
+      (milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
+        ? undefined
+        : dateStringToInteger(
+            milestoneForm.workOrderMilestoneCompletionDateString!
+          ),
+      (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
+        ? undefined
+        : timeStringToInteger(
+            milestoneForm.workOrderMilestoneCompletionTimeString!
+          ),
       requestSession.user!.userName,
-      rightNow.getTime(),
+      rightNowMillis,
       requestSession.user!.userName,
-      rightNow.getTime()
+      rightNowMillis
     )
 
   database.release()
