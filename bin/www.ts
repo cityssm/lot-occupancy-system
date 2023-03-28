@@ -1,6 +1,8 @@
 import '../helpers/polyfills.js'
 
 import cluster from 'node:cluster'
+import type { Worker } from 'node:cluster'
+
 import os from 'node:os'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -37,7 +39,7 @@ const clusterSettings = {
 
 cluster.setupPrimary(clusterSettings)
 
-const activeWorkers = new Map<number, any>()
+const activeWorkers = new Map<number, Worker>()
 
 for (let index = 0; index < processCount; index += 1) {
   const worker = cluster.fork()
