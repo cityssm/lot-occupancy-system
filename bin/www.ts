@@ -67,7 +67,7 @@ cluster.on('exit', (worker, code, signal) => {
 
 const ntfyStartupConfig = configFunctions.getProperty('application.ntfyStartup')
 
-if (ntfyStartupConfig) {
+if (ntfyStartupConfig !== undefined) {
   const topic = ntfyStartupConfig.topic
   const server = ntfyStartupConfig.server
 
@@ -85,7 +85,7 @@ if (ntfyStartupConfig) {
     tags: ['arrow_down']
   }
 
-  if (server) {
+  if (server !== undefined) {
     ntfyStartupMessage.server = server
     ntfyShutdownMessage.server = server
   }

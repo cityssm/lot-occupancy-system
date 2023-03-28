@@ -40,7 +40,7 @@ cluster.on('exit', (worker, code, signal) => {
     cluster.fork();
 });
 const ntfyStartupConfig = configFunctions.getProperty('application.ntfyStartup');
-if (ntfyStartupConfig) {
+if (ntfyStartupConfig !== undefined) {
     const topic = ntfyStartupConfig.topic;
     const server = ntfyStartupConfig.server;
     const ntfyStartupMessage = {
@@ -55,7 +55,7 @@ if (ntfyStartupConfig) {
         message: 'Application Shut Down',
         tags: ['arrow_down']
     };
-    if (server) {
+    if (server !== undefined) {
         ntfyStartupMessage.server = server;
         ntfyShutdownMessage.server = server;
     }
