@@ -36,8 +36,7 @@ function buildWhereClause(filters) {
         sqlParameters.push(dateStringToInteger(filters.occupancyStartDateString));
     }
     if ((filters.occupancyEffectiveDateString ?? '') !== '') {
-        sqlWhereClause +=
-            ` and (
+        sqlWhereClause += ` and (
         o.occupancyEndDate is null
         or (o.occupancyStartDate <= ? and o.occupancyEndDate >= ?)
       )`;
@@ -66,6 +65,18 @@ function buildWhereClause(filters) {
         sqlParameters
     };
 }
+async function addInclusions(lotOccupancy, options, database) {
+    if (options.includeFees) {
+        lotOccupancy.lotOccupancyFees = await getLotOccupancyFees(lotOccupancy.lotOccupancyId, database);
+    }
+    if (options.includeTransactions) {
+        lotOccupancy.lotOccupancyTransactions = await getLotOccupancyTransactions(lotOccupancy.lotOccupancyId, database);
+    }
+    if (options.includeOccupants) {
+        lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(lotOccupancy.lotOccupancyId, database);
+    }
+    return lotOccupancy;
+}
 export async function getLotOccupancies(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
@@ -74,10 +85,10 @@ export async function getLotOccupancies(filters, options, connectedDatabase) {
     const isLimited = options.limit !== -1;
     if (isLimited) {
         count = database
-            .prepare('select count(*) as recordCount' +
-            ' from LotOccupancies o' +
-            ' left join Lots l on o.lotId = l.lotId' +
-            sqlWhereClause)
+            .prepare(`select count(*) as recordCount
+          from LotOccupancies o
+          left join Lots l on o.lotId = l.lotId
+          ${sqlWhereClause}`)
             .get(sqlParameters).recordCount;
     }
     let lotOccupancies = [];
@@ -108,16 +119,7 @@ export async function getLotOccupancies(filters, options, connectedDatabase) {
                     ? configFunctions.getProperty('settings.lotOccupancy.prints')[0]
                     : occupancyType.occupancyTypePrints[0];
             }
-            if (options.includeFees) {
-                lotOccupancy.lotOccupancyFees = await getLotOccupancyFees(lotOccupancy.lotOccupancyId, database);
-            }
-            if (options.includeTransactions) {
-                lotOccupancy.lotOccupancyTransactions =
-                    await getLotOccupancyTransactions(lotOccupancy.lotOccupancyId, database);
-            }
-            if (options.includeOccupants) {
-                lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(lotOccupancy.lotOccupancyId, database);
-            }
+            await addInclusions(lotOccupancy, options, database);
         }
     }
     if (connectedDatabase === undefined) {

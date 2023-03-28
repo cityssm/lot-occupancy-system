@@ -97,8 +97,7 @@ function buildWhereClause(filters: GetLotOccupanciesFilters): {
   }
 
   if ((filters.occupancyEffectiveDateString ?? '') !== '') {
-    sqlWhereClause +=
-      ` and (
+    sqlWhereClause += ` and (
         o.occupancyEndDate is null
         or (o.occupancyStartDate <= ? and o.occupancyEndDate >= ?)
       )`
@@ -136,6 +135,35 @@ function buildWhereClause(filters: GetLotOccupanciesFilters): {
   }
 }
 
+async function addInclusions(
+  lotOccupancy: recordTypes.LotOccupancy,
+  options: GetLotOccupanciesOptions,
+  database: PoolConnection
+): Promise<recordTypes.LotOccupancy> {
+  if (options.includeFees) {
+    lotOccupancy.lotOccupancyFees = await getLotOccupancyFees(
+      lotOccupancy.lotOccupancyId!,
+      database
+    )
+  }
+
+  if (options.includeTransactions) {
+    lotOccupancy.lotOccupancyTransactions = await getLotOccupancyTransactions(
+      lotOccupancy.lotOccupancyId!,
+      database
+    )
+  }
+
+  if (options.includeOccupants) {
+    lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(
+      lotOccupancy.lotOccupancyId!,
+      database
+    )
+  }
+
+  return lotOccupancy
+}
+
 export async function getLotOccupancies(
   filters: GetLotOccupanciesFilters,
   options: GetLotOccupanciesOptions,
@@ -154,10 +182,10 @@ export async function getLotOccupancies(
   if (isLimited) {
     count = database
       .prepare(
-        'select count(*) as recordCount' +
-          ' from LotOccupancies o' +
-          ' left join Lots l on o.lotId = l.lotId' +
-          sqlWhereClause
+        `select count(*) as recordCount
+          from LotOccupancies o
+          left join Lots l on o.lotId = l.lotId
+          ${sqlWhereClause}`
       )
       .get(sqlParameters).recordCount
   }
@@ -201,27 +229,7 @@ export async function getLotOccupancies(
           : occupancyType.occupancyTypePrints![0]
       }
 
-      if (options.includeFees) {
-        lotOccupancy.lotOccupancyFees = await getLotOccupancyFees(
-          lotOccupancy.lotOccupancyId!,
-          database
-        )
-      }
-
-      if (options.includeTransactions) {
-        lotOccupancy.lotOccupancyTransactions =
-          await getLotOccupancyTransactions(
-            lotOccupancy.lotOccupancyId!,
-            database
-          )
-      }
-
-      if (options.includeOccupants) {
-        lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(
-          lotOccupancy.lotOccupancyId!,
-          database
-        )
-      }
+      await addInclusions(lotOccupancy, options, database)
     }
   }
 
