@@ -205,17 +205,23 @@
                                           <% } %>
                                       </td>
                                       <td>
-                                          <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
-                                              <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.occupants") %>)</span>
-                                          <% } else { %>
-                                              <% for (const occupant of lotOccupancy.lotOccupancyOccupants) { %>
-                                                  <span class="has-tooltip-left" data-tooltip="<%= occupant.lotOccupantType %>">
-                                                      <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-hidden="true"></i>
-                                                      <%= occupant.occupantName %>
-                                                      <%= occupant.occupantFamilyName %>
-                                                  </span><br />
-                                              <% } %>
-                                          <% } %>
+                                        <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
+                                          <span class="has-text-grey">(
+                                            No <%= configFunctions.getProperty("aliases.occupants") %>)
+                                          </span>
+                                        <% } else { %>
+                                          <ul class="fa-ul ml-5">
+                                            <% for (const occupant of lotOccupancy.lotOccupancyOccupants) { %>
+                                              <li class="has-tooltip-right" data-tooltip="<%= occupant.lotOccupantType %>">
+                                                <span class="fa-li">
+                                                  <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-hidden="true"></i>
+                                                </span>
+                                                <%= occupant.occupantName %>
+                                                <%= occupant.occupantFamilyName %>
+                                              </li>
+                                            <% } %>
+                                          </ul>
+                                        <% } %>
                                       </td>
                                   </tr>
                               <% } %>

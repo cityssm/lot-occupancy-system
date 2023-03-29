@@ -66,7 +66,7 @@ declare const cityssm: cityssmGlobal
               ? cityssm.escapeHTML(lot.lotStatus!)
               : '<span class="has-text-grey">(No Status)</span>') +
             '<br />' +
-            (lot.lotOccupancyCount! > 0
+            ((lot.lotOccupancyCount ?? 0) > 0
               ? '<span class="is-size-7">Currently Occupied</span>'
               : '') +
             '</td>') +

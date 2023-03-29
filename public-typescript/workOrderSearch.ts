@@ -35,10 +35,9 @@ declare const cityssm: cityssmGlobal
     workOrders: recordTypes.WorkOrder[]
   }): void {
     if (responseJSON.workOrders.length === 0) {
-      searchResultsContainerElement.innerHTML =
-        '<div class="message is-info">' +
-        '<p class="message-body">There are no work orders that meet the search criteria.</p>' +
-        '</div>'
+      searchResultsContainerElement.innerHTML = `<div class="message is-info">
+        <p class="message-body">There are no work orders that meet the search criteria.</p>
+        </div>`
 
       return
     }
@@ -49,42 +48,39 @@ declare const cityssm: cityssmGlobal
       let relatedHTML = ''
 
       for (const lot of workOrder.workOrderLots!) {
-        relatedHTML +=
-          '<span class="has-tooltip-left" data-tooltip="' +
-          cityssm.escapeHTML(lot.mapName ?? '') +
-          '">' +
-          '<i class="fas fa-fw fa-vector-square" aria-label="' +
-          los.escapedAliases.Lot +
-          '"></i> ' +
-          cityssm.escapeHTML(
+        relatedHTML += `<li class="has-tooltip-right"
+          data-tooltip="${cityssm.escapeHTML(lot.mapName ?? '')}">
+          <span class="fa-li">
+            <i class="fas fa-fw fa-vector-square"
+              aria-label="${los.escapedAliases.Lot}"></i>
+          </span>
+          ${cityssm.escapeHTML(
             (lot.lotName ?? '') === ''
               ? '(No ' + los.escapedAliases.Lot + ' Name)'
               : lot.lotName!
-          ) +
-          '</span><br />'
+          )}
+          </li>`
       }
 
       for (const occupancy of workOrder.workOrderLotOccupancies!) {
         for (const occupant of occupancy.lotOccupancyOccupants!) {
-          relatedHTML +=
-            '<span class="has-tooltip-left" data-tooltip="' +
-            cityssm.escapeHTML(occupant.lotOccupantType ?? '') +
-            '">' +
-            '<i class="fas fa-fw fa-' +
-            cityssm.escapeHTML(
-              (occupant.fontAwesomeIconClass ?? '') === ''
-                ? 'user'
-                : occupant.fontAwesomeIconClass!
-            ) +
-            '" aria-label="' +
-            los.escapedAliases.occupant +
-            '"></i> ' +
-            cityssm.escapeHTML(
-              (occupant.occupantName ?? '') === '' && (occupant.occupantFamilyName ?? '') === ''
+          relatedHTML += `<li class="has-tooltip-right"
+            data-tooltip="${cityssm.escapeHTML(
+              occupant.lotOccupantType ?? ''
+            )}">
+            <span class="fa-li">
+              <i class="fas fa-fw fa-${cityssm.escapeHTML(
+                (occupant.fontAwesomeIconClass ?? '') === ''
+                  ? 'user'
+                  : occupant.fontAwesomeIconClass!
+              )}" aria-label="${los.escapedAliases.occupant}"></i></span>
+            ${cityssm.escapeHTML(
+              (occupant.occupantName ?? '') === '' &&
+                (occupant.occupantFamilyName ?? '') === ''
                 ? '(No Name)'
                 : occupant.occupantName! + ' ' + occupant.occupantFamilyName!
-            ) +
-            '</span><br />'
+            )}
+            </li>`
         }
       }
 
@@ -95,9 +91,9 @@ declare const cityssm: cityssmGlobal
             '<a class="has-text-weight-bold" href="' +
             los.getWorkOrderURL(workOrder.workOrderId) +
             '">' +
-            (workOrder.workOrderNumber!.trim()
-              ? cityssm.escapeHTML(workOrder.workOrderNumber ?? '')
-              : '(No Number)') +
+            (workOrder.workOrderNumber!.trim() === ''
+              ? '(No Number)'
+              : cityssm.escapeHTML(workOrder.workOrderNumber ?? '')) +
             '</a>' +
             '</td>') +
           ('<td>' +
@@ -107,37 +103,43 @@ declare const cityssm: cityssmGlobal
             cityssm.escapeHTML(workOrder.workOrderDescription ?? '') +
             '</span>' +
             '</td>') +
-          ('<td class="is-nowrap"><span class="is-size-7">' +
-            relatedHTML +
-            '</span></td>') +
-          ('<td class="is-nowrap">' +
-            ('<span class="has-tooltip-left" data-tooltip="' +
+          ('<td>' +
+            (relatedHTML === ''
+              ? ''
+              : '<ul class="fa-ul ml-5 is-size-7">' + relatedHTML + '</ul>') +
+            '</td>') +
+          ('<td>' +
+            '<ul class="fa-ul ml-5 is-size-7">' +
+            ('<li class="has-tooltip-right" data-tooltip="' +
               los.escapedAliases.WorkOrderOpenDate +
               '">' +
+              '<span class="fa-li">' +
               '<i class="fas fa-fw fa-play" aria-label="' +
               los.escapedAliases.WorkOrderOpenDate +
-              '"></i> ' +
-              workOrder.workOrderOpenDateString +
-              '</span><br />') +
-            ('<span class="has-tooltip-left" data-tooltip="' +
+              '"></i></span> ' +
+              workOrder.workOrderOpenDateString! +
+              '</li>') +
+            ('<li class="has-tooltip-right" data-tooltip="' +
               los.escapedAliases.WorkOrderCloseDate +
               '">' +
+              '<span class="fa-li">' +
               '<i class="fas fa-fw fa-stop" aria-label="' +
               los.escapedAliases.WorkOrderCloseDate +
-              '"></i> ' +
+              '"></i></span> ' +
               (workOrder.workOrderCloseDate
-                ? workOrder.workOrderCloseDateString
+                ? workOrder.workOrderCloseDateString!
                 : '<span class="has-text-grey">(No ' +
                   los.escapedAliases.WorkOrderCloseDate +
                   ')</span>') +
-              '</span>') +
+              '</li>') +
+            '</ul>' +
             '</td>') +
           ('<td>' +
             (workOrder.workOrderMilestoneCount === 0
               ? '-'
-              : workOrder.workOrderMilestoneCompletionCount +
+              : workOrder.workOrderMilestoneCompletionCount!.toString() +
                 ' / ' +
-                workOrder.workOrderMilestoneCount) +
+                workOrder.workOrderMilestoneCount!.toString()) +
             '</td>') +
           (workOrderPrints.length > 0
             ? '<td>' +
@@ -146,7 +148,7 @@ declare const cityssm: cityssmGlobal
               '/print/' +
               workOrderPrints[0] +
               '/?workOrderId=' +
-              workOrder.workOrderId +
+              workOrder.workOrderId!.toString() +
               '" target="_blank">' +
               '<i class="fas fa-print" aria-label="Print"></i>' +
               '</a>' +
@@ -156,17 +158,16 @@ declare const cityssm: cityssmGlobal
       )
     }
 
-    searchResultsContainerElement.innerHTML =
-      '<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">' +
-      '<thead><tr>' +
-      '<th>Work Order Number</th>' +
-      '<th>Description</th>' +
-      '<th>Related</th>' +
-      '<th>Date</th>' +
-      '<th class="has-tooltip-bottom" data-tooltip="Completed / Total Milestones">Progress</th>' +
-      (workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : '') +
-      '</tr></thead>' +
-      '<table>'
+    searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+      <thead><tr>
+      <th>Work Order Number</th>
+      <th>Description</th>
+      <th>Related</th>
+      <th>Date</th>
+      <th class="has-tooltip-bottom" data-tooltip="Completed / Total Milestones">Progress</th>
+      ${workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : ''}
+      </tr></thead>
+      <table>`
 
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',

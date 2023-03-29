@@ -1,80 +1,80 @@
 <%- include('_header'); -%>
 
-<div class="columns">
-    <div class="column is-3 is-hidden-mobile">
-      <%- include('_menu-admin'); -%>
-    </div>
-    <div class="column">
-      <nav class="breadcrumb">
-        <ul>
-          <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-          <li>
-            <a href="#">
-              <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
-              <span>Administrator Tools</span>
-            </a>
-          </li>
-          <li class="is-active">
-            <a href="#" aria-current="page">
-              Database Maintenance
-            </a>
-          </li>
-        </ul>
-      </nav>
-        
-      <h1 class="title is-1">
-        Database Maintenance
-      </h1>
-
-      <h2 class="title is-3">
-        Database Backup
-      </h2>
-
-      <div class="message is-info">
-        <div class="message-body">
-          <p>
-            Before making significant changes to the records in the database,
-            it is a good idea to back up first!
-          </p>
-        </div>
-      </div>
-
-      <p class="has-text-right">
-        <button class="button is-success" id="button--backupDatabase" data-cy="backup" type="button">
-          <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
-          <span>Backup Database</span>
-        </button>
-      </p>
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch">
+    <%- include('_menu-admin'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li>
+          <a href="#">
+            <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
+            <span>Administrator Tools</span>
+          </a>
+        </li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            Database Maintenance
+          </a>
+        </li>
+      </ul>
+    </nav>
       
-      <h2 class="title is-3">
-        Database Cleanup
-      </h2>
+    <h1 class="title is-1">
+      Database Maintenance
+    </h1>
 
-      <div class="message is-warning">
-        <div class="message-header">
-          Important Note about Cleanup
-        </div>
-        <div class="message-body">
-          <p>
-            When records are deleted in this application, they are not removed entirely.
-            This gives systems administrators the ability to recover deleted records.
-            This also can leave a small amount of garbage behind in the database.
-          </p>
-          <p class="mt-2">
-            This process permanently deletes records that have already been deleted over
-            <%= configFunctions.getProperty("settings.adminCleanup.recordDeleteAgeDays") %> days ago.
-            Note that no active records will be affected by the cleanup process.
-          </p>
-        </div>
+    <h2 class="title is-3">
+      Database Backup
+    </h2>
+
+    <div class="message is-info">
+      <div class="message-body">
+        <p>
+          Before making significant changes to the records in the database,
+          it is a good idea to back up first!
+        </p>
       </div>
-
-      <p class="has-text-right">
-        <button class="button is-success" id="button--cleanupDatabase" data-cy="cleanup" type="button">
-          <span class="icon"><i class="fas fa-broom" aria-hidden="true"></i></span>
-          <span>Cleanup Database</span>
-        </button>
-      </p>
     </div>
+
+    <p class="has-text-right">
+      <button class="button is-success" id="button--backupDatabase" data-cy="backup" type="button">
+        <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
+        <span>Backup Database</span>
+      </button>
+    </p>
+    
+    <h2 class="title is-3">
+      Database Cleanup
+    </h2>
+
+    <div class="message is-warning">
+      <div class="message-header">
+        Important Note about Cleanup
+      </div>
+      <div class="message-body">
+        <p>
+          When records are deleted in this application, they are not removed entirely.
+          This gives systems administrators the ability to recover deleted records.
+          This also can leave a small amount of garbage behind in the database.
+        </p>
+        <p class="mt-2">
+          This process permanently deletes records that have already been deleted over
+          <%= configFunctions.getProperty("settings.adminCleanup.recordDeleteAgeDays") %> days ago.
+          Note that no active records will be affected by the cleanup process.
+        </p>
+      </div>
+    </div>
+
+    <p class="has-text-right">
+      <button class="button is-success" id="button--cleanupDatabase" data-cy="cleanup" type="button">
+        <span class="icon"><i class="fas fa-broom" aria-hidden="true"></i></span>
+        <span>Cleanup Database</span>
+      </button>
+    </p>
+  </div>
 </div>
 
 <%- include('_footerA'); -%>

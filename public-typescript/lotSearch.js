@@ -8,7 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
     function renderLots(responseJSON) {
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e;
         if (responseJSON.lots.length === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no ${los.escapedAliases.lots} that meet the search criteria.</p>
@@ -40,7 +40,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         ? cityssm.escapeHTML(lot.lotStatus)
                         : '<span class="has-text-grey">(No Status)</span>') +
                     '<br />' +
-                    (lot.lotOccupancyCount > 0
+                    (((_c = lot.lotOccupancyCount) !== null && _c !== void 0 ? _c : 0) > 0
                         ? '<span class="is-size-7">Currently Occupied</span>'
                         : '') +
                     '</td>') +
@@ -58,10 +58,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         searchResultsContainerElement
             .querySelector('table')
             .append(resultsTbodyElement);
-        (_c = searchResultsContainerElement
-            .querySelector("button[data-page='previous']")) === null || _c === void 0 ? void 0 : _c.addEventListener('click', previousAndGetLots);
         (_d = searchResultsContainerElement
-            .querySelector("button[data-page='next']")) === null || _d === void 0 ? void 0 : _d.addEventListener('click', nextAndGetLots);
+            .querySelector("button[data-page='previous']")) === null || _d === void 0 ? void 0 : _d.addEventListener('click', previousAndGetLots);
+        (_e = searchResultsContainerElement
+            .querySelector("button[data-page='next']")) === null || _e === void 0 ? void 0 : _e.addEventListener('click', nextAndGetLots);
     }
     function getLots() {
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Lots}...`);

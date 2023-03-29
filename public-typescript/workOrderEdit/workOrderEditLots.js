@@ -95,22 +95,22 @@ function renderRelatedOccupancies() {
     document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent = workOrderLotOccupancies.length.toString();
     if (workOrderLotOccupancies.length === 0) {
         occupanciesContainerElement.innerHTML = `<div class="message is-info">
-            <p class="message-body">There are no ${los.escapedAliases.occupancies} associated with this work order.</p>
-            </div>`;
+      <p class="message-body">There are no ${los.escapedAliases.occupancies} associated with this work order.</p>
+      </div>`;
         return;
     }
     occupanciesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-        <thead><tr>
-        <th class="has-width-1"></th>
-        <th>${los.escapedAliases.Occupancy} Type</th>
-        <th>${los.escapedAliases.Lot}</th>
-        <th>${los.escapedAliases.OccupancyStartDate}</th>
-        <th>End Date</th>
-        <th>${los.escapedAliases.Occupants}</th>
-        <th class="has-width-1"></th>
-        </tr></thead>
-        <tbody></tbody>
-        </table>`;
+    <thead><tr>
+    <th class="has-width-1"></th>
+    <th>${los.escapedAliases.Occupancy} Type</th>
+    <th>${los.escapedAliases.Lot}</th>
+    <th>${los.escapedAliases.OccupancyStartDate}</th>
+    <th>End Date</th>
+    <th>${los.escapedAliases.Occupants}</th>
+    <th class="has-width-1"></th>
+    </tr></thead>
+    <tbody></tbody>
+    </table>`;
     const currentDateString = cityssm.dateToString(new Date());
     for (const lotOccupancy of workOrderLotOccupancies) {
         const rowElement = document.createElement('tr');
@@ -162,6 +162,19 @@ function renderRelatedOccupancies() {
         else {
             rowElement.insertAdjacentHTML('beforeend', `<td><span class="has-text-grey">(No ${los.escapedAliases.Lot})</span></td>`);
         }
+        let occupantsHTML = '';
+        for (const occupant of lotOccupancy.lotOccupancyOccupants) {
+            occupantsHTML += `<li class="has-tooltip-left"
+        data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType)}">
+        <span class="fa-li">
+        <i class="fas fa-fw fa-${cityssm.escapeHTML(((_c = occupant.fontAwesomeIconClass) !== null && _c !== void 0 ? _c : '') === ''
+                ? 'user'
+                : occupant.fontAwesomeIconClass)}" aria-label="${los.escapedAliases.Occupant}"></i>
+        </span>
+        ${cityssm.escapeHTML(occupant.occupantName)}
+        ${cityssm.escapeHTML(occupant.occupantFamilyName)}
+        </li>`;
+        }
         rowElement.insertAdjacentHTML('beforeend', '<td>' +
             lotOccupancy.occupancyStartDateString +
             '</td>' +
@@ -172,27 +185,8 @@ function renderRelatedOccupancies() {
                 '</td>') +
             ('<td>' +
                 (lotOccupancy.lotOccupancyOccupants.length === 0
-                    ? '<span class="has-text-grey">(No ' +
-                        los.escapedAliases.Occupants +
-                        ')</span>'
-                    : (_c = lotOccupancy.lotOccupancyOccupants) === null || _c === void 0 ? void 0 : _c.reduce((soFar, occupant) => {
-                        var _a;
-                        return (soFar +
-                            '<span class="has-tooltip-left" data-tooltip="' +
-                            cityssm.escapeHTML(occupant.lotOccupantType) +
-                            '">' +
-                            '<i class="fas fa-fw fa-' +
-                            cityssm.escapeHTML(((_a = occupant.fontAwesomeIconClass) !== null && _a !== void 0 ? _a : '') === ''
-                                ? 'user'
-                                : occupant.fontAwesomeIconClass) +
-                            '" aria-label="' +
-                            los.escapedAliases.Occupant +
-                            '"></i> ' +
-                            cityssm.escapeHTML(occupant.occupantName) +
-                            ' ' +
-                            cityssm.escapeHTML(occupant.occupantFamilyName) +
-                            '</span><br />');
-                    }, '')) +
+                    ? `<span class="has-text-grey">(No ${los.escapedAliases.Occupants})</span>`
+                    : `<ul class="fa-ul ml-5">${occupantsHTML}</ul>`) +
                 '</td>') +
             ('<td>' +
                 '<button class="button is-small is-light is-danger button--deleteLotOccupancy" data-tooltip="Delete Relationship" type="button">' +
@@ -441,7 +435,7 @@ function doAddLotOccupancy(clickEvent) {
                                     .occupantFamilyName) +
                                 (lotOccupancy.lotOccupancyOccupants.length > 1
                                     ? ' plus ' +
-                                        (lotOccupancy.lotOccupancyOccupants.length - 1)
+                                        (lotOccupancy.lotOccupancyOccupants.length - 1).toString()
                                     : '')) +
                         '</td>'));
                 rowElement

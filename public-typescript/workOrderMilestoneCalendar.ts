@@ -78,32 +78,29 @@ declare const cityssm: cityssmGlobal
       let lotOccupancyHTML = ''
 
       for (const lot of milestone.workOrderLots!) {
-        lotOccupancyHTML +=
-          '<span class="has-tooltip-left" data-tooltip="' +
-          cityssm.escapeHTML(lot.mapName ?? '') +
-          '">' +
-          '<i class="fas fa-vector-square" aria-label="' +
-          los.escapedAliases.Lot +
-          '"></i> ' +
-          cityssm.escapeHTML(lot.lotName ?? '') +
-          '</span>' +
-          '<br />'
+        lotOccupancyHTML += `<li class="has-tooltip-left"
+          data-tooltip="${cityssm.escapeHTML(lot.mapName ?? '')}">
+          <span class="fa-li">
+          <i class="fas fa-vector-square"
+            aria-label="${los.escapedAliases.Lot}"></i>
+          </span>
+          ${cityssm.escapeHTML(lot.lotName ?? '')}
+          </li>`
       }
 
       for (const lotOccupancy of milestone.workOrderLotOccupancies!) {
         for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
-          lotOccupancyHTML +=
-            '<span class="has-tooltip-left" data-tooltip="' +
-            cityssm.escapeHTML(occupant.lotOccupantType ?? '') +
-            '">' +
-            '<i class="fas fa-user" aria-label="' +
-            los.escapedAliases.Occupancy +
-            '"></i> ' +
-            cityssm.escapeHTML(occupant.occupantName ?? '') +
-            ' ' +
-            cityssm.escapeHTML(occupant.occupantFamilyName ?? '') +
-            '</span>' +
-            '<br />'
+          lotOccupancyHTML += `<li class="has-tooltip-left"
+            data-tooltip="${cityssm.escapeHTML(
+              occupant.lotOccupantType ?? ''
+            )}">
+            <span class="fa-li">
+            <i class="fas fa-user"
+              aria-label="${los.escapedAliases.Occupancy}"></i>
+            </span>
+            ${cityssm.escapeHTML(occupant.occupantName ?? '')}
+            ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
+            </li>`
         }
       }
 
@@ -142,7 +139,11 @@ declare const cityssm: cityssmGlobal
           cityssm.escapeHTML(milestone.workOrderDescription ?? '') +
           '</span>' +
           '</div>') +
-        ('<div class="column is-size-7">' + lotOccupancyHTML + '</div>') +
+        ('<div class="column is-size-7">' +
+          (lotOccupancyHTML === ''
+            ? ''
+            : '<ul class="fa-ul ml-4">' + lotOccupancyHTML + '</ul>') +
+          '</div>') +
         '</div>'
       ;(currentPanelElement as HTMLElement).append(panelBlockElement)
     }
@@ -162,10 +163,14 @@ declare const cityssm: cityssmGlobal
     cityssm.postJSON(
       los.urlPrefix + '/workOrders/doGetWorkOrderMilestones',
       workOrderSearchFiltersFormElement,
-      (responseJSON: {
-        workOrderMilestones: recordTypes.WorkOrderMilestone[]
-      }) => {
-        renderMilestones(responseJSON.workOrderMilestones)
+      (responseJSON) => {
+        renderMilestones(
+          (
+            responseJSON as {
+              workOrderMilestones: recordTypes.WorkOrderMilestone[]
+            }
+          ).workOrderMilestones
+        )
       }
     )
   }

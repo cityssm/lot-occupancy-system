@@ -72,20 +72,20 @@ declare const cityssm: cityssmGlobal
 
       for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
         occupantsHTML +=
-          '<span class="has-tooltip-left" data-tooltip="' +
+          '<li class="has-tooltip-right" data-tooltip="' +
           cityssm.escapeHTML(occupant.lotOccupantType ?? '') +
           '">' +
-          ('<i class="fas fa-fw fa-' +
+          ('<span class="fa-li"><i class="fas fa-fw fa-' +
             cityssm.escapeHTML(
               (occupant.fontAwesomeIconClass ?? '') === ''
                 ? 'user'
                 : occupant.fontAwesomeIconClass!
             ) +
-            '" aria-hidden="true"></i> ') +
+            '" aria-hidden="true"></i></span> ') +
           cityssm.escapeHTML(occupant.occupantName ?? '') +
           ' ' +
           cityssm.escapeHTML(occupant.occupantFamilyName ?? '') +
-          '</span><br />'
+          '</li>'
       }
 
       const feeTotal = (
@@ -153,10 +153,14 @@ declare const cityssm: cityssmGlobal
           ('<td>' + lotOccupancy.occupancyStartDateString! + '</td>') +
           ('<td>' +
             (lotOccupancy.occupancyEndDate
-              ? lotOccupancy.occupancyEndDateString
+              ? lotOccupancy.occupancyEndDateString!
               : '<span class="has-text-grey">(No End Date)</span>') +
             '</td>') +
-          ('<td>' + occupantsHTML + '</td>') +
+          ('<td>' +
+            (occupantsHTML === ''
+              ? ''
+              : '<ul class="fa-ul">' + occupantsHTML + '</ul>') +
+            '</td>') +
           ('<td>' + feeIconHTML + '</td>') +
           '<td>' +
           (lotOccupancy.printEJS

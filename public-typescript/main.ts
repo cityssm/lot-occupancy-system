@@ -158,7 +158,7 @@ declare const bulmaJS: BulmaJS
       })
 
       // Get the datepicker container element
-      const datepickerElement = containerElement.querySelector('#' + cal._id)!
+      const datepickerElement = containerElement.querySelector('#' + (cal._id as string))!
 
       // Override the previous and next month button styles
       const datePickerNavButtonElements = datepickerElement.querySelectorAll(

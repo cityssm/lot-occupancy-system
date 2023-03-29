@@ -42,18 +42,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
             let occupantsHTML = '';
             for (const occupant of lotOccupancy.lotOccupancyOccupants) {
                 occupantsHTML +=
-                    '<span class="has-tooltip-left" data-tooltip="' +
+                    '<li class="has-tooltip-right" data-tooltip="' +
                         cityssm.escapeHTML((_a = occupant.lotOccupantType) !== null && _a !== void 0 ? _a : '') +
                         '">' +
-                        ('<i class="fas fa-fw fa-' +
+                        ('<span class="fa-li"><i class="fas fa-fw fa-' +
                             cityssm.escapeHTML(((_b = occupant.fontAwesomeIconClass) !== null && _b !== void 0 ? _b : '') === ''
                                 ? 'user'
                                 : occupant.fontAwesomeIconClass) +
-                            '" aria-hidden="true"></i> ') +
+                            '" aria-hidden="true"></i></span> ') +
                         cityssm.escapeHTML((_c = occupant.occupantName) !== null && _c !== void 0 ? _c : '') +
                         ' ' +
                         cityssm.escapeHTML((_d = occupant.occupantFamilyName) !== null && _d !== void 0 ? _d : '') +
-                        '</span><br />';
+                        '</li>';
             }
             const feeTotal = ((_f = (_e = lotOccupancy.lotOccupancyFees) === null || _e === void 0 ? void 0 : _e.reduce((soFar, currentFee) => {
                 var _a, _b, _c;
@@ -107,7 +107,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         ? lotOccupancy.occupancyEndDateString
                         : '<span class="has-text-grey">(No End Date)</span>') +
                     '</td>') +
-                ('<td>' + occupantsHTML + '</td>') +
+                ('<td>' +
+                    (occupantsHTML === ''
+                        ? ''
+                        : '<ul class="fa-ul">' + occupantsHTML + '</ul>') +
+                    '</td>') +
                 ('<td>' + feeIconHTML + '</td>') +
                 '<td>' +
                 (lotOccupancy.printEJS

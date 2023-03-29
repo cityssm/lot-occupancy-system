@@ -42,31 +42,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             let lotOccupancyHTML = '';
             for (const lot of milestone.workOrderLots) {
-                lotOccupancyHTML +=
-                    '<span class="has-tooltip-left" data-tooltip="' +
-                        cityssm.escapeHTML((_a = lot.mapName) !== null && _a !== void 0 ? _a : '') +
-                        '">' +
-                        '<i class="fas fa-vector-square" aria-label="' +
-                        los.escapedAliases.Lot +
-                        '"></i> ' +
-                        cityssm.escapeHTML((_b = lot.lotName) !== null && _b !== void 0 ? _b : '') +
-                        '</span>' +
-                        '<br />';
+                lotOccupancyHTML += `<li class="has-tooltip-left"
+          data-tooltip="${cityssm.escapeHTML((_a = lot.mapName) !== null && _a !== void 0 ? _a : '')}">
+          <span class="fa-li">
+          <i class="fas fa-vector-square"
+            aria-label="${los.escapedAliases.Lot}"></i>
+          </span>
+          ${cityssm.escapeHTML((_b = lot.lotName) !== null && _b !== void 0 ? _b : '')}
+          </li>`;
             }
             for (const lotOccupancy of milestone.workOrderLotOccupancies) {
                 for (const occupant of lotOccupancy.lotOccupancyOccupants) {
-                    lotOccupancyHTML +=
-                        '<span class="has-tooltip-left" data-tooltip="' +
-                            cityssm.escapeHTML((_c = occupant.lotOccupantType) !== null && _c !== void 0 ? _c : '') +
-                            '">' +
-                            '<i class="fas fa-user" aria-label="' +
-                            los.escapedAliases.Occupancy +
-                            '"></i> ' +
-                            cityssm.escapeHTML((_d = occupant.occupantName) !== null && _d !== void 0 ? _d : '') +
-                            ' ' +
-                            cityssm.escapeHTML((_e = occupant.occupantFamilyName) !== null && _e !== void 0 ? _e : '') +
-                            '</span>' +
-                            '<br />';
+                    lotOccupancyHTML += `<li class="has-tooltip-left"
+            data-tooltip="${cityssm.escapeHTML((_c = occupant.lotOccupantType) !== null && _c !== void 0 ? _c : '')}">
+            <span class="fa-li">
+            <i class="fas fa-user"
+              aria-label="${los.escapedAliases.Occupancy}"></i>
+            </span>
+            ${cityssm.escapeHTML((_d = occupant.occupantName) !== null && _d !== void 0 ? _d : '')}
+            ${cityssm.escapeHTML((_e = occupant.occupantFamilyName) !== null && _e !== void 0 ? _e : '')}
+            </li>`;
                 }
             }
             panelBlockElement.innerHTML =
@@ -104,7 +99,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         cityssm.escapeHTML((_h = milestone.workOrderDescription) !== null && _h !== void 0 ? _h : '') +
                         '</span>' +
                         '</div>') +
-                    ('<div class="column is-size-7">' + lotOccupancyHTML + '</div>') +
+                    ('<div class="column is-size-7">' +
+                        (lotOccupancyHTML === ''
+                            ? ''
+                            : '<ul class="fa-ul ml-4">' + lotOccupancyHTML + '</ul>') +
+                        '</div>') +
                     '</div>';
             currentPanelElement.append(panelBlockElement);
         }
