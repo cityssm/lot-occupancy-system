@@ -4,38 +4,50 @@
   </h2>
   <ul class="menu-list">
     <li>
-      <a class="<%= (headTitle === "Fee Management" ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/fees">
+      <a class="<%= (headTitle === "Fee Management" ? "is-active" : "") %>"
+        href="<%= urlPrefix %>/admin/fees"
+        aria-label="Fee Management">
         <span class="icon"><i class="fas fa-fw fa-dollar-sign" aria-hidden="true"></i></span>
         <span class="is-hidden-touch">Fee Management</span>
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === configFunctions.getProperty("aliases.occupancy") + " Type Management" ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/occupancyTypes">
+      <a class="<%= (headTitle === configFunctions.getProperty("aliases.occupancy") + " Type Management" ? "is-active" : "") %>"
+        href="<%= urlPrefix %>/admin/occupancyTypes"
+        aria-label="<%= configFunctions.getProperty("aliases.occupancy") %> Type Management">
         <span class="icon"><i class="fas fa-fw fa-user-friends" aria-hidden="true"></i></span>
         <span class="is-hidden-touch"><%= configFunctions.getProperty("aliases.occupancy") %> Type Management</span>
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === configFunctions.getProperty("aliases.lot") + " Type Management" ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/lotTypes">
+      <a class="<%= (headTitle === configFunctions.getProperty("aliases.lot") + " Type Management" ? "is-active" : "") %>"
+        href="<%= urlPrefix %>/admin/lotTypes"
+        aria-label="<%= configFunctions.getProperty("aliases.lot") %> Type Management">
         <span class="icon"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
         <span class="is-hidden-touch"><%= configFunctions.getProperty("aliases.lot") %> Type Management</span>
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === "Config Table Management" ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/tables">
+      <a class="<%= (headTitle === "Config Table Management" ? "is-active" : "") %>"
+        href="<%= urlPrefix %>/admin/tables"
+        aria-label="Config Table Management">
         <span class="icon"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
         <span class="is-hidden-touch">Config Table Management</span>
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === "Database Maintenance" ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/database">
+      <a class="<%= (headTitle === "Database Maintenance" ? "is-active" : "") %>"\
+        href="<%= urlPrefix %>/admin/database"
+        aria-label="Database Maintenance">
         <span class="icon"><i class="fas fa-fw fa-database" aria-hidden="true"></i></span>
         <span class="is-hidden-touch">Database Maintenance</span>
       </a>
     </li>
     <% if (configFunctions.getProperty("application.ntfyStartup")) { %>
       <li>
-        <a class="<%= (headTitle === "Ntfy Startup Notification" ? "is-active" : "") %>" href="<%= urlPrefix %>/admin/ntfyStartup">
+        <a class="<%= (headTitle === "Ntfy Startup Notification" ? "is-active" : "") %>"
+          href="<%= urlPrefix %>/admin/ntfyStartup"
+          aria-label="Ntfy Startup Notification">
           <span class="icon"><i class="far fa-fw fa-comment-alt" aria-hidden="true"></i></span>
           <span class="is-hidden-touch">Ntfy Startup Notification</span>
         </a>
