@@ -54,7 +54,7 @@ databaseInitializer.initializeDatabase()
  * PRELOAD CACHES
  */
 
-preloadCaches()
+// preloadCaches()
 
 /*
  * INITIALIZE APP
