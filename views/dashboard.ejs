@@ -125,7 +125,7 @@
                     </div>
                   </div>
                   <p>View and maintain work orders.</p>
-                </div>
+                </a>
               </a>
               <% if (user.userProperties.canUpdate) { %>
                 <a class="button is-fullwidth is-success is-light mb-2" href="<%= urlPrefix %>/workOrders/new">
@@ -180,8 +180,8 @@
                       View and maintain current and past
                       <%= configFunctions.getProperty("aliases.occupancies").toLowerCase() %>.
                     </p>
-                  </div>
-                </a>
+                  </a>
+                </div>
                 <% if (user.userProperties.canUpdate) { %>
                   <a class="button is-fullwidth is-success is-light" href="<%= urlPrefix %>/lotOccupancies/new">
                     <span class="icon">
