@@ -160,6 +160,15 @@ export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrde
             workOrderMilestoneTypeLowerCase);
     });
 }
+export function preloadCaches() {
+    debug('Preloading caches');
+    void getLotOccupantTypes();
+    void getLotStatuses();
+    void getLotTypes();
+    void getOccupancyTypes();
+    void getWorkOrderTypes();
+    void getWorkOrderMilestoneTypes();
+}
 function clearWorkOrderMilestoneTypesCache() {
     workOrderMilestoneTypes = undefined;
 }

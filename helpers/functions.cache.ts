@@ -298,6 +298,16 @@ export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
   })
 }
 
+export function preloadCaches(): void {
+  debug('Preloading caches')
+  void getLotOccupantTypes()
+  void getLotStatuses()
+  void getLotTypes()
+  void getOccupancyTypes()
+  void getWorkOrderTypes()
+  void getWorkOrderMilestoneTypes()
+}
+
 function clearWorkOrderMilestoneTypesCache(): void {
   workOrderMilestoneTypes = undefined
 }
