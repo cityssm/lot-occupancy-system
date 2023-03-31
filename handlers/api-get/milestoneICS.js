@@ -116,20 +116,16 @@ function buildEventDescriptionHTML_lots(request, milestone) {
                 '</tr></thead>' +
                 '<tbody>';
         for (const lot of milestone.workOrderLots) {
-            descriptionHTML +=
-                '<tr>' +
-                    ('<td>' +
-                        '<a href="' +
-                        urlRoot +
-                        '/lots/' +
-                        lot.lotId +
-                        '">' +
-                        escapeHTML(lot.lotName ?? '') +
-                        '</a></td>') +
-                    `<td>${escapeHTML(lot.mapName ?? '')}</td>` +
-                    `<td>${escapeHTML(lot.lotType ?? '')}</td>` +
-                    `<td>${escapeHTML(lot.lotStatus ?? '')}</td>` +
-                    '</tr>';
+            descriptionHTML += `<tr>
+          <td>
+            <a href="${urlRoot}/lots/${lot.lotId.toString()}">
+              ${escapeHTML(lot.lotName ?? '')}
+            </a>
+          </td>
+          <td>${escapeHTML(lot.mapName ?? '')}</td>
+          <td>${escapeHTML(lot.lotType ?? '')}</td>
+          <td>${escapeHTML(lot.lotStatus ?? '')}</td>
+        </tr>`;
         }
         descriptionHTML += '</tbody></table>';
     }
@@ -152,7 +148,7 @@ function buildEventDescriptionHTML_prints(request, milestone) {
                             '/print/' +
                             printName +
                             '/?workOrderId=' +
-                            milestone.workOrderId) +
+                            milestone.workOrderId.toString()) +
                         '</p>';
             }
         }
@@ -213,7 +209,7 @@ export async function handler(request, response) {
     });
     if (request.query.workOrderId && workOrderMilestones.length > 0) {
         calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber}`);
-        calendar.url(urlRoot + '/workOrders/' + workOrderMilestones[0].workOrderId);
+        calendar.url(urlRoot + '/workOrders/' + workOrderMilestones[0].workOrderId.toString());
     }
     calendar.prodId({
         company: calendarCompany,
