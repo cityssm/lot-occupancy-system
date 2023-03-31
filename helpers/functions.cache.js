@@ -169,6 +169,14 @@ export async function preloadCaches() {
     await getWorkOrderTypes();
     await getWorkOrderMilestoneTypes();
 }
+export function clearCaches() {
+    clearLotOccupantTypesCache();
+    clearLotStatusesCache();
+    clearLotTypesCache();
+    clearOccupancyTypesCache();
+    clearWorkOrderTypesCache();
+    clearWorkOrderMilestoneTypesCache();
+}
 function clearWorkOrderMilestoneTypesCache() {
     workOrderMilestoneTypes = undefined;
 }

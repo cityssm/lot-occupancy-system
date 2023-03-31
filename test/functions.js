@@ -16,6 +16,9 @@ describe('config.cemetery.ssm', () => {
 describe('functions.cache', () => {
     const badId = -3;
     const badName = 'qwertyuiopasdfghjklzxcvbnm';
+    before(() => {
+        cacheFunctions.clearCaches();
+    });
     describe('Lot Occupant Types', () => {
         it('returns Lot Occupant Types', async () => {
             cacheFunctions.clearCacheByTableName('LotOccupantTypes');
