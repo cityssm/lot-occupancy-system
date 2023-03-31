@@ -18,5 +18,5 @@ export declare function getWorkOrderTypeById(workOrderTypeId: number): Promise<r
 export declare function getWorkOrderMilestoneTypes(): Promise<recordTypes.WorkOrderMilestoneType[]>;
 export declare function getWorkOrderMilestoneTypeById(workOrderMilestoneTypeId: number): Promise<recordTypes.WorkOrderMilestoneType | undefined>;
 export declare function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString: string): Promise<recordTypes.WorkOrderMilestoneType | undefined>;
-export declare function preloadCaches(): void;
+export declare function preloadCaches(): Promise<void>;
 export declare function clearCacheByTableName(tableName: string, relayMessage?: boolean): void;

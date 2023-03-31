@@ -160,14 +160,14 @@ export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrde
             workOrderMilestoneTypeLowerCase);
     });
 }
-export function preloadCaches() {
+export async function preloadCaches() {
     debug('Preloading caches');
-    void getLotOccupantTypes();
-    void getLotStatuses();
-    void getLotTypes();
-    void getOccupancyTypes();
-    void getWorkOrderTypes();
-    void getWorkOrderMilestoneTypes();
+    await getLotOccupantTypes();
+    await getLotStatuses();
+    await getLotTypes();
+    await getOccupancyTypes();
+    await getWorkOrderTypes();
+    await getWorkOrderMilestoneTypes();
 }
 function clearWorkOrderMilestoneTypesCache() {
     workOrderMilestoneTypes = undefined;

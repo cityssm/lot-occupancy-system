@@ -298,14 +298,14 @@ export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
   })
 }
 
-export function preloadCaches(): void {
+export async function preloadCaches(): Promise<void> {
   debug('Preloading caches')
-  void getLotOccupantTypes()
-  void getLotStatuses()
-  void getLotTypes()
-  void getOccupancyTypes()
-  void getWorkOrderTypes()
-  void getWorkOrderMilestoneTypes()
+  await getLotOccupantTypes()
+  await getLotStatuses()
+  await getLotTypes()
+  await getOccupancyTypes()
+  await getWorkOrderTypes()
+  await getWorkOrderMilestoneTypes()
 }
 
 function clearWorkOrderMilestoneTypesCache(): void {
