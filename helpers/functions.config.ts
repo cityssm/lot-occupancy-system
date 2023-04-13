@@ -99,6 +99,8 @@ configFallbackValues.set('settings.printPdf.contentDisposition', 'attachment')
 
 configFallbackValues.set('settings.dynamicsGP.integrationIsEnabled', false)
 configFallbackValues.set('settings.dynamicsGP.lookupOrder', ['invoice'])
+configFallbackValues.set('settings.dynamicsGP.accountCodes', [])
+configFallbackValues.set('settings.dynamicsGP.itemNumbers', [])
 
 /*
  * Set up function overloads
@@ -228,6 +230,14 @@ export function getProperty(
 export function getProperty(
   propertyName: 'settings.dynamicsGP.lookupOrder'
 ): configTypes.DynamicsGPLookup[]
+
+export function getProperty(
+  propertyName: 'settings.dynamicsGP.accountCodes'
+): string[]
+
+export function getProperty(
+  propertyName: 'settings.dynamicsGP.itemNumbers'
+): string[]
 
 export function getProperty(propertyName: string): unknown {
   const propertyNameSplit = propertyName.split('.')

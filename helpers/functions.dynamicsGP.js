@@ -5,11 +5,43 @@ if (configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
     gp.setMSSQLConfig(configFunctions.getProperty('settings.dynamicsGP.mssqlConfig'));
     diamond.setMSSQLConfig(configFunctions.getProperty('settings.dynamicsGP.mssqlConfig'));
 }
+function filterCashReceipt(cashReceipt) {
+    const accountCodes = configFunctions.getProperty('settings.dynamicsGP.accountCodes');
+    for (const accountCode of accountCodes) {
+        let found = cashReceipt.details.some((detailRecord) => {
+            return detailRecord.accountCode === accountCode;
+        });
+        if (!found) {
+            found = cashReceipt.distributions.some((distributionRecord) => {
+                return distributionRecord.accountCode === accountCode;
+            });
+        }
+        if (!found) {
+            return undefined;
+        }
+    }
+    return cashReceipt;
+}
+function filterInvoice(invoice) {
+    const itemNumbers = configFunctions.getProperty('settings.dynamicsGP.itemNumbers');
+    for (const itemNumber of itemNumbers) {
+        const found = invoice.lineItems.some((itemRecord) => {
+            return itemRecord.itemNumber === itemNumber;
+        });
+        if (!found) {
+            return undefined;
+        }
+    }
+    return invoice;
+}
 async function _getDynamicsGPDocument(documentNumber, lookupType) {
     let document;
     switch (lookupType) {
         case 'invoice': {
-            const invoice = await gp.getInvoiceByInvoiceNumber(documentNumber);
+            let invoice = await gp.getInvoiceByInvoiceNumber(documentNumber);
+            if (invoice !== undefined) {
+                invoice = filterInvoice(invoice);
+            }
             if (invoice !== undefined) {
                 document = {
                     documentType: 'Invoice',
@@ -27,7 +59,10 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
             break;
         }
         case 'diamond/cashReceipt': {
-            const receipt = await diamond.getCashReceiptByDocumentNumber(documentNumber);
+            let receipt = await diamond.getCashReceiptByDocumentNumber(documentNumber);
+            if (receipt !== undefined) {
+                receipt = filterCashReceipt(receipt);
+            }
             if (receipt !== undefined) {
                 document = {
                     documentType: 'Cash Receipt',

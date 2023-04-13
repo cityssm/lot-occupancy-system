@@ -52,4 +52,6 @@ export declare function getProperty(propertyName: 'settings.printPdf.contentDisp
 export declare function getProperty(propertyName: 'settings.dynamicsGP.integrationIsEnabled'): boolean;
 export declare function getProperty(propertyName: 'settings.dynamicsGP.mssqlConfig'): MSSQLConfig;
 export declare function getProperty(propertyName: 'settings.dynamicsGP.lookupOrder'): configTypes.DynamicsGPLookup[];
+export declare function getProperty(propertyName: 'settings.dynamicsGP.accountCodes'): string[];
+export declare function getProperty(propertyName: 'settings.dynamicsGP.itemNumbers'): string[];
 export declare const keepAliveMillis: number;

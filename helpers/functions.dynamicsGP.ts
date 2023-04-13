@@ -8,6 +8,9 @@ import * as configFunctions from './functions.config.js'
 import type { DynamicsGPLookup } from '../types/configTypes'
 import type { DynamicsGPDocument } from '../types/recordTypes.js'
 
+import { type DiamondCashReceipt } from '@cityssm/dynamics-gp/diamond/types.js'
+import { type GPInvoice } from '@cityssm/dynamics-gp/gp/types.js'
+
 if (configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
   gp.setMSSQLConfig(
     configFunctions.getProperty('settings.dynamicsGP.mssqlConfig')
@@ -15,6 +18,50 @@ if (configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
   diamond.setMSSQLConfig(
     configFunctions.getProperty('settings.dynamicsGP.mssqlConfig')
   )
+}
+
+function filterCashReceipt(
+  cashReceipt: DiamondCashReceipt
+): DiamondCashReceipt | undefined {
+  const accountCodes = configFunctions.getProperty(
+    'settings.dynamicsGP.accountCodes'
+  )
+
+  for (const accountCode of accountCodes) {
+    let found = cashReceipt.details.some((detailRecord) => {
+      return detailRecord.accountCode === accountCode
+    })
+
+    if (!found) {
+      found = cashReceipt.distributions.some((distributionRecord) => {
+        return distributionRecord.accountCode === accountCode
+      })
+    }
+
+    if (!found) {
+      return undefined
+    }
+  }
+
+  return cashReceipt
+}
+
+function filterInvoice(invoice: GPInvoice): GPInvoice | undefined {
+  const itemNumbers = configFunctions.getProperty(
+    'settings.dynamicsGP.itemNumbers'
+  )
+
+  for (const itemNumber of itemNumbers) {
+    const found = invoice.lineItems.some((itemRecord) => {
+      return itemRecord.itemNumber === itemNumber
+    })
+
+    if (!found) {
+      return undefined
+    }
+  }
+
+  return invoice
 }
 
 async function _getDynamicsGPDocument(
@@ -25,7 +72,11 @@ async function _getDynamicsGPDocument(
 
   switch (lookupType) {
     case 'invoice': {
-      const invoice = await gp.getInvoiceByInvoiceNumber(documentNumber)
+      let invoice = await gp.getInvoiceByInvoiceNumber(documentNumber)
+
+      if (invoice !== undefined) {
+        invoice = filterInvoice(invoice)
+      }
 
       if (invoice !== undefined) {
         document = {
@@ -45,9 +96,12 @@ async function _getDynamicsGPDocument(
       break
     }
     case 'diamond/cashReceipt': {
-      const receipt = await diamond.getCashReceiptByDocumentNumber(
-        documentNumber
-      )
+      let receipt: DiamondCashReceipt | undefined =
+        await diamond.getCashReceiptByDocumentNumber(documentNumber)
+
+      if (receipt !== undefined) {
+        receipt = filterCashReceipt(receipt)
+      }
 
       if (receipt !== undefined) {
         document = {

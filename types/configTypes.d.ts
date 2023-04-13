@@ -65,6 +65,8 @@ export interface Config {
             integrationIsEnabled: boolean;
             mssqlConfig?: MSSQLConfig;
             lookupOrder?: DynamicsGPLookup[];
+            accountCodes?: string[];
+            itemNumbers?: string[];
         };
     };
 }

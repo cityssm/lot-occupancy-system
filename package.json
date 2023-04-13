@@ -36,7 +36,7 @@
     "@cityssm/bulma-js": "^0.4.0",
     "@cityssm/bulma-webapp-js": "^1.5.0",
     "@cityssm/date-diff": "^2.2.3",
-    "@cityssm/dynamics-gp": "^0.4.0",
+    "@cityssm/dynamics-gp": "^0.4.1",
     "@cityssm/expressjs-server-js": "^2.3.3",
     "@cityssm/ntfy-publish": "^0.2.2",
     "@cityssm/pdf-puppeteer": "^2.0.0-beta.1",
