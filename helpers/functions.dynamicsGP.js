@@ -10,7 +10,7 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
     switch (lookupType) {
         case 'invoice': {
             const invoice = await gp.getInvoiceByInvoiceNumber(documentNumber);
-            if (invoice) {
+            if (invoice !== undefined) {
                 document = {
                     documentType: 'Invoice',
                     documentNumber: invoice.invoiceNumber,
@@ -28,7 +28,7 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
         }
         case 'diamond/cashReceipt': {
             const receipt = await diamond.getCashReceiptByDocumentNumber(documentNumber);
-            if (receipt) {
+            if (receipt !== undefined) {
                 document = {
                     documentType: 'Cash Receipt',
                     documentNumber: receipt.documentNumber.toString(),

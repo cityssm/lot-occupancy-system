@@ -24,8 +24,6 @@ import routerWorkOrders from './routes/workOrders.js'
 import routerReports from './routes/reports.js'
 import routerAdmin from './routes/admin.js'
 
-import { preloadCaches } from './helpers/functions.cache.js'
-
 import * as configFunctions from './helpers/functions.config.js'
 import * as printFunctions from './helpers/functions.print.js'
 import * as dateTimeFns from '@cityssm/utils-datetime'
@@ -49,12 +47,6 @@ const debug = Debug(`lot-occupancy-system:app:${process.pid}`)
  */
 
 databaseInitializer.initializeDatabase()
-
-/*
- * PRELOAD CACHES
- */
-
-// await preloadCaches()
 
 /*
  * INITIALIZE APP

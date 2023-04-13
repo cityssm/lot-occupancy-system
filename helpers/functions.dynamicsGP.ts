@@ -27,7 +27,7 @@ async function _getDynamicsGPDocument(
     case 'invoice': {
       const invoice = await gp.getInvoiceByInvoiceNumber(documentNumber)
 
-      if (invoice) {
+      if (invoice !== undefined) {
         document = {
           documentType: 'Invoice',
           documentNumber: invoice.invoiceNumber,
@@ -49,7 +49,7 @@ async function _getDynamicsGPDocument(
         documentNumber
       )
 
-      if (receipt) {
+      if (receipt !== undefined) {
         document = {
           documentType: 'Cash Receipt',
           documentNumber: receipt.documentNumber.toString(),
