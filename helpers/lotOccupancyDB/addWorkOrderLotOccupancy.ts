@@ -17,7 +17,7 @@ export async function addWorkOrderLotOccupancy(
 
   const rightNowMillis = Date.now()
 
-  const row: { recordDelete_timeMillis?: number } = database
+  const row = database
     .prepare(
       `select recordDelete_timeMillis
         from WorkOrderLotOccupancies
@@ -27,7 +27,7 @@ export async function addWorkOrderLotOccupancy(
     .get(
       workOrderLotOccupancyForm.workOrderId,
       workOrderLotOccupancyForm.lotOccupancyId
-    )
+    ) as { recordDelete_timeMillis?: number }
 
   if (row === undefined) {
     database
