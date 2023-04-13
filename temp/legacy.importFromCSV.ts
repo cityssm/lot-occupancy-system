@@ -49,10 +49,7 @@ import { addWorkOrderMilestone } from '../helpers/lotOccupancyDB/addWorkOrderMil
 
 import { closeWorkOrder } from '../helpers/lotOccupancyDB/closeWorkOrder.js'
 
-import {
-  dateIntegerToString,
-  dateToString
-} from '@cityssm/utils-datetime'
+import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime'
 
 import type * as recordTypes from '../types/recordTypes'
 
@@ -637,6 +634,8 @@ async function importFromMasterCSV(): Promise<void> {
         }
 
         if (masterRow.CM_PERIOD !== '') {
+          const period = importData.getDeathAgePeriod(masterRow.CM_PERIOD)
+
           await addOrUpdateLotOccupancyField(
             {
               lotOccupancyId: deceasedLotOccupancyId,
@@ -647,7 +646,7 @@ async function importFromMasterCSV(): Promise<void> {
                   )
                 }
               )!.occupancyTypeFieldId!,
-              lotOccupancyFieldValue: masterRow.CM_PERIOD
+              lotOccupancyFieldValue: period
             },
             user
           )
@@ -1368,6 +1367,8 @@ async function importFromWorkOrderCSV(): Promise<void> {
       }
 
       if (workOrderRow.WO_PERIOD !== '') {
+        const period = importData.getDeathAgePeriod(workOrderRow.WO_PERIOD)
+
         await addOrUpdateLotOccupancyField(
           {
             lotOccupancyId,
@@ -1378,7 +1379,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
                 )
               }
             )!.occupancyTypeFieldId!,
-            lotOccupancyFieldValue: workOrderRow.WO_PERIOD
+            lotOccupancyFieldValue: period
           },
           user
         )

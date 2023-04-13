@@ -17,14 +17,14 @@ export function getFeeIdByFeeDescription(feeDescription: string): number {
       readonly: true
     })
 
-    const records: Array<{
-      feeId: number
-      feeDescription: string
-    }> = database
+    const records = database
       .prepare(
         "select feeId, feeDescription from Fees where feeDescription like 'CMPP_FEE_%'"
       )
-      .all()
+      .all() as Array<{
+      feeId: number
+      feeDescription: string
+    }>
 
     for (const record of records) {
       feeCache.set(record.feeDescription, record.feeId)

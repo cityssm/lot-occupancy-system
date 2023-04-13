@@ -11,3 +11,4 @@ export declare function buildLotName(lotNamePieces: {
     interment: string;
 }): string;
 export declare function getFuneralHomeLotOccupancyOccupantData(funeralHomeKey: string): recordTypes.LotOccupancyOccupant;
+export declare function getDeathAgePeriod(legacyDeathAgePeriod: string): string;

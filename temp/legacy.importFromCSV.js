@@ -308,12 +308,13 @@ async function importFromMasterCSV() {
                     }, user);
                 }
                 if (masterRow.CM_PERIOD !== '') {
+                    const period = importData.getDeathAgePeriod(masterRow.CM_PERIOD);
                     await addOrUpdateLotOccupancyField({
                         lotOccupancyId: deceasedLotOccupancyId,
                         occupancyTypeFieldId: occupancyType.occupancyTypeFields.find((occupancyTypeField) => {
                             return (occupancyTypeField.occupancyTypeField === 'Death Age Period');
                         }).occupancyTypeFieldId,
-                        lotOccupancyFieldValue: masterRow.CM_PERIOD
+                        lotOccupancyFieldValue: period
                     }, user);
                 }
                 if (masterRow.CM_FUNERAL_HOME !== '') {
@@ -791,12 +792,13 @@ async function importFromWorkOrderCSV() {
                 }, user);
             }
             if (workOrderRow.WO_PERIOD !== '') {
+                const period = importData.getDeathAgePeriod(workOrderRow.WO_PERIOD);
                 await addOrUpdateLotOccupancyField({
                     lotOccupancyId,
                     occupancyTypeFieldId: occupancyType.occupancyTypeFields.find((occupancyTypeField) => {
                         return (occupancyTypeField.occupancyTypeField === 'Death Age Period');
                     }).occupancyTypeFieldId,
-                    lotOccupancyFieldValue: workOrderRow.WO_PERIOD
+                    lotOccupancyFieldValue: period
                 }, user);
             }
             if (workOrderRow.WO_FUNERAL_HOME !== '') {
