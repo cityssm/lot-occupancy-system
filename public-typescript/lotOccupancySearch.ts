@@ -72,7 +72,7 @@ declare const cityssm: cityssmGlobal
 
       for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
         occupantsHTML +=
-          '<li class="has-tooltip-right" data-tooltip="' +
+          '<li class="has-tooltip-left" data-tooltip="' +
           cityssm.escapeHTML(occupant.lotOccupantType ?? '') +
           '">' +
           ('<span class="fa-li"><i class="fas fa-fw fa-' +

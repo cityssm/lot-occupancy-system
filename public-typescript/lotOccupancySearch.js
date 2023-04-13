@@ -42,7 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             let occupantsHTML = '';
             for (const occupant of lotOccupancy.lotOccupancyOccupants) {
                 occupantsHTML +=
-                    '<li class="has-tooltip-right" data-tooltip="' +
+                    '<li class="has-tooltip-left" data-tooltip="' +
                         cityssm.escapeHTML((_a = occupant.lotOccupantType) !== null && _a !== void 0 ? _a : '') +
                         '">' +
                         ('<span class="fa-li"><i class="fas fa-fw fa-' +
