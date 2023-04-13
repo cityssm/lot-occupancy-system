@@ -180,14 +180,16 @@ export async function getLotOccupancies(
   const isLimited = options.limit !== -1
 
   if (isLimited) {
-    count = database
-      .prepare(
-        `select count(*) as recordCount
+    count = (
+      database
+        .prepare(
+          `select count(*) as recordCount
           from LotOccupancies o
           left join Lots l on o.lotId = l.lotId
           ${sqlWhereClause}`
-      )
-      .get(sqlParameters).recordCount
+        )
+        .get(sqlParameters) as { recordCount: number }
+    ).recordCount
   }
 
   let lotOccupancies: recordTypes.LotOccupancy[] = []
@@ -210,7 +212,7 @@ export async function getLotOccupancies(
           order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId, o.lotOccupancyId desc` +
           (isLimited ? ` limit ${options.limit} offset ${options.offset}` : '')
       )
-      .all(sqlParameters)
+      .all(sqlParameters) as recordTypes.LotOccupancy[]
 
     if (!isLimited) {
       count = lotOccupancies.length

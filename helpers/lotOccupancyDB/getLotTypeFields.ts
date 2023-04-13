@@ -10,7 +10,7 @@ export async function getLotTypeFields(
 ): Promise<recordTypes.LotTypeField[]> {
   const database = connectedDatabase ?? (await acquireConnection())
 
-  const lotTypeFields: recordTypes.LotTypeField[] = database
+  const lotTypeFields = database
     .prepare(
       `select lotTypeFieldId,
         lotTypeField, lotTypeFieldValues,
@@ -20,7 +20,7 @@ export async function getLotTypeFields(
         and lotTypeId = ?
         order by orderNumber, lotTypeField`
     )
-    .all(lotTypeId)
+    .all(lotTypeId) as recordTypes.LotTypeField[]
 
   let expectedOrderNumber = 0
 

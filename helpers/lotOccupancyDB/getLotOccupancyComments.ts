@@ -33,7 +33,7 @@ export async function getLotOccupancyComments(
         and lotOccupancyId = ?
         order by lotOccupancyCommentDate desc, lotOccupancyCommentTime desc, lotOccupancyCommentId desc`
     )
-    .all(lotOccupancyId)
+    .all(lotOccupancyId) as recordTypes.LotOccupancyComment[]
 
   if (connectedDatabase === null) {
     database.release()

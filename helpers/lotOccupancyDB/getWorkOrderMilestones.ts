@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
+
 import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
@@ -18,7 +20,12 @@ import type * as recordTypes from '../../types/recordTypes'
 
 export interface WorkOrderMilestoneFilters {
   workOrderId?: number | string
-  workOrderMilestoneDateFilter?: 'upcomingMissed' | 'recent' | 'date' | 'blank' | 'notBlank'
+  workOrderMilestoneDateFilter?:
+    | 'upcomingMissed'
+    | 'recent'
+    | 'date'
+    | 'blank'
+    | 'notBlank'
   workOrderMilestoneDateString?: string
   workOrderTypeIds?: string
   workOrderMilestoneTypeIds?: string
@@ -134,7 +141,10 @@ export async function getWorkOrderMilestones(
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
-  database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString)
+  database.function(
+    'userFn_timeIntegerToPeriodString',
+    timeIntegerToPeriodString
+  )
 
   // Filters
   const { sqlWhereClause, sqlParameters } = buildWhereClause(filters)
@@ -188,9 +198,9 @@ export async function getWorkOrderMilestones(
     sqlWhereClause +
     orderByClause
 
-  const workOrderMilestones: recordTypes.WorkOrderMilestone[] = database
+  const workOrderMilestones = database
     .prepare(sql)
-    .all(sqlParameters)
+    .all(sqlParameters) as recordTypes.WorkOrderMilestone[]
 
   if (options.includeWorkOrders ?? false) {
     for (const workOrderMilestone of workOrderMilestones) {

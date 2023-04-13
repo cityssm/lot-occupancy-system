@@ -8,14 +8,16 @@ function getCurrentField(
   occupancyTypeFieldId: number,
   connectedDatabase: PoolConnection
 ): { occupancyTypeId?: number; orderNumber: number } {
-  const currentField: { occupancyTypeId?: number; orderNumber: number } =
-    connectedDatabase
-      .prepare(
-        `select occupancyTypeId, orderNumber
+  const currentField = connectedDatabase
+    .prepare(
+      `select occupancyTypeId, orderNumber
           from OccupancyTypeFields
           where occupancyTypeFieldId = ?`
-      )
-      .get(occupancyTypeFieldId)
+    )
+    .get(occupancyTypeFieldId) as {
+    occupancyTypeId?: number
+    orderNumber: number
+  }
 
   return currentField
 }
@@ -33,7 +35,9 @@ export async function moveOccupancyTypeFieldDown(
         ' set orderNumber = orderNumber - 1' +
         ' where recordDelete_timeMillis is null' +
         (currentField.occupancyTypeId
-          ? " and occupancyTypeId = '" + currentField.occupancyTypeId.toString() + "'"
+          ? " and occupancyTypeId = '" +
+            currentField.occupancyTypeId.toString() +
+            "'"
           : ' and occupancyTypeId is null') +
         ' and orderNumber = ? + 1'
     )
@@ -66,16 +70,18 @@ export async function moveOccupancyTypeFieldDownToBottom(
     occupancyTypeParameters.push(currentField.occupancyTypeId)
   }
 
-  const maxOrderNumber: number = database
-    .prepare(
-      'select max(orderNumber) as maxOrderNumber' +
-        ' from OccupancyTypeFields' +
-        ' where recordDelete_timeMillis is null' +
-        (currentField.occupancyTypeId
-          ? ' and occupancyTypeId = ?'
-          : ' and occupancyTypeId is null')
-    )
-    .get(occupancyTypeParameters).maxOrderNumber
+  const maxOrderNumber: number = (
+    database
+      .prepare(
+        'select max(orderNumber) as maxOrderNumber' +
+          ' from OccupancyTypeFields' +
+          ' where recordDelete_timeMillis is null' +
+          (currentField.occupancyTypeId
+            ? ' and occupancyTypeId = ?'
+            : ' and occupancyTypeId is null')
+      )
+      .get(occupancyTypeParameters) as { maxOrderNumber: number }
+  ).maxOrderNumber
 
   if (currentField.orderNumber !== maxOrderNumber) {
     updateRecordOrderNumber(
@@ -125,7 +131,9 @@ export async function moveOccupancyTypeFieldUp(
         ' set orderNumber = orderNumber + 1' +
         ' where recordDelete_timeMillis is null' +
         (currentField.occupancyTypeId
-          ? " and occupancyTypeId = '" + currentField.occupancyTypeId.toString() + "'"
+          ? " and occupancyTypeId = '" +
+            currentField.occupancyTypeId.toString() +
+            "'"
           : ' and occupancyTypeId is null') +
         ' and orderNumber = ? - 1'
     )

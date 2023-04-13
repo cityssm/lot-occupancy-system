@@ -26,7 +26,7 @@ export async function addLotOccupancyTransaction(
 
   let transactionIndex = 0
 
-  const maxIndexResult: { transactionIndex: number } | undefined = database
+  const maxIndexResult = database
     .prepare(
       `select transactionIndex
         from LotOccupancyTransactions
@@ -34,7 +34,9 @@ export async function addLotOccupancyTransaction(
         order by transactionIndex desc
         limit 1`
     )
-    .get(lotOccupancyTransactionForm.lotOccupancyId)
+    .get(lotOccupancyTransactionForm.lotOccupancyId) as
+    | { transactionIndex: number }
+    | undefined
 
   if (maxIndexResult !== undefined) {
     transactionIndex = maxIndexResult.transactionIndex + 1

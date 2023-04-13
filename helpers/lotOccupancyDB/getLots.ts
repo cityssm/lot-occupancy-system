@@ -91,9 +91,10 @@ export async function getLots(
   let count = 0
 
   if (options.limit !== -1) {
-    count = database
-      .prepare(
-        `select count(*) as recordCount
+    count = (
+      database
+        .prepare(
+          `select count(*) as recordCount
           from Lots l
           left join (
             select lotId, count(lotOccupancyId) as lotOccupancyCount from LotOccupancies
@@ -103,8 +104,9 @@ export async function getLots(
             group by lotId
           ) o on l.lotId = o.lotId
           ${sqlWhereClause}`
-      )
-      .get(sqlParameters).recordCount
+        )
+        .get(sqlParameters) as { recordCount: number }
+    ).recordCount
   }
 
   let lots: recordTypes.Lot[] = []
@@ -155,7 +157,7 @@ export async function getLots(
               : ` limit ${options.limit.toString()} offset ${options.offset.toString()}`
           }`
       )
-      .all(sqlParameters)
+      .all(sqlParameters) as recordTypes.Lot[]
 
     if (options.limit === -1) {
       count = lots.length

@@ -20,7 +20,7 @@ export async function getLotOccupancy(
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
-  const lotOccupancy: recordTypes.LotOccupancy | undefined = database
+  const lotOccupancy = database
     .prepare(
       `select o.lotOccupancyId,
         o.occupancyTypeId, t.occupancyType,
@@ -36,7 +36,7 @@ export async function getLotOccupancy(
         where o.recordDelete_timeMillis is null
         and o.lotOccupancyId = ?`
     )
-    .get(lotOccupancyId)
+    .get(lotOccupancyId) as recordTypes.LotOccupancy | undefined
 
   if (lotOccupancy !== undefined) {
     lotOccupancy.lotOccupancyFields = await getLotOccupancyFields(

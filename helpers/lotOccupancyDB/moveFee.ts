@@ -37,14 +37,16 @@ export async function moveFeeDownToBottom(
 
   const currentFee = await getFee(feeId, database)
 
-  const maxOrderNumber: number = database
-    .prepare(
-      `select max(orderNumber) as maxOrderNumber
+  const maxOrderNumber = (
+    database
+      .prepare(
+        `select max(orderNumber) as maxOrderNumber
         from Fees
         where recordDelete_timeMillis is null
         and feeCategoryId = ?`
-    )
-    .get(currentFee.feeCategoryId).maxOrderNumber
+      )
+      .get(currentFee.feeCategoryId) as { maxOrderNumber: number }
+  ).maxOrderNumber
 
   if (currentFee.orderNumber !== maxOrderNumber) {
     updateRecordOrderNumber('Fees', feeId, maxOrderNumber + 1, database)

@@ -27,13 +27,15 @@ function getCurrentOrderNumber(
   recordId: number | string,
   database: sqlite.Database
 ): number {
-  const currentOrderNumber: number = database
-    .prepare(
-      `select orderNumber
+  const currentOrderNumber: number = (
+    database
+      .prepare(
+        `select orderNumber
         from ${recordTable}
         where ${recordIdColumns.get(recordTable)!} = ?`
-    )
-    .get(recordId).orderNumber
+      )
+      .get(recordId) as { orderNumber: number }
+  ).orderNumber
 
   return currentOrderNumber
 }
@@ -85,13 +87,15 @@ export async function moveRecordDownToBottom(
     database
   )
 
-  const maxOrderNumber: number = database
-    .prepare(
-      `select max(orderNumber) as maxOrderNumber
+  const maxOrderNumber = (
+    database
+      .prepare(
+        `select max(orderNumber) as maxOrderNumber
         from ${recordTable}
         where recordDelete_timeMillis is null`
-    )
-    .get().maxOrderNumber
+      )
+      .get() as { maxOrderNumber: number }
+  ).maxOrderNumber
 
   if (currentOrderNumber !== maxOrderNumber) {
     updateRecordOrderNumber(recordTable, recordId, maxOrderNumber + 1, database)

@@ -12,9 +12,7 @@ export async function getNextLotId(
     configFunctions.getProperty('settings.lot.lotNameSortNameFunction')
   )
 
-  const result: {
-    lotId: number
-  } = database
+  const result = database
     .prepare(
       `select lotId
         from Lots
@@ -23,7 +21,9 @@ export async function getNextLotId(
         order by userFn_lotNameSortName(lotName)
         limit 1`
     )
-    .get(lotId)
+    .get(lotId) as {
+    lotId: number
+  }
 
   database.release()
 

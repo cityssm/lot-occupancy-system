@@ -27,7 +27,7 @@ export async function getOccupancyTypePrints(
     userFunction_configContainsPrintEJS
   )
 
-  const results: Array<{ printEJS: string; orderNumber: number }> = database
+  const results = database
     .prepare(
       `select printEJS, orderNumber
         from OccupancyTypePrints
@@ -36,7 +36,7 @@ export async function getOccupancyTypePrints(
         and userFn_configContainsPrintEJS(printEJS) = 1
         order by orderNumber, printEJS`
     )
-    .all(occupancyTypeId)
+    .all(occupancyTypeId) as Array<{ printEJS: string; orderNumber: number }>
 
   let expectedOrderNumber = -1
 

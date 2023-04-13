@@ -5,9 +5,7 @@ export async function getNextMapId(
 ): Promise<number | undefined> {
   const database = await acquireConnection()
 
-  const result: {
-    mapId: number
-  } = database
+  const result = database
     .prepare(
       `select mapId
         from Maps
@@ -16,7 +14,9 @@ export async function getNextMapId(
         order by mapName
         limit 1`
     )
-    .get(mapId)
+    .get(mapId) as {
+    mapId: number
+  }
 
   database.release()
 

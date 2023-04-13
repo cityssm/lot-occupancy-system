@@ -39,9 +39,9 @@ async function _getWorkOrder(
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
-  const workOrder: recordTypes.WorkOrder = database
-    .prepare(sql)
-    .get(workOrderIdOrWorkOrderNumber)
+  const workOrder = database.prepare(sql).get(workOrderIdOrWorkOrderNumber) as
+    | recordTypes.WorkOrder
+    | undefined
 
   if (workOrder !== undefined) {
     if (options.includeLotsAndLotOccupancies) {

@@ -8,17 +8,18 @@ function getCurrentField(
   lotTypeFieldId: number | string,
   connectedDatabase: PoolConnection
 ): { lotTypeId?: number; orderNumber: number } {
-  const currentField: { lotTypeId?: number; orderNumber: number } =
-    connectedDatabase
-      .prepare(
-        'select lotTypeId, orderNumber from LotTypeFields where lotTypeFieldId = ?'
-      )
-      .get(lotTypeFieldId)
+  const currentField = connectedDatabase
+    .prepare(
+      'select lotTypeId, orderNumber from LotTypeFields where lotTypeFieldId = ?'
+    )
+    .get(lotTypeFieldId) as { lotTypeId?: number; orderNumber: number }
 
   return currentField
 }
 
-export async function moveLotTypeFieldDown(lotTypeFieldId: number | string): Promise<boolean> {
+export async function moveLotTypeFieldDown(
+  lotTypeFieldId: number | string
+): Promise<boolean> {
   const database = await acquireConnection()
 
   const currentField = getCurrentField(lotTypeFieldId, database)
@@ -53,14 +54,16 @@ export async function moveLotTypeFieldDownToBottom(
 
   const currentField = getCurrentField(lotTypeFieldId, database)
 
-  const maxOrderNumber: number = database
-    .prepare(
-      `select max(orderNumber) as maxOrderNumber
+  const maxOrderNumber = (
+    database
+      .prepare(
+        `select max(orderNumber) as maxOrderNumber
         from LotTypeFields
         where recordDelete_timeMillis is null
         and lotTypeId = ?`
-    )
-    .get(currentField.lotTypeId).maxOrderNumber
+      )
+      .get(currentField.lotTypeId) as { maxOrderNumber: number }
+  ).maxOrderNumber
 
   if (currentField.orderNumber !== maxOrderNumber) {
     updateRecordOrderNumber(
@@ -88,7 +91,9 @@ export async function moveLotTypeFieldDownToBottom(
   return true
 }
 
-export async function moveLotTypeFieldUp(lotTypeFieldId: number | string): Promise<boolean> {
+export async function moveLotTypeFieldUp(
+  lotTypeFieldId: number | string
+): Promise<boolean> {
   const database = await acquireConnection()
 
   const currentField = getCurrentField(lotTypeFieldId, database)

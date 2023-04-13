@@ -20,10 +20,9 @@ export async function getLotOccupancyTransactions(
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
 
-  const lotOccupancyTransactions: recordTypes.LotOccupancyTransaction[] =
-    database
-      .prepare(
-        `select lotOccupancyId, transactionIndex,
+  const lotOccupancyTransactions = database
+    .prepare(
+      `select lotOccupancyId, transactionIndex,
           transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString,
           transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString,
           transactionAmount, externalReceiptNumber, transactionNote
@@ -31,8 +30,8 @@ export async function getLotOccupancyTransactions(
           where recordDelete_timeMillis is null
           and lotOccupancyId = ?
           order by transactionDate, transactionTime, transactionIndex`
-      )
-      .all(lotOccupancyId)
+    )
+    .all(lotOccupancyId) as recordTypes.LotOccupancyTransaction[]
 
   if (connectedDatabase === undefined) {
     database.release()

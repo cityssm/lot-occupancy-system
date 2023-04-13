@@ -23,7 +23,7 @@ async function _getLot(
 ): Promise<recordTypes.Lot | undefined> {
   const database = await acquireConnection()
 
-  const lot: recordTypes.Lot = database.prepare(sql).get(lotIdOrLotName)
+  const lot = database.prepare(sql).get(lotIdOrLotName) as recordTypes.Lot | undefined
 
   if (lot !== undefined) {
     const lotOccupancies = await getLotOccupancies(

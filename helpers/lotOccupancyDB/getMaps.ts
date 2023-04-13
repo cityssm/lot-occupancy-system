@@ -5,7 +5,7 @@ import type * as recordTypes from '../../types/recordTypes'
 export async function getMaps(): Promise<recordTypes.Map[]> {
   const database = await acquireConnection()
 
-  const maps: recordTypes.Map[] = database
+  const maps = database
     .prepare(
       `select m.mapId, m.mapName, m.mapDescription,
         m.mapLatitude, m.mapLongitude, m.mapSVG,
@@ -20,7 +20,7 @@ export async function getMaps(): Promise<recordTypes.Map[]> {
         ) l on m.mapId = l.mapId
         where m.recordDelete_timeMillis is null order by m.mapName, m.mapId`
     )
-    .all()
+    .all() as recordTypes.Map[]
 
   database.release()
 

@@ -8,11 +8,13 @@ export async function moveOccupancyTypePrintDown(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const currentOrderNumber = database
-    .prepare(
-      'select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?'
-    )
-    .get(occupancyTypeId, printEJS).orderNumber
+  const currentOrderNumber = (
+    database
+      .prepare(
+        'select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?'
+      )
+      .get(occupancyTypeId, printEJS) as { orderNumber: number }
+  ).orderNumber
 
   database
     .prepare(
@@ -43,20 +45,24 @@ export async function moveOccupancyTypePrintDownToBottom(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const currentOrderNumber = database
-    .prepare(
-      'select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?'
-    )
-    .get(occupancyTypeId, printEJS).orderNumber
+  const currentOrderNumber = (
+    database
+      .prepare(
+        'select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?'
+      )
+      .get(occupancyTypeId, printEJS) as { orderNumber: number }
+  ).orderNumber
 
-  const maxOrderNumber: number = database
-    .prepare(
-      `select max(orderNumber) as maxOrderNumber
+  const maxOrderNumber: number = (
+    database
+      .prepare(
+        `select max(orderNumber) as maxOrderNumber
         from OccupancyTypePrints
         where recordDelete_timeMillis is null
         and occupancyTypeId = ?`
-    )
-    .get(occupancyTypeId).maxOrderNumber
+      )
+      .get(occupancyTypeId) as { maxOrderNumber: number }
+  ).maxOrderNumber
 
   if (currentOrderNumber !== maxOrderNumber) {
     database

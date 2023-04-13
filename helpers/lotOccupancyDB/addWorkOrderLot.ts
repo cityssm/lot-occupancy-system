@@ -15,14 +15,16 @@ export async function addWorkOrderLot(
 
   const rightNowMillis = Date.now()
 
-  const row: { recordDelete_timeMillis?: number } = database
+  const row = database
     .prepare(
       `select recordDelete_timeMillis
         from WorkOrderLots
         where workOrderId = ?
         and lotId = ?`
     )
-    .get(workOrderLotForm.workOrderId, workOrderLotForm.lotId)
+    .get(workOrderLotForm.workOrderId, workOrderLotForm.lotId) as {
+    recordDelete_timeMillis?: number
+  }
 
   if (row === undefined) {
     database

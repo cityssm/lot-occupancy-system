@@ -13,14 +13,14 @@ export async function getOccupancyTypes(): Promise<
 > {
   const database = await acquireConnection()
 
-  const occupancyTypes: recordTypes.OccupancyType[] = database
+  const occupancyTypes = database
     .prepare(
       `select occupancyTypeId, occupancyType, orderNumber
         from OccupancyTypes
         where recordDelete_timeMillis is null
         order by orderNumber, occupancyType`
     )
-    .all()
+    .all() as recordTypes.OccupancyType[]
 
   let expectedTypeOrderNumber = -1
 

@@ -9,7 +9,7 @@ export async function getLotOccupancyOccupants(
 ): Promise<recordTypes.LotOccupancyOccupant[]> {
   const database = connectedDatabase ?? (await acquireConnection())
 
-  const lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[] = database
+  const lotOccupancyOccupants = database
     .prepare(
       `select o.lotOccupancyId, o.lotOccupantIndex,
         o.occupantName, o.occupantFamilyName,
@@ -25,7 +25,7 @@ export async function getLotOccupancyOccupants(
         and o.lotOccupancyId = ?
         order by t.orderNumber, t.lotOccupantType, o.occupantName, o.lotOccupantIndex`
     )
-    .all(lotOccupancyId)
+    .all(lotOccupancyId) as recordTypes.LotOccupancyOccupant[]
 
   if (connectedDatabase === undefined) {
     database.release()

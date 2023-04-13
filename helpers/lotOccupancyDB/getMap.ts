@@ -7,7 +7,7 @@ export async function getMap(
 ): Promise<recordTypes.Map | undefined> {
   const database = await acquireConnection()
 
-  const map: recordTypes.Map = database
+  const map = database
     .prepare(
       `select m.mapId, m.mapName, m.mapDescription,
         m.mapLatitude, m.mapLongitude, m.mapSVG,
@@ -29,7 +29,7 @@ export async function getMap(
           m.recordUpdate_userName, m.recordUpdate_timeMillis,
           m.recordDelete_userName, m.recordDelete_timeMillis`
     )
-    .get(mapId)
+    .get(mapId) as recordTypes.Map | undefined
 
   database.release()
 

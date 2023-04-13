@@ -28,7 +28,9 @@ export async function getNextWorkOrderNumber(
         where userFn_matchesWorkOrderNumberSyntax(workOrderNumber) = 1
         order by cast(substr(workOrderNumber, instr(workOrderNumber, '-') + 1) as integer) desc`
     )
-    .get()
+    .get() as {
+    workOrderNumber: string
+  }
 
   if (connectedDatabase === undefined) {
     database.release()

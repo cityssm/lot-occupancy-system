@@ -61,9 +61,9 @@ export async function getPastLotOccupancyOccupants(
       order by lotOccupancyIdCount desc, recordUpdate_timeMillisMax desc
       limit ${options.limit}`
 
-  const lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[] = database
+  const lotOccupancyOccupants = database
     .prepare(sql)
-    .all(sqlParameters)
+    .all(sqlParameters) as recordTypes.LotOccupancyOccupant[]
 
   database.release()
 

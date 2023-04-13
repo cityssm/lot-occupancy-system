@@ -7,14 +7,14 @@ import type * as recordTypes from '../../types/recordTypes'
 export async function getLotStatuses(): Promise<recordTypes.LotStatus[]> {
   const database = await acquireConnection()
 
-  const lotStatuses: recordTypes.LotStatus[] = database
+  const lotStatuses = database
     .prepare(
       `select lotStatusId, lotStatus, orderNumber
         from LotStatuses
         where recordDelete_timeMillis is null
         order by orderNumber, lotStatus`
     )
-    .all()
+    .all() as recordTypes.LotStatus[]
 
   let expectedOrderNumber = 0
 

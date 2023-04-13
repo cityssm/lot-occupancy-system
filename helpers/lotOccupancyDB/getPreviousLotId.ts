@@ -12,9 +12,7 @@ export async function getPreviousLotId(
     configFunctions.getProperty('settings.lot.lotNameSortNameFunction')
   )
 
-  const result: {
-    lotId: number
-  } = database
+  const result = database
     .prepare(
       `select lotId from Lots
         where recordDelete_timeMillis is null
@@ -22,7 +20,9 @@ export async function getPreviousLotId(
         order by userFn_lotNameSortName(lotName) desc
         limit 1`
     )
-    .get(lotId)
+    .get(lotId) as {
+    lotId: number
+  }
 
   database.release()
 

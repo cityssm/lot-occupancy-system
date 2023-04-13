@@ -16,9 +16,7 @@ const baseSQL = `select w.workOrderId,
 async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
-    const workOrder = database
-        .prepare(sql)
-        .get(workOrderIdOrWorkOrderNumber);
+    const workOrder = database.prepare(sql).get(workOrderIdOrWorkOrderNumber);
     if (workOrder !== undefined) {
         if (options.includeLotsAndLotOccupancies) {
             const workOrderLotsResults = await getLots({

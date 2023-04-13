@@ -23,7 +23,7 @@ export async function getLotStatusSummary(
     sqlParameters.push(filters.mapId)
   }
 
-  const lotStatuses: LotStatusSummary[] = database
+  const lotStatuses = database
     .prepare(
       `select s.lotStatusId, s.lotStatus, count(l.lotId) as lotCount
         from Lots l
@@ -32,7 +32,7 @@ export async function getLotStatusSummary(
         group by s.lotStatusId, s.lotStatus, s.orderNumber
         order by s.orderNumber`
     )
-    .all(sqlParameters)
+    .all(sqlParameters) as LotStatusSummary[]
 
   database.release()
 

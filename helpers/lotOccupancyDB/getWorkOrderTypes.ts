@@ -11,14 +11,14 @@ export async function getWorkOrderTypes(): Promise<
 > {
   const database = await acquireConnection()
 
-  const workOrderTypes: recordTypes.WorkOrderType[] = database
+  const workOrderTypes = database
     .prepare(
       `select workOrderTypeId, workOrderType, orderNumber
         from WorkOrderTypes
         where recordDelete_timeMillis is null
         order by orderNumber, workOrderType`
     )
-    .all()
+    .all() as recordTypes.WorkOrderType[]
 
   let expectedOrderNumber = 0
 
@@ -26,7 +26,7 @@ export async function getWorkOrderTypes(): Promise<
     if (workOrderType.orderNumber !== expectedOrderNumber) {
       updateRecordOrderNumber(
         'WorkOrderTypes',
-        workOrderType.workOrderTypeId!,
+        workOrderType.workOrderTypeId,
         expectedOrderNumber,
         database
       )

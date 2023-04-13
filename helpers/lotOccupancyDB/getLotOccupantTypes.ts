@@ -11,7 +11,7 @@ export async function getLotOccupantTypes(): Promise<
 > {
   const database = await acquireConnection()
 
-  const lotOccupantTypes: recordTypes.LotOccupantType[] = database
+  const lotOccupantTypes = database
     .prepare(
       `select lotOccupantTypeId, lotOccupantType, fontAwesomeIconClass, occupantCommentTitle,
         orderNumber
@@ -19,7 +19,7 @@ export async function getLotOccupantTypes(): Promise<
         where recordDelete_timeMillis is null
         order by orderNumber, lotOccupantType`
     )
-    .all()
+    .all() as recordTypes.LotOccupantType[]
 
   let expectedOrderNumber = 0
 

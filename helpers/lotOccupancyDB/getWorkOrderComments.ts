@@ -33,7 +33,7 @@ export async function getWorkOrderComments(
         and workOrderId = ?
         order by workOrderCommentDate desc, workOrderCommentTime desc, workOrderCommentId desc`
     )
-    .all(workOrderId)
+    .all(workOrderId) as recordTypes.WorkOrderComment[]
 
   if (connectedDatabase === undefined) {
     database.release()

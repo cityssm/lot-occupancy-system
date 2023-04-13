@@ -9,7 +9,7 @@ export async function getLotOccupancyFees(
 ): Promise<recordTypes.LotOccupancyFee[]> {
   const database = connectedDatabase ?? (await acquireConnection())
 
-  const lotOccupancyFees: recordTypes.LotOccupancyFee[] = database
+  const lotOccupancyFees = database
     .prepare(
       `select o.lotOccupancyId, o.feeId,
         c.feeCategory, f.feeName,
@@ -21,7 +21,7 @@ export async function getLotOccupancyFees(
         and o.lotOccupancyId = ?
         order by o.recordCreate_timeMillis`
     )
-    .all(lotOccupancyId)
+    .all(lotOccupancyId) as recordTypes.LotOccupancyFee[]
 
   if (connectedDatabase === undefined) {
     database.release()

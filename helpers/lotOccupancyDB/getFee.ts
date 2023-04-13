@@ -27,7 +27,7 @@ export async function getFee(
         where f.recordDelete_timeMillis is null
         and f.feeId = ?`
     )
-    .get(feeId)
+    .get(feeId) as recordTypes.Fee
 
   if (connectedDatabase === undefined) {
     database.release()

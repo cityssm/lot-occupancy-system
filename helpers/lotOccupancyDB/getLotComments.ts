@@ -33,7 +33,7 @@ export async function getLotComments(
         and lotId = ?
         order by lotCommentDate desc, lotCommentTime desc, lotCommentId desc`
     )
-    .all(lotId)
+    .all(lotId) as recordTypes.LotComment[]
 
   if (connectedDatabase === undefined) {
     database.release()

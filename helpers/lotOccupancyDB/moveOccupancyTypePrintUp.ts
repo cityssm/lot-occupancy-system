@@ -8,11 +8,13 @@ export async function moveOccupancyTypePrintUp(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const currentOrderNumber = database
-    .prepare(
-      'select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?'
-    )
-    .get(occupancyTypeId, printEJS).orderNumber
+  const currentOrderNumber = (
+    database
+      .prepare(
+        'select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?'
+      )
+      .get(occupancyTypeId, printEJS) as { orderNumber: number }
+  ).orderNumber
 
   if (currentOrderNumber <= 0) {
     database.release()
@@ -48,11 +50,13 @@ export async function moveOccupancyTypePrintUpToTop(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const currentOrderNumber = database
-    .prepare(
-      'select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?'
-    )
-    .get(occupancyTypeId, printEJS).orderNumber
+  const currentOrderNumber = (
+    database
+      .prepare(
+        'select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?'
+      )
+      .get(occupancyTypeId, printEJS) as { orderNumber: number }
+  ).orderNumber
 
   if (currentOrderNumber > 0) {
     database

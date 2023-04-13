@@ -9,7 +9,7 @@ export async function getLotOccupancyFields(
 ): Promise<recordTypes.LotOccupancyField[]> {
   const database = connectedDatabase ?? (await acquireConnection())
 
-  const lotOccupancyFields: recordTypes.LotOccupancyField[] = database
+  const lotOccupancyFields = database
     .prepare(
       `select o.lotOccupancyId, o.occupancyTypeFieldId,
         o.lotOccupancyFieldValue, f.occupancyTypeField, f.occupancyTypeFieldValues,
@@ -35,7 +35,7 @@ export async function getLotOccupancyFields(
         and f.occupancyTypeFieldId not in (select occupancyTypeFieldId from LotOccupancyFields where lotOccupancyId = ? and recordDelete_timeMillis is null)
         order by occupancyTypeOrderNumber, f.orderNumber, f.occupancyTypeField`
     )
-    .all(lotOccupancyId, lotOccupancyId, lotOccupancyId, lotOccupancyId)
+    .all(lotOccupancyId, lotOccupancyId, lotOccupancyId, lotOccupancyId) as recordTypes.LotOccupancyField[]
 
   if (connectedDatabase === undefined) {
     database.release()

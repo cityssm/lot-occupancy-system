@@ -48,18 +48,18 @@ export async function addLotOccupancyFee(
   }
 
   // Check if record already exists
-  const record: {
-    feeAmount?: number
-    taxAmount?: number
-    recordDelete_timeMillis?: number
-  } = database
+  const record = database
     .prepare(
       `select feeAmount, taxAmount, recordDelete_timeMillis
         from LotOccupancyFees
         where lotOccupancyId = ?
         and feeId = ?`
     )
-    .get(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId)
+    .get(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId) as {
+    feeAmount?: number
+    taxAmount?: number
+    recordDelete_timeMillis?: number
+  }
 
   if (record) {
     if (record.recordDelete_timeMillis) {

@@ -39,7 +39,7 @@ export async function getFees(
     sqlParameters.push(additionalFilters.lotTypeId)
   }
 
-  const fees: recordTypes.Fee[] = database
+  const fees = database
     .prepare(
       `select f.feeId, f.feeName, f.feeDescription,
         f.occupancyTypeId, o.occupancyType,
@@ -62,7 +62,7 @@ export async function getFees(
         ${sqlWhereClause}
         order by f.orderNumber, f.feeName`
     )
-    .all(sqlParameters)
+    .all(sqlParameters) as recordTypes.Fee[]
 
   if (updateOrderNumbers) {
     let expectedOrderNumber = 0

@@ -47,14 +47,14 @@ export async function getFeeCategories(
     sqlParameters.push(filters.lotTypeId)
   }
 
-  const feeCategories: recordTypes.FeeCategory[] = database
+  const feeCategories = database
     .prepare(
       'select feeCategoryId, feeCategory, orderNumber' +
         ' from FeeCategories' +
         sqlWhereClause +
         ' order by orderNumber, feeCategory'
     )
-    .all(sqlParameters)
+    .all(sqlParameters) as recordTypes.FeeCategory[]
 
   if (options.includeFees ?? false) {
     let expectedOrderNumber = 0

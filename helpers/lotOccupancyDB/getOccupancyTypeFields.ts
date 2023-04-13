@@ -16,7 +16,7 @@ export async function getOccupancyTypeFields(
     sqlParameters.push(occupancyTypeId)
   }
 
-  const occupancyTypeFields: recordTypes.OccupancyTypeField[] = database
+  const occupancyTypeFields = database
     .prepare(
       'select occupancyTypeFieldId,' +
         ' occupancyTypeField, occupancyTypeFieldValues, isRequired, pattern,' +
@@ -29,7 +29,7 @@ export async function getOccupancyTypeFields(
           : ' and occupancyTypeId = ?') +
         ' order by orderNumber, occupancyTypeField'
     )
-    .all(sqlParameters)
+    .all(sqlParameters) as recordTypes.OccupancyTypeField[]
 
   let expectedOrderNumber = 0
 

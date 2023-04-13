@@ -5,9 +5,7 @@ export async function getPreviousMapId(
 ): Promise<number | undefined> {
   const database = await acquireConnection()
 
-  const result: {
-    mapId: number
-  } = database
+  const result = database
     .prepare(
       `select mapId from Maps
         where recordDelete_timeMillis is null
@@ -15,7 +13,9 @@ export async function getPreviousMapId(
         order by mapName desc
         limit 1`
     )
-    .get(mapId)
+    .get(mapId) as {
+    mapId: number
+  }
 
   database.release()
 

@@ -17,7 +17,9 @@ export async function moveOccupancyTypeFieldDown(occupancyTypeFieldId) {
         ' set orderNumber = orderNumber - 1' +
         ' where recordDelete_timeMillis is null' +
         (currentField.occupancyTypeId
-            ? " and occupancyTypeId = '" + currentField.occupancyTypeId.toString() + "'"
+            ? " and occupancyTypeId = '" +
+                currentField.occupancyTypeId.toString() +
+                "'"
             : ' and occupancyTypeId is null') +
         ' and orderNumber = ? + 1')
         .run(currentField.orderNumber);
@@ -70,7 +72,9 @@ export async function moveOccupancyTypeFieldUp(occupancyTypeFieldId) {
         ' set orderNumber = orderNumber + 1' +
         ' where recordDelete_timeMillis is null' +
         (currentField.occupancyTypeId
-            ? " and occupancyTypeId = '" + currentField.occupancyTypeId.toString() + "'"
+            ? " and occupancyTypeId = '" +
+                currentField.occupancyTypeId.toString() +
+                "'"
             : ' and occupancyTypeId is null') +
         ' and orderNumber = ? - 1')
         .run(currentField.orderNumber);

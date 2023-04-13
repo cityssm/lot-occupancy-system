@@ -8,14 +8,14 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 export async function getLotTypes(): Promise<recordTypes.LotType[]> {
   const database = await acquireConnection()
 
-  const lotTypes: recordTypes.LotType[] = database
+  const lotTypes = database
     .prepare(
       `select lotTypeId, lotType, orderNumber
         from LotTypes
         where recordDelete_timeMillis is null
         order by orderNumber, lotType`
     )
-    .all()
+    .all() as recordTypes.LotType[]
 
   let expectedTypeOrderNumber = -1
 
