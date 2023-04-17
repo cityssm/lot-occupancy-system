@@ -23,7 +23,7 @@
         <% } else { %>
           Update
         <% } %>
-    </a>
+      </a>
     </li>
   </ul>
 </nav>
@@ -45,7 +45,13 @@
     <% } %>
   </div>
   <div class="level-right">
-    <% if (!isCreate) { %>
+    <% if (isCreate) { %>
+      <div class="level-item">
+        <a class="button is-danger is-inverted" href="<%= urlPrefix %>/maps">
+          Cancel
+        </a>
+      </div>
+    <% } else { %>
       <div class="level-item">
         <div class="dropdown is-right is-up">
           <div class="dropdown-trigger">
@@ -71,8 +77,8 @@
       <button class="button is-primary is-light" type="submit" form="form--map">
         <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
         <span>
-            <%= (isCreate ? "Create": "Update") %>
-            <%= configFunctions.getProperty("aliases.map") %>
+          <%= (isCreate ? "Create": "Update") %>
+          <%= configFunctions.getProperty("aliases.map") %>
         </span>
       </button>
     </div>
@@ -85,79 +91,79 @@
 
     <div class="columns">
         <div class="column">
-            <div class="panel">
-                <div class="panel-block is-block">
-                    <div class="field">
-                        <label class="label" for="map--mapName"><%= configFunctions.getProperty("aliases.map") %> Name</label>
-                        <div class="control">
-                            <input class="input" id="map--mapName" name="mapName" type="text"
-                                value="<%= map.mapName %>" maxlength="200" required
-                                accesskey="f"
-                                <%= (isCreate ? " autofocus" : "") %> />
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label" for="map--mapDescription"><%= configFunctions.getProperty("aliases.map") %> Description</label>
-                        <div class="control">
-                            <textarea class="textarea" id="map--mapDescription" name="mapDescription"><%= map.mapDescription %></textarea>
-                        </div>
-                    </div>
-                </div>
+          <div class="panel">
+            <div class="panel-block is-block">
+              <div class="field">
+                  <label class="label" for="map--mapName"><%= configFunctions.getProperty("aliases.map") %> Name</label>
+                  <div class="control">
+                    <input class="input" id="map--mapName" name="mapName" type="text"
+                      value="<%= map.mapName %>" maxlength="200" required
+                      accesskey="f"
+                      <%= (isCreate ? " autofocus" : "") %> />
+                  </div>
+              </div>
+              <div class="field">
+                  <label class="label" for="map--mapDescription"><%= configFunctions.getProperty("aliases.map") %> Description</label>
+                  <div class="control">
+                      <textarea class="textarea" id="map--mapDescription" name="mapDescription"><%= map.mapDescription %></textarea>
+                  </div>
+              </div>
             </div>
+          </div>
         </div>
         <div class="column">
-            <div class="panel">
-                <h2 class="panel-heading">Address</h2>
-                <div class="panel-block is-block">
-                    <div class="field">
-                        <label class="label" for="map--mapAddress1">Address</label>
-                        <div class="control">
-                            <input class="input" id="map--mapAddress1" name="mapAddress1" type="text" value="<%= map.mapAddress1 %>" maxlength="50" placeholder="Line 1" />
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input class="input" id="map--mapAddress2" name="mapAddress2" type="text" value="<%= map.mapAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
-                        </div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-8">
-                            <div class="field">
-                                <label class="label" for="map--mapCity">City</label>
-                                <div class="control">
-                                    <input class="input" id="map--mapCity" name="mapCity" value="<%= map.mapCity %>" maxlength="20" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="field">
-                                <label class="label" for="map--mapProvince">Province</label>
-                                <div class="control">
-                                    <input class="input" id="map--mapProvince" name="mapProvince" value="<%= map.mapProvince %>" maxlength="2" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="columns">
-                        <div class="column">
-                            <div class="field">
-                                <label class="label" for="map--mapPostalCode">Postal Code</label>
-                                <div class="control">
-                                    <input class="input" id="map--mapPostalCode" name="mapPostalCode" value="<%= map.mapPostalCode %>" maxlength="7" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="field">
-                                <label class="label" for="map--mapPhoneNumber">Phone Number</label>
-                                <div class="control">
-                                    <input class="input" id="map--mapPhoneNumber" name="mapPhoneNumber" value="<%= map.mapPhoneNumber %>" maxlength="30" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          <div class="panel">
+              <h2 class="panel-heading">Address</h2>
+              <div class="panel-block is-block">
+                  <div class="field">
+                      <label class="label" for="map--mapAddress1">Address</label>
+                      <div class="control">
+                          <input class="input" id="map--mapAddress1" name="mapAddress1" type="text" value="<%= map.mapAddress1 %>" maxlength="50" placeholder="Line 1" />
+                      </div>
+                  </div>
+                  <div class="field">
+                      <div class="control">
+                          <input class="input" id="map--mapAddress2" name="mapAddress2" type="text" value="<%= map.mapAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
+                      </div>
+                  </div>
+                  <div class="columns">
+                      <div class="column is-8">
+                          <div class="field">
+                              <label class="label" for="map--mapCity">City</label>
+                              <div class="control">
+                                  <input class="input" id="map--mapCity" name="mapCity" value="<%= map.mapCity %>" maxlength="20" />
+                              </div>
+                          </div>
+                      </div>
+                      <div class="column">
+                          <div class="field">
+                              <label class="label" for="map--mapProvince">Province</label>
+                              <div class="control">
+                                  <input class="input" id="map--mapProvince" name="mapProvince" value="<%= map.mapProvince %>" maxlength="2" />
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="columns">
+                      <div class="column">
+                          <div class="field">
+                              <label class="label" for="map--mapPostalCode">Postal Code</label>
+                              <div class="control">
+                                  <input class="input" id="map--mapPostalCode" name="mapPostalCode" value="<%= map.mapPostalCode %>" maxlength="7" />
+                              </div>
+                          </div>
+                      </div>
+                      <div class="column">
+                          <div class="field">
+                              <label class="label" for="map--mapPhoneNumber">Phone Number</label>
+                              <div class="control">
+                                  <input class="input" id="map--mapPhoneNumber" name="mapPhoneNumber" value="<%= map.mapPhoneNumber %>" maxlength="30" />
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
         </div>
     </div>
     <div class="columns">
