@@ -24,6 +24,10 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: Update npm (Node 14 only)
+        run: npm install -g npm@7
+        if: ${{ matrix.node == 14 }}
+
       - name: Install Application
         run: |
           npm ci
