@@ -31,20 +31,20 @@ function filterCashReceipt(
     'settings.dynamicsGP.accountCodes'
   )
 
-  for (const accountCode of accountCodes) {
-    let found = cashReceipt.details.some((detailRecord) => {
-      return detailRecord.accountCode === accountCode
-    })
-
-    if (!found) {
-      found = cashReceipt.distributions.some((distributionRecord) => {
-        return distributionRecord.accountCode === accountCode
-      })
+  if (accountCodes.length > 0) {
+    for (const detail of cashReceipt.details) {
+      if (accountCodes.includes(detail.accountCode)) {
+        return cashReceipt
+      }
     }
 
-    if (!found) {
-      return undefined
+    for (const distribution of cashReceipt.distributions) {
+      if (accountCodes.includes(distribution.accountCode)) {
+        return cashReceipt
+      }
     }
+
+    return undefined
   }
 
   return cashReceipt
