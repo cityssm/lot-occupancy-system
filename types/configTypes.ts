@@ -1,3 +1,4 @@
+// eslint-disable-next-line node/no-extraneous-import
 import type { config as MSSQLConfig } from 'mssql'
 
 export interface Config {
@@ -68,11 +69,12 @@ export interface Config {
       lookupOrder?: DynamicsGPLookup[]
       accountCodes?: string[]
       itemNumbers?: string[]
+      trialBalanceCodes?: string[]
     }
   }
 }
 
-export type DynamicsGPLookup = 'diamond/cashReceipt' | 'invoice'
+export type DynamicsGPLookup = 'diamond/cashReceipt' | 'diamond/extendedInvoice' | 'invoice'
 
 interface ConfigApplication {
   applicationName?: string

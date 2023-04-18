@@ -67,10 +67,11 @@ export interface Config {
             lookupOrder?: DynamicsGPLookup[];
             accountCodes?: string[];
             itemNumbers?: string[];
+            trialBalanceCodes?: string[];
         };
     };
 }
-export type DynamicsGPLookup = 'diamond/cashReceipt' | 'invoice';
+export type DynamicsGPLookup = 'diamond/cashReceipt' | 'diamond/extendedInvoice' | 'invoice';
 interface ConfigApplication {
     applicationName?: string;
     backgroundURL?: string;

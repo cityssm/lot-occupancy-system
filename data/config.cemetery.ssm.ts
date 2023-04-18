@@ -83,7 +83,7 @@ config.settings.workOrders.workOrderMilestoneDateRecentAfterDays = 30
 
 config.settings.dynamicsGP = {
   integrationIsEnabled: true,
-  lookupOrder: ['diamond/cashReceipt', 'invoice']
+  lookupOrder: ['diamond/cashReceipt', 'diamond/extendedInvoice']
 }
 
 export default config

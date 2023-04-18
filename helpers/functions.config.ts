@@ -101,6 +101,7 @@ configFallbackValues.set('settings.dynamicsGP.integrationIsEnabled', false)
 configFallbackValues.set('settings.dynamicsGP.lookupOrder', ['invoice'])
 configFallbackValues.set('settings.dynamicsGP.accountCodes', [])
 configFallbackValues.set('settings.dynamicsGP.itemNumbers', [])
+configFallbackValues.set('settings.dynamicsGP.trialBalanceCodes', [])
 
 /*
  * Set up function overloads
@@ -237,6 +238,10 @@ export function getProperty(
 
 export function getProperty(
   propertyName: 'settings.dynamicsGP.itemNumbers'
+): string[]
+
+export function getProperty(
+  propertyName: 'settings.dynamicsGP.trialBalanceCodes'
 ): string[]
 
 export function getProperty(propertyName: string): unknown {

@@ -54,4 +54,5 @@ export declare function getProperty(propertyName: 'settings.dynamicsGP.mssqlConf
 export declare function getProperty(propertyName: 'settings.dynamicsGP.lookupOrder'): configTypes.DynamicsGPLookup[];
 export declare function getProperty(propertyName: 'settings.dynamicsGP.accountCodes'): string[];
 export declare function getProperty(propertyName: 'settings.dynamicsGP.itemNumbers'): string[];
+export declare function getProperty(propertyName: 'settings.dynamicsGP.trialBalanceCodes'): string[];
 export declare const keepAliveMillis: number;

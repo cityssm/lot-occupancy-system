@@ -54,6 +54,7 @@ configFallbackValues.set('settings.dynamicsGP.integrationIsEnabled', false);
 configFallbackValues.set('settings.dynamicsGP.lookupOrder', ['invoice']);
 configFallbackValues.set('settings.dynamicsGP.accountCodes', []);
 configFallbackValues.set('settings.dynamicsGP.itemNumbers', []);
+configFallbackValues.set('settings.dynamicsGP.trialBalanceCodes', []);
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split('.');
     let currentObject = config;

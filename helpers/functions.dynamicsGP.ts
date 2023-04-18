@@ -8,8 +8,12 @@ import * as configFunctions from './functions.config.js'
 import type { DynamicsGPLookup } from '../types/configTypes'
 import type { DynamicsGPDocument } from '../types/recordTypes.js'
 
-import { type DiamondCashReceipt } from '@cityssm/dynamics-gp/diamond/types.js'
-import { type GPInvoice } from '@cityssm/dynamics-gp/gp/types.js'
+import type {
+  DiamondExtendedGPInvoice,
+  DiamondCashReceipt
+} from '@cityssm/dynamics-gp/diamond/types'
+
+import type { GPInvoice } from '@cityssm/dynamics-gp/gp/types'
 
 if (configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
   gp.setMSSQLConfig(
@@ -62,6 +66,27 @@ function filterInvoice(invoice: GPInvoice): GPInvoice | undefined {
   }
 
   return invoice
+}
+
+function filterExtendedInvoice(
+  invoice: DiamondExtendedGPInvoice
+): DiamondExtendedGPInvoice | undefined {
+  if (filterInvoice(invoice) === undefined) {
+    return undefined
+  }
+
+  const trialBalanceCodes = configFunctions.getProperty(
+    'settings.dynamicsGP.trialBalanceCodes'
+  )
+
+  if (
+    trialBalanceCodes.length > 0 &&
+    trialBalanceCodes.includes(invoice.trialBalanceCode ?? '')
+  ) {
+    return invoice
+  }
+
+  return undefined
 }
 
 async function _getDynamicsGPDocument(
@@ -118,6 +143,32 @@ async function _getDynamicsGPDocument(
           documentTotal: receipt.total
         }
       }
+
+      break
+    }
+    case 'diamond/extendedInvoice': {
+      let invoice = await diamond.getDiamondExtendedGPInvoice(documentNumber)
+
+      if (invoice !== undefined) {
+        invoice = filterExtendedInvoice(invoice)
+      }
+
+      if (invoice !== undefined) {
+        document = {
+          documentType: 'Invoice',
+          documentNumber: invoice.invoiceNumber,
+          documentDate: invoice.documentDate,
+          documentDescription: [
+            invoice.comment1,
+            invoice.comment2,
+            invoice.comment3,
+            invoice.comment4
+          ],
+          documentTotal: invoice.documentAmount
+        }
+      }
+
+      break
     }
   }
 
