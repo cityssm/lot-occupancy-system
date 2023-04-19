@@ -70,7 +70,7 @@ async function addInclusions(lotOccupancy, options, database) {
         lotOccupancy.lotOccupancyFees = await getLotOccupancyFees(lotOccupancy.lotOccupancyId, database);
     }
     if (options.includeTransactions) {
-        lotOccupancy.lotOccupancyTransactions = await getLotOccupancyTransactions(lotOccupancy.lotOccupancyId, database);
+        lotOccupancy.lotOccupancyTransactions = await getLotOccupancyTransactions(lotOccupancy.lotOccupancyId, { includeIntegrations: false }, database);
     }
     if (options.includeOccupants) {
         lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(lotOccupancy.lotOccupancyId, database);

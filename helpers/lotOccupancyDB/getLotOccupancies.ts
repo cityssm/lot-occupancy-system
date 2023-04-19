@@ -150,6 +150,7 @@ async function addInclusions(
   if (options.includeTransactions) {
     lotOccupancy.lotOccupancyTransactions = await getLotOccupancyTransactions(
       lotOccupancy.lotOccupancyId!,
+      { includeIntegrations: false },
       database
     )
   }

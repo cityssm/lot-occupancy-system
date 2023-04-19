@@ -29,7 +29,7 @@ export async function getLotOccupancy(lotOccupancyId, connectedDatabase) {
         lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(lotOccupancyId, database);
         lotOccupancy.lotOccupancyComments = await getLotOccupancyComments(lotOccupancyId, database);
         lotOccupancy.lotOccupancyFees = await getLotOccupancyFees(lotOccupancyId, database);
-        lotOccupancy.lotOccupancyTransactions = await getLotOccupancyTransactions(lotOccupancyId, database);
+        lotOccupancy.lotOccupancyTransactions = await getLotOccupancyTransactions(lotOccupancyId, { includeIntegrations: true }, database);
         const workOrdersResults = await getWorkOrders({
             lotOccupancyId
         }, {

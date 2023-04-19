@@ -13,6 +13,9 @@ import type * as recordTypes from '../../types/recordTypes'
 
 export async function getLotOccupancyTransactions(
   lotOccupancyId: number | string,
+  options: {
+    includeIntegrations: boolean
+  },
   connectedDatabase?: PoolConnection
 ): Promise<recordTypes.LotOccupancyTransaction[]> {
   const database = connectedDatabase ?? (await acquireConnection())
@@ -37,7 +40,10 @@ export async function getLotOccupancyTransactions(
     database.release()
   }
 
-  if (configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
+  if (
+    (options?.includeIntegrations ?? false) &&
+    configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')
+  ) {
     for (const transaction of lotOccupancyTransactions) {
       if ((transaction.externalReceiptNumber ?? '') !== '') {
         const gpDocument = await gpFunctions.getDynamicsGPDocument(

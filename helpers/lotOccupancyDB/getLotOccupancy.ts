@@ -57,6 +57,7 @@ export async function getLotOccupancy(
     )
     lotOccupancy.lotOccupancyTransactions = await getLotOccupancyTransactions(
       lotOccupancyId,
+      { includeIntegrations: true },
       database
     )
 

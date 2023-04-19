@@ -11,7 +11,8 @@ export async function handler(
   await updateLotOccupancyTransaction(request.body, request.session)
 
   const lotOccupancyTransactions = await getLotOccupancyTransactions(
-    request.body.lotOccupancyId
+    request.body.lotOccupancyId,
+    { includeIntegrations: true }
   )
 
   response.json({
