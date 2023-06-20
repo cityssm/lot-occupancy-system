@@ -29,11 +29,13 @@ declare const cityssm: cityssmGlobal
     '#searchFilter--offset'
   ) as HTMLInputElement
 
-  function renderWorkOrders(responseJSON: {
-    count: number
-    offset: number
-    workOrders: recordTypes.WorkOrder[]
-  }): void {
+  function renderWorkOrders(rawResponseJSON: unknown): void {
+    const responseJSON = rawResponseJSON as {
+      count: number
+      offset: number
+      workOrders: recordTypes.WorkOrder[]
+    }
+
     if (responseJSON.workOrders.length === 0) {
       searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no work orders that meet the search criteria.</p>
@@ -48,7 +50,7 @@ declare const cityssm: cityssmGlobal
       let relatedHTML = ''
 
       for (const lot of workOrder.workOrderLots!) {
-        relatedHTML += `<li class="has-tooltip-right"
+        relatedHTML += `<li class="has-tooltip-left"
           data-tooltip="${cityssm.escapeHTML(lot.mapName ?? '')}">
           <span class="fa-li">
             <i class="fas fa-fw fa-vector-square"
@@ -64,7 +66,7 @@ declare const cityssm: cityssmGlobal
 
       for (const occupancy of workOrder.workOrderLotOccupancies!) {
         for (const occupant of occupancy.lotOccupancyOccupants!) {
-          relatedHTML += `<li class="has-tooltip-right"
+          relatedHTML += `<li class="has-tooltip-left"
             data-tooltip="${cityssm.escapeHTML(
               occupant.lotOccupantType ?? ''
             )}">
@@ -96,13 +98,12 @@ declare const cityssm: cityssmGlobal
               : cityssm.escapeHTML(workOrder.workOrderNumber ?? '')) +
             '</a>' +
             '</td>') +
-          ('<td>' +
-            cityssm.escapeHTML(workOrder.workOrderType ?? '') +
-            '<br />' +
-            '<span class="is-size-7">' +
-            cityssm.escapeHTML(workOrder.workOrderDescription ?? '') +
-            '</span>' +
-            '</td>') +
+          `<td>
+            ${cityssm.escapeHTML(workOrder.workOrderType ?? '')}<br />
+            <span class="is-size-7">
+              ${cityssm.escapeHTML(workOrder.workOrderDescription ?? '')}
+            </span>
+            </td>` +
           ('<td>' +
             (relatedHTML === ''
               ? ''
@@ -110,16 +111,15 @@ declare const cityssm: cityssmGlobal
             '</td>') +
           ('<td>' +
             '<ul class="fa-ul ml-5 is-size-7">' +
-            ('<li class="has-tooltip-right" data-tooltip="' +
-              los.escapedAliases.WorkOrderOpenDate +
-              '">' +
-              '<span class="fa-li">' +
-              '<i class="fas fa-fw fa-play" aria-label="' +
-              los.escapedAliases.WorkOrderOpenDate +
-              '"></i></span> ' +
-              workOrder.workOrderOpenDateString! +
-              '</li>') +
-            ('<li class="has-tooltip-right" data-tooltip="' +
+            `<li class="has-tooltip-left"
+              data-tooltip="${los.escapedAliases.WorkOrderOpenDate}">
+              <span class="fa-li">
+                <i class="fas fa-fw fa-play"
+                  aria-label="${los.escapedAliases.WorkOrderOpenDate}"></i>
+              </span>
+              ${workOrder.workOrderOpenDateString!}
+            </li>` +
+            ('<li class="has-tooltip-left" data-tooltip="' +
               los.escapedAliases.WorkOrderCloseDate +
               '">' +
               '<span class="fa-li">' +

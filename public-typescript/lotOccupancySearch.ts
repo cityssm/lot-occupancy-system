@@ -159,7 +159,7 @@ declare const cityssm: cityssmGlobal
           ('<td>' +
             (occupantsHTML === ''
               ? ''
-              : '<ul class="fa-ul">' + occupantsHTML + '</ul>') +
+              : '<ul class="fa-ul ml-5">' + occupantsHTML + '</ul>') +
             '</td>') +
           ('<td>' + feeIconHTML + '</td>') +
           '<td>' +

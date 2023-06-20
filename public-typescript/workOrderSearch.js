@@ -9,8 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
-    function renderWorkOrders(responseJSON) {
+    function renderWorkOrders(rawResponseJSON) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+        const responseJSON = rawResponseJSON;
         if (responseJSON.workOrders.length === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no work orders that meet the search criteria.</p>
@@ -21,7 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         for (const workOrder of responseJSON.workOrders) {
             let relatedHTML = '';
             for (const lot of workOrder.workOrderLots) {
-                relatedHTML += `<li class="has-tooltip-right"
+                relatedHTML += `<li class="has-tooltip-left"
           data-tooltip="${cityssm.escapeHTML((_a = lot.mapName) !== null && _a !== void 0 ? _a : '')}">
           <span class="fa-li">
             <i class="fas fa-fw fa-vector-square"
@@ -34,7 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             for (const occupancy of workOrder.workOrderLotOccupancies) {
                 for (const occupant of occupancy.lotOccupancyOccupants) {
-                    relatedHTML += `<li class="has-tooltip-right"
+                    relatedHTML += `<li class="has-tooltip-left"
             data-tooltip="${cityssm.escapeHTML((_c = occupant.lotOccupantType) !== null && _c !== void 0 ? _c : '')}">
             <span class="fa-li">
               <i class="fas fa-fw fa-${cityssm.escapeHTML(((_d = occupant.fontAwesomeIconClass) !== null && _d !== void 0 ? _d : '') === ''
@@ -57,13 +58,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         : cityssm.escapeHTML((_g = workOrder.workOrderNumber) !== null && _g !== void 0 ? _g : '')) +
                     '</a>' +
                     '</td>') +
-                ('<td>' +
-                    cityssm.escapeHTML((_h = workOrder.workOrderType) !== null && _h !== void 0 ? _h : '') +
-                    '<br />' +
-                    '<span class="is-size-7">' +
-                    cityssm.escapeHTML((_j = workOrder.workOrderDescription) !== null && _j !== void 0 ? _j : '') +
-                    '</span>' +
-                    '</td>') +
+                `<td>
+            ${cityssm.escapeHTML((_h = workOrder.workOrderType) !== null && _h !== void 0 ? _h : '')}<br />
+            <span class="is-size-7">
+              ${cityssm.escapeHTML((_j = workOrder.workOrderDescription) !== null && _j !== void 0 ? _j : '')}
+            </span>
+            </td>` +
                 ('<td>' +
                     (relatedHTML === ''
                         ? ''
@@ -71,16 +71,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '</td>') +
                 ('<td>' +
                     '<ul class="fa-ul ml-5 is-size-7">' +
-                    ('<li class="has-tooltip-right" data-tooltip="' +
-                        los.escapedAliases.WorkOrderOpenDate +
-                        '">' +
-                        '<span class="fa-li">' +
-                        '<i class="fas fa-fw fa-play" aria-label="' +
-                        los.escapedAliases.WorkOrderOpenDate +
-                        '"></i></span> ' +
-                        workOrder.workOrderOpenDateString +
-                        '</li>') +
-                    ('<li class="has-tooltip-right" data-tooltip="' +
+                    `<li class="has-tooltip-left"
+              data-tooltip="${los.escapedAliases.WorkOrderOpenDate}">
+              <span class="fa-li">
+                <i class="fas fa-fw fa-play"
+                  aria-label="${los.escapedAliases.WorkOrderOpenDate}"></i>
+              </span>
+              ${workOrder.workOrderOpenDateString}
+            </li>` +
+                    ('<li class="has-tooltip-left" data-tooltip="' +
                         los.escapedAliases.WorkOrderCloseDate +
                         '">' +
                         '<span class="fa-li">' +

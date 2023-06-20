@@ -110,7 +110,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ('<td>' +
                     (occupantsHTML === ''
                         ? ''
-                        : '<ul class="fa-ul">' + occupantsHTML + '</ul>') +
+                        : '<ul class="fa-ul ml-5">' + occupantsHTML + '</ul>') +
                     '</td>') +
                 ('<td>' + feeIconHTML + '</td>') +
                 '<td>' +
