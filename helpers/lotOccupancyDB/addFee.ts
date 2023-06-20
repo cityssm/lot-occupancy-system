@@ -8,6 +8,7 @@ interface AddFeeForm {
   feeCategoryId: string
   feeName: string
   feeDescription: string
+  feeAccount: string
   occupancyTypeId: string
   lotTypeId: string
   feeAmount?: string
@@ -32,7 +33,7 @@ export async function addFee(
     .prepare(
       `insert into Fees (
         feeCategoryId,
-        feeName, feeDescription,
+        feeName, feeDescription, feeAccount,
         occupancyTypeId, lotTypeId,
         feeAmount, feeFunction,
         taxAmount, taxPercentage,
@@ -40,12 +41,13 @@ export async function addFee(
         isRequired, orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       feeForm.feeCategoryId,
       feeForm.feeName,
       feeForm.feeDescription,
+      feeForm.feeAccount,
       feeForm.occupancyTypeId === '' ? undefined : feeForm.occupancyTypeId,
       feeForm.lotTypeId === '' ? undefined : feeForm.lotTypeId,
       feeForm.feeAmount ?? undefined,

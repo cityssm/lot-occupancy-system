@@ -7,6 +7,7 @@ interface UpdateFeeForm {
   feeCategoryId: string
   feeName: string
   feeDescription: string
+  feeAccount: string
   occupancyTypeId: string
   lotTypeId: string
   feeAmount?: string
@@ -30,6 +31,7 @@ export async function updateFee(
         set feeCategoryId = ?,
         feeName = ?,
         feeDescription = ?,
+        feeAccount = ?,
         occupancyTypeId = ?,
         lotTypeId = ?,
         feeAmount = ?,
@@ -48,6 +50,7 @@ export async function updateFee(
       feeForm.feeCategoryId,
       feeForm.feeName,
       feeForm.feeDescription,
+      feeForm.feeAccount,
       feeForm.occupancyTypeId === '' ? undefined : feeForm.occupancyTypeId,
       feeForm.lotTypeId === '' ? undefined : feeForm.lotTypeId,
       feeForm.feeAmount === undefined || feeForm.feeAmount === ''

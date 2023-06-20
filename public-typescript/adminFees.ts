@@ -781,12 +781,15 @@ declare const bulmaJS: BulmaJS
 
         ;(
           modalElement.querySelector('#feeEdit--feeName') as HTMLInputElement
-        ).value = fee.feeName!
+        ).value = fee.feeName ?? ''
+        ;(
+          modalElement.querySelector('#feeEdit--feeAccount') as HTMLInputElement
+        ).value = fee.feeAccount ?? ''
         ;(
           modalElement.querySelector(
             '#feeEdit--feeDescription'
           ) as HTMLTextAreaElement
-        ).value = fee.feeDescription!
+        ).value = fee.feeDescription ?? ''
 
         const occupancyTypeElement = modalElement.querySelector(
           '#feeEdit--occupancyTypeId'

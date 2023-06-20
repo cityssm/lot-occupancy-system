@@ -154,6 +154,7 @@ export interface Fee extends Record {
 
   feeName?: string
   feeDescription?: string
+  feeAccount?: string
 
   occupancyTypeId?: number
   occupancyType?: string

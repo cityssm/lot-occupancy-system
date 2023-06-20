@@ -15,7 +15,8 @@ export async function getFees(feeCategoryId, additionalFilters, connectedDatabas
         sqlParameters.push(additionalFilters.lotTypeId);
     }
     const fees = database
-        .prepare(`select f.feeId, f.feeName, f.feeDescription,
+        .prepare(`select f.feeId,
+        f.feeName, f.feeDescription, f.feeAccount,
         f.occupancyTypeId, o.occupancyType,
         f.lotTypeId, l.lotType,
         ifnull(f.feeAmount, 0) as feeAmount,

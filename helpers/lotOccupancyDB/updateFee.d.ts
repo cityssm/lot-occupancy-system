@@ -4,6 +4,7 @@ interface UpdateFeeForm {
     feeCategoryId: string;
     feeName: string;
     feeDescription: string;
+    feeAccount: string;
     occupancyTypeId: string;
     lotTypeId: string;
     feeAmount?: string;

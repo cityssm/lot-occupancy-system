@@ -13,7 +13,7 @@ export async function getFee(
     .prepare(
       `select f.feeId,
         f.feeCategoryId, c.feeCategory,
-        f.feeName, f.feeDescription,
+        f.feeName, f.feeDescription, f.feeAccount,
         f.occupancyTypeId, o.occupancyType,
         f.lotTypeId, l.lotType,
         ifnull(f.feeAmount, 0) as feeAmount, f.feeFunction,

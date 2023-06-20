@@ -515,7 +515,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('adminFees-editFee', {
             onshow(modalElement) {
-                var _a, _b, _c;
+                var _a, _b, _c, _d, _e, _f;
                 editModalElement = modalElement;
                 modalElement.querySelector('#feeEdit--feeId').value = fee.feeId.toString();
                 const feeCategoryElement = modalElement.querySelector('#feeEdit--feeCategoryId');
@@ -529,8 +529,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     feeCategoryElement.append(optionElement);
                 }
                 ;
-                modalElement.querySelector('#feeEdit--feeName').value = fee.feeName;
-                modalElement.querySelector('#feeEdit--feeDescription').value = fee.feeDescription;
+                modalElement.querySelector('#feeEdit--feeName').value = (_a = fee.feeName) !== null && _a !== void 0 ? _a : '';
+                modalElement.querySelector('#feeEdit--feeAccount').value = (_b = fee.feeAccount) !== null && _b !== void 0 ? _b : '';
+                modalElement.querySelector('#feeEdit--feeDescription').value = (_c = fee.feeDescription) !== null && _c !== void 0 ? _c : '';
                 const occupancyTypeElement = modalElement.querySelector('#feeEdit--occupancyTypeId');
                 for (const occupancyType of exports.occupancyTypes) {
                     const optionElement = document.createElement('option');
@@ -565,13 +566,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 taxPercentageElement.addEventListener('keyup', toggleTaxFields);
                 toggleTaxFields();
                 const includeQuantityElement = modalElement.querySelector('#feeEdit--includeQuantity');
-                if ((_a = fee.includeQuantity) !== null && _a !== void 0 ? _a : false) {
+                if ((_d = fee.includeQuantity) !== null && _d !== void 0 ? _d : false) {
                     includeQuantityElement.value = '1';
                 }
                 includeQuantityElement.addEventListener('change', toggleQuantityFields);
-                modalElement.querySelector('#feeEdit--quantityUnit').value = (_b = fee.quantityUnit) !== null && _b !== void 0 ? _b : '';
+                modalElement.querySelector('#feeEdit--quantityUnit').value = (_e = fee.quantityUnit) !== null && _e !== void 0 ? _e : '';
                 toggleQuantityFields();
-                if ((_c = fee.isRequired) !== null && _c !== void 0 ? _c : false) {
+                if ((_f = fee.isRequired) !== null && _f !== void 0 ? _f : false) {
                     ;
                     modalElement.querySelector('#feeEdit--isRequired').value = '1';
                 }

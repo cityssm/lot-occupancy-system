@@ -118,6 +118,7 @@ export interface Fee extends Record {
     feeCategory?: string;
     feeName?: string;
     feeDescription?: string;
+    feeAccount?: string;
     occupancyTypeId?: number;
     occupancyType?: string;
     lotTypeId?: number;
