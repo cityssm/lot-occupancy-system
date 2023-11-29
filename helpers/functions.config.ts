@@ -1,11 +1,15 @@
-/* eslint-disable @typescript-eslint/indent, node/no-unpublished-import */
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/indent, n/no-unpublished-import */
+
+// eslint-disable-next-line n/no-extraneous-import
+import type { config as MSSQLConfig } from 'mssql'
 
 import { config } from '../data/config.js'
-
-import type * as configTypes from '../types/configTypes'
-
-// eslint-disable-next-line node/no-extraneous-import
-import type { config as MSSQLConfig } from 'mssql'
+import type {
+  ConfigActiveDirectory,
+  ConfigNtfyStartup,
+  DynamicsGPLookup
+} from '../types/configTypes.js'
 
 /*
  * SET UP FALLBACK VALUES
@@ -105,122 +109,86 @@ configFallbackValues.set('settings.dynamicsGP.trialBalanceCodes', [])
  * Set up function overloads
  */
 
-export function getProperty(propertyName: 'application.applicationName'): string
-
-export function getProperty(propertyName: 'application.logoURL'): string
-export function getProperty(propertyName: 'application.httpPort'): number
-export function getProperty(propertyName: 'application.userDomain'): string
 export function getProperty(
-  propertyName: 'application.useTestDatabases'
+  propertyName:
+    | 'application.applicationName'
+    | 'application.logoURL'
+    | 'application.userDomain'
+    | 'reverseProxy.urlPrefix'
+    | 'session.cookieName'
+    | 'session.secret'
+    | 'aliases.lot'
+    | 'aliases.lots'
+    | 'aliases.map'
+    | 'aliases.maps'
+    | 'aliases.occupancy'
+    | 'aliases.occupancies'
+    | 'aliases.occupancyStartDate'
+    | 'aliases.occupant'
+    | 'aliases.occupants'
+    | 'aliases.workOrderOpenDate'
+    | 'aliases.workOrderCloseDate'
+    | 'aliases.externalReceiptNumber'
+    | 'settings.map.mapCityDefault'
+    | 'settings.map.mapProvinceDefault'
+    | 'settings.lot.lotNameHelpText'
+    | 'settings.lotOccupancy.occupantCityDefault'
+    | 'settings.lotOccupancy.occupantProvinceDefault'
+    | 'settings.workOrders.calendarEmailAddress'
+): string
+
+export function getProperty(
+  propertyName:
+    | 'application.httpPort'
+    | 'application.maximumProcesses'
+    | 'session.maxAgeMillis'
+    | 'settings.fees.taxPercentageDefault'
+    | 'settings.workOrders.workOrderNumberLength'
+    | 'settings.workOrders.workOrderMilestoneDateRecentBeforeDays'
+    | 'settings.workOrders.workOrderMilestoneDateRecentAfterDays'
+    | 'settings.adminCleanup.recordDeleteAgeDays'
+): number
+
+export function getProperty(
+  propertyName:
+    | 'application.useTestDatabases'
+    | 'reverseProxy.disableCompression'
+    | 'reverseProxy.disableEtag'
+    | 'session.doKeepAlive'
+    | 'settings.lotOccupancy.occupancyEndDateIsRequired'
+    | 'settings.dynamicsGP.integrationIsEnabled'
 ): boolean
+
+export function getProperty(
+  propertyName:
+    | 'users.testing'
+    | 'users.canLogin'
+    | 'users.canUpdate'
+    | 'users.isAdmin'
+    | 'settings.dynamicsGP.accountCodes'
+    | 'settings.dynamicsGP.itemNumbers'
+    | 'settings.dynamicsGP.trialBalanceCodes'
+    | 'settings.lotOccupancy.prints'
+    | 'settings.workOrders.prints'
+): string[]
+
 export function getProperty(
   propertyName: 'application.ntfyStartup'
-): configTypes.ConfigNtfyStartup | undefined
+): ConfigNtfyStartup | undefined
 
 export function getProperty(
   propertyName: 'activeDirectory'
-): configTypes.ConfigActiveDirectory
-
-export function getProperty(
-  propertyName: 'application.maximumProcesses'
-): number
-
-export function getProperty(propertyName: 'users.testing'): string[]
-export function getProperty(propertyName: 'users.canLogin'): string[]
-export function getProperty(propertyName: 'users.canUpdate'): string[]
-export function getProperty(propertyName: 'users.isAdmin'): string[]
-
-export function getProperty(
-  propertyName: 'reverseProxy.disableCompression'
-): boolean
-
-export function getProperty(propertyName: 'reverseProxy.disableEtag'): boolean
-export function getProperty(propertyName: 'reverseProxy.urlPrefix'): string
-
-export function getProperty(propertyName: 'session.cookieName'): string
-export function getProperty(propertyName: 'session.doKeepAlive'): boolean
-export function getProperty(propertyName: 'session.maxAgeMillis'): number
-export function getProperty(propertyName: 'session.secret'): string
-
-export function getProperty(propertyName: 'aliases.lot'): string
-export function getProperty(propertyName: 'aliases.lots'): string
-export function getProperty(propertyName: 'aliases.map'): string
-export function getProperty(propertyName: 'aliases.maps'): string
-export function getProperty(propertyName: 'aliases.occupancy'): string
-export function getProperty(propertyName: 'aliases.occupancies'): string
-export function getProperty(propertyName: 'aliases.occupancyStartDate'): string
-export function getProperty(propertyName: 'aliases.occupant'): string
-export function getProperty(propertyName: 'aliases.occupants'): string
-export function getProperty(propertyName: 'aliases.workOrderOpenDate'): string
-export function getProperty(propertyName: 'aliases.workOrderCloseDate'): string
-
-export function getProperty(
-  propertyName: 'aliases.externalReceiptNumber'
-): string
-
-export function getProperty(propertyName: 'settings.map.mapCityDefault'): string
-
-export function getProperty(
-  propertyName: 'settings.map.mapProvinceDefault'
-): string
+): ConfigActiveDirectory
 
 export function getProperty(propertyName: 'settings.lot.lotNamePattern'): RegExp
-export function getProperty(
-  propertyName: 'settings.lot.lotNameHelpText'
-): string
 
 export function getProperty(
   propertyName: 'settings.lot.lotNameSortNameFunction'
 ): (lotName: string) => string
 
 export function getProperty(
-  propertyName: 'settings.lotOccupancy.occupancyEndDateIsRequired'
-): boolean
-
-export function getProperty(
-  propertyName: 'settings.lotOccupancy.occupantCityDefault'
-): string
-export function getProperty(
-  propertyName: 'settings.lotOccupancy.occupantProvinceDefault'
-): string
-export function getProperty(
-  propertyName: 'settings.lotOccupancy.prints'
-): string[]
-
-export function getProperty(
-  propertyName: 'settings.fees.taxPercentageDefault'
-): number
-
-export function getProperty(
-  propertyName: 'settings.workOrders.workOrderNumberLength'
-): number
-
-export function getProperty(
-  propertyName: 'settings.workOrders.workOrderMilestoneDateRecentBeforeDays'
-): number
-
-export function getProperty(
-  propertyName: 'settings.workOrders.workOrderMilestoneDateRecentAfterDays'
-): number
-
-export function getProperty(
-  propertyName: 'settings.workOrders.calendarEmailAddress'
-): string
-export function getProperty(
-  propertyName: 'settings.workOrders.prints'
-): string[]
-
-export function getProperty(
-  propertyName: 'settings.adminCleanup.recordDeleteAgeDays'
-): number
-
-export function getProperty(
   propertyName: 'settings.printPdf.contentDisposition'
 ): 'attachment' | 'inline'
-
-export function getProperty(
-  propertyName: 'settings.dynamicsGP.integrationIsEnabled'
-): boolean
 
 export function getProperty(
   propertyName: 'settings.dynamicsGP.mssqlConfig'
@@ -228,19 +196,7 @@ export function getProperty(
 
 export function getProperty(
   propertyName: 'settings.dynamicsGP.lookupOrder'
-): configTypes.DynamicsGPLookup[]
-
-export function getProperty(
-  propertyName: 'settings.dynamicsGP.accountCodes'
-): string[]
-
-export function getProperty(
-  propertyName: 'settings.dynamicsGP.itemNumbers'
-): string[]
-
-export function getProperty(
-  propertyName: 'settings.dynamicsGP.trialBalanceCodes'
-): string[]
+): DynamicsGPLookup[]
 
 export function getProperty(propertyName: string): unknown {
   const propertyNameSplit = propertyName.split('.')
