@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../data/databasePaths.js';
 import debug from 'debug';
+import { lotOccupancyDB as databasePath } from '../data/databasePaths.js';
 const debugSQL = debug('lot-occupancy-system:databaseInitializer');
 const recordColumns = `recordCreate_userName varchar(30) not null,
   recordCreate_timeMillis integer not null,

@@ -1,4 +1,3 @@
-import type { User } from '../types/recordTypes';
 export interface UserRequest {
     session?: {
         user?: User;

@@ -1,4 +1,4 @@
-import type * as recordTypes from '../types/recordTypes';
+import type * as recordTypes from '../types/recordTypes.js';
 export declare function getLotOccupantTypes(): Promise<recordTypes.LotOccupantType[]>;
 export declare function getLotOccupantTypeById(lotOccupantTypeId: number): Promise<recordTypes.LotOccupantType | undefined>;
 export declare function getLotOccupantTypeByLotOccupantType(lotOccupantType: string): Promise<recordTypes.LotOccupantType | undefined>;

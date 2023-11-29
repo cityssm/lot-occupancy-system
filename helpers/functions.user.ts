@@ -1,8 +1,6 @@
 import { getUserNameFromApiKey } from './functions.api.js'
 import * as configFunctions from './functions.config.js'
 
-import type { User } from '../types/recordTypes'
-
 export interface UserRequest {
   session?: {
     user?: User
@@ -36,11 +34,9 @@ export async function apiKeyIsValid(request: APIRequest): Promise<boolean> {
     return false
   }
 
-  const canLogin = configFunctions
+  return configFunctions
     .getProperty('users.canLogin')
     .some((currentUserName) => {
       return userName === currentUserName.toLowerCase()
     })
-
-  return canLogin
 }

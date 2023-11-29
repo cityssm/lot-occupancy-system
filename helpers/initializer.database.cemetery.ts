@@ -1,26 +1,20 @@
+import Debug from 'debug'
+
 import { lotOccupancyDB as databasePath } from '../data/databasePaths.js'
 
 import { initializeDatabase } from './initializer.database.js'
-
-import { addOccupancyTypeField } from './lotOccupancyDB/addOccupancyTypeField.js'
-
 import { addLotOccupantType } from './lotOccupancyDB/addLotOccupantType.js'
-
+import { addOccupancyTypeField } from './lotOccupancyDB/addOccupancyTypeField.js'
 import { addRecord } from './lotOccupancyDB/addRecord.js'
 
-import type { PartialSession } from '../types/recordTypes.js'
-
-import Debug from 'debug'
 const debug = Debug('lot-occupancy-system:initialize')
 
-const session: PartialSession = {
-  user: {
-    userName: 'init.cemetery',
-    userProperties: {
-      canUpdate: true,
-      isAdmin: true,
-      apiKey: ''
-    }
+const user: User = {
+  userName: 'init.cemetery',
+  userProperties: {
+    canUpdate: true,
+    isAdmin: true,
+    apiKey: ''
   }
 }
 
@@ -46,20 +40,20 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
    * Lot Types
    */
 
-  await addRecord('LotTypes', 'Casket Grave', 1, session)
-  await addRecord('LotTypes', 'Columbarium', 2, session)
-  await addRecord('LotTypes', 'Mausoleum', 2, session)
-  await addRecord('LotTypes', 'Niche Wall', 2, session)
-  await addRecord('LotTypes', 'Urn Garden', 2, session)
-  await addRecord('LotTypes', 'Crematorium', 2, session)
+  await addRecord('LotTypes', 'Casket Grave', 1, user)
+  await addRecord('LotTypes', 'Columbarium', 2, user)
+  await addRecord('LotTypes', 'Mausoleum', 2, user)
+  await addRecord('LotTypes', 'Niche Wall', 2, user)
+  await addRecord('LotTypes', 'Urn Garden', 2, user)
+  await addRecord('LotTypes', 'Crematorium', 2, user)
 
   /*
    * Lot Statuses
    */
 
-  await addRecord('LotStatuses', 'Available', 1, session)
-  await addRecord('LotStatuses', 'Reserved', 2, session)
-  await addRecord('LotStatuses', 'Taken', 3, session)
+  await addRecord('LotStatuses', 'Available', 1, user)
+  await addRecord('LotStatuses', 'Reserved', 2, user)
+  await addRecord('LotStatuses', 'Taken', 3, user)
 
   /*
    * Lot Occupant Types
@@ -71,7 +65,7 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
       fontAwesomeIconClass: 'cross',
       orderNumber: 1
     },
-    session
+    user
   )
 
   await addLotOccupantType(
@@ -80,7 +74,7 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
       fontAwesomeIconClass: 'church',
       orderNumber: 2
     },
-    session
+    user
   )
 
   await addLotOccupantType(
@@ -89,7 +83,7 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
       fontAwesomeIconClass: 'user',
       orderNumber: 3
     },
-    session
+    user
   )
 
   await addLotOccupantType(
@@ -99,25 +93,25 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
       occupantCommentTitle: 'Relationship to Owner/Deceased',
       orderNumber: 4
     },
-    session
+    user
   )
 
   /*
    * Occupancy Types
    */
 
-  await addRecord('OccupancyTypes', 'Preneed', 1, session)
+  await addRecord('OccupancyTypes', 'Preneed', 1, user)
   const intermentOccupancyTypeId = await addRecord(
     'OccupancyTypes',
     'Interment',
     2,
-    session
+    user
   )
   const cremationOccupancyTypeId = await addRecord(
     'OccupancyTypes',
     'Cremation',
     3,
-    session
+    user
   )
 
   // Death Date
@@ -132,13 +126,13 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
     orderNumber: 1
   }
 
-  await addOccupancyTypeField(deathDateField, session)
+  await addOccupancyTypeField(deathDateField, user)
 
   await addOccupancyTypeField(
     Object.assign(deathDateField, {
       occupancyTypeId: cremationOccupancyTypeId
     }),
-    session
+    user
   )
 
   // Death Age
@@ -153,11 +147,11 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
     orderNumber: 2
   }
 
-  await addOccupancyTypeField(deathAgeField, session)
+  await addOccupancyTypeField(deathAgeField, user)
 
   await addOccupancyTypeField(
     Object.assign(deathAgeField, { occupancyTypeId: cremationOccupancyTypeId }),
-    session
+    user
   )
 
   // Death Age Period
@@ -172,13 +166,13 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
     orderNumber: 3
   }
 
-  await addOccupancyTypeField(deathAgePeriod, session)
+  await addOccupancyTypeField(deathAgePeriod, user)
 
   await addOccupancyTypeField(
     Object.assign(deathAgePeriod, {
       occupancyTypeId: cremationOccupancyTypeId
     }),
-    session
+    user
   )
 
   // Death Place
@@ -193,11 +187,11 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
     orderNumber: 4
   }
 
-  await addOccupancyTypeField(deathPlace, session)
+  await addOccupancyTypeField(deathPlace, user)
 
   await addOccupancyTypeField(
     Object.assign(deathPlace, { occupancyTypeId: cremationOccupancyTypeId }),
-    session
+    user
   )
 
   // Funeral Home
@@ -212,11 +206,11 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
     orderNumber: 10
   }
 
-  await addOccupancyTypeField(funeralHome, session)
+  await addOccupancyTypeField(funeralHome, user)
 
   await addOccupancyTypeField(
     Object.assign(funeralHome, { occupancyTypeId: cremationOccupancyTypeId }),
-    session
+    user
   )
 
   // Funeral Date
@@ -231,11 +225,11 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
     orderNumber: 11
   }
 
-  await addOccupancyTypeField(funeralDate, session)
+  await addOccupancyTypeField(funeralDate, user)
 
   await addOccupancyTypeField(
     Object.assign(funeralDate, { occupancyTypeId: cremationOccupancyTypeId }),
-    session
+    user
   )
 
   // Container Type
@@ -250,11 +244,11 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
     orderNumber: 20
   }
 
-  await addOccupancyTypeField(containerType, session)
+  await addOccupancyTypeField(containerType, user)
 
   await addOccupancyTypeField(
     Object.assign(containerType, { occupancyTypeId: cremationOccupancyTypeId }),
-    session
+    user
   )
 
   // Committal Type
@@ -269,33 +263,33 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
     orderNumber: 21
   }
 
-  await addOccupancyTypeField(committalType, session)
+  await addOccupancyTypeField(committalType, user)
 
   await addOccupancyTypeField(
     Object.assign(committalType, { occupancyTypeId: cremationOccupancyTypeId }),
-    session
+    user
   )
 
   /*
    * Fee Categories
    */
 
-  await addRecord('FeeCategories', 'Interment Rights', 1, session)
-  await addRecord('FeeCategories', 'Cremation Services', 2, session)
-  await addRecord('FeeCategories', 'Burial Charges', 3, session)
-  await addRecord('FeeCategories', 'Disinterment of Human Remains', 4, session)
-  await addRecord('FeeCategories', 'Additional Services', 5, session)
+  await addRecord('FeeCategories', 'Interment Rights', 1, user)
+  await addRecord('FeeCategories', 'Cremation Services', 2, user)
+  await addRecord('FeeCategories', 'Burial Charges', 3, user)
+  await addRecord('FeeCategories', 'Disinterment of Human Remains', 4, user)
+  await addRecord('FeeCategories', 'Additional Services', 5, user)
 
   /*
    * Work Orders
    */
 
-  await addRecord('WorkOrderTypes', 'Cemetry Work Order', 1, session)
+  await addRecord('WorkOrderTypes', 'Cemetery Work Order', 1, user)
 
-  await addRecord('WorkOrderMilestoneTypes', 'Funeral', 1, session)
-  await addRecord('WorkOrderMilestoneTypes', 'Arrival', 2, session)
-  await addRecord('WorkOrderMilestoneTypes', 'Cremation', 3, session)
-  await addRecord('WorkOrderMilestoneTypes', 'Interment', 4, session)
+  await addRecord('WorkOrderMilestoneTypes', 'Funeral', 1, user)
+  await addRecord('WorkOrderMilestoneTypes', 'Arrival', 2, user)
+  await addRecord('WorkOrderMilestoneTypes', 'Cremation', 3, user)
+  await addRecord('WorkOrderMilestoneTypes', 'Interment', 4, user)
 
   return true
 }
