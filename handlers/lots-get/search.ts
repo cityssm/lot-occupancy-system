@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express'
 
+import { getMaps } from '../../database/getMaps.js'
 import { getLotTypes, getLotStatuses } from '../../helpers/functions.cache.js'
 import * as configFunctions from '../../helpers/functions.config.js'
-import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 
 export async function handler(
   request: Request,
@@ -13,7 +13,7 @@ export async function handler(
   const lotStatuses = await getLotStatuses()
 
   response.render('lot-search', {
-    headTitle: configFunctions.getProperty('aliases.lot') + ' Search',
+    headTitle: `${configFunctions.getProperty('aliases.lot')} Search`,
     maps,
     lotTypes,
     lotStatuses,

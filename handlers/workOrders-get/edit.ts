@@ -6,7 +6,7 @@ import {
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
 import * as configFunctions from '../../helpers/functions.config.js'
-import { getWorkOrder } from '../../helpers/lotOccupancyDB/getWorkOrder.js'
+import { getWorkOrder } from '../../database/getWorkOrder.js'
 
 export async function handler(
   request: Request,

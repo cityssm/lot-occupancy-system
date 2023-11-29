@@ -1,4 +1,4 @@
-import { getLotOccupancies } from '../../helpers/lotOccupancyDB/getLotOccupancies.js';
+import { getLotOccupancies } from '../../database/getLotOccupancies.js';
 export async function handler(request, response) {
     const result = await getLotOccupancies(request.body, {
         limit: request.body.limit,

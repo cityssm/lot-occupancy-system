@@ -1,11 +1,10 @@
 import type { Request, Response } from 'express'
 
+import { getFeeCategories } from '../../database/getFeeCategories.js'
 import {
   getLotTypes,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
-
-import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js'
 
 export async function handler(
   _request: Request,

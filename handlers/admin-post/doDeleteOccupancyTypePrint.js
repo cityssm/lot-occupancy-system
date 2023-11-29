@@ -1,5 +1,5 @@
 import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
-import { deleteOccupancyTypePrint } from '../../helpers/lotOccupancyDB/deleteOccupancyTypePrint.js';
+import { deleteOccupancyTypePrint } from '../../database/deleteOccupancyTypePrint.js';
 export async function handler(request, response) {
     const success = await deleteOccupancyTypePrint(request.body.occupancyTypeId, request.body.printEJS, request.session.user);
     const occupancyTypes = await getOccupancyTypes();

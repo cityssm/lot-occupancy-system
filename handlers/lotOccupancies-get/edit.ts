@@ -1,5 +1,7 @@
 import type { Request, Response } from 'express'
 
+import { getLotOccupancy } from '../../database/getLotOccupancy.js'
+import { getMaps } from '../../database/getMaps.js'
 import {
   getLotOccupantTypes,
   getLotStatuses,
@@ -9,8 +11,6 @@ import {
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
 import * as configFunctions from '../../helpers/functions.config.js'
-import { getLotOccupancy } from '../../helpers/lotOccupancyDB/getLotOccupancy.js'
-import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 
 export async function handler(request: Request, response: Response): Promise<void> {
   const lotOccupancy = await getLotOccupancy(request.params.lotOccupancyId)

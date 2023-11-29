@@ -1,4 +1,4 @@
-import { updateWorkOrder } from '../../helpers/lotOccupancyDB/updateWorkOrder.js';
+import { updateWorkOrder } from '../../database/updateWorkOrder.js';
 export async function handler(request, response) {
     const success = await updateWorkOrder(request.body, request.session.user);
     response.json({

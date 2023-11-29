@@ -1,8 +1,8 @@
 import * as configFunctions from './functions.config.js'
 
-import { getLot } from './lotOccupancyDB/getLot.js'
-import { getLotOccupancy } from './lotOccupancyDB/getLotOccupancy.js'
-import { getWorkOrder } from './lotOccupancyDB/getWorkOrder.js'
+import { getLot } from '../database/getLot.js'
+import { getLotOccupancy } from '../database/getLotOccupancy.js'
+import { getWorkOrder } from '../database/getWorkOrder.js'
 
 interface PrintConfig {
   title: string

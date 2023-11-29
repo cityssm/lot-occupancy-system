@@ -1,12 +1,11 @@
 import type { Request, Response } from 'express'
 
-import * as configFunctions from '../../helpers/functions.config.js'
-import * as printFunctions from '../../helpers/functions.print.js'
-
 import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
+import * as configFunctions from '../../helpers/functions.config.js'
+import * as printFunctions from '../../helpers/functions.print.js'
 
 export async function handler(
   _request: Request,
@@ -31,7 +30,7 @@ export async function handler(
 
   response.render('admin-occupancyTypes', {
     headTitle:
-      configFunctions.getProperty('aliases.occupancy') + ' Type Management',
+      `${configFunctions.getProperty('aliases.occupancy')} Type Management`,
     occupancyTypes,
     allOccupancyTypeFields,
     occupancyTypePrintTitles

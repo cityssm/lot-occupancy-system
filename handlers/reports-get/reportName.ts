@@ -4,7 +4,7 @@ import papaparse from 'papaparse'
 import {
   getReportData,
   type ReportParameters
-} from '../../helpers/lotOccupancyDB/getReportData.js'
+} from '../../database/getReportData.js'
 
 export async function handler(
   request: Request,

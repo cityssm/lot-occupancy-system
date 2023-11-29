@@ -1,6 +1,6 @@
+import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
 import * as printFunctions from '../../helpers/functions.print.js';
-import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
 export async function handler(_request, response) {
     const occupancyTypes = await getOccupancyTypes();
     const allOccupancyTypeFields = await getAllOccupancyTypeFields();
@@ -13,7 +13,7 @@ export async function handler(_request, response) {
         }
     }
     response.render('admin-occupancyTypes', {
-        headTitle: configFunctions.getProperty('aliases.occupancy') + ' Type Management',
+        headTitle: `${configFunctions.getProperty('aliases.occupancy')} Type Management`,
         occupancyTypes,
         allOccupancyTypeFields,
         occupancyTypePrintTitles

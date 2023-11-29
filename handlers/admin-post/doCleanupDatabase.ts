@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { cleanupDatabase } from '../../helpers/lotOccupancyDB/cleanupDatabase.js'
+import { cleanupDatabase } from '../../database/cleanupDatabase.js'
 
 export async function handler(
   request: Request,

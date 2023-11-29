@@ -1,5 +1,5 @@
-import { moveRecordUp, moveRecordUpToTop } from '../../helpers/lotOccupancyDB/moveRecord.js';
-import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js';
+import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js';
+import { getFeeCategories } from '../../database/getFeeCategories.js';
 export async function handler(request, response) {
     const success = request.body.moveToEnd === '1'
         ? await moveRecordUpToTop('FeeCategories', request.body.feeCategoryId)

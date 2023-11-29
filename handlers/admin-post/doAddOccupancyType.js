@@ -1,5 +1,5 @@
 import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
-import { addRecord } from '../../helpers/lotOccupancyDB/addRecord.js';
+import { addRecord } from '../../database/addRecord.js';
 export async function handler(request, response) {
     const occupancyTypeId = await addRecord('OccupancyTypes', request.body.occupancyType, request.body.orderNumber ?? -1, request.session.user);
     const occupancyTypes = await getOccupancyTypes();

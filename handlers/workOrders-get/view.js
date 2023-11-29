@@ -1,5 +1,5 @@
 import * as configFunctions from '../../helpers/functions.config.js';
-import { getWorkOrder } from '../../helpers/lotOccupancyDB/getWorkOrder.js';
+import { getWorkOrder } from '../../database/getWorkOrder.js';
 export async function handler(request, response) {
     const workOrder = await getWorkOrder(request.params.workOrderId, {
         includeLotsAndLotOccupancies: true,

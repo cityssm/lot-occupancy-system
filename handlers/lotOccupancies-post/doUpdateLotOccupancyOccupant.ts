@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { getLotOccupancyOccupants } from '../../helpers/lotOccupancyDB/getLotOccupancyOccupants.js'
-import { updateLotOccupancyOccupant } from '../../helpers/lotOccupancyDB/updateLotOccupancyOccupant.js'
+import { getLotOccupancyOccupants } from '../../database/getLotOccupancyOccupants.js'
+import { updateLotOccupancyOccupant } from '../../database/updateLotOccupancyOccupant.js'
 
 export async function handler(
   request: Request,

@@ -15,14 +15,15 @@ export async function handler(
   if (
     !configFunctions
       .getProperty('settings.lotOccupancy.prints')
-      .includes('screen/' + printName) &&
+      .includes(`screen/${printName}`) &&
     !configFunctions
       .getProperty('settings.workOrders.prints')
-      .includes('screen/' + printName)
+      .includes(`screen/${printName}`)
   ) {
     response.redirect(
-      configFunctions.getProperty('reverseProxy.urlPrefix') +
-        '/dashboard/?error=printConfigNotAllowed'
+      `${configFunctions.getProperty(
+        'reverseProxy.urlPrefix'
+      )}/dashboard/?error=printConfigNotAllowed`
     )
     return
   }
@@ -39,7 +40,7 @@ export async function handler(
 
   const reportData = await getReportData(printConfig, request.query)
 
-  response.render('print/screen/' + printName, reportData)
+  response.render(`print/screen/${printName}`, reportData)
 }
 
 export default handler

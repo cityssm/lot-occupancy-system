@@ -1,4 +1,4 @@
-import { moveRecordDown, moveRecordDownToBottom } from '../../helpers/lotOccupancyDB/moveRecord.js';
+import { moveRecordDown, moveRecordDownToBottom } from '../../database/moveRecord.js';
 import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
 export async function handler(request, response) {
     const success = request.body.moveToEnd === '1'

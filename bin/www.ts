@@ -41,8 +41,8 @@ for (let index = 0; index < processCount; index += 1) {
 }
 
 cluster.on('message', (worker, message: WorkerMessage) => {
-  for (const [pid, worker] of activeWorkers.entries()) {
-    if (worker === undefined || pid === message.pid) {
+  for (const [pid, activeWorker] of activeWorkers.entries()) {
+    if (activeWorker === undefined || pid === message.pid) {
       continue
     }
 

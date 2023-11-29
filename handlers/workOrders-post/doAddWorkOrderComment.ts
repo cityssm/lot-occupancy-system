@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { addWorkOrderComment } from '../../helpers/lotOccupancyDB/addWorkOrderComment.js'
-import { getWorkOrderComments } from '../../helpers/lotOccupancyDB/getWorkOrderComments.js'
+import { addWorkOrderComment } from '../../database/addWorkOrderComment.js'
+import { getWorkOrderComments } from '../../database/getWorkOrderComments.js'
 
 export async function handler(
   request: Request,

@@ -4,7 +4,7 @@ import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
-import { addOccupancyTypePrint } from '../../helpers/lotOccupancyDB/addOccupancyTypePrint.js'
+import { addOccupancyTypePrint } from '../../database/addOccupancyTypePrint.js'
 
 export async function handler(
   request: Request,

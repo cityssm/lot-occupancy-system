@@ -6,7 +6,6 @@ import {
   getWorkOrderMilestoneTypes,
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
-
 import { getSolidIconClasses } from '../../helpers/functions.icons.js'
 
 export async function handler(_request: Request, response: Response): Promise<void> {

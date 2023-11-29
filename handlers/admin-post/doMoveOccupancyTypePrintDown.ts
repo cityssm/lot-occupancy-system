@@ -5,7 +5,7 @@ import type { Request, Response } from 'express'
 import {
   moveOccupancyTypePrintDown,
   moveOccupancyTypePrintDownToBottom
-} from '../../helpers/lotOccupancyDB/moveOccupancyTypePrintDown.js'
+} from '../../database/moveOccupancyTypePrintDown.js'
 
 import {
   getAllOccupancyTypeFields,

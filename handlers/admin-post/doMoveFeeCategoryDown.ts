@@ -3,9 +3,9 @@ import type { Request, Response } from 'express'
 import {
   moveRecordDown,
   moveRecordDownToBottom
-} from '../../helpers/lotOccupancyDB/moveRecord.js'
+} from '../../database/moveRecord.js'
 
-import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js'
+import { getFeeCategories } from '../../database/getFeeCategories.js'
 
 export async function handler(
   request: Request,

@@ -1,6 +1,6 @@
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import { getLotStatuses, getLotTypes } from '../../helpers/functions.cache.js';
-import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js';
+import { getMaps } from '../../database/getMaps.js';
 export async function handler(_request, response) {
     const rightNow = new Date();
     const maps = await getMaps();

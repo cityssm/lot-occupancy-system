@@ -8,7 +8,7 @@ import { getPrintConfig } from '../../helpers/functions.print.js'
 import {
   getWorkOrderMilestones,
   type WorkOrderMilestoneFilters
-} from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
+} from '../../database/getWorkOrderMilestones.js'
 import type { WorkOrderMilestone } from '../../types/recordTypes.js'
 
 const calendarCompany = 'cityssm.github.io'

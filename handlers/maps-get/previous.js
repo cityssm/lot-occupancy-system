@@ -1,5 +1,5 @@
+import { getPreviousMapId } from '../../database/getPreviousMapId.js';
 import * as configFunctions from '../../helpers/functions.config.js';
-import { getPreviousMapId } from '../../helpers/lotOccupancyDB/getPreviousMapId.js';
 export async function handler(request, response) {
     const mapId = Number.parseInt(request.params.mapId, 10);
     const previousMapId = await getPreviousMapId(mapId);

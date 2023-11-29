@@ -1,4 +1,4 @@
-import { updateLotOccupancy } from '../../helpers/lotOccupancyDB/updateLotOccupancy.js';
+import { updateLotOccupancy } from '../../database/updateLotOccupancy.js';
 export async function handler(request, response) {
     const success = await updateLotOccupancy(request.body, request.session.user);
     response.json({

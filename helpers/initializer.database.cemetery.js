@@ -1,9 +1,9 @@
 import Debug from 'debug';
 import { lotOccupancyDB as databasePath } from '../data/databasePaths.js';
+import { addLotOccupantType } from '../database/addLotOccupantType.js';
+import { addOccupancyTypeField } from '../database/addOccupancyTypeField.js';
+import { addRecord } from '../database/addRecord.js';
 import { initializeDatabase } from './initializer.database.js';
-import { addLotOccupantType } from './lotOccupancyDB/addLotOccupantType.js';
-import { addOccupancyTypeField } from './lotOccupancyDB/addOccupancyTypeField.js';
-import { addRecord } from './lotOccupancyDB/addRecord.js';
 const debug = Debug('lot-occupancy-system:initialize');
 const user = {
     userName: 'init.cemetery',

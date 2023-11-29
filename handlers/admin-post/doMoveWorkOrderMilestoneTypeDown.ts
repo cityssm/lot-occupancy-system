@@ -5,7 +5,7 @@ import type { Request, Response } from 'express'
 import {
   moveRecordDown,
   moveRecordDownToBottom
-} from '../../helpers/lotOccupancyDB/moveRecord.js'
+} from '../../database/moveRecord.js'
 import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
 
 export async function handler(

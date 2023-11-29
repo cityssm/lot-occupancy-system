@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express'
 
+import { getMaps } from '../../database/getMaps.js'
 import * as cacheFunctions from '../../helpers/functions.cache.js'
 import * as configFunctions from '../../helpers/functions.config.js'
-import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 import type { Lot } from '../../types/recordTypes.js'
 
 export async function handler(
@@ -33,7 +33,7 @@ export async function handler(
   const lotStatuses = await cacheFunctions.getLotStatuses()
 
   response.render('lot-edit', {
-    headTitle: 'Create a New ' + configFunctions.getProperty('aliases.lot'),
+    headTitle: `Create a New ${configFunctions.getProperty('aliases.lot')}`,
     lot,
     isCreate: true,
     maps,

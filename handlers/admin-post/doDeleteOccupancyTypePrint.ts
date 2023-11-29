@@ -4,7 +4,7 @@ import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
-import { deleteOccupancyTypePrint } from '../../helpers/lotOccupancyDB/deleteOccupancyTypePrint.js'
+import { deleteOccupancyTypePrint } from '../../database/deleteOccupancyTypePrint.js'
 
 export async function handler(
   request: Request,

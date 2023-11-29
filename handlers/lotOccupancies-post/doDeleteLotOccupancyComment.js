@@ -1,5 +1,5 @@
-import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js';
-import { getLotOccupancyComments } from '../../helpers/lotOccupancyDB/getLotOccupancyComments.js';
+import { deleteRecord } from '../../database/deleteRecord.js';
+import { getLotOccupancyComments } from '../../database/getLotOccupancyComments.js';
 export async function handler(request, response) {
     const success = await deleteRecord('LotOccupancyComments', request.body.lotOccupancyCommentId, request.session.user);
     const lotOccupancyComments = await getLotOccupancyComments(request.body.lotOccupancyId);

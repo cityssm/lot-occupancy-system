@@ -1,5 +1,5 @@
-import { moveFeeUp, moveFeeUpToTop } from '../../helpers/lotOccupancyDB/moveFee.js';
-import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js';
+import { moveFeeUp, moveFeeUpToTop } from '../../database/moveFee.js';
+import { getFeeCategories } from '../../database/getFeeCategories.js';
 export async function handler(request, response) {
     const success = request.body.moveToEnd === '1'
         ? await moveFeeUpToTop(request.body.feeId)

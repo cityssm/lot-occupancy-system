@@ -4,7 +4,7 @@ import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
-import { updateRecord } from '../../helpers/lotOccupancyDB/updateRecord.js'
+import { updateRecord } from '../../database/updateRecord.js'
 
 export async function handler(
   request: Request,

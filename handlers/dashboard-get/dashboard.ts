@@ -1,9 +1,9 @@
 import { dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
-import { getLotOccupancies } from '../../helpers/lotOccupancyDB/getLotOccupancies.js'
-import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
-import { getWorkOrders } from '../../helpers/lotOccupancyDB/getWorkOrders.js'
+import { getLotOccupancies } from '../../database/getLotOccupancies.js'
+import { getWorkOrderMilestones } from '../../database/getWorkOrderMilestones.js'
+import { getWorkOrders } from '../../database/getWorkOrders.js'
 
 export async function handler(
   _request: Request,

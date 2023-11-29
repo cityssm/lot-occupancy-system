@@ -1,4 +1,4 @@
-import { moveOccupancyTypePrintUp, moveOccupancyTypePrintUpToTop } from '../../helpers/lotOccupancyDB/moveOccupancyTypePrintUp.js';
+import { moveOccupancyTypePrintUp, moveOccupancyTypePrintUpToTop } from '../../database/moveOccupancyTypePrintUp.js';
 import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
 export async function handler(request, response) {
     const success = request.body.moveToEnd === '1'

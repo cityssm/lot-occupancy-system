@@ -1,5 +1,5 @@
-import { getLotOccupancyTransactions } from '../../helpers/lotOccupancyDB/getLotOccupancyTransactions.js';
-import { updateLotOccupancyTransaction } from '../../helpers/lotOccupancyDB/updateLotOccupancyTransaction.js';
+import { getLotOccupancyTransactions } from '../../database/getLotOccupancyTransactions.js';
+import { updateLotOccupancyTransaction } from '../../database/updateLotOccupancyTransaction.js';
 export async function handler(request, response) {
     await updateLotOccupancyTransaction(request.body, request.session.user);
     const lotOccupancyTransactions = await getLotOccupancyTransactions(request.body.lotOccupancyId, { includeIntegrations: true });

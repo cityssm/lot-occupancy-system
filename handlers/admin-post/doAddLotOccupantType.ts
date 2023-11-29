@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { getLotOccupantTypes } from '../../helpers/functions.cache.js'
-import { addLotOccupantType } from '../../helpers/lotOccupancyDB/addLotOccupantType.js'
+import { addLotOccupantType } from '../../database/addLotOccupantType.js'
 
 export async function handler(
   request: Request,

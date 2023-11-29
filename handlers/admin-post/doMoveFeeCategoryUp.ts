@@ -3,8 +3,8 @@ import type { Request, Response } from 'express'
 import {
   moveRecordUp,
   moveRecordUpToTop
-} from '../../helpers/lotOccupancyDB/moveRecord.js'
-import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js'
+} from '../../database/moveRecord.js'
+import { getFeeCategories } from '../../database/getFeeCategories.js'
 
 export async function handler(
   request: Request,

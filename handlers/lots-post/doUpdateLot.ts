@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { clearNextPreviousLotIdCache } from '../../helpers/functions.lots.js'
-import { updateLot } from '../../helpers/lotOccupancyDB/updateLot.js'
+import { updateLot } from '../../database/updateLot.js'
 
 export async function handler(
   request: Request,

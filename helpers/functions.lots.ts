@@ -4,8 +4,8 @@ import cluster from 'node:cluster'
 
 import NodeCache from 'node-cache'
 
-import getPreviousLotIdFromDatabase from './lotOccupancyDB/getPreviousLotId.js'
-import getNextLotIdFromDatabase from './lotOccupancyDB/getNextLotId.js'
+import getPreviousLotIdFromDatabase from '../database/getPreviousLotId.js'
+import getNextLotIdFromDatabase from '../database/getNextLotId.js'
 
 import type {
   CacheLotIdsWorkerMessage,

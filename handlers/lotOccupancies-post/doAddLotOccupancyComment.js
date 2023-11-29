@@ -1,5 +1,5 @@
-import { addLotOccupancyComment } from '../../helpers/lotOccupancyDB/addLotOccupancyComment.js';
-import { getLotOccupancyComments } from '../../helpers/lotOccupancyDB/getLotOccupancyComments.js';
+import { addLotOccupancyComment } from '../../database/addLotOccupancyComment.js';
+import { getLotOccupancyComments } from '../../database/getLotOccupancyComments.js';
 export async function handler(request, response) {
     await addLotOccupancyComment(request.body, request.session.user);
     const lotOccupancyComments = await getLotOccupancyComments(request.body.lotOccupancyId);

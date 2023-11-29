@@ -1,4 +1,4 @@
-import { moveOccupancyTypeFieldUp, moveOccupancyTypeFieldUpToTop } from '../../helpers/lotOccupancyDB/moveOccupancyTypeField.js';
+import { moveOccupancyTypeFieldUp, moveOccupancyTypeFieldUpToTop } from '../../database/moveOccupancyTypeField.js';
 import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
 export async function handler(request, response) {
     const occupancyTypeFieldId = Number.parseInt(request.body.occupancyTypeFieldId, 10);

@@ -1,5 +1,5 @@
 import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
-import { addOccupancyTypeField } from '../../helpers/lotOccupancyDB/addOccupancyTypeField.js';
+import { addOccupancyTypeField } from '../../database/addOccupancyTypeField.js';
 export async function handler(request, response) {
     const occupancyTypeFieldId = await addOccupancyTypeField(request.body, request.session.user);
     const occupancyTypes = await getOccupancyTypes();

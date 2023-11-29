@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { addWorkOrder } from '../../helpers/lotOccupancyDB/addWorkOrder.js'
+import { addWorkOrder } from '../../database/addWorkOrder.js'
 
 export async function handler(
   request: Request,

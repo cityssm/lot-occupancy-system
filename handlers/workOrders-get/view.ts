@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
-import { getWorkOrder } from '../../helpers/lotOccupancyDB/getWorkOrder.js'
+import { getWorkOrder } from '../../database/getWorkOrder.js'
 
 export async function handler(
   request: Request,

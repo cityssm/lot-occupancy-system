@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express'
 
+import { getLotOccupancy } from '../../database/getLotOccupancy.js'
 import { getOccupancyTypePrintsById } from '../../helpers/functions.cache.js'
 import * as configFunctions from '../../helpers/functions.config.js'
-import { getLotOccupancy } from '../../helpers/lotOccupancyDB/getLotOccupancy.js'
 
 export async function handler(
   request: Request,

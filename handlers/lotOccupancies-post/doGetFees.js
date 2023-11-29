@@ -1,5 +1,5 @@
-import { getLotOccupancy } from '../../helpers/lotOccupancyDB/getLotOccupancy.js';
-import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js';
+import { getLotOccupancy } from '../../database/getLotOccupancy.js';
+import { getFeeCategories } from '../../database/getFeeCategories.js';
 export async function handler(request, response) {
     const lotOccupancyId = request.body.lotOccupancyId;
     const lotOccupancy = (await getLotOccupancy(lotOccupancyId));

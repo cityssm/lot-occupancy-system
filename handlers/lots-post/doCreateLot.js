@@ -1,5 +1,5 @@
 import { clearNextPreviousLotIdCache } from '../../helpers/functions.lots.js';
-import { addLot } from '../../helpers/lotOccupancyDB/addLot.js';
+import { addLot } from '../../database/addLot.js';
 export async function handler(request, response) {
     const lotId = await addLot(request.body, request.session.user);
     response.json({

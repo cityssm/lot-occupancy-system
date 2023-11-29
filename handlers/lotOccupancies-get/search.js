@@ -1,6 +1,6 @@
+import { getMaps } from '../../database/getMaps.js';
 import { getLotTypes, getOccupancyTypes } from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
-import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js';
 export async function handler(request, response) {
     const maps = await getMaps();
     const lotTypes = await getLotTypes();

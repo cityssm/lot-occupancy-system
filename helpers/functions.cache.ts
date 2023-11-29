@@ -10,13 +10,13 @@ import type { ClearCacheWorkerMessage } from '../types/applicationTypes.js'
 import type * as recordTypes from '../types/recordTypes.js'
 
 import * as configFunctions from './functions.config.js'
-import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from './lotOccupancyDB/getLotOccupantTypes.js'
-import { getLotStatuses as getLotStatusesFromDatabase } from './lotOccupancyDB/getLotStatuses.js'
-import { getLotTypes as getLotTypesFromDatabase } from './lotOccupancyDB/getLotTypes.js'
-import { getOccupancyTypeFields as getOccupancyTypeFieldsFromDatabase } from './lotOccupancyDB/getOccupancyTypeFields.js'
-import { getOccupancyTypes as getOccupancyTypesFromDatabase } from './lotOccupancyDB/getOccupancyTypes.js'
-import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from './lotOccupancyDB/getWorkOrderMilestoneTypes.js'
-import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from './lotOccupancyDB/getWorkOrderTypes.js'
+import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from '../database/getLotOccupantTypes.js'
+import { getLotStatuses as getLotStatusesFromDatabase } from '../database/getLotStatuses.js'
+import { getLotTypes as getLotTypesFromDatabase } from '../database/getLotTypes.js'
+import { getOccupancyTypeFields as getOccupancyTypeFieldsFromDatabase } from '../database/getOccupancyTypeFields.js'
+import { getOccupancyTypes as getOccupancyTypesFromDatabase } from '../database/getOccupancyTypes.js'
+import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from '../database/getWorkOrderMilestoneTypes.js'
+import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from '../database/getWorkOrderTypes.js'
 
 const debug = Debug(`lot-occupancy-system:functions.cache:${process.pid}`)
 

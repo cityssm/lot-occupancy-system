@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { updateMap } from '../../helpers/lotOccupancyDB/updateMap.js'
+import { updateMap } from '../../database/updateMap.js'
 
 export async function handler(
   request: Request,

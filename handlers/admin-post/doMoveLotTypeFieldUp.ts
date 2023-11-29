@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import {
   moveLotTypeFieldUp,
   moveLotTypeFieldUpToTop
-} from '../../helpers/lotOccupancyDB/moveLotTypeField.js'
+} from '../../database/moveLotTypeField.js'
 
 import { getLotTypes } from '../../helpers/functions.cache.js'
 
