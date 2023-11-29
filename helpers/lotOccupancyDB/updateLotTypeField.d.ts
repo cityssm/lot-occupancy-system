@@ -1,4 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
 interface UpdateLotTypeFieldForm {
     lotTypeFieldId: number | string;
     lotTypeField: string;
@@ -8,5 +7,5 @@ interface UpdateLotTypeFieldForm {
     pattern?: string;
     lotTypeFieldValues: string;
 }
-export declare function updateLotTypeField(lotTypeFieldForm: UpdateLotTypeFieldForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
+export declare function updateLotTypeField(lotTypeFieldForm: UpdateLotTypeFieldForm, user: User): Promise<boolean>;
 export default updateLotTypeField;

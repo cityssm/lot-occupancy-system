@@ -3,7 +3,7 @@ export async function handler(_request, response) {
     const backupDatabasePath = await backupDatabase();
     if (typeof backupDatabasePath === 'string') {
         const backupDatabasePathSplit = backupDatabasePath.split(/[/\\]/g);
-        const fileName = backupDatabasePathSplit[backupDatabasePathSplit.length - 1];
+        const fileName = backupDatabasePathSplit.at(-1);
         response.json({
             success: true,
             fileName

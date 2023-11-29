@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
-export async function updateOccupancyTypeField(occupancyTypeFieldForm, requestSession) {
+import { acquireConnection } from './pool.js';
+export async function updateOccupancyTypeField(occupancyTypeFieldForm, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update OccupancyTypeFields
@@ -14,7 +14,7 @@ export async function updateOccupancyTypeField(occupancyTypeFieldForm, requestSe
         recordUpdate_timeMillis = ?
         where occupancyTypeFieldId = ?
         and recordDelete_timeMillis is null`)
-        .run(occupancyTypeFieldForm.occupancyTypeField, Number.parseInt(occupancyTypeFieldForm.isRequired, 10), occupancyTypeFieldForm.minimumLength ?? 0, occupancyTypeFieldForm.maximumLength ?? 100, occupancyTypeFieldForm.pattern ?? '', occupancyTypeFieldForm.occupancyTypeFieldValues, requestSession.user.userName, Date.now(), occupancyTypeFieldForm.occupancyTypeFieldId);
+        .run(occupancyTypeFieldForm.occupancyTypeField, Number.parseInt(occupancyTypeFieldForm.isRequired, 10), occupancyTypeFieldForm.minimumLength ?? 0, occupancyTypeFieldForm.maximumLength ?? 100, occupancyTypeFieldForm.pattern ?? '', occupancyTypeFieldForm.occupancyTypeFieldValues, user.userName, Date.now(), occupancyTypeFieldForm.occupancyTypeFieldId);
     database.release();
     clearCacheByTableName('OccupancyTypeFields');
     return result.changes > 0;

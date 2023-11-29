@@ -1,4 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
 interface UpdateWorkOrderForm {
     workOrderId: string;
     workOrderNumber: string;
@@ -6,5 +5,5 @@ interface UpdateWorkOrderForm {
     workOrderDescription: string;
     workOrderOpenDateString: string;
 }
-export declare function updateWorkOrder(workOrderForm: UpdateWorkOrderForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
+export declare function updateWorkOrder(workOrderForm: UpdateWorkOrderForm, user: User): Promise<boolean>;
 export default updateWorkOrder;

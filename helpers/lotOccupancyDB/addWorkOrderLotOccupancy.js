@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function addWorkOrderLotOccupancy(workOrderLotOccupancyForm, requestSession, connectedDatabase) {
+export async function addWorkOrderLotOccupancy(workOrderLotOccupancyForm, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     const row = database
@@ -15,10 +15,10 @@ export async function addWorkOrderLotOccupancy(workOrderLotOccupancyForm, reques
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
           values (?, ?, ?, ?, ?, ?)`)
-            .run(workOrderLotOccupancyForm.workOrderId, workOrderLotOccupancyForm.lotOccupancyId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+            .run(workOrderLotOccupancyForm.workOrderId, workOrderLotOccupancyForm.lotOccupancyId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     else {
-        if (row.recordDelete_timeMillis) {
+        if (row.recordDelete_timeMillis !== null) {
             database
                 .prepare(`update WorkOrderLotOccupancies
             set recordCreate_userName = ?,
@@ -29,7 +29,7 @@ export async function addWorkOrderLotOccupancy(workOrderLotOccupancyForm, reques
             recordDelete_timeMillis = null
             where workOrderId = ?
             and lotOccupancyId = ?`)
-                .run(requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis, workOrderLotOccupancyForm.workOrderId, workOrderLotOccupancyForm.lotOccupancyId);
+                .run(user.userName, rightNowMillis, user.userName, rightNowMillis, workOrderLotOccupancyForm.workOrderId, workOrderLotOccupancyForm.lotOccupancyId);
         }
     }
     if (connectedDatabase === undefined) {

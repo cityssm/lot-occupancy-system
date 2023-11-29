@@ -1,10 +1,8 @@
 import { acquireConnection } from './pool.js'
 
-import type * as recordTypes from '../../types/recordTypes'
-
 export async function reopenWorkOrderMilestone(
   workOrderMilestoneId: number | string,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -18,7 +16,7 @@ export async function reopenWorkOrderMilestone(
         where workOrderMilestoneId = ?
         and workOrderMilestoneCompletionDate is not null`
     )
-    .run(requestSession.user!.userName, Date.now(), workOrderMilestoneId)
+    .run(user.userName, Date.now(), workOrderMilestoneId)
 
   database.release()
 

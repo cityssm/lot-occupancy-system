@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
-export async function addLotComment(lotCommentForm, requestSession) {
+import { acquireConnection } from './pool.js';
+export async function addLotComment(lotCommentForm, user) {
     const database = await acquireConnection();
     const rightNow = new Date();
     const result = database
@@ -10,7 +10,7 @@ export async function addLotComment(lotCommentForm, requestSession) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis) 
         values (?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(lotCommentForm.lotId, dateTimeFunctions.dateToInteger(rightNow), dateTimeFunctions.dateToTimeInteger(rightNow), lotCommentForm.lotComment, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
+        .run(lotCommentForm.lotId, dateTimeFunctions.dateToInteger(rightNow), dateTimeFunctions.dateToTimeInteger(rightNow), lotCommentForm.lotComment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     database.release();
     return result.lastInsertRowid;
 }

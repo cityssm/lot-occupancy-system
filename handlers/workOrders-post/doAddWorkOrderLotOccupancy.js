@@ -4,7 +4,7 @@ export async function handler(request, response) {
     const success = await addWorkOrderLotOccupancy({
         workOrderId: request.body.workOrderId,
         lotOccupancyId: request.body.lotOccupancyId
-    }, request.session);
+    }, request.session.user);
     const workOrderLotOccupanciesResults = await getLotOccupancies({
         workOrderId: request.body.workOrderId
     }, {

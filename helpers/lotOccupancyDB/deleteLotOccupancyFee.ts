@@ -1,11 +1,9 @@
 import { acquireConnection } from './pool.js'
 
-import type * as recordTypes from '../../types/recordTypes'
-
 export async function deleteLotOccupancyFee(
   lotOccupancyId: number | string,
   feeId: number | string,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -17,7 +15,7 @@ export async function deleteLotOccupancyFee(
         where lotOccupancyId = ?
         and feeId = ?`
     )
-    .run(requestSession.user!.userName, Date.now(), lotOccupancyId, feeId)
+    .run(user.userName, Date.now(), lotOccupancyId, feeId)
 
   database.release()
 

@@ -1,8 +1,6 @@
-import { acquireConnection } from './pool.js'
-
 import { clearCacheByTableName } from '../functions.cache.js'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface UpdateOccupancyTypeFieldForm {
   occupancyTypeFieldId: number | string
@@ -16,7 +14,7 @@ interface UpdateOccupancyTypeFieldForm {
 
 export async function updateOccupancyTypeField(
   occupancyTypeFieldForm: UpdateOccupancyTypeFieldForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -41,7 +39,7 @@ export async function updateOccupancyTypeField(
       occupancyTypeFieldForm.maximumLength ?? 100,
       occupancyTypeFieldForm.pattern ?? '',
       occupancyTypeFieldForm.occupancyTypeFieldValues,
-      requestSession.user!.userName,
+      user.userName,
       Date.now(),
       occupancyTypeFieldForm.occupancyTypeFieldId
     )

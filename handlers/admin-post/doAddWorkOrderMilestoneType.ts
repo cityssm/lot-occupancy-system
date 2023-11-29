@@ -11,7 +11,7 @@ export async function handler(
     'WorkOrderMilestoneTypes',
     request.body.workOrderMilestoneType,
     request.body.orderNumber ?? -1,
-    request.session
+    request.session.user as User
   )
 
   const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes()

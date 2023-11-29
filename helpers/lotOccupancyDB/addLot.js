@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js';
 import { addOrUpdateLotField } from './addOrUpdateLotField.js';
-export async function addLot(lotForm, requestSession) {
+import { acquireConnection } from './pool.js';
+export async function addLot(lotForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
@@ -11,7 +11,7 @@ export async function addLot(lotForm, requestSession) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis) 
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(lotForm.lotName, lotForm.lotTypeId, lotForm.lotStatusId === '' ? undefined : lotForm.lotStatusId, lotForm.mapId === '' ? undefined : lotForm.mapId, lotForm.mapKey, lotForm.lotLatitude === '' ? undefined : lotForm.lotLatitude, lotForm.lotLongitude === '' ? undefined : lotForm.lotLongitude, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(lotForm.lotName, lotForm.lotTypeId, lotForm.lotStatusId === '' ? undefined : lotForm.lotStatusId, lotForm.mapId === '' ? undefined : lotForm.mapId, lotForm.mapKey, lotForm.lotLatitude === '' ? undefined : lotForm.lotLatitude, lotForm.lotLongitude === '' ? undefined : lotForm.lotLongitude, user.userName, rightNowMillis, user.userName, rightNowMillis);
     const lotId = result.lastInsertRowid;
     const lotTypeFieldIds = (lotForm.lotTypeFieldIds ?? '').split(',');
     for (const lotTypeFieldId of lotTypeFieldIds) {
@@ -21,7 +21,7 @@ export async function addLot(lotForm, requestSession) {
                 lotId,
                 lotTypeFieldId,
                 lotFieldValue
-            }, requestSession, database);
+            }, user, database);
         }
     }
     database.release();

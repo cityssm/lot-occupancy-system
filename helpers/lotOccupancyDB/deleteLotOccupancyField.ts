@@ -1,12 +1,11 @@
-import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 export async function deleteLotOccupancyField(
   lotOccupancyId: number | string,
   occupancyTypeFieldId: number | string,
-  requestSession: recordTypes.PartialSession,
+  user: User,
   connectedDatabase?: PoolConnection
 ): Promise<boolean> {
   const database = connectedDatabase ?? (await acquireConnection())
@@ -20,7 +19,7 @@ export async function deleteLotOccupancyField(
         and occupancyTypeFieldId = ?`
     )
     .run(
-      requestSession.user!.userName,
+      user.userName,
       Date.now(),
       lotOccupancyId,
       occupancyTypeFieldId

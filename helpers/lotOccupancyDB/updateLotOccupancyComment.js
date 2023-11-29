@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js';
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
-export async function updateLotOccupancyComment(commentForm, requestSession) {
+import { acquireConnection } from './pool.js';
+export async function updateLotOccupancyComment(commentForm, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update LotOccupancyComments
@@ -11,7 +11,7 @@ export async function updateLotOccupancyComment(commentForm, requestSession) {
         recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
         and lotOccupancyCommentId = ?`)
-        .run(dateStringToInteger(commentForm.lotOccupancyCommentDateString), timeStringToInteger(commentForm.lotOccupancyCommentTimeString), commentForm.lotOccupancyComment, requestSession.user.userName, Date.now(), commentForm.lotOccupancyCommentId);
+        .run(dateStringToInteger(commentForm.lotOccupancyCommentDateString), timeStringToInteger(commentForm.lotOccupancyCommentTimeString), commentForm.lotOccupancyComment, user.userName, Date.now(), commentForm.lotOccupancyCommentId);
     database.release();
     return result.changes > 0;
 }

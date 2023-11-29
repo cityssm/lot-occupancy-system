@@ -1,8 +1,6 @@
-import { acquireConnection } from './pool.js'
-
 import { clearCacheByTableName } from '../functions.cache.js'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface OccupancyTypePrintForm {
   occupancyTypeId: string | number
@@ -12,7 +10,7 @@ interface OccupancyTypePrintForm {
 
 export async function addOccupancyTypePrint(
   occupancyTypePrintForm: OccupancyTypePrintForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -29,7 +27,7 @@ export async function addOccupancyTypePrint(
         and printEJS = ?`
     )
     .run(
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis,
       occupancyTypePrintForm.occupancyTypeId,
       occupancyTypePrintForm.printEJS
@@ -48,9 +46,9 @@ export async function addOccupancyTypePrint(
         occupancyTypePrintForm.occupancyTypeId,
         occupancyTypePrintForm.printEJS,
         occupancyTypePrintForm.orderNumber ?? -1,
-        requestSession.user!.userName,
+        user.userName,
         rightNowMillis,
-        requestSession.user!.userName,
+        user.userName,
         rightNowMillis
       )
   }

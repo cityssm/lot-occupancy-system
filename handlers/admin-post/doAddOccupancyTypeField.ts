@@ -1,11 +1,10 @@
 import type { Request, Response } from 'express'
 
-import { addOccupancyTypeField } from '../../helpers/lotOccupancyDB/addOccupancyTypeField.js'
-
 import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
+import { addOccupancyTypeField } from '../../helpers/lotOccupancyDB/addOccupancyTypeField.js'
 
 export async function handler(
   request: Request,
@@ -13,7 +12,7 @@ export async function handler(
 ): Promise<void> {
   const occupancyTypeFieldId = await addOccupancyTypeField(
     request.body,
-    request.session
+    request.session.user as User
   )
 
   const occupancyTypes = await getOccupancyTypes()

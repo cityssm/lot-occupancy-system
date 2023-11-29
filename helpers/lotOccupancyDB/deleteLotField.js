@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function deleteLotField(lotId, lotTypeFieldId, requestSession, connectedDatabase) {
+export async function deleteLotField(lotId, lotTypeFieldId, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const result = database
         .prepare(`update LotFields
@@ -7,7 +7,7 @@ export async function deleteLotField(lotId, lotTypeFieldId, requestSession, conn
         recordDelete_timeMillis = ?
         where lotId = ?
         and lotTypeFieldId = ?`)
-        .run(requestSession.user.userName, Date.now(), lotId, lotTypeFieldId);
+        .run(user.userName, Date.now(), lotId, lotTypeFieldId);
     if (connectedDatabase === undefined) {
         database.release();
     }

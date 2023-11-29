@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
-export async function addOccupancyTypePrint(occupancyTypePrintForm, requestSession) {
+import { acquireConnection } from './pool.js';
+export async function addOccupancyTypePrint(occupancyTypePrintForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     let result = database
@@ -11,7 +11,7 @@ export async function addOccupancyTypePrint(occupancyTypePrintForm, requestSessi
         recordDelete_timeMillis = null
         where occupancyTypeId = ?
         and printEJS = ?`)
-        .run(requestSession.user.userName, rightNowMillis, occupancyTypePrintForm.occupancyTypeId, occupancyTypePrintForm.printEJS);
+        .run(user.userName, rightNowMillis, occupancyTypePrintForm.occupancyTypeId, occupancyTypePrintForm.printEJS);
     if (result.changes === 0) {
         result = database
             .prepare(`insert into OccupancyTypePrints (
@@ -19,7 +19,7 @@ export async function addOccupancyTypePrint(occupancyTypePrintForm, requestSessi
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
           values (?, ?, ?, ?, ?, ?, ?)`)
-            .run(occupancyTypePrintForm.occupancyTypeId, occupancyTypePrintForm.printEJS, occupancyTypePrintForm.orderNumber ?? -1, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+            .run(occupancyTypePrintForm.occupancyTypeId, occupancyTypePrintForm.printEJS, occupancyTypePrintForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     database.release();
     clearCacheByTableName('OccupancyTypePrints');

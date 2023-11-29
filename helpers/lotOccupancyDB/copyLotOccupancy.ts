@@ -1,16 +1,13 @@
-import { acquireConnection } from './pool.js'
-
-import { getLotOccupancy } from './getLotOccupancy.js'
-import { addLotOccupancy } from './addLotOccupancy.js'
-import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js'
-
 import { dateToString } from '@cityssm/utils-datetime'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { addLotOccupancy } from './addLotOccupancy.js'
+import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js'
+import { getLotOccupancy } from './getLotOccupancy.js'
+import { acquireConnection } from './pool.js'
 
 export async function copyLotOccupancy(
   oldLotOccupancyId: number | string,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<number> {
   const database = await acquireConnection()
 
@@ -23,7 +20,7 @@ export async function copyLotOccupancy(
       occupancyStartDateString: dateToString(new Date()),
       occupancyEndDateString: ''
     },
-    requestSession,
+    user,
     database
   )
 
@@ -46,9 +43,9 @@ export async function copyLotOccupancy(
         newLotOccupancyId,
         occupancyField.occupancyTypeFieldId,
         occupancyField.lotOccupancyFieldValue,
-        requestSession.user!.userName,
+        user.userName,
         rightNowMillis,
-        requestSession.user!.userName,
+        user.userName,
         rightNowMillis
       )
   }
@@ -72,7 +69,7 @@ export async function copyLotOccupancy(
         occupantPhoneNumber: occupant.occupantPhoneNumber!,
         occupantEmailAddress: occupant.occupantEmailAddress!
       },
-      requestSession,
+      user,
       database
     )
   }

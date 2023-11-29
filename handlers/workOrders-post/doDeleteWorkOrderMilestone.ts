@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express'
 
 import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js'
-
 import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
 
 export async function handler(
@@ -11,7 +10,7 @@ export async function handler(
   const success = await deleteRecord(
     'WorkOrderMilestones',
     request.body.workOrderMilestoneId,
-    request.session
+    request.session.user as User
   )
 
   const workOrderMilestones = await getWorkOrderMilestones(

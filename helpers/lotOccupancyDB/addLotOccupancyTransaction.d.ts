@@ -1,4 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
 interface AddLotOccupancyTransactionForm {
     lotOccupancyId: string | number;
     transactionDateString?: string;
@@ -7,5 +6,5 @@ interface AddLotOccupancyTransactionForm {
     externalReceiptNumber: string;
     transactionNote: string;
 }
-export declare function addLotOccupancyTransaction(lotOccupancyTransactionForm: AddLotOccupancyTransactionForm, requestSession: recordTypes.PartialSession): Promise<number>;
+export declare function addLotOccupancyTransaction(lotOccupancyTransactionForm: AddLotOccupancyTransactionForm, user: User): Promise<number>;
 export default addLotOccupancyTransaction;

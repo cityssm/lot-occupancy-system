@@ -365,9 +365,11 @@ export interface WorkOrder extends Record {
  * USER TYPES
  */
 
-export interface User {
-  userName: string
-  userProperties?: UserProperties
+declare global {
+  export interface User {
+    userName: string
+    userProperties?: UserProperties
+  }
 }
 
 export interface UserProperties {
@@ -380,8 +382,4 @@ declare module 'express-session' {
   interface Session {
     user?: User
   }
-}
-
-export interface PartialSession {
-  user?: User
 }

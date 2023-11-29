@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express'
 
 import { completeWorkOrderMilestone } from '../../helpers/lotOccupancyDB/completeWorkOrderMilestone.js'
-
 import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
 
 export async function handler(
@@ -12,7 +11,7 @@ export async function handler(
     {
       workOrderMilestoneId: request.body.workOrderMilestoneId
     },
-    request.session
+    request.session.user as User
   )
 
   const workOrderMilestones = await getWorkOrderMilestones(

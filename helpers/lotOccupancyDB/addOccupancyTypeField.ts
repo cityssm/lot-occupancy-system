@@ -1,7 +1,6 @@
-import { acquireConnection } from './pool.js'
-
-import type * as recordTypes from '../../types/recordTypes'
 import { clearCacheByTableName } from '../functions.cache.js'
+
+import { acquireConnection } from './pool.js'
 
 interface AddOccupancyTypeFieldForm {
   occupancyTypeId?: string | number
@@ -16,7 +15,7 @@ interface AddOccupancyTypeFieldForm {
 
 export async function addOccupancyTypeField(
   occupancyTypeFieldForm: AddOccupancyTypeFieldForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<number> {
   const database = await acquireConnection()
 
@@ -42,9 +41,9 @@ export async function addOccupancyTypeField(
       occupancyTypeFieldForm.minimumLength ?? 0,
       occupancyTypeFieldForm.maximumLength ?? 100,
       occupancyTypeFieldForm.orderNumber ?? -1,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis
     )
 

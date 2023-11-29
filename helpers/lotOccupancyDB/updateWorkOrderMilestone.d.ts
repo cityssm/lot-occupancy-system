@@ -1,4 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
 interface UpdateWorkOrderMilestoneForm {
     workOrderMilestoneId: string | number;
     workOrderMilestoneTypeId: number | string;
@@ -6,5 +5,5 @@ interface UpdateWorkOrderMilestoneForm {
     workOrderMilestoneTimeString?: string;
     workOrderMilestoneDescription: string;
 }
-export declare function updateWorkOrderMilestone(milestoneForm: UpdateWorkOrderMilestoneForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
+export declare function updateWorkOrderMilestone(milestoneForm: UpdateWorkOrderMilestoneForm, user: User): Promise<boolean>;
 export default updateWorkOrderMilestone;

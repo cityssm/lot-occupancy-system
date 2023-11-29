@@ -1,6 +1,6 @@
-import * as configFunctions from './functions.config.js'
-
 import ActiveDirectory from 'activedirectory2'
+
+import * as configFunctions from './functions.config.js'
 
 const userDomain = configFunctions.getProperty('application.userDomain')
 
@@ -59,7 +59,10 @@ const safeRedirects = new Set([
   '/reports'
 ])
 
+// eslint-disable-next-line regexp/no-unused-capturing-group
 const recordUrl = /^(\/(maps|lots|lotoccupancies|workorders)\/)\d+(\/edit)?$/
+
+// eslint-disable-next-line regexp/no-unused-capturing-group
 const printUrl = /^\/print\/(pdf|screen)\/[\d/=?A-Za-z-]+$/
 
 export function getSafeRedirectURL(possibleRedirectURL = ''): string {

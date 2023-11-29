@@ -1,14 +1,11 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/indent */
-
-import { acquireConnection } from './pool.js'
 
 import { dateStringToInteger } from '@cityssm/utils-datetime'
 
 import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js'
-
 import { deleteLotOccupancyField } from './deleteLotOccupancyField.js'
-
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface UpdateLotOccupancyForm {
   lotOccupancyId: string | number
@@ -24,7 +21,7 @@ interface UpdateLotOccupancyForm {
 
 export async function updateLotOccupancy(
   lotOccupancyForm: UpdateLotOccupancyForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -47,7 +44,7 @@ export async function updateLotOccupancy(
       lotOccupancyForm.occupancyEndDateString === ''
         ? undefined
         : dateStringToInteger(lotOccupancyForm.occupancyEndDateString),
-      requestSession.user!.userName,
+      user.userName,
       Date.now(),
       lotOccupancyForm.lotOccupancyId
     )
@@ -66,7 +63,7 @@ export async function updateLotOccupancy(
         ? deleteLotOccupancyField(
             lotOccupancyForm.lotOccupancyId,
             occupancyTypeFieldId,
-            requestSession,
+            user,
             database
           )
         : addOrUpdateLotOccupancyField(
@@ -75,7 +72,7 @@ export async function updateLotOccupancy(
               occupancyTypeFieldId,
               lotOccupancyFieldValue
             },
-            requestSession,
+            user,
             database
           ))
     }

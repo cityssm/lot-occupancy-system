@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { updateLotStatus } from '../../helpers/lotOccupancyDB/updateLot.js'
 import { getLots } from '../../helpers/lotOccupancyDB/getLots.js'
+import { updateLotStatus } from '../../helpers/lotOccupancyDB/updateLot.js'
 
 export async function handler(
   request: Request,
@@ -10,7 +10,7 @@ export async function handler(
   const success = await updateLotStatus(
     request.body.lotId,
     request.body.lotStatusId,
-    request.session
+    request.session.user as User
   )
 
   const workOrderLotsResults = await getLots(

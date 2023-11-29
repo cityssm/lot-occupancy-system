@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { reopenWorkOrderMilestone } from '../../helpers/lotOccupancyDB/reopenWorkOrderMilestone.js'
-
 import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
+import { reopenWorkOrderMilestone } from '../../helpers/lotOccupancyDB/reopenWorkOrderMilestone.js'
 
 export async function handler(
   request: Request,
@@ -10,7 +9,7 @@ export async function handler(
 ): Promise<void> {
   const success = await reopenWorkOrderMilestone(
     request.body.workOrderMilestoneId,
-    request.session
+    request.session.user as User
   )
 
   const workOrderMilestones = await getWorkOrderMilestones(

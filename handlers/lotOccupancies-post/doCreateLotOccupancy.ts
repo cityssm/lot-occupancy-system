@@ -6,7 +6,7 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lotOccupancyId = await addLotOccupancy(request.body, request.session)
+  const lotOccupancyId = await addLotOccupancy(request.body, request.session.user as User)
 
   response.json({
     success: true,

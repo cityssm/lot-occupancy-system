@@ -1,8 +1,6 @@
-import { acquireConnection } from './pool.js'
-
 import { clearCacheByTableName } from '../functions.cache.js'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface UpdateLotTypeFieldForm {
   lotTypeFieldId: number | string
@@ -16,7 +14,7 @@ interface UpdateLotTypeFieldForm {
 
 export async function updateLotTypeField(
   lotTypeFieldForm: UpdateLotTypeFieldForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -41,7 +39,7 @@ export async function updateLotTypeField(
       lotTypeFieldForm.maximumLength ?? 100,
       lotTypeFieldForm.pattern ?? '',
       lotTypeFieldForm.lotTypeFieldValues,
-      requestSession.user!.userName,
+      user.userName,
       Date.now(),
       lotTypeFieldForm.lotTypeFieldId
     )

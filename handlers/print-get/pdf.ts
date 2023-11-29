@@ -75,9 +75,8 @@ export async function handler(
       return
     }
 
-    await convertHTMLToPDF(
+    const pdf = await convertHTMLToPDF(
       ejsData,
-      pdfCallbackFunction,
       {
         format: 'letter',
         printBackground: true,
@@ -89,6 +88,8 @@ export async function handler(
         remoteContent: false
       }
     )
+
+    pdfCallbackFunction(pdf)
   }
 
   reportData.configFunctions = configFunctions

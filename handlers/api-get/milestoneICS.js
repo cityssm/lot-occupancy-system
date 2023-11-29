@@ -1,12 +1,12 @@
 import ical, { ICalEventStatus } from 'ical-generator';
-import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js';
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getPrintConfig } from '../../helpers/functions.print.js';
+import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js';
 const calendarCompany = 'cityssm.github.io';
 const calendarProduct = configFunctions.getProperty('application.applicationName');
 const timeStringSplitRegex = /[ :-]/;
 function escapeHTML(stringToEscape) {
-    return stringToEscape.replace(/[^\d A-Za-z]/g, (c) => `&#${c.codePointAt(0)};`);
+    return stringToEscape.replaceAll(/[^\d a-z]/gi, (c) => `&#${c.codePointAt(0)};`);
 }
 function getUrlRoot(request) {
     return ('http://' +

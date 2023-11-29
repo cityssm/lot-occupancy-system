@@ -1,9 +1,9 @@
+import Debug from 'debug';
 import { Router } from 'express';
-import * as configFunctions from '../helpers/functions.config.js';
-import * as authenticationFunctions from '../helpers/functions.authentication.js';
 import { useTestDatabases } from '../data/databasePaths.js';
 import { getApiKey } from '../helpers/functions.api.js';
-import Debug from 'debug';
+import * as authenticationFunctions from '../helpers/functions.authentication.js';
+import * as configFunctions from '../helpers/functions.config.js';
 const debug = Debug('lot-occupancy-system:login');
 export const router = Router();
 function getHandler(request, response) {

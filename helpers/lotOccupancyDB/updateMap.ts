@@ -1,7 +1,5 @@
 import { acquireConnection } from './pool.js'
 
-import type * as recordTypes from '../../types/recordTypes'
-
 interface UpdateMapForm {
   mapId: string
   mapName: string
@@ -19,7 +17,7 @@ interface UpdateMapForm {
 
 export async function updateMap(
   mapForm: UpdateMapForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -54,7 +52,7 @@ export async function updateMap(
       mapForm.mapProvince,
       mapForm.mapPostalCode,
       mapForm.mapPhoneNumber,
-      requestSession.user!.userName,
+      user.userName,
       Date.now(),
       mapForm.mapId
     )

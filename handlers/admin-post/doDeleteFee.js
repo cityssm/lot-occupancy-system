@@ -1,7 +1,7 @@
 import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js';
 import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js';
 export async function handler(request, response) {
-    const success = await deleteRecord('Fees', request.body.feeId, request.session);
+    const success = await deleteRecord('Fees', request.body.feeId, request.session.user);
     const feeCategories = await getFeeCategories({}, {
         includeFees: true
     });

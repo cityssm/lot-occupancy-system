@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function reopenWorkOrderMilestone(workOrderMilestoneId, requestSession) {
+export async function reopenWorkOrderMilestone(workOrderMilestoneId, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update WorkOrderMilestones
@@ -9,7 +9,7 @@ export async function reopenWorkOrderMilestone(workOrderMilestoneId, requestSess
         recordUpdate_timeMillis = ?
         where workOrderMilestoneId = ?
         and workOrderMilestoneCompletionDate is not null`)
-        .run(requestSession.user.userName, Date.now(), workOrderMilestoneId);
+        .run(user.userName, Date.now(), workOrderMilestoneId);
     database.release();
     return result.changes > 0;
 }

@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function addWorkOrderLot(workOrderLotForm, requestSession) {
+export async function addWorkOrderLot(workOrderLotForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const row = database
@@ -15,7 +15,7 @@ export async function addWorkOrderLot(workOrderLotForm, requestSession) {
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
           values (?, ?, ?, ?, ?, ?)`)
-            .run(workOrderLotForm.workOrderId, workOrderLotForm.lotId, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+            .run(workOrderLotForm.workOrderId, workOrderLotForm.lotId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     else {
         if (row.recordDelete_timeMillis) {
@@ -29,7 +29,7 @@ export async function addWorkOrderLot(workOrderLotForm, requestSession) {
             recordDelete_timeMillis = null
             where workOrderId = ?
             and lotId = ?`)
-                .run(requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis, workOrderLotForm.workOrderId, workOrderLotForm.lotId);
+                .run(user.userName, rightNowMillis, user.userName, rightNowMillis, workOrderLotForm.workOrderId, workOrderLotForm.lotId);
         }
     }
     database.release();

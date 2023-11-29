@@ -1,45 +1,36 @@
-import './helpers/polyfills.js'
-
-import createError from 'http-errors'
-import express, { type RequestHandler } from 'express'
-
-import compression from 'compression'
 import path from 'node:path'
+
+import * as htmlFns from '@cityssm/expressjs-server-js/htmlFns.js'
+import * as stringFns from '@cityssm/expressjs-server-js/stringFns.js'
+import * as dateTimeFns from '@cityssm/utils-datetime'
+import compression from 'compression'
 import cookieParser from 'cookie-parser'
 import csurf from 'csurf'
+import Debug from 'debug'
+import express, { type RequestHandler } from 'express'
 import rateLimit from 'express-rate-limit'
-
 import session from 'express-session'
+import createError from 'http-errors'
 import FileStore from 'session-file-store'
 
+import { useTestDatabases } from './data/databasePaths.js'
 import * as permissionHandlers from './handlers/permissions.js'
-import routerLogin from './routes/login.js'
-import routerDashboard from './routes/dashboard.js'
-import routerApi from './routes/api.js'
-import routerPrint from './routes/print.js'
-import routerMaps from './routes/maps.js'
-import routerLots from './routes/lots.js'
-import routerLotOccupancies from './routes/lotOccupancies.js'
-import routerWorkOrders from './routes/workOrders.js'
-import routerReports from './routes/reports.js'
-import routerAdmin from './routes/admin.js'
-
+import { getSafeRedirectURL } from './helpers/functions.authentication.js'
 import * as configFunctions from './helpers/functions.config.js'
 import * as printFunctions from './helpers/functions.print.js'
-import * as dateTimeFns from '@cityssm/utils-datetime'
-import * as stringFns from '@cityssm/expressjs-server-js/stringFns.js'
-import * as htmlFns from '@cityssm/expressjs-server-js/htmlFns.js'
-
+import * as databaseInitializer from './helpers/initializer.database.js'
+import routerAdmin from './routes/admin.js'
+import routerApi from './routes/api.js'
+import routerDashboard from './routes/dashboard.js'
+import routerLogin from './routes/login.js'
+import routerLotOccupancies from './routes/lotOccupancies.js'
+import routerLots from './routes/lots.js'
+import routerMaps from './routes/maps.js'
+import routerPrint from './routes/print.js'
+import routerReports from './routes/reports.js'
+import routerWorkOrders from './routes/workOrders.js'
 import { version } from './version.js'
 
-import * as databaseInitializer from './helpers/initializer.database.js'
-
-import { apiGetHandler } from './handlers/permissions.js'
-import { getSafeRedirectURL } from './helpers/functions.authentication.js'
-
-import { useTestDatabases } from './data/databasePaths.js'
-
-import Debug from 'debug'
 const debug = Debug(`lot-occupancy-system:app:${process.pid}`)
 
 /*
@@ -240,7 +231,11 @@ app.get(urlPrefix + '/', sessionChecker, (_request, response) => {
 
 app.use(urlPrefix + '/dashboard', sessionChecker, routerDashboard)
 
-app.use(urlPrefix + '/api/:apiKey', apiGetHandler as RequestHandler, routerApi)
+app.use(
+  urlPrefix + '/api/:apiKey',
+  permissionHandlers.apiGetHandler as RequestHandler,
+  routerApi
+)
 
 app.use(urlPrefix + '/print', sessionChecker, routerPrint)
 app.use(urlPrefix + '/maps', sessionChecker, routerMaps)

@@ -8,8 +8,6 @@ import * as iconFunctions from '../helpers/functions.icons.js'
 import * as sqlFilterFunctions from '../helpers/functions.sqlFilters.js'
 import * as userFunctions from '../helpers/functions.user.js'
 
-import * as polyfills from '../helpers/polyfills.js'
-
 describe('config.cemetery.ssm', () => {
   it('Sorts burial site names', () => {
     const grave2 = 'XX-B1-G2A'
@@ -519,19 +517,5 @@ describe('functions.user', () => {
 
       assert.strictEqual(await userFunctions.apiKeyIsValid(apiRequest), false)
     })
-  })
-})
-
-describe('polyfills', () => {
-  it('applys Object.hasOwn polyfill', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    delete (Object as any).hasOwn
-    assert.ok(Object.hasOwn === undefined)
-
-    polyfills.applyPolyfills()
-    assert.ok(Object.hasOwn !== undefined)
-
-    const testObject = { foo: 'bar' }
-    assert.ok(Object.hasOwn(testObject, 'foo'))
   })
 })

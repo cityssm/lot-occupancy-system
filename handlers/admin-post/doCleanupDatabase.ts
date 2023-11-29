@@ -6,7 +6,7 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const recordCounts = await cleanupDatabase(request.session)
+  const recordCounts = await cleanupDatabase(request.session.user as User)
 
   response.json({
     success: true,

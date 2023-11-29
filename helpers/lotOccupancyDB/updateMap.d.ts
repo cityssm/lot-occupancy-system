@@ -1,4 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
 interface UpdateMapForm {
     mapId: string;
     mapName: string;
@@ -13,5 +12,5 @@ interface UpdateMapForm {
     mapPostalCode: string;
     mapPhoneNumber: string;
 }
-export declare function updateMap(mapForm: UpdateMapForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
+export declare function updateMap(mapForm: UpdateMapForm, user: User): Promise<boolean>;
 export default updateMap;

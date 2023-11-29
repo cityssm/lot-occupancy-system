@@ -1,10 +1,8 @@
 import { acquireConnection } from './pool.js'
 
-import type * as recordTypes from '../../types/recordTypes'
-
 export async function reopenWorkOrder(
   workOrderId: number | string,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -17,7 +15,7 @@ export async function reopenWorkOrder(
         where workOrderId = ?
         and workOrderCloseDate is not null`
     )
-    .run(requestSession.user!.userName, Date.now(), workOrderId)
+    .run(user.userName, Date.now(), workOrderId)
 
   database.release()
 

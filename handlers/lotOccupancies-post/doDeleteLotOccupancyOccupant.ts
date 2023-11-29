@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express'
 
 import { deleteLotOccupancyOccupant } from '../../helpers/lotOccupancyDB/deleteLotOccupancyOccupant.js'
-
 import { getLotOccupancyOccupants } from '../../helpers/lotOccupancyDB/getLotOccupancyOccupants.js'
 
 export async function handler(
@@ -11,7 +10,7 @@ export async function handler(
   const success = await deleteLotOccupancyOccupant(
     request.body.lotOccupancyId,
     request.body.lotOccupantIndex,
-    request.session
+    request.session.user as User
   )
 
   const lotOccupancyOccupants = await getLotOccupancyOccupants(

@@ -1,8 +1,8 @@
-import { acquireConnection } from './pool.js';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
-import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js';
 import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js';
-export async function addLotOccupancy(lotOccupancyForm, requestSession, connectedDatabase) {
+import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js';
+import { acquireConnection } from './pool.js';
+export async function addLotOccupancy(lotOccupancyForm, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     const occupancyStartDate = dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyStartDateString);
@@ -18,7 +18,7 @@ export async function addLotOccupancy(lotOccupancyForm, requestSession, connecte
         values (?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(lotOccupancyForm.occupancyTypeId, lotOccupancyForm.lotId === '' ? undefined : lotOccupancyForm.lotId, occupancyStartDate, lotOccupancyForm.occupancyEndDateString === ''
         ? undefined
-        : dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyEndDateString), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        : dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyEndDateString), user.userName, rightNowMillis, user.userName, rightNowMillis);
     const lotOccupancyId = result.lastInsertRowid;
     const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds ?? '').split(',');
     for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
@@ -28,7 +28,7 @@ export async function addLotOccupancy(lotOccupancyForm, requestSession, connecte
                 lotOccupancyId,
                 occupancyTypeFieldId,
                 lotOccupancyFieldValue
-            }, requestSession, database);
+            }, user, database);
         }
     }
     if ((lotOccupancyForm.lotOccupantTypeId ?? '') !== '') {
@@ -45,7 +45,7 @@ export async function addLotOccupancy(lotOccupancyForm, requestSession, connecte
             occupantPhoneNumber: lotOccupancyForm.occupantPhoneNumber,
             occupantEmailAddress: lotOccupancyForm.occupantEmailAddress,
             occupantComment: lotOccupancyForm.occupantComment
-        }, requestSession, database);
+        }, user, database);
     }
     if (connectedDatabase === undefined) {
         database.release();

@@ -5,7 +5,6 @@ import * as cacheFunctions from '../helpers/functions.cache.js';
 import * as iconFunctions from '../helpers/functions.icons.js';
 import * as sqlFilterFunctions from '../helpers/functions.sqlFilters.js';
 import * as userFunctions from '../helpers/functions.user.js';
-import * as polyfills from '../helpers/polyfills.js';
 describe('config.cemetery.ssm', () => {
     it('Sorts burial site names', () => {
         const grave2 = 'XX-B1-G2A';
@@ -337,15 +336,5 @@ describe('functions.user', () => {
             };
             assert.strictEqual(await userFunctions.apiKeyIsValid(apiRequest), false);
         });
-    });
-});
-describe('polyfills', () => {
-    it('applys Object.hasOwn polyfill', () => {
-        delete Object.hasOwn;
-        assert.ok(Object.hasOwn === undefined);
-        polyfills.applyPolyfills();
-        assert.ok(Object.hasOwn !== undefined);
-        const testObject = { foo: 'bar' };
-        assert.ok(Object.hasOwn(testObject, 'foo'));
     });
 });

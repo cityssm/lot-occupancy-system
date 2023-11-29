@@ -1,4 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
 interface UpdateFeeForm {
     feeId: string;
     feeCategoryId: string;
@@ -15,5 +14,5 @@ interface UpdateFeeForm {
     quantityUnit?: string;
     isRequired: '' | '1';
 }
-export declare function updateFee(feeForm: UpdateFeeForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
+export declare function updateFee(feeForm: UpdateFeeForm, user: User): Promise<boolean>;
 export default updateFee;

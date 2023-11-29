@@ -1,7 +1,5 @@
 import { acquireConnection } from './pool.js'
 
-import type * as recordTypes from '../../types/recordTypes'
-
 interface AddMapForm {
   mapName: string
   mapDescription: string
@@ -16,10 +14,7 @@ interface AddMapForm {
   mapPhoneNumber: string
 }
 
-export async function addMap(
-  mapForm: AddMapForm,
-  requestSession: recordTypes.PartialSession
-): Promise<number> {
+export async function addMap(mapForm: AddMapForm, user: User): Promise<number> {
   const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
@@ -48,9 +43,9 @@ export async function addMap(
       mapForm.mapProvince,
       mapForm.mapPostalCode,
       mapForm.mapPhoneNumber,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis
     )
 

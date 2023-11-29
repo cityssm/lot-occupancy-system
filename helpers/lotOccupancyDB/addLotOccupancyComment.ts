@@ -1,5 +1,3 @@
-import { acquireConnection } from './pool.js'
-
 import {
   dateStringToInteger,
   dateToInteger,
@@ -7,7 +5,7 @@ import {
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface AddLotOccupancyCommentForm {
   lotOccupancyId: string | number
@@ -18,7 +16,7 @@ interface AddLotOccupancyCommentForm {
 
 export async function addLotOccupancyComment(
   commentForm: AddLotOccupancyCommentForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<number> {
   const rightNow = new Date()
 
@@ -54,9 +52,9 @@ export async function addLotOccupancyComment(
       lotOccupancyCommentDate,
       lotOccupancyCommentTime,
       commentForm.lotOccupancyComment,
-      requestSession.user!.userName,
+      user.userName,
       rightNow.getTime(),
-      requestSession.user!.userName,
+      user.userName,
       rightNow.getTime()
     )
 

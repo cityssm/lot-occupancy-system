@@ -3,7 +3,7 @@ import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrde
 export async function handler(request, response) {
     const success = await completeWorkOrderMilestone({
         workOrderMilestoneId: request.body.workOrderMilestoneId
-    }, request.session);
+    }, request.session.user);
     const workOrderMilestones = await getWorkOrderMilestones({
         workOrderId: request.body.workOrderId
     }, {

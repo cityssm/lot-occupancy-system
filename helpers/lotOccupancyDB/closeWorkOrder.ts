@@ -1,11 +1,6 @@
+import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime'
+
 import { acquireConnection } from './pool.js'
-
-import {
-  dateStringToInteger,
-  dateToInteger
-} from '@cityssm/utils-datetime'
-
-import type * as recordTypes from '../../types/recordTypes'
 
 interface AddWorkOrderForm {
   workOrderId: number | string
@@ -14,7 +9,7 @@ interface AddWorkOrderForm {
 
 export async function closeWorkOrder(
   workOrderForm: AddWorkOrderForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -32,7 +27,7 @@ export async function closeWorkOrder(
       workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
         : dateToInteger(new Date()),
-      requestSession.user!.userName,
+      user.userName,
       rightNow.getTime(),
       workOrderForm.workOrderId
     )

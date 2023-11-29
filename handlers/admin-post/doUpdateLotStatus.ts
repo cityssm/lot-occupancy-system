@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { updateRecord } from '../../helpers/lotOccupancyDB/updateRecord.js'
 import { getLotStatuses } from '../../helpers/functions.cache.js'
+import { updateRecord } from '../../helpers/lotOccupancyDB/updateRecord.js'
 
 export async function handler(
   request: Request,
@@ -11,7 +11,7 @@ export async function handler(
     'LotStatuses',
     request.body.lotStatusId,
     request.body.lotStatus,
-    request.session
+    request.session.user as User
   )
 
   const lotStatuses = await getLotStatuses()

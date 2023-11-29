@@ -1,7 +1,7 @@
 import { addLotOccupancyTransaction } from '../../helpers/lotOccupancyDB/addLotOccupancyTransaction.js';
 import { getLotOccupancyTransactions } from '../../helpers/lotOccupancyDB/getLotOccupancyTransactions.js';
 export async function handler(request, response) {
-    await addLotOccupancyTransaction(request.body, request.session);
+    await addLotOccupancyTransaction(request.body, request.session.user);
     const lotOccupancyTransactions = await getLotOccupancyTransactions(request.body.lotOccupancyId, { includeIntegrations: true });
     response.json({
         success: true,

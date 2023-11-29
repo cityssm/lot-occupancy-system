@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
-export async function addWorkOrderComment(workOrderCommentForm, requestSession) {
+import { acquireConnection } from './pool.js';
+export async function addWorkOrderComment(workOrderCommentForm, user) {
     const database = await acquireConnection();
     const rightNow = new Date();
     const result = database
@@ -11,7 +11,7 @@ export async function addWorkOrderComment(workOrderCommentForm, requestSession) 
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(workOrderCommentForm.workOrderId, dateTimeFunctions.dateToInteger(rightNow), dateTimeFunctions.dateToTimeInteger(rightNow), workOrderCommentForm.workOrderComment, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
+        .run(workOrderCommentForm.workOrderId, dateTimeFunctions.dateToInteger(rightNow), dateTimeFunctions.dateToTimeInteger(rightNow), workOrderCommentForm.workOrderComment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     database.release();
     return result.lastInsertRowid;
 }

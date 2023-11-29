@@ -1,11 +1,10 @@
 import type { Request, Response } from 'express'
 
-import { deleteOccupancyTypePrint } from '../../helpers/lotOccupancyDB/deleteOccupancyTypePrint.js'
-
 import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
+import { deleteOccupancyTypePrint } from '../../helpers/lotOccupancyDB/deleteOccupancyTypePrint.js'
 
 export async function handler(
   request: Request,
@@ -14,7 +13,7 @@ export async function handler(
   const success = await deleteOccupancyTypePrint(
     request.body.occupancyTypeId,
     request.body.printEJS,
-    request.session
+    request.session.user as User
   )
 
   const occupancyTypes = await getOccupancyTypes()

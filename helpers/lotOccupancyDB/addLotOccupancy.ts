@@ -1,12 +1,12 @@
-import { acquireConnection } from './pool.js'
-import type { PoolConnection } from 'better-sqlite-pool'
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/indent */
 
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
+import type { PoolConnection } from 'better-sqlite-pool'
 
-import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js'
 import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js'
-
-import type * as recordTypes from '../../types/recordTypes'
+import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js'
+import { acquireConnection } from './pool.js'
 
 interface AddLotOccupancyForm {
   occupancyTypeId: string | number
@@ -33,7 +33,7 @@ interface AddLotOccupancyForm {
 
 export async function addLotOccupancy(
   lotOccupancyForm: AddLotOccupancyForm,
-  requestSession: recordTypes.PartialSession,
+  user: User,
   connectedDatabase?: PoolConnection
 ): Promise<number> {
   const database = connectedDatabase ?? (await acquireConnection())
@@ -48,7 +48,6 @@ export async function addLotOccupancy(
     console.error(lotOccupancyForm)
   }
 
-  /* eslint-disable @typescript-eslint/indent */
   const result = database
     .prepare(
       `insert into LotOccupancies (
@@ -67,9 +66,9 @@ export async function addLotOccupancy(
         : dateTimeFunctions.dateStringToInteger(
             lotOccupancyForm.occupancyEndDateString
           ),
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis
     )
 
@@ -91,7 +90,7 @@ export async function addLotOccupancy(
           occupancyTypeFieldId,
           lotOccupancyFieldValue
         },
-        requestSession,
+        user,
         database
       )
     }
@@ -113,7 +112,7 @@ export async function addLotOccupancy(
         occupantEmailAddress: lotOccupancyForm.occupantEmailAddress!,
         occupantComment: lotOccupancyForm.occupantComment!
       },
-      requestSession,
+      user,
       database
     )
   }

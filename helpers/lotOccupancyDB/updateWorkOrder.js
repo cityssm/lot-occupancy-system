@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js';
 import { dateStringToInteger } from '@cityssm/utils-datetime';
-export async function updateWorkOrder(workOrderForm, requestSession) {
+import { acquireConnection } from './pool.js';
+export async function updateWorkOrder(workOrderForm, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update WorkOrders
@@ -12,7 +12,7 @@ export async function updateWorkOrder(workOrderForm, requestSession) {
         recordUpdate_timeMillis = ?
         where workOrderId = ?
         and recordDelete_timeMillis is null`)
-        .run(workOrderForm.workOrderNumber, workOrderForm.workOrderTypeId, workOrderForm.workOrderDescription, dateStringToInteger(workOrderForm.workOrderOpenDateString), requestSession.user.userName, Date.now(), workOrderForm.workOrderId);
+        .run(workOrderForm.workOrderNumber, workOrderForm.workOrderTypeId, workOrderForm.workOrderDescription, dateStringToInteger(workOrderForm.workOrderOpenDateString), user.userName, Date.now(), workOrderForm.workOrderId);
     database.release();
     return result.changes > 0;
 }

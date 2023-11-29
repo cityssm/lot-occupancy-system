@@ -268,9 +268,11 @@ export interface WorkOrder extends Record {
     workOrderLotCount?: number;
     workOrderLotOccupancies?: LotOccupancy[];
 }
-export interface User {
-    userName: string;
-    userProperties?: UserProperties;
+declare global {
+    export interface User {
+        userName: string;
+        userProperties?: UserProperties;
+    }
 }
 export interface UserProperties {
     canUpdate: boolean;
@@ -281,7 +283,4 @@ declare module 'express-session' {
     interface Session {
         user?: User;
     }
-}
-export interface PartialSession {
-    user?: User;
 }

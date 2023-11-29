@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function addOrUpdateLotField(lotFieldForm, requestSession, connectedDatabase) {
+export async function addOrUpdateLotField(lotFieldForm, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     let result = database
@@ -11,7 +11,7 @@ export async function addOrUpdateLotField(lotFieldForm, requestSession, connecte
         recordDelete_timeMillis = null
         where lotId = ?
         and lotTypeFieldId = ?`)
-        .run(lotFieldForm.lotFieldValue, requestSession.user.userName, rightNowMillis, lotFieldForm.lotId, lotFieldForm.lotTypeFieldId);
+        .run(lotFieldForm.lotFieldValue, user.userName, rightNowMillis, lotFieldForm.lotId, lotFieldForm.lotTypeFieldId);
     if (result.changes === 0) {
         result = database
             .prepare(`insert into LotFields (
@@ -19,7 +19,7 @@ export async function addOrUpdateLotField(lotFieldForm, requestSession, connecte
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
           values (?, ?, ?, ?, ?, ?, ?)`)
-            .run(lotFieldForm.lotId, lotFieldForm.lotTypeFieldId, lotFieldForm.lotFieldValue, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+            .run(lotFieldForm.lotId, lotFieldForm.lotTypeFieldId, lotFieldForm.lotFieldValue, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     if (connectedDatabase === undefined) {
         database.release();

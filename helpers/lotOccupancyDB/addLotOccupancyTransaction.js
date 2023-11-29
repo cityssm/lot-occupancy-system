@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js';
 import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/utils-datetime';
-export async function addLotOccupancyTransaction(lotOccupancyTransactionForm, requestSession) {
+import { acquireConnection } from './pool.js';
+export async function addLotOccupancyTransaction(lotOccupancyTransactionForm, user) {
     const database = await acquireConnection();
     let transactionIndex = 0;
     const maxIndexResult = database
@@ -28,7 +28,7 @@ export async function addLotOccupancyTransaction(lotOccupancyTransactionForm, re
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(lotOccupancyTransactionForm.lotOccupancyId, transactionIndex, transactionDate, transactionTime, lotOccupancyTransactionForm.transactionAmount, lotOccupancyTransactionForm.externalReceiptNumber, lotOccupancyTransactionForm.transactionNote, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
+        .run(lotOccupancyTransactionForm.lotOccupancyId, transactionIndex, transactionDate, transactionTime, lotOccupancyTransactionForm.transactionAmount, lotOccupancyTransactionForm.externalReceiptNumber, lotOccupancyTransactionForm.transactionNote, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     database.release();
     return transactionIndex;
 }

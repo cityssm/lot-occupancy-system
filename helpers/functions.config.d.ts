@@ -1,4 +1,3 @@
-import './polyfills.js';
 import type * as configTypes from '../types/configTypes';
 import type { config as MSSQLConfig } from 'mssql';
 export declare function getProperty(propertyName: 'application.applicationName'): string;

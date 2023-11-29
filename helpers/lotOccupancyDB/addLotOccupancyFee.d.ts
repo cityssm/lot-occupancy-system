@@ -1,4 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
 interface AddLotOccupancyFeeForm {
     lotOccupancyId: number | string;
     feeId: number | string;
@@ -6,5 +5,5 @@ interface AddLotOccupancyFeeForm {
     feeAmount?: number | string;
     taxAmount?: number | string;
 }
-export declare function addLotOccupancyFee(lotOccupancyFeeForm: AddLotOccupancyFeeForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
+export declare function addLotOccupancyFee(lotOccupancyFeeForm: AddLotOccupancyFeeForm, user: User): Promise<boolean>;
 export default addLotOccupancyFee;

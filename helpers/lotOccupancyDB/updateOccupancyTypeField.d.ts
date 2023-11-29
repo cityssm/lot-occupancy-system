@@ -1,4 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
 interface UpdateOccupancyTypeFieldForm {
     occupancyTypeFieldId: number | string;
     occupancyTypeField: string;
@@ -8,5 +7,5 @@ interface UpdateOccupancyTypeFieldForm {
     pattern?: string;
     occupancyTypeFieldValues: string;
 }
-export declare function updateOccupancyTypeField(occupancyTypeFieldForm: UpdateOccupancyTypeFieldForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
+export declare function updateOccupancyTypeField(occupancyTypeFieldForm: UpdateOccupancyTypeFieldForm, user: User): Promise<boolean>;
 export default updateOccupancyTypeField;

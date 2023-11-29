@@ -1,7 +1,6 @@
-import './polyfills.js';
 import fs from 'node:fs/promises';
-import { v4 as uuidv4 } from 'uuid';
 import Debug from 'debug';
+import { v4 as uuidv4 } from 'uuid';
 const debug = Debug('lot-occupancy-system:functions.api');
 const apiKeyPath = 'data/apiKeys.json';
 let apiKeys;
@@ -39,8 +38,8 @@ export async function getApiKey(userName) {
     }
     return apiKeys[userName];
 }
-export async function getApiKeyFromSession(session) {
-    return await getApiKey(session.user.userName);
+export async function getApiKeyFromUser(user) {
+    return await getApiKey(user.userName);
 }
 export async function getUserNameFromApiKey(apiKey) {
     if (apiKeys === undefined) {

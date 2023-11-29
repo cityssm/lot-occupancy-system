@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js'
-
 import { getLotTypes } from '../../helpers/functions.cache.js'
+import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js'
 
 export async function handler(
   request: Request,
@@ -11,7 +10,7 @@ export async function handler(
   const success = await deleteRecord(
     'LotTypeFields',
     request.body.lotTypeFieldId,
-    request.session
+    request.session.user as User
   )
 
   const lotTypes = await getLotTypes()

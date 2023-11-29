@@ -1,8 +1,7 @@
-import type * as recordTypes from '../../types/recordTypes';
 interface CompleteWorkOrderMilestoneForm {
     workOrderMilestoneId: string | number;
     workOrderMilestoneCompletionDateString?: string;
     workOrderMilestoneCompletionTimeString?: string;
 }
-export declare function completeWorkOrderMilestone(milestoneForm: CompleteWorkOrderMilestoneForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
+export declare function completeWorkOrderMilestone(milestoneForm: CompleteWorkOrderMilestoneForm, user: User): Promise<boolean>;
 export default completeWorkOrderMilestone;

@@ -7,7 +7,7 @@ export async function handler(request: Request, response: Response): Promise<voi
   const success = await deleteWorkOrderLotOccupancy(
     request.body.workOrderId,
     request.body.lotOccupancyId,
-    request.session
+    request.session.user as User
   )
 
   const workOrderLotOccupancies = await getLotOccupancies(

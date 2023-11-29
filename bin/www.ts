@@ -1,22 +1,15 @@
-import '../helpers/polyfills.js'
-
-import cluster from 'node:cluster'
-import type { Worker } from 'node:cluster'
-
+import cluster, { type Worker } from 'node:cluster'
 import os from 'node:os'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import * as configFunctions from '../helpers/functions.config.js'
-
+import ntfyPublish, { type NtfyMessageOptions } from '@cityssm/ntfy-publish'
+import Debug from 'debug'
 import exitHook from 'exit-hook'
 
-import ntfyPublish from '@cityssm/ntfy-publish'
-import type * as ntfyTypes from '@cityssm/ntfy-publish/types'
+import * as configFunctions from '../helpers/functions.config.js'
+import type { WorkerMessage } from '../types/applicationTypes.js'
 
-import type { WorkerMessage } from '../types/applicationTypes'
-
-import Debug from 'debug'
 const debug = Debug(`lot-occupancy-system:www:${process.pid}`)
 
 const directoryName = dirname(fileURLToPath(import.meta.url))
@@ -71,14 +64,14 @@ if (ntfyStartupConfig !== undefined) {
   const topic = ntfyStartupConfig.topic
   const server = ntfyStartupConfig.server
 
-  const ntfyStartupMessage: ntfyTypes.NtfyMessageOptions = {
+  const ntfyStartupMessage: NtfyMessageOptions = {
     topic,
     title: configFunctions.getProperty('application.applicationName'),
     message: 'Application Started',
     tags: ['arrow_up']
   }
 
-  const ntfyShutdownMessage: ntfyTypes.NtfyMessageOptions = {
+  const ntfyShutdownMessage: NtfyMessageOptions = {
     topic,
     title: configFunctions.getProperty('application.applicationName'),
     message: 'Application Shut Down',
@@ -106,7 +99,7 @@ if (process.env.STARTUP_TEST === 'true') {
   setTimeout(() => {
     debug('Killing processes')
 
-    // eslint-disable-next-line no-process-exit, unicorn/no-process-exit
+    // eslint-disable-next-line n/no-process-exit, unicorn/no-process-exit
     process.exit(0)
   }, 10_000)
 }

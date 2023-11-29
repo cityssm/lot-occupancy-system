@@ -1,8 +1,8 @@
-import { acquireConnection } from './pool.js';
 import { calculateFeeAmount, calculateTaxAmount } from '../functions.fee.js';
 import { getFee } from './getFee.js';
 import { getLotOccupancy } from './getLotOccupancy.js';
-export async function addLotOccupancyFee(lotOccupancyFeeForm, requestSession) {
+import { acquireConnection } from './pool.js';
+export async function addLotOccupancyFee(lotOccupancyFeeForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     let feeAmount;
@@ -47,7 +47,7 @@ export async function addLotOccupancyFee(lotOccupancyFeeForm, requestSession) {
             recordUpdate_timeMillis = ?
             where lotOccupancyId = ?
             and feeId = ?`)
-                .run(lotOccupancyFeeForm.quantity, requestSession.user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
+                .run(lotOccupancyFeeForm.quantity, user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
             database.release();
             return true;
         }
@@ -64,7 +64,7 @@ export async function addLotOccupancyFee(lotOccupancyFeeForm, requestSession) {
             recordUpdate_timeMillis = ?
             where lotOccupancyId = ?
             and feeId = ?`)
-                .run(feeAmount * quantity, taxAmount * quantity, requestSession.user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
+                .run(feeAmount * quantity, taxAmount * quantity, user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
             database.release();
             return true;
         }
@@ -76,7 +76,7 @@ export async function addLotOccupancyFee(lotOccupancyFeeForm, requestSession) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId, lotOccupancyFeeForm.quantity, feeAmount, taxAmount, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId, lotOccupancyFeeForm.quantity, feeAmount, taxAmount, user.userName, rightNowMillis, user.userName, rightNowMillis);
     database.release();
     return result.changes > 0;
 }

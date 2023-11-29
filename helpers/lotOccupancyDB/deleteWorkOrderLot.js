@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function deleteWorkOrderLot(workOrderId, lotId, requestSession) {
+export async function deleteWorkOrderLot(workOrderId, lotId, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update WorkOrderLots
@@ -7,7 +7,7 @@ export async function deleteWorkOrderLot(workOrderId, lotId, requestSession) {
         recordDelete_timeMillis = ?
         where workOrderId = ?
         and lotId = ?`)
-        .run(requestSession.user.userName, Date.now(), workOrderId, lotId);
+        .run(user.userName, Date.now(), workOrderId, lotId);
     database.release();
     return result.changes > 0;
 }

@@ -1,8 +1,8 @@
-import { acquireConnection } from './pool.js';
-import { getNextWorkOrderNumber } from './getNextWorkOrderNumber.js';
-import { addWorkOrderLotOccupancy } from './addWorkOrderLotOccupancy.js';
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
-export async function addWorkOrder(workOrderForm, requestSession) {
+import { addWorkOrderLotOccupancy } from './addWorkOrderLotOccupancy.js';
+import { getNextWorkOrderNumber } from './getNextWorkOrderNumber.js';
+import { acquireConnection } from './pool.js';
+export async function addWorkOrder(workOrderForm, user) {
     const database = await acquireConnection();
     const rightNow = new Date();
     let workOrderNumber = workOrderForm.workOrderNumber;
@@ -20,13 +20,13 @@ export async function addWorkOrder(workOrderForm, requestSession) {
         ? dateToInteger(rightNow)
         : dateStringToInteger(workOrderForm.workOrderOpenDateString), (workOrderForm.workOrderCloseDateString ?? '') === ''
         ? undefined
-        : dateStringToInteger(workOrderForm.workOrderCloseDateString), requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
+        : dateStringToInteger(workOrderForm.workOrderCloseDateString), user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     const workOrderId = result.lastInsertRowid;
     if ((workOrderForm.lotOccupancyId ?? '') !== '') {
         await addWorkOrderLotOccupancy({
             workOrderId,
             lotOccupancyId: workOrderForm.lotOccupancyId
-        }, requestSession, database);
+        }, user, database);
     }
     database.release();
     return workOrderId;

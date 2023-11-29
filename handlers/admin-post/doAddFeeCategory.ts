@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express'
 
 import { addRecord } from '../../helpers/lotOccupancyDB/addRecord.js'
-
 import { getFeeCategories } from '../../helpers/lotOccupancyDB/getFeeCategories.js'
 
 export async function handler(
@@ -12,7 +11,7 @@ export async function handler(
     'FeeCategories',
     request.body.feeCategory,
     request.body.orderNumber ?? -1,
-    request.session
+    request.session.user as User
   )
 
   const feeCategories = await getFeeCategories(

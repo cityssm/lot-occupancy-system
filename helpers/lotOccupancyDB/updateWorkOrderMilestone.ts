@@ -1,11 +1,9 @@
-import { acquireConnection } from './pool.js'
-
 import {
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface UpdateWorkOrderMilestoneForm {
   workOrderMilestoneId: string | number
@@ -17,7 +15,7 @@ interface UpdateWorkOrderMilestoneForm {
 
 export async function updateWorkOrderMilestone(
   milestoneForm: UpdateWorkOrderMilestoneForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -44,7 +42,7 @@ export async function updateWorkOrderMilestone(
         : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString!),
       milestoneForm.workOrderMilestoneDescription,
 
-      requestSession.user!.userName,
+      user.userName,
       Date.now(),
       milestoneForm.workOrderMilestoneId
     )

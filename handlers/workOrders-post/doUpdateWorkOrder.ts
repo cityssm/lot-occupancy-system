@@ -6,7 +6,10 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const success = await updateWorkOrder(request.body, request.session)
+  const success = await updateWorkOrder(
+    request.body,
+    request.session.user as User
+  )
 
   response.json({
     success,

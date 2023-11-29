@@ -1,8 +1,5 @@
-import { acquireConnection } from './pool.js'
-
 import { addOrUpdateLotField } from './addOrUpdateLotField.js'
-
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface AddLotForm {
   lotName: string
@@ -19,10 +16,7 @@ interface AddLotForm {
   [lotFieldValue_lotTypeFieldId: string]: unknown
 }
 
-export async function addLot(
-  lotForm: AddLotForm,
-  requestSession: recordTypes.PartialSession
-): Promise<number> {
+export async function addLot(lotForm: AddLotForm, user: User): Promise<number> {
   const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
@@ -45,9 +39,9 @@ export async function addLot(
       lotForm.mapKey,
       lotForm.lotLatitude === '' ? undefined : lotForm.lotLatitude,
       lotForm.lotLongitude === '' ? undefined : lotForm.lotLongitude,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis
     )
 
@@ -65,7 +59,7 @@ export async function addLot(
           lotTypeFieldId,
           lotFieldValue
         },
-        requestSession,
+        user,
         database
       )
     }

@@ -1,29 +1,29 @@
 import fs from 'node:fs';
-import papa from 'papaparse';
+import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
+import papa from 'papaparse';
 import { lotOccupancyDB as databasePath } from '../data/databasePaths.js';
-import * as importIds from './legacy.importFromCsv.ids.js';
-import * as importData from './legacy.importFromCsv.data.js';
-import { addMap } from '../helpers/lotOccupancyDB/addMap.js';
-import { getMap as getMapFromDatabase } from '../helpers/lotOccupancyDB/getMap.js';
 import { addLot } from '../helpers/lotOccupancyDB/addLot.js';
-import { updateLotStatus } from '../helpers/lotOccupancyDB/updateLot.js';
 import { addLotOccupancy } from '../helpers/lotOccupancyDB/addLotOccupancy.js';
-import { addLotOccupancyOccupant } from '../helpers/lotOccupancyDB/addLotOccupancyOccupant.js';
 import { addLotOccupancyComment } from '../helpers/lotOccupancyDB/addLotOccupancyComment.js';
-import { addOrUpdateLotOccupancyField } from '../helpers/lotOccupancyDB/addOrUpdateLotOccupancyField.js';
-import { getLot, getLotByLotName } from '../helpers/lotOccupancyDB/getLot.js';
-import { getLotOccupancies } from '../helpers/lotOccupancyDB/getLotOccupancies.js';
 import { addLotOccupancyFee } from '../helpers/lotOccupancyDB/addLotOccupancyFee.js';
+import { addLotOccupancyOccupant } from '../helpers/lotOccupancyDB/addLotOccupancyOccupant.js';
 import { addLotOccupancyTransaction } from '../helpers/lotOccupancyDB/addLotOccupancyTransaction.js';
+import { addMap } from '../helpers/lotOccupancyDB/addMap.js';
+import { addOrUpdateLotOccupancyField } from '../helpers/lotOccupancyDB/addOrUpdateLotOccupancyField.js';
 import { addWorkOrder } from '../helpers/lotOccupancyDB/addWorkOrder.js';
 import { addWorkOrderLot } from '../helpers/lotOccupancyDB/addWorkOrderLot.js';
 import { addWorkOrderLotOccupancy } from '../helpers/lotOccupancyDB/addWorkOrderLotOccupancy.js';
-import { getWorkOrder, getWorkOrderByWorkOrderNumber } from '../helpers/lotOccupancyDB/getWorkOrder.js';
-import { reopenWorkOrder } from '../helpers/lotOccupancyDB/reopenWorkOrder.js';
 import { addWorkOrderMilestone } from '../helpers/lotOccupancyDB/addWorkOrderMilestone.js';
 import { closeWorkOrder } from '../helpers/lotOccupancyDB/closeWorkOrder.js';
-import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime';
+import { getLot, getLotByLotName } from '../helpers/lotOccupancyDB/getLot.js';
+import { getLotOccupancies } from '../helpers/lotOccupancyDB/getLotOccupancies.js';
+import { getMap as getMapFromDatabase } from '../helpers/lotOccupancyDB/getMap.js';
+import { getWorkOrder, getWorkOrderByWorkOrderNumber } from '../helpers/lotOccupancyDB/getWorkOrder.js';
+import { reopenWorkOrder } from '../helpers/lotOccupancyDB/reopenWorkOrder.js';
+import { updateLotStatus } from '../helpers/lotOccupancyDB/updateLot.js';
+import * as importData from './legacy.importFromCsv.data.js';
+import * as importIds from './legacy.importFromCsv.ids.js';
 const user = {
     user: {
         userName: 'import.unix',
@@ -707,7 +707,10 @@ async function importFromWorkOrderCSV() {
                     interment: workOrderRow.WO_INTERMENT
                 });
                 lot = await getLotByLotName(lotName);
-                if (!lot) {
+                if (lot) {
+                    await updateLotStatus(lot.lotId, importIds.takenLotStatusId, user);
+                }
+                else {
                     const map = await getMap({ cemetery: workOrderRow.WO_CEMETERY });
                     const lotTypeId = importIds.getLotTypeId({
                         cemetery: workOrderRow.WO_CEMETERY
@@ -722,9 +725,6 @@ async function importFromWorkOrderCSV() {
                         lotLongitude: ''
                     }, user);
                     lot = await getLot(lotId);
-                }
-                else {
-                    await updateLotStatus(lot.lotId, importIds.takenLotStatusId, user);
                 }
                 const workOrderContainsLot = workOrder.workOrderLots.find((possibleLot) => {
                     return (possibleLot.lotId = lot.lotId);

@@ -1,7 +1,7 @@
 import { addWorkOrderMilestone } from '../../helpers/lotOccupancyDB/addWorkOrderMilestone.js';
 import { getWorkOrderMilestones } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js';
 export async function handler(request, response) {
-    const success = await addWorkOrderMilestone(request.body, request.session);
+    const success = await addWorkOrderMilestone(request.body, request.session.user);
     const workOrderMilestones = await getWorkOrderMilestones({
         workOrderId: request.body.workOrderId
     }, {

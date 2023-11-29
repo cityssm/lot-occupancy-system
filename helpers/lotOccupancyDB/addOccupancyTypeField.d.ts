@@ -1,4 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
 interface AddOccupancyTypeFieldForm {
     occupancyTypeId?: string | number;
     occupancyTypeField: string;
@@ -9,5 +8,5 @@ interface AddOccupancyTypeFieldForm {
     maximumLength: string | number;
     orderNumber?: number;
 }
-export declare function addOccupancyTypeField(occupancyTypeFieldForm: AddOccupancyTypeFieldForm, requestSession: recordTypes.PartialSession): Promise<number>;
+export declare function addOccupancyTypeField(occupancyTypeFieldForm: AddOccupancyTypeFieldForm, user: User): Promise<number>;
 export default addOccupancyTypeField;

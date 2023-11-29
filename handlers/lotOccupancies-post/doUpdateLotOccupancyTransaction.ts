@@ -1,14 +1,13 @@
 import type { Request, Response } from 'express'
 
-import { updateLotOccupancyTransaction } from '../../helpers/lotOccupancyDB/updateLotOccupancyTransaction.js'
-
 import { getLotOccupancyTransactions } from '../../helpers/lotOccupancyDB/getLotOccupancyTransactions.js'
+import { updateLotOccupancyTransaction } from '../../helpers/lotOccupancyDB/updateLotOccupancyTransaction.js'
 
 export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  await updateLotOccupancyTransaction(request.body, request.session)
+  await updateLotOccupancyTransaction(request.body, request.session.user as User)
 
   const lotOccupancyTransactions = await getLotOccupancyTransactions(
     request.body.lotOccupancyId,

@@ -1,4 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
 interface UpdateLotOccupancyTransactionForm {
     lotOccupancyId: string | number;
     transactionIndex: string | number;
@@ -8,5 +7,5 @@ interface UpdateLotOccupancyTransactionForm {
     externalReceiptNumber: string;
     transactionNote: string;
 }
-export declare function updateLotOccupancyTransaction(lotOccupancyTransactionForm: UpdateLotOccupancyTransactionForm, requestSession: recordTypes.PartialSession): Promise<boolean>;
+export declare function updateLotOccupancyTransaction(lotOccupancyTransactionForm: UpdateLotOccupancyTransactionForm, user: User): Promise<boolean>;
 export default updateLotOccupancyTransaction;

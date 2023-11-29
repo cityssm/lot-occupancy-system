@@ -9,7 +9,7 @@ export async function handler(
   const success = await deleteRecord(
     'WorkOrders',
     request.body.workOrderId,
-    request.session
+    request.session.user as User
   )
 
   response.json({

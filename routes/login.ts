@@ -1,16 +1,15 @@
-import { Router, type RequestHandler, type Request, type Response } from 'express'
-
-import * as configFunctions from '../helpers/functions.config.js'
-
-import * as authenticationFunctions from '../helpers/functions.authentication.js'
+import Debug from 'debug'
+import {
+  Router,
+  type RequestHandler,
+  type Request,
+  type Response
+} from 'express'
 
 import { useTestDatabases } from '../data/databasePaths.js'
-
 import { getApiKey } from '../helpers/functions.api.js'
-
-import Debug from 'debug'
-
-import type * as recordTypes from '../types/recordTypes'
+import * as authenticationFunctions from '../helpers/functions.authentication.js'
+import * as configFunctions from '../helpers/functions.config.js'
 
 const debug = Debug('lot-occupancy-system:login')
 
@@ -75,7 +74,7 @@ async function postHandler(
     )
   }
 
-  let userObject: recordTypes.User | undefined
+  let userObject: User | undefined
 
   if (isAuthenticated) {
     const userNameLowerCase = userName.toLowerCase()

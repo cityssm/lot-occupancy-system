@@ -1,5 +1,4 @@
 import type { PoolConnection } from 'better-sqlite-pool';
-import type * as recordTypes from '../../types/recordTypes';
 interface AddLotOccupancyOccupantForm {
     lotOccupancyId: string | number;
     lotOccupantTypeId: string | number;
@@ -14,5 +13,5 @@ interface AddLotOccupancyOccupantForm {
     occupantEmailAddress: string;
     occupantComment?: string;
 }
-export declare function addLotOccupancyOccupant(lotOccupancyOccupantForm: AddLotOccupancyOccupantForm, requestSession: recordTypes.PartialSession, connectedDatabase?: PoolConnection): Promise<number>;
+export declare function addLotOccupancyOccupant(lotOccupancyOccupantForm: AddLotOccupancyOccupantForm, user: User, connectedDatabase?: PoolConnection): Promise<number>;
 export default addLotOccupancyOccupant;

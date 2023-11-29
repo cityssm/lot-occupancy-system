@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
-export async function deleteOccupancyTypePrint(occupancyTypeId, printEJS, requestSession) {
+import { acquireConnection } from './pool.js';
+export async function deleteOccupancyTypePrint(occupancyTypeId, printEJS, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update OccupancyTypePrints
@@ -8,7 +8,7 @@ export async function deleteOccupancyTypePrint(occupancyTypeId, printEJS, reques
         recordDelete_timeMillis = ?
         where occupancyTypeId = ?
         and printEJS = ?`)
-        .run(requestSession.user.userName, Date.now(), occupancyTypeId, printEJS);
+        .run(user.userName, Date.now(), occupancyTypeId, printEJS);
     database.release();
     clearCacheByTableName('OccupancyTypePrints');
     return result.changes > 0;

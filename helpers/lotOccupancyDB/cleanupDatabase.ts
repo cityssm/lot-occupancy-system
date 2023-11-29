@@ -1,11 +1,9 @@
-import { acquireConnection } from './pool.js'
-
 import * as configFunctions from '../functions.config.js'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 export async function cleanupDatabase(
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<{ inactivatedRecordCount: number; purgedRecordCount: number }> {
   const database = await acquireConnection()
 
@@ -32,7 +30,7 @@ export async function cleanupDatabase(
         and workOrderId in (
           select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare('delete from WorkOrderComments where recordDelete_timeMillis <= ?')
@@ -51,7 +49,7 @@ export async function cleanupDatabase(
         and workOrderId in (
           select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
@@ -72,7 +70,7 @@ export async function cleanupDatabase(
         and workOrderId in (
           select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare('delete from WorkOrderLots where recordDelete_timeMillis <= ?')
@@ -91,7 +89,7 @@ export async function cleanupDatabase(
         and workOrderId in (
           select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
@@ -152,7 +150,7 @@ export async function cleanupDatabase(
         and lotOccupancyId in (
           select lotOccupancyId from LotOccupancies where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
@@ -172,7 +170,7 @@ export async function cleanupDatabase(
         where recordDelete_timeMillis is null
         and lotOccupancyId in (select lotOccupancyId from LotOccupancies where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
@@ -192,7 +190,7 @@ export async function cleanupDatabase(
         where recordDelete_timeMillis is null
         and lotOccupancyId in (select lotOccupancyId from LotOccupancies where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
@@ -244,7 +242,7 @@ export async function cleanupDatabase(
         where recordDelete_timeMillis is null
         and feeCategoryId in (select feeCategoryId from FeeCategories where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
@@ -278,7 +276,7 @@ export async function cleanupDatabase(
         where recordDelete_timeMillis is null
         and occupancyTypeId in (select occupancyTypeId from OccupancyTypes where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
@@ -300,7 +298,7 @@ export async function cleanupDatabase(
         where recordDelete_timeMillis is null
         and occupancyTypeId in (select occupancyTypeId from OccupancyTypes where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
@@ -347,7 +345,7 @@ export async function cleanupDatabase(
         where recordDelete_timeMillis is null
         and lotId in (select lotId from Lots where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare('delete from LotComments where recordDelete_timeMillis <= ?')
@@ -365,7 +363,7 @@ export async function cleanupDatabase(
         where recordDelete_timeMillis is null
         and lotId in (select lotId from Lots where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare('delete from LotFields where recordDelete_timeMillis <= ?')
@@ -383,7 +381,7 @@ export async function cleanupDatabase(
         where recordDelete_timeMillis is null
         and mapId in (select mapId from Maps where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
@@ -420,7 +418,7 @@ export async function cleanupDatabase(
         where recordDelete_timeMillis is null
         and lotTypeId in (select lotTypeId from LotTypes where recordDelete_timeMillis is not null)`
     )
-    .run(requestSession.user!.userName, rightNowMillis).changes
+    .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(

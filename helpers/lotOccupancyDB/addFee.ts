@@ -1,8 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 import { acquireConnection } from './pool.js'
-
-import type * as recordTypes from '../../types/recordTypes'
 
 interface AddFeeForm {
   feeCategoryId: string
@@ -21,10 +17,7 @@ interface AddFeeForm {
   orderNumber?: number
 }
 
-export async function addFee(
-  feeForm: AddFeeForm,
-  requestSession: recordTypes.PartialSession
-): Promise<number> {
+export async function addFee(feeForm: AddFeeForm, user: User): Promise<number> {
   const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
@@ -58,9 +51,9 @@ export async function addFee(
       feeForm.quantityUnit,
       (feeForm.isRequired ?? '') === '' ? 0 : 1,
       feeForm.orderNumber ?? -1,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis
     )
 

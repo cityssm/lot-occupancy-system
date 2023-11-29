@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function updateLotOccupancyFeeQuantity(feeQuantityForm, requestSession) {
+export async function updateLotOccupancyFeeQuantity(feeQuantityForm, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update LotOccupancyFees
@@ -9,7 +9,7 @@ export async function updateLotOccupancyFeeQuantity(feeQuantityForm, requestSess
         where recordDelete_timeMillis is null
         and lotOccupancyId = ?
         and feeId = ?`)
-        .run(feeQuantityForm.quantity, requestSession.user.userName, Date.now(), feeQuantityForm.lotOccupancyId, feeQuantityForm.feeId);
+        .run(feeQuantityForm.quantity, user.userName, Date.now(), feeQuantityForm.lotOccupancyId, feeQuantityForm.feeId);
     database.release();
     return result.changes > 0;
 }

@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function reopenWorkOrder(workOrderId, requestSession) {
+export async function reopenWorkOrder(workOrderId, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update WorkOrders
@@ -8,7 +8,7 @@ export async function reopenWorkOrder(workOrderId, requestSession) {
         recordUpdate_timeMillis = ?
         where workOrderId = ?
         and workOrderCloseDate is not null`)
-        .run(requestSession.user.userName, Date.now(), workOrderId);
+        .run(user.userName, Date.now(), workOrderId);
     database.release();
     return result.changes > 0;
 }

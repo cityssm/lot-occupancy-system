@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function deleteLotOccupancyField(lotOccupancyId, occupancyTypeFieldId, requestSession, connectedDatabase) {
+export async function deleteLotOccupancyField(lotOccupancyId, occupancyTypeFieldId, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const result = database
         .prepare(`update LotOccupancyFields
@@ -7,7 +7,7 @@ export async function deleteLotOccupancyField(lotOccupancyId, occupancyTypeField
         recordDelete_timeMillis = ?
         where lotOccupancyId = ?
         and occupancyTypeFieldId = ?`)
-        .run(requestSession.user.userName, Date.now(), lotOccupancyId, occupancyTypeFieldId);
+        .run(user.userName, Date.now(), lotOccupancyId, occupancyTypeFieldId);
     if (connectedDatabase === undefined) {
         database.release();
     }

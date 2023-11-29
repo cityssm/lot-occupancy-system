@@ -1,7 +1,5 @@
 import { acquireConnection } from './pool.js'
 
-import type * as recordTypes from '../../types/recordTypes'
-
 interface AddWorkOrderLotForm {
   workOrderId: number | string
   lotId: number | string
@@ -9,7 +7,7 @@ interface AddWorkOrderLotForm {
 
 export async function addWorkOrderLot(
   workOrderLotForm: AddWorkOrderLotForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -38,9 +36,9 @@ export async function addWorkOrderLot(
       .run(
         workOrderLotForm.workOrderId,
         workOrderLotForm.lotId,
-        requestSession.user!.userName,
+        user.userName,
         rightNowMillis,
-        requestSession.user!.userName,
+        user.userName,
         rightNowMillis
       )
   } else {
@@ -58,9 +56,9 @@ export async function addWorkOrderLot(
             and lotId = ?`
         )
         .run(
-          requestSession.user!.userName,
+          user.userName,
           rightNowMillis,
-          requestSession.user!.userName,
+          user.userName,
           rightNowMillis,
           workOrderLotForm.workOrderId,
           workOrderLotForm.lotId

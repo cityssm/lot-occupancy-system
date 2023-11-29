@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js';
 import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/utils-datetime';
-export async function addLotOccupancyComment(commentForm, requestSession) {
+import { acquireConnection } from './pool.js';
+export async function addLotOccupancyComment(commentForm, user) {
     const rightNow = new Date();
     let lotOccupancyCommentDate;
     let lotOccupancyCommentTime;
@@ -21,7 +21,7 @@ export async function addLotOccupancyComment(commentForm, requestSession) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(commentForm.lotOccupancyId, lotOccupancyCommentDate, lotOccupancyCommentTime, commentForm.lotOccupancyComment, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
+        .run(commentForm.lotOccupancyId, lotOccupancyCommentDate, lotOccupancyCommentTime, commentForm.lotOccupancyComment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     database.release();
     return result.lastInsertRowid;
 }

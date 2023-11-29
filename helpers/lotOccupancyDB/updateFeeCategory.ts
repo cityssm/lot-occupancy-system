@@ -1,7 +1,5 @@
 import { updateRecord } from './updateRecord.js'
 
-import type * as recordTypes from '../../types/recordTypes'
-
 interface UpdateFeeCategoryForm {
   feeCategoryId: number | string
   feeCategory: string
@@ -9,15 +7,14 @@ interface UpdateFeeCategoryForm {
 
 export async function updateFeeCategory(
   feeCategoryForm: UpdateFeeCategoryForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
-  const success = await updateRecord(
+  return await updateRecord(
     'FeeCategories',
     feeCategoryForm.feeCategoryId,
     feeCategoryForm.feeCategory,
-    requestSession
+    user
   )
-  return success
 }
 
 export default updateFeeCategory

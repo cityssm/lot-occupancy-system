@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js';
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
-export async function addWorkOrderMilestone(milestoneForm, requestSession) {
+import { acquireConnection } from './pool.js';
+export async function addWorkOrderMilestone(milestoneForm, user) {
     const rightNowMillis = Date.now();
     const database = await acquireConnection();
     const result = database
@@ -22,7 +22,7 @@ export async function addWorkOrderMilestone(milestoneForm, requestSession) {
         ? undefined
         : dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString), (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
         ? undefined
-        : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), user.userName, rightNowMillis, user.userName, rightNowMillis);
     database.release();
     return result.lastInsertRowid;
 }

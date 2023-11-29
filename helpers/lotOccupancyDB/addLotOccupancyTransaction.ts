@@ -1,5 +1,3 @@
-import { acquireConnection } from './pool.js'
-
 import {
   dateStringToInteger,
   dateToInteger,
@@ -7,7 +5,7 @@ import {
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface AddLotOccupancyTransactionForm {
   lotOccupancyId: string | number
@@ -20,7 +18,7 @@ interface AddLotOccupancyTransactionForm {
 
 export async function addLotOccupancyTransaction(
   lotOccupancyTransactionForm: AddLotOccupancyTransactionForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<number> {
   const database = await acquireConnection()
 
@@ -70,9 +68,9 @@ export async function addLotOccupancyTransaction(
       lotOccupancyTransactionForm.transactionAmount,
       lotOccupancyTransactionForm.externalReceiptNumber,
       lotOccupancyTransactionForm.transactionNote,
-      requestSession.user!.userName,
+      user.userName,
       rightNow.getTime(),
-      requestSession.user!.userName,
+      user.userName,
       rightNow.getTime()
     )
 

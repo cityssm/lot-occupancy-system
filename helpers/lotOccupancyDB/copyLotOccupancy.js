@@ -1,9 +1,9 @@
-import { acquireConnection } from './pool.js';
-import { getLotOccupancy } from './getLotOccupancy.js';
+import { dateToString } from '@cityssm/utils-datetime';
 import { addLotOccupancy } from './addLotOccupancy.js';
 import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js';
-import { dateToString } from '@cityssm/utils-datetime';
-export async function copyLotOccupancy(oldLotOccupancyId, requestSession) {
+import { getLotOccupancy } from './getLotOccupancy.js';
+import { acquireConnection } from './pool.js';
+export async function copyLotOccupancy(oldLotOccupancyId, user) {
     const database = await acquireConnection();
     const oldLotOccupancy = (await getLotOccupancy(oldLotOccupancyId, database));
     const newLotOccupancyId = await addLotOccupancy({
@@ -11,7 +11,7 @@ export async function copyLotOccupancy(oldLotOccupancyId, requestSession) {
         occupancyTypeId: oldLotOccupancy.occupancyTypeId,
         occupancyStartDateString: dateToString(new Date()),
         occupancyEndDateString: ''
-    }, requestSession, database);
+    }, user, database);
     const rightNowMillis = Date.now();
     for (const occupancyField of oldLotOccupancy.lotOccupancyFields ?? []) {
         database
@@ -20,7 +20,7 @@ export async function copyLotOccupancy(oldLotOccupancyId, requestSession) {
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
           values (?, ?, ?, ?, ?, ?, ?)`)
-            .run(newLotOccupancyId, occupancyField.occupancyTypeFieldId, occupancyField.lotOccupancyFieldValue, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+            .run(newLotOccupancyId, occupancyField.occupancyTypeFieldId, occupancyField.lotOccupancyFieldValue, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     for (const occupant of oldLotOccupancy.lotOccupancyOccupants ?? []) {
         await addLotOccupancyOccupant({
@@ -35,7 +35,7 @@ export async function copyLotOccupancy(oldLotOccupancyId, requestSession) {
             occupantPostalCode: occupant.occupantPostalCode,
             occupantPhoneNumber: occupant.occupantPhoneNumber,
             occupantEmailAddress: occupant.occupantEmailAddress
-        }, requestSession, database);
+        }, user, database);
     }
     database.release();
     return newLotOccupancyId;

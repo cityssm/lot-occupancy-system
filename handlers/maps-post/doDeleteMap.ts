@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
-import { clearNextPreviousLotIdCache } from '../../helpers/functions.lots.js'
 
+import { clearNextPreviousLotIdCache } from '../../helpers/functions.lots.js'
 import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js'
 
 export async function handler(
@@ -10,7 +10,7 @@ export async function handler(
   const success = await deleteRecord(
     'Maps',
     request.body.mapId,
-    request.session
+    request.session.user as User
   )
 
   response.json({

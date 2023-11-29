@@ -1,11 +1,10 @@
 import type { Request, Response } from 'express'
 
-import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js'
-
 import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
+import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js'
 
 export async function handler(
   request: Request,
@@ -14,7 +13,7 @@ export async function handler(
   const success = await deleteRecord(
     'OccupancyTypeFields',
     request.body.occupancyTypeFieldId,
-    request.session
+    request.session.user as User
   )
 
   const occupancyTypes = await getOccupancyTypes()

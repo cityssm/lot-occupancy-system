@@ -1,11 +1,7 @@
-import './polyfills.js'
-
 import fs from 'node:fs/promises'
-import { v4 as uuidv4 } from 'uuid'
 
 import Debug from 'debug'
-
-import type * as recordTypes from '../types/recordTypes'
+import { v4 as uuidv4 } from 'uuid'
 
 const debug = Debug('lot-occupancy-system:functions.api')
 
@@ -51,10 +47,8 @@ export async function getApiKey(userName: string): Promise<string> {
   return apiKeys[userName]
 }
 
-export async function getApiKeyFromSession(
-  session: recordTypes.PartialSession
-): Promise<string> {
-  return await getApiKey(session.user!.userName)
+export async function getApiKeyFromUser(user: User): Promise<string> {
+  return await getApiKey(user.userName)
 }
 
 export async function getUserNameFromApiKey(

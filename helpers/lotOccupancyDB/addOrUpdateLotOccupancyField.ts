@@ -1,7 +1,6 @@
-import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface LotOccupancyFieldForm {
   lotOccupancyId: string | number
@@ -11,7 +10,7 @@ interface LotOccupancyFieldForm {
 
 export async function addOrUpdateLotOccupancyField(
   lotOccupancyFieldForm: LotOccupancyFieldForm,
-  requestSession: recordTypes.PartialSession,
+  user: User,
   connectedDatabase?: PoolConnection
 ): Promise<boolean> {
   const database = connectedDatabase ?? (await acquireConnection())
@@ -31,7 +30,7 @@ export async function addOrUpdateLotOccupancyField(
     )
     .run(
       lotOccupancyFieldForm.lotOccupancyFieldValue,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis,
       lotOccupancyFieldForm.lotOccupancyId,
       lotOccupancyFieldForm.occupancyTypeFieldId
@@ -50,9 +49,9 @@ export async function addOrUpdateLotOccupancyField(
         lotOccupancyFieldForm.lotOccupancyId,
         lotOccupancyFieldForm.occupancyTypeFieldId,
         lotOccupancyFieldForm.lotOccupancyFieldValue,
-        requestSession.user!.userName,
+        user.userName,
         rightNowMillis,
-        requestSession.user!.userName,
+        user.userName,
         rightNowMillis
       )
   }

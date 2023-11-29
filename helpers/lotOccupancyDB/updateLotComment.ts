@@ -1,11 +1,9 @@
-import { acquireConnection } from './pool.js'
-
 import {
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface UpdateLotCommentForm {
   lotCommentId: string | number
@@ -16,7 +14,7 @@ interface UpdateLotCommentForm {
 
 export async function updateLotComment(
   commentForm: UpdateLotCommentForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -35,7 +33,7 @@ export async function updateLotComment(
       dateStringToInteger(commentForm.lotCommentDateString),
       timeStringToInteger(commentForm.lotCommentTimeString),
       commentForm.lotComment,
-      requestSession.user!.userName,
+      user.userName,
       Date.now(),
       commentForm.lotCommentId
     )

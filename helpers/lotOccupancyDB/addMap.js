@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function addMap(mapForm, requestSession) {
+export async function addMap(mapForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
@@ -12,7 +12,7 @@ export async function addMap(mapForm, requestSession) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(mapForm.mapName, mapForm.mapDescription, mapForm.mapSVG, mapForm.mapLatitude === '' ? undefined : mapForm.mapLatitude, mapForm.mapLongitude === '' ? undefined : mapForm.mapLongitude, mapForm.mapAddress1, mapForm.mapAddress2, mapForm.mapCity, mapForm.mapProvince, mapForm.mapPostalCode, mapForm.mapPhoneNumber, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(mapForm.mapName, mapForm.mapDescription, mapForm.mapSVG, mapForm.mapLatitude === '' ? undefined : mapForm.mapLatitude, mapForm.mapLongitude === '' ? undefined : mapForm.mapLongitude, mapForm.mapAddress1, mapForm.mapAddress2, mapForm.mapCity, mapForm.mapProvince, mapForm.mapPostalCode, mapForm.mapPhoneNumber, user.userName, rightNowMillis, user.userName, rightNowMillis);
     database.release();
     return result.lastInsertRowid;
 }

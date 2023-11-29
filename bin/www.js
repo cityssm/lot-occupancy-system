@@ -1,12 +1,11 @@
-import '../helpers/polyfills.js';
 import cluster from 'node:cluster';
 import os from 'node:os';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import * as configFunctions from '../helpers/functions.config.js';
-import exitHook from 'exit-hook';
 import ntfyPublish from '@cityssm/ntfy-publish';
 import Debug from 'debug';
+import exitHook from 'exit-hook';
+import * as configFunctions from '../helpers/functions.config.js';
 const debug = Debug(`lot-occupancy-system:www:${process.pid}`);
 const directoryName = dirname(fileURLToPath(import.meta.url));
 const processCount = Math.min(configFunctions.getProperty('application.maximumProcesses'), os.cpus().length);

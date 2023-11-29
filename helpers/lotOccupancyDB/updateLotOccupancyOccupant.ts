@@ -1,7 +1,5 @@
 import { acquireConnection } from './pool.js'
 
-import type * as recordTypes from '../../types/recordTypes'
-
 interface UpdateLotOccupancyOccupantForm {
   lotOccupancyId: string | number
   lotOccupantIndex: string | number
@@ -20,7 +18,7 @@ interface UpdateLotOccupancyOccupantForm {
 
 export async function updateLotOccupancyOccupant(
   lotOccupancyOccupantForm: UpdateLotOccupancyOccupantForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -56,7 +54,7 @@ export async function updateLotOccupancyOccupant(
       lotOccupancyOccupantForm.occupantEmailAddress,
       lotOccupancyOccupantForm.occupantComment,
       lotOccupancyOccupantForm.lotOccupantTypeId,
-      requestSession.user!.userName,
+      user.userName,
       Date.now(),
       lotOccupancyOccupantForm.lotOccupancyId,
       lotOccupancyOccupantForm.lotOccupantIndex

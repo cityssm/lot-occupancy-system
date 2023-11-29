@@ -1,10 +1,9 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/indent */
-import { acquireConnection } from './pool.js'
 
 import { addOrUpdateLotField } from './addOrUpdateLotField.js'
 import { deleteLotField } from './deleteLotField.js'
-
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface UpdateLotForm {
   lotId: string | number
@@ -24,7 +23,7 @@ interface UpdateLotForm {
 
 export async function updateLot(
   lotForm: UpdateLotForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -51,7 +50,7 @@ export async function updateLot(
       lotForm.mapKey,
       lotForm.lotLatitude === '' ? undefined : lotForm.lotLatitude,
       lotForm.lotLongitude === '' ? undefined : lotForm.lotLongitude,
-      requestSession.user!.userName,
+      user.userName,
       Date.now(),
       lotForm.lotId
     )
@@ -65,19 +64,14 @@ export async function updateLot(
         | undefined
 
       await ((lotFieldValue ?? '') === ''
-        ? deleteLotField(
-            lotForm.lotId,
-            lotTypeFieldId,
-            requestSession,
-            database
-          )
+        ? deleteLotField(lotForm.lotId, lotTypeFieldId, user, database)
         : addOrUpdateLotField(
             {
               lotId: lotForm.lotId,
               lotTypeFieldId,
               lotFieldValue: lotFieldValue!
             },
-            requestSession,
+            user,
             database
           ))
     }
@@ -91,7 +85,7 @@ export async function updateLot(
 export async function updateLotStatus(
   lotId: number | string,
   lotStatusId: number | string,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -108,7 +102,7 @@ export async function updateLotStatus(
     )
     .run(
       lotStatusId === '' ? undefined : lotStatusId,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis,
       lotId
     )

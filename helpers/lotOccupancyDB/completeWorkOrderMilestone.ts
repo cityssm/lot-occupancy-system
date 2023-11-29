@@ -1,6 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/indent */
-
-import { acquireConnection } from './pool.js'
 
 import {
   dateStringToInteger,
@@ -9,7 +8,7 @@ import {
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface CompleteWorkOrderMilestoneForm {
   workOrderMilestoneId: string | number
@@ -19,7 +18,7 @@ interface CompleteWorkOrderMilestoneForm {
 
 export async function completeWorkOrderMilestone(
   milestoneForm: CompleteWorkOrderMilestoneForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const rightNow = new Date()
 
@@ -45,7 +44,7 @@ export async function completeWorkOrderMilestone(
         : timeStringToInteger(
             milestoneForm.workOrderMilestoneCompletionTimeString!
           ),
-      requestSession.user!.userName,
+      user.userName,
       rightNow.getTime(),
       milestoneForm.workOrderMilestoneId
     )

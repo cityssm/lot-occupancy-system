@@ -1,4 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
 interface AddWorkOrderForm {
     workOrderTypeId: number | string;
     workOrderNumber?: string;
@@ -7,5 +6,5 @@ interface AddWorkOrderForm {
     workOrderCloseDateString?: string;
     lotOccupancyId?: string;
 }
-export declare function addWorkOrder(workOrderForm: AddWorkOrderForm, requestSession: recordTypes.PartialSession): Promise<number>;
+export declare function addWorkOrder(workOrderForm: AddWorkOrderForm, user: User): Promise<number>;
 export default addWorkOrder;

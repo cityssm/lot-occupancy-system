@@ -1,14 +1,11 @@
-import { acquireConnection } from './pool.js'
-
-import { getNextWorkOrderNumber } from './getNextWorkOrderNumber.js'
-import { addWorkOrderLotOccupancy } from './addWorkOrderLotOccupancy.js'
-
 import {
   dateStringToInteger,
   dateToInteger
 } from '@cityssm/utils-datetime'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { addWorkOrderLotOccupancy } from './addWorkOrderLotOccupancy.js'
+import { getNextWorkOrderNumber } from './getNextWorkOrderNumber.js'
+import { acquireConnection } from './pool.js'
 
 interface AddWorkOrderForm {
   workOrderTypeId: number | string
@@ -21,7 +18,7 @@ interface AddWorkOrderForm {
 
 export async function addWorkOrder(
   workOrderForm: AddWorkOrderForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<number> {
   const database = await acquireConnection()
 
@@ -52,9 +49,9 @@ export async function addWorkOrder(
       (workOrderForm.workOrderCloseDateString ?? '') === ''
         ? undefined
         : dateStringToInteger(workOrderForm.workOrderCloseDateString!),
-      requestSession.user!.userName,
+      user.userName,
       rightNow.getTime(),
-      requestSession.user!.userName,
+      user.userName,
       rightNow.getTime()
     )
 
@@ -66,7 +63,7 @@ export async function addWorkOrder(
         workOrderId,
         lotOccupancyId: workOrderForm.lotOccupancyId!
       },
-      requestSession,
+      user,
       database
     )
   }

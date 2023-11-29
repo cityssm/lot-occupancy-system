@@ -1,7 +1,7 @@
 import { addLotOccupancyComment } from '../../helpers/lotOccupancyDB/addLotOccupancyComment.js';
 import { getLotOccupancyComments } from '../../helpers/lotOccupancyDB/getLotOccupancyComments.js';
 export async function handler(request, response) {
-    await addLotOccupancyComment(request.body, request.session);
+    await addLotOccupancyComment(request.body, request.session.user);
     const lotOccupancyComments = await getLotOccupancyComments(request.body.lotOccupancyId);
     response.json({
         success: true,

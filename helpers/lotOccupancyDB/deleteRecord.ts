@@ -1,8 +1,6 @@
-import { acquireConnection } from './pool.js'
-
 import { clearCacheByTableName } from '../functions.cache.js'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 type RecordTable =
   | 'FeeCategories'
@@ -68,7 +66,7 @@ relatedTables.set('WorkOrders', [
 export async function deleteRecord(
   recordTable: RecordTable,
   recordId: number | string,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -82,7 +80,7 @@ export async function deleteRecord(
         where ${recordIdColumns.get(recordTable)!} = ?
         and recordDelete_timeMillis is null`
     )
-    .run(requestSession.user!.userName, rightNowMillis, recordId)
+    .run(user.userName, rightNowMillis, recordId)
 
   for (const relatedTable of relatedTables.get(recordTable) ?? []) {
     database
@@ -93,7 +91,7 @@ export async function deleteRecord(
           where ${recordIdColumns.get(recordTable)!} = ?
           and recordDelete_timeMillis is null`
       )
-      .run(requestSession.user!.userName, rightNowMillis, recordId)
+      .run(user.userName, rightNowMillis, recordId)
   }
 
   database.release()

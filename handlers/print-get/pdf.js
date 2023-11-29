@@ -37,7 +37,7 @@ export async function handler(request, response, next) {
             next(ejsError);
             return;
         }
-        await convertHTMLToPDF(ejsData, pdfCallbackFunction, {
+        const pdf = await convertHTMLToPDF(ejsData, {
             format: 'letter',
             printBackground: true,
             preferCSSPageSize: true
@@ -45,6 +45,7 @@ export async function handler(request, response, next) {
             cacheBrowser: true,
             remoteContent: false
         });
+        pdfCallbackFunction(pdf);
     }
     reportData.configFunctions = configFunctions;
     reportData.dateTimeFunctions = dateTimeFunctions;

@@ -12,7 +12,7 @@ export async function handler(
       workOrderId: request.body.workOrderId,
       lotOccupancyId: request.body.lotOccupancyId
     },
-    request.session
+    request.session.user as User
   )
 
   const workOrderLotOccupanciesResults = await getLotOccupancies(

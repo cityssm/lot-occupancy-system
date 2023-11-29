@@ -1,7 +1,6 @@
-import { acquireConnection } from './pool.js'
-
-import type * as recordTypes from '../../types/recordTypes'
 import { clearCacheByTableName } from '../functions.cache.js'
+
+import { acquireConnection } from './pool.js'
 
 interface AddLotOccupantTypeForm {
   lotOccupantType: string
@@ -12,7 +11,7 @@ interface AddLotOccupantTypeForm {
 
 export async function addLotOccupantType(
   lotOccupantTypeForm: AddLotOccupantTypeForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<number> {
   const database = await acquireConnection()
 
@@ -31,9 +30,9 @@ export async function addLotOccupantType(
       lotOccupantTypeForm.fontAwesomeIconClass ?? '',
       lotOccupantTypeForm.occupantCommentTitle ?? '',
       lotOccupantTypeForm.orderNumber ?? -1,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis
     )
 

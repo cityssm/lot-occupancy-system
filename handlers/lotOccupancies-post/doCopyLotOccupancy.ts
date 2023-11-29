@@ -8,7 +8,7 @@ export async function handler(
 ): Promise<void> {
   const lotOccupancyId = await copyLotOccupancy(
     request.body.lotOccupancyId,
-    request.session
+    request.session.user as User
   )
 
   response.json({

@@ -1,13 +1,11 @@
-import { acquireConnection } from './pool.js'
-
 import { clearCacheByTableName } from '../functions.cache.js'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 export async function deleteOccupancyTypePrint(
   occupancyTypeId: number | string,
   printEJS: string,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -19,12 +17,7 @@ export async function deleteOccupancyTypePrint(
         where occupancyTypeId = ?
         and printEJS = ?`
     )
-    .run(
-      requestSession.user!.userName,
-      Date.now(),
-      occupancyTypeId,
-      printEJS
-    )
+    .run(user.userName, Date.now(), occupancyTypeId, printEJS)
 
   database.release()
 

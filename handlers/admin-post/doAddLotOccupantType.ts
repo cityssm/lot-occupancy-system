@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { addLotOccupantType } from '../../helpers/lotOccupancyDB/addLotOccupantType.js'
-
 import { getLotOccupantTypes } from '../../helpers/functions.cache.js'
+import { addLotOccupantType } from '../../helpers/lotOccupancyDB/addLotOccupantType.js'
 
 export async function handler(
   request: Request,
@@ -10,7 +9,7 @@ export async function handler(
 ): Promise<void> {
   const lotOccupantTypeId = await addLotOccupantType(
     request.body,
-    request.session
+    request.session.user as User
   )
 
   const lotOccupantTypes = await getLotOccupantTypes()

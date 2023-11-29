@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express'
 
-import { addRecord } from '../../helpers/lotOccupancyDB/addRecord.js'
 import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
+import { addRecord } from '../../helpers/lotOccupancyDB/addRecord.js'
 
 export async function handler(
   request: Request,
@@ -14,7 +14,7 @@ export async function handler(
     'OccupancyTypes',
     request.body.occupancyType,
     request.body.orderNumber ?? -1,
-    request.session
+    request.session.user as User
   )
 
   const occupancyTypes = await getOccupancyTypes()

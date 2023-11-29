@@ -1,12 +1,9 @@
-import { acquireConnection } from './pool.js'
-
+import type { LotOccupancy } from '../../types/recordTypes.js'
 import { calculateFeeAmount, calculateTaxAmount } from '../functions.fee.js'
 
 import { getFee } from './getFee.js'
-
 import { getLotOccupancy } from './getLotOccupancy.js'
-
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 interface AddLotOccupancyFeeForm {
   lotOccupancyId: number | string
@@ -18,7 +15,7 @@ interface AddLotOccupancyFeeForm {
 
 export async function addLotOccupancyFee(
   lotOccupancyFeeForm: AddLotOccupancyFeeForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -31,7 +28,8 @@ export async function addLotOccupancyFee(
   if ((lotOccupancyFeeForm.feeAmount ?? '') === '') {
     const lotOccupancy = (await getLotOccupancy(
       lotOccupancyFeeForm.lotOccupancyId
-    ))!
+    )) as LotOccupancy
+
     const fee = await getFee(lotOccupancyFeeForm.feeId)
 
     feeAmount = calculateFeeAmount(fee, lotOccupancy)
@@ -86,7 +84,7 @@ export async function addLotOccupancyFee(
         )
         .run(
           lotOccupancyFeeForm.quantity,
-          requestSession.user!.userName,
+          user.userName,
           rightNowMillis,
           lotOccupancyFeeForm.lotOccupancyId,
           lotOccupancyFeeForm.feeId
@@ -115,7 +113,7 @@ export async function addLotOccupancyFee(
         .run(
           feeAmount * quantity,
           taxAmount * quantity,
-          requestSession.user!.userName,
+          user.userName,
           rightNowMillis,
           lotOccupancyFeeForm.lotOccupancyId,
           lotOccupancyFeeForm.feeId
@@ -143,9 +141,9 @@ export async function addLotOccupancyFee(
       lotOccupancyFeeForm.quantity,
       feeAmount,
       taxAmount,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis
     )
 

@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
-import { clearNextPreviousLotIdCache } from '../../helpers/functions.lots.js'
 
+import { clearNextPreviousLotIdCache } from '../../helpers/functions.lots.js'
 import { deleteRecord } from '../../helpers/lotOccupancyDB/deleteRecord.js'
 
 export async function handler(
@@ -9,7 +9,7 @@ export async function handler(
 ): Promise<void> {
   const lotId = Number.parseInt(request.body.lotId, 10)
 
-  const success = await deleteRecord('Lots', lotId, request.session)
+  const success = await deleteRecord('Lots', lotId, request.session.user as User)
 
   response.json({
     success

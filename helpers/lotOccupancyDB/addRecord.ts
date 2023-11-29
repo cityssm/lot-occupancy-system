@@ -1,7 +1,6 @@
-import { acquireConnection } from './pool.js'
-
-import type * as recordTypes from '../../types/recordTypes'
 import { clearCacheByTableName } from '../functions.cache.js'
+
+import { acquireConnection } from './pool.js'
 
 type RecordTable =
   | 'FeeCategories'
@@ -11,7 +10,7 @@ type RecordTable =
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
 
-const recordNameColumns: Map<RecordTable, string> = new Map()
+const recordNameColumns = new Map<RecordTable, string>()
 recordNameColumns.set('FeeCategories', 'feeCategory')
 recordNameColumns.set('LotStatuses', 'lotStatus')
 recordNameColumns.set('LotTypes', 'lotType')
@@ -23,7 +22,7 @@ export async function addRecord(
   recordTable: RecordTable,
   recordName: string,
   orderNumber: number | string,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<number> {
   const database = await acquireConnection()
 
@@ -32,7 +31,7 @@ export async function addRecord(
   const result = database
     .prepare(
       `insert into ${recordTable} (
-        ${recordNameColumns.get(recordTable)!},
+        ${recordNameColumns.get(recordTable)},
         orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
@@ -41,9 +40,9 @@ export async function addRecord(
     .run(
       recordName,
       orderNumber === '' ? -1 : orderNumber,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis,
-      requestSession.user!.userName,
+      user.userName,
       rightNowMillis
     )
 

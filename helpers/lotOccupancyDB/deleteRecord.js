@@ -1,5 +1,5 @@
-import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../functions.cache.js';
+import { acquireConnection } from './pool.js';
 const recordIdColumns = new Map();
 recordIdColumns.set('FeeCategories', 'feeCategoryId');
 recordIdColumns.set('Fees', 'feeId');
@@ -39,7 +39,7 @@ relatedTables.set('WorkOrders', [
     'WorkOrderLotOccupancies',
     'WorkOrderComments'
 ]);
-export async function deleteRecord(recordTable, recordId, requestSession) {
+export async function deleteRecord(recordTable, recordId, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
@@ -48,7 +48,7 @@ export async function deleteRecord(recordTable, recordId, requestSession) {
         recordDelete_timeMillis = ?
         where ${recordIdColumns.get(recordTable)} = ?
         and recordDelete_timeMillis is null`)
-        .run(requestSession.user.userName, rightNowMillis, recordId);
+        .run(user.userName, rightNowMillis, recordId);
     for (const relatedTable of relatedTables.get(recordTable) ?? []) {
         database
             .prepare(`update ${relatedTable}
@@ -56,7 +56,7 @@ export async function deleteRecord(recordTable, recordId, requestSession) {
           recordDelete_timeMillis = ?
           where ${recordIdColumns.get(recordTable)} = ?
           and recordDelete_timeMillis is null`)
-            .run(requestSession.user.userName, rightNowMillis, recordId);
+            .run(user.userName, rightNowMillis, recordId);
     }
     database.release();
     clearCacheByTableName(recordTable);

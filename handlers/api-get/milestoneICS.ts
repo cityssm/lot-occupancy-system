@@ -1,18 +1,15 @@
-/* eslint-disable unicorn/filename-case */
+/* eslint-disable unicorn/filename-case, eslint-comments/disable-enable-pair */
 
+import type { Request, Response } from 'express'
 import ical, { type ICalEventData, ICalEventStatus } from 'ical-generator'
 
+import * as configFunctions from '../../helpers/functions.config.js'
+import { getPrintConfig } from '../../helpers/functions.print.js'
 import {
   getWorkOrderMilestones,
   type WorkOrderMilestoneFilters
 } from '../../helpers/lotOccupancyDB/getWorkOrderMilestones.js'
-
-import type { Request, Response } from 'express'
-
-import * as configFunctions from '../../helpers/functions.config.js'
-import { getPrintConfig } from '../../helpers/functions.print.js'
-
-import type * as recordTypes from '../../types/recordTypes'
+import type { WorkOrderMilestone } from '../../types/recordTypes.js'
 
 const calendarCompany = 'cityssm.github.io'
 const calendarProduct = configFunctions.getProperty(
@@ -22,8 +19,8 @@ const calendarProduct = configFunctions.getProperty(
 const timeStringSplitRegex = /[ :-]/
 
 function escapeHTML(stringToEscape: string): string {
-  return stringToEscape.replace(
-    /[^\d A-Za-z]/g,
+  return stringToEscape.replaceAll(
+    /[^\d a-z]/gi,
     (c) => `&#${c.codePointAt(0)!};`
   )
 }
@@ -41,12 +38,12 @@ function getUrlRoot(request: Request): string {
 
 function getWorkOrderUrl(
   request: Request,
-  milestone: recordTypes.WorkOrderMilestone
+  milestone: WorkOrderMilestone
 ): string {
   return `${getUrlRoot(request)}/workOrders/${milestone.workOrderId!}`
 }
 
-function buildEventSummary(milestone: recordTypes.WorkOrderMilestone): string {
+function buildEventSummary(milestone: WorkOrderMilestone): string {
   let summary =
     (milestone.workOrderMilestoneCompletionDate ? '✔ ' : '') +
     ((milestone.workOrderMilestoneTypeId ?? -1) === -1
@@ -83,7 +80,7 @@ function buildEventSummary(milestone: recordTypes.WorkOrderMilestone): string {
 // eslint-disable-next-line @typescript-eslint/naming-convention
 function buildEventDescriptionHTML_occupancies(
   request: Request,
-  milestone: recordTypes.WorkOrderMilestone
+  milestone: WorkOrderMilestone
 ): string {
   let descriptionHTML = ''
 
@@ -149,7 +146,7 @@ function buildEventDescriptionHTML_occupancies(
 // eslint-disable-next-line @typescript-eslint/naming-convention
 function buildEventDescriptionHTML_lots(
   request: Request,
-  milestone: recordTypes.WorkOrderMilestone
+  milestone: WorkOrderMilestone
 ): string {
   let descriptionHTML = ''
 
@@ -196,7 +193,7 @@ function buildEventDescriptionHTML_lots(
 // eslint-disable-next-line @typescript-eslint/naming-convention
 function buildEventDescriptionHTML_prints(
   request: Request,
-  milestone: recordTypes.WorkOrderMilestone
+  milestone: WorkOrderMilestone
 ): string {
   let descriptionHTML = ''
 
@@ -230,7 +227,7 @@ function buildEventDescriptionHTML_prints(
 
 function buildEventDescriptionHTML(
   request: Request,
-  milestone: recordTypes.WorkOrderMilestone
+  milestone: WorkOrderMilestone
 ): string {
   const workOrderUrl = getWorkOrderUrl(request, milestone)
 
@@ -247,9 +244,7 @@ function buildEventDescriptionHTML(
   return descriptionHTML
 }
 
-function buildEventCategoryList(
-  milestone: recordTypes.WorkOrderMilestone
-): string[] {
+function buildEventCategoryList(milestone: WorkOrderMilestone): string[] {
   const categories: string[] = []
 
   if (milestone.workOrderMilestoneTypeId) {
@@ -266,7 +261,7 @@ function buildEventCategoryList(
   return categories
 }
 
-function buildEventLocation(milestone: recordTypes.WorkOrderMilestone): string {
+function buildEventLocation(milestone: WorkOrderMilestone): string {
   const lotNames: string[] = []
 
   if (milestone.workOrderLots!.length > 0) {
@@ -316,7 +311,9 @@ export async function handler(
 
   if (request.query.workOrderId && workOrderMilestones.length > 0) {
     calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber!}`)
-    calendar.url(urlRoot + '/workOrders/' + workOrderMilestones[0].workOrderId!.toString())
+    calendar.url(
+      urlRoot + '/workOrders/' + workOrderMilestones[0].workOrderId!.toString()
+    )
   }
 
   calendar.prodId({

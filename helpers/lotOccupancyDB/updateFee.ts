@@ -1,7 +1,5 @@
 import { acquireConnection } from './pool.js'
 
-import type * as recordTypes from '../../types/recordTypes'
-
 interface UpdateFeeForm {
   feeId: string
   feeCategoryId: string
@@ -21,7 +19,7 @@ interface UpdateFeeForm {
 
 export async function updateFee(
   feeForm: UpdateFeeForm,
-  requestSession: recordTypes.PartialSession
+  user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -62,7 +60,7 @@ export async function updateFee(
       feeForm.includeQuantity === '' ? 0 : 1,
       feeForm.quantityUnit,
       feeForm.isRequired === '' ? 0 : 1,
-      requestSession.user!.userName,
+      user.userName,
       Date.now(),
       feeForm.feeId
     )

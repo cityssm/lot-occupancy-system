@@ -10,7 +10,7 @@ export async function handler(
   const success = await deleteWorkOrderLot(
     request.body.workOrderId,
     request.body.lotId,
-    request.session
+    request.session.user as User
   )
 
   const workOrderLotsResults = await getLots(

@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
-import { clearNextPreviousLotIdCache } from '../../helpers/functions.lots.js'
 
+import { clearNextPreviousLotIdCache } from '../../helpers/functions.lots.js'
 import { updateLot } from '../../helpers/lotOccupancyDB/updateLot.js'
 
 export async function handler(
@@ -9,7 +9,7 @@ export async function handler(
 ): Promise<void> {
   const lotId = Number.parseInt(request.body.lotId, 10)
 
-  const success = await updateLot(request.body, request.session)
+  const success = await updateLot(request.body, request.session.user as User)
 
   response.json({
     success,
