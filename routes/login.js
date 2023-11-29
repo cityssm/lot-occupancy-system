@@ -28,7 +28,7 @@ async function postHandler(request, response) {
     const unsafeRedirectURL = request.body.redirect;
     const redirectURL = authenticationFunctions.getSafeRedirectURL(typeof unsafeRedirectURL === 'string' ? unsafeRedirectURL : '');
     let isAuthenticated = false;
-    if (userName.charAt(0) === '*') {
+    if (userName.startsWith('*')) {
         if (useTestDatabases && userName === passwordPlain) {
             isAuthenticated = configFunctions
                 .getProperty('users.testing')

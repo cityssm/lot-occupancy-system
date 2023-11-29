@@ -1,4 +1,4 @@
-import type * as recordTypes from '../types/recordTypes';
+import type { LotOccupancyOccupant } from '../types/recordTypes.js';
 export declare function buildLotName(lotNamePieces: {
     cemetery: string;
     block: string;
@@ -10,5 +10,5 @@ export declare function buildLotName(lotNamePieces: {
     grave2: string;
     interment: string;
 }): string;
-export declare function getFuneralHomeLotOccupancyOccupantData(funeralHomeKey: string): recordTypes.LotOccupancyOccupant;
+export declare function getFuneralHomeLotOccupancyOccupantData(funeralHomeKey: string): LotOccupancyOccupant;
 export declare function getDeathAgePeriod(legacyDeathAgePeriod: string): string;

@@ -1,11 +1,10 @@
 import type { Request, Response } from 'express'
+import papaparse from 'papaparse'
 
 import {
   getReportData,
   type ReportParameters
 } from '../../helpers/lotOccupancyDB/getReportData.js'
-
-import papaparse from 'papaparse'
 
 export async function handler(
   request: Request,
@@ -13,14 +12,7 @@ export async function handler(
 ): Promise<void> {
   const reportName = request.params.reportName
 
-  let rows: unknown[] | undefined
-
-  switch (reportName) {
-    default: {
-      rows = await getReportData(reportName, request.query as ReportParameters)
-      break
-    }
-  }
+  const rows = await getReportData(reportName, request.query as ReportParameters)
 
   if (rows === undefined) {
     response.status(404).json({

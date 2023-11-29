@@ -1,7 +1,7 @@
 import { type RequestHandler, Router } from 'express'
 
-import handler_search from '../handlers/reports-get/search.js'
 import handler_reportName from '../handlers/reports-get/reportName.js'
+import handler_search from '../handlers/reports-get/search.js'
 
 export const router = Router()
 

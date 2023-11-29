@@ -1,12 +1,13 @@
-/* eslint-disable node/no-unpublished-import */
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable n/no-unpublished-import */
 
 import gulp from 'gulp'
 import changed from 'gulp-changed'
-import minify from 'gulp-minify'
 import include from 'gulp-include'
-
-import dartSass from 'sass'
+import minify from 'gulp-minify'
 import gulpSass from 'gulp-sass'
+import dartSass from 'sass'
+
 const sass = gulpSass(dartSass)
 
 /*

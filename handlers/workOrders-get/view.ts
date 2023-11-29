@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
-
 import { getWorkOrder } from '../../helpers/lotOccupancyDB/getWorkOrder.js'
 
 export async function handler(
@@ -16,8 +15,9 @@ export async function handler(
 
   if (workOrder === undefined) {
     response.redirect(
-      configFunctions.getProperty('reverseProxy.urlPrefix') +
-        '/workOrders/?error=workOrderIdNotFound'
+      `${configFunctions.getProperty(
+        'reverseProxy.urlPrefix'
+      )}/workOrders/?error=workOrderIdNotFound`
     )
     return
   }

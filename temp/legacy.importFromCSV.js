@@ -25,13 +25,11 @@ import { updateLotStatus } from '../helpers/lotOccupancyDB/updateLot.js';
 import * as importData from './legacy.importFromCsv.data.js';
 import * as importIds from './legacy.importFromCsv.ids.js';
 const user = {
-    user: {
-        userName: 'import.unix',
-        userProperties: {
-            canUpdate: true,
-            isAdmin: false,
-            apiKey: ''
-        }
+    userName: 'import.unix',
+    userProperties: {
+        canUpdate: true,
+        isAdmin: false,
+        apiKey: ''
     }
 };
 function purgeTables() {
@@ -876,7 +874,7 @@ async function importFromWorkOrderCSV() {
                         workOrderId: workOrder.workOrderId,
                         workOrderMilestoneTypeId: importIds.deathWorkOrderMilestoneTypeId,
                         workOrderMilestoneDateString,
-                        workOrderMilestoneDescription: 'Death Place: ' + workOrderRow.WO_DEATH_PLACE,
+                        workOrderMilestoneDescription: `Death Place: ${workOrderRow.WO_DEATH_PLACE}`,
                         workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString
                             ? workOrderMilestoneDateString
                             : undefined,
@@ -905,7 +903,7 @@ async function importFromWorkOrderCSV() {
                         workOrderMilestoneTypeId: importIds.funeralWorkOrderMilestoneTypeId,
                         workOrderMilestoneDateString,
                         workOrderMilestoneTimeString,
-                        workOrderMilestoneDescription: 'Funeral Home: ' + workOrderRow.WO_FUNERAL_HOME,
+                        workOrderMilestoneDescription: `Funeral Home: ${workOrderRow.WO_FUNERAL_HOME}`,
                         workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString
                             ? workOrderMilestoneDateString
                             : undefined,
@@ -973,11 +971,11 @@ async function importFromWorkOrderCSV() {
     }
     console.timeEnd('importFromWorkOrderCSV');
 }
-console.log('Started ' + new Date().toLocaleString());
+console.log(`Started ${new Date().toLocaleString()}`);
 console.time('importFromCsv');
 purgeTables();
 await importFromMasterCSV();
 await importFromPrepaidCSV();
 await importFromWorkOrderCSV();
 console.timeEnd('importFromCsv');
-console.log('Finished ' + new Date().toLocaleString());
+console.log(`Finished ${new Date().toLocaleString()}`);

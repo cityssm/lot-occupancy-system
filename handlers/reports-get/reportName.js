@@ -1,14 +1,8 @@
-import { getReportData } from '../../helpers/lotOccupancyDB/getReportData.js';
 import papaparse from 'papaparse';
+import { getReportData } from '../../helpers/lotOccupancyDB/getReportData.js';
 export async function handler(request, response) {
     const reportName = request.params.reportName;
-    let rows;
-    switch (reportName) {
-        default: {
-            rows = await getReportData(reportName, request.query);
-            break;
-        }
-    }
+    const rows = await getReportData(reportName, request.query);
     if (rows === undefined) {
         response.status(404).json({
             success: false,

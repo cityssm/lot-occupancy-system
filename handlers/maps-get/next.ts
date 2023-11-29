@@ -13,16 +13,17 @@ export async function handler(
 
   if (nextMapId === undefined) {
     response.redirect(
-      configFunctions.getProperty('reverseProxy.urlPrefix') +
-        '/maps/?error=noNextMapIdFound'
+      `${configFunctions.getProperty(
+        'reverseProxy.urlPrefix'
+      )}/maps/?error=noNextMapIdFound`
     )
     return
   }
 
   response.redirect(
-    configFunctions.getProperty('reverseProxy.urlPrefix') +
-      '/maps/' +
-      nextMapId.toString()
+    `${configFunctions.getProperty(
+      'reverseProxy.urlPrefix'
+    )}/maps/${nextMapId.toString()}`
   )
 }
 

@@ -7,8 +7,7 @@ export async function handler(request, response) {
         includeMilestones: true
     });
     if (workOrder === undefined) {
-        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
-            '/workOrders/?error=workOrderIdNotFound');
+        response.redirect(`${configFunctions.getProperty('reverseProxy.urlPrefix')}/workOrders/?error=workOrderIdNotFound`);
         return;
     }
     response.render('workOrder-view', {

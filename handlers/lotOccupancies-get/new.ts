@@ -1,9 +1,8 @@
-import type { Request, Response } from 'express'
-
 import {
   dateToInteger,
   dateToString
 } from '@cityssm/utils-datetime'
+import type { Request, Response } from 'express'
 
 import {
   getLotOccupantTypes,
@@ -11,13 +10,10 @@ import {
   getLotTypes,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
-
+import * as configFunctions from '../../helpers/functions.config.js'
 import { getLot } from '../../helpers/lotOccupancyDB/getLot.js'
 import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
-
-import * as configFunctions from '../../helpers/functions.config.js'
-
-import type * as recordTypes from '../../types/recordTypes'
+import type { LotOccupancy } from '../../types/recordTypes.js'
 
 export async function handler(
   request: Request,
@@ -25,7 +21,7 @@ export async function handler(
 ): Promise<void> {
   const startDate = new Date()
 
-  const lotOccupancy: recordTypes.LotOccupancy = {
+  const lotOccupancy: LotOccupancy = {
     occupancyStartDate: dateToInteger(startDate),
     occupancyStartDateString: dateToString(startDate)
   }

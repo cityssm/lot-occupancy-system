@@ -1,19 +1,15 @@
 import { type RequestHandler, Router } from 'express'
 
-import * as permissionHandlers from '../handlers/permissions.js'
-
-import handler_search from '../handlers/maps-get/search.js'
-
-import handler_view from '../handlers/maps-get/view.js'
+import handler_edit from '../handlers/maps-get/edit.js'
+import handler_new from '../handlers/maps-get/new.js'
 import handler_next from '../handlers/maps-get/next.js'
 import handler_previous from '../handlers/maps-get/previous.js'
-
-import handler_new from '../handlers/maps-get/new.js'
-import handler_edit from '../handlers/maps-get/edit.js'
-
+import handler_search from '../handlers/maps-get/search.js'
+import handler_view from '../handlers/maps-get/view.js'
 import handler_doCreateMap from '../handlers/maps-post/doCreateMap.js'
-import handler_doUpdateMap from '../handlers/maps-post/doUpdateMap.js'
 import handler_doDeleteMap from '../handlers/maps-post/doDeleteMap.js'
+import handler_doUpdateMap from '../handlers/maps-post/doUpdateMap.js'
+import * as permissionHandlers from '../handlers/permissions.js'
 
 export const router = Router()
 

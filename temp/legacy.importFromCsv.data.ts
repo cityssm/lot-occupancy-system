@@ -1,6 +1,6 @@
-import * as importIds from './legacy.importFromCsv.ids.js'
+import type { LotOccupancyOccupant } from '../types/recordTypes.js'
 
-import type * as recordTypes from '../types/recordTypes'
+import * as importIds from './legacy.importFromCsv.ids.js'
 
 export function buildLotName(lotNamePieces: {
   cemetery: string
@@ -34,7 +34,7 @@ export function buildLotName(lotNamePieces: {
 
 export function getFuneralHomeLotOccupancyOccupantData(
   funeralHomeKey: string
-): recordTypes.LotOccupancyOccupant {
+): LotOccupancyOccupant {
   switch (funeralHomeKey) {
     case 'AR': {
       return {

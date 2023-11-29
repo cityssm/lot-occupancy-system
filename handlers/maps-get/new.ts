@@ -16,7 +16,7 @@ export async function handler(
   const mapSVGs = await getMapSVGs()
 
   response.render('map-edit', {
-    headTitle: configFunctions.getProperty('aliases.map') + ' Create',
+    headTitle: `${configFunctions.getProperty('aliases.map')} Create`,
     isCreate: true,
     map,
     mapSVGs

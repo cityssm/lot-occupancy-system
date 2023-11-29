@@ -1,14 +1,13 @@
-/* eslint-disable unicorn/filename-case */
+/* eslint-disable unicorn/filename-case, eslint-comments/disable-enable-pair */
 
 import * as assert from 'node:assert'
-
 import fs from 'node:fs/promises'
 
-import { initializeCemeteryDatabase } from '../helpers/initializer.database.cemetery.js'
 import {
   lotOccupancyDB as databasePath,
   useTestDatabases
 } from '../data/databasePaths.js'
+import { initializeCemeteryDatabase } from '../helpers/initializer.database.cemetery.js'
 
 describe('Initialize Database', () => {
   it('initializes a cemetery database', async () => {

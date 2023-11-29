@@ -8,9 +8,7 @@ import {
   getOccupancyTypes,
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
-
 import * as configFunctions from '../../helpers/functions.config.js'
-
 import { getLotOccupancy } from '../../helpers/lotOccupancyDB/getLotOccupancy.js'
 import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 

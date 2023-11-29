@@ -176,14 +176,12 @@ interface WorkOrderRecord {
   WO_DEATH_PLACE: string
 }
 
-const user: recordTypes.PartialSession = {
-  user: {
-    userName: 'import.unix',
-    userProperties: {
-      canUpdate: true,
-      isAdmin: false,
-      apiKey: ''
-    }
+const user: User = {
+  userName: 'import.unix',
+  userProperties: {
+    canUpdate: true,
+    isAdmin: false,
+    apiKey: ''
   }
 }
 
@@ -276,7 +274,9 @@ const cemeteryToMapName = {
 
 const mapCache = new Map<string, recordTypes.MapRecord>()
 
-async function getMap(dataRow: { cemetery: string }): Promise<recordTypes.MapRecord> {
+async function getMap(dataRow: {
+  cemetery: string
+}): Promise<recordTypes.MapRecord> {
   const mapCacheKey = dataRow.cemetery
 
   /*
@@ -1511,7 +1511,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
               workOrderMilestoneTypeId: importIds.deathWorkOrderMilestoneTypeId,
               workOrderMilestoneDateString,
               workOrderMilestoneDescription:
-                'Death Place: ' + workOrderRow.WO_DEATH_PLACE,
+                `Death Place: ${workOrderRow.WO_DEATH_PLACE}`,
               workOrderMilestoneCompletionDateString:
                 workOrderMilestoneDateString < currentDateString
                   ? workOrderMilestoneDateString
@@ -1559,8 +1559,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
                 importIds.funeralWorkOrderMilestoneTypeId,
               workOrderMilestoneDateString,
               workOrderMilestoneTimeString,
-              workOrderMilestoneDescription:
-                'Funeral Home: ' + workOrderRow.WO_FUNERAL_HOME,
+              workOrderMilestoneDescription: `Funeral Home: ${workOrderRow.WO_FUNERAL_HOME}`,
               workOrderMilestoneCompletionDateString:
                 workOrderMilestoneDateString < currentDateString
                   ? workOrderMilestoneDateString
@@ -1662,7 +1661,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
   console.timeEnd('importFromWorkOrderCSV')
 }
 
-console.log('Started ' + new Date().toLocaleString())
+console.log(`Started ${new Date().toLocaleString()}`)
 console.time('importFromCsv')
 
 purgeTables()
@@ -1672,4 +1671,4 @@ await importFromPrepaidCSV()
 await importFromWorkOrderCSV()
 
 console.timeEnd('importFromCsv')
-console.log('Finished ' + new Date().toLocaleString())
+console.log(`Finished ${new Date().toLocaleString()}`)

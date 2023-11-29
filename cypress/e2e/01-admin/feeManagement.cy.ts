@@ -1,12 +1,10 @@
-/* eslint-disable unicorn/filename-case, promise/catch-or-return, promise/always-return, @typescript-eslint/no-non-null-assertion */
-
-import { testAdmin } from '../../../test/_globals.js'
-
-import { logout, login, ajaxDelayMillis } from '../../support/index.js'
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-non-null-assertion, promise/always-return, promise/catch-or-return */
 
 import * as configFunctions from '../../../helpers/functions.config.js'
-
-import type * as recordTypes from '../../../types/recordTypes'
+import { testAdmin } from '../../../test/_globals.js'
+import type { Fee } from '../../../types/recordTypes.js'
+import { logout, login, ajaxDelayMillis } from '../../support/index.js'
 
 describe('Admin - Fee Management', () => {
   beforeEach('Loads page', () => {
@@ -31,7 +29,7 @@ describe('Admin - Fee Management', () => {
     cy.injectAxe()
     cy.checkA11y()
 
-    cy.fixture('fee.json').then((fee: recordTypes.Fee) => {
+    cy.fixture('fee.json').then((fee: Fee) => {
       cy.get(".modal input[name='feeCategory']").type(fee.feeCategory!)
 
       cy.get(".modal button[type='submit']").click()
@@ -53,7 +51,7 @@ describe('Admin - Fee Management', () => {
     cy.injectAxe()
     cy.checkA11y()
 
-    cy.fixture('fee.json').then((fee: recordTypes.Fee) => {
+    cy.fixture('fee.json').then((fee: Fee) => {
       cy.get(".modal input[name='feeName']").type(fee.feeName!)
 
       cy.get(".modal textarea[name='feeDescription']").type(fee.feeDescription!)

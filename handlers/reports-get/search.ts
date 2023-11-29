@@ -1,9 +1,8 @@
+import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
-import * as dateTimeFunctions from '@cityssm/utils-datetime'
-
-import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 import { getLotStatuses, getLotTypes } from '../../helpers/functions.cache.js'
+import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 
 export async function handler(_request: Request, response: Response): Promise<void> {
   const rightNow = new Date()

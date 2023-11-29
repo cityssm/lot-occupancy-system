@@ -5,8 +5,7 @@ import { getMap } from '../../helpers/lotOccupancyDB/getMap.js';
 export async function handler(request, response) {
     const map = await getMap(request.params.mapId);
     if (map === undefined) {
-        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
-            '/maps/?error=mapIdNotFound');
+        response.redirect(`${configFunctions.getProperty('reverseProxy.urlPrefix')}/maps/?error=mapIdNotFound`);
         return;
     }
     const lotTypeSummary = await getLotTypeSummary({

@@ -1,8 +1,8 @@
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime';
 import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypes } from '../../helpers/functions.cache.js';
+import * as configFunctions from '../../helpers/functions.config.js';
 import { getLot } from '../../helpers/lotOccupancyDB/getLot.js';
 import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js';
-import * as configFunctions from '../../helpers/functions.config.js';
 export async function handler(request, response) {
     const startDate = new Date();
     const lotOccupancy = {

@@ -13,8 +13,7 @@ export async function handler(
 
   if (map === undefined) {
     response.redirect(
-      configFunctions.getProperty('reverseProxy.urlPrefix') +
-        '/maps/?error=mapIdNotFound'
+      `${configFunctions.getProperty('reverseProxy.urlPrefix')}/maps/?error=mapIdNotFound`
     )
     return
   }

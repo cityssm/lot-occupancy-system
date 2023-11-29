@@ -7,7 +7,7 @@ export async function handler(_request: Request, response: Response): Promise<vo
   const maps = await getMaps()
 
   response.render('map-search', {
-    headTitle: configFunctions.getProperty('aliases.map') + ' Search',
+    headTitle: `${configFunctions.getProperty('aliases.map')} Search`,
     maps
   })
 }
