@@ -5,9 +5,7 @@ import {
   getWorkOrderMilestoneTypes,
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
-
 import * as configFunctions from '../../helpers/functions.config.js'
-
 import { getWorkOrder } from '../../helpers/lotOccupancyDB/getWorkOrder.js'
 
 export async function handler(

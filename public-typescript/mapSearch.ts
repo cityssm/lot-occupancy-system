@@ -9,7 +9,7 @@ declare const cityssm: cityssmGlobal
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
-  const maps: recordTypes.Map[] = exports.maps
+  const maps: recordTypes.MapRecord[] = exports.maps
 
   const searchFilterElement = document.querySelector(
     '#searchFilter--map'

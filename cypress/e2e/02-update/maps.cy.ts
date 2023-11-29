@@ -1,12 +1,10 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { testUpdate } from '../../../test/_globals.js'
-
-import { logout, login } from '../../support/index.js'
-
 import * as configFunctions from '../../../helpers/functions.config.js'
-
-import type * as recordTypes from '../../../types/recordTypes'
+import { testUpdate } from '../../../test/_globals.js'
+import type { MapRecord } from '../../../types/recordTypes.js'
+import { logout, login } from '../../support/index.js'
 
 describe('Update - Maps', () => {
   beforeEach('Loads page', () => {
@@ -33,7 +31,7 @@ describe('Update - Maps', () => {
     cy.log('Populate the fields')
 
     // eslint-disable-next-line promise/catch-or-return, promise/always-return
-    cy.fixture('map.json').then((mapJSON: recordTypes.Map) => {
+    cy.fixture('map.json').then((mapJSON: MapRecord) => {
       cy.get("input[name='mapName']").clear().type(mapJSON.mapName!)
       cy.get("textarea[name='mapDescription']")
         .clear()
@@ -77,7 +75,7 @@ describe('Update - Maps', () => {
       .should('contain', '/edit')
 
     // eslint-disable-next-line promise/catch-or-return, promise/always-return
-    cy.fixture('map.json').then((mapJSON: recordTypes.Map) => {
+    cy.fixture('map.json').then((mapJSON: MapRecord) => {
       cy.get("input[name='mapName']").should('have.value', mapJSON.mapName)
       cy.get("textarea[name='mapDescription']").should(
         'have.value',

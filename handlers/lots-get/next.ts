@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
-
 import { getNextLotId } from '../../helpers/functions.lots.js'
 
 export async function handler(

@@ -661,7 +661,7 @@ declare const bulmaJS: BulmaJS
           '#lotCreate--mapId'
         ) as HTMLSelectElement
 
-        for (const map of exports.maps as recordTypes.Map[]) {
+        for (const map of exports.maps as recordTypes.MapRecord[]) {
           const optionElement = document.createElement('option')
           optionElement.value = map.mapId!.toString()
           optionElement.textContent =

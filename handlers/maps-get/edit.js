@@ -1,8 +1,8 @@
 import * as configFunctions from '../../helpers/functions.config.js';
-import { getMap } from '../../helpers/lotOccupancyDB/getMap.js';
 import { getMapSVGs } from '../../helpers/functions.map.js';
-import { getLotTypeSummary } from '../../helpers/lotOccupancyDB/getLotTypeSummary.js';
 import { getLotStatusSummary } from '../../helpers/lotOccupancyDB/getLotStatusSummary.js';
+import { getLotTypeSummary } from '../../helpers/lotOccupancyDB/getLotTypeSummary.js';
+import { getMap } from '../../helpers/lotOccupancyDB/getMap.js';
 export async function handler(request, response) {
     const map = await getMap(request.params.mapId);
     if (map === undefined) {

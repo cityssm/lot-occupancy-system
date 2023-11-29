@@ -1,3 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
-export declare function getMap(mapId: number | string): Promise<recordTypes.Map | undefined>;
+import type { MapRecord } from '../../types/recordTypes.js';
+export declare function getMap(mapId: number | string): Promise<MapRecord | undefined>;
 export default getMap;

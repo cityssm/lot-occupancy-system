@@ -232,14 +232,14 @@ function purgeConfigTables(): void {
   console.timeEnd('purgeConfigTables')
 }
 
-function getMapByMapDescription(mapDescription: string): recordTypes.Map {
+function getMapByMapDescription(mapDescription: string): recordTypes.MapRecord {
   const database = sqlite(databasePath, {
     readonly: true
   })
 
-  const map: recordTypes.Map = database
+  const map = database
     .prepare('select * from Maps where mapDescription = ?')
-    .get(mapDescription)
+    .get(mapDescription) as recordTypes.MapRecord
 
   database.close()
 
@@ -274,9 +274,9 @@ const cemeteryToMapName = {
   WK: 'West Korah'
 }
 
-const mapCache = new Map<string, recordTypes.Map>()
+const mapCache = new Map<string, recordTypes.MapRecord>()
 
-async function getMap(dataRow: { cemetery: string }): Promise<recordTypes.Map> {
+async function getMap(dataRow: { cemetery: string }): Promise<recordTypes.MapRecord> {
   const mapCacheKey = dataRow.cemetery
 
   /*
@@ -312,7 +312,7 @@ async function getMap(dataRow: { cemetery: string }): Promise<recordTypes.Map> {
       user
     )
 
-    map = (await getMapFromDatabase(mapId)) as recordTypes.Map
+    map = (await getMapFromDatabase(mapId)) as recordTypes.MapRecord
   }
 
   mapCache.set(mapCacheKey, map)

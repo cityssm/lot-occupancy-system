@@ -1,3 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
-export declare function getMaps(): Promise<recordTypes.Map[]>;
+import type { MapRecord } from '../../types/recordTypes.js';
+export declare function getMaps(): Promise<MapRecord[]>;
 export default getMaps;

@@ -1,12 +1,8 @@
-import {
-  dateToInteger,
-  dateToString
-} from '@cityssm/utils-datetime'
+import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js'
-
-import type * as recordTypes from '../../types/recordTypes'
+import type { WorkOrder } from '../../types/recordTypes.js'
 
 export async function handler(
   request: Request,
@@ -14,7 +10,7 @@ export async function handler(
 ): Promise<void> {
   const currentDate = new Date()
 
-  const workOrder: recordTypes.WorkOrder = {
+  const workOrder: WorkOrder = {
     workOrderOpenDate: dateToInteger(currentDate),
     workOrderOpenDateString: dateToString(currentDate)
   }

@@ -1,10 +1,8 @@
 import type { Request, Response } from 'express'
 
-import * as configFunctions from '../../helpers/functions.config.js'
-
-import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
-
 import { getLotTypes, getLotStatuses } from '../../helpers/functions.cache.js'
+import * as configFunctions from '../../helpers/functions.config.js'
+import { getMaps } from '../../helpers/lotOccupancyDB/getMaps.js'
 
 export async function handler(
   request: Request,

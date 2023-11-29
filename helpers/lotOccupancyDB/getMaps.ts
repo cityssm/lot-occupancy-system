@@ -1,8 +1,8 @@
+import type { MapRecord } from '../../types/recordTypes.js'
+
 import { acquireConnection } from './pool.js'
 
-import type * as recordTypes from '../../types/recordTypes'
-
-export async function getMaps(): Promise<recordTypes.Map[]> {
+export async function getMaps(): Promise<MapRecord[]> {
   const database = await acquireConnection()
 
   const maps = database
@@ -20,7 +20,7 @@ export async function getMaps(): Promise<recordTypes.Map[]> {
         ) l on m.mapId = l.mapId
         where m.recordDelete_timeMillis is null order by m.mapName, m.mapId`
     )
-    .all() as recordTypes.Map[]
+    .all() as MapRecord[]
 
   database.release()
 

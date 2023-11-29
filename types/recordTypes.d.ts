@@ -10,7 +10,7 @@ export interface Record {
     recordDelete_timeMillis?: number;
     recordDelete_dateString?: string;
 }
-export interface Map extends Record {
+export interface MapRecord extends Record {
     mapId?: number;
     mapName?: string;
     mapDescription?: string;
@@ -55,7 +55,7 @@ export interface Lot extends Record {
     lotType?: string;
     mapId?: number;
     mapName?: string;
-    map?: Map;
+    map?: MapRecord;
     mapSVG?: string;
     mapKey?: string;
     lotLatitude?: number;

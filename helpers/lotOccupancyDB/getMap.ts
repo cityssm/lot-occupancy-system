@@ -1,10 +1,10 @@
-import { acquireConnection } from './pool.js'
+import type { MapRecord } from '../../types/recordTypes.js'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { acquireConnection } from './pool.js'
 
 export async function getMap(
   mapId: number | string
-): Promise<recordTypes.Map | undefined> {
+): Promise<MapRecord | undefined> {
   const database = await acquireConnection()
 
   const map = database
@@ -29,7 +29,7 @@ export async function getMap(
           m.recordUpdate_userName, m.recordUpdate_timeMillis,
           m.recordDelete_userName, m.recordDelete_timeMillis`
     )
-    .get(mapId) as recordTypes.Map | undefined
+    .get(mapId) as MapRecord | undefined
 
   database.release()
 

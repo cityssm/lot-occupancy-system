@@ -17,7 +17,7 @@ export interface Record {
  * LOT OCCUPANCY DB TYPES
  */
 
-export interface Map extends Record {
+export interface MapRecord extends Record {
   mapId?: number
   mapName?: string
   mapDescription?: string
@@ -74,7 +74,7 @@ export interface Lot extends Record {
 
   mapId?: number
   mapName?: string
-  map?: Map
+  map?: MapRecord
   mapSVG?: string
   mapKey?: string
 

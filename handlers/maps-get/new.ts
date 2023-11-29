@@ -1,16 +1,14 @@
 import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
-
 import { getMapSVGs } from '../../helpers/functions.map.js'
-
-import * as recordTypes from '../../types/recordTypes'
+import type { MapRecord } from '../../types/recordTypes.js'
 
 export async function handler(
   _request: Request,
   response: Response
 ): Promise<void> {
-  const map: recordTypes.Map = {
+  const map: MapRecord = {
     mapCity: configFunctions.getProperty('settings.map.mapCityDefault'),
     mapProvince: configFunctions.getProperty('settings.map.mapProvinceDefault')
   }

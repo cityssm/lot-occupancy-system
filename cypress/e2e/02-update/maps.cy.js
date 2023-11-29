@@ -1,6 +1,6 @@
+import * as configFunctions from '../../../helpers/functions.config.js';
 import { testUpdate } from '../../../test/_globals.js';
 import { logout, login } from '../../support/index.js';
-import * as configFunctions from '../../../helpers/functions.config.js';
 describe('Update - Maps', () => {
     beforeEach('Loads page', () => {
         logout();
