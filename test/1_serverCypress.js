@@ -36,7 +36,7 @@ describe('lot-occupancy-system', () => {
         catch {
         }
     });
-    it('Ensure server starts on port ' + portNumber.toString(), () => {
+    it(`Ensure server starts on port ${portNumber.toString()}`, () => {
         assert.ok(serverStarted);
     });
     describe('Cypress tests', () => {

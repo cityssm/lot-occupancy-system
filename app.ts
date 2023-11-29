@@ -99,42 +99,42 @@ app.use(
 const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix')
 
 if (urlPrefix !== '') {
-  debug('urlPrefix = ' + urlPrefix)
+  debug(`urlPrefix = ${urlPrefix}`)
 }
 
 app.use(urlPrefix, express.static(path.join('public')))
 
 app.use(
-  urlPrefix + '/lib/bulma-calendar',
+  `${urlPrefix}/lib/bulma-calendar`,
   express.static(path.join('node_modules', 'bulma-calendar', 'dist'))
 )
 
 app.use(
-  urlPrefix + '/lib/cityssm-bulma-js/bulma-js.js',
+  `${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`,
   express.static(
     path.join('node_modules', '@cityssm', 'bulma-js', 'dist', 'bulma-js.js')
   )
 )
 
 app.use(
-  urlPrefix + '/lib/cityssm-bulma-webapp-js',
+  `${urlPrefix}/lib/cityssm-bulma-webapp-js`,
   express.static(
     path.join('node_modules', '@cityssm', 'bulma-webapp-js', 'dist')
   )
 )
 
 app.use(
-  urlPrefix + '/lib/fa',
+  `${urlPrefix}/lib/fa`,
   express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free'))
 )
 
 app.use(
-  urlPrefix + '/lib/leaflet',
+  `${urlPrefix}/lib/leaflet`,
   express.static(path.join('node_modules', 'leaflet', 'dist'))
 )
 
 app.use(
-  urlPrefix + '/lib/randomcolor/randomColor.js',
+  `${urlPrefix}/lib/randomcolor/randomColor.js`,
   express.static(path.join('node_modules', 'randomcolor', 'randomColor.js'))
 )
 
@@ -226,40 +226,40 @@ app.use((request, response, next) => {
 })
 
 app.get(urlPrefix + '/', sessionChecker, (_request, response) => {
-  response.redirect(urlPrefix + '/dashboard')
+  response.redirect(`${urlPrefix}/dashboard`)
 })
 
-app.use(urlPrefix + '/dashboard', sessionChecker, routerDashboard)
+app.use(`${urlPrefix}/dashboard`, sessionChecker, routerDashboard)
 
 app.use(
-  urlPrefix + '/api/:apiKey',
+  `${urlPrefix}/api/:apiKey`,
   permissionHandlers.apiGetHandler as RequestHandler,
   routerApi
 )
 
-app.use(urlPrefix + '/print', sessionChecker, routerPrint)
-app.use(urlPrefix + '/maps', sessionChecker, routerMaps)
-app.use(urlPrefix + '/lots', sessionChecker, routerLots)
-app.use(urlPrefix + '/lotOccupancies', sessionChecker, routerLotOccupancies)
-app.use(urlPrefix + '/workOrders', sessionChecker, routerWorkOrders)
+app.use(`${urlPrefix}/print`, sessionChecker, routerPrint)
+app.use(`${urlPrefix}/maps`, sessionChecker, routerMaps)
+app.use(`${urlPrefix}/lots`, sessionChecker, routerLots)
+app.use(`${urlPrefix}/lotOccupancies`, sessionChecker, routerLotOccupancies)
+app.use(`${urlPrefix}/workOrders`, sessionChecker, routerWorkOrders)
 
-app.use(urlPrefix + '/reports', sessionChecker, routerReports)
+app.use(`${urlPrefix}/reports`, sessionChecker, routerReports)
 app.use(
-  urlPrefix + '/admin',
+  `${urlPrefix}/admin`,
   sessionChecker,
   permissionHandlers.adminGetHandler,
   routerAdmin
 )
 
 if (configFunctions.getProperty('session.doKeepAlive')) {
-  app.all(urlPrefix + '/keepAlive', (_request, response) => {
+  app.all(`${urlPrefix}/keepAlive`, (_request, response) => {
     response.json(true)
   })
 }
 
-app.use(urlPrefix + '/login', routerLogin)
+app.use(`${urlPrefix}/login`, routerLogin)
 
-app.get(urlPrefix + '/logout', (request, response) => {
+app.get(`${urlPrefix}/logout`, (request, response) => {
   if (
     Object.hasOwn(request.session, 'user') &&
     Object.hasOwn(request.cookies, sessionCookieName)
@@ -276,7 +276,7 @@ app.get(urlPrefix + '/logout', (request, response) => {
 // Catch 404 and forward to error handler
 app.use((request, _response, next) => {
   debug(request.url)
-  next(createError(404, 'File not found: ' + request.url))
+  next(createError(404, `File not found: ${request.url}`))
 })
 
 export default app

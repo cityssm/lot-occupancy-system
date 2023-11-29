@@ -16,19 +16,18 @@ export function buildLotName(lotNamePieces: {
   return (
     lotNamePieces.cemetery +
     '-' +
-    (lotNamePieces.block === '' ? '' : 'B' + lotNamePieces.block + '-') +
+    (lotNamePieces.block === '' ? '' : `B${lotNamePieces.block}-`) +
     (lotNamePieces.range1 === '0' && lotNamePieces.range2 === ''
       ? ''
-      : 'R' +
-        (lotNamePieces.range1 === '0' ? '' : lotNamePieces.range1) +
-        lotNamePieces.range2 +
-        '-') +
+      : `R${lotNamePieces.range1 === '0' ? '' : lotNamePieces.range1}${
+          lotNamePieces.range2
+        }-`) +
     (lotNamePieces.lot1 === '0' && lotNamePieces.lot2 === ''
       ? ''
-      : 'L' + lotNamePieces.lot1 + lotNamePieces.lot2 + '-') +
-    ('G' + lotNamePieces.grave1 + lotNamePieces.grave2) +
+      : `L${lotNamePieces.lot1}${lotNamePieces.lot2}-`) +
+    `G${lotNamePieces.grave1}${lotNamePieces.grave2}` +
     ', ' +
-    ('Interment ' + lotNamePieces.interment)
+    `Interment ${lotNamePieces.interment}`
   )
 }
 

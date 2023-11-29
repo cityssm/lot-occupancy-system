@@ -79,14 +79,14 @@ function getMapByMapDescription(mapDescription) {
     return map;
 }
 function formatDateString(year, month, day) {
-    return (('0000' + year).slice(-4) +
+    return (`0000${year}`.slice(-4) +
         '-' +
-        ('00' + month).slice(-2) +
+        `00${month}`.slice(-2) +
         '-' +
-        ('00' + day).slice(-2));
+        `00${day}`.slice(-2));
 }
 function formatTimeString(hour, minute) {
-    return ('00' + hour).slice(-2) + ':' + ('00' + minute).slice(-2);
+    return `00${hour}`.slice(-2) + ':' + `00${minute}`.slice(-2);
 }
 const cemeteryToMapName = {
     '00': 'Crematorium',
@@ -109,7 +109,7 @@ async function getMap(dataRow) {
     }
     let map = getMapByMapDescription(mapCacheKey);
     if (!map) {
-        console.log('Creating map: ' + dataRow.cemetery);
+        console.log(`Creating map: ${dataRow.cemetery}`);
         const mapId = await addMap({
             mapName: cemeteryToMapName[dataRow.cemetery] ?? dataRow.cemetery,
             mapDescription: dataRow.cemetery,
@@ -239,7 +239,7 @@ async function importFromMasterCSV() {
                         lotOccupancyId: preneedLotOccupancyId,
                         lotOccupancyCommentDateString: preneedOccupancyStartDateString,
                         lotOccupancyCommentTimeString: '00:00',
-                        lotOccupancyComment: 'Imported Contract #' + masterRow.CM_WORK_ORDER
+                        lotOccupancyComment: `Imported Contract #${masterRow.CM_WORK_ORDER}`
                     }, user);
                 }
                 if (occupancyEndDateString === '') {
@@ -386,7 +386,7 @@ async function importFromMasterCSV() {
                         lotOccupancyId: deceasedLotOccupancyId,
                         lotOccupancyCommentDateString: deceasedOccupancyStartDateString,
                         lotOccupancyCommentTimeString: '00:00',
-                        lotOccupancyComment: 'Imported Contract #' + masterRow.CM_WORK_ORDER
+                        lotOccupancyComment: `Imported Contract #${masterRow.CM_WORK_ORDER}`
                     }, user);
                 }
                 await updateLotStatus(lotId, importIds.takenLotStatusId, user);
@@ -508,7 +508,7 @@ async function importFromPrepaidCSV() {
                 occupantAddress2: '',
                 occupantCity: prepaidRow.CMPP_CITY,
                 occupantProvince: prepaidRow.CMPP_PROV.slice(0, 2),
-                occupantPostalCode: prepaidRow.CMPP_POSTAL1 + ' ' + prepaidRow.CMPP_POSTAL2,
+                occupantPostalCode: `${prepaidRow.CMPP_POSTAL1} ${prepaidRow.CMPP_POSTAL2}`,
                 occupantPhoneNumber: '',
                 occupantEmailAddress: ''
             }, user);
@@ -625,7 +625,7 @@ async function importFromPrepaidCSV() {
                 externalReceiptNumber: '',
                 transactionAmount,
                 transactionDateString: occupancyStartDateString,
-                transactionNote: 'Order Number: ' + prepaidRow.CMPP_ORDER_NO
+                transactionNote: `Order Number: ${prepaidRow.CMPP_ORDER_NO}`
             }, user);
             if (prepaidRow.CMPP_REMARK1) {
                 await addLotOccupancyComment({
@@ -664,7 +664,7 @@ async function importFromWorkOrderCSV() {
     const currentDateString = dateToString(new Date());
     try {
         for (workOrderRow of cmwkordr.data) {
-            const workOrderNumber = ('000000' + workOrderRow.WO_WORK_ORDER).slice(-6);
+            const workOrderNumber = `000000${workOrderRow.WO_WORK_ORDER}`.slice(-6);
             let workOrder = await getWorkOrderByWorkOrderNumber(workOrderNumber);
             const workOrderOpenDateString = dateIntegerToString(Number.parseInt(workOrderRow.WO_INITIATION_DATE, 10));
             if (workOrder) {
@@ -678,11 +678,7 @@ async function importFromWorkOrderCSV() {
                 const workOrderId = await addWorkOrder({
                     workOrderNumber,
                     workOrderTypeId: importIds.workOrderTypeId,
-                    workOrderDescription: (workOrderRow.WO_REMARK1 +
-                        ' ' +
-                        workOrderRow.WO_REMARK2 +
-                        ' ' +
-                        workOrderRow.WO_REMARK3).trim(),
+                    workOrderDescription: `${workOrderRow.WO_REMARK1} ${workOrderRow.WO_REMARK2} ${workOrderRow.WO_REMARK3}`.trim(),
                     workOrderOpenDateString
                 }, user);
                 workOrder = await getWorkOrder(workOrderId, {
@@ -757,7 +753,7 @@ async function importFromWorkOrderCSV() {
                 occupantAddress2: '',
                 occupantCity: workOrderRow.WO_CITY,
                 occupantProvince: workOrderRow.WO_PROV.slice(0, 2),
-                occupantPostalCode: workOrderRow.WO_POST1 + ' ' + workOrderRow.WO_POST2,
+                occupantPostalCode: `${workOrderRow.WO_POST1} ${workOrderRow.WO_POST2}`,
                 occupantPhoneNumber: '',
                 occupantEmailAddress: ''
             }, user);
@@ -941,7 +937,7 @@ async function importFromWorkOrderCSV() {
                         workOrderId: workOrder.workOrderId,
                         workOrderMilestoneTypeId: importIds.intermentWorkOrderMilestoneTypeId,
                         workOrderMilestoneDateString,
-                        workOrderMilestoneDescription: 'Depth: ' + workOrderRow.WO_DEPTH,
+                        workOrderMilestoneDescription: `Depth: ${workOrderRow.WO_DEPTH}`,
                         workOrderMilestoneCompletionDateString: workOrderMilestoneDateString < currentDateString
                             ? workOrderMilestoneDateString
                             : undefined,
