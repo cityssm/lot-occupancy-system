@@ -25,12 +25,11 @@ function onError(error) {
 function onListening(server) {
     const addr = server.address();
     if (addr !== null) {
-        const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port.toString();
-        debug('HTTP Listening on ' + bind);
+        const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port.toString()}`;
+        debug(`HTTP Listening on ${bind}`);
     }
 }
-process.title =
-    configFunctions.getProperty('application.applicationName') + ' (Worker)';
+process.title = `${configFunctions.getProperty('application.applicationName')} (Worker)`;
 const httpPort = configFunctions.getProperty('application.httpPort');
 const httpServer = http.createServer(app);
 httpServer.listen(httpPort);

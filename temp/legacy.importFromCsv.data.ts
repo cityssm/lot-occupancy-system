@@ -13,22 +13,25 @@ export function buildLotName(lotNamePieces: {
   grave2: string
   interment: string
 }): string {
-  return (
-    lotNamePieces.cemetery +
-    '-' +
-    (lotNamePieces.block === '' ? '' : `B${lotNamePieces.block}-`) +
-    (lotNamePieces.range1 === '0' && lotNamePieces.range2 === ''
-      ? ''
-      : `R${lotNamePieces.range1 === '0' ? '' : lotNamePieces.range1}${
-          lotNamePieces.range2
-        }-`) +
-    (lotNamePieces.lot1 === '0' && lotNamePieces.lot2 === ''
-      ? ''
-      : `L${lotNamePieces.lot1}${lotNamePieces.lot2}-`) +
-    `G${lotNamePieces.grave1}${lotNamePieces.grave2}` +
-    ', ' +
-    `Interment ${lotNamePieces.interment}`
-  )
+  let lotName = `${lotNamePieces.cemetery}-`
+
+  if (lotNamePieces.block !== '') {
+    lotName += `B${lotNamePieces.block}-`
+  }
+
+  if (lotNamePieces.range1 !== '0' || lotNamePieces.range2 !== '') {
+    lotName += `R${lotNamePieces.range1 === '0' ? '' : lotNamePieces.range1}${
+      lotNamePieces.range2
+    }-`
+  }
+
+  if (lotNamePieces.lot1 !== '0' || lotNamePieces.lot2 === '') {
+    lotName += `L${lotNamePieces.lot1}${lotNamePieces.lot2}-`
+  }
+
+  lotName += `G${lotNamePieces.grave1}${lotNamePieces.grave2}, Interment ${lotNamePieces.interment}`
+
+  return lotName
 }
 
 export function getFuneralHomeLotOccupancyOccupantData(

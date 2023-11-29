@@ -245,17 +245,18 @@ function getMapByMapDescription(mapDescription: string): recordTypes.MapRecord {
 }
 
 function formatDateString(year: string, month: string, day: string): string {
-  return (
-    `0000${year}`.slice(-4) +
-    '-' +
-    `00${month}`.slice(-2) +
-    '-' +
-    `00${day}`.slice(-2)
-  )
+  const formattedYear = `0000${year}`.slice(-4)
+  const formattedMonth = `00${month}`.slice(-2)
+  const formattedDay = `00${day}`.slice(-2)
+
+  return `${formattedYear}-${formattedMonth}-${formattedDay}`
 }
 
 function formatTimeString(hour: string, minute: string): string {
-  return `00${hour}`.slice(-2) + ':' + `00${minute}`.slice(-2)
+  const formattedHour = `00${hour}`.slice(-2)
+  const formattedMinute = `00${minute}`.slice(-2)
+
+  return `${formattedHour}:${formattedMinute}`
 }
 
 const cemeteryToMapName = {

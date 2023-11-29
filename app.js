@@ -114,7 +114,7 @@ app.use((request, response, next) => {
     response.locals.urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
     next();
 });
-app.get(urlPrefix + '/', sessionChecker, (_request, response) => {
+app.get(`${urlPrefix}/`, sessionChecker, (_request, response) => {
     response.redirect(`${urlPrefix}/dashboard`);
 });
 app.use(`${urlPrefix}/dashboard`, sessionChecker, routerDashboard);
@@ -137,11 +137,11 @@ app.get(`${urlPrefix}/logout`, (request, response) => {
         Object.hasOwn(request.cookies, sessionCookieName)) {
         request.session.destroy(() => {
             response.clearCookie(sessionCookieName);
-            response.redirect(urlPrefix + '/');
+            response.redirect(`${urlPrefix}/`);
         });
     }
     else {
-        response.redirect(urlPrefix + '/login');
+        response.redirect(`${urlPrefix}/login`);
     }
 });
 app.use((request, _response, next) => {

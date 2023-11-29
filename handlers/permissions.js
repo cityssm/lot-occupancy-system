@@ -6,7 +6,7 @@ const forbiddenJSON = {
     success: false,
     message: 'Forbidden'
 };
-const forbiddenRedirectURL = urlPrefix + '/dashboard/?error=accessDenied';
+const forbiddenRedirectURL = `${urlPrefix}/dashboard/?error=accessDenied`;
 export function adminGetHandler(request, response, next) {
     if (userFunctions.userIsAdmin(request)) {
         next();
@@ -40,6 +40,6 @@ export async function apiGetHandler(request, response, next) {
         next();
     }
     else {
-        response.redirect(urlPrefix + '/login');
+        response.redirect(`${urlPrefix}/login`);
     }
 }
