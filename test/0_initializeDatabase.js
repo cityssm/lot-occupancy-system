@@ -1,4 +1,4 @@
-import * as assert from 'node:assert';
+import assert from 'node:assert';
 import fs from 'node:fs/promises';
 import { lotOccupancyDB as databasePath, useTestDatabases } from '../data/databasePaths.js';
 import { initializeCemeteryDatabase } from '../helpers/initializer.database.cemetery.js';
