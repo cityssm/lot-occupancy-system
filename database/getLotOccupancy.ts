@@ -1,21 +1,20 @@
-import { acquireConnection } from './pool.js'
+import { dateIntegerToString } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import { dateIntegerToString } from '@cityssm/utils-datetime'
+import type { LotOccupancy } from '../types/recordTypes.js'
 
-import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js'
 import { getLotOccupancyComments } from './getLotOccupancyComments.js'
-import { getLotOccupancyFields } from './getLotOccupancyFields.js'
 import { getLotOccupancyFees } from './getLotOccupancyFees.js'
+import { getLotOccupancyFields } from './getLotOccupancyFields.js'
+import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js'
 import { getLotOccupancyTransactions } from './getLotOccupancyTransactions.js'
 import { getWorkOrders } from './getWorkOrders.js'
-
-import type * as recordTypes from '../types/recordTypes.js'
+import { acquireConnection } from './pool.js'
 
 export async function getLotOccupancy(
   lotOccupancyId: number | string,
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.LotOccupancy | undefined> {
+): Promise<LotOccupancy | undefined> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
@@ -36,7 +35,7 @@ export async function getLotOccupancy(
         where o.recordDelete_timeMillis is null
         and o.lotOccupancyId = ?`
     )
-    .get(lotOccupancyId) as recordTypes.LotOccupancy | undefined
+    .get(lotOccupancyId) as LotOccupancy | undefined
 
   if (lotOccupancy !== undefined) {
     lotOccupancy.lotOccupancyFields = await getLotOccupancyFields(

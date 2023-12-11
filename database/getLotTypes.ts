@@ -1,11 +1,10 @@
-import { acquireConnection } from './pool.js'
+import type { LotType } from '../types/recordTypes.js'
 
 import { getLotTypeFields } from './getLotTypeFields.js'
-
-import type * as recordTypes from '../types/recordTypes.js'
+import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export async function getLotTypes(): Promise<recordTypes.LotType[]> {
+export async function getLotTypes(): Promise<LotType[]> {
   const database = await acquireConnection()
 
   const lotTypes = database
@@ -15,7 +14,7 @@ export async function getLotTypes(): Promise<recordTypes.LotType[]> {
         where recordDelete_timeMillis is null
         order by orderNumber, lotType`
     )
-    .all() as recordTypes.LotType[]
+    .all() as LotType[]
 
   let expectedTypeOrderNumber = -1
 

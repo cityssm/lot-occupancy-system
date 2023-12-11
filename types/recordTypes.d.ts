@@ -89,7 +89,7 @@ export interface OccupancyType extends Record {
     occupancyTypePrints?: string[];
 }
 export interface OccupancyTypeField {
-    occupancyTypeFieldId?: number;
+    occupancyTypeFieldId: number;
     occupancyTypeId?: number;
     occupancyTypeField?: string;
     occupancyTypeFieldValues?: string;
@@ -251,7 +251,7 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
     workOrderRecordUpdate_timeMillis?: number;
 }
 export interface WorkOrder extends Record {
-    workOrderId?: number;
+    workOrderId: number;
     workOrderTypeId?: number;
     workOrderType?: string;
     workOrderNumber?: string;

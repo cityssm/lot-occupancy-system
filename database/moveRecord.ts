@@ -1,7 +1,8 @@
 import type sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
+
+import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 type RecordTable =

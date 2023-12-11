@@ -1,12 +1,13 @@
-import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import type * as recordTypes from '../types/recordTypes.js'
+import type { LotField } from '../types/recordTypes.js'
+
+import { acquireConnection } from './pool.js'
 
 export async function getLotFields(
   lotId: number | string,
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.LotField[]> {
+): Promise<LotField[]> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   const lotFields = database
@@ -38,7 +39,7 @@ export async function getLotFields(
         and f.lotTypeFieldId not in (select lotTypeFieldId from LotFields where lotId = ? and recordDelete_timeMillis is null)
         order by lotTypeOrderNumber, f.orderNumber, f.lotTypeField`
     )
-    .all(lotId, lotId, lotId, lotId) as recordTypes.LotField[]
+    .all(lotId, lotId, lotId, lotId) as LotField[]
 
   if (connectedDatabase === undefined) {
     database.release()

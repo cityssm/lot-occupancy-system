@@ -1,23 +1,26 @@
-import { acquireConnection } from './pool.js'
-import type { PoolConnection } from 'better-sqlite-pool'
-
 import {
   dateIntegerToString,
   timeIntegerToString,
   timeIntegerToPeriodString
 } from '@cityssm/utils-datetime'
+import type { PoolConnection } from 'better-sqlite-pool'
 
-import type * as recordTypes from '../types/recordTypes.js'
+import type { LotComment } from '../types/recordTypes.js'
+
+import { acquireConnection } from './pool.js'
 
 export async function getLotComments(
   lotId: number | string,
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.LotComment[]> {
+): Promise<LotComment[]> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
-  database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString)
+  database.function(
+    'userFn_timeIntegerToPeriodString',
+    timeIntegerToPeriodString
+  )
 
   const lotComments = database
     .prepare(
@@ -33,7 +36,7 @@ export async function getLotComments(
         and lotId = ?
         order by lotCommentDate desc, lotCommentTime desc, lotCommentId desc`
     )
-    .all(lotId) as recordTypes.LotComment[]
+    .all(lotId) as LotComment[]
 
   if (connectedDatabase === undefined) {
     database.release()

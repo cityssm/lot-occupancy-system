@@ -1,5 +1,6 @@
 # Lot Occupancy System
 
+[![DeepSource](https://app.deepsource.com/gh/cityssm/lot-occupancy-system.svg/?label=active+issues&show_trend=true&token=8rYoZ1g7FoZHstfQmOzvlBn7)](https://app.deepsource.com/gh/cityssm/lot-occupancy-system/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/11a8975b332f66e6eec7/maintainability)](https://codeclimate.com/github/cityssm/lot-occupancy-system/maintainability)
 [![codecov](https://codecov.io/gh/cityssm/lot-occupancy-system/branch/main/graph/badge.svg?token=1M38ZVCLKE)](https://codecov.io/gh/cityssm/lot-occupancy-system)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cityssm/lot-occupancy-system/coverage.yml?branch=main)](https://github.com/cityssm/lot-occupancy-system/actions/workflows/coverage.yml)

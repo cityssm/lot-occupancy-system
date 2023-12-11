@@ -1,12 +1,9 @@
-import { acquireConnection } from './pool.js'
-
-import { getLotFields } from './getLotFields.js'
+import type { Lot } from '../types/recordTypes.js'
 
 import { getLotComments } from './getLotComments.js'
-
+import { getLotFields } from './getLotFields.js'
 import { getLotOccupancies } from './getLotOccupancies.js'
-
-import type * as recordTypes from '../types/recordTypes.js'
+import { acquireConnection } from './pool.js'
 
 const baseSQL = `select l.lotId, l.lotTypeId, t.lotType, l.lotName, l.lotStatusId, s.lotStatus,
     l.mapId, m.mapName, m.mapSVG, l.mapKey,
@@ -20,10 +17,10 @@ const baseSQL = `select l.lotId, l.lotTypeId, t.lotType, l.lotName, l.lotStatusI
 async function _getLot(
   sql: string,
   lotIdOrLotName: number | string
-): Promise<recordTypes.Lot | undefined> {
+): Promise<Lot | undefined> {
   const database = await acquireConnection()
 
-  const lot = database.prepare(sql).get(lotIdOrLotName) as recordTypes.Lot | undefined
+  const lot = database.prepare(sql).get(lotIdOrLotName) as Lot | undefined
 
   if (lot !== undefined) {
     const lotOccupancies = await getLotOccupancies(
@@ -54,13 +51,11 @@ async function _getLot(
 
 export async function getLotByLotName(
   lotName: string
-): Promise<recordTypes.Lot | undefined> {
+): Promise<Lot | undefined> {
   return await _getLot(baseSQL + ' and l.lotName = ?', lotName)
 }
 
-export async function getLot(
-  lotId: number | string
-): Promise<recordTypes.Lot | undefined> {
+export async function getLot(lotId: number | string): Promise<Lot | undefined> {
   return await _getLot(baseSQL + ' and l.lotId = ?', lotId)
 }
 

@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js';
 import { getOccupancyTypeFields } from './getOccupancyTypeFields.js';
 import { getOccupancyTypePrints } from './getOccupancyTypePrints.js';
+import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export async function getOccupancyTypes() {
     const database = await acquireConnection();

@@ -1,3 +1,3 @@
-import type * as recordTypes from '../types/recordTypes.js';
-export declare function getWorkOrderTypes(): Promise<recordTypes.WorkOrderType[]>;
+import type { WorkOrderType } from '../types/recordTypes.js';
+export declare function getWorkOrderTypes(): Promise<WorkOrderType[]>;
 export default getWorkOrderTypes;

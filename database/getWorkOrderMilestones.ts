@@ -1,7 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/indent */
-
-import { acquireConnection } from './pool.js'
-import type { PoolConnection } from 'better-sqlite-pool'
 
 import {
   dateIntegerToString,
@@ -10,13 +8,14 @@ import {
   timeIntegerToString,
   timeIntegerToPeriodString
 } from '@cityssm/utils-datetime'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import * as configFunctions from '../helpers/functions.config.js'
+import type { WorkOrderMilestone } from '../types/recordTypes.js'
 
-import { getLots } from './getLots.js'
 import { getLotOccupancies } from './getLotOccupancies.js'
-
-import type * as recordTypes from '../types/recordTypes.js'
+import { getLots } from './getLots.js'
+import { acquireConnection } from './pool.js'
 
 export interface WorkOrderMilestoneFilters {
   workOrderId?: number | string
@@ -136,7 +135,7 @@ export async function getWorkOrderMilestones(
   filters: WorkOrderMilestoneFilters,
   options: WorkOrderMilestoneOptions,
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.WorkOrderMilestone[]> {
+): Promise<WorkOrderMilestone[]> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
@@ -171,36 +170,39 @@ export async function getWorkOrderMilestones(
   }
 
   // Query
-  const sql =
-    'select m.workOrderMilestoneId,' +
-    ' m.workOrderMilestoneTypeId, t.workOrderMilestoneType,' +
-    ' m.workOrderMilestoneDate, userFn_dateIntegerToString(m.workOrderMilestoneDate) as workOrderMilestoneDateString,' +
-    ' m.workOrderMilestoneTime,' +
-    ' userFn_timeIntegerToString(m.workOrderMilestoneTime) as workOrderMilestoneTimeString,' +
-    ' userFn_timeIntegerToPeriodString(m.workOrderMilestoneTime) as workOrderMilestoneTimePeriodString,' +
-    ' m.workOrderMilestoneDescription,' +
-    ' m.workOrderMilestoneCompletionDate, userFn_dateIntegerToString(m.workOrderMilestoneCompletionDate) as workOrderMilestoneCompletionDateString,' +
-    ' m.workOrderMilestoneCompletionTime,' +
-    ' userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,' +
-    ' userFn_timeIntegerToPeriodString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimePeriodString,' +
-    (options.includeWorkOrders ?? false
-      ? ' m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,' +
-        ' w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,' +
-        ' w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,' +
-        ' w.recordUpdate_timeMillis as workOrderRecordUpdate_timeMillis,'
-      : '') +
-    ' m.recordCreate_userName, m.recordCreate_timeMillis,' +
-    ' m.recordUpdate_userName, m.recordUpdate_timeMillis' +
-    ' from WorkOrderMilestones m' +
-    ' left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId' +
-    ' left join WorkOrders w on m.workOrderId = w.workOrderId' +
-    ' left join WorkOrderTypes wt on w.workOrderTypeId = wt.workOrderTypeId' +
-    sqlWhereClause +
-    orderByClause
+  const sql = `select m.workOrderMilestoneId,
+    m.workOrderMilestoneTypeId, t.workOrderMilestoneType,
+    m.workOrderMilestoneDate,
+    userFn_dateIntegerToString(m.workOrderMilestoneDate) as workOrderMilestoneDateString,
+    m.workOrderMilestoneTime,
+    userFn_timeIntegerToString(m.workOrderMilestoneTime) as workOrderMilestoneTimeString,
+    userFn_timeIntegerToPeriodString(m.workOrderMilestoneTime) as workOrderMilestoneTimePeriodString,
+    m.workOrderMilestoneDescription,
+    m.workOrderMilestoneCompletionDate,
+    userFn_dateIntegerToString(m.workOrderMilestoneCompletionDate) as workOrderMilestoneCompletionDateString,
+    m.workOrderMilestoneCompletionTime,
+    userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,
+    userFn_timeIntegerToPeriodString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimePeriodString,
+    ${
+      options.includeWorkOrders ?? false
+        ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
+        w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
+        w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
+        w.recordUpdate_timeMillis as workOrderRecordUpdate_timeMillis,`
+        : ''
+    }
+    m.recordCreate_userName, m.recordCreate_timeMillis,
+    m.recordUpdate_userName, m.recordUpdate_timeMillis
+    from WorkOrderMilestones m
+    left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
+    left join WorkOrders w on m.workOrderId = w.workOrderId
+    left join WorkOrderTypes wt on w.workOrderTypeId = wt.workOrderTypeId
+    ${sqlWhereClause}
+    ${orderByClause}`
 
   const workOrderMilestones = database
     .prepare(sql)
-    .all(sqlParameters) as recordTypes.WorkOrderMilestone[]
+    .all(sqlParameters) as WorkOrderMilestone[]
 
   if (options.includeWorkOrders ?? false) {
     for (const workOrderMilestone of workOrderMilestones) {

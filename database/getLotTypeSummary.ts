@@ -1,12 +1,12 @@
-import { acquireConnection } from './pool.js'
+import type { LotType } from '../types/recordTypes.js'
 
-import type * as recordTypes from '../types/recordTypes.js'
+import { acquireConnection } from './pool.js'
 
 interface GetFilters {
   mapId?: number | string
 }
 
-interface LotTypeSummary extends recordTypes.LotType {
+interface LotTypeSummary extends LotType {
   lotCount: number
 }
 

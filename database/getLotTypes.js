@@ -1,5 +1,5 @@
-import { acquireConnection } from './pool.js';
 import { getLotTypeFields } from './getLotTypeFields.js';
+import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export async function getLotTypes() {
     const database = await acquireConnection();

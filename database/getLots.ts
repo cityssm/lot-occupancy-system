@@ -1,14 +1,11 @@
-/* eslint-disable @typescript-eslint/indent */
-
-import { acquireConnection } from './pool.js'
+import { dateToInteger } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import { dateToInteger } from '@cityssm/utils-datetime'
-
 import * as configFunctions from '../helpers/functions.config.js'
-
-import type * as recordTypes from '../types/recordTypes.js'
 import { getLotNameWhereClause } from '../helpers/functions.sqlFilters.js'
+import type { Lot } from '../types/recordTypes.js'
+
+import { acquireConnection } from './pool.js'
 
 interface GetLotsFilters {
   lotNameSearchType?: '' | 'startsWith' | 'endsWith'
@@ -81,7 +78,7 @@ export async function getLots(
   filters: GetLotsFilters,
   options: GetLotsOptions,
   connectedDatabase?: PoolConnection
-): Promise<{ count: number; lots: recordTypes.Lot[] }> {
+): Promise<{ count: number; lots: Lot[] }> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   const { sqlWhereClause, sqlParameters } = buildWhereClause(filters)
@@ -109,7 +106,7 @@ export async function getLots(
     ).recordCount
   }
 
-  let lots: recordTypes.Lot[] = []
+  let lots: Lot[] = []
 
   if (options.limit === -1 || count > 0) {
     const includeLotOccupancyCount = options.includeLotOccupancyCount ?? true
@@ -157,7 +154,7 @@ export async function getLots(
               : ` limit ${options.limit.toString()} offset ${options.offset.toString()}`
           }`
       )
-      .all(sqlParameters) as recordTypes.Lot[]
+      .all(sqlParameters) as Lot[]
 
     if (options.limit === -1) {
       count = lots.length

@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js'
+import type { LotOccupancyOccupant } from '../types/recordTypes.js'
 
-import type * as recordTypes from '../types/recordTypes.js'
+import { acquireConnection } from './pool.js'
 
 interface GetPastLotOccupancyOccupantsFilters {
   searchFilter: string
@@ -13,7 +13,7 @@ interface GetPastLotOccupancyOccupantsOptions {
 export async function getPastLotOccupancyOccupants(
   filters: GetPastLotOccupancyOccupantsFilters,
   options: GetPastLotOccupancyOccupantsOptions
-): Promise<recordTypes.LotOccupancyOccupant[]> {
+): Promise<LotOccupancyOccupant[]> {
   const database = await acquireConnection()
 
   let sqlWhereClause =
@@ -63,7 +63,7 @@ export async function getPastLotOccupancyOccupants(
 
   const lotOccupancyOccupants = database
     .prepare(sql)
-    .all(sqlParameters) as recordTypes.LotOccupancyOccupant[]
+    .all(sqlParameters) as LotOccupancyOccupant[]
 
   database.release()
 

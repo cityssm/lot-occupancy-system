@@ -1,9 +1,8 @@
-import { acquireConnection } from './pool.js'
+import type { FeeCategory } from '../types/recordTypes.js'
 
 import { getFees } from './getFees.js'
+import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
-
-import type * as recordTypes from '../types/recordTypes.js'
 
 interface GetFeeCategoriesFilters {
   occupancyTypeId?: number | string
@@ -17,7 +16,7 @@ interface GetFeeCategoriesOptions {
 export async function getFeeCategories(
   filters: GetFeeCategoriesFilters,
   options: GetFeeCategoriesOptions
-): Promise<recordTypes.FeeCategory[]> {
+): Promise<FeeCategory[]> {
   const updateOrderNumbers =
     !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees
 
@@ -54,7 +53,7 @@ export async function getFeeCategories(
         sqlWhereClause +
         ' order by orderNumber, feeCategory'
     )
-    .all(sqlParameters) as recordTypes.FeeCategory[]
+    .all(sqlParameters) as FeeCategory[]
 
   if (options.includeFees ?? false) {
     let expectedOrderNumber = 0

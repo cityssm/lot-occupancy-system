@@ -1,5 +1,5 @@
 import type { PoolConnection } from 'better-sqlite-pool';
-import type * as recordTypes from '../types/recordTypes.js';
+import type { LotOccupancy } from '../types/recordTypes.js';
 interface GetLotOccupanciesFilters {
     lotId?: number | string;
     occupancyTime?: '' | 'past' | 'current' | 'future';
@@ -23,6 +23,6 @@ interface GetLotOccupanciesOptions {
 }
 export declare function getLotOccupancies(filters: GetLotOccupanciesFilters, options: GetLotOccupanciesOptions, connectedDatabase?: PoolConnection): Promise<{
     count: number;
-    lotOccupancies: recordTypes.LotOccupancy[];
+    lotOccupancies: LotOccupancy[];
 }>;
 export default getLotOccupancies;

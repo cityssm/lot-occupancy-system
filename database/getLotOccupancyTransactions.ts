@@ -1,15 +1,14 @@
-import { acquireConnection } from './pool.js'
-import type { PoolConnection } from 'better-sqlite-pool'
-
 import {
   dateIntegerToString,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import * as configFunctions from '../helpers/functions.config.js'
 import * as gpFunctions from '../helpers/functions.dynamicsGP.js'
+import type { LotOccupancyTransaction } from '../types/recordTypes.js'
 
-import type * as recordTypes from '../types/recordTypes.js'
+import { acquireConnection } from './pool.js'
 
 export async function getLotOccupancyTransactions(
   lotOccupancyId: number | string,
@@ -17,7 +16,7 @@ export async function getLotOccupancyTransactions(
     includeIntegrations: boolean
   },
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.LotOccupancyTransaction[]> {
+): Promise<LotOccupancyTransaction[]> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
@@ -34,7 +33,7 @@ export async function getLotOccupancyTransactions(
         and lotOccupancyId = ?
         order by transactionDate, transactionTime, transactionIndex`
     )
-    .all(lotOccupancyId) as recordTypes.LotOccupancyTransaction[]
+    .all(lotOccupancyId) as LotOccupancyTransaction[]
 
   if (connectedDatabase === undefined) {
     database.release()
@@ -47,7 +46,7 @@ export async function getLotOccupancyTransactions(
     for (const transaction of lotOccupancyTransactions) {
       if ((transaction.externalReceiptNumber ?? '') !== '') {
         const gpDocument = await gpFunctions.getDynamicsGPDocument(
-          transaction.externalReceiptNumber!
+          transaction.externalReceiptNumber ?? ''
         )
 
         if (gpDocument !== undefined) {

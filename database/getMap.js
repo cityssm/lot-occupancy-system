@@ -13,7 +13,7 @@ export async function getMap(mapId) {
         from Maps m
         left join Lots l on m.mapId = l.mapId and l.recordDelete_timeMillis is null
         where m.mapId = ?
-        and m.recordDelete_timeMillis is null
+          and m.recordDelete_timeMillis is null
         group by m.mapId, m.mapName, m.mapDescription,
           m.mapLatitude, m.mapLongitude, m.mapSVG,
           m.mapAddress1, m.mapAddress2, m.mapCity, m.mapProvince, m.mapPostalCode,

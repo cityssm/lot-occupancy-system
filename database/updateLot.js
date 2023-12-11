@@ -20,13 +20,13 @@ export async function updateLot(lotForm, user) {
     if (result.changes > 0) {
         const lotTypeFieldIds = (lotForm.lotTypeFieldIds ?? '').split(',');
         for (const lotTypeFieldId of lotTypeFieldIds) {
-            const lotFieldValue = lotForm['lotFieldValue_' + lotTypeFieldId];
+            const lotFieldValue = lotForm[`lotFieldValue_${lotTypeFieldId}`];
             await ((lotFieldValue ?? '') === ''
                 ? deleteLotField(lotForm.lotId, lotTypeFieldId, user, database)
                 : addOrUpdateLotField({
                     lotId: lotForm.lotId,
                     lotTypeFieldId,
-                    lotFieldValue: lotFieldValue
+                    lotFieldValue: lotFieldValue ?? ''
                 }, user, database));
         }
     }

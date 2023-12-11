@@ -1,14 +1,9 @@
-/* eslint-disable @typescript-eslint/indent */
+import type { LotOccupantType } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
-
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-import type * as recordTypes from '../types/recordTypes.js'
-
-export async function getLotOccupantTypes(): Promise<
-  recordTypes.LotOccupantType[]
-> {
+export async function getLotOccupantTypes(): Promise<LotOccupantType[]> {
   const database = await acquireConnection()
 
   const lotOccupantTypes = database
@@ -19,7 +14,7 @@ export async function getLotOccupantTypes(): Promise<
         where recordDelete_timeMillis is null
         order by orderNumber, lotOccupantType`
     )
-    .all() as recordTypes.LotOccupantType[]
+    .all() as LotOccupantType[]
 
   let expectedOrderNumber = 0
 

@@ -1,9 +1,9 @@
-import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+import type { Fee } from '../types/recordTypes.js'
 
-import type * as recordTypes from '../types/recordTypes.js'
+import { acquireConnection } from './pool.js'
+import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 interface GetFeesFilters {
   occupancyTypeId?: number | string
@@ -14,7 +14,7 @@ export async function getFees(
   feeCategoryId: number,
   additionalFilters: GetFeesFilters,
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.Fee[]> {
+): Promise<Fee[]> {
   const updateOrderNumbers = !(
     additionalFilters.lotTypeId || additionalFilters.occupancyTypeId
   )
@@ -63,7 +63,7 @@ export async function getFees(
         ${sqlWhereClause}
         order by f.orderNumber, f.feeName`
     )
-    .all(sqlParameters) as recordTypes.Fee[]
+    .all(sqlParameters) as Fee[]
 
   if (updateOrderNumbers) {
     let expectedOrderNumber = 0

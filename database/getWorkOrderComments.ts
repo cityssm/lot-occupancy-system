@@ -1,23 +1,26 @@
-import { acquireConnection } from './pool.js'
-import type { PoolConnection } from 'better-sqlite-pool'
-
 import {
   dateIntegerToString,
   timeIntegerToString,
   timeIntegerToPeriodString
 } from '@cityssm/utils-datetime'
+import type { PoolConnection } from 'better-sqlite-pool'
 
-import type * as recordTypes from '../types/recordTypes.js'
+import type { WorkOrderComment } from '../types/recordTypes.js'
+
+import { acquireConnection } from './pool.js'
 
 export async function getWorkOrderComments(
   workOrderId: number | string,
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.WorkOrderComment[]> {
+): Promise<WorkOrderComment[]> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
-  database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString)
+  database.function(
+    'userFn_timeIntegerToPeriodString',
+    timeIntegerToPeriodString
+  )
 
   const workOrderComments = database
     .prepare(
@@ -33,7 +36,7 @@ export async function getWorkOrderComments(
         and workOrderId = ?
         order by workOrderCommentDate desc, workOrderCommentTime desc, workOrderCommentId desc`
     )
-    .all(workOrderId) as recordTypes.WorkOrderComment[]
+    .all(workOrderId) as WorkOrderComment[]
 
   if (connectedDatabase === undefined) {
     database.release()

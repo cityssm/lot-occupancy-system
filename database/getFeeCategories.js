@@ -1,5 +1,5 @@
-import { acquireConnection } from './pool.js';
 import { getFees } from './getFees.js';
+import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export async function getFeeCategories(filters, options) {
     const updateOrderNumbers = !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees;

@@ -1,23 +1,23 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/indent */
-
-import { acquireConnection } from './pool.js'
-import type { PoolConnection } from 'better-sqlite-pool'
 
 import {
   dateIntegerToString,
   dateStringToInteger
 } from '@cityssm/utils-datetime'
+import type { PoolConnection } from 'better-sqlite-pool'
 
-import { getWorkOrderComments } from './getWorkOrderComments.js'
-import { getLots } from './getLots.js'
-import { getLotOccupancies } from './getLotOccupancies.js'
-import { getWorkOrderMilestones } from './getWorkOrderMilestones.js'
-
-import type * as recordTypes from '../types/recordTypes.js'
 import {
   getLotNameWhereClause,
   getOccupantNameWhereClause
 } from '../helpers/functions.sqlFilters.js'
+import type { WorkOrder } from '../types/recordTypes.js'
+
+import { getLotOccupancies } from './getLotOccupancies.js'
+import { getLots } from './getLots.js'
+import { getWorkOrderComments } from './getWorkOrderComments.js'
+import { getWorkOrderMilestones } from './getWorkOrderMilestones.js'
+import { acquireConnection } from './pool.js'
 
 interface GetWorkOrdersFilters {
   workOrderTypeId?: number | string
@@ -100,10 +100,10 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
 }
 
 async function addInclusions(
-  workOrder: recordTypes.WorkOrder,
+  workOrder: WorkOrder,
   options: GetWorkOrdersOptions,
   database: PoolConnection
-): Promise<recordTypes.WorkOrder> {
+): Promise<WorkOrder> {
   if (options.includeComments ?? false) {
     workOrder.workOrderComments = await getWorkOrderComments(
       workOrder.workOrderId!,
@@ -169,7 +169,7 @@ export async function getWorkOrders(
   filters: GetWorkOrdersFilters,
   options: GetWorkOrdersOptions,
   connectedDatabase?: PoolConnection
-): Promise<{ count: number; workOrders: recordTypes.WorkOrder[] }> {
+): Promise<{ count: number; workOrders: WorkOrder[] }> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
@@ -186,7 +186,7 @@ export async function getWorkOrders(
       .get(sqlParameters) as { recordCount: number }
   ).recordCount
 
-  let workOrders: recordTypes.WorkOrder[] = []
+  let workOrders: WorkOrder[] = []
 
   if (count > 0) {
     workOrders = database
@@ -221,7 +221,7 @@ export async function getWorkOrders(
               : ` limit ${options.limit} offset ${options.offset}`
           }`
       )
-      .all(sqlParameters) as recordTypes.WorkOrder[]
+      .all(sqlParameters) as WorkOrder[]
   }
 
   const hasInclusions =

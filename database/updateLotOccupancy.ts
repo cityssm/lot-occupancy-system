@@ -56,7 +56,7 @@ export async function updateLotOccupancy(
 
     for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
       const lotOccupancyFieldValue = lotOccupancyForm[
-        'lotOccupancyFieldValue_' + occupancyTypeFieldId
+        `lotOccupancyFieldValue_${occupancyTypeFieldId}`
       ] as string
 
       await ((lotOccupancyFieldValue ?? '') === ''

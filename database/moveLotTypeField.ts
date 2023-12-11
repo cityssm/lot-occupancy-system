@@ -1,20 +1,19 @@
-import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
+
+import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 function getCurrentField(
   lotTypeFieldId: number | string,
   connectedDatabase: PoolConnection
 ): { lotTypeId?: number; orderNumber: number } {
-  const currentField = connectedDatabase
+  return connectedDatabase
     .prepare(
       'select lotTypeId, orderNumber from LotTypeFields where lotTypeFieldId = ?'
     )
     .get(lotTypeFieldId) as { lotTypeId?: number; orderNumber: number }
-
-  return currentField
 }
 
 export async function moveLotTypeFieldDown(
@@ -58,9 +57,9 @@ export async function moveLotTypeFieldDownToBottom(
     database
       .prepare(
         `select max(orderNumber) as maxOrderNumber
-        from LotTypeFields
-        where recordDelete_timeMillis is null
-        and lotTypeId = ?`
+          from LotTypeFields
+          where recordDelete_timeMillis is null
+          and lotTypeId = ?`
       )
       .get(currentField.lotTypeId) as { maxOrderNumber: number }
   ).maxOrderNumber
@@ -140,10 +139,10 @@ export async function moveLotTypeFieldUpToTop(
     database
       .prepare(
         `update LotTypeFields
-            set orderNumber = orderNumber + 1
-            where recordDelete_timeMillis is null
-            and lotTypeId = ?
-            and orderNumber < ?`
+          set orderNumber = orderNumber + 1
+          where recordDelete_timeMillis is null
+          and lotTypeId = ?
+          and orderNumber < ?`
       )
       .run(currentField.lotTypeId, currentField.orderNumber)
   }

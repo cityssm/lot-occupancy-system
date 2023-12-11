@@ -1,28 +1,22 @@
-/* eslint-disable @typescript-eslint/indent */
-
-import { acquireConnection } from './pool.js'
-import type { PoolConnection } from 'better-sqlite-pool'
-
 import {
   dateIntegerToString,
   dateStringToInteger
 } from '@cityssm/utils-datetime'
-
-import * as configFunctions from '../helpers/functions.config.js'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import { getOccupancyTypeById } from '../helpers/functions.cache.js'
-
-import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js'
-import { getLotOccupancyFees } from './getLotOccupancyFees.js'
-import { getLotOccupancyTransactions } from './getLotOccupancyTransactions.js'
-
+import * as configFunctions from '../helpers/functions.config.js'
 import {
   getLotNameWhereClause,
   getOccupancyTimeWhereClause,
   getOccupantNameWhereClause
 } from '../helpers/functions.sqlFilters.js'
+import type { LotOccupancy } from '../types/recordTypes.js'
 
-import type * as recordTypes from '../types/recordTypes.js'
+import { getLotOccupancyFees } from './getLotOccupancyFees.js'
+import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js'
+import { getLotOccupancyTransactions } from './getLotOccupancyTransactions.js'
+import { acquireConnection } from './pool.js'
 
 interface GetLotOccupanciesFilters {
   lotId?: number | string
@@ -136,10 +130,10 @@ function buildWhereClause(filters: GetLotOccupanciesFilters): {
 }
 
 async function addInclusions(
-  lotOccupancy: recordTypes.LotOccupancy,
+  lotOccupancy: LotOccupancy,
   options: GetLotOccupanciesOptions,
   database: PoolConnection
-): Promise<recordTypes.LotOccupancy> {
+): Promise<LotOccupancy> {
   if (options.includeFees) {
     lotOccupancy.lotOccupancyFees = await getLotOccupancyFees(
       lotOccupancy.lotOccupancyId!,
@@ -169,7 +163,7 @@ export async function getLotOccupancies(
   filters: GetLotOccupanciesFilters,
   options: GetLotOccupanciesOptions,
   connectedDatabase?: PoolConnection
-): Promise<{ count: number; lotOccupancies: recordTypes.LotOccupancy[] }> {
+): Promise<{ count: number; lotOccupancies: LotOccupancy[] }> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
@@ -193,7 +187,7 @@ export async function getLotOccupancies(
     ).recordCount
   }
 
-  let lotOccupancies: recordTypes.LotOccupancy[] = []
+  let lotOccupancies: LotOccupancy[] = []
 
   if (count !== 0) {
     lotOccupancies = database
@@ -213,7 +207,7 @@ export async function getLotOccupancies(
           order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId, o.lotOccupancyId desc` +
           (isLimited ? ` limit ${options.limit} offset ${options.offset}` : '')
       )
-      .all(sqlParameters) as recordTypes.LotOccupancy[]
+      .all(sqlParameters) as LotOccupancy[]
 
     if (!isLimited) {
       count = lotOccupancies.length

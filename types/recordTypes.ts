@@ -120,7 +120,7 @@ export interface OccupancyType extends Record {
 }
 
 export interface OccupancyTypeField {
-  occupancyTypeFieldId?: number
+  occupancyTypeFieldId: number
   occupancyTypeId?: number
   occupancyTypeField?: string
   occupancyTypeFieldValues?: string
@@ -335,7 +335,7 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
 }
 
 export interface WorkOrder extends Record {
-  workOrderId?: number
+  workOrderId: number
 
   workOrderTypeId?: number
   workOrderType?: string

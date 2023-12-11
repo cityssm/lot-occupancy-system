@@ -1,11 +1,11 @@
-import { acquireConnection } from './pool.js';
 import { dateIntegerToString } from '@cityssm/utils-datetime';
-import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js';
 import { getLotOccupancyComments } from './getLotOccupancyComments.js';
-import { getLotOccupancyFields } from './getLotOccupancyFields.js';
 import { getLotOccupancyFees } from './getLotOccupancyFees.js';
+import { getLotOccupancyFields } from './getLotOccupancyFields.js';
+import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js';
 import { getLotOccupancyTransactions } from './getLotOccupancyTransactions.js';
 import { getWorkOrders } from './getWorkOrders.js';
+import { acquireConnection } from './pool.js';
 export async function getLotOccupancy(lotOccupancyId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);

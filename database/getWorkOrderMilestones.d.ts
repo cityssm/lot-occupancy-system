@@ -1,5 +1,5 @@
 import type { PoolConnection } from 'better-sqlite-pool';
-import type * as recordTypes from '../types/recordTypes.js';
+import type { WorkOrderMilestone } from '../types/recordTypes.js';
 export interface WorkOrderMilestoneFilters {
     workOrderId?: number | string;
     workOrderMilestoneDateFilter?: 'upcomingMissed' | 'recent' | 'date' | 'blank' | 'notBlank';
@@ -11,5 +11,5 @@ interface WorkOrderMilestoneOptions {
     includeWorkOrders?: boolean;
     orderBy: 'completion' | 'date';
 }
-export declare function getWorkOrderMilestones(filters: WorkOrderMilestoneFilters, options: WorkOrderMilestoneOptions, connectedDatabase?: PoolConnection): Promise<recordTypes.WorkOrderMilestone[]>;
+export declare function getWorkOrderMilestones(filters: WorkOrderMilestoneFilters, options: WorkOrderMilestoneOptions, connectedDatabase?: PoolConnection): Promise<WorkOrderMilestone[]>;
 export default getWorkOrderMilestones;

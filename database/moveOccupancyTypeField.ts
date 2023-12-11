@@ -1,25 +1,24 @@
-import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
+
+import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 function getCurrentField(
   occupancyTypeFieldId: number,
   connectedDatabase: PoolConnection
 ): { occupancyTypeId?: number; orderNumber: number } {
-  const currentField = connectedDatabase
+  return connectedDatabase
     .prepare(
       `select occupancyTypeId, orderNumber
-          from OccupancyTypeFields
-          where occupancyTypeFieldId = ?`
+        from OccupancyTypeFields
+        where occupancyTypeFieldId = ?`
     )
     .get(occupancyTypeFieldId) as {
     occupancyTypeId?: number
     orderNumber: number
   }
-
-  return currentField
 }
 
 export async function moveOccupancyTypeFieldDown(
@@ -31,15 +30,15 @@ export async function moveOccupancyTypeFieldDown(
 
   database
     .prepare(
-      'update OccupancyTypeFields' +
-        ' set orderNumber = orderNumber - 1' +
-        ' where recordDelete_timeMillis is null' +
-        (currentField.occupancyTypeId
-          ? " and occupancyTypeId = '" +
-            currentField.occupancyTypeId.toString() +
-            "'"
-          : ' and occupancyTypeId is null') +
-        ' and orderNumber = ? + 1'
+      `update OccupancyTypeFields
+        set orderNumber = orderNumber - 1
+        where recordDelete_timeMillis is null
+        ${
+          currentField.occupancyTypeId === undefined
+            ? ' and occupancyTypeId is null'
+            : ` and occupancyTypeId = '${currentField.occupancyTypeId.toString()}'`
+        }
+        and orderNumber = ? + 1`
     )
     .run(currentField.orderNumber)
 
@@ -73,12 +72,14 @@ export async function moveOccupancyTypeFieldDownToBottom(
   const maxOrderNumber: number = (
     database
       .prepare(
-        'select max(orderNumber) as maxOrderNumber' +
-          ' from OccupancyTypeFields' +
-          ' where recordDelete_timeMillis is null' +
-          (currentField.occupancyTypeId
-            ? ' and occupancyTypeId = ?'
-            : ' and occupancyTypeId is null')
+        `select max(orderNumber) as maxOrderNumber
+          from OccupancyTypeFields
+          where recordDelete_timeMillis is null
+          ${
+            currentField.occupancyTypeId === undefined
+              ? ' and occupancyTypeId is null'
+              : ' and occupancyTypeId = ?'
+          }`
       )
       .get(occupancyTypeParameters) as { maxOrderNumber: number }
   ).maxOrderNumber
@@ -95,13 +96,14 @@ export async function moveOccupancyTypeFieldDownToBottom(
 
     database
       .prepare(
-        'update OccupancyTypeFields' +
-          ' set orderNumber = orderNumber - 1' +
-          ' where recordDelete_timeMillis is null' +
-          (currentField.occupancyTypeId
-            ? ' and occupancyTypeId = ?'
-            : ' and occupancyTypeId is null') +
-          ' and orderNumber > ?'
+        `update OccupancyTypeFields set orderNumber = orderNumber - 1
+          where recordDelete_timeMillis is null
+          ${
+            currentField.occupancyTypeId === undefined
+              ? ' and occupancyTypeId is null'
+              : ' and occupancyTypeId = ?'
+          }
+          and orderNumber > ?`
       )
       .run(occupancyTypeParameters)
   }
@@ -127,15 +129,15 @@ export async function moveOccupancyTypeFieldUp(
 
   database
     .prepare(
-      'update OccupancyTypeFields' +
-        ' set orderNumber = orderNumber + 1' +
-        ' where recordDelete_timeMillis is null' +
-        (currentField.occupancyTypeId
-          ? " and occupancyTypeId = '" +
-            currentField.occupancyTypeId.toString() +
-            "'"
-          : ' and occupancyTypeId is null') +
-        ' and orderNumber = ? - 1'
+      `update OccupancyTypeFields
+        set orderNumber = orderNumber + 1
+        where recordDelete_timeMillis is null
+        ${
+          currentField.occupancyTypeId === undefined
+            ? ' and occupancyTypeId is null'
+            : ` and occupancyTypeId = '${currentField.occupancyTypeId.toString()}'`
+        }
+        and orderNumber = ? - 1`
     )
     .run(currentField.orderNumber)
 
@@ -178,13 +180,14 @@ export async function moveOccupancyTypeFieldUpToTop(
 
     database
       .prepare(
-        'update OccupancyTypeFields' +
-          ' set orderNumber = orderNumber + 1' +
-          ' where recordDelete_timeMillis is null' +
-          (currentField.occupancyTypeId
-            ? ' and occupancyTypeId = ?'
-            : ' and occupancyTypeId is null') +
-          ' and orderNumber < ?'
+        `update OccupancyTypeFields
+          set orderNumber = orderNumber + 1
+          where recordDelete_timeMillis is null
+          ${
+            currentField.occupancyTypeId
+              ? ' and occupancyTypeId = ?'
+              : ' and occupancyTypeId is null'
+          } and orderNumber < ?`
       )
       .run(occupancyTypeParameters)
   }

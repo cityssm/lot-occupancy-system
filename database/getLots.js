@@ -1,7 +1,7 @@
-import { acquireConnection } from './pool.js';
 import { dateToInteger } from '@cityssm/utils-datetime';
 import * as configFunctions from '../helpers/functions.config.js';
 import { getLotNameWhereClause } from '../helpers/functions.sqlFilters.js';
+import { acquireConnection } from './pool.js';
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where l.recordDelete_timeMillis is null';
     const sqlParameters = [];

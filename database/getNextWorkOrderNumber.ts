@@ -1,7 +1,8 @@
-import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
 import * as configFunctions from '../helpers/functions.config.js'
+
+import { acquireConnection } from './pool.js'
 
 export async function getNextWorkOrderNumber(
   connectedDatabase?: PoolConnection

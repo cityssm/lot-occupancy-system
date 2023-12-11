@@ -1,5 +1,5 @@
-import { acquireConnection } from './pool.js';
 import { getFee } from './getFee.js';
+import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export async function moveFeeDown(feeId) {
     const database = await acquireConnection();

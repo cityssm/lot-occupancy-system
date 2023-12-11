@@ -1,11 +1,10 @@
-import { acquireConnection } from './pool.js';
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
+import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 function getCurrentField(lotTypeFieldId, connectedDatabase) {
-    const currentField = connectedDatabase
+    return connectedDatabase
         .prepare('select lotTypeId, orderNumber from LotTypeFields where lotTypeFieldId = ?')
         .get(lotTypeFieldId);
-    return currentField;
 }
 export async function moveLotTypeFieldDown(lotTypeFieldId) {
     const database = await acquireConnection();
@@ -26,9 +25,9 @@ export async function moveLotTypeFieldDownToBottom(lotTypeFieldId) {
     const currentField = getCurrentField(lotTypeFieldId, database);
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
-        from LotTypeFields
-        where recordDelete_timeMillis is null
-        and lotTypeId = ?`)
+          from LotTypeFields
+          where recordDelete_timeMillis is null
+          and lotTypeId = ?`)
         .get(currentField.lotTypeId).maxOrderNumber;
     if (currentField.orderNumber !== maxOrderNumber) {
         updateRecordOrderNumber('LotTypeFields', lotTypeFieldId, maxOrderNumber + 1, database);
@@ -70,10 +69,10 @@ export async function moveLotTypeFieldUpToTop(lotTypeFieldId) {
         updateRecordOrderNumber('LotTypeFields', lotTypeFieldId, -1, database);
         database
             .prepare(`update LotTypeFields
-            set orderNumber = orderNumber + 1
-            where recordDelete_timeMillis is null
-            and lotTypeId = ?
-            and orderNumber < ?`)
+          set orderNumber = orderNumber + 1
+          where recordDelete_timeMillis is null
+          and lotTypeId = ?
+          and orderNumber < ?`)
             .run(currentField.lotTypeId, currentField.orderNumber);
     }
     database.release();

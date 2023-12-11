@@ -59,7 +59,7 @@ export async function updateLot(
     const lotTypeFieldIds = (lotForm.lotTypeFieldIds ?? '').split(',')
 
     for (const lotTypeFieldId of lotTypeFieldIds) {
-      const lotFieldValue = lotForm['lotFieldValue_' + lotTypeFieldId] as
+      const lotFieldValue = lotForm[`lotFieldValue_${lotTypeFieldId}`] as
         | string
         | undefined
 
@@ -69,7 +69,7 @@ export async function updateLot(
             {
               lotId: lotForm.lotId,
               lotTypeFieldId,
-              lotFieldValue: lotFieldValue!
+              lotFieldValue: lotFieldValue ?? ''
             },
             user,
             database

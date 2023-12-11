@@ -20,7 +20,7 @@ export async function updateLotOccupancy(lotOccupancyForm, user) {
     if (result.changes > 0) {
         const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds ?? '').split(',');
         for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
-            const lotOccupancyFieldValue = lotOccupancyForm['lotOccupancyFieldValue_' + occupancyTypeFieldId];
+            const lotOccupancyFieldValue = lotOccupancyForm[`lotOccupancyFieldValue_${occupancyTypeFieldId}`];
             await ((lotOccupancyFieldValue ?? '') === ''
                 ? deleteLotOccupancyField(lotOccupancyForm.lotOccupancyId, occupancyTypeFieldId, user, database)
                 : addOrUpdateLotOccupancyField({

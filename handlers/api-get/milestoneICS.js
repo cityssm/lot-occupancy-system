@@ -40,7 +40,7 @@ function buildEventSummary(milestone) {
         }
     }
     if (occupantCount > 1) {
-        summary += ' plus ' + (occupantCount - 1).toString();
+        summary += ` plus ${(occupantCount - 1).toString()}`;
     }
     return summary;
 }
@@ -80,13 +80,7 @@ function buildEventDescriptionHTML_occupancies(request, milestone) {
           </td>
           <td>`;
             for (const occupant of occupancy.lotOccupancyOccupants) {
-                descriptionHTML +=
-                    escapeHTML(occupant.lotOccupantType) +
-                        ': ' +
-                        escapeHTML(occupant.occupantName) +
-                        ' ' +
-                        escapeHTML(occupant.occupantFamilyName) +
-                        '<br />';
+                descriptionHTML += `${escapeHTML(occupant.lotOccupantType)}: ${escapeHTML(occupant.occupantName)} ${escapeHTML(occupant.occupantFamilyName)}<br />`;
             }
             descriptionHTML += '</td></tr>';
         }
@@ -98,33 +92,32 @@ function buildEventDescriptionHTML_lots(request, milestone) {
     let descriptionHTML = '';
     if (milestone.workOrderLots.length > 0) {
         const urlRoot = getUrlRoot(request);
-        descriptionHTML +=
-            '<h2>Related ' +
-                escapeHTML(configFunctions.getProperty('aliases.lots')) +
-                '</h2>' +
-                '<table border="1"><thead><tr>' +
-                `<th>
-                ${escapeHTML(configFunctions.getProperty('aliases.lot'))} Type
-            </th>
-            <th>
-                ${escapeHTML(configFunctions.getProperty('aliases.map'))}
-            </th>
-            <th>
-                ${escapeHTML(configFunctions.getProperty('aliases.lot'))} Type
-            </th>` +
-                '<th>Status</th>' +
-                '</tr></thead>' +
-                '<tbody>';
+        descriptionHTML += `<h2>
+      Related ${escapeHTML(configFunctions.getProperty('aliases.lots'))}
+      </h2>
+      <table border="1"><thead><tr>
+      <th>
+        ${escapeHTML(configFunctions.getProperty('aliases.lot'))} Type
+      </th>
+      <th>
+        ${escapeHTML(configFunctions.getProperty('aliases.map'))}
+      </th>
+      <th>
+        ${escapeHTML(configFunctions.getProperty('aliases.lot'))} Type
+      </th>
+      <th>Status</th>
+      </tr></thead>
+      <tbody>`;
         for (const lot of milestone.workOrderLots) {
             descriptionHTML += `<tr>
-          <td>
-            <a href="${urlRoot}/lots/${lot.lotId.toString()}">
-              ${escapeHTML(lot.lotName ?? '')}
-            </a>
-          </td>
-          <td>${escapeHTML(lot.mapName ?? '')}</td>
-          <td>${escapeHTML(lot.lotType ?? '')}</td>
-          <td>${escapeHTML(lot.lotStatus ?? '')}</td>
+        <td>
+          <a href="${urlRoot}/lots/${lot.lotId.toString()}">
+            ${escapeHTML(lot.lotName ?? '')}
+          </a>
+        </td>
+        <td>${escapeHTML(lot.mapName ?? '')}</td>
+        <td>${escapeHTML(lot.lotType ?? '')}</td>
+        <td>${escapeHTML(lot.lotStatus ?? '')}</td>
         </tr>`;
         }
         descriptionHTML += '</tbody></table>';
@@ -140,16 +133,10 @@ function buildEventDescriptionHTML_prints(request, milestone) {
         for (const printName of prints) {
             const printConfig = getPrintConfig(printName);
             if (printConfig) {
-                descriptionHTML +=
-                    '<p>' +
-                        escapeHTML(printConfig.title) +
-                        '<br />' +
-                        (urlRoot +
-                            '/print/' +
-                            printName +
-                            '/?workOrderId=' +
-                            milestone.workOrderId.toString()) +
-                        '</p>';
+                descriptionHTML += `<p>
+          ${escapeHTML(printConfig.title)}<br />
+          ${urlRoot}/print/${printName}/?workOrderId=${milestone.workOrderId.toString()}
+          </p>`;
             }
         }
     }
@@ -158,10 +145,10 @@ function buildEventDescriptionHTML_prints(request, milestone) {
 function buildEventDescriptionHTML(request, milestone) {
     const workOrderUrl = getWorkOrderUrl(request, milestone);
     let descriptionHTML = `<h1>Milestone Description</h1>
-        <p>${escapeHTML(milestone.workOrderMilestoneDescription ?? '')}</p>
-        <h2>Work Order #${milestone.workOrderNumber ?? ''}</h2>
-        <p>${escapeHTML(milestone.workOrderDescription ?? '')}</p>
-        <p>${workOrderUrl}</p>`;
+    <p>${escapeHTML(milestone.workOrderMilestoneDescription ?? '')}</p>
+    <h2>Work Order #${milestone.workOrderNumber ?? ''}</h2>
+    <p>${escapeHTML(milestone.workOrderDescription ?? '')}</p>
+    <p>${workOrderUrl}</p>`;
     descriptionHTML += buildEventDescriptionHTML_occupancies(request, milestone);
     descriptionHTML += buildEventDescriptionHTML_lots(request, milestone);
     descriptionHTML += buildEventDescriptionHTML_prints(request, milestone);
@@ -205,20 +192,18 @@ export async function handler(request, response) {
     });
     const calendar = ical({
         name: 'Work Order Milestone Calendar',
-        url: urlRoot + '/workOrders'
+        url: `${urlRoot}/workOrders`
     });
     if (request.query.workOrderId && workOrderMilestones.length > 0) {
         calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber}`);
-        calendar.url(urlRoot + '/workOrders/' + workOrderMilestones[0].workOrderId.toString());
+        calendar.url(`${urlRoot}/workOrders/${workOrderMilestones[0].workOrderId.toString()}`);
     }
     calendar.prodId({
         company: calendarCompany,
         product: calendarProduct
     });
     for (const milestone of workOrderMilestones) {
-        const milestoneTimePieces = (milestone.workOrderMilestoneDateString +
-            ' ' +
-            milestone.workOrderMilestoneTimeString).split(timeStringSplitRegex);
+        const milestoneTimePieces = `${milestone.workOrderMilestoneDateString} ${milestone.workOrderMilestoneTimeString}`.split(timeStringSplitRegex);
         const milestoneDate = new Date(Number.parseInt(milestoneTimePieces[0], 10), Number.parseInt(milestoneTimePieces[1], 10) - 1, Number.parseInt(milestoneTimePieces[2], 10), Number.parseInt(milestoneTimePieces[3], 10), Number.parseInt(milestoneTimePieces[4], 10));
         const milestoneEndDate = new Date(milestoneDate.getTime());
         milestoneEndDate.setHours(milestoneEndDate.getHours() + 1);

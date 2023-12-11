@@ -1,5 +1,5 @@
-import { acquireConnection } from './pool.js';
 import { dateIntegerToString, timeIntegerToString, timeIntegerToPeriodString } from '@cityssm/utils-datetime';
+import { acquireConnection } from './pool.js';
 export async function getLotComments(lotId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);

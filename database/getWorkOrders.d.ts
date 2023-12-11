@@ -1,5 +1,5 @@
 import type { PoolConnection } from 'better-sqlite-pool';
-import type * as recordTypes from '../types/recordTypes.js';
+import type { WorkOrder } from '../types/recordTypes.js';
 interface GetWorkOrdersFilters {
     workOrderTypeId?: number | string;
     workOrderOpenStatus?: '' | 'open' | 'closed';
@@ -17,6 +17,6 @@ interface GetWorkOrdersOptions {
 }
 export declare function getWorkOrders(filters: GetWorkOrdersFilters, options: GetWorkOrdersOptions, connectedDatabase?: PoolConnection): Promise<{
     count: number;
-    workOrders: recordTypes.WorkOrder[];
+    workOrders: WorkOrder[];
 }>;
 export default getWorkOrders;

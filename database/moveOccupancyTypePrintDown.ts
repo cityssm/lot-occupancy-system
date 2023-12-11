@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js'
-
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
+
+import { acquireConnection } from './pool.js'
 
 export async function moveOccupancyTypePrintDown(
   occupancyTypeId: number | string,

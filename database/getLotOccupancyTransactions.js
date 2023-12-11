@@ -1,7 +1,7 @@
-import { acquireConnection } from './pool.js';
 import { dateIntegerToString, timeIntegerToString } from '@cityssm/utils-datetime';
 import * as configFunctions from '../helpers/functions.config.js';
 import * as gpFunctions from '../helpers/functions.dynamicsGP.js';
+import { acquireConnection } from './pool.js';
 export async function getLotOccupancyTransactions(lotOccupancyId, options, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
@@ -23,7 +23,7 @@ export async function getLotOccupancyTransactions(lotOccupancyId, options, conne
         configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
         for (const transaction of lotOccupancyTransactions) {
             if ((transaction.externalReceiptNumber ?? '') !== '') {
-                const gpDocument = await gpFunctions.getDynamicsGPDocument(transaction.externalReceiptNumber);
+                const gpDocument = await gpFunctions.getDynamicsGPDocument(transaction.externalReceiptNumber ?? '');
                 if (gpDocument !== undefined) {
                     transaction.dynamicsGPDocument = gpDocument;
                 }

@@ -1,6 +1,6 @@
-import { acquireConnection } from './pool.js'
-
 import * as configFunctions from '../helpers/functions.config.js'
+
+import { acquireConnection } from './pool.js'
 
 export async function getNextLotId(
   lotId: number | string

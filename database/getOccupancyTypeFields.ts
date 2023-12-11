@@ -1,13 +1,14 @@
-import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import type * as recordTypes from '../types/recordTypes.js'
+import type { OccupancyTypeField } from '../types/recordTypes.js'
+
+import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export async function getOccupancyTypeFields(
   occupancyTypeId?: number,
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.OccupancyTypeField[]> {
+): Promise<OccupancyTypeField[]> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   const sqlParameters: unknown[] = []
@@ -29,7 +30,7 @@ export async function getOccupancyTypeFields(
           : ' and occupancyTypeId = ?') +
         ' order by orderNumber, occupancyTypeField'
     )
-    .all(sqlParameters) as recordTypes.OccupancyTypeField[]
+    .all(sqlParameters) as OccupancyTypeField[]
 
   let expectedOrderNumber = 0
 
@@ -37,7 +38,7 @@ export async function getOccupancyTypeFields(
     if (occupancyTypeField.orderNumber !== expectedOrderNumber) {
       updateRecordOrderNumber(
         'OccupancyTypeFields',
-        occupancyTypeField.occupancyTypeFieldId!,
+        occupancyTypeField.occupancyTypeFieldId,
         expectedOrderNumber,
         database
       )

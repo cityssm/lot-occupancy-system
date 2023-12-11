@@ -1,7 +1,7 @@
-import { acquireConnection } from './pool.js';
-import { getLotFields } from './getLotFields.js';
 import { getLotComments } from './getLotComments.js';
+import { getLotFields } from './getLotFields.js';
 import { getLotOccupancies } from './getLotOccupancies.js';
+import { acquireConnection } from './pool.js';
 const baseSQL = `select l.lotId, l.lotTypeId, t.lotType, l.lotName, l.lotStatusId, s.lotStatus,
     l.mapId, m.mapName, m.mapSVG, l.mapKey,
     l.lotLatitude, l.lotLongitude

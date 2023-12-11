@@ -1,5 +1,5 @@
-import { acquireConnection } from './pool.js';
 import * as configFunctions from '../helpers/functions.config.js';
+import { acquireConnection } from './pool.js';
 export async function getNextWorkOrderNumber(connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const paddingLength = configFunctions.getProperty('settings.workOrders.workOrderNumberLength');

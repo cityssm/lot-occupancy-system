@@ -1,12 +1,13 @@
-import { acquireConnection } from './pool.js'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import type * as recordTypes from '../types/recordTypes.js'
+import type { Fee } from '../types/recordTypes.js'
+
+import { acquireConnection } from './pool.js'
 
 export async function getFee(
   feeId: number | string,
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.Fee> {
+): Promise<Fee | undefined> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   const fee = database
@@ -27,7 +28,7 @@ export async function getFee(
         where f.recordDelete_timeMillis is null
         and f.feeId = ?`
     )
-    .get(feeId) as recordTypes.Fee
+    .get(feeId) as Fee | undefined
 
   if (connectedDatabase === undefined) {
     database.release()

@@ -1,3 +1,3 @@
-import type * as recordTypes from '../types/recordTypes.js';
-export declare function getLotStatuses(): Promise<recordTypes.LotStatus[]>;
+import type { LotStatus } from '../types/recordTypes.js';
+export declare function getLotStatuses(): Promise<LotStatus[]>;
 export default getLotStatuses;

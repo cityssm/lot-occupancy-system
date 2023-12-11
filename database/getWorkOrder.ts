@@ -1,17 +1,13 @@
-import { acquireConnection } from './pool.js'
+import { dateIntegerToString } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import { dateIntegerToString } from '@cityssm/utils-datetime'
-
-import { getLots } from './getLots.js'
+import type { WorkOrder } from '../types/recordTypes.js'
 
 import { getLotOccupancies } from './getLotOccupancies.js'
-
+import { getLots } from './getLots.js'
 import { getWorkOrderComments } from './getWorkOrderComments.js'
-
 import { getWorkOrderMilestones } from './getWorkOrderMilestones.js'
-
-import type * as recordTypes from '../types/recordTypes.js'
+import { acquireConnection } from './pool.js'
 
 interface WorkOrderOptions {
   includeLotsAndLotOccupancies: boolean
@@ -34,13 +30,13 @@ async function _getWorkOrder(
   workOrderIdOrWorkOrderNumber: number | string,
   options: WorkOrderOptions,
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.WorkOrder | undefined> {
+): Promise<WorkOrder | undefined> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
   const workOrder = database.prepare(sql).get(workOrderIdOrWorkOrderNumber) as
-    | recordTypes.WorkOrder
+    | WorkOrder
     | undefined
 
   if (workOrder !== undefined) {
@@ -79,7 +75,7 @@ async function _getWorkOrder(
 
     if (options.includeComments) {
       workOrder.workOrderComments = await getWorkOrderComments(
-        workOrder.workOrderId as number,
+        workOrder.workOrderId,
         database
       )
     }
@@ -107,7 +103,7 @@ async function _getWorkOrder(
 
 export async function getWorkOrderByWorkOrderNumber(
   workOrderNumber: string
-): Promise<recordTypes.WorkOrder | undefined> {
+): Promise<WorkOrder | undefined> {
   return await _getWorkOrder(
     baseSQL + ' and w.workOrderNumber = ?',
     workOrderNumber,
@@ -123,7 +119,7 @@ export async function getWorkOrder(
   workOrderId: number | string,
   options: WorkOrderOptions,
   connectedDatabase?: PoolConnection
-): Promise<recordTypes.WorkOrder | undefined> {
+): Promise<WorkOrder | undefined> {
   return await _getWorkOrder(
     baseSQL + ' and w.workOrderId = ?',
     workOrderId,

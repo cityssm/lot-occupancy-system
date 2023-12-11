@@ -1,10 +1,14 @@
-import { acquireConnection } from './pool.js'
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/indent */
 
+import type { WorkOrderMilestoneType } from '../types/recordTypes.js'
+
+import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-import type * as recordTypes from '../types/recordTypes.js'
-
-export async function getWorkOrderMilestoneTypes(): Promise<recordTypes.WorkOrderMilestoneType[]> {
+export async function getWorkOrderMilestoneTypes(): Promise<
+  WorkOrderMilestoneType[]
+> {
   const database = await acquireConnection()
 
   const workOrderMilestoneTypes = database
@@ -14,7 +18,7 @@ export async function getWorkOrderMilestoneTypes(): Promise<recordTypes.WorkOrde
         where recordDelete_timeMillis is null
         order by orderNumber, workOrderMilestoneType`
     )
-    .all() as recordTypes.WorkOrderMilestoneType[]
+    .all() as WorkOrderMilestoneType[]
 
   let expectedOrderNumber = 0
 
