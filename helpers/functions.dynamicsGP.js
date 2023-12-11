@@ -1,9 +1,8 @@
-import * as gp from '@cityssm/dynamics-gp/gp.js';
-import * as diamond from '@cityssm/dynamics-gp/diamond.js';
+import { DynamicsGP } from '@cityssm/dynamics-gp';
 import * as configFunctions from './functions.config.js';
+let gp;
 if (configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
-    gp.setMSSQLConfig(configFunctions.getProperty('settings.dynamicsGP.mssqlConfig'));
-    diamond.setMSSQLConfig(configFunctions.getProperty('settings.dynamicsGP.mssqlConfig'));
+    gp = new DynamicsGP(configFunctions.getProperty('settings.dynamicsGP.mssqlConfig'));
 }
 function filterCashReceipt(cashReceipt) {
     const accountCodes = configFunctions.getProperty('settings.dynamicsGP.accountCodes');
@@ -70,7 +69,7 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
             break;
         }
         case 'diamond/cashReceipt': {
-            let receipt = await diamond.getCashReceiptByDocumentNumber(documentNumber);
+            let receipt = await gp.getDiamondCashReceiptByDocumentNumber(documentNumber);
             if (receipt !== undefined) {
                 receipt = filterCashReceipt(receipt);
             }
@@ -92,7 +91,7 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
             break;
         }
         case 'diamond/extendedInvoice': {
-            let invoice = await diamond.getDiamondExtendedGPInvoice(documentNumber);
+            let invoice = await gp.getDiamondExtendedInvoiceByInvoiceNumber(documentNumber);
             if (invoice !== undefined) {
                 invoice = filterExtendedInvoice(invoice);
             }
@@ -117,7 +116,7 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
 }
 export async function getDynamicsGPDocument(documentNumber) {
     if (!configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
-        return;
+        return undefined;
     }
     let document;
     for (const lookupType of configFunctions.getProperty('settings.dynamicsGP.lookupOrder')) {

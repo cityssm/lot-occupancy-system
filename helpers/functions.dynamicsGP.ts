@@ -1,25 +1,21 @@
-/* eslint-disable unicorn/filename-case */
+/* eslint-disable unicorn/filename-case, eslint-comments/disable-enable-pair */
 
-import * as gp from '@cityssm/dynamics-gp/gp.js'
-import * as diamond from '@cityssm/dynamics-gp/diamond.js'
+import {
+  DynamicsGP,
+  type DiamondCashReceipt,
+  type DiamondExtendedGPInvoice,
+  type GPInvoice
+} from '@cityssm/dynamics-gp'
+
+import type { DynamicsGPLookup } from '../types/configTypes.js'
+import type { DynamicsGPDocument } from '../types/recordTypes.js'
 
 import * as configFunctions from './functions.config.js'
 
-import type { DynamicsGPLookup } from '../types/configTypes'
-import type { DynamicsGPDocument } from '../types/recordTypes.js'
-
-import type {
-  DiamondExtendedGPInvoice,
-  DiamondCashReceipt
-} from '@cityssm/dynamics-gp/diamond/types'
-
-import type { GPInvoice } from '@cityssm/dynamics-gp/gp/types'
+let gp: DynamicsGP
 
 if (configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
-  gp.setMSSQLConfig(
-    configFunctions.getProperty('settings.dynamicsGP.mssqlConfig')
-  )
-  diamond.setMSSQLConfig(
+  gp = new DynamicsGP(
     configFunctions.getProperty('settings.dynamicsGP.mssqlConfig')
   )
 }
@@ -122,7 +118,7 @@ async function _getDynamicsGPDocument(
     }
     case 'diamond/cashReceipt': {
       let receipt: DiamondCashReceipt | undefined =
-        await diamond.getCashReceiptByDocumentNumber(documentNumber)
+        await gp.getDiamondCashReceiptByDocumentNumber(documentNumber)
 
       if (receipt !== undefined) {
         receipt = filterCashReceipt(receipt)
@@ -147,7 +143,9 @@ async function _getDynamicsGPDocument(
       break
     }
     case 'diamond/extendedInvoice': {
-      let invoice = await diamond.getDiamondExtendedGPInvoice(documentNumber)
+      let invoice = await gp.getDiamondExtendedInvoiceByInvoiceNumber(
+        documentNumber
+      )
 
       if (invoice !== undefined) {
         invoice = filterExtendedInvoice(invoice)
@@ -181,7 +179,7 @@ export async function getDynamicsGPDocument(
   if (
     !configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')
   ) {
-    return
+    return undefined
   }
 
   let document: DynamicsGPDocument | undefined

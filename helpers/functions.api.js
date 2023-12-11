@@ -50,4 +50,5 @@ export async function getUserNameFromApiKey(apiKey) {
             return userName;
         }
     }
+    return undefined;
 }

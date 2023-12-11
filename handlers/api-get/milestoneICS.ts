@@ -3,12 +3,12 @@
 import type { Request, Response } from 'express'
 import ical, { type ICalEventData, ICalEventStatus } from 'ical-generator'
 
-import * as configFunctions from '../../helpers/functions.config.js'
-import { getPrintConfig } from '../../helpers/functions.print.js'
 import {
   getWorkOrderMilestones,
   type WorkOrderMilestoneFilters
 } from '../../database/getWorkOrderMilestones.js'
+import * as configFunctions from '../../helpers/functions.config.js'
+import { getPrintConfig } from '../../helpers/functions.print.js'
 import type { WorkOrderMilestone } from '../../types/recordTypes.js'
 
 const calendarCompany = 'cityssm.github.io'

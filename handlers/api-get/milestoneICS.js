@@ -1,7 +1,7 @@
 import ical, { ICalEventStatus } from 'ical-generator';
+import { getWorkOrderMilestones } from '../../database/getWorkOrderMilestones.js';
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getPrintConfig } from '../../helpers/functions.print.js';
-import { getWorkOrderMilestones } from '../../database/getWorkOrderMilestones.js';
 const calendarCompany = 'cityssm.github.io';
 const calendarProduct = configFunctions.getProperty('application.applicationName');
 const timeStringSplitRegex = /[ :-]/;

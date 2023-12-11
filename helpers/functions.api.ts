@@ -63,4 +63,6 @@ export async function getUserNameFromApiKey(
       return userName
     }
   }
+
+  return undefined
 }
