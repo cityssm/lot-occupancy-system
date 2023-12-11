@@ -1,9 +1,7 @@
 # Lot Occupancy System
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/87f68ffeb2524c1fb0991d544e6afffb)](https://www.codacy.com/gh/cityssm/lot-occupancy-system/dashboard?utm_source=github.com&utm_medium=referral&utm_content=cityssm/lot-occupancy-system&utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/11a8975b332f66e6eec7/maintainability)](https://codeclimate.com/github/cityssm/lot-occupancy-system/maintainability)
 [![codecov](https://codecov.io/gh/cityssm/lot-occupancy-system/branch/main/graph/badge.svg?token=1M38ZVCLKE)](https://codecov.io/gh/cityssm/lot-occupancy-system)
-[![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/cityssm/lot-occupancy-system)](https://app.snyk.io/org/cityssm/project/ea456d07-9674-4c74-b3d1-1452a8183153)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cityssm/lot-occupancy-system/coverage.yml?branch=main)](https://github.com/cityssm/lot-occupancy-system/actions/workflows/coverage.yml)
 [![lot-occupancy-system](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/xya1fn&style=flat&logo=cypress)](https://cloud.cypress.io/projects/xya1fn/runs)
 
