@@ -136,14 +136,14 @@ async function addInclusions(
 ): Promise<LotOccupancy> {
   if (options.includeFees) {
     lotOccupancy.lotOccupancyFees = await getLotOccupancyFees(
-      lotOccupancy.lotOccupancyId!,
+      lotOccupancy.lotOccupancyId,
       database
     )
   }
 
   if (options.includeTransactions) {
     lotOccupancy.lotOccupancyTransactions = await getLotOccupancyTransactions(
-      lotOccupancy.lotOccupancyId!,
+      lotOccupancy.lotOccupancyId,
       { includeIntegrations: false },
       database
     )
@@ -151,7 +151,7 @@ async function addInclusions(
 
   if (options.includeOccupants) {
     lotOccupancy.lotOccupancyOccupants = await getLotOccupancyOccupants(
-      lotOccupancy.lotOccupancyId!,
+      lotOccupancy.lotOccupancyId,
       database
     )
   }

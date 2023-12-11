@@ -1,5 +1,8 @@
-import type { LotOccupancy } from '../types/recordTypes.js'
-import { calculateFeeAmount, calculateTaxAmount } from '../helpers/functions.fee.js'
+import {
+  calculateFeeAmount,
+  calculateTaxAmount
+} from '../helpers/functions.fee.js'
+import type { Fee, LotOccupancy } from '../types/recordTypes.js'
 
 import { getFee } from './getFee.js'
 import { getLotOccupancy } from './getLotOccupancy.js'
@@ -30,7 +33,7 @@ export async function addLotOccupancyFee(
       lotOccupancyFeeForm.lotOccupancyId
     )) as LotOccupancy
 
-    const fee = await getFee(lotOccupancyFeeForm.feeId)
+    const fee = (await getFee(lotOccupancyFeeForm.feeId)) as Fee
 
     feeAmount = calculateFeeAmount(fee, lotOccupancy)
     taxAmount = calculateTaxAmount(fee, feeAmount)

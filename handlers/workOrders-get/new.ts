@@ -10,7 +10,7 @@ export async function handler(
 ): Promise<void> {
   const currentDate = new Date()
 
-  const workOrder: WorkOrder = {
+  const workOrder: Partial<WorkOrder> = {
     workOrderOpenDate: dateToInteger(currentDate),
     workOrderOpenDateString: dateToString(currentDate)
   }

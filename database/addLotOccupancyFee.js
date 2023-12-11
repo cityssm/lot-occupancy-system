@@ -9,7 +9,7 @@ export async function addLotOccupancyFee(lotOccupancyFeeForm, user) {
     let taxAmount;
     if ((lotOccupancyFeeForm.feeAmount ?? '') === '') {
         const lotOccupancy = (await getLotOccupancy(lotOccupancyFeeForm.lotOccupancyId));
-        const fee = await getFee(lotOccupancyFeeForm.feeId);
+        const fee = (await getFee(lotOccupancyFeeForm.feeId));
         feeAmount = calculateFeeAmount(fee, lotOccupancy);
         taxAmount = calculateTaxAmount(fee, feeAmount);
     }

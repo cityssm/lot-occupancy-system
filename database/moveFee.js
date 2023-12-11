@@ -56,7 +56,7 @@ export async function moveFeeUp(feeId) {
 }
 export async function moveFeeUpToTop(feeId) {
     const database = await acquireConnection();
-    const currentFee = await getFee(feeId, database);
+    const currentFee = (await getFee(feeId, database));
     if (currentFee.orderNumber > 0) {
         updateRecordOrderNumber('Fees', feeId, -1, database);
         database

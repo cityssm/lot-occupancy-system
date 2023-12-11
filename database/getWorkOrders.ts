@@ -106,7 +106,7 @@ async function addInclusions(
 ): Promise<WorkOrder> {
   if (options.includeComments ?? false) {
     workOrder.workOrderComments = await getWorkOrderComments(
-      workOrder.workOrderId!,
+      workOrder.workOrderId,
       database
     )
   }

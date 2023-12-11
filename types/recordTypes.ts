@@ -245,13 +245,13 @@ export interface LotOccupancyComment extends Record {
 }
 
 export interface LotOccupancyField extends OccupancyTypeField, Record {
-  lotOccupancyId?: number
-  occupancyTypeFieldId?: number
+  lotOccupancyId: number
+  occupancyTypeFieldId: number
   lotOccupancyFieldValue?: string
 }
 
 export interface LotOccupancy extends Record {
-  lotOccupancyId?: number
+  lotOccupancyId: number
 
   occupancyTypeId?: number
   occupancyType?: string

@@ -1,3 +1,4 @@
+import { Fee } from '../types/recordTypes.js'
 import { getFee } from './getFee.js'
 import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
@@ -100,7 +101,7 @@ export async function moveFeeUp(feeId: number): Promise<boolean> {
 export async function moveFeeUpToTop(feeId: number | string): Promise<boolean> {
   const database = await acquireConnection()
 
-  const currentFee = await getFee(feeId, database)
+  const currentFee = (await getFee(feeId, database)) as Fee
 
   if (currentFee.orderNumber! > 0) {
     updateRecordOrderNumber('Fees', feeId, -1, database)

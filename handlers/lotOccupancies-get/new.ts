@@ -21,7 +21,7 @@ export async function handler(
 ): Promise<void> {
   const startDate = new Date()
 
-  const lotOccupancy: LotOccupancy = {
+  const lotOccupancy: Partial<LotOccupancy> = {
     occupancyStartDate: dateToInteger(startDate),
     occupancyStartDateString: dateToString(startDate)
   }
