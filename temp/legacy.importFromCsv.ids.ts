@@ -1,4 +1,4 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable unicorn/no-await-expression-member */
 
 import sqlite from 'better-sqlite3'

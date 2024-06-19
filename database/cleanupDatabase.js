@@ -5,7 +5,7 @@ export async function cleanupDatabase(user) {
     const rightNowMillis = Date.now();
     const recordDeleteTimeMillisMin = rightNowMillis -
         configFunctions.getProperty('settings.adminCleanup.recordDeleteAgeDays') *
-            86400 *
+            86_400 *
             1000;
     let inactivatedRecordCount = 0;
     let purgedRecordCount = 0;

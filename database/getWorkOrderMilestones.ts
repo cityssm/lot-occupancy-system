@@ -1,12 +1,12 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/indent */
 
 import {
   dateIntegerToString,
   dateStringToInteger,
   dateToInteger,
-  timeIntegerToString,
-  timeIntegerToPeriodString
+  timeIntegerToPeriodString,
+  timeIntegerToString
 } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
@@ -35,7 +35,7 @@ interface WorkOrderMilestoneOptions {
   orderBy: 'completion' | 'date'
 }
 
-const commaSeparatedNumbersRegex = /^\d+(,\d+)*$/
+const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/
 
 function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   sqlWhereClause: string
@@ -170,19 +170,20 @@ export async function getWorkOrderMilestones(
   }
 
   // Query
+  // eslint-disable-next-line no-secrets/no-secrets
   const sql = `select m.workOrderMilestoneId,
     m.workOrderMilestoneTypeId, t.workOrderMilestoneType,
     m.workOrderMilestoneDate,
     userFn_dateIntegerToString(m.workOrderMilestoneDate) as workOrderMilestoneDateString,
     m.workOrderMilestoneTime,
     userFn_timeIntegerToString(m.workOrderMilestoneTime) as workOrderMilestoneTimeString,
-    userFn_timeIntegerToPeriodString(m.workOrderMilestoneTime) as workOrderMilestoneTimePeriodString,
+    userFn_timeIntegerToPeriodString(ifnull(m.workOrderMilestoneTime, 0)) as workOrderMilestoneTimePeriodString,
     m.workOrderMilestoneDescription,
     m.workOrderMilestoneCompletionDate,
     userFn_dateIntegerToString(m.workOrderMilestoneCompletionDate) as workOrderMilestoneCompletionDateString,
     m.workOrderMilestoneCompletionTime,
     userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,
-    userFn_timeIntegerToPeriodString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimePeriodString,
+    userFn_timeIntegerToPeriodString(ifnull(m.workOrderMilestoneCompletionTime, 0)) as workOrderMilestoneCompletionTimePeriodString,
     ${
       options.includeWorkOrders ?? false
         ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,

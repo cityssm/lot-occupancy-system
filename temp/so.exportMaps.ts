@@ -1,9 +1,9 @@
-/* eslint-disable node/no-extraneous-import, node/no-unpublished-import */
-
 import fs from 'node:fs'
+
 import * as sql from '@cityssm/mssql-multi-pool'
-import { soMSSQL } from './config.js'
 import type * as sqlTypes from 'mssql'
+
+import { soMSSQL } from './config.js'
 
 interface MapLayer {
   mapId: string

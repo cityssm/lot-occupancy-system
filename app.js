@@ -54,8 +54,8 @@ app.use(csurf({
     cookie: true
 }));
 app.use(rateLimit({
-    windowMs: 10000,
-    max: useTestDatabases ? 1000000 : 200
+    windowMs: 10_000,
+    max: useTestDatabases ? 1_000_000 : 200
 }));
 const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
 if (urlPrefix !== '') {

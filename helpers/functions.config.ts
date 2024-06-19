@@ -1,4 +1,4 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/indent, n/no-unpublished-import */
 
 // eslint-disable-next-line n/no-extraneous-import

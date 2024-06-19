@@ -1,11 +1,11 @@
-/* eslint-disable unicorn/filename-case, eslint-comments/disable-enable-pair */
+/* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 
 import type { Request, Response } from 'express'
 import ical, { type ICalEventData, ICalEventStatus } from 'ical-generator'
 
 import {
-  getWorkOrderMilestones,
-  type WorkOrderMilestoneFilters
+  type WorkOrderMilestoneFilters,
+  getWorkOrderMilestones
 } from '../../database/getWorkOrderMilestones.js'
 import * as configFunctions from '../../helpers/functions.config.js'
 import { getPrintConfig } from '../../helpers/functions.print.js'

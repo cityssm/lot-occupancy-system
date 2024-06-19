@@ -1,3 +1,7 @@
 {
-  "reject": ["@fortawesome/fontawesome-free"]
+  "reject": [
+    "@cityssm/bulma-sticky-table",
+    "@fortawesome/fontawesome-free",
+    "bulma"
+  ]
 }

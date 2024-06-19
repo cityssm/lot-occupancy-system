@@ -1,4 +1,4 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-non-null-assertion, promise/always-return, promise/catch-or-return */
 
 import * as configFunctions from '../../../helpers/functions.config.js'
