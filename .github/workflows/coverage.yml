@@ -18,16 +18,16 @@ jobs:
       DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
     name: Node ${{ matrix.node }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
       - name: Install Application
         run: |
           npm ci
-          npm install -g mocha c8 cypress@12
+          npm install -g mocha c8 cypress@13
 
       - name: Copy Test Config
         run: cp ./data/config.testing.js ./data/config.js
