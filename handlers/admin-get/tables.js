@@ -1,5 +1,5 @@
+import { getSolidIconClasses } from '@cityssm/font-awesome-v5-iconclasses';
 import { getLotOccupantTypes, getLotStatuses, getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
-import { getSolidIconClasses } from '../../helpers/functions.icons.js';
 export async function handler(_request, response) {
     const workOrderTypes = await getWorkOrderTypes();
     const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes();

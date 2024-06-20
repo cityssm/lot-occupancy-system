@@ -1,3 +1,4 @@
+import { getSolidIconClasses } from '@cityssm/font-awesome-v5-iconclasses'
 import type { Request, Response } from 'express'
 
 import {
@@ -6,7 +7,6 @@ import {
   getWorkOrderMilestoneTypes,
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
-import { getSolidIconClasses } from '../../helpers/functions.icons.js'
 
 export async function handler(_request: Request, response: Response): Promise<void> {
   const workOrderTypes = await getWorkOrderTypes()
