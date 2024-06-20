@@ -1,4 +1,4 @@
-interface AddWorkOrderForm {
+export interface AddWorkOrderForm {
     workOrderTypeId: number | string;
     workOrderNumber?: string;
     workOrderDescription: string;
@@ -6,5 +6,4 @@ interface AddWorkOrderForm {
     workOrderCloseDateString?: string;
     lotOccupancyId?: string;
 }
-export declare function addWorkOrder(workOrderForm: AddWorkOrderForm, user: User): Promise<number>;
-export default addWorkOrder;
+export default function addWorkOrder(workOrderForm: AddWorkOrderForm, user: User): Promise<number>;

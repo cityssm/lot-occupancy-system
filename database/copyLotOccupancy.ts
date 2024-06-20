@@ -1,11 +1,11 @@
 import { dateToString } from '@cityssm/utils-datetime'
 
-import { addLotOccupancy } from './addLotOccupancy.js'
-import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js'
+import addLotOccupancy from './addLotOccupancy.js'
+import addLotOccupancyOccupant from './addLotOccupancyOccupant.js'
 import { getLotOccupancy } from './getLotOccupancy.js'
 import { acquireConnection } from './pool.js'
 
-export async function copyLotOccupancy(
+export default async function copyLotOccupancy(
   oldLotOccupancyId: number | string,
   user: User
 ): Promise<number> {
@@ -78,5 +78,3 @@ export async function copyLotOccupancy(
 
   return newLotOccupancyId
 }
-
-export default copyLotOccupancy

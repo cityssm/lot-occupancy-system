@@ -1,6 +1,6 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
-export async function addLotTypeField(lotTypeFieldForm, user) {
+export default async function addLotTypeField(lotTypeFieldForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
@@ -17,4 +17,3 @@ export async function addLotTypeField(lotTypeFieldForm, user) {
     clearCacheByTableName('LotTypeFields');
     return result.lastInsertRowid;
 }
-export default addLotTypeField;

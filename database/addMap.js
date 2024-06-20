@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function addMap(mapForm, user) {
+export default async function addMap(mapForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
@@ -16,4 +16,3 @@ export async function addMap(mapForm, user) {
     database.release();
     return result.lastInsertRowid;
 }
-export default addMap;

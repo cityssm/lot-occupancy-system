@@ -1,7 +1,7 @@
-import { addOrUpdateLotField } from './addOrUpdateLotField.js'
+import addOrUpdateLotField from './addOrUpdateLotField.js'
 import { acquireConnection } from './pool.js'
 
-interface AddLotForm {
+export interface AddLotForm {
   lotName: string
   lotTypeId: string | number
   lotStatusId: string | number
@@ -16,7 +16,10 @@ interface AddLotForm {
   [lotFieldValue_lotTypeFieldId: string]: unknown
 }
 
-export async function addLot(lotForm: AddLotForm, user: User): Promise<number> {
+export default async function addLot(
+  lotForm: AddLotForm,
+  user: User
+): Promise<number> {
   const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
@@ -50,7 +53,7 @@ export async function addLot(lotForm: AddLotForm, user: User): Promise<number> {
   const lotTypeFieldIds = (lotForm.lotTypeFieldIds ?? '').split(',')
 
   for (const lotTypeFieldId of lotTypeFieldIds) {
-    const lotFieldValue = lotForm['lotFieldValue_' + lotTypeFieldId] as string
+    const lotFieldValue = lotForm[`lotFieldValue_${lotTypeFieldId}`] as string
 
     if ((lotFieldValue ?? '') !== '') {
       await addOrUpdateLotField(
@@ -69,5 +72,3 @@ export async function addLot(lotForm: AddLotForm, user: User): Promise<number> {
 
   return lotId
 }
-
-export default addLot

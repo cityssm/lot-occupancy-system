@@ -2,13 +2,13 @@ import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime'
 
 import { acquireConnection } from './pool.js'
 
-interface AddWorkOrderForm {
+export interface CloseWorkOrderForm {
   workOrderId: number | string
   workOrderCloseDateString?: string
 }
 
-export async function closeWorkOrder(
-  workOrderForm: AddWorkOrderForm,
+export default async function closeWorkOrder(
+  workOrderForm: CloseWorkOrderForm,
   user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
@@ -36,5 +36,3 @@ export async function closeWorkOrder(
 
   return result.changes > 0
 }
-
-export default closeWorkOrder

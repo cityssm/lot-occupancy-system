@@ -1,7 +1,4 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/indent */
-
-import { addOrUpdateLotField } from './addOrUpdateLotField.js'
+import addOrUpdateLotField from './addOrUpdateLotField.js'
 import { deleteLotField } from './deleteLotField.js'
 import { acquireConnection } from './pool.js'
 

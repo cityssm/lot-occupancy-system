@@ -1,4 +1,4 @@
-/* eslint-disable spaced-comment, @typescript-eslint/indent, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
 import type { BulmaJS } from '@cityssm/bulma-js/types'

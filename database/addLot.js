@@ -1,6 +1,6 @@
-import { addOrUpdateLotField } from './addOrUpdateLotField.js';
+import addOrUpdateLotField from './addOrUpdateLotField.js';
 import { acquireConnection } from './pool.js';
-export async function addLot(lotForm, user) {
+export default async function addLot(lotForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
@@ -15,7 +15,7 @@ export async function addLot(lotForm, user) {
     const lotId = result.lastInsertRowid;
     const lotTypeFieldIds = (lotForm.lotTypeFieldIds ?? '').split(',');
     for (const lotTypeFieldId of lotTypeFieldIds) {
-        const lotFieldValue = lotForm['lotFieldValue_' + lotTypeFieldId];
+        const lotFieldValue = lotForm[`lotFieldValue_${lotTypeFieldId}`];
         if ((lotFieldValue ?? '') !== '') {
             await addOrUpdateLotField({
                 lotId,
@@ -27,4 +27,3 @@ export async function addLot(lotForm, user) {
     database.release();
     return lotId;
 }
-export default addLot;

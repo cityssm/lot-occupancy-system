@@ -2,7 +2,7 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 import { acquireConnection } from './pool.js'
 
-interface AddOccupancyTypeFieldForm {
+export interface AddOccupancyTypeFieldForm {
   occupancyTypeId?: string | number
   occupancyTypeField: string
   occupancyTypeFieldValues?: string
@@ -13,7 +13,7 @@ interface AddOccupancyTypeFieldForm {
   orderNumber?: number
 }
 
-export async function addOccupancyTypeField(
+export default async function addOccupancyTypeField(
   occupancyTypeFieldForm: AddOccupancyTypeFieldForm,
   user: User
 ): Promise<number> {
@@ -53,5 +53,3 @@ export async function addOccupancyTypeField(
 
   return result.lastInsertRowid as number
 }
-
-export default addOccupancyTypeField

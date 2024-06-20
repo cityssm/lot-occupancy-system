@@ -2,13 +2,13 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import { acquireConnection } from './pool.js'
 
-interface LotFieldForm {
+export interface LotFieldForm {
   lotId: string | number
   lotTypeFieldId: string | number
   lotFieldValue: string
 }
 
-export async function addOrUpdateLotField(
+export default async function addOrUpdateLotField(
   lotFieldForm: LotFieldForm,
   user: User,
   connectedDatabase?: PoolConnection
@@ -62,5 +62,3 @@ export async function addOrUpdateLotField(
 
   return result.changes > 0
 }
-
-export default addOrUpdateLotField

@@ -1,6 +1,6 @@
 import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
-export async function completeWorkOrderMilestone(milestoneForm, user) {
+export default async function completeWorkOrderMilestone(milestoneForm, user) {
     const rightNow = new Date();
     const database = await acquireConnection();
     const result = database
@@ -18,4 +18,3 @@ export async function completeWorkOrderMilestone(milestoneForm, user) {
     database.release();
     return result.changes > 0;
 }
-export default completeWorkOrderMilestone;

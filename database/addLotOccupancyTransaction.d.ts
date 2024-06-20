@@ -1,4 +1,4 @@
-interface AddLotOccupancyTransactionForm {
+export interface AddLotOccupancyTransactionForm {
     lotOccupancyId: string | number;
     transactionDateString?: string;
     transactionTimeString?: string;
@@ -6,5 +6,4 @@ interface AddLotOccupancyTransactionForm {
     externalReceiptNumber: string;
     transactionNote: string;
 }
-export declare function addLotOccupancyTransaction(lotOccupancyTransactionForm: AddLotOccupancyTransactionForm, user: User): Promise<number>;
-export default addLotOccupancyTransaction;
+export default function addLotOccupancyTransaction(lotOccupancyTransactionForm: AddLotOccupancyTransactionForm, user: User): Promise<number>;

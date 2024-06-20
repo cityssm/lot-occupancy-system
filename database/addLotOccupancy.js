@@ -1,8 +1,8 @@
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
-import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js';
-import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js';
+import addLotOccupancyOccupant from './addLotOccupancyOccupant.js';
+import addOrUpdateLotOccupancyField from './addOrUpdateLotOccupancyField.js';
 import { acquireConnection } from './pool.js';
-export async function addLotOccupancy(lotOccupancyForm, user, connectedDatabase) {
+export default async function addLotOccupancy(lotOccupancyForm, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     const occupancyStartDate = dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyStartDateString);
@@ -22,7 +22,7 @@ export async function addLotOccupancy(lotOccupancyForm, user, connectedDatabase)
     const lotOccupancyId = result.lastInsertRowid;
     const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds ?? '').split(',');
     for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
-        const lotOccupancyFieldValue = lotOccupancyForm['lotOccupancyFieldValue_' + occupancyTypeFieldId];
+        const lotOccupancyFieldValue = lotOccupancyForm[`lotOccupancyFieldValue_${occupancyTypeFieldId}`];
         if ((lotOccupancyFieldValue ?? '') !== '') {
             await addOrUpdateLotOccupancyField({
                 lotOccupancyId,
@@ -52,4 +52,3 @@ export async function addLotOccupancy(lotOccupancyForm, user, connectedDatabase)
     }
     return lotOccupancyId;
 }
-export default addLotOccupancy;

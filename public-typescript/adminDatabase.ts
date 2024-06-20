@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/indent, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 
 import type * as globalTypes from '../types/globalTypes'
 

@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function addFee(feeForm, user) {
+export default async function addFee(feeForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
@@ -18,4 +18,3 @@ export async function addFee(feeForm, user) {
     database.release();
     return result.lastInsertRowid;
 }
-export default addFee;

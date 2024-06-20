@@ -1,12 +1,15 @@
 import type { Request, Response } from 'express'
 
-import { addMap } from '../../database/addMap.js'
+import addMap, { type AddMapForm } from '../../database/addMap.js'
 
 export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const mapId = await addMap(request.body, request.session.user as User)
+  const mapId = await addMap(
+    request.body as AddMapForm,
+    request.session.user as User
+  )
 
   response.json({
     success: true,

@@ -1,4 +1,4 @@
-interface AddOccupancyTypeFieldForm {
+export interface AddOccupancyTypeFieldForm {
     occupancyTypeId?: string | number;
     occupancyTypeField: string;
     occupancyTypeFieldValues?: string;
@@ -8,5 +8,4 @@ interface AddOccupancyTypeFieldForm {
     maximumLength: string | number;
     orderNumber?: number;
 }
-export declare function addOccupancyTypeField(occupancyTypeFieldForm: AddOccupancyTypeFieldForm, user: User): Promise<number>;
-export default addOccupancyTypeField;
+export default function addOccupancyTypeField(occupancyTypeFieldForm: AddOccupancyTypeFieldForm, user: User): Promise<number>;

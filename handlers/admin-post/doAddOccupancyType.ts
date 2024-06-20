@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express'
 
+import { addRecord } from '../../database/addRecord.js'
 import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
-import { addRecord } from '../../database/addRecord.js'
 
 export async function handler(
   request: Request,

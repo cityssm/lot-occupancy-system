@@ -1,4 +1,4 @@
-import { addWorkOrderMilestone } from '../../database/addWorkOrderMilestone.js';
+import addWorkOrderMilestone from '../../database/addWorkOrderMilestone.js';
 import { getWorkOrderMilestones } from '../../database/getWorkOrderMilestones.js';
 export async function handler(request, response) {
     const success = await addWorkOrderMilestone(request.body, request.session.user);

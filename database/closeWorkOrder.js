@@ -1,6 +1,6 @@
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
-export async function closeWorkOrder(workOrderForm, user) {
+export default async function closeWorkOrder(workOrderForm, user) {
     const database = await acquireConnection();
     const rightNow = new Date();
     const result = database
@@ -15,4 +15,3 @@ export async function closeWorkOrder(workOrderForm, user) {
     database.release();
     return result.changes > 0;
 }
-export default closeWorkOrder;

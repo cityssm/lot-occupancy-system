@@ -1,7 +1,6 @@
 import type { PoolConnection } from 'better-sqlite-pool';
-interface AddWorkOrderLotOccupancyForm {
+export interface AddWorkOrderLotOccupancyForm {
     workOrderId: number | string;
     lotOccupancyId: number | string;
 }
-export declare function addWorkOrderLotOccupancy(workOrderLotOccupancyForm: AddWorkOrderLotOccupancyForm, user: User, connectedDatabase?: PoolConnection): Promise<boolean>;
-export default addWorkOrderLotOccupancy;
+export default function addWorkOrderLotOccupancy(workOrderLotOccupancyForm: AddWorkOrderLotOccupancyForm, user: User, connectedDatabase?: PoolConnection): Promise<boolean>;

@@ -1,4 +1,4 @@
-interface AddLotForm {
+export interface AddLotForm {
     lotName: string;
     lotTypeId: string | number;
     lotStatusId: string | number;
@@ -9,5 +9,4 @@ interface AddLotForm {
     lotTypeFieldIds?: string;
     [lotFieldValue_lotTypeFieldId: string]: unknown;
 }
-export declare function addLot(lotForm: AddLotForm, user: User): Promise<number>;
-export default addLot;
+export default function addLot(lotForm: AddLotForm, user: User): Promise<number>;

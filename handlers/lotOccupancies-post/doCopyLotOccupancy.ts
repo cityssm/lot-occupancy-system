@@ -1,13 +1,13 @@
 import type { Request, Response } from 'express'
 
-import { copyLotOccupancy } from '../../database/copyLotOccupancy.js'
+import copyLotOccupancy from '../../database/copyLotOccupancy.js'
 
 export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
   const lotOccupancyId = await copyLotOccupancy(
-    request.body.lotOccupancyId,
+    request.body.lotOccupancyId as string,
     request.session.user as User
   )
 

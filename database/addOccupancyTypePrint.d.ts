@@ -1,7 +1,6 @@
-interface OccupancyTypePrintForm {
+export interface AddOccupancyTypePrintForm {
     occupancyTypeId: string | number;
     printEJS: string;
     orderNumber?: number;
 }
-export declare function addOccupancyTypePrint(occupancyTypePrintForm: OccupancyTypePrintForm, user: User): Promise<boolean>;
-export default addOccupancyTypePrint;
+export default function addOccupancyTypePrint(occupancyTypePrintForm: AddOccupancyTypePrintForm, user: User): Promise<boolean>;

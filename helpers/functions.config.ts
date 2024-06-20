@@ -1,7 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/indent, n/no-unpublished-import */
-
-// eslint-disable-next-line n/no-extraneous-import
 import type { config as MSSQLConfig } from 'mssql'
 
 import { config } from '../data/config.js'

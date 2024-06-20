@@ -2,7 +2,7 @@ import * as configFunctions from '../helpers/functions.config.js'
 
 import { acquireConnection } from './pool.js'
 
-export async function cleanupDatabase(
+export default async function cleanupDatabase(
   user: User
 ): Promise<{ inactivatedRecordCount: number; purgedRecordCount: number }> {
   const database = await acquireConnection()
@@ -447,5 +447,3 @@ export async function cleanupDatabase(
     purgedRecordCount
   }
 }
-
-export default cleanupDatabase

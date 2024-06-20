@@ -1,14 +1,11 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/indent */
-
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js'
-import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js'
+import addLotOccupancyOccupant from './addLotOccupancyOccupant.js'
+import addOrUpdateLotOccupancyField from './addOrUpdateLotOccupancyField.js'
 import { acquireConnection } from './pool.js'
 
-interface AddLotOccupancyForm {
+export interface AddLotOccupancyForm {
   occupancyTypeId: string | number
   lotId: string | number
 
@@ -31,7 +28,7 @@ interface AddLotOccupancyForm {
   occupantComment?: string
 }
 
-export async function addLotOccupancy(
+export default async function addLotOccupancy(
   lotOccupancyForm: AddLotOccupancyForm,
   user: User,
   connectedDatabase?: PoolConnection
@@ -80,7 +77,7 @@ export async function addLotOccupancy(
 
   for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
     const lotOccupancyFieldValue = lotOccupancyForm[
-      'lotOccupancyFieldValue_' + occupancyTypeFieldId
+      `lotOccupancyFieldValue_${occupancyTypeFieldId}`
     ] as string
 
     if ((lotOccupancyFieldValue ?? '') !== '') {
@@ -123,5 +120,3 @@ export async function addLotOccupancy(
 
   return lotOccupancyId
 }
-
-export default addLotOccupancy

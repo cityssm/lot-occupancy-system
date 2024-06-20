@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/indent, unicorn/prefer-module */
+/* eslint-disable unicorn/prefer-module */
 
 import type * as globalTypes from '../../types/globalTypes'
 import type * as recordTypes from '../../types/recordTypes'

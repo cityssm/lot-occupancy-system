@@ -1,13 +1,10 @@
-import {
-  dateStringToInteger,
-  dateToInteger
-} from '@cityssm/utils-datetime'
+import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime'
 
-import { addWorkOrderLotOccupancy } from './addWorkOrderLotOccupancy.js'
+import addWorkOrderLotOccupancy from './addWorkOrderLotOccupancy.js'
 import { getNextWorkOrderNumber } from './getNextWorkOrderNumber.js'
 import { acquireConnection } from './pool.js'
 
-interface AddWorkOrderForm {
+export interface AddWorkOrderForm {
   workOrderTypeId: number | string
   workOrderNumber?: string
   workOrderDescription: string
@@ -16,7 +13,7 @@ interface AddWorkOrderForm {
   lotOccupancyId?: string
 }
 
-export async function addWorkOrder(
+export default async function addWorkOrder(
   workOrderForm: AddWorkOrderForm,
   user: User
 ): Promise<number> {
@@ -72,5 +69,3 @@ export async function addWorkOrder(
 
   return workOrderId
 }
-
-export default addWorkOrder

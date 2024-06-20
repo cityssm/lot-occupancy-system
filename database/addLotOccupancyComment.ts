@@ -7,14 +7,14 @@ import {
 
 import { acquireConnection } from './pool.js'
 
-interface AddLotOccupancyCommentForm {
+export interface AddLotOccupancyCommentForm {
   lotOccupancyId: string | number
   lotOccupancyCommentDateString?: string
   lotOccupancyCommentTimeString?: string
   lotOccupancyComment: string
 }
 
-export async function addLotOccupancyComment(
+export default async function addLotOccupancyComment(
   commentForm: AddLotOccupancyCommentForm,
   user: User
 ): Promise<number> {
@@ -62,5 +62,3 @@ export async function addLotOccupancyComment(
 
   return result.lastInsertRowid as number
 }
-
-export default addLotOccupancyComment

@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function addWorkOrderLot(workOrderLotForm, user) {
+export default async function addWorkOrderLot(workOrderLotForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const row = database
@@ -35,4 +35,3 @@ export async function addWorkOrderLot(workOrderLotForm, user) {
     database.release();
     return true;
 }
-export default addWorkOrderLot;

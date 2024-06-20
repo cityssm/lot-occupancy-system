@@ -1,6 +1,6 @@
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
-export async function addLotComment(lotCommentForm, user) {
+export default async function addLotComment(lotCommentForm, user) {
     const database = await acquireConnection();
     const rightNow = new Date();
     const result = database
@@ -14,4 +14,3 @@ export async function addLotComment(lotCommentForm, user) {
     database.release();
     return result.lastInsertRowid;
 }
-export default addLotComment;

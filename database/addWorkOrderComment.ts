@@ -2,12 +2,12 @@ import * as dateTimeFunctions from '@cityssm/utils-datetime'
 
 import { acquireConnection } from './pool.js'
 
-interface AddWorkOrderCommentForm {
+export interface AddWorkOrderCommentForm {
   workOrderId: string
   workOrderComment: string
 }
 
-export async function addWorkOrderComment(
+export default async function addWorkOrderComment(
   workOrderCommentForm: AddWorkOrderCommentForm,
   user: User
 ): Promise<number> {
@@ -40,5 +40,3 @@ export async function addWorkOrderComment(
 
   return result.lastInsertRowid as number
 }
-
-export default addWorkOrderComment

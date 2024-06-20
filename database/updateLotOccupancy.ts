@@ -1,9 +1,6 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/indent */
-
 import { dateStringToInteger } from '@cityssm/utils-datetime'
 
-import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js'
+import addOrUpdateLotOccupancyField from './addOrUpdateLotOccupancyField.js'
 import { deleteLotOccupancyField } from './deleteLotOccupancyField.js'
 import { acquireConnection } from './pool.js'
 

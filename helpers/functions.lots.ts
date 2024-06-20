@@ -1,18 +1,15 @@
-/* eslint-disable @typescript-eslint/indent */
-
 import cluster from 'node:cluster'
 
+import Debug from 'debug'
 import NodeCache from 'node-cache'
 
-import getPreviousLotIdFromDatabase from '../database/getPreviousLotId.js'
 import getNextLotIdFromDatabase from '../database/getNextLotId.js'
-
+import getPreviousLotIdFromDatabase from '../database/getPreviousLotId.js'
 import type {
   CacheLotIdsWorkerMessage,
   ClearNextPreviousLotIdsCacheWorkerMessage
 } from '../types/applicationTypes.js'
 
-import Debug from 'debug'
 const debug = Debug(`lot-occupancy-system:functions.lots:${process.pid}`)
 
 const cacheOptions: NodeCache.Options = {

@@ -1,4 +1,4 @@
-interface AddFeeForm {
+export interface AddFeeForm {
     feeCategoryId: string;
     feeName: string;
     feeDescription: string;
@@ -14,5 +14,4 @@ interface AddFeeForm {
     isRequired: '' | '1';
     orderNumber?: number;
 }
-export declare function addFee(feeForm: AddFeeForm, user: User): Promise<number>;
-export default addFee;
+export default function addFee(feeForm: AddFeeForm, user: User): Promise<number>;

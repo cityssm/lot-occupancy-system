@@ -2,14 +2,14 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 import { acquireConnection } from './pool.js'
 
-interface AddLotOccupantTypeForm {
+export interface AddLotOccupantTypeForm {
   lotOccupantType: string
   fontAwesomeIconClass?: string
   occupantCommentTitle?: string
   orderNumber?: number
 }
 
-export async function addLotOccupantType(
+export default async function addLotOccupantType(
   lotOccupantTypeForm: AddLotOccupantTypeForm,
   user: User
 ): Promise<number> {
@@ -42,5 +42,3 @@ export async function addLotOccupantType(
 
   return result.lastInsertRowid as number
 }
-
-export default addLotOccupantType

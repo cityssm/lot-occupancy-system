@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/indent */
-
 import {
   dateStringToInteger,
   dateToInteger,
@@ -10,13 +7,13 @@ import {
 
 import { acquireConnection } from './pool.js'
 
-interface CompleteWorkOrderMilestoneForm {
+export interface CompleteWorkOrderMilestoneForm {
   workOrderMilestoneId: string | number
   workOrderMilestoneCompletionDateString?: string
   workOrderMilestoneCompletionTimeString?: string
 }
 
-export async function completeWorkOrderMilestone(
+export default async function completeWorkOrderMilestone(
   milestoneForm: CompleteWorkOrderMilestoneForm,
   user: User
 ): Promise<boolean> {
@@ -53,5 +50,3 @@ export async function completeWorkOrderMilestone(
 
   return result.changes > 0
 }
-
-export default completeWorkOrderMilestone

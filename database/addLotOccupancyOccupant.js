@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function addLotOccupancyOccupant(lotOccupancyOccupantForm, user, connectedDatabase) {
+export default async function addLotOccupancyOccupant(lotOccupancyOccupantForm, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     let lotOccupantIndex = 0;
     const maxIndexResult = database
@@ -31,4 +31,3 @@ export async function addLotOccupancyOccupant(lotOccupancyOccupantForm, user, co
     }
     return lotOccupantIndex;
 }
-export default addLotOccupancyOccupant;

@@ -1,13 +1,16 @@
 import type { Request, Response } from 'express'
 
+import addLot, { type AddLotForm } from '../../database/addLot.js'
 import { clearNextPreviousLotIdCache } from '../../helpers/functions.lots.js'
-import { addLot } from '../../database/addLot.js'
 
 export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lotId = await addLot(request.body, request.session.user as User)
+  const lotId = await addLot(
+    request.body as AddLotForm,
+    request.session.user as User
+  )
 
   response.json({
     success: true,

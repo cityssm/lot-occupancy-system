@@ -1,6 +1,6 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
-export async function addLotOccupantType(lotOccupantTypeForm, user) {
+export default async function addLotOccupantType(lotOccupantTypeForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
@@ -14,4 +14,3 @@ export async function addLotOccupantType(lotOccupantTypeForm, user) {
     clearCacheByTableName('LotOccupantTypes');
     return result.lastInsertRowid;
 }
-export default addLotOccupantType;

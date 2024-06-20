@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { completeWorkOrderMilestone } from '../../database/completeWorkOrderMilestone.js'
+import completeWorkOrderMilestone from '../../database/completeWorkOrderMilestone.js'
 import { getWorkOrderMilestones } from '../../database/getWorkOrderMilestones.js'
 
 export async function handler(

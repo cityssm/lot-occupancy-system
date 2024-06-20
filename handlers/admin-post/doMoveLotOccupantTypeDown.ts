@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
-
 import type { Request, Response } from 'express'
 
 import {

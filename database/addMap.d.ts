@@ -1,4 +1,4 @@
-interface AddMapForm {
+export interface AddMapForm {
     mapName: string;
     mapDescription: string;
     mapSVG: string;
@@ -11,5 +11,4 @@ interface AddMapForm {
     mapPostalCode: string;
     mapPhoneNumber: string;
 }
-export declare function addMap(mapForm: AddMapForm, user: User): Promise<number>;
-export default addMap;
+export default function addMap(mapForm: AddMapForm, user: User): Promise<number>;

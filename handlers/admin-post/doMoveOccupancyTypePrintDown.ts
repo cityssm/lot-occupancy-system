@@ -1,12 +1,9 @@
-/* eslint-disable @typescript-eslint/indent */
-
 import type { Request, Response } from 'express'
 
 import {
   moveOccupancyTypePrintDown,
   moveOccupancyTypePrintDownToBottom
 } from '../../database/moveOccupancyTypePrintDown.js'
-
 import {
   getAllOccupancyTypeFields,
   getOccupancyTypes

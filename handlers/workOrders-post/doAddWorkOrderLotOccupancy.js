@@ -1,4 +1,4 @@
-import { addWorkOrderLotOccupancy } from '../../database/addWorkOrderLotOccupancy.js';
+import addWorkOrderLotOccupancy from '../../database/addWorkOrderLotOccupancy.js';
 import { getLotOccupancies } from '../../database/getLotOccupancies.js';
 export async function handler(request, response) {
     const success = await addWorkOrderLotOccupancy({

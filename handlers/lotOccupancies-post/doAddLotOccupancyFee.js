@@ -1,4 +1,4 @@
-import { addLotOccupancyFee } from '../../database/addLotOccupancyFee.js';
+import addLotOccupancyFee from '../../database/addLotOccupancyFee.js';
 import { getLotOccupancyFees } from '../../database/getLotOccupancyFees.js';
 export async function handler(request, response) {
     await addLotOccupancyFee(request.body, request.session.user);

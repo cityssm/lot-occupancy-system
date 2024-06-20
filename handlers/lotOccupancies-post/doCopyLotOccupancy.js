@@ -1,4 +1,4 @@
-import { copyLotOccupancy } from '../../database/copyLotOccupancy.js';
+import copyLotOccupancy from '../../database/copyLotOccupancy.js';
 export async function handler(request, response) {
     const lotOccupancyId = await copyLotOccupancy(request.body.lotOccupancyId, request.session.user);
     response.json({

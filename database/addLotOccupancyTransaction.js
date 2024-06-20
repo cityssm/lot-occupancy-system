@@ -1,6 +1,6 @@
 import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
-export async function addLotOccupancyTransaction(lotOccupancyTransactionForm, user) {
+export default async function addLotOccupancyTransaction(lotOccupancyTransactionForm, user) {
     const database = await acquireConnection();
     let transactionIndex = 0;
     const maxIndexResult = database
@@ -32,4 +32,3 @@ export async function addLotOccupancyTransaction(lotOccupancyTransactionForm, us
     database.release();
     return transactionIndex;
 }
-export default addLotOccupancyTransaction;

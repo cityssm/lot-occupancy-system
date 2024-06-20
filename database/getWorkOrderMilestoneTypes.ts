@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/indent */
-
 import type { WorkOrderMilestoneType } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'

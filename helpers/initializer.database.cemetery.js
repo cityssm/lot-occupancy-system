@@ -1,7 +1,7 @@
 import Debug from 'debug';
 import { lotOccupancyDB as databasePath } from '../data/databasePaths.js';
-import { addLotOccupantType } from '../database/addLotOccupantType.js';
-import { addOccupancyTypeField } from '../database/addOccupancyTypeField.js';
+import addLotOccupantType from '../database/addLotOccupantType.js';
+import addOccupancyTypeField from '../database/addOccupancyTypeField.js';
 import { addRecord } from '../database/addRecord.js';
 import { initializeDatabase } from './initializer.database.js';
 const debug = Debug('lot-occupancy-system:initialize');
@@ -59,7 +59,7 @@ export async function initializeCemeteryDatabase() {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: 'Death Date',
         occupancyTypeFieldValues: '',
-        pattern: '\\d{4}([\\/-]\\d{2}){2}',
+        pattern: String.raw `\d{4}([\/-]\d{2}){2}`,
         isRequired: '',
         minimumLength: 10,
         maximumLength: 10,
@@ -73,7 +73,7 @@ export async function initializeCemeteryDatabase() {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: 'Death Age',
         occupancyTypeFieldValues: '',
-        pattern: '\\d+',
+        pattern: String.raw `\d+`,
         isRequired: '',
         minimumLength: 1,
         maximumLength: 3,
@@ -123,7 +123,7 @@ export async function initializeCemeteryDatabase() {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: 'Funeral Date',
         occupancyTypeFieldValues: '',
-        pattern: '\\d{4}([\\/-]\\d{2}){2}',
+        pattern: String.raw `\d{4}([\/-]\d{2}){2}`,
         isRequired: '',
         minimumLength: 10,
         maximumLength: 10,

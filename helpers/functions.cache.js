@@ -1,6 +1,5 @@
 import cluster from 'node:cluster';
 import Debug from 'debug';
-import * as configFunctions from './functions.config.js';
 import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from '../database/getLotOccupantTypes.js';
 import { getLotStatuses as getLotStatusesFromDatabase } from '../database/getLotStatuses.js';
 import { getLotTypes as getLotTypesFromDatabase } from '../database/getLotTypes.js';
@@ -8,6 +7,7 @@ import { getOccupancyTypeFields as getOccupancyTypeFieldsFromDatabase } from '..
 import { getOccupancyTypes as getOccupancyTypesFromDatabase } from '../database/getOccupancyTypes.js';
 import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from '../database/getWorkOrderMilestoneTypes.js';
 import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from '../database/getWorkOrderTypes.js';
+import * as configFunctions from './functions.config.js';
 const debug = Debug(`lot-occupancy-system:functions.cache:${process.pid}`);
 let lotOccupantTypes;
 export async function getLotOccupantTypes() {

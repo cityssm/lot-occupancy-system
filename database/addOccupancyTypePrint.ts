@@ -2,14 +2,14 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 import { acquireConnection } from './pool.js'
 
-interface OccupancyTypePrintForm {
+export interface AddOccupancyTypePrintForm {
   occupancyTypeId: string | number
   printEJS: string
   orderNumber?: number
 }
 
-export async function addOccupancyTypePrint(
-  occupancyTypePrintForm: OccupancyTypePrintForm,
+export default async function addOccupancyTypePrint(
+  occupancyTypePrintForm: AddOccupancyTypePrintForm,
   user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
@@ -59,5 +59,3 @@ export async function addOccupancyTypePrint(
 
   return result.changes > 0
 }
-
-export default addOccupancyTypePrint

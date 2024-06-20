@@ -2,7 +2,7 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 import { acquireConnection } from './pool.js'
 
-interface AddLotTypeFieldForm {
+export interface AddLotTypeFieldForm {
   lotTypeId: string | number
   lotTypeField: string
   lotTypeFieldValues?: string
@@ -13,7 +13,7 @@ interface AddLotTypeFieldForm {
   orderNumber?: number
 }
 
-export async function addLotTypeField(
+export default async function addLotTypeField(
   lotTypeFieldForm: AddLotTypeFieldForm,
   user: User
 ): Promise<number> {
@@ -53,5 +53,3 @@ export async function addLotTypeField(
 
   return result.lastInsertRowid as number
 }
-
-export default addLotTypeField

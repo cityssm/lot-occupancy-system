@@ -7,7 +7,7 @@ import {
 
 import { acquireConnection } from './pool.js'
 
-interface AddLotOccupancyTransactionForm {
+export interface AddLotOccupancyTransactionForm {
   lotOccupancyId: string | number
   transactionDateString?: string
   transactionTimeString?: string
@@ -16,7 +16,7 @@ interface AddLotOccupancyTransactionForm {
   transactionNote: string
 }
 
-export async function addLotOccupancyTransaction(
+export default async function addLotOccupancyTransaction(
   lotOccupancyTransactionForm: AddLotOccupancyTransactionForm,
   user: User
 ): Promise<number> {
@@ -78,5 +78,3 @@ export async function addLotOccupancyTransaction(
 
   return transactionIndex
 }
-
-export default addLotOccupancyTransaction

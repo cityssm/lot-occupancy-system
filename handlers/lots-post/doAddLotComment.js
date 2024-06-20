@@ -1,4 +1,4 @@
-import { addLotComment } from '../../database/addLotComment.js';
+import addLotComment from '../../database/addLotComment.js';
 import { getLotComments } from '../../database/getLotComments.js';
 export async function handler(request, response) {
     await addLotComment(request.body, request.session.user);

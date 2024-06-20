@@ -1,4 +1,4 @@
-import { addOrUpdateLotField } from './addOrUpdateLotField.js';
+import addOrUpdateLotField from './addOrUpdateLotField.js';
 import { deleteLotField } from './deleteLotField.js';
 import { acquireConnection } from './pool.js';
 export async function updateLot(lotForm, user) {

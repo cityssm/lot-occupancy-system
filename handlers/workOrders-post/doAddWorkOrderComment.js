@@ -1,4 +1,4 @@
-import { addWorkOrderComment } from '../../database/addWorkOrderComment.js';
+import addWorkOrderComment from '../../database/addWorkOrderComment.js';
 import { getWorkOrderComments } from '../../database/getWorkOrderComments.js';
 export async function handler(request, response) {
     await addWorkOrderComment(request.body, request.session.user);

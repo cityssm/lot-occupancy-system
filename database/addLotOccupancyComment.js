@@ -1,6 +1,6 @@
 import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
-export async function addLotOccupancyComment(commentForm, user) {
+export default async function addLotOccupancyComment(commentForm, user) {
     const rightNow = new Date();
     let lotOccupancyCommentDate;
     let lotOccupancyCommentTime;
@@ -25,4 +25,3 @@ export async function addLotOccupancyComment(commentForm, user) {
     database.release();
     return result.lastInsertRowid;
 }
-export default addLotOccupancyComment;

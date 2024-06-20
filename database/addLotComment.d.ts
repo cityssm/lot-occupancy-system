@@ -1,6 +1,5 @@
-interface AddLotCommentForm {
+export interface AddLotCommentForm {
     lotId: string;
     lotComment: string;
 }
-export declare function addLotComment(lotCommentForm: AddLotCommentForm, user: User): Promise<number>;
-export default addLotComment;
+export default function addLotComment(lotCommentForm: AddLotCommentForm, user: User): Promise<number>;

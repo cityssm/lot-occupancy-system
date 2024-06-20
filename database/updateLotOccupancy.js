@@ -1,5 +1,5 @@
 import { dateStringToInteger } from '@cityssm/utils-datetime';
-import { addOrUpdateLotOccupancyField } from './addOrUpdateLotOccupancyField.js';
+import addOrUpdateLotOccupancyField from './addOrUpdateLotOccupancyField.js';
 import { deleteLotOccupancyField } from './deleteLotOccupancyField.js';
 import { acquireConnection } from './pool.js';
 export async function updateLotOccupancy(lotOccupancyForm, user) {

@@ -1,8 +1,8 @@
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
-import { addWorkOrderLotOccupancy } from './addWorkOrderLotOccupancy.js';
+import addWorkOrderLotOccupancy from './addWorkOrderLotOccupancy.js';
 import { getNextWorkOrderNumber } from './getNextWorkOrderNumber.js';
 import { acquireConnection } from './pool.js';
-export async function addWorkOrder(workOrderForm, user) {
+export default async function addWorkOrder(workOrderForm, user) {
     const database = await acquireConnection();
     const rightNow = new Date();
     let workOrderNumber = workOrderForm.workOrderNumber;
@@ -31,4 +31,3 @@ export async function addWorkOrder(workOrderForm, user) {
     database.release();
     return workOrderId;
 }
-export default addWorkOrder;

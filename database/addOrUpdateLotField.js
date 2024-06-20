@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function addOrUpdateLotField(lotFieldForm, user, connectedDatabase) {
+export default async function addOrUpdateLotField(lotFieldForm, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     let result = database
@@ -26,4 +26,3 @@ export async function addOrUpdateLotField(lotFieldForm, user, connectedDatabase)
     }
     return result.changes > 0;
 }
-export default addOrUpdateLotField;

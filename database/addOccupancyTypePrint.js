@@ -1,6 +1,6 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
-export async function addOccupancyTypePrint(occupancyTypePrintForm, user) {
+export default async function addOccupancyTypePrint(occupancyTypePrintForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     let result = database
@@ -25,4 +25,3 @@ export async function addOccupancyTypePrint(occupancyTypePrintForm, user) {
     clearCacheByTableName('OccupancyTypePrints');
     return result.changes > 0;
 }
-export default addOccupancyTypePrint;

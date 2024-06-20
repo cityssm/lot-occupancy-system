@@ -1,6 +1,5 @@
-interface AddWorkOrderForm {
+export interface CloseWorkOrderForm {
     workOrderId: number | string;
     workOrderCloseDateString?: string;
 }
-export declare function closeWorkOrder(workOrderForm: AddWorkOrderForm, user: User): Promise<boolean>;
-export default closeWorkOrder;
+export default function closeWorkOrder(workOrderForm: CloseWorkOrderForm, user: User): Promise<boolean>;

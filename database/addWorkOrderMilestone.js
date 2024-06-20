@@ -1,6 +1,6 @@
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
-export async function addWorkOrderMilestone(milestoneForm, user) {
+export default async function addWorkOrderMilestone(milestoneForm, user) {
     const rightNowMillis = Date.now();
     const database = await acquireConnection();
     const result = database
@@ -26,4 +26,3 @@ export async function addWorkOrderMilestone(milestoneForm, user) {
     database.release();
     return result.lastInsertRowid;
 }
-export default addWorkOrderMilestone;

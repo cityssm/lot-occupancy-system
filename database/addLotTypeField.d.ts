@@ -1,4 +1,4 @@
-interface AddLotTypeFieldForm {
+export interface AddLotTypeFieldForm {
     lotTypeId: string | number;
     lotTypeField: string;
     lotTypeFieldValues?: string;
@@ -8,5 +8,4 @@ interface AddLotTypeFieldForm {
     maximumLength: string | number;
     orderNumber?: number;
 }
-export declare function addLotTypeField(lotTypeFieldForm: AddLotTypeFieldForm, user: User): Promise<number>;
-export default addLotTypeField;
+export default function addLotTypeField(lotTypeFieldForm: AddLotTypeFieldForm, user: User): Promise<number>;

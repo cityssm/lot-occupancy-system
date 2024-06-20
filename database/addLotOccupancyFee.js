@@ -2,7 +2,7 @@ import { calculateFeeAmount, calculateTaxAmount } from '../helpers/functions.fee
 import { getFee } from './getFee.js';
 import { getLotOccupancy } from './getLotOccupancy.js';
 import { acquireConnection } from './pool.js';
-export async function addLotOccupancyFee(lotOccupancyFeeForm, user) {
+export default async function addLotOccupancyFee(lotOccupancyFeeForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     let feeAmount;
@@ -80,4 +80,3 @@ export async function addLotOccupancyFee(lotOccupancyFeeForm, user) {
     database.release();
     return result.changes > 0;
 }
-export default addLotOccupancyFee;

@@ -1,6 +1,6 @@
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
-export async function addWorkOrderComment(workOrderCommentForm, user) {
+export default async function addWorkOrderComment(workOrderCommentForm, user) {
     const database = await acquireConnection();
     const rightNow = new Date();
     const result = database
@@ -15,4 +15,3 @@ export async function addWorkOrderComment(workOrderCommentForm, user) {
     database.release();
     return result.lastInsertRowid;
 }
-export default addWorkOrderComment;

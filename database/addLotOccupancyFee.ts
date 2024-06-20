@@ -8,7 +8,7 @@ import { getFee } from './getFee.js'
 import { getLotOccupancy } from './getLotOccupancy.js'
 import { acquireConnection } from './pool.js'
 
-interface AddLotOccupancyFeeForm {
+export interface AddLotOccupancyFeeForm {
   lotOccupancyId: number | string
   feeId: number | string
   quantity: number | string
@@ -16,7 +16,7 @@ interface AddLotOccupancyFeeForm {
   taxAmount?: number | string
 }
 
-export async function addLotOccupancyFee(
+export default async function addLotOccupancyFee(
   lotOccupancyFeeForm: AddLotOccupancyFeeForm,
   user: User
 ): Promise<boolean> {
@@ -154,5 +154,3 @@ export async function addLotOccupancyFee(
 
   return result.changes > 0
 }
-
-export default addLotOccupancyFee

@@ -1,6 +1,6 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
-export async function addOccupancyTypeField(occupancyTypeFieldForm, user) {
+export default async function addOccupancyTypeField(occupancyTypeFieldForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const result = database
@@ -17,4 +17,3 @@ export async function addOccupancyTypeField(occupancyTypeFieldForm, user) {
     clearCacheByTableName('OccupancyTypeFields');
     return result.lastInsertRowid;
 }
-export default addOccupancyTypeField;

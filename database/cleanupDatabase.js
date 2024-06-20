@@ -1,6 +1,6 @@
 import * as configFunctions from '../helpers/functions.config.js';
 import { acquireConnection } from './pool.js';
-export async function cleanupDatabase(user) {
+export default async function cleanupDatabase(user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const recordDeleteTimeMillisMin = rightNowMillis -
@@ -234,4 +234,3 @@ export async function cleanupDatabase(user) {
         purgedRecordCount
     };
 }
-export default cleanupDatabase;

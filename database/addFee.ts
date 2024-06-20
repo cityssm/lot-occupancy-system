@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js'
 
-interface AddFeeForm {
+export interface AddFeeForm {
   feeCategoryId: string
   feeName: string
   feeDescription: string
@@ -17,7 +17,10 @@ interface AddFeeForm {
   orderNumber?: number
 }
 
-export async function addFee(feeForm: AddFeeForm, user: User): Promise<number> {
+export default async function addFee(
+  feeForm: AddFeeForm,
+  user: User
+): Promise<number> {
   const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
@@ -61,5 +64,3 @@ export async function addFee(feeForm: AddFeeForm, user: User): Promise<number> {
 
   return result.lastInsertRowid as number
 }
-
-export default addFee

@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js'
 
-interface AddMapForm {
+export interface AddMapForm {
   mapName: string
   mapDescription: string
   mapSVG: string
@@ -14,7 +14,10 @@ interface AddMapForm {
   mapPhoneNumber: string
 }
 
-export async function addMap(mapForm: AddMapForm, user: User): Promise<number> {
+export default async function addMap(
+  mapForm: AddMapForm,
+  user: User
+): Promise<number> {
   const database = await acquireConnection()
 
   const rightNowMillis = Date.now()
@@ -53,5 +56,3 @@ export async function addMap(mapForm: AddMapForm, user: User): Promise<number> {
 
   return result.lastInsertRowid as number
 }
-
-export default addMap

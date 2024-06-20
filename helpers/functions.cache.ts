@@ -1,15 +1,7 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/indent */
-
 import cluster from 'node:cluster'
 
 import Debug from 'debug'
 
-import type { ClearCacheWorkerMessage } from '../types/applicationTypes.js'
-// eslint-disable-next-line import/namespace
-import type * as recordTypes from '../types/recordTypes.js'
-
-import * as configFunctions from './functions.config.js'
 import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from '../database/getLotOccupantTypes.js'
 import { getLotStatuses as getLotStatusesFromDatabase } from '../database/getLotStatuses.js'
 import { getLotTypes as getLotTypesFromDatabase } from '../database/getLotTypes.js'
@@ -17,6 +9,10 @@ import { getOccupancyTypeFields as getOccupancyTypeFieldsFromDatabase } from '..
 import { getOccupancyTypes as getOccupancyTypesFromDatabase } from '../database/getOccupancyTypes.js'
 import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from '../database/getWorkOrderMilestoneTypes.js'
 import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from '../database/getWorkOrderTypes.js'
+import type { ClearCacheWorkerMessage } from '../types/applicationTypes.js'
+import type * as recordTypes from '../types/recordTypes.js'
+
+import * as configFunctions from './functions.config.js'
 
 const debug = Debug(`lot-occupancy-system:functions.cache:${process.pid}`)
 

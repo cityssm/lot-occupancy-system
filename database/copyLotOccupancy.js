@@ -1,9 +1,9 @@
 import { dateToString } from '@cityssm/utils-datetime';
-import { addLotOccupancy } from './addLotOccupancy.js';
-import { addLotOccupancyOccupant } from './addLotOccupancyOccupant.js';
+import addLotOccupancy from './addLotOccupancy.js';
+import addLotOccupancyOccupant from './addLotOccupancyOccupant.js';
 import { getLotOccupancy } from './getLotOccupancy.js';
 import { acquireConnection } from './pool.js';
-export async function copyLotOccupancy(oldLotOccupancyId, user) {
+export default async function copyLotOccupancy(oldLotOccupancyId, user) {
     const database = await acquireConnection();
     const oldLotOccupancy = (await getLotOccupancy(oldLotOccupancyId, database));
     const newLotOccupancyId = await addLotOccupancy({
@@ -40,4 +40,3 @@ export async function copyLotOccupancy(oldLotOccupancyId, user) {
     database.release();
     return newLotOccupancyId;
 }
-export default copyLotOccupancy;

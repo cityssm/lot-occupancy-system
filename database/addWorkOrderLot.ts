@@ -1,11 +1,11 @@
 import { acquireConnection } from './pool.js'
 
-interface AddWorkOrderLotForm {
+export interface AddWorkOrderLotForm {
   workOrderId: number | string
   lotId: number | string
 }
 
-export async function addWorkOrderLot(
+export default async function addWorkOrderLot(
   workOrderLotForm: AddWorkOrderLotForm,
   user: User
 ): Promise<boolean> {
@@ -70,5 +70,3 @@ export async function addWorkOrderLot(
 
   return true
 }
-
-export default addWorkOrderLot
