@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
 import { deleteRecord } from '../../database/deleteRecord.js'
+import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
 
 export async function handler(
   request: Request,
@@ -9,7 +9,7 @@ export async function handler(
 ): Promise<void> {
   const success = await deleteRecord(
     'WorkOrderMilestoneTypes',
-    request.body.workOrderMilestoneTypeId,
+    request.body.workOrderMilestoneTypeId as string,
     request.session.user as User
   )
 

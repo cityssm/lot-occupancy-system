@@ -2,7 +2,7 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 import { acquireConnection } from './pool.js'
 
-export async function deleteOccupancyTypePrint(
+export default async function deleteOccupancyTypePrint(
   occupancyTypeId: number | string,
   printEJS: string,
   user: User
@@ -25,5 +25,3 @@ export async function deleteOccupancyTypePrint(
 
   return result.changes > 0
 }
-
-export default deleteOccupancyTypePrint

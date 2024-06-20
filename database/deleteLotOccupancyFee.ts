@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js'
 
-export async function deleteLotOccupancyFee(
+export default async function deleteLotOccupancyFee(
   lotOccupancyId: number | string,
   feeId: number | string,
   user: User
@@ -21,5 +21,3 @@ export async function deleteLotOccupancyFee(
 
   return result.changes > 0
 }
-
-export default deleteLotOccupancyFee

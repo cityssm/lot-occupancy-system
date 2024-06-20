@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express'
 
+import { deleteRecord } from '../../database/deleteRecord.js'
 import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
-import { deleteRecord } from '../../database/deleteRecord.js'
 
 export async function handler(
   request: Request,
@@ -12,7 +12,7 @@ export async function handler(
 ): Promise<void> {
   const success = await deleteRecord(
     'OccupancyTypes',
-    request.body.occupancyTypeId,
+    request.body.occupancyTypeId as string,
     request.session.user as User
   )
 

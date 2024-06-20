@@ -1,4 +1,4 @@
-import { deleteLotOccupancyTransaction } from '../../database/deleteLotOccupancyTransaction.js';
+import deleteLotOccupancyTransaction from '../../database/deleteLotOccupancyTransaction.js';
 import { getLotOccupancyTransactions } from '../../database/getLotOccupancyTransactions.js';
 export async function handler(request, response) {
     const success = await deleteLotOccupancyTransaction(request.body.lotOccupancyId, request.body.transactionIndex, request.session.user);

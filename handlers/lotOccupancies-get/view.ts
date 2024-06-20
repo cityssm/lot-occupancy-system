@@ -20,7 +20,7 @@ export async function handler(
   }
 
   const occupancyTypePrints = await getOccupancyTypePrintsById(
-    lotOccupancy.occupancyTypeId!
+    lotOccupancy.occupancyTypeId
   )
 
   response.render('lotOccupancy-view', {

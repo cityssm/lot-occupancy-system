@@ -9,12 +9,12 @@ export async function handler(
 ): Promise<void> {
   const success = await deleteRecord(
     'LotOccupancyComments',
-    request.body.lotOccupancyCommentId,
+    request.body.lotOccupancyCommentId as string,
     request.session.user as User
   )
 
   const lotOccupancyComments = await getLotOccupancyComments(
-    request.body.lotOccupancyId
+    request.body.lotOccupancyId as string
   )
 
   response.json({

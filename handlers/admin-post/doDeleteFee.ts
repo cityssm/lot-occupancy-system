@@ -7,7 +7,11 @@ export async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const success = await deleteRecord('Fees', request.body.feeId, request.session.user as User)
+  const success = await deleteRecord(
+    'Fees',
+    request.body.feeId as string,
+    request.session.user as User
+  )
 
   const feeCategories = await getFeeCategories(
     {},

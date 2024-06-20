@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js'
 
-export async function deleteWorkOrderLot(
+export default async function deleteWorkOrderLot(
   workOrderId: number | string,
   lotId: number | string,
   user: User
@@ -21,5 +21,3 @@ export async function deleteWorkOrderLot(
 
   return result.changes > 0
 }
-
-export default deleteWorkOrderLot

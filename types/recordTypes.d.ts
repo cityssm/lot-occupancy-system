@@ -193,7 +193,7 @@ export interface LotOccupancyField extends OccupancyTypeField, Record {
 }
 export interface LotOccupancy extends Record {
     lotOccupancyId: number;
-    occupancyTypeId?: number;
+    occupancyTypeId: number;
     occupancyType?: string;
     printEJS?: string;
     lotId?: number;

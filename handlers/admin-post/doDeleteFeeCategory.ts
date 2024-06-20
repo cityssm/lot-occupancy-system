@@ -9,7 +9,7 @@ export async function handler(
 ): Promise<void> {
   const success = await deleteRecord(
     'FeeCategories',
-    request.body.feeCategoryId,
+    request.body.feeCategoryId as string,
     request.session.user as User
   )
 

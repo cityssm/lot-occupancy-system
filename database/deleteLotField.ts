@@ -2,7 +2,7 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import { acquireConnection } from './pool.js'
 
-export async function deleteLotField(
+export default async function deleteLotField(
   lotId: number | string,
   lotTypeFieldId: number | string,
   user: User,
@@ -26,5 +26,3 @@ export async function deleteLotField(
 
   return result.changes > 0
 }
-
-export default deleteLotField

@@ -25,7 +25,7 @@ export async function handler(request: Request, response: Response): Promise<voi
   }
 
   const occupancyTypePrints = await getOccupancyTypePrintsById(
-    lotOccupancy.occupancyTypeId!
+    lotOccupancy.occupancyTypeId
   )
 
   const occupancyTypes = await getOccupancyTypes()

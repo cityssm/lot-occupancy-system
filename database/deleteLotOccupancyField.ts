@@ -2,7 +2,7 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import { acquireConnection } from './pool.js'
 
-export async function deleteLotOccupancyField(
+export default async function deleteLotOccupancyField(
   lotOccupancyId: number | string,
   occupancyTypeFieldId: number | string,
   user: User,
@@ -18,12 +18,7 @@ export async function deleteLotOccupancyField(
         where lotOccupancyId = ?
         and occupancyTypeFieldId = ?`
     )
-    .run(
-      user.userName,
-      Date.now(),
-      lotOccupancyId,
-      occupancyTypeFieldId
-    )
+    .run(user.userName, Date.now(), lotOccupancyId, occupancyTypeFieldId)
 
   if (connectedDatabase === undefined) {
     database.release()
@@ -31,5 +26,3 @@ export async function deleteLotOccupancyField(
 
   return result.changes > 0
 }
-
-export default deleteLotOccupancyField

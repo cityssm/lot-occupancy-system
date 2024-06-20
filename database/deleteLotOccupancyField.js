@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function deleteLotOccupancyField(lotOccupancyId, occupancyTypeFieldId, user, connectedDatabase) {
+export default async function deleteLotOccupancyField(lotOccupancyId, occupancyTypeFieldId, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const result = database
         .prepare(`update LotOccupancyFields
@@ -13,4 +13,3 @@ export async function deleteLotOccupancyField(lotOccupancyId, occupancyTypeField
     }
     return result.changes > 0;
 }
-export default deleteLotOccupancyField;

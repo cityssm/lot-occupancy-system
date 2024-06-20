@@ -1,2 +1,1 @@
-export declare function deleteLotOccupancyFee(lotOccupancyId: number | string, feeId: number | string, user: User): Promise<boolean>;
-export default deleteLotOccupancyFee;
+export default function deleteLotOccupancyFee(lotOccupancyId: number | string, feeId: number | string, user: User): Promise<boolean>;

@@ -1,5 +1,5 @@
 import addOrUpdateLotField from './addOrUpdateLotField.js'
-import { deleteLotField } from './deleteLotField.js'
+import deleteLotField from './deleteLotField.js'
 import { acquireConnection } from './pool.js'
 
 interface UpdateLotForm {
