@@ -2,7 +2,6 @@ import assert from 'node:assert';
 import fs from 'node:fs';
 import { lotNameSortNameFunction } from '../data/config.cemetery.ssm.js';
 import * as cacheFunctions from '../helpers/functions.cache.js';
-import * as iconFunctions from '../helpers/functions.icons.js';
 import * as sqlFilterFunctions from '../helpers/functions.sqlFilters.js';
 import * as userFunctions from '../helpers/functions.user.js';
 describe('config.cemetery.ssm', () => {
@@ -137,12 +136,6 @@ describe('functions.cache', () => {
             const byBadName = await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(badName);
             assert.ok(byBadName === undefined);
         });
-    });
-});
-describe('functions.icons', () => {
-    it('returns a list of icon classes', async () => {
-        const iconClasses = await iconFunctions.getSolidIconClasses();
-        assert.ok(iconClasses.includes('save'));
     });
 });
 describe('functions.sqlFilters', () => {
