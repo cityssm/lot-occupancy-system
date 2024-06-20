@@ -4,13 +4,13 @@ import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer'
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import camelcase from 'camelcase'
 import * as ejs from 'ejs'
-import type { Request, Response, NextFunction } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
 import * as lotOccupancyFunctions from '../../helpers/functions.lotOccupancy.js'
 import {
-  getReportData,
-  getPdfPrintConfig
+  getPdfPrintConfig,
+  getReportData
 } from '../../helpers/functions.print.js'
 
 const attachmentOrInline = configFunctions.getProperty(
@@ -74,19 +74,11 @@ export async function handler(
       return
     }
 
-    const pdf = await convertHTMLToPDF(
-      ejsData,
-      {
-        format: 'letter',
-        printBackground: true,
-        preferCSSPageSize: true
-      },
-      undefined,
-      {
-        cacheBrowser: true,
-        remoteContent: false
-      }
-    )
+    const pdf = await convertHTMLToPDF(ejsData, {
+      format: 'letter',
+      printBackground: true,
+      preferCSSPageSize: true
+    })
 
     pdfCallbackFunction(pdf)
   }

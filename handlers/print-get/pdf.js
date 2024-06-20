@@ -5,7 +5,7 @@ import camelcase from 'camelcase';
 import * as ejs from 'ejs';
 import * as configFunctions from '../../helpers/functions.config.js';
 import * as lotOccupancyFunctions from '../../helpers/functions.lotOccupancy.js';
-import { getReportData, getPdfPrintConfig } from '../../helpers/functions.print.js';
+import { getPdfPrintConfig, getReportData } from '../../helpers/functions.print.js';
 const attachmentOrInline = configFunctions.getProperty('settings.printPdf.contentDisposition');
 export async function handler(request, response, next) {
     const printName = request.params.printName;
@@ -40,9 +40,6 @@ export async function handler(request, response, next) {
             format: 'letter',
             printBackground: true,
             preferCSSPageSize: true
-        }, undefined, {
-            cacheBrowser: true,
-            remoteContent: false
         });
         pdfCallbackFunction(pdf);
     }
