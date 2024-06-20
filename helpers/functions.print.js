@@ -1,7 +1,7 @@
-import * as configFunctions from './functions.config.js';
 import { getLot } from '../database/getLot.js';
 import { getLotOccupancy } from '../database/getLotOccupancy.js';
 import { getWorkOrder } from '../database/getWorkOrder.js';
+import * as configFunctions from './functions.config.js';
 const screenPrintConfigs = {
     lotOccupancy: {
         title: `${configFunctions.getProperty('aliases.lot')} ${configFunctions.getProperty('aliases.occupancy')} Print`,

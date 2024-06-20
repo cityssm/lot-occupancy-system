@@ -5,12 +5,12 @@ export function getLotNameWhereClause(lotName = '', lotNameSearchType, lotsTable
     if (lotName !== '') {
         switch (lotNameSearchType) {
             case 'startsWith': {
-                sqlWhereClause += ' and ' + lotsTableAlias + ".lotName like ? || '%'";
+                sqlWhereClause += ` and ${lotsTableAlias}.lotName like ? || '%'`;
                 sqlParameters.push(lotName);
                 break;
             }
             case 'endsWith': {
-                sqlWhereClause += ' and ' + lotsTableAlias + ".lotName like '%' || ?";
+                sqlWhereClause += ` and ${lotsTableAlias}.lotName like '%' || ?`;
                 sqlParameters.push(lotName);
                 break;
             }
