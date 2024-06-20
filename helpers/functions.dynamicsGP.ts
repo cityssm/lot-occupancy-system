@@ -1,9 +1,9 @@
 /* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 
 import {
-  DynamicsGP,
   type DiamondCashReceipt,
   type DiamondExtendedGPInvoice,
+  DynamicsGP,
   type GPInvoice
 } from '@cityssm/dynamics-gp'
 

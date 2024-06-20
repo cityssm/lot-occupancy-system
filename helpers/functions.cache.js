@@ -109,14 +109,14 @@ export async function getOccupancyTypeByOccupancyType(occupancyTypeString) {
 }
 export async function getOccupancyTypePrintsById(occupancyTypeId) {
     const occupancyType = await getOccupancyTypeById(occupancyTypeId);
-    if (occupancyType === undefined ||
-        (occupancyType.occupancyTypePrints ?? []).length === 0) {
+    if (occupancyType?.occupancyTypePrints === undefined ||
+        occupancyType.occupancyTypePrints.length === 0) {
         return [];
     }
     if (occupancyType.occupancyTypePrints.includes('*')) {
         return configFunctions.getProperty('settings.lotOccupancy.prints');
     }
-    return occupancyType.occupancyTypePrints;
+    return occupancyType.occupancyTypePrints ?? [];
 }
 function clearOccupancyTypesCache() {
     occupancyTypes = undefined;

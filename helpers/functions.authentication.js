@@ -43,8 +43,8 @@ const safeRedirects = new Set([
     '/workorders/outlook',
     '/reports'
 ]);
-const recordUrl = /^(\/(maps|lots|lotoccupancies|workorders)\/)\d+(\/edit)?$/;
-const printUrl = /^\/print\/(pdf|screen)\/[\d/=?A-Za-z-]+$/;
+const recordUrl = /^\/(?:maps|lots|lotoccupancies|workorders)\/\d+(?:\/edit)?$/;
+const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/;
 export function getSafeRedirectURL(possibleRedirectURL = '') {
     const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
     if (typeof possibleRedirectURL === 'string') {
@@ -58,5 +58,5 @@ export function getSafeRedirectURL(possibleRedirectURL = '') {
             return urlPrefix + urlToCheck;
         }
     }
-    return urlPrefix + '/dashboard/';
+    return `${urlPrefix}/dashboard/`;
 }

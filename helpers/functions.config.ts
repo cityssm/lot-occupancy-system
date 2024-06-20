@@ -62,6 +62,7 @@ configFallbackValues.set(
 )
 
 configFallbackValues.set(
+  // eslint-disable-next-line no-secrets/no-secrets
   'settings.lotOccupancy.occupancyEndDateIsRequired',
   true
 )

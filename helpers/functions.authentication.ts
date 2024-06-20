@@ -59,11 +59,9 @@ const safeRedirects = new Set([
   '/reports'
 ])
 
-// eslint-disable-next-line regexp/no-unused-capturing-group
-const recordUrl = /^(\/(maps|lots|lotoccupancies|workorders)\/)\d+(\/edit)?$/
+const recordUrl = /^\/(?:maps|lots|lotoccupancies|workorders)\/\d+(?:\/edit)?$/
 
-// eslint-disable-next-line regexp/no-unused-capturing-group
-const printUrl = /^\/print\/(pdf|screen)\/[\d/=?A-Za-z-]+$/
+const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/
 
 export function getSafeRedirectURL(possibleRedirectURL = ''): string {
   const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix')
@@ -84,5 +82,5 @@ export function getSafeRedirectURL(possibleRedirectURL = ''): string {
     }
   }
 
-  return urlPrefix + '/dashboard/'
+  return `${urlPrefix}/dashboard/`
 }

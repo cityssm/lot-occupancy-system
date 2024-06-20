@@ -198,17 +198,17 @@ export async function getOccupancyTypePrintsById(
   const occupancyType = await getOccupancyTypeById(occupancyTypeId)
 
   if (
-    occupancyType === undefined ||
-    (occupancyType.occupancyTypePrints ?? []).length === 0
+    occupancyType?.occupancyTypePrints === undefined ||
+    occupancyType.occupancyTypePrints.length === 0
   ) {
     return []
   }
 
-  if (occupancyType.occupancyTypePrints!.includes('*')) {
+  if (occupancyType.occupancyTypePrints.includes('*')) {
     return configFunctions.getProperty('settings.lotOccupancy.prints')
   }
 
-  return occupancyType.occupancyTypePrints!
+  return occupancyType.occupancyTypePrints ?? []
 }
 
 function clearOccupancyTypesCache(): void {
