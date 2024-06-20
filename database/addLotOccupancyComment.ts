@@ -50,7 +50,7 @@ export async function addLotOccupancyComment(
     .run(
       commentForm.lotOccupancyId,
       lotOccupancyCommentDate,
-      lotOccupancyCommentTime,
+      lotOccupancyCommentTime ?? 0,
       commentForm.lotOccupancyComment,
       user.userName,
       rightNow.getTime(),

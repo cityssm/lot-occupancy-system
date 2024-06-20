@@ -21,7 +21,7 @@ export async function addLotOccupancyComment(commentForm, user) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(commentForm.lotOccupancyId, lotOccupancyCommentDate, lotOccupancyCommentTime, commentForm.lotOccupancyComment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
+        .run(commentForm.lotOccupancyId, lotOccupancyCommentDate, lotOccupancyCommentTime ?? 0, commentForm.lotOccupancyComment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     database.release();
     return result.lastInsertRowid;
 }
