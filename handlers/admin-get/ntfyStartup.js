@@ -1,7 +1,7 @@
 import * as configFunctions from '../../helpers/functions.config.js';
 export function handler(_request, response) {
-    if (configFunctions.getProperty('application.ntfyStartup') === undefined) {
-        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
+    if (configFunctions.getConfigProperty('application.ntfyStartup') === undefined) {
+        response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
             '/dashboard/?error=ntfyNotConfigured');
         return;
     }

@@ -13,7 +13,7 @@ export async function handler(
   const lotStatuses = await getLotStatuses()
 
   response.render('lot-search', {
-    headTitle: `${configFunctions.getProperty('aliases.lot')} Search`,
+    headTitle: `${configFunctions.getConfigProperty('aliases.lot')} Search`,
     maps,
     lotTypes,
     lotStatuses,

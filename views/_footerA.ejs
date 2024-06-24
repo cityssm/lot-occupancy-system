@@ -4,7 +4,7 @@
     <div class="content has-text-right">
     <p class="has-text-grey-dark">
       <strong>
-      <%= configFunctions.getProperty("application.applicationName") %>
+      <%= configFunctions.getConfigProperty("application.applicationName") %>
       </strong><br />
       Build <%= buildNumber %>
     </p>
@@ -14,20 +14,20 @@
 <script>
   window.exports = window.exports || {};
   exports.aliases = {
-    map: "<%= configFunctions.getProperty('aliases.map') %>",
-    maps: "<%= configFunctions.getProperty('aliases.maps') %>",
-    lot: "<%= configFunctions.getProperty('aliases.lot') %>",
-    lots: "<%= configFunctions.getProperty('aliases.lots') %>",
-    occupancy: "<%= configFunctions.getProperty('aliases.occupancy') %>",
-    occupancies: "<%= configFunctions.getProperty('aliases.occupancies') %>",
-    occupancyStartDate: "<%= configFunctions.getProperty('aliases.occupancyStartDate') %>",
-    occupant: "<%= configFunctions.getProperty('aliases.occupant') %>",
-    occupants: "<%= configFunctions.getProperty('aliases.occupants') %>",
-    externalReceiptNumber: "<%= configFunctions.getProperty('aliases.externalReceiptNumber') %>",
-    workOrderOpenDate: "<%= configFunctions.getProperty('aliases.workOrderOpenDate') %>",
-    workOrderCloseDate: "<%= configFunctions.getProperty('aliases.workOrderCloseDate') %>"
+    map: "<%= configFunctions.getConfigProperty('aliases.map') %>",
+    maps: "<%= configFunctions.getConfigProperty('aliases.maps') %>",
+    lot: "<%= configFunctions.getConfigProperty('aliases.lot') %>",
+    lots: "<%= configFunctions.getConfigProperty('aliases.lots') %>",
+    occupancy: "<%= configFunctions.getConfigProperty('aliases.occupancy') %>",
+    occupancies: "<%= configFunctions.getConfigProperty('aliases.occupancies') %>",
+    occupancyStartDate: "<%= configFunctions.getConfigProperty('aliases.occupancyStartDate') %>",
+    occupant: "<%= configFunctions.getConfigProperty('aliases.occupant') %>",
+    occupants: "<%= configFunctions.getConfigProperty('aliases.occupants') %>",
+    externalReceiptNumber: "<%= configFunctions.getConfigProperty('aliases.externalReceiptNumber') %>",
+    workOrderOpenDate: "<%= configFunctions.getConfigProperty('aliases.workOrderOpenDate') %>",
+    workOrderCloseDate: "<%= configFunctions.getConfigProperty('aliases.workOrderCloseDate') %>"
   };
-  exports.dynamicsGPIntegrationIsEnabled = <%= configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled') %>;
+  exports.dynamicsGPIntegrationIsEnabled = <%= configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled') %>;
 </script>
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-js/bulma-js.js"></script>
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-webapp-js/cityssm.min.js"></script>

@@ -10,7 +10,7 @@ export async function handler(
   const lotTypes = await getLotTypes()
 
   response.render('admin-lotTypes', {
-    headTitle: `${configFunctions.getProperty('aliases.lot')} Type Management`,
+    headTitle: `${configFunctions.getConfigProperty('aliases.lot')} Type Management`,
     lotTypes
   })
 }

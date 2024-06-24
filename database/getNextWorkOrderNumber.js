@@ -2,7 +2,7 @@ import * as configFunctions from '../helpers/functions.config.js';
 import { acquireConnection } from './pool.js';
 export async function getNextWorkOrderNumber(connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
-    const paddingLength = configFunctions.getProperty('settings.workOrders.workOrderNumberLength');
+    const paddingLength = configFunctions.getConfigProperty('settings.workOrders.workOrderNumberLength');
     const currentYearString = new Date().getFullYear().toString();
     const regex = new RegExp('^' + currentYearString + '-\\d+$');
     database.function('userFn_matchesWorkOrderNumberSyntax', (workOrderNumber) => {

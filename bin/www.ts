@@ -15,11 +15,11 @@ const debug = Debug(`lot-occupancy-system:www:${process.pid}`)
 const directoryName = dirname(fileURLToPath(import.meta.url))
 
 const processCount = Math.min(
-  configFunctions.getProperty('application.maximumProcesses'),
+  configFunctions.getConfigProperty('application.maximumProcesses'),
   os.cpus().length
 )
 
-process.title = `${configFunctions.getProperty(
+process.title = `${configFunctions.getConfigProperty(
   'application.applicationName'
 )} (Primary)`
 
@@ -59,7 +59,7 @@ cluster.on('exit', (worker) => {
   cluster.fork()
 })
 
-const ntfyStartupConfig = configFunctions.getProperty('application.ntfyStartup')
+const ntfyStartupConfig = configFunctions.getConfigProperty('application.ntfyStartup')
 
 if (ntfyStartupConfig !== undefined) {
   const topic = ntfyStartupConfig.topic
@@ -67,14 +67,14 @@ if (ntfyStartupConfig !== undefined) {
 
   const ntfyStartupMessage: NtfyMessageOptions = {
     topic,
-    title: configFunctions.getProperty('application.applicationName'),
+    title: configFunctions.getConfigProperty('application.applicationName'),
     message: 'Application Started',
     tags: ['arrow_up']
   }
 
   const ntfyShutdownMessage: NtfyMessageOptions = {
     topic,
-    title: configFunctions.getProperty('application.applicationName'),
+    title: configFunctions.getConfigProperty('application.applicationName'),
     message: 'Application Shut Down',
     tags: ['arrow_down']
   }

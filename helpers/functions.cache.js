@@ -114,7 +114,7 @@ export async function getOccupancyTypePrintsById(occupancyTypeId) {
         return [];
     }
     if (occupancyType.occupancyTypePrints.includes('*')) {
-        return configFunctions.getProperty('settings.lotOccupancy.prints');
+        return configFunctions.getConfigProperty('settings.lotOccupancy.prints');
     }
     return occupancyType.occupancyTypePrints ?? [];
 }

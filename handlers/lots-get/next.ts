@@ -13,7 +13,7 @@ export async function handler(
 
   if (nextLotId === undefined) {
     response.redirect(
-      `${configFunctions.getProperty(
+      `${configFunctions.getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/lots/?error=noNextLotIdFound`
     )
@@ -21,7 +21,7 @@ export async function handler(
   }
 
   response.redirect(
-    `${configFunctions.getProperty(
+    `${configFunctions.getConfigProperty(
       'reverseProxy.urlPrefix'
     )}/lots/${nextLotId.toString()}`
   )

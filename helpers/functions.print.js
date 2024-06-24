@@ -4,7 +4,7 @@ import { getWorkOrder } from '../database/getWorkOrder.js';
 import * as configFunctions from './functions.config.js';
 const screenPrintConfigs = {
     lotOccupancy: {
-        title: `${configFunctions.getProperty('aliases.lot')} ${configFunctions.getProperty('aliases.occupancy')} Print`,
+        title: `${configFunctions.getConfigProperty('aliases.lot')} ${configFunctions.getConfigProperty('aliases.occupancy')} Print`,
         params: ['lotOccupancyId']
     }
 };

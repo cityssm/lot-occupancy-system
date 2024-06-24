@@ -6,21 +6,21 @@ import * as ejs from 'ejs';
 import * as configFunctions from '../../helpers/functions.config.js';
 import * as lotOccupancyFunctions from '../../helpers/functions.lotOccupancy.js';
 import { getPdfPrintConfig, getReportData } from '../../helpers/functions.print.js';
-const attachmentOrInline = configFunctions.getProperty('settings.printPdf.contentDisposition');
+const attachmentOrInline = configFunctions.getConfigProperty('settings.printPdf.contentDisposition');
 export async function handler(request, response, next) {
     const printName = request.params.printName;
     if (!configFunctions
-        .getProperty('settings.lotOccupancy.prints')
+        .getConfigProperty('settings.lotOccupancy.prints')
         .includes(`pdf/${printName}`) &&
         !configFunctions
-            .getProperty('settings.workOrders.prints')
+            .getConfigProperty('settings.workOrders.prints')
             .includes(`pdf/${printName}`)) {
-        response.redirect(`${configFunctions.getProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotAllowed`);
+        response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotAllowed`);
         return;
     }
     const printConfig = getPdfPrintConfig(printName);
     if (printConfig === undefined) {
-        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
+        response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
             '/dashboard/?error=printConfigNotFound');
         return;
     }

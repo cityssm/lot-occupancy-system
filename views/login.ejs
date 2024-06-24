@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html class="has-background-grey" id="is-login-page" lang="en" style="background-image:url('<%= urlPrefix + configFunctions.getProperty("application.backgroundURL") %>')">
+<html class="has-background-grey" id="is-login-page" lang="en" style="background-image:url('<%= urlPrefix + configFunctions.getConfigProperty("application.backgroundURL") %>')">
 
 <head>
   <title>
     Login:
-    <%= configFunctions.getProperty("application.applicationName") %>
+    <%= configFunctions.getConfigProperty("application.applicationName") %>
   </title>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <link rel="icon" href="<%= urlPrefix + configFunctions.getProperty("application.logoURL") %>" />
+  <link rel="icon" href="<%= urlPrefix + configFunctions.getConfigProperty("application.logoURL") %>" />
 
   <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/style.css" />
 </head>
@@ -21,11 +21,11 @@
       <main class="box mx-3 my-3">
         <div class="columns is-vcentered">
           <div class="column has-text-centered">
-            <img src="<%= urlPrefix + configFunctions.getProperty("application.logoURL") %>" alt="" style="max-height:400px" />
+            <img src="<%= urlPrefix + configFunctions.getConfigProperty("application.logoURL") %>" alt="" style="max-height:400px" />
           </div>
           <div class="column">
               <h1 class="title is-3 has-text-centered">
-              <%= configFunctions.getProperty("application.applicationName") %>
+              <%= configFunctions.getConfigProperty("application.applicationName") %>
               </h1>
               <form id="form--login" method="post" action="<%= urlPrefix %>/login">
                 <input name="_csrf" type="hidden" value="<%= csrfToken %>" />
@@ -33,7 +33,7 @@
 
                 <div class="field has-addons">
                   <div class="control">
-                    <span class="button is-static"><%= configFunctions.getProperty("application.userDomain") %>\</span>
+                    <span class="button is-static"><%= configFunctions.getConfigProperty("application.userDomain") %>\</span>
                   </div>
                   <div class="control is-expanded">
                     <input class="input" id="login--userName" name="userName" type="text" placeholder="User Name" value="<%= userName %>" aria-label="User Name" autofocus required />

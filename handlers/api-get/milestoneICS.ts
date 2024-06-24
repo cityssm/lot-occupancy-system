@@ -12,7 +12,7 @@ import { getPrintConfig } from '../../helpers/functions.print.js'
 import type { WorkOrderMilestone } from '../../types/recordTypes.js'
 
 const calendarCompany = 'cityssm.github.io'
-const calendarProduct = configFunctions.getProperty(
+const calendarProduct = configFunctions.getConfigProperty(
   'application.applicationName'
 )
 
@@ -29,10 +29,10 @@ function getUrlRoot(request: Request): string {
   return (
     'http://' +
     request.hostname +
-    (configFunctions.getProperty('application.httpPort') === 80
+    (configFunctions.getConfigProperty('application.httpPort') === 80
       ? ''
-      : `:${configFunctions.getProperty('application.httpPort')}`) +
-    configFunctions.getProperty('reverseProxy.urlPrefix')
+      : `:${configFunctions.getConfigProperty('application.httpPort')}`) +
+    configFunctions.getConfigProperty('reverseProxy.urlPrefix')
   )
 }
 
@@ -88,17 +88,17 @@ function buildEventDescriptionHTML_occupancies(
     const urlRoot = getUrlRoot(request)
 
     descriptionHTML = `<h2>
-      Related ${escapeHTML(configFunctions.getProperty('aliases.occupancies'))}
+      Related ${escapeHTML(configFunctions.getConfigProperty('aliases.occupancies'))}
       </h2>
       <table border="1">
       <thead><tr>
       <th>${escapeHTML(
-        configFunctions.getProperty('aliases.occupancy')
+        configFunctions.getConfigProperty('aliases.occupancy')
       )} Type</th>
-      <th>${escapeHTML(configFunctions.getProperty('aliases.lot'))}</th>
+      <th>${escapeHTML(configFunctions.getConfigProperty('aliases.lot'))}</th>
       <th>Start Date</th>
       <th>End Date</th>
-      <th>${escapeHTML(configFunctions.getProperty('aliases.occupants'))}</th>
+      <th>${escapeHTML(configFunctions.getConfigProperty('aliases.occupants'))}</th>
       </tr></thead>
       <tbody>`
 
@@ -152,17 +152,17 @@ function buildEventDescriptionHTML_lots(
     const urlRoot = getUrlRoot(request)
 
     descriptionHTML += `<h2>
-      Related ${escapeHTML(configFunctions.getProperty('aliases.lots'))}
+      Related ${escapeHTML(configFunctions.getConfigProperty('aliases.lots'))}
       </h2>
       <table border="1"><thead><tr>
       <th>
-        ${escapeHTML(configFunctions.getProperty('aliases.lot'))} Type
+        ${escapeHTML(configFunctions.getConfigProperty('aliases.lot'))} Type
       </th>
       <th>
-        ${escapeHTML(configFunctions.getProperty('aliases.map'))}
+        ${escapeHTML(configFunctions.getConfigProperty('aliases.map'))}
       </th>
       <th>
-        ${escapeHTML(configFunctions.getProperty('aliases.lot'))} Type
+        ${escapeHTML(configFunctions.getConfigProperty('aliases.lot'))} Type
       </th>
       <th>Status</th>
       </tr></thead>
@@ -194,7 +194,7 @@ function buildEventDescriptionHTML_prints(
 ): string {
   let descriptionHTML = ''
 
-  const prints = configFunctions.getProperty('settings.workOrders.prints')
+  const prints = configFunctions.getConfigProperty('settings.workOrders.prints')
 
   if (prints.length > 0) {
     const urlRoot = getUrlRoot(request)
@@ -395,7 +395,7 @@ export async function handler(
               name: `${occupant.occupantName ?? ''} ${
                 occupant.occupantFamilyName ?? ''
               }`,
-              email: configFunctions.getProperty(
+              email: configFunctions.getConfigProperty(
                 'settings.workOrders.calendarEmailAddress'
               )
             })
@@ -404,7 +404,7 @@ export async function handler(
               name: `${occupant.occupantName ?? ''} ${
                 occupant.occupantFamilyName ?? ''
               }`,
-              email: configFunctions.getProperty(
+              email: configFunctions.getConfigProperty(
                 'settings.workOrders.calendarEmailAddress'
               )
             })
@@ -415,7 +415,7 @@ export async function handler(
     } else {
       calendarEvent.organizer({
         name: milestone.recordCreate_userName!,
-        email: configFunctions.getProperty(
+        email: configFunctions.getConfigProperty(
           'settings.workOrders.calendarEmailAddress'
         )
       })

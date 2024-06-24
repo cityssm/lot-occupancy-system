@@ -3,9 +3,9 @@ import type { Request, Response } from 'express'
 import * as configFunctions from '../../helpers/functions.config.js'
 
 export function handler(_request: Request, response: Response): void {
-  if (configFunctions.getProperty('application.ntfyStartup') === undefined) {
+  if (configFunctions.getConfigProperty('application.ntfyStartup') === undefined) {
     response.redirect(
-      configFunctions.getProperty('reverseProxy.urlPrefix') +
+      configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
         '/dashboard/?error=ntfyNotConfigured'
     )
     return

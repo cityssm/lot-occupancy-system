@@ -35,7 +35,7 @@ export async function apiKeyIsValid(request: APIRequest): Promise<boolean> {
   }
 
   return configFunctions
-    .getProperty('users.canLogin')
+    .getConfigProperty('users.canLogin')
     .some((currentUserName) => {
       return userName === currentUserName.toLowerCase()
     })

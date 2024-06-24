@@ -33,12 +33,12 @@ databaseInitializer.initializeDatabase();
 const _dirname = '.';
 export const app = express();
 app.disable('X-Powered-By');
-if (!configFunctions.getProperty('reverseProxy.disableEtag')) {
+if (!configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
     app.set('etag', false);
 }
 app.set('views', path.join(_dirname, 'views'));
 app.set('view engine', 'ejs');
-if (!configFunctions.getProperty('reverseProxy.disableCompression')) {
+if (!configFunctions.getConfigProperty('reverseProxy.disableCompression')) {
     app.use(compression());
 }
 app.use((request, _response, next) => {
@@ -57,7 +57,7 @@ app.use(rateLimit({
     windowMs: 10_000,
     max: useTestDatabases ? 1_000_000 : 200
 }));
-const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
+const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
 if (urlPrefix !== '') {
     debug(`urlPrefix = ${urlPrefix}`);
 }
@@ -68,7 +68,7 @@ app.use(`${urlPrefix}/lib/cityssm-bulma-webapp-js`, express.static(path.join('no
 app.use(`${urlPrefix}/lib/fa`, express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free')));
 app.use(`${urlPrefix}/lib/leaflet`, express.static(path.join('node_modules', 'leaflet', 'dist')));
 app.use(`${urlPrefix}/lib/randomcolor/randomColor.js`, express.static(path.join('node_modules', 'randomcolor', 'randomColor.js')));
-const sessionCookieName = configFunctions.getProperty('session.cookieName');
+const sessionCookieName = configFunctions.getConfigProperty('session.cookieName');
 const FileStoreSession = FileStore(session);
 app.use(session({
     store: new FileStoreSession({
@@ -77,12 +77,12 @@ app.use(session({
         retries: 20
     }),
     name: sessionCookieName,
-    secret: configFunctions.getProperty('session.secret'),
+    secret: configFunctions.getConfigProperty('session.secret'),
     resave: true,
     saveUninitialized: false,
     rolling: true,
     cookie: {
-        maxAge: configFunctions.getProperty('session.maxAgeMillis'),
+        maxAge: configFunctions.getConfigProperty('session.maxAgeMillis'),
         sameSite: 'strict'
     }
 }));
@@ -111,7 +111,7 @@ app.use((request, response, next) => {
     response.locals.dateTimeFunctions = dateTimeFns;
     response.locals.stringFunctions = stringFns;
     response.locals.htmlFunctions = htmlFns;
-    response.locals.urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
+    response.locals.urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
     next();
 });
 app.get(`${urlPrefix}/`, sessionChecker, (_request, response) => {
@@ -126,7 +126,7 @@ app.use(`${urlPrefix}/lotOccupancies`, sessionChecker, routerLotOccupancies);
 app.use(`${urlPrefix}/workOrders`, sessionChecker, routerWorkOrders);
 app.use(`${urlPrefix}/reports`, sessionChecker, routerReports);
 app.use(`${urlPrefix}/admin`, sessionChecker, permissionHandlers.adminGetHandler, routerAdmin);
-if (configFunctions.getProperty('session.doKeepAlive')) {
+if (configFunctions.getConfigProperty('session.doKeepAlive')) {
     app.all(`${urlPrefix}/keepAlive`, (_request, response) => {
         response.json(true);
     });

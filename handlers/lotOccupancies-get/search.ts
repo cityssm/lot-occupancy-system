@@ -16,7 +16,7 @@ export async function handler(
   const occupancyTypes = await getOccupancyTypes()
 
   response.render('lotOccupancy-search', {
-    headTitle: `${configFunctions.getProperty('aliases.occupancy')} Search`,
+    headTitle: `${configFunctions.getConfigProperty('aliases.occupancy')} Search`,
     maps,
     lotTypes,
     occupancyTypes,

@@ -209,12 +209,12 @@
                 <h2 class="is-10pt is-capitalized">Details</h2>
                 <table class="is-10pt data-table">
                   <tr>
-                    <td><%= configFunctions.getProperty("aliases.map") %></td>
-                    <td><%= lotOccupancy.mapName ?? '(No ' + configFunctions.getProperty("aliases.map") + ')' %></td>
+                    <td><%= configFunctions.getConfigProperty("aliases.map") %></td>
+                    <td><%= lotOccupancy.mapName ?? '(No ' + configFunctions.getConfigProperty("aliases.map") + ')' %></td>
                   </tr>
                   <tr>
-                    <td><%= configFunctions.getProperty("aliases.lot") %></td>
-                    <td><%= lotOccupancy.lotName ?? '(No ' + configFunctions.getProperty("aliases.lot") + ')' %></td>
+                    <td><%= configFunctions.getConfigProperty("aliases.lot") %></td>
+                    <td><%= lotOccupancy.lotName ?? '(No ' + configFunctions.getConfigProperty("aliases.lot") + ')' %></td>
                   </tr>
                   <% 
                     for (const field of lotOccupancy.lotOccupancyFields) { 

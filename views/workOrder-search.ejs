@@ -77,7 +77,7 @@
                 </div>  
                 <div class="column">
                     <div class="field">
-                        <label class="label" for="searchFilter--workOrderOpenDateString"><%= configFunctions.getProperty("aliases.workOrderOpenDate") %></label>
+                        <label class="label" for="searchFilter--workOrderOpenDateString"><%= configFunctions.getConfigProperty("aliases.workOrderOpenDate") %></label>
                         <div class="control is-expanded has-icons-left">
                             <input class="input" id="searchFilter--workOrderOpenDateString" name="workOrderOpenDateString" type="date" value="<%= workOrderOpenDateString %>" max="<%= dateTimeFunctions.dateToString(new Date()) %>" />
                             <span class="icon is-small is-left">
@@ -90,7 +90,7 @@
               <div class="columns">
                   <div class="column">
                       <div class="field">
-                          <label class="label" for="searchFilter--occupantName">Related <%= configFunctions.getProperty("aliases.occupant") %> Name</label>
+                          <label class="label" for="searchFilter--occupantName">Related <%= configFunctions.getConfigProperty("aliases.occupant") %> Name</label>
                           <div class="control is-expanded has-icons-left">
                               <input class="input" id="searchFilter--occupantName" name="occupantName" type="text" />
                               <span class="icon is-small is-left">
@@ -101,7 +101,7 @@
                   </div>
                   <div class="column">
                       <div class="field">
-                          <label class="label" for="searchFilter--lotName">Related <%= configFunctions.getProperty("aliases.lot") %> Name</label>
+                          <label class="label" for="searchFilter--lotName">Related <%= configFunctions.getConfigProperty("aliases.lot") %> Name</label>
                           <div class="control is-expanded has-icons-left">
                               <input class="input" id="searchFilter--lotName" name="lotName" type="text" />
                               <span class="icon is-small is-left">
@@ -121,7 +121,7 @@
 <%- include('_footerA'); -%>
 
 <script>
-    exports.workOrderPrints = <%- JSON.stringify(configFunctions.getProperty("settings.workOrders.prints")) %>;
+    exports.workOrderPrints = <%- JSON.stringify(configFunctions.getConfigProperty("settings.workOrders.prints")) %>;
 </script>
 <script src="<%= urlPrefix %>/javascripts/workOrderSearch.min.js"></script>
 

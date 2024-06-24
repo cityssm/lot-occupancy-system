@@ -11,24 +11,24 @@
                     <i class="fas fa-user" data-fa-transform="shrink-10"></i>
                 </span>
             </span>
-            <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
+            <span><%= configFunctions.getConfigProperty("aliases.occupancies") %></span>
         </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-    Find an <%= configFunctions.getProperty("aliases.occupancy") %> Record
+    Find an <%= configFunctions.getConfigProperty("aliases.occupancy") %> Record
 </h1>
 
 <% if (user.userProperties.canUpdate) { %>
     <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
         <a class="button is-circle is-primary has-tooltip-left"
-            data-tooltip="Create a New <%= configFunctions.getProperty("aliases.occupancy") %>"
+            data-tooltip="Create a New <%= configFunctions.getConfigProperty("aliases.occupancy") %>"
             href="<%= urlPrefix %>/lotOccupancies/new"
             accesskey="n">
             <i class="fas fa-plus" aria-hidden="true"></i>
-            <span class="sr-only">Create a New <%= configFunctions.getProperty("aliases.occupancy") %></span>
+            <span class="sr-only">Create a New <%= configFunctions.getConfigProperty("aliases.occupancy") %></span>
         </a>
     </div>
 <% } %>
@@ -40,7 +40,7 @@
         <div class="columns">
             <div class="column">
                 <div class="field">
-                    <label class="label" for="searchFilter--occupantName"><%= configFunctions.getProperty("aliases.occupant") %> Name</label>
+                    <label class="label" for="searchFilter--occupantName"><%= configFunctions.getConfigProperty("aliases.occupant") %> Name</label>
                     <div class="control has-icons-left">
                         <input class="input" id="searchFilter--occupantName" name="occupantName" accesskey="f" />
                         <span class="icon is-small is-left">
@@ -51,11 +51,11 @@
             </div>
             <div class="column">
                 <div class="field">
-                    <label class="label" for="searchFilter--occupancyTypeId"><%= configFunctions.getProperty("aliases.occupancy") %> Type</label>
+                    <label class="label" for="searchFilter--occupancyTypeId"><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</label>
                     <div class="control has-icons-left">
                         <div class="select is-fullwidth">
                             <select id="searchFilter--occupancyTypeId" name="occupancyTypeId">
-                                <option value="">(All <%= configFunctions.getProperty("aliases.occupancy") %> Types)</option>
+                                <option value="">(All <%= configFunctions.getConfigProperty("aliases.occupancy") %> Types)</option>
                                 <% for (const occupancyType of occupancyTypes) { %>
                                     <option value="<%= occupancyType.occupancyTypeId %>"><%= occupancyType.occupancyType %></option>
                                 <% } %>
@@ -69,7 +69,7 @@
             </div>
             <div class="column">
                 <div class="field">
-                    <label class="label" for="searchFilter--occupancyTime"><%= configFunctions.getProperty("aliases.occupancy") %> Time</label>
+                    <label class="label" for="searchFilter--occupancyTime"><%= configFunctions.getConfigProperty("aliases.occupancy") %> Time</label>
                     <div class="control has-icons-left">
                         <div class="select is-fullwidth">
                             <select id="searchFilter--occupancyTime" name="occupancyTime">
@@ -89,11 +89,11 @@
         <div class="columns">
             <div class="column">
                 <div class="field">
-                    <label class="label" for="searchFilter--mapId"><%= configFunctions.getProperty("aliases.map") %></label>
+                    <label class="label" for="searchFilter--mapId"><%= configFunctions.getConfigProperty("aliases.map") %></label>
                     <div class="control has-icons-left">
                         <div class="select is-fullwidth">
                             <select id="searchFilter--mapId" name="mapId">
-                                <option value="">(All <%= configFunctions.getProperty("aliases.maps") %>)</option>
+                                <option value="">(All <%= configFunctions.getConfigProperty("aliases.maps") %>)</option>
                                 <% for (const map of maps) { %>
                                 <option value="<%= map.mapId %>" <%= (map.mapId.toString() === mapId) ? " selected" : "" %>>
                                     <%= map.mapName || "(No Name)" %>
@@ -109,11 +109,11 @@
             </div>
             <div class="column">
                 <div class="field">
-                <label class="label" for="searchFilter--lotTypeId"><%= configFunctions.getProperty("aliases.lot") %> Type</label>
+                <label class="label" for="searchFilter--lotTypeId"><%= configFunctions.getConfigProperty("aliases.lot") %> Type</label>
                 <div class="control has-icons-left">
                     <div class="select is-fullwidth">
                     <select id="searchFilter--lotTypeId" name="lotTypeId">
-                        <option value="">(All <%= configFunctions.getProperty("aliases.lot") %> Types)</option>
+                        <option value="">(All <%= configFunctions.getConfigProperty("aliases.lot") %> Types)</option>
                         <% for (const lotType of lotTypes) { %>
                         <option value="<%= lotType.lotTypeId %>"><%= lotType.lotType %></option>
                         <% } %>
@@ -126,7 +126,7 @@
                 </div>
             </div>
         </div>
-        <label class="label" for="searchFilter--lotName"><%= configFunctions.getProperty("aliases.lot") %></label>
+        <label class="label" for="searchFilter--lotName"><%= configFunctions.getConfigProperty("aliases.lot") %></label>
         <div class="field has-addons">
             <div class="control has-icons-left">
                 <div class="select">

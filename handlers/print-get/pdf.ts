@@ -13,7 +13,7 @@ import {
   getReportData
 } from '../../helpers/functions.print.js'
 
-const attachmentOrInline = configFunctions.getProperty(
+const attachmentOrInline = configFunctions.getConfigProperty(
   'settings.printPdf.contentDisposition'
 )
 
@@ -26,14 +26,14 @@ export async function handler(
 
   if (
     !configFunctions
-      .getProperty('settings.lotOccupancy.prints')
+      .getConfigProperty('settings.lotOccupancy.prints')
       .includes(`pdf/${printName}`) &&
     !configFunctions
-      .getProperty('settings.workOrders.prints')
+      .getConfigProperty('settings.workOrders.prints')
       .includes(`pdf/${printName}`)
   ) {
     response.redirect(
-      `${configFunctions.getProperty(
+      `${configFunctions.getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/dashboard/?error=printConfigNotAllowed`
     )
@@ -44,7 +44,7 @@ export async function handler(
 
   if (printConfig === undefined) {
     response.redirect(
-      configFunctions.getProperty('reverseProxy.urlPrefix') +
+      configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
         '/dashboard/?error=printConfigNotFound'
     )
     return

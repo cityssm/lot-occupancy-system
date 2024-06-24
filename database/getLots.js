@@ -61,7 +61,7 @@ export async function getLots(filters, options, connectedDatabase) {
     let lots = [];
     if (options.limit === -1 || count > 0) {
         const includeLotOccupancyCount = options.includeLotOccupancyCount ?? true;
-        database.function('userFn_lotNameSortName', configFunctions.getProperty('settings.lot.lotNameSortNameFunction'));
+        database.function('userFn_lotNameSortName', configFunctions.getConfigProperty('settings.lot.lotNameSortNameFunction'));
         if (includeLotOccupancyCount) {
             sqlParameters.unshift(currentDate, currentDate);
         }

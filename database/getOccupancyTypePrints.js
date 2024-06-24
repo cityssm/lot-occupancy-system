@@ -1,6 +1,6 @@
 import * as configFunctions from '../helpers/functions.config.js';
 import { acquireConnection } from './pool.js';
-const availablePrints = configFunctions.getProperty('settings.lotOccupancy.prints');
+const availablePrints = configFunctions.getConfigProperty('settings.lotOccupancy.prints');
 const userFunction_configContainsPrintEJS = (printEJS) => {
     if (printEJS === '*' || availablePrints.includes(printEJS)) {
         return 1;

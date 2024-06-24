@@ -1,38 +1,38 @@
 <%- include('_header-print'); -%>
 
 <h1 class="title is-2 has-text-centered">
-    <%= configFunctions.getProperty("aliases.lot") %>
-    <%= configFunctions.getProperty("aliases.occupancy") %>
+    <%= configFunctions.getConfigProperty("aliases.lot") %>
+    <%= configFunctions.getConfigProperty("aliases.occupancy") %>
 </h1>
 
 <div class="columns">
     <div class="column">
         <p>
-            <strong><%= configFunctions.getProperty("aliases.occupancy") %> Type</strong><br />
+            <strong><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</strong><br />
             <%= lotOccupancy.occupancyType %>
         </p>
     </div>
     <div class="column">
         <p class="mb-2">
-            <strong><%= configFunctions.getProperty("aliases.lot") %></strong><br />
+            <strong><%= configFunctions.getConfigProperty("aliases.lot") %></strong><br />
             <% if (lotOccupancy.lotId) { %>
                 <%= lotOccupancy.lotName %>
             <% } else { %>
-                (No <%= configFunctions.getProperty("aliases.lot") %>)
+                (No <%= configFunctions.getConfigProperty("aliases.lot") %>)
             <% } %>
         </p>
         <p>
-            <strong><%= configFunctions.getProperty("aliases.map") %></strong><br />
+            <strong><%= configFunctions.getConfigProperty("aliases.map") %></strong><br />
             <% if (lotOccupancy.mapId) { %>
                 <%= lotOccupancy.mapName %>
             <% } else { %>
-                (No <%= configFunctions.getProperty("aliases.map") %>)
+                (No <%= configFunctions.getConfigProperty("aliases.map") %>)
             <% } %>
         </p>
     </div>
     <div class="column">
         <p class="mb-2">
-            <strong><%= configFunctions.getProperty("aliases.occupancyStartDate") %></strong><br />
+            <strong><%= configFunctions.getConfigProperty("aliases.occupancyStartDate") %></strong><br />
             <%= lotOccupancy.occupancyStartDateString %>
         </p>
         <p>
@@ -53,12 +53,12 @@
 </div>
 
 <section>
-    <h2 class="title is-4"><%= configFunctions.getProperty("aliases.occupants") %></h2>
+    <h2 class="title is-4"><%= configFunctions.getConfigProperty("aliases.occupants") %></h2>
 
     <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
         <div class="message is-warning">
             <p class="message-body">
-                There are no <%= configFunctions.getProperty("aliases.occupants").toLowerCase() %>
+                There are no <%= configFunctions.getConfigProperty("aliases.occupants").toLowerCase() %>
                 associated with this record.
             </p>
         </div>
@@ -66,8 +66,8 @@
         <table class="table is-fullwidth">
             <thead>
                 <tr>
-                    <th><%= configFunctions.getProperty("aliases.occupant") %> Type</th>
-                    <th><%= configFunctions.getProperty("aliases.occupant") %></th>
+                    <th><%= configFunctions.getConfigProperty("aliases.occupant") %> Type</th>
+                    <th><%= configFunctions.getConfigProperty("aliases.occupant") %></th>
                     <th>Address</th>
                     <th>Phone Number</th>
                 </tr>
@@ -132,7 +132,7 @@
     <% if (lotOccupancy.lotOccupancyFees.length === 0) { %>
         <div class="message is-info">
             <p class="message-body">
-                There are no fees applied to this <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> record.
+                There are no fees applied to this <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %> record.
             </p>
         </div>
     <% } else { %>
@@ -195,7 +195,7 @@
     <% if (lotOccupancy.lotOccupancyTransactions.length === 0) { %>
         <div class="message is-info">
             <p class="message-body">
-                There are no transactions associated with this <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> record.
+                There are no transactions associated with this <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %> record.
             </p>
         </div>
     <% } else { %>
@@ -203,7 +203,7 @@
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th><%= configFunctions.getProperty("aliases.externalReceiptNumber") %></th>
+                    <th><%= configFunctions.getConfigProperty("aliases.externalReceiptNumber") %></th>
                     <th class="has-text-right">Amount</th>
                 </tr>
             </thead>

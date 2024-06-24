@@ -58,11 +58,11 @@ function onListening(server: http.Server): void {
  * Initialize HTTP
  */
 
-process.title = `${configFunctions.getProperty(
+process.title = `${configFunctions.getConfigProperty(
   'application.applicationName'
 )} (Worker)`
 
-const httpPort = configFunctions.getProperty('application.httpPort')
+const httpPort = configFunctions.getConfigProperty('application.httpPort')
 
 const httpServer = http.createServer(app)
 

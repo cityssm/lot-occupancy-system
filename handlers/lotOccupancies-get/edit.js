@@ -5,7 +5,7 @@ import * as configFunctions from '../../helpers/functions.config.js';
 export async function handler(request, response) {
     const lotOccupancy = await getLotOccupancy(request.params.lotOccupancyId);
     if (lotOccupancy === undefined) {
-        response.redirect(`${configFunctions.getProperty('reverseProxy.urlPrefix')}/lotOccupancies/?error=lotOccupancyIdNotFound`);
+        response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/lotOccupancies/?error=lotOccupancyIdNotFound`);
         return;
     }
     const occupancyTypePrints = await getOccupancyTypePrintsById(lotOccupancy.occupancyTypeId);
@@ -16,7 +16,7 @@ export async function handler(request, response) {
     const maps = await getMaps();
     const workOrderTypes = await getWorkOrderTypes();
     response.render('lotOccupancy-edit', {
-        headTitle: `${configFunctions.getProperty('aliases.occupancy')} Update`,
+        headTitle: `${configFunctions.getConfigProperty('aliases.occupancy')} Update`,
         lotOccupancy,
         occupancyTypePrints,
         occupancyTypes,

@@ -48,7 +48,7 @@ router.post('/doGetFees', permissionHandlers.updatePostHandler, handler_doGetFee
 router.post('/doAddLotOccupancyFee', permissionHandlers.updatePostHandler, handler_doAddLotOccupancyFee);
 router.post('/doUpdateLotOccupancyFeeQuantity', permissionHandlers.updatePostHandler, handler_doUpdateLotOccupancyFeeQuantity);
 router.post('/doDeleteLotOccupancyFee', permissionHandlers.updatePostHandler, handler_doDeleteLotOccupancyFee);
-if (configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
+if (configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
     router.post('/doGetDynamicsGPDocument', permissionHandlers.updatePostHandler, handler_doGetDynamicsGPDocument);
 }
 router.post('/doAddLotOccupancyTransaction', permissionHandlers.updatePostHandler, handler_doAddLotOccupancyTransaction);

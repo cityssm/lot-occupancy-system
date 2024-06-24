@@ -44,7 +44,7 @@ export async function handler(
   const maps = await getMaps()
 
   response.render('lotOccupancy-edit', {
-    headTitle: `Create a New ${configFunctions.getProperty(
+    headTitle: `Create a New ${configFunctions.getConfigProperty(
       'aliases.occupancy'
     )} Record`,
     lotOccupancy,

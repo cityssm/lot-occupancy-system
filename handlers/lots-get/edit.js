@@ -5,7 +5,7 @@ import * as configFunctions from '../../helpers/functions.config.js';
 export async function handler(request, response) {
     const lot = await getLot(request.params.lotId);
     if (lot === undefined) {
-        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
+        response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
             '/lots/?error=lotIdNotFound');
         return;
     }

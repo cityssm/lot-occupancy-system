@@ -106,7 +106,7 @@ configFallbackValues.set('settings.dynamicsGP.trialBalanceCodes', [])
  * Set up function overloads
  */
 
-export function getProperty(
+export function getConfigProperty(
   propertyName:
     | 'application.applicationName'
     | 'application.logoURL'
@@ -134,7 +134,7 @@ export function getProperty(
     | 'settings.workOrders.calendarEmailAddress'
 ): string
 
-export function getProperty(
+export function getConfigProperty(
   propertyName:
     | 'application.httpPort'
     | 'application.maximumProcesses'
@@ -146,7 +146,7 @@ export function getProperty(
     | 'settings.adminCleanup.recordDeleteAgeDays'
 ): number
 
-export function getProperty(
+export function getConfigProperty(
   propertyName:
     | 'application.useTestDatabases'
     | 'reverseProxy.disableCompression'
@@ -156,7 +156,7 @@ export function getProperty(
     | 'settings.dynamicsGP.integrationIsEnabled'
 ): boolean
 
-export function getProperty(
+export function getConfigProperty(
   propertyName:
     | 'users.testing'
     | 'users.canLogin'
@@ -169,33 +169,33 @@ export function getProperty(
     | 'settings.workOrders.prints'
 ): string[]
 
-export function getProperty(
+export function getConfigProperty(
   propertyName: 'application.ntfyStartup'
 ): ConfigNtfyStartup | undefined
 
-export function getProperty(
+export function getConfigProperty(
   propertyName: 'activeDirectory'
 ): ConfigActiveDirectory
 
-export function getProperty(propertyName: 'settings.lot.lotNamePattern'): RegExp
+export function getConfigProperty(propertyName: 'settings.lot.lotNamePattern'): RegExp
 
-export function getProperty(
+export function getConfigProperty(
   propertyName: 'settings.lot.lotNameSortNameFunction'
 ): (lotName: string) => string
 
-export function getProperty(
+export function getConfigProperty(
   propertyName: 'settings.printPdf.contentDisposition'
 ): 'attachment' | 'inline'
 
-export function getProperty(
+export function getConfigProperty(
   propertyName: 'settings.dynamicsGP.mssqlConfig'
 ): MSSQLConfig
 
-export function getProperty(
+export function getConfigProperty(
   propertyName: 'settings.dynamicsGP.lookupOrder'
 ): DynamicsGPLookup[]
 
-export function getProperty(propertyName: string): unknown {
+export function getConfigProperty(propertyName: string): unknown {
   const propertyNameSplit = propertyName.split('.')
 
   let currentObject = config
@@ -212,9 +212,9 @@ export function getProperty(propertyName: string): unknown {
   return currentObject
 }
 
-export const keepAliveMillis = getProperty('session.doKeepAlive')
+export const keepAliveMillis = getConfigProperty('session.doKeepAlive')
   ? Math.max(
-      getProperty('session.maxAgeMillis') / 2,
-      getProperty('session.maxAgeMillis') - 10 * 60 * 1000
+      getConfigProperty('session.maxAgeMillis') / 2,
+      getConfigProperty('session.maxAgeMillis') - 10 * 60 * 1000
     )
   : 0

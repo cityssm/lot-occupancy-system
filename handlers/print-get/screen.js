@@ -3,17 +3,17 @@ import { getReportData, getScreenPrintConfig } from '../../helpers/functions.pri
 export async function handler(request, response) {
     const printName = request.params.printName;
     if (!configFunctions
-        .getProperty('settings.lotOccupancy.prints')
+        .getConfigProperty('settings.lotOccupancy.prints')
         .includes(`screen/${printName}`) &&
         !configFunctions
-            .getProperty('settings.workOrders.prints')
+            .getConfigProperty('settings.workOrders.prints')
             .includes(`screen/${printName}`)) {
-        response.redirect(`${configFunctions.getProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotAllowed`);
+        response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotAllowed`);
         return;
     }
     const printConfig = getScreenPrintConfig(printName);
     if (printConfig === undefined) {
-        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
+        response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
             '/dashboard/?error=printConfigNotFound');
         return;
     }

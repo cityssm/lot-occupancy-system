@@ -14,26 +14,26 @@
           </a>
         </li> 
         <li>
-          <a href="#tab--lotOccupancies" aria-label="<%= configFunctions.getProperty("aliases.occupancies") %>">
+          <a href="#tab--lotOccupancies" aria-label="<%= configFunctions.getConfigProperty("aliases.occupancies") %>">
             <span class="icon">
                 <span class="fa-layers fa-fw" aria-hidden="true">
                   <i class="fas fa-vector-square"></i>
                   <i class="fas fa-user" data-fa-transform="shrink-10"></i>
                 </span>
             </span>
-            <span class="is-hidden-touch"><%= configFunctions.getProperty("aliases.occupancies") %></span>
+            <span class="is-hidden-touch"><%= configFunctions.getConfigProperty("aliases.occupancies") %></span>
           </a>
         </li> 
         <li>
-          <a href="#tab--lots" aria-label="<%= configFunctions.getProperty("aliases.lots") %>">
+          <a href="#tab--lots" aria-label="<%= configFunctions.getConfigProperty("aliases.lots") %>">
             <span class="icon"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
-            <span class="is-hidden-touch"><%= configFunctions.getProperty("aliases.lots") %></span>
+            <span class="is-hidden-touch"><%= configFunctions.getConfigProperty("aliases.lots") %></span>
           </a>
         </li>
         <li>
-          <a href="#tab--maps" aria-label="<%= configFunctions.getProperty("aliases.maps") %>">
+          <a href="#tab--maps" aria-label="<%= configFunctions.getConfigProperty("aliases.maps") %>">
             <span class="icon"><i class="far fa-fw fa-map" aria-hidden="true"></i></span>
-            <span class="is-hidden-touch"><%= configFunctions.getProperty("aliases.maps") %></span>
+            <span class="is-hidden-touch"><%= configFunctions.getConfigProperty("aliases.maps") %></span>
           </a>
         </li>
       </ul>
@@ -114,7 +114,7 @@
       </div>
           
       <div class="is-hidden" id="tab--lotOccupancies">
-        <h1 class="title is-1"><%= configFunctions.getProperty("aliases.occupancy") %> Reports</h1>
+        <h1 class="title is-1"><%= configFunctions.getConfigProperty("aliases.occupancy") %> Reports</h1>
 
         <div class="panel">
             <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lotOccupancies-current-byMapId">
@@ -126,12 +126,12 @@
                 </div>
                 <div>
                     <h2 class="title is-5 is-marginless">
-                      Current <%= configFunctions.getProperty("aliases.occupancy") %> By <%= configFunctions.getProperty("aliases.map") %>
+                      Current <%= configFunctions.getConfigProperty("aliases.occupancy") %> By <%= configFunctions.getConfigProperty("aliases.map") %>
                     </h2>
                     <div class="field has-addons mt-2">
                         <div class="control">
                             <label class="button is-small is-static" for="lotOccupancies-current-byMapId--mapId">
-                                <%= configFunctions.getProperty("aliases.map") %>
+                                <%= configFunctions.getConfigProperty("aliases.map") %>
                             </label>
                         </div>
                         <div class="control is-expanded">
@@ -182,7 +182,7 @@
         </div>
       </div>
       <div class="is-hidden" id="tab--lots">
-        <h1 class="title is-1"><%= configFunctions.getProperty("aliases.lot") %> Reports</h1>
+        <h1 class="title is-1"><%= configFunctions.getConfigProperty("aliases.lot") %> Reports</h1>
 
         <div class="panel">
             <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byMapId">
@@ -194,12 +194,12 @@
                 </div>
                 <div>
                   <h2 class="title is-5 is-marginless">
-                    <%= configFunctions.getProperty("aliases.lots") %> By <%= configFunctions.getProperty("aliases.map") %>
+                    <%= configFunctions.getConfigProperty("aliases.lots") %> By <%= configFunctions.getConfigProperty("aliases.map") %>
                   </h2>
                   <div class="field has-addons mt-2">
                       <div class="control">
                           <label class="button is-small is-static" for="lots-byMapId--mapId">
-                              <%= configFunctions.getProperty("aliases.map") %>
+                              <%= configFunctions.getConfigProperty("aliases.map") %>
                           </label>
                       </div>
                       <div class="control is-expanded">
@@ -229,11 +229,11 @@
                     <span class="tag is-info">CSV</span>
                 </div>
                 <div>
-                    <h2 class="title is-5 is-marginless"><%= configFunctions.getProperty("aliases.lots") %> By Type</h2>
+                    <h2 class="title is-5 is-marginless"><%= configFunctions.getConfigProperty("aliases.lots") %> By Type</h2>
                     <div class="field has-addons mt-2">
                         <div class="control">
                             <label class="button is-small is-static" for="lots-byLotTypeId--lotTypeId">
-                                <%= configFunctions.getProperty("aliases.lot") %> Type
+                                <%= configFunctions.getConfigProperty("aliases.lot") %> Type
                             </label>
                         </div>
                         <div class="control is-expanded">
@@ -263,11 +263,11 @@
                     <span class="tag is-info">CSV</span>
                 </div>
                 <div>
-                    <h2 class="title is-5 is-marginless"><%= configFunctions.getProperty("aliases.lots") %> By Status</h2>
+                    <h2 class="title is-5 is-marginless"><%= configFunctions.getConfigProperty("aliases.lots") %> By Status</h2>
                     <div class="field has-addons mt-2">
                         <div class="control">
                             <label class="button is-small is-static" for="lots-byLotStatusId--lotStatusId">
-                                <%= configFunctions.getProperty("aliases.lot") %> Status
+                                <%= configFunctions.getConfigProperty("aliases.lot") %> Status
                             </label>
                         </div>
                         <div class="control is-expanded">
@@ -292,7 +292,7 @@
         </div>
       </div>
       <div class="is-hidden" id="tab--maps">
-        <h1 class="title is-1"><%= configFunctions.getProperty("aliases.map") %> Reports</h1>
+        <h1 class="title is-1"><%= configFunctions.getConfigProperty("aliases.map") %> Reports</h1>
         <div class="panel">
             <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/maps-formatted" download>
               <div class="has-text-centered my-2 ml-2 mr-3">
@@ -302,9 +302,9 @@
                   <span class="tag is-info">CSV</span>
               </div>
               <div>
-                  <h2 class="title is-5 is-marginless">Full <%= configFunctions.getProperty("aliases.map") %> List</h2>
+                  <h2 class="title is-5 is-marginless">Full <%= configFunctions.getConfigProperty("aliases.map") %> List</h2>
                   <p>
-                      All active <%= configFunctions.getProperty("aliases.maps").toLowerCase() %>.
+                      All active <%= configFunctions.getConfigProperty("aliases.maps").toLowerCase() %>.
                   </p>
               </div>
             </a>
@@ -322,7 +322,7 @@
         <div class="columns">
           <div class="column">
             <div class="panel">
-                <h2 class="panel-heading">Occupancy (<%= configFunctions.getProperty("aliases.occupancy") %>) Tables</h2>
+                <h2 class="panel-heading">Occupancy (<%= configFunctions.getConfigProperty("aliases.occupancy") %>) Tables</h2>
                 <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancies-all" download>
                     <div class="has-text-centered my-2 ml-2 mr-3">
                         <span class="icon has-text-info">
@@ -440,7 +440,7 @@
                 </a>
             </div>
             <div class="panel">
-                <h2 class="panel-heading">Lot (<%= configFunctions.getProperty("aliases.lot") %>) Tables</h2>
+                <h2 class="panel-heading">Lot (<%= configFunctions.getConfigProperty("aliases.lot") %>) Tables</h2>
                 <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/maps-all" download>
                     <div class="has-text-centered my-2 ml-2 mr-3">
                         <span class="icon has-text-info">
@@ -525,7 +525,7 @@
                 </a>
             </div>
             <div class="panel">
-                <h2 class="panel-heading">Lot (<%= configFunctions.getProperty("aliases.lot") %>) Tables</h2>
+                <h2 class="panel-heading">Lot (<%= configFunctions.getConfigProperty("aliases.lot") %>) Tables</h2>
                 <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotTypes-all" download>
                     <div class="has-text-centered my-2 ml-2 mr-3">
                         <span class="icon has-text-info">
@@ -563,7 +563,7 @@
           </div>
           <div class="column">
             <div class="panel">
-              <h2 class="panel-heading">Occupancy (<%= configFunctions.getProperty("aliases.occupancy") %>) Tables</h2>
+              <h2 class="panel-heading">Occupancy (<%= configFunctions.getConfigProperty("aliases.occupancy") %>) Tables</h2>
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/occupancyTypes-all" download>
                   <div class="has-text-centered my-2 ml-2 mr-3">
                       <span class="icon has-text-info">

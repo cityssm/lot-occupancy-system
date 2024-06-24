@@ -14,7 +14,7 @@ export async function handler(
   const occupancyTypes = await getOccupancyTypes()
   const allOccupancyTypeFields = await getAllOccupancyTypeFields()
 
-  const occupancyTypePrints = configFunctions.getProperty(
+  const occupancyTypePrints = configFunctions.getConfigProperty(
     'settings.lotOccupancy.prints'
   )
 
@@ -30,7 +30,7 @@ export async function handler(
 
   response.render('admin-occupancyTypes', {
     headTitle:
-      `${configFunctions.getProperty('aliases.occupancy')} Type Management`,
+      `${configFunctions.getConfigProperty('aliases.occupancy')} Type Management`,
     occupancyTypes,
     allOccupancyTypeFields,
     occupancyTypePrintTitles

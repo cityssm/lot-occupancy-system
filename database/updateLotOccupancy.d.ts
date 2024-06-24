@@ -1,9 +1,10 @@
+import { type DateString } from '@cityssm/utils-datetime';
 interface UpdateLotOccupancyForm {
     lotOccupancyId: string | number;
     occupancyTypeId: string | number;
     lotId: string | number;
-    occupancyStartDateString: string;
-    occupancyEndDateString: string;
+    occupancyStartDateString: DateString;
+    occupancyEndDateString: DateString | '';
     occupancyTypeFieldIds?: string;
     [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown;
 }

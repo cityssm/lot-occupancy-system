@@ -20,7 +20,7 @@ export async function handler(request, response) {
     const lotTypes = await cacheFunctions.getLotTypes();
     const lotStatuses = await cacheFunctions.getLotStatuses();
     response.render('lot-edit', {
-        headTitle: `Create a New ${configFunctions.getProperty('aliases.lot')}`,
+        headTitle: `Create a New ${configFunctions.getConfigProperty('aliases.lot')}`,
         lot,
         isCreate: true,
         maps,

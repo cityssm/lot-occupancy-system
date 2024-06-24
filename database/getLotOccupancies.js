@@ -116,7 +116,7 @@ export async function getLotOccupancies(filters, options, connectedDatabase) {
             const occupancyType = await getOccupancyTypeById(lotOccupancy.occupancyTypeId);
             if (occupancyType !== undefined) {
                 lotOccupancy.printEJS = (occupancyType.occupancyTypePrints ?? []).includes('*')
-                    ? configFunctions.getProperty('settings.lotOccupancy.prints')[0]
+                    ? configFunctions.getConfigProperty('settings.lotOccupancy.prints')[0]
                     : occupancyType.occupancyTypePrints[0];
             }
             await addInclusions(lotOccupancy, options, database);

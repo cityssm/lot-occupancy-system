@@ -2,9 +2,9 @@ import ActiveDirectory from 'activedirectory2'
 
 import * as configFunctions from './functions.config.js'
 
-const userDomain = configFunctions.getProperty('application.userDomain')
+const userDomain = configFunctions.getConfigProperty('application.userDomain')
 
-const activeDirectoryConfig = configFunctions.getProperty('activeDirectory')
+const activeDirectoryConfig = configFunctions.getConfigProperty('activeDirectory')
 
 async function authenticateViaActiveDirectory(
   userName: string,
@@ -64,7 +64,7 @@ const recordUrl = /^\/(?:maps|lots|lotoccupancies|workorders)\/\d+(?:\/edit)?$/
 const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/
 
 export function getSafeRedirectURL(possibleRedirectURL = ''): string {
-  const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix')
+  const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix')
 
   if (typeof possibleRedirectURL === 'string') {
     const urlToCheck = possibleRedirectURL.startsWith(urlPrefix)

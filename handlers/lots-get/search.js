@@ -6,7 +6,7 @@ export async function handler(request, response) {
     const lotTypes = await getLotTypes();
     const lotStatuses = await getLotStatuses();
     response.render('lot-search', {
-        headTitle: `${configFunctions.getProperty('aliases.lot')} Search`,
+        headTitle: `${configFunctions.getConfigProperty('aliases.lot')} Search`,
         maps,
         lotTypes,
         lotStatuses,

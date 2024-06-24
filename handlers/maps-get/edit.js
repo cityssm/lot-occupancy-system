@@ -6,7 +6,7 @@ import { getMapSVGs } from '../../helpers/functions.map.js';
 export async function handler(request, response) {
     const map = await getMap(request.params.mapId);
     if (map === undefined) {
-        response.redirect(`${configFunctions.getProperty('reverseProxy.urlPrefix')}/maps/?error=mapIdNotFound`);
+        response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/maps/?error=mapIdNotFound`);
         return;
     }
     const mapSVGs = await getMapSVGs();

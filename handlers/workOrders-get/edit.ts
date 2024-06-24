@@ -20,7 +20,7 @@ export async function handler(
 
   if (workOrder === undefined) {
     response.redirect(
-      `${configFunctions.getProperty(
+      `${configFunctions.getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/workOrders/?error=workOrderIdNotFound`
     )
@@ -29,7 +29,7 @@ export async function handler(
 
   if (workOrder.workOrderCloseDate) {
     response.redirect(
-      `${configFunctions.getProperty(
+      `${configFunctions.getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/workOrders/${workOrder.workOrderId!.toString()}/?error=workOrderIsClosed`
     )

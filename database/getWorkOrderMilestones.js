@@ -14,11 +14,11 @@ function buildWhereClause(filters) {
     const date = new Date();
     const currentDateNumber = dateToInteger(date);
     date.setDate(date.getDate() -
-        configFunctions.getProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays'));
+        configFunctions.getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays'));
     const recentBeforeDateNumber = dateToInteger(date);
     date.setDate(date.getDate() +
-        configFunctions.getProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays') +
-        configFunctions.getProperty('settings.workOrders.workOrderMilestoneDateRecentAfterDays'));
+        configFunctions.getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays') +
+        configFunctions.getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentAfterDays'));
     const recentAfterDateNumber = dateToInteger(date);
     switch (filters.workOrderMilestoneDateFilter) {
         case 'upcomingMissed': {

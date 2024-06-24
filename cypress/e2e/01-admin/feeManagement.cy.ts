@@ -67,7 +67,7 @@ describe('Admin - Fee Management', () => {
         .should(
           'equal',
           configFunctions
-            .getProperty('settings.fees.taxPercentageDefault')
+            .getConfigProperty('settings.fees.taxPercentageDefault')
             .toString()
         )
 

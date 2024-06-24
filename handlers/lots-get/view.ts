@@ -12,7 +12,7 @@ export async function handler(
 
   if (lot === undefined) {
     response.redirect(
-      configFunctions.getProperty('reverseProxy.urlPrefix') +
+      configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
         '/lots/?error=lotIdNotFound'
     )
     return

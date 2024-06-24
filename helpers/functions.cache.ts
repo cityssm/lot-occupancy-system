@@ -205,7 +205,7 @@ export async function getOccupancyTypePrintsById(
   }
 
   if (occupancyType.occupancyTypePrints.includes('*')) {
-    return configFunctions.getProperty('settings.lotOccupancy.prints')
+    return configFunctions.getConfigProperty('settings.lotOccupancy.prints')
   }
 
   return occupancyType.occupancyTypePrints ?? []

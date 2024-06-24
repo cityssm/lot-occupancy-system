@@ -11,22 +11,22 @@
             <i class="fas fa-user" data-fa-transform="shrink-10"></i>
           </span>
         </span>
-        <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
+        <span><%= configFunctions.getConfigProperty("aliases.occupancies") %></span>
       </a>
     </li>
     <% if (!isCreate) { %>
     <li>
       <a href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>" accesskey="v">
-        <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
+        <%= configFunctions.getConfigProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>: <%= lotOccupancy.lotName || ("(No " + configFunctions.getConfigProperty("aliases.lot") + ")") %>
       </a>
     </li>
     <% } %>
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-          Create a New <%= configFunctions.getProperty("aliases.occupancy") %> Record
+          Create a New <%= configFunctions.getConfigProperty("aliases.occupancy") %> Record
         <% } else { %>
-          Update <%= configFunctions.getProperty("aliases.occupancy") %>
+          Update <%= configFunctions.getConfigProperty("aliases.occupancy") %>
         <% } %>
       </a>
    </li>
@@ -35,11 +35,11 @@
 
 <% if (isCreate) { %>
   <h1 class="title is-1">
-    Create a New <%= configFunctions.getProperty("aliases.occupancy") %> Record
+    Create a New <%= configFunctions.getConfigProperty("aliases.occupancy") %> Record
   </h1>
 <% } else { %>
   <h1 class="title is-1">
-    Update <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>
+    Update <%= configFunctions.getConfigProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>
   </h1>
 <% } %>
 
@@ -47,8 +47,8 @@
   <div class="level-left">
     <% if (!isCreate) { %>
       <span class="level-item has-text-weight-bold">
-        <%= configFunctions.getProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>:
-        <%= lotOccupancy.lotName || ("(No " + configFunctions.getProperty("aliases.lot") + ")") %>
+        <%= configFunctions.getConfigProperty("aliases.occupancy") %> #<%= lotOccupancy.lotOccupancyId %>:
+        <%= lotOccupancy.lotName || ("(No " + configFunctions.getConfigProperty("aliases.lot") + ")") %>
       </span>
     <% } %>
   </div>
@@ -112,11 +112,11 @@
             <div class="dropdown-content">
               <a class="dropdown-item" id="button--copyLotOccupancy" href="#">
                 <span class="icon"><i class="far fa-copy" aria-hidden="true"></i></span>
-                <span>Copy <%= configFunctions.getProperty("aliases.occupancy") %> Record as New</span>
+                <span>Copy <%= configFunctions.getConfigProperty("aliases.occupancy") %> Record as New</span>
               </a>
               <a class="dropdown-item" id="button--deleteLotOccupancy" href="#">
                 <span class="icon"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
-                <span>Delete <%= configFunctions.getProperty("aliases.occupancy") %> Record</span>
+                <span>Delete <%= configFunctions.getConfigProperty("aliases.occupancy") %> Record</span>
               </a>
             </div>
           </div>
@@ -129,7 +129,7 @@
         <span>
           <%= (isCreate ? "Create" : "Update") %>
           <span class="is-hidden-touch">
-            <%= configFunctions.getProperty("aliases.occupancy") %> Record
+            <%= configFunctions.getConfigProperty("aliases.occupancy") %> Record
           </span>
         </span>
       </button>
@@ -145,7 +145,7 @@
         <div class="columns">
           <div class="column">
               <label class="label" for="lotOccupancy--occupancyTypeId">
-                  <%= configFunctions.getProperty("aliases.occupancy") %> Type
+                  <%= configFunctions.getConfigProperty("aliases.occupancy") %> Type
               </label>
               <div class="field has-addons">
                   <div class="control is-expanded">
@@ -182,7 +182,7 @@
                       </div>
                   </div>
                   <div class="control is-hidden-print">
-                      <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock <%= configFunctions.getProperty("aliases.occupancy") %> Type Field">
+                      <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock <%= configFunctions.getConfigProperty("aliases.occupancy") %> Type Field">
                           <i class="fas fa-unlock" aria-hidden="true"></i>
                       </button>
                   </div>
@@ -190,26 +190,26 @@
 
               <input id="lotOccupancy--lotId" name="lotId" type="hidden" value="<%= lotOccupancy.lotId %>" />
               <label class="label" for="lotOccupancy--lotName">
-                  <%= configFunctions.getProperty("aliases.lot") %>
+                  <%= configFunctions.getConfigProperty("aliases.lot") %>
               </label>
               <div class="field has-addons">
                   <div class="control is-expanded">
-                      <input class="input is-clickable has-text-left <%= (isCreate ? "" : " is-readonly") %>" id="lotOccupancy--lotName" type="button" value="<%= lotOccupancy.lotName || "(No " + configFunctions.getProperty("aliases.lot") + ")" %>"
-                      <%= (configFunctions.getProperty("settings.lotOccupancy.lotIdIsRequired") ? " required" : "") %>
+                      <input class="input is-clickable has-text-left <%= (isCreate ? "" : " is-readonly") %>" id="lotOccupancy--lotName" type="button" value="<%= lotOccupancy.lotName || "(No " + configFunctions.getConfigProperty("aliases.lot") + ")" %>"
+                      <%= (configFunctions.getConfigProperty("settings.lotOccupancy.lotIdIsRequired") ? " required" : "") %>
                       <%= (isCreate ? "" : " disabled readonly") %> />
                   </div>
                   <div class="control is-hidden-print">
-                      <button class="button is-clear-lot-button" data-tooltip="Clear" type="button" aria-label="Clear <%= configFunctions.getProperty("aliases.lot") %></button> Field">
+                      <button class="button is-clear-lot-button" data-tooltip="Clear" type="button" aria-label="Clear <%= configFunctions.getConfigProperty("aliases.lot") %></button> Field">
                           <i class="fas fa-eraser" aria-hidden="true"></i>
                       </button>
                   </div>
                   <div class="control is-hidden-print">
-                      <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock <%= configFunctions.getProperty("aliases.lot") %></button> Field">
+                      <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock <%= configFunctions.getConfigProperty("aliases.lot") %></button> Field">
                           <i class="fas fa-unlock" aria-hidden="true"></i>
                       </button>
                   </div>
                   <div class="control is-hidden-print">
-                      <button class="button is-lot-view-button" data-tooltip="Open <%= configFunctions.getProperty("aliases.lot") %>" type="button" aria-label="Open <%= configFunctions.getProperty("aliases.lot") %>">
+                      <button class="button is-lot-view-button" data-tooltip="Open <%= configFunctions.getConfigProperty("aliases.lot") %>" type="button" aria-label="Open <%= configFunctions.getConfigProperty("aliases.lot") %>">
                           <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                       </button>
                   </div>
@@ -217,7 +217,7 @@
           </div>
           <div class="column is-3">
               <div class="field">
-                  <label class="label" for="lotOccupancy--occupancyStartDateString"><%= configFunctions.getProperty("aliases.occupancyStartDate") %></label>
+                  <label class="label" for="lotOccupancy--occupancyStartDateString"><%= configFunctions.getConfigProperty("aliases.occupancyStartDate") %></label>
                   <div class="control has-icons-left">
                       <input class="input" id="lotOccupancy--occupancyStartDateString" name="occupancyStartDateString" type="date"
                       value="<%= lotOccupancy.occupancyStartDateString %>" required />
@@ -232,7 +232,7 @@
                       <input class="input" id="lotOccupancy--occupancyEndDateString" name="occupancyEndDateString" type="date" 
                           value="<%= lotOccupancy.occupancyEndDateString %>"
                           min="<%= lotOccupancy.occupancyStartDateString %>"
-                          <%= (configFunctions.getProperty("settings.lotOccupancy.occupancyEndDateIsRequired") ? " required" : "") %> />
+                          <%= (configFunctions.getConfigProperty("settings.lotOccupancy.occupancyEndDateIsRequired") ? " required" : "") %> />
                       <span class="icon is-left">
                           <i class="fas fa-calendar" aria-hidden="true"></i>
                       </span>
@@ -244,13 +244,13 @@
                   <% if (isCreate) { %>
                       <div class="message is-info">
                           <p class="message-body">
-                              Select the <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> type to load the available fields.
+                              Select the <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %> type to load the available fields.
                           </p>
                       </div>
                   <% } else if (lotOccupancy.lotOccupancyFields.length === 0) { %>
                       <div class="message is-info">
                           <p class="message-body">
-                              The current <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> type has no additional fields.
+                              The current <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %> type has no additional fields.
                           </p>
                       </div>
                   <% } else { %>
@@ -315,18 +315,18 @@
       </div>
       <% if (isCreate) { %>
           <div class="panel-block is-block">
-            <h2 class="title is-4"><%= configFunctions.getProperty("aliases.occupant") %></h2>
+            <h2 class="title is-4"><%= configFunctions.getConfigProperty("aliases.occupant") %></h2>
             <div class="columns">
                 <div class="column">
                     <div class="field">
                         <label class="label" for="lotOccupancy--lotOccupantTypeId">
-                            <%= configFunctions.getProperty("aliases.occupant") %> Type
+                            <%= configFunctions.getConfigProperty("aliases.occupant") %> Type
                         </label>
                         <div class="control">
                           <div class="select is-fullwidth">
                             <select id="lotOccupancy--lotOccupantTypeId" name="lotOccupantTypeId">
                               <option value="" data-occupant-comment-title="Comment">
-                                (Select a Type to Create a <%= configFunctions.getProperty("aliases.occupant") %>)
+                                (Select a Type to Create a <%= configFunctions.getConfigProperty("aliases.occupant") %>)
                               </option>
                               <% for (const lotOccupantType of lotOccupantTypes) { %>
                                 <option value="<%= lotOccupantType.lotOccupantTypeId %>"
@@ -342,7 +342,7 @@
                       <div class="column">
                         <div class="field">
                           <label class="label" for="lotOccupancy--occupantName">
-                            <%= configFunctions.getProperty("aliases.occupant") %> Name
+                            <%= configFunctions.getConfigProperty("aliases.occupant") %> Name
                           </label>
                           <div class="control">
                             <input class="input" id="lotOccupancy--occupantName" data-table="LotOccupancyOccupant" name="occupantName" type="text" maxlength="200" autocomplete="off" required disabled />
@@ -376,7 +376,7 @@
                             <div class="field">
                                 <label class="label" for="lotOccupancy--occupantCity">City</label>
                                 <div class="control">
-                                    <input class="input" id="lotOccupancy--occupantCity" data-table="LotOccupancyOccupant" name="occupantCity" type="text" maxlength="20" value="<%= configFunctions.getProperty("settings.lotOccupancy.occupantCityDefault") %>" disabled />
+                                    <input class="input" id="lotOccupancy--occupantCity" data-table="LotOccupancyOccupant" name="occupantCity" type="text" maxlength="20" value="<%= configFunctions.getConfigProperty("settings.lotOccupancy.occupantCityDefault") %>" disabled />
                                 </div>
                             </div>
                         </div>
@@ -384,7 +384,7 @@
                             <div class="field">
                                 <label class="label" for="lotOccupancy--occupantProvince">Province</label>
                                 <div class="control">
-                                    <input class="input" id="lotOccupancy--occupantProvince" data-table="LotOccupancyOccupant" name="occupantProvince" type="text" maxlength="2" value="<%= configFunctions.getProperty("settings.lotOccupancy.occupantProvinceDefault") %>" disabled />
+                                    <input class="input" id="lotOccupancy--occupantProvince" data-table="LotOccupancyOccupant" name="occupantProvince" type="text" maxlength="2" value="<%= configFunctions.getConfigProperty("settings.lotOccupancy.occupantProvinceDefault") %>" disabled />
                                 </div>
                             </div>
                         </div>
@@ -424,7 +424,7 @@
                 </div>
                 <div class="column">
                     <div class="message is-info">
-                        <p class="message-body">Additional <%= configFunctions.getProperty("aliases.occupants").toLowerCase() %> can be added after the record has been created.</p>
+                        <p class="message-body">Additional <%= configFunctions.getConfigProperty("aliases.occupants").toLowerCase() %> can be added after the record has been created.</p>
                     </div>
                 </div>
             </div>
@@ -440,7 +440,7 @@
           <div class="level-left">
             <div class="level-item">
               <h2 class="has-text-weight-bold is-size-5">
-                <%= configFunctions.getProperty("aliases.occupants") %>
+                <%= configFunctions.getConfigProperty("aliases.occupants") %>
               </h2>
             </div>
           </div>
@@ -448,7 +448,7 @@
             <div class="level-item">
               <button class="button is-small is-success is-hidden-print" id="button--addOccupant" type="button">
                 <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                <span>Add <%= configFunctions.getProperty("aliases.occupant") %></span>
+                <span>Add <%= configFunctions.getConfigProperty("aliases.occupant") %></span>
               </button>
             </div>
             <div class="level-item">
@@ -485,8 +485,8 @@
     </div>
 
     <%
-      const workOrderOpenDateAlias = configFunctions.getProperty("aliases.workOrderOpenDate");
-      const workOrderCloseDateAlias = configFunctions.getProperty("aliases.workOrderCloseDate");
+      const workOrderOpenDateAlias = configFunctions.getConfigProperty("aliases.workOrderOpenDate");
+      const workOrderCloseDateAlias = configFunctions.getConfigProperty("aliases.workOrderCloseDate");
     %>
     <div class="panel">
         <div class="panel-heading">
@@ -606,8 +606,8 @@
 
 <script>
     <% if (!isCreate) { %>
-        exports.occupantCityDefault = "<%= configFunctions.getProperty("settings.lotOccupancy.occupantCityDefault") %>";
-        exports.occupantProvinceDefault = "<%= configFunctions.getProperty("settings.lotOccupancy.occupantProvinceDefault") %>";
+        exports.occupantCityDefault = "<%= configFunctions.getConfigProperty("settings.lotOccupancy.occupantCityDefault") %>";
+        exports.occupantProvinceDefault = "<%= configFunctions.getConfigProperty("settings.lotOccupancy.occupantProvinceDefault") %>";
 
         exports.lotOccupantTypes = <%- JSON.stringify(lotOccupantTypes) %>;
         
@@ -619,12 +619,12 @@
         exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
     <% } %>
     
-    <% if (configFunctions.getProperty("settings.lot.lotNamePattern")) { %>
-        exports.lotNamePattern = /<%= configFunctions.getProperty("settings.lot.lotNamePattern").source %>/;
+    <% if (configFunctions.getConfigProperty("settings.lot.lotNamePattern")) { %>
+        exports.lotNamePattern = /<%= configFunctions.getConfigProperty("settings.lot.lotNamePattern").source %>/;
     <% } %>    
     
-    <% if (configFunctions.getProperty("settings.lot.lotNameHelpText")) { %>
-        exports.lotNameHelpText = `<%= configFunctions.getProperty("settings.lot.lotNameHelpText") %>`;
+    <% if (configFunctions.getConfigProperty("settings.lot.lotNameHelpText")) { %>
+        exports.lotNameHelpText = `<%= configFunctions.getConfigProperty("settings.lot.lotNameHelpText") %>`;
     <% } %>
 
     exports.lotTypes = <%- JSON.stringify(lotTypes) %>;

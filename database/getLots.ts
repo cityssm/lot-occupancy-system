@@ -113,7 +113,7 @@ export async function getLots(
 
     database.function(
       'userFn_lotNameSortName',
-      configFunctions.getProperty('settings.lot.lotNameSortNameFunction')
+      configFunctions.getConfigProperty('settings.lot.lotNameSortNameFunction')
     )
 
     if (includeLotOccupancyCount) {

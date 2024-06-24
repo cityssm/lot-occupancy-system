@@ -8,8 +8,8 @@ import exitHook from 'exit-hook';
 import * as configFunctions from '../helpers/functions.config.js';
 const debug = Debug(`lot-occupancy-system:www:${process.pid}`);
 const directoryName = dirname(fileURLToPath(import.meta.url));
-const processCount = Math.min(configFunctions.getProperty('application.maximumProcesses'), os.cpus().length);
-process.title = `${configFunctions.getProperty('application.applicationName')} (Primary)`;
+const processCount = Math.min(configFunctions.getConfigProperty('application.maximumProcesses'), os.cpus().length);
+process.title = `${configFunctions.getConfigProperty('application.applicationName')} (Primary)`;
 debug(`Primary pid:   ${process.pid}`);
 debug(`Primary title: ${process.title}`);
 debug(`Launching ${processCount} processes`);
@@ -37,19 +37,19 @@ cluster.on('exit', (worker) => {
     debug('Starting another worker');
     cluster.fork();
 });
-const ntfyStartupConfig = configFunctions.getProperty('application.ntfyStartup');
+const ntfyStartupConfig = configFunctions.getConfigProperty('application.ntfyStartup');
 if (ntfyStartupConfig !== undefined) {
     const topic = ntfyStartupConfig.topic;
     const server = ntfyStartupConfig.server;
     const ntfyStartupMessage = {
         topic,
-        title: configFunctions.getProperty('application.applicationName'),
+        title: configFunctions.getConfigProperty('application.applicationName'),
         message: 'Application Started',
         tags: ['arrow_up']
     };
     const ntfyShutdownMessage = {
         topic,
-        title: configFunctions.getProperty('application.applicationName'),
+        title: configFunctions.getConfigProperty('application.applicationName'),
         message: 'Application Shut Down',
         tags: ['arrow_down']
     };

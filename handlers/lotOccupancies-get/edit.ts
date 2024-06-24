@@ -17,7 +17,7 @@ export async function handler(request: Request, response: Response): Promise<voi
 
   if (lotOccupancy === undefined) {
     response.redirect(
-      `${configFunctions.getProperty(
+      `${configFunctions.getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/lotOccupancies/?error=lotOccupancyIdNotFound`
     )
@@ -36,7 +36,7 @@ export async function handler(request: Request, response: Response): Promise<voi
   const workOrderTypes = await getWorkOrderTypes()
 
   response.render('lotOccupancy-edit', {
-    headTitle: `${configFunctions.getProperty('aliases.occupancy')} Update`,
+    headTitle: `${configFunctions.getConfigProperty('aliases.occupancy')} Update`,
     lotOccupancy,
     occupancyTypePrints,
 

@@ -10,7 +10,7 @@ import { acquireConnection } from './pool.js'
 
 export type ReportParameters = Record<string, string | number>
 
-const mapCamelCase = camelCase(configFunctions.getProperty('aliases.map'))
+const mapCamelCase = camelCase(configFunctions.getConfigProperty('aliases.map'))
 const mapNameAlias = `${mapCamelCase}Name`
 const mapDescriptionAlias = `${mapCamelCase}Description`
 const mapAddress1Alias = `${mapCamelCase}Address1`
@@ -20,14 +20,14 @@ const mapProvinceAlias = `${mapCamelCase}Province`
 const mapPostalCodeAlias = `${mapCamelCase}PostalCode`
 const mapPhoneNumberAlias = `${mapCamelCase}PhoneNumber`
 
-const lotCamelCase = camelCase(configFunctions.getProperty('aliases.lot'))
+const lotCamelCase = camelCase(configFunctions.getConfigProperty('aliases.lot'))
 const lotIdAlias = `${lotCamelCase}Id`
 const lotNameAlias = `${lotCamelCase}Name`
 const lotTypeAlias = `${lotCamelCase}Type`
 const lotStatusAlias = `${lotCamelCase}Status`
 
 const occupancyCamelCase = camelCase(
-  configFunctions.getProperty('aliases.occupancy')
+  configFunctions.getConfigProperty('aliases.occupancy')
 )
 const lotOccupancyIdAlias = `${occupancyCamelCase}Id`
 const occupancyTypeAlias = `${occupancyCamelCase}Type`
@@ -35,7 +35,7 @@ const occupancyStartDateAlias = `${occupancyCamelCase}StartDate`
 const occupancyEndDateAlias = `${occupancyCamelCase}EndDate`
 
 const occupantCamelCase = camelCase(
-  configFunctions.getProperty('aliases.occupant')
+  configFunctions.getConfigProperty('aliases.occupant')
 )
 const lotOccupantIndexAlias = `${occupantCamelCase}Index`
 const lotOccupantTypeAlias = `${occupantCamelCase}Type`

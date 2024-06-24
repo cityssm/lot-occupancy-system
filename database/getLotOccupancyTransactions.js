@@ -20,7 +20,7 @@ export async function getLotOccupancyTransactions(lotOccupancyId, options, conne
         database.release();
     }
     if ((options?.includeIntegrations ?? false) &&
-        configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')) {
+        configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
         for (const transaction of lotOccupancyTransactions) {
             if ((transaction.externalReceiptNumber ?? '') !== '') {
                 const gpDocument = await gpFunctions.getDynamicsGPDocument(transaction.externalReceiptNumber ?? '');

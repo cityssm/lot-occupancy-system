@@ -222,7 +222,7 @@ export async function getLotOccupancies(
         lotOccupancy.printEJS = (
           occupancyType.occupancyTypePrints ?? []
         ).includes('*')
-          ? configFunctions.getProperty('settings.lotOccupancy.prints')[0]
+          ? configFunctions.getConfigProperty('settings.lotOccupancy.prints')[0]
           : occupancyType.occupancyTypePrints![0]
       }
 

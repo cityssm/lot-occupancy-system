@@ -54,7 +54,7 @@ configFallbackValues.set('settings.dynamicsGP.lookupOrder', ['invoice']);
 configFallbackValues.set('settings.dynamicsGP.accountCodes', []);
 configFallbackValues.set('settings.dynamicsGP.itemNumbers', []);
 configFallbackValues.set('settings.dynamicsGP.trialBalanceCodes', []);
-export function getProperty(propertyName) {
+export function getConfigProperty(propertyName) {
     const propertyNameSplit = propertyName.split('.');
     let currentObject = config;
     for (const propertyNamePiece of propertyNameSplit) {
@@ -66,6 +66,6 @@ export function getProperty(propertyName) {
     }
     return currentObject;
 }
-export const keepAliveMillis = getProperty('session.doKeepAlive')
-    ? Math.max(getProperty('session.maxAgeMillis') / 2, getProperty('session.maxAgeMillis') - 10 * 60 * 1000)
+export const keepAliveMillis = getConfigProperty('session.doKeepAlive')
+    ? Math.max(getConfigProperty('session.maxAgeMillis') / 2, getConfigProperty('session.maxAgeMillis') - 10 * 60 * 1000)
     : 0;

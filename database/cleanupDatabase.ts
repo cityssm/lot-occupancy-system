@@ -10,7 +10,7 @@ export default async function cleanupDatabase(
   const rightNowMillis = Date.now()
   const recordDeleteTimeMillisMin =
     rightNowMillis -
-    configFunctions.getProperty('settings.adminCleanup.recordDeleteAgeDays') *
+    configFunctions.getConfigProperty('settings.adminCleanup.recordDeleteAgeDays') *
       86_400 *
       1000
 

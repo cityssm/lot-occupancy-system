@@ -45,13 +45,13 @@
         <div class="column">
           <p class="has-text-centered">
             <strong>Server</strong><br />
-            <%= configFunctions.getProperty("application.ntfyStartup.server") || "Default Server" %>
+            <%= configFunctions.getConfigProperty("application.ntfyStartup.server") || "Default Server" %>
           </p>
         </div>
         <div class="column">
           <p class="has-text-centered">
             <strong>Topic</strong><br />
-            <%= configFunctions.getProperty("application.ntfyStartup.topic") %>
+            <%= configFunctions.getConfigProperty("application.ntfyStartup.topic") %>
           </p>
         </div>
       </div>

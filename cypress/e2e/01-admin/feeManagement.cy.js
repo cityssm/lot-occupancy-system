@@ -40,7 +40,7 @@ describe('Admin - Fee Management', () => {
             cy.get(".modal input[name='taxPercentage']")
                 .invoke('val')
                 .should('equal', configFunctions
-                .getProperty('settings.fees.taxPercentageDefault')
+                .getConfigProperty('settings.fees.taxPercentageDefault')
                 .toString());
             cy.get(".modal input[name='quantityUnit']").should('be.disabled');
             cy.get(".modal select[name='includeQuantity']").select('1');

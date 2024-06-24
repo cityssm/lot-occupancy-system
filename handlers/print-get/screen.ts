@@ -14,14 +14,14 @@ export async function handler(
 
   if (
     !configFunctions
-      .getProperty('settings.lotOccupancy.prints')
+      .getConfigProperty('settings.lotOccupancy.prints')
       .includes(`screen/${printName}`) &&
     !configFunctions
-      .getProperty('settings.workOrders.prints')
+      .getConfigProperty('settings.workOrders.prints')
       .includes(`screen/${printName}`)
   ) {
     response.redirect(
-      `${configFunctions.getProperty(
+      `${configFunctions.getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/dashboard/?error=printConfigNotAllowed`
     )
@@ -32,7 +32,7 @@ export async function handler(
 
   if (printConfig === undefined) {
     response.redirect(
-      configFunctions.getProperty('reverseProxy.urlPrefix') +
+      configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
         '/dashboard/?error=printConfigNotFound'
     )
     return

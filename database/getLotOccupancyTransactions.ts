@@ -41,7 +41,7 @@ export async function getLotOccupancyTransactions(
 
   if (
     (options?.includeIntegrations ?? false) &&
-    configFunctions.getProperty('settings.dynamicsGP.integrationIsEnabled')
+    configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled')
   ) {
     for (const transaction of lotOccupancyTransactions) {
       if ((transaction.externalReceiptNumber ?? '') !== '') {

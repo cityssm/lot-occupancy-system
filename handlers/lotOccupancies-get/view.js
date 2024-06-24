@@ -4,12 +4,12 @@ import * as configFunctions from '../../helpers/functions.config.js';
 export async function handler(request, response) {
     const lotOccupancy = await getLotOccupancy(request.params.lotOccupancyId);
     if (lotOccupancy === undefined) {
-        response.redirect(`${configFunctions.getProperty('reverseProxy.urlPrefix')}/lotOccupancies/?error=lotOccupancyIdNotFound`);
+        response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/lotOccupancies/?error=lotOccupancyIdNotFound`);
         return;
     }
     const occupancyTypePrints = await getOccupancyTypePrintsById(lotOccupancy.occupancyTypeId);
     response.render('lotOccupancy-view', {
-        headTitle: `${configFunctions.getProperty('aliases.occupancy')} View`,
+        headTitle: `${configFunctions.getConfigProperty('aliases.occupancy')} View`,
         lotOccupancy,
         occupancyTypePrints
     });

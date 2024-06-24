@@ -12,7 +12,7 @@ export async function handler(
 
   if (lotOccupancy === undefined) {
     response.redirect(
-      `${configFunctions.getProperty(
+      `${configFunctions.getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/lotOccupancies/?error=lotOccupancyIdNotFound`
     )
@@ -24,7 +24,7 @@ export async function handler(
   )
 
   response.render('lotOccupancy-view', {
-    headTitle: `${configFunctions.getProperty('aliases.occupancy')} View`,
+    headTitle: `${configFunctions.getConfigProperty('aliases.occupancy')} View`,
     lotOccupancy,
     occupancyTypePrints
   })

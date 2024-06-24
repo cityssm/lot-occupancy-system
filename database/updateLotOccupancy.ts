@@ -1,4 +1,4 @@
-import { dateStringToInteger } from '@cityssm/utils-datetime'
+import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
 
 import addOrUpdateLotOccupancyField from './addOrUpdateLotOccupancyField.js'
 import deleteLotOccupancyField from './deleteLotOccupancyField.js'
@@ -9,8 +9,8 @@ interface UpdateLotOccupancyForm {
   occupancyTypeId: string | number
   lotId: string | number
 
-  occupancyStartDateString: string
-  occupancyEndDateString: string
+  occupancyStartDateString: DateString
+  occupancyEndDateString: DateString | ''
 
   occupancyTypeFieldIds?: string
   [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown

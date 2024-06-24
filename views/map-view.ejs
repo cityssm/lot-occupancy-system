@@ -6,7 +6,7 @@
     <li>
         <a href="<%= urlPrefix %>/maps">
             <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
-            <span><%= configFunctions.getProperty("aliases.maps") %></span>
+            <span><%= configFunctions.getConfigProperty("aliases.maps") %></span>
         </a>
     </li>
     <li class="is-active">
@@ -31,16 +31,16 @@
   <div class="level-right">
     <div class="level-item">
       <a class="button is-link is-outlined has-tooltip-left"
-          data-tooltip="Previous <%= configFunctions.getProperty("aliases.map") %>"
+          data-tooltip="Previous <%= configFunctions.getConfigProperty("aliases.map") %>"
           href="<%= urlPrefix %>/maps/<%= map.mapId %>/previous"
           accesskey=",">
           <i class="fas fa-arrow-left" aria-hidden="true"></i>
-          <span class="sr-only">Previous <%= configFunctions.getProperty("aliases.map") %></span>
+          <span class="sr-only">Previous <%= configFunctions.getConfigProperty("aliases.map") %></span>
       </a>
     </div>
     <div class="level-item">
       <a class="button is-link has-tooltip-left"
-          data-tooltip="Next <%= configFunctions.getProperty("aliases.map") %>"
+          data-tooltip="Next <%= configFunctions.getConfigProperty("aliases.map") %>"
           href="<%= urlPrefix %>/maps/<%= map.mapId %>/next"
           accesskey=".">
           <span>Next</span>
@@ -99,7 +99,7 @@
                     <div id="map--leaflet" data-map-latitude="<%= map.mapLatitude %>" data-map-longitude="<%= map.mapLongitude %>" style="height:300px"></div>
                 <% } else { %>
                     <div class="message is-info">
-                        <p class="message-body">There are no geographic coordinates associated with this <%= configFunctions.getProperty("aliases.map").toLowerCase() %>.</p>
+                        <p class="message-body">There are no geographic coordinates associated with this <%= configFunctions.getConfigProperty("aliases.map").toLowerCase() %>.</p>
                     </div>
                 <% } %>
             </div>
@@ -116,7 +116,7 @@
                     </a>
                 <% } else { %>
                     <div class="message is-info">
-                        <p class="message-body">There are no image associated with this <%= configFunctions.getProperty("aliases.map").toLowerCase() %>.</p>
+                        <p class="message-body">There are no image associated with this <%= configFunctions.getConfigProperty("aliases.map").toLowerCase() %>.</p>
                     </div>
                 <% } %>
             </div>
@@ -131,7 +131,7 @@
             <div class="level-left">
                 <div class="level-item">
                     <h2 class="title is-5 has-text-weight-bold">
-                        <%= configFunctions.getProperty("aliases.lot") %> Summaries
+                        <%= configFunctions.getConfigProperty("aliases.lot") %> Summaries
                         <a class="tag is-link ml-2" href="<%= lotSearchUrl %>">
                             <%= map.lotCount %>
                         </a>
@@ -152,8 +152,8 @@
         <% if (map.lotCount === 0) { %>
             <div class="message is-info">
                 <p class="message-body">
-                    There are no <%= configFunctions.getProperty("aliases.lots").toLowerCase() %>
-                    associated with this <%= configFunctions.getProperty("aliases.map").toLowerCase() %>.
+                    There are no <%= configFunctions.getConfigProperty("aliases.lots").toLowerCase() %>
+                    associated with this <%= configFunctions.getConfigProperty("aliases.map").toLowerCase() %>.
                 </p>
             </div>
         <% } else { %>
@@ -164,7 +164,7 @@
                             <tr>
                                 <th>Type</th>
                                 <th class="has-text-right">
-                                    <%= configFunctions.getProperty("aliases.lot") %> Count
+                                    <%= configFunctions.getConfigProperty("aliases.lot") %> Count
                                 </th>
                                 <th class="has-text-right">Percentage</th>
                             </tr>
@@ -194,7 +194,7 @@
                             <tr>
                                 <th>Status</th>
                                 <th class="has-text-right">
-                                    <%= configFunctions.getProperty("aliases.lot") %> Count
+                                    <%= configFunctions.getConfigProperty("aliases.lot") %> Count
                                 </th>
                                 <th class="has-text-right">Percentage</th>
                             </tr>

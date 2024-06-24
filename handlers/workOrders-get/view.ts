@@ -15,7 +15,7 @@ export async function handler(
 
   if (workOrder === undefined) {
     response.redirect(
-      `${configFunctions.getProperty(
+      `${configFunctions.getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/workOrders/?error=workOrderIdNotFound`
     )

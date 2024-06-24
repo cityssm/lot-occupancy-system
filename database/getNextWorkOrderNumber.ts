@@ -9,7 +9,7 @@ export async function getNextWorkOrderNumber(
 ): Promise<string> {
   const database = connectedDatabase ?? (await acquireConnection())
 
-  const paddingLength = configFunctions.getProperty(
+  const paddingLength = configFunctions.getConfigProperty(
     'settings.workOrders.workOrderNumberLength'
   )
   const currentYearString = new Date().getFullYear().toString()

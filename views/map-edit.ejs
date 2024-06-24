@@ -6,7 +6,7 @@
     <li>
       <a href="<%= urlPrefix %>/maps">
         <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
-        <span><%= configFunctions.getProperty("aliases.maps") %></span>
+        <span><%= configFunctions.getConfigProperty("aliases.maps") %></span>
       </a>
     </li>
     <% if (!isCreate) { %>
@@ -19,7 +19,7 @@
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-          Create a New <%= configFunctions.getProperty("aliases.map") %>
+          Create a New <%= configFunctions.getConfigProperty("aliases.map") %>
         <% } else { %>
           Update
         <% } %>
@@ -30,9 +30,9 @@
 
 <h1 class="title is-1">
   <% if (isCreate) { %>
-    Create a New <%= configFunctions.getProperty("aliases.map") %>
+    Create a New <%= configFunctions.getConfigProperty("aliases.map") %>
   <% } else { %>
-    Update <%= configFunctions.getProperty("aliases.map") %>
+    Update <%= configFunctions.getConfigProperty("aliases.map") %>
   <% } %>
 </h1>
 
@@ -66,7 +66,7 @@
             <div class="dropdown-content">
               <a class="dropdown-item" id="button--deleteMap" href="#">
                 <span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
-                <span>Delete <%= configFunctions.getProperty("aliases.map") %></span>
+                <span>Delete <%= configFunctions.getConfigProperty("aliases.map") %></span>
               </a>
             </div>
           </div>
@@ -78,7 +78,7 @@
         <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
         <span>
           <%= (isCreate ? "Create": "Update") %>
-          <%= configFunctions.getProperty("aliases.map") %>
+          <%= configFunctions.getConfigProperty("aliases.map") %>
         </span>
       </button>
     </div>
@@ -94,7 +94,7 @@
           <div class="panel">
             <div class="panel-block is-block">
               <div class="field">
-                  <label class="label" for="map--mapName"><%= configFunctions.getProperty("aliases.map") %> Name</label>
+                  <label class="label" for="map--mapName"><%= configFunctions.getConfigProperty("aliases.map") %> Name</label>
                   <div class="control">
                     <input class="input" id="map--mapName" name="mapName" type="text"
                       value="<%= map.mapName %>" maxlength="200" required
@@ -103,7 +103,7 @@
                   </div>
               </div>
               <div class="field">
-                  <label class="label" for="map--mapDescription"><%= configFunctions.getProperty("aliases.map") %> Description</label>
+                  <label class="label" for="map--mapDescription"><%= configFunctions.getConfigProperty("aliases.map") %> Description</label>
                   <div class="control">
                       <textarea class="textarea" id="map--mapDescription" name="mapDescription"><%= map.mapDescription %></textarea>
                   </div>
@@ -221,7 +221,7 @@
                 <div class="level-left">
                     <div class="level-item">
                         <h2 class="title is-5 has-text-weight-bold">
-                            <%= configFunctions.getProperty("aliases.lot") %> Summaries
+                            <%= configFunctions.getConfigProperty("aliases.lot") %> Summaries
                             <a class="tag is-link ml-2" href="<%= lotSearchUrl %>">
                                 <%= map.lotCount %>
                             </a>
@@ -232,7 +232,7 @@
                     <div class="level-item">
                         <a class="button is-small is-success has-text-weight-normal" href="<%=urlPrefix %>/lots/new?mapId=<%= map.mapId %>">
                             <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                            <span>Create a <%= configFunctions.getProperty("aliases.lot") %></span>
+                            <span>Create a <%= configFunctions.getConfigProperty("aliases.lot") %></span>
                         </a>
                     </div>
                     <div class="level-item">
@@ -248,8 +248,8 @@
             <% if (map.lotCount === 0) { %>
                 <div class="message is-info">
                     <p class="message-body">
-                        There are no <%= configFunctions.getProperty("aliases.lots").toLowerCase() %>
-                        associated with this <%= configFunctions.getProperty("aliases.map").toLowerCase() %>.
+                        There are no <%= configFunctions.getConfigProperty("aliases.lots").toLowerCase() %>
+                        associated with this <%= configFunctions.getConfigProperty("aliases.map").toLowerCase() %>.
                     </p>
                 </div>
             <% } else { %>
@@ -260,7 +260,7 @@
                                 <tr>
                                     <th>Type</th>
                                     <th class="has-text-right">
-                                        <%= configFunctions.getProperty("aliases.lot") %> Count
+                                        <%= configFunctions.getConfigProperty("aliases.lot") %> Count
                                     </th>
                                     <th class="has-text-right">Percentage</th>
                                 </tr>
@@ -290,7 +290,7 @@
                                 <tr>
                                     <th>Status</th>
                                     <th class="has-text-right">
-                                        <%= configFunctions.getProperty("aliases.lot") %> Count
+                                        <%= configFunctions.getConfigProperty("aliases.lot") %> Count
                                     </th>
                                     <th class="has-text-right">Percentage</th>
                                 </tr>

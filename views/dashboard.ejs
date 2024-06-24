@@ -1,12 +1,12 @@
 <%- include('_header'); -%>
 
 <h1 class="title is-1">
-  <%= configFunctions.getProperty("application.applicationName") %>
+  <%= configFunctions.getConfigProperty("application.applicationName") %>
 </h1>
 
 <div class="columns">
   <% if (workOrderMilestones.length > 0) { %>
-    <% const workOrderPrints = configFunctions.getProperty("settings.workOrders.prints"); %>
+    <% const workOrderPrints = configFunctions.getConfigProperty("settings.workOrders.prints"); %>
     <div class="column is-4">
       <div class="panel is-info">
         <div class="panel-heading">
@@ -63,7 +63,7 @@
                       for (const lot of milestone.workOrderLots) {
                   %>
                   <span class="has-tooltip-right" data-tooltip="<%= lot.mapName %>">
-                    <i class="fas fa-fw fa-vector-square" aria-label="<%= configFunctions.getProperty("aliases.lot") %>"></i>
+                    <i class="fas fa-fw fa-vector-square" aria-label="<%= configFunctions.getConfigProperty("aliases.lot") %>"></i>
                     <%= lot.lotName %>
                   </span><br />
                   <%
@@ -75,7 +75,7 @@
                         for (const occupant of occupancy.lotOccupancyOccupants) {
                   %>
                   <span class="has-tooltip-right" data-tooltip="<%= occupant.lotOccupantType %>">
-                    <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-label="<%= configFunctions.getProperty("aliases.occupancy") %>"></i>
+                    <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-label="<%= configFunctions.getConfigProperty("aliases.occupancy") %>"></i>
                     <%= occupant.occupantName %>
                     <%= occupant.occupantFamilyName %>
                   </span><br />
@@ -152,11 +152,11 @@
                   </div>
                   <a class="media-content" href="<%= urlPrefix %>/lotOccupancies">
                     <h2 class="title is-4 is-marginless has-text-link">
-                      <%= configFunctions.getProperty("aliases.occupancies") %>
+                      <%= configFunctions.getConfigProperty("aliases.occupancies") %>
                     </h2>
                     <p>
                       View and maintain current and past
-                      <%= configFunctions.getProperty("aliases.occupancies").toLowerCase() %>.<br />
+                      <%= configFunctions.getConfigProperty("aliases.occupancies").toLowerCase() %>.<br />
                       <span class="tags has-addons is-invisible is-visible-hover">
                         <span class="tag is-link is-light">Shortcut</span>
                         <kbd class="tag">2</kbd>
@@ -169,7 +169,7 @@
                     <span class="icon">
                       <i class="fas fa-plus" aria-hidden="true"></i>
                     </span>
-                    <span>New <%= configFunctions.getProperty("aliases.occupancy") %></span>
+                    <span>New <%= configFunctions.getConfigProperty("aliases.occupancy") %></span>
                   </a>
                 <% } %>
               </div>
@@ -186,12 +186,12 @@
               </div>
               <a class="media-content" href="<%= urlPrefix %>/lots">
                 <h2 class="title is-4 is-marginless has-text-link">
-                  <%= configFunctions.getProperty("aliases.lots") %>
+                  <%= configFunctions.getConfigProperty("aliases.lots") %>
                 </h2>
                 <p>
                   View and maintain
-                  <%= configFunctions.getProperty("aliases.lots").toLowerCase() %> within a
-                  <%= configFunctions.getProperty("aliases.map").toLowerCase() %>.<br />
+                  <%= configFunctions.getConfigProperty("aliases.lots").toLowerCase() %> within a
+                  <%= configFunctions.getConfigProperty("aliases.map").toLowerCase() %>.<br />
                   <span class="tags has-addons is-invisible is-visible-hover">
                     <span class="tag is-link is-light">Shortcut</span>
                     <kbd class="tag">3</kbd>
@@ -204,7 +204,7 @@
                 <span class="icon">
                   <i class="fas fa-plus" aria-hidden="true"></i>
                 </span>
-                <span>New <%= configFunctions.getProperty("aliases.lot") %></span>
+                <span>New <%= configFunctions.getConfigProperty("aliases.lot") %></span>
               </a>
             <% } %>
           </div>
@@ -219,10 +219,10 @@
               </div>
               <a class="media-content" href="<%= urlPrefix %>/maps">
                 <h2 class="title is-4 is-marginless has-text-link">
-                  <%= configFunctions.getProperty("aliases.maps") %>
+                  <%= configFunctions.getConfigProperty("aliases.maps") %>
                 </h2>
                 <p>
-                  View and maintain <%= configFunctions.getProperty("aliases.maps").toLowerCase() %>.
+                  View and maintain <%= configFunctions.getConfigProperty("aliases.maps").toLowerCase() %>.
                   <span class="tags has-addons is-invisible is-visible-hover">
                     <span class="tag is-link is-light">Shortcut</span>
                     <kbd class="tag">4</kbd>
@@ -235,7 +235,7 @@
                 <span class="icon">
                   <i class="fas fa-plus" aria-hidden="true"></i>
                 </span>
-                <span>New <%= configFunctions.getProperty("aliases.map") %></span>
+                <span>New <%= configFunctions.getConfigProperty("aliases.map") %></span>
               </a>
             <% } %>
           </div>
@@ -310,10 +310,10 @@
               </h2>
               <p>
                 Manage fees for
-                <%= configFunctions.getProperty("aliases.lot").toLowerCase() %>
-                <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %>
+                <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %>
+                <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %>
                 and specific
-                <%= configFunctions.getProperty("aliases.lot").toLowerCase() %> types.
+                <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %> types.
               </p>
             </a>
           </div>
@@ -328,11 +328,11 @@
             </div>
             <a class="media-content" href="<%= urlPrefix %>/admin/occupancyTypes">
               <h2 class="title is-4 is-marginless has-text-link">
-                <%= configFunctions.getProperty("aliases.occupancy") %> Type Management
+                <%= configFunctions.getConfigProperty("aliases.occupancy") %> Type Management
               </h2>
               <p>
                 Manage
-                <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %> types,
+                <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %> types,
                 the fields associated with them,
                 and their available print options.
               </p>
@@ -349,11 +349,11 @@
             </div>
             <a class="media-content" href="<%= urlPrefix %>/admin/lotTypes">
               <h2 class="title is-4 is-marginless has-text-link">
-                <%= configFunctions.getProperty("aliases.lot") %> Type Management
+                <%= configFunctions.getConfigProperty("aliases.lot") %> Type Management
               </h2>
               <p>
                 Manage
-                <%= configFunctions.getProperty("aliases.lot").toLowerCase() %> types
+                <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %> types
                 and fields associated with them.
               </p>
             </a>
@@ -374,8 +374,8 @@
               <p>
                 Manage simple configuration tables fees for
                 work order types,
-                <%= configFunctions.getProperty("aliases.lot").toLowerCase() %> statuses,
-                and <%= configFunctions.getProperty("aliases.lot").toLowerCase() %> <%= configFunctions.getProperty("aliases.occupant").toLowerCase() %> types.
+                <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %> statuses,
+                and <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %> <%= configFunctions.getConfigProperty("aliases.occupant").toLowerCase() %> types.
               </p>
             </a>
           </div>
@@ -396,7 +396,7 @@
               </a>
           </div>
         </div>
-        <% if (configFunctions.getProperty("application.ntfyStartup")) { %>
+        <% if (configFunctions.getConfigProperty("application.ntfyStartup")) { %>
           <div class="card-content">
             <div class="media">
               <div class="media-left">

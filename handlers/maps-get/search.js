@@ -3,7 +3,7 @@ import * as configFunctions from '../../helpers/functions.config.js';
 export async function handler(_request, response) {
     const maps = await getMaps();
     response.render('map-search', {
-        headTitle: `${configFunctions.getProperty('aliases.map')} Search`,
+        headTitle: `${configFunctions.getConfigProperty('aliases.map')} Search`,
         maps
     });
 }

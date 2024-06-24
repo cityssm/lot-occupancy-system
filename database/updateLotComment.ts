@@ -1,4 +1,6 @@
 import {
+  type DateString,
+  type TimeString,
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
@@ -7,8 +9,8 @@ import { acquireConnection } from './pool.js'
 
 interface UpdateLotCommentForm {
   lotCommentId: string | number
-  lotCommentDateString: string
-  lotCommentTimeString: string
+  lotCommentDateString: DateString
+  lotCommentTimeString: TimeString
   lotComment: string
 }
 

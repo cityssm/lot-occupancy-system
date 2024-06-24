@@ -29,8 +29,8 @@ function onListening(server) {
         debug(`HTTP Listening on ${bind}`);
     }
 }
-process.title = `${configFunctions.getProperty('application.applicationName')} (Worker)`;
-const httpPort = configFunctions.getProperty('application.httpPort');
+process.title = `${configFunctions.getConfigProperty('application.applicationName')} (Worker)`;
+const httpPort = configFunctions.getConfigProperty('application.httpPort');
 const httpServer = http.createServer(app);
 httpServer.listen(httpPort);
 httpServer.on('error', onError);

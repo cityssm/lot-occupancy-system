@@ -4,9 +4,9 @@ export async function handler(request, response) {
     const lotId = Number.parseInt(request.params.lotId, 10);
     const nextLotId = await getNextLotId(lotId);
     if (nextLotId === undefined) {
-        response.redirect(`${configFunctions.getProperty('reverseProxy.urlPrefix')}/lots/?error=noNextLotIdFound`);
+        response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/lots/?error=noNextLotIdFound`);
         return;
     }
-    response.redirect(`${configFunctions.getProperty('reverseProxy.urlPrefix')}/lots/${nextLotId.toString()}`);
+    response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/lots/${nextLotId.toString()}`);
 }
 export default handler;

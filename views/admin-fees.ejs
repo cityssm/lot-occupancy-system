@@ -47,7 +47,7 @@
   exports.occupancyTypes = <%- JSON.stringify(occupancyTypes) %>;
   exports.lotTypes = <%- JSON.stringify(lotTypes) %>;
 
-  exports.taxPercentageDefault = <%= configFunctions.getProperty("settings.fees.taxPercentageDefault") %>;
+  exports.taxPercentageDefault = <%= configFunctions.getConfigProperty("settings.fees.taxPercentageDefault") %>;
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/adminFees.min.js"></script>

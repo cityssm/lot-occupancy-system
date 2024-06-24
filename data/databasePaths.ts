@@ -6,7 +6,7 @@ const debug = Debug('lot-occupancy-system:databasePaths')
 // Determine if test databases should be used
 
 export const useTestDatabases =
-  configFunctions.getProperty('application.useTestDatabases') ||
+  configFunctions.getConfigProperty('application.useTestDatabases') ||
   process.env.TEST_DATABASES === 'true'
 
 if (useTestDatabases) {

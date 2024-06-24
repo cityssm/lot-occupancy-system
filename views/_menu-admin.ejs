@@ -12,19 +12,19 @@
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === configFunctions.getProperty("aliases.occupancy") + " Type Management" ? "is-active" : "") %>"
+      <a class="<%= (headTitle === configFunctions.getConfigProperty("aliases.occupancy") + " Type Management" ? "is-active" : "") %>"
         href="<%= urlPrefix %>/admin/occupancyTypes"
-        aria-label="<%= configFunctions.getProperty("aliases.occupancy") %> Type Management">
+        aria-label="<%= configFunctions.getConfigProperty("aliases.occupancy") %> Type Management">
         <span class="icon"><i class="fas fa-fw fa-user-friends" aria-hidden="true"></i></span>
-        <span class="is-hidden-touch"><%= configFunctions.getProperty("aliases.occupancy") %> Type Management</span>
+        <span class="is-hidden-touch"><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type Management</span>
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === configFunctions.getProperty("aliases.lot") + " Type Management" ? "is-active" : "") %>"
+      <a class="<%= (headTitle === configFunctions.getConfigProperty("aliases.lot") + " Type Management" ? "is-active" : "") %>"
         href="<%= urlPrefix %>/admin/lotTypes"
-        aria-label="<%= configFunctions.getProperty("aliases.lot") %> Type Management">
+        aria-label="<%= configFunctions.getConfigProperty("aliases.lot") %> Type Management">
         <span class="icon"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
-        <span class="is-hidden-touch"><%= configFunctions.getProperty("aliases.lot") %> Type Management</span>
+        <span class="is-hidden-touch"><%= configFunctions.getConfigProperty("aliases.lot") %> Type Management</span>
       </a>
     </li>
     <li>
@@ -43,7 +43,7 @@
         <span class="is-hidden-touch">Database Maintenance</span>
       </a>
     </li>
-    <% if (configFunctions.getProperty("application.ntfyStartup")) { %>
+    <% if (configFunctions.getConfigProperty("application.ntfyStartup")) { %>
       <li>
         <a class="<%= (headTitle === "Ntfy Startup Notification" ? "is-active" : "") %>"
           href="<%= urlPrefix %>/admin/ntfyStartup"

@@ -30,10 +30,10 @@
     </span>
   </div>
   <div class="level-right">
-    <% if (configFunctions.getProperty("settings.workOrders.prints").length > 0) { %>
-      <% if (configFunctions.getProperty("settings.workOrders.prints").length === 1) { %>
+    <% if (configFunctions.getConfigProperty("settings.workOrders.prints").length > 0) { %>
+      <% if (configFunctions.getConfigProperty("settings.workOrders.prints").length === 1) { %>
         <div class="level-item">
-          <a href="<%= urlPrefix %>/print/<%= configFunctions.getProperty("settings.workOrders.prints")[0] %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" aria-label="Print">
+          <a href="<%= urlPrefix %>/print/<%= configFunctions.getConfigProperty("settings.workOrders.prints")[0] %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" aria-label="Print">
             <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
             <span class="is-hidden-touch">Print</span>
           </a>
@@ -50,7 +50,7 @@
             </div>
             <div class="dropdown-menu">
               <div class="dropdown-content">
-                <% for (const printName of configFunctions.getProperty("settings.workOrders.prints")) { %>
+                <% for (const printName of configFunctions.getConfigProperty("settings.workOrders.prints")) { %>
                   <% const printConfig = printFunctions.getPrintConfig(printName); %>
                   <% if (printConfig) { %>
                     <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
@@ -105,16 +105,16 @@
             </div>
             <div class="column">
               <p class="mb-2">
-                <strong><%= configFunctions.getProperty("aliases.workOrderOpenDate") %></strong><br />
+                <strong><%= configFunctions.getConfigProperty("aliases.workOrderOpenDate") %></strong><br />
                 <%= workOrder.workOrderOpenDateString %>
               </p>
               <p>
-                <strong><%= configFunctions.getProperty("aliases.workOrderCloseDate") %></strong><br />
+                <strong><%= configFunctions.getConfigProperty("aliases.workOrderCloseDate") %></strong><br />
                 <% if (workOrder.workOrderCloseDate) { %>
                   <%= workOrder.workOrderCloseDateString %>
                 <% } else { %>
                   <span class="has-text-grey">
-                    (No <%= configFunctions.getProperty("aliases.workOrderCloseDate") %>)
+                    (No <%= configFunctions.getConfigProperty("aliases.workOrderCloseDate") %>)
                   </span>
                 <% } %>
               </p>
@@ -124,7 +124,7 @@
     </div>
 
     <div class="panel">
-      <h2 class="panel-heading">Related <%= configFunctions.getProperty("aliases.lots") %></h2>
+      <h2 class="panel-heading">Related <%= configFunctions.getConfigProperty("aliases.lots") %></h2>
       <div class="panel-block is-block">
           <%
               const tabToSelect = (workOrder.workOrderLotOccupancies.length > 0 || workOrder.workOrderLots.length === 0 ? "lotOccupancies" : "lots");
@@ -133,13 +133,13 @@
             <ul>
               <li class="<%= (tabToSelect === "lotOccupancies" ? "is-active" : "") %>">
                 <a href="#relatedTab--lotOccupancies">
-                  <span><%= configFunctions.getProperty("aliases.occupancies") %></span>
+                  <span><%= configFunctions.getConfigProperty("aliases.occupancies") %></span>
                   <span class="ml-2 tag"><%= workOrder.workOrderLotOccupancies.length %></span>
                 </a>
               </li>
               <li class="<%= (tabToSelect === "lots" ? "is-active" : "") %>">
                 <a href="#relatedTab--lots">
-                  <span><%= configFunctions.getProperty("aliases.lots") %></span>
+                  <span><%= configFunctions.getConfigProperty("aliases.lots") %></span>
                   <span class="ml-2 tag"><%= workOrder.workOrderLots.length %></span>
                 </a>
               </li>
@@ -151,8 +151,8 @@
                       <div class="message is-info">
                         <p class="message-body">
                           There are no
-                          <%= configFunctions.getProperty("aliases.lot").toLowerCase() %>
-                          <%= configFunctions.getProperty("aliases.occupancy").toLowerCase() %>
+                          <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %>
+                          <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %>
                           records associated with this work order.
                         </p>
                       </div>
@@ -162,11 +162,11 @@
                           <thead>
                               <tr>
                                   <th class="has-width-1"></th>
-                                  <th><%= configFunctions.getProperty("aliases.occupancy") %> Type</th>
-                                  <th><%= configFunctions.getProperty("aliases.lot") %></th>
-                                  <th><%= configFunctions.getProperty("aliases.occupancyStartDate") %></th>
+                                  <th><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</th>
+                                  <th><%= configFunctions.getConfigProperty("aliases.lot") %></th>
+                                  <th><%= configFunctions.getConfigProperty("aliases.occupancyStartDate") %></th>
                                   <th>End Date</th>
-                                  <th><%= configFunctions.getProperty("aliases.occupants") %></th>
+                                  <th><%= configFunctions.getConfigProperty("aliases.occupants") %></th>
                               </tr>
                           </thead>
                           <tbody>
@@ -175,9 +175,9 @@
                                   <tr>
                                       <td class="has-text-centered">
                                         <% if (isActive) { %>
-                                          <i class="fas fa-play" title="Current <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
+                                          <i class="fas fa-play" title="Current <%= configFunctions.getConfigProperty("aliases.occupancy") %>"></i>
                                         <% } else { %>
-                                          <i class="fas fa-stop" title="Previous <%= configFunctions.getProperty("aliases.occupancy") %>"></i>
+                                          <i class="fas fa-stop" title="Previous <%= configFunctions.getConfigProperty("aliases.occupancy") %>"></i>
                                         <% } %>
                                       </td>
                                       <td>
@@ -193,7 +193,7 @@
                                           <% if (lotOccupancy.lotId) { %>
                                               <%= lotOccupancy.lotName %>
                                           <% } else { %>
-                                              <span class="has-text-grey">(No <%= configFunctions.getProperty("aliases.lot") %>)</span>
+                                              <span class="has-text-grey">(No <%= configFunctions.getConfigProperty("aliases.lot") %>)</span>
                                           <% } %>
                                       </td>
                                       <td><%= lotOccupancy.occupancyStartDateString %></td>
@@ -207,7 +207,7 @@
                                       <td>
                                         <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
                                           <span class="has-text-grey">(
-                                            No <%= configFunctions.getProperty("aliases.occupants") %>)
+                                            No <%= configFunctions.getConfigProperty("aliases.occupants") %>)
                                           </span>
                                         <% } else { %>
                                           <ul class="fa-ul ml-5">
@@ -234,7 +234,7 @@
                       <div class="message is-info">
                           <p class="message-body">
                               There are no
-                              <%= configFunctions.getProperty("aliases.lots").toLowerCase() %>
+                              <%= configFunctions.getConfigProperty("aliases.lots").toLowerCase() %>
                               records associated with this work order.
                           </p>
                       </div>
@@ -242,9 +242,9 @@
                       <table class="table is-fullwidth is-striped is-hoverable">
                           <thead>
                               <tr>
-                                  <th><%= configFunctions.getProperty("aliases.lot") %></th>
-                                  <th><%= configFunctions.getProperty("aliases.map") %></th>
-                                  <th><%= configFunctions.getProperty("aliases.lot") %> Type</th>
+                                  <th><%= configFunctions.getConfigProperty("aliases.lot") %></th>
+                                  <th><%= configFunctions.getConfigProperty("aliases.map") %></th>
+                                  <th><%= configFunctions.getConfigProperty("aliases.lot") %> Type</th>
                                   <th>Status</th>
                               </tr>
                           </thead>

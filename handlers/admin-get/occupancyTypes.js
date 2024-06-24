@@ -4,7 +4,7 @@ import * as printFunctions from '../../helpers/functions.print.js';
 export async function handler(_request, response) {
     const occupancyTypes = await getOccupancyTypes();
     const allOccupancyTypeFields = await getAllOccupancyTypeFields();
-    const occupancyTypePrints = configFunctions.getProperty('settings.lotOccupancy.prints');
+    const occupancyTypePrints = configFunctions.getConfigProperty('settings.lotOccupancy.prints');
     const occupancyTypePrintTitles = {};
     for (const printEJS of occupancyTypePrints) {
         const printConfig = printFunctions.getPrintConfig(printEJS);
@@ -13,7 +13,7 @@ export async function handler(_request, response) {
         }
     }
     response.render('admin-occupancyTypes', {
-        headTitle: `${configFunctions.getProperty('aliases.occupancy')} Type Management`,
+        headTitle: `${configFunctions.getConfigProperty('aliases.occupancy')} Type Management`,
         occupancyTypes,
         allOccupancyTypeFields,
         occupancyTypePrintTitles

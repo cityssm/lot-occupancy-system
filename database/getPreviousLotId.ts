@@ -9,7 +9,7 @@ export async function getPreviousLotId(
 
   database.function(
     'userFn_lotNameSortName',
-    configFunctions.getProperty('settings.lot.lotNameSortNameFunction')
+    configFunctions.getConfigProperty('settings.lot.lotNameSortNameFunction')
   )
 
   const result = database

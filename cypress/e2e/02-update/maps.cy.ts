@@ -56,12 +56,12 @@ describe('Update - Maps', () => {
 
     cy.get("input[name='mapCity']").should(
       'have.value',
-      configFunctions.getProperty('settings.map.mapCityDefault')
+      configFunctions.getConfigProperty('settings.map.mapCityDefault')
     )
 
     cy.get("input[name='mapProvince']").should(
       'have.value',
-      configFunctions.getProperty('settings.map.mapProvinceDefault')
+      configFunctions.getConfigProperty('settings.map.mapProvinceDefault')
     )
 
     cy.log('Submit the form')
@@ -93,11 +93,11 @@ describe('Update - Maps', () => {
 
       cy.get("input[name='mapCity']").should(
         'have.value',
-        configFunctions.getProperty('settings.map.mapCityDefault')
+        configFunctions.getConfigProperty('settings.map.mapCityDefault')
       )
       cy.get("input[name='mapProvince']").should(
         'have.value',
-        configFunctions.getProperty('settings.map.mapProvinceDefault')
+        configFunctions.getConfigProperty('settings.map.mapProvinceDefault')
       )
 
       cy.get("input[name='mapPostalCode']").should(

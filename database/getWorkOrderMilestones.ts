@@ -52,7 +52,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
 
   date.setDate(
     date.getDate() -
-      configFunctions.getProperty(
+      configFunctions.getConfigProperty(
         'settings.workOrders.workOrderMilestoneDateRecentBeforeDays'
       )
   )
@@ -61,10 +61,10 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
 
   date.setDate(
     date.getDate() +
-      configFunctions.getProperty(
+      configFunctions.getConfigProperty(
         'settings.workOrders.workOrderMilestoneDateRecentBeforeDays'
       ) +
-      configFunctions.getProperty(
+      configFunctions.getConfigProperty(
         'settings.workOrders.workOrderMilestoneDateRecentAfterDays'
       )
   )

@@ -49,7 +49,7 @@ export const app = express()
 
 app.disable('X-Powered-By')
 
-if (!configFunctions.getProperty('reverseProxy.disableEtag')) {
+if (!configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
   app.set('etag', false)
 }
 
@@ -57,7 +57,7 @@ if (!configFunctions.getProperty('reverseProxy.disableEtag')) {
 app.set('views', path.join(_dirname, 'views'))
 app.set('view engine', 'ejs')
 
-if (!configFunctions.getProperty('reverseProxy.disableCompression')) {
+if (!configFunctions.getConfigProperty('reverseProxy.disableCompression')) {
   app.use(compression())
 }
 
@@ -96,7 +96,7 @@ app.use(
  * STATIC ROUTES
  */
 
-const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix')
+const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix')
 
 if (urlPrefix !== '') {
   debug(`urlPrefix = ${urlPrefix}`)
@@ -143,7 +143,7 @@ app.use(
  */
 
 const sessionCookieName: string =
-  configFunctions.getProperty('session.cookieName')
+  configFunctions.getConfigProperty('session.cookieName')
 
 const FileStoreSession = FileStore(session)
 
@@ -156,12 +156,12 @@ app.use(
       retries: 20
     }),
     name: sessionCookieName,
-    secret: configFunctions.getProperty('session.secret'),
+    secret: configFunctions.getConfigProperty('session.secret'),
     resave: true,
     saveUninitialized: false,
     rolling: true,
     cookie: {
-      maxAge: configFunctions.getProperty('session.maxAgeMillis'),
+      maxAge: configFunctions.getConfigProperty('session.maxAgeMillis'),
       sameSite: 'strict'
     }
   })
@@ -218,7 +218,7 @@ app.use((request, response, next) => {
   response.locals.stringFunctions = stringFns
   response.locals.htmlFunctions = htmlFns
 
-  response.locals.urlPrefix = configFunctions.getProperty(
+  response.locals.urlPrefix = configFunctions.getConfigProperty(
     'reverseProxy.urlPrefix'
   )
 
@@ -251,7 +251,7 @@ app.use(
   routerAdmin
 )
 
-if (configFunctions.getProperty('session.doKeepAlive')) {
+if (configFunctions.getConfigProperty('session.doKeepAlive')) {
   app.all(`${urlPrefix}/keepAlive`, (_request, response) => {
     response.json(true)
   })

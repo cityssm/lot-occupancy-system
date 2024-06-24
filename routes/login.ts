@@ -16,7 +16,7 @@ const debug = Debug('lot-occupancy-system:login')
 export const router = Router()
 
 function getHandler(request: Request, response: Response): void {
-  const sessionCookieName = configFunctions.getProperty('session.cookieName')
+  const sessionCookieName = configFunctions.getConfigProperty('session.cookieName')
 
   if (
     request.session.user !== undefined &&
@@ -60,7 +60,7 @@ async function postHandler(
   if (userName.startsWith('*')) {
     if (useTestDatabases && userName === passwordPlain) {
       isAuthenticated = configFunctions
-        .getProperty('users.testing')
+        .getConfigProperty('users.testing')
         .includes(userName)
 
       if (isAuthenticated) {
@@ -80,20 +80,20 @@ async function postHandler(
     const userNameLowerCase = userName.toLowerCase()
 
     const canLogin = configFunctions
-      .getProperty('users.canLogin')
+      .getConfigProperty('users.canLogin')
       .some((currentUserName) => {
         return userNameLowerCase === currentUserName.toLowerCase()
       })
 
     if (canLogin) {
       const canUpdate = configFunctions
-        .getProperty('users.canUpdate')
+        .getConfigProperty('users.canUpdate')
         .some((currentUserName) => {
           return userNameLowerCase === currentUserName.toLowerCase()
         })
 
       const isAdmin = configFunctions
-        .getProperty('users.isAdmin')
+        .getConfigProperty('users.isAdmin')
         .some((currentUserName) => {
           return userNameLowerCase === currentUserName.toLowerCase()
         })
