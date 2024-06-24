@@ -1,14 +1,3 @@
-import type { config as MSSQLConfig } from 'mssql';
-import type { ConfigActiveDirectory, ConfigNtfyStartup, DynamicsGPLookup } from '../types/configTypes.js';
-export declare function getConfigProperty(propertyName: 'application.applicationName' | 'application.logoURL' | 'application.userDomain' | 'reverseProxy.urlPrefix' | 'session.cookieName' | 'session.secret' | 'aliases.lot' | 'aliases.lots' | 'aliases.map' | 'aliases.maps' | 'aliases.occupancy' | 'aliases.occupancies' | 'aliases.occupancyStartDate' | 'aliases.occupant' | 'aliases.occupants' | 'aliases.workOrderOpenDate' | 'aliases.workOrderCloseDate' | 'aliases.externalReceiptNumber' | 'settings.map.mapCityDefault' | 'settings.map.mapProvinceDefault' | 'settings.lot.lotNameHelpText' | 'settings.lotOccupancy.occupantCityDefault' | 'settings.lotOccupancy.occupantProvinceDefault' | 'settings.workOrders.calendarEmailAddress'): string;
-export declare function getConfigProperty(propertyName: 'application.httpPort' | 'application.maximumProcesses' | 'session.maxAgeMillis' | 'settings.fees.taxPercentageDefault' | 'settings.workOrders.workOrderNumberLength' | 'settings.workOrders.workOrderMilestoneDateRecentBeforeDays' | 'settings.workOrders.workOrderMilestoneDateRecentAfterDays' | 'settings.adminCleanup.recordDeleteAgeDays'): number;
-export declare function getConfigProperty(propertyName: 'application.useTestDatabases' | 'reverseProxy.disableCompression' | 'reverseProxy.disableEtag' | 'session.doKeepAlive' | 'settings.lotOccupancy.occupancyEndDateIsRequired' | 'settings.dynamicsGP.integrationIsEnabled'): boolean;
-export declare function getConfigProperty(propertyName: 'users.testing' | 'users.canLogin' | 'users.canUpdate' | 'users.isAdmin' | 'settings.dynamicsGP.accountCodes' | 'settings.dynamicsGP.itemNumbers' | 'settings.dynamicsGP.trialBalanceCodes' | 'settings.lotOccupancy.prints' | 'settings.workOrders.prints'): string[];
-export declare function getConfigProperty(propertyName: 'application.ntfyStartup'): ConfigNtfyStartup | undefined;
-export declare function getConfigProperty(propertyName: 'activeDirectory'): ConfigActiveDirectory;
-export declare function getConfigProperty(propertyName: 'settings.lot.lotNamePattern'): RegExp;
-export declare function getConfigProperty(propertyName: 'settings.lot.lotNameSortNameFunction'): (lotName: string) => string;
-export declare function getConfigProperty(propertyName: 'settings.printPdf.contentDisposition'): 'attachment' | 'inline';
-export declare function getConfigProperty(propertyName: 'settings.dynamicsGP.mssqlConfig'): MSSQLConfig;
-export declare function getConfigProperty(propertyName: 'settings.dynamicsGP.lookupOrder'): DynamicsGPLookup[];
+import { configDefaultValues } from '../data/config.defaultValues.js';
+export declare function getConfigProperty<K extends keyof typeof configDefaultValues>(propertyName: K, fallbackValue?: (typeof configDefaultValues)[K]): (typeof configDefaultValues)[K];
 export declare const keepAliveMillis: number;
