@@ -25,7 +25,7 @@ import handler_doUpdateLotOccupancyComment from '../handlers/lotOccupancies-post
 import handler_doUpdateLotOccupancyFeeQuantity from '../handlers/lotOccupancies-post/doUpdateLotOccupancyFeeQuantity.js'
 import handler_doUpdateLotOccupancyOccupant from '../handlers/lotOccupancies-post/doUpdateLotOccupancyOccupant.js'
 import handler_doUpdateLotOccupancyTransaction from '../handlers/lotOccupancies-post/doUpdateLotOccupancyTransaction.js'
-import * as permissionHandlers from '../handlers/permissions.js'
+import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js'
 import { getConfigProperty } from '../helpers/functions.config.js'
 
 export const router = Router()
@@ -41,21 +41,17 @@ router.post(
 
 // Create
 
-router.get(
-  '/new',
-  permissionHandlers.updateGetHandler,
-  handler_new as RequestHandler
-)
+router.get('/new', updateGetHandler, handler_new as RequestHandler)
 
 router.post(
   '/doGetOccupancyTypeFields',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doGetOccupancyTypeFields as RequestHandler
 )
 
 router.post(
   '/doCreateLotOccupancy',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doCreateLotOccupancy as RequestHandler
 )
 
@@ -67,25 +63,25 @@ router.get('/:lotOccupancyId', handler_view as RequestHandler)
 
 router.get(
   '/:lotOccupancyId/edit',
-  permissionHandlers.updateGetHandler,
+  updateGetHandler,
   handler_edit as RequestHandler
 )
 
 router.post(
   '/doUpdateLotOccupancy',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doUpdateLotOccupancy as RequestHandler
 )
 
 router.post(
   '/doCopyLotOccupancy',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doCopyLotOccupancy as RequestHandler
 )
 
 router.post(
   '/doDeleteLotOccupancy',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doDeleteLotOccupancy as RequestHandler
 )
 
@@ -93,25 +89,25 @@ router.post(
 
 router.post(
   '/doSearchPastOccupants',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doSearchPastOccupants as RequestHandler
 )
 
 router.post(
   '/doAddLotOccupancyOccupant',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doAddLotOccupancyOccupant as RequestHandler
 )
 
 router.post(
   '/doUpdateLotOccupancyOccupant',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doUpdateLotOccupancyOccupant as RequestHandler
 )
 
 router.post(
   '/doDeleteLotOccupancyOccupant',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doDeleteLotOccupancyOccupant as RequestHandler
 )
 
@@ -119,19 +115,19 @@ router.post(
 
 router.post(
   '/doAddLotOccupancyComment',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doAddLotOccupancyComment as RequestHandler
 )
 
 router.post(
   '/doUpdateLotOccupancyComment',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doUpdateLotOccupancyComment as RequestHandler
 )
 
 router.post(
   '/doDeleteLotOccupancyComment',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doDeleteLotOccupancyComment as RequestHandler
 )
 
@@ -139,25 +135,25 @@ router.post(
 
 router.post(
   '/doGetFees',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doGetFees as RequestHandler
 )
 
 router.post(
   '/doAddLotOccupancyFee',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doAddLotOccupancyFee as RequestHandler
 )
 
 router.post(
   '/doUpdateLotOccupancyFeeQuantity',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doUpdateLotOccupancyFeeQuantity as RequestHandler
 )
 
 router.post(
   '/doDeleteLotOccupancyFee',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doDeleteLotOccupancyFee as RequestHandler
 )
 
@@ -166,26 +162,26 @@ router.post(
 if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
   router.post(
     '/doGetDynamicsGPDocument',
-    permissionHandlers.updatePostHandler,
+    updatePostHandler,
     handler_doGetDynamicsGPDocument as RequestHandler
   )
 }
 
 router.post(
   '/doAddLotOccupancyTransaction',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doAddLotOccupancyTransaction as RequestHandler
 )
 
 router.post(
   '/doUpdateLotOccupancyTransaction',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doUpdateLotOccupancyTransaction as RequestHandler
 )
 
 router.post(
   '/doDeleteLotOccupancyTransaction',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doDeleteLotOccupancyTransaction as RequestHandler
 )
 

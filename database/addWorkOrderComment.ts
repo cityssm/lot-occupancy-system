@@ -1,4 +1,4 @@
-import * as dateTimeFunctions from '@cityssm/utils-datetime'
+import { dateToInteger, dateToTimeInteger } from '@cityssm/utils-datetime'
 
 import { acquireConnection } from './pool.js'
 
@@ -27,8 +27,8 @@ export default async function addWorkOrderComment(
     )
     .run(
       workOrderCommentForm.workOrderId,
-      dateTimeFunctions.dateToInteger(rightNow),
-      dateTimeFunctions.dateToTimeInteger(rightNow),
+      dateToInteger(rightNow),
+      dateToTimeInteger(rightNow),
       workOrderCommentForm.workOrderComment,
       user.userName,
       rightNow.getTime(),

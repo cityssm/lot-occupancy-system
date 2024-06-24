@@ -1,4 +1,4 @@
-import * as dateTimeFunctions from '@cityssm/utils-datetime'
+import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
 import addLotOccupancyOccupant from './addLotOccupancyOccupant.js'
@@ -37,8 +37,8 @@ export default async function addLotOccupancy(
 
   const rightNowMillis = Date.now()
 
-  const occupancyStartDate = dateTimeFunctions.dateStringToInteger(
-    lotOccupancyForm.occupancyStartDateString as dateTimeFunctions.DateString
+  const occupancyStartDate = dateStringToInteger(
+    lotOccupancyForm.occupancyStartDateString as DateString
   )
 
   if (occupancyStartDate <= 0) {
@@ -60,8 +60,8 @@ export default async function addLotOccupancy(
       occupancyStartDate,
       lotOccupancyForm.occupancyEndDateString === ''
         ? undefined
-        : dateTimeFunctions.dateStringToInteger(
-            lotOccupancyForm.occupancyEndDateString as dateTimeFunctions.DateString
+        : dateStringToInteger(
+            lotOccupancyForm.occupancyEndDateString as DateString
           ),
       user.userName,
       rightNowMillis,

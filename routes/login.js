@@ -2,7 +2,7 @@ import Debug from 'debug';
 import { Router } from 'express';
 import { useTestDatabases } from '../data/databasePaths.js';
 import { getApiKey } from '../helpers/functions.api.js';
-import * as authenticationFunctions from '../helpers/functions.authentication.js';
+import { authenticate, getSafeRedirectURL } from '../helpers/functions.authentication.js';
 import { getConfigProperty } from '../helpers/functions.config.js';
 const debug = Debug('lot-occupancy-system:login');
 export const router = Router();
@@ -10,7 +10,7 @@ function getHandler(request, response) {
     const sessionCookieName = getConfigProperty('session.cookieName');
     if (request.session.user !== undefined &&
         request.cookies[sessionCookieName] !== undefined) {
-        const redirectURL = authenticationFunctions.getSafeRedirectURL((request.query.redirect ?? ''));
+        const redirectURL = getSafeRedirectURL((request.query.redirect ?? ''));
         response.redirect(redirectURL);
     }
     else {
@@ -26,7 +26,7 @@ async function postHandler(request, response) {
     const userName = (typeof request.body.userName === 'string' ? request.body.userName : '');
     const passwordPlain = (typeof request.body.password === 'string' ? request.body.password : '');
     const unsafeRedirectURL = request.body.redirect;
-    const redirectURL = authenticationFunctions.getSafeRedirectURL(typeof unsafeRedirectURL === 'string' ? unsafeRedirectURL : '');
+    const redirectURL = getSafeRedirectURL(typeof unsafeRedirectURL === 'string' ? unsafeRedirectURL : '');
     let isAuthenticated = false;
     if (userName.startsWith('*')) {
         if (useTestDatabases && userName === passwordPlain) {
@@ -37,7 +37,7 @@ async function postHandler(request, response) {
         }
     }
     else if (userName !== '' && passwordPlain !== '') {
-        isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain);
+        isAuthenticated = await authenticate(userName, passwordPlain);
     }
     let userObject;
     if (isAuthenticated) {

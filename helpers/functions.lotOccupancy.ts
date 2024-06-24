@@ -1,9 +1,9 @@
-import type * as recordTypes from '../types/recordTypes'
+import type { LotOccupancy, LotOccupancyFee, LotOccupancyOccupant } from '../types/recordTypes'
 
 export function filterOccupantsByLotOccupantType(
-  lotOccupancy: recordTypes.LotOccupancy,
+  lotOccupancy: LotOccupancy,
   lotOccupantType: string
-): recordTypes.LotOccupancyOccupant[] {
+): LotOccupancyOccupant[] {
   const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase()
 
   return (lotOccupancy.lotOccupancyOccupants ?? []).filter(
@@ -17,7 +17,7 @@ export function filterOccupantsByLotOccupantType(
 }
 
 export function getFieldValueByOccupancyTypeField(
-  lotOccupancy: recordTypes.LotOccupancy,
+  lotOccupancy: LotOccupancy,
   occupancyTypeField: string
 ): string | undefined {
   const occupancyTypeFieldLowerCase = occupancyTypeField.toLowerCase()
@@ -39,10 +39,10 @@ export function getFieldValueByOccupancyTypeField(
 }
 
 export function getFeesByFeeCategory(
-  lotOccupancy: recordTypes.LotOccupancy,
+  lotOccupancy: LotOccupancy,
   feeCategory: string,
   feeCategoryContains = false
-): recordTypes.LotOccupancyFee[] {
+): LotOccupancyFee[] {
   const feeCategoryLowerCase = feeCategory.toLowerCase()
 
   return (lotOccupancy.lotOccupancyFees ?? []).filter((possibleFee) => {
@@ -56,7 +56,7 @@ export function getFeesByFeeCategory(
 }
 
 export function getTransactionTotal(
-  lotOccupancy: recordTypes.LotOccupancy
+  lotOccupancy: LotOccupancy
 ): number {
   let transactionTotal = 0
 

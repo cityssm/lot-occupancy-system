@@ -8,7 +8,10 @@ import {
 
 import { useTestDatabases } from '../data/databasePaths.js'
 import { getApiKey } from '../helpers/functions.api.js'
-import * as authenticationFunctions from '../helpers/functions.authentication.js'
+import {
+  authenticate,
+  getSafeRedirectURL
+} from '../helpers/functions.authentication.js'
 import { getConfigProperty } from '../helpers/functions.config.js'
 
 const debug = Debug('lot-occupancy-system:login')
@@ -22,7 +25,7 @@ function getHandler(request: Request, response: Response): void {
     request.session.user !== undefined &&
     request.cookies[sessionCookieName] !== undefined
   ) {
-    const redirectURL = authenticationFunctions.getSafeRedirectURL(
+    const redirectURL = getSafeRedirectURL(
       (request.query.redirect ?? '') as string
     )
 
@@ -51,7 +54,7 @@ async function postHandler(
 
   const unsafeRedirectURL = request.body.redirect
 
-  const redirectURL = authenticationFunctions.getSafeRedirectURL(
+  const redirectURL = getSafeRedirectURL(
     typeof unsafeRedirectURL === 'string' ? unsafeRedirectURL : ''
   )
 
@@ -66,10 +69,7 @@ async function postHandler(
       }
     }
   } else if (userName !== '' && passwordPlain !== '') {
-    isAuthenticated = await authenticationFunctions.authenticate(
-      userName,
-      passwordPlain
-    )
+    isAuthenticated = await authenticate(userName, passwordPlain)
   }
 
   let userObject: User | undefined

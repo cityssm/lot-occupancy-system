@@ -1,7 +1,13 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable no-case-declarations */
 
-import * as dateTimeFunctions from '@cityssm/utils-datetime'
+import {
+  type DateString,
+  dateIntegerToString,
+  dateStringToInteger,
+  dateToInteger,
+  timeIntegerToString
+} from '@cityssm/utils-datetime'
 import camelCase from 'camelcase'
 
 import { getConfigProperty } from '../helpers/functions.config.js'
@@ -166,10 +172,7 @@ export default async function getReportData(
         and (o.occupancyEndDate is null or o.occupancyEndDate >= ?)
         and l.mapId = ?`
 
-      sqlParameters.push(
-        dateTimeFunctions.dateToInteger(new Date()),
-        reportParameters.mapId
-      )
+      sqlParameters.push(dateToInteger(new Date()), reportParameters.mapId)
 
       break
     }
@@ -231,8 +234,8 @@ export default async function getReportData(
         and t.transactionDate = ?`
 
       sqlParameters.push(
-        dateTimeFunctions.dateStringToInteger(
-          reportParameters.transactionDateString as dateTimeFunctions.DateString
+        dateStringToInteger(
+          reportParameters.transactionDateString as DateString
         )
       )
       break
@@ -350,14 +353,8 @@ export default async function getReportData(
 
   const database = await acquireConnection()
 
-  database.function(
-    'userFn_dateIntegerToString',
-    dateTimeFunctions.dateIntegerToString
-  )
-  database.function(
-    'userFn_timeIntegerToString',
-    dateTimeFunctions.timeIntegerToString
-  )
+  database.function('userFn_dateIntegerToString', dateIntegerToString)
+  database.function('userFn_timeIntegerToString', timeIntegerToString)
 
   const rows = database.prepare(sql).all(sqlParameters)
 

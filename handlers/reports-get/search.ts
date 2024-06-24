@@ -1,4 +1,4 @@
-import * as dateTimeFunctions from '@cityssm/utils-datetime'
+import { dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
 import getMaps from '../../database/getMaps.js'
@@ -16,7 +16,7 @@ export default async function handler(
 
   response.render('report-search', {
     headTitle: 'Reports',
-    todayDateString: dateTimeFunctions.dateToString(rightNow),
+    todayDateString: dateToString(rightNow),
     maps,
     lotTypes,
     lotStatuses

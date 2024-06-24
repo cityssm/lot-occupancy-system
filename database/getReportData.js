@@ -1,4 +1,4 @@
-import * as dateTimeFunctions from '@cityssm/utils-datetime';
+import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToString } from '@cityssm/utils-datetime';
 import camelCase from 'camelcase';
 import { getConfigProperty } from '../helpers/functions.config.js';
 import { acquireConnection } from './pool.js';
@@ -132,7 +132,7 @@ export default async function getReportData(reportName, reportParameters = {}) {
         where o.recordDelete_timeMillis is null
         and (o.occupancyEndDate is null or o.occupancyEndDate >= ?)
         and l.mapId = ?`;
-            sqlParameters.push(dateTimeFunctions.dateToInteger(new Date()), reportParameters.mapId);
+            sqlParameters.push(dateToInteger(new Date()), reportParameters.mapId);
             break;
         }
         case 'lotOccupancyComments-all': {
@@ -184,7 +184,7 @@ export default async function getReportData(reportName, reportParameters = {}) {
         from LotOccupancyTransactions t
         where t.recordDelete_timeMillis is null
         and t.transactionDate = ?`;
-            sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.transactionDateString));
+            sqlParameters.push(dateStringToInteger(reportParameters.transactionDateString));
             break;
         }
         case 'workOrders-all': {
@@ -281,8 +281,8 @@ export default async function getReportData(reportName, reportParameters = {}) {
         }
     }
     const database = await acquireConnection();
-    database.function('userFn_dateIntegerToString', dateTimeFunctions.dateIntegerToString);
-    database.function('userFn_timeIntegerToString', dateTimeFunctions.timeIntegerToString);
+    database.function('userFn_dateIntegerToString', dateIntegerToString);
+    database.function('userFn_timeIntegerToString', timeIntegerToString);
     const rows = database.prepare(sql).all(sqlParameters);
     database.release();
     return rows;

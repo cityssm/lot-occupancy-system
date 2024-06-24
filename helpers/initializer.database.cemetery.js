@@ -14,7 +14,7 @@ const user = {
     }
 };
 export async function initializeCemeteryDatabase() {
-    debug('Checking for ' + databasePath + '...');
+    debug(`Checking for ${databasePath}...`);
     const databaseInitialized = initializeDatabase();
     if (!databaseInitialized) {
         debug('Database already created.\n' +

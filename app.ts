@@ -16,7 +16,7 @@ import * as permissionHandlers from './handlers/permissions.js'
 import { getSafeRedirectURL } from './helpers/functions.authentication.js'
 import * as configFunctions from './helpers/functions.config.js'
 import * as printFunctions from './helpers/functions.print.js'
-import * as databaseInitializer from './helpers/initializer.database.js'
+import { initializeDatabase } from './helpers/initializer.database.js'
 import routerAdmin from './routes/admin.js'
 import routerApi from './routes/api.js'
 import routerDashboard from './routes/dashboard.js'
@@ -35,7 +35,7 @@ const debug = Debug(`lot-occupancy-system:app:${process.pid}`)
  * INITIALIZE THE DATABASE
  */
 
-databaseInitializer.initializeDatabase()
+initializeDatabase()
 
 /*
  * INITIALIZE APP

@@ -1,5 +1,5 @@
 import { getConfigProperty } from '../helpers/functions.config.js';
-import * as userFunctions from '../helpers/functions.user.js';
+import { apiKeyIsValid, userCanUpdate, userIsAdmin } from '../helpers/functions.user.js';
 const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');
 const forbiddenStatus = 403;
 const forbiddenJSON = {
@@ -8,35 +8,35 @@ const forbiddenJSON = {
 };
 const forbiddenRedirectURL = `${urlPrefix}/dashboard/?error=accessDenied`;
 export function adminGetHandler(request, response, next) {
-    if (userFunctions.userIsAdmin(request)) {
+    if (userIsAdmin(request)) {
         next();
         return;
     }
     response.redirect(forbiddenRedirectURL);
 }
 export function adminPostHandler(request, response, next) {
-    if (userFunctions.userIsAdmin(request)) {
+    if (userIsAdmin(request)) {
         next();
         return;
     }
     response.status(forbiddenStatus).json(forbiddenJSON);
 }
 export function updateGetHandler(request, response, next) {
-    if (userFunctions.userCanUpdate(request)) {
+    if (userCanUpdate(request)) {
         next();
         return;
     }
     response.redirect(forbiddenRedirectURL);
 }
 export function updatePostHandler(request, response, next) {
-    if (userFunctions.userCanUpdate(request)) {
+    if (userCanUpdate(request)) {
         next();
         return;
     }
     response.status(forbiddenStatus).json(forbiddenJSON);
 }
 export async function apiGetHandler(request, response, next) {
-    if (await userFunctions.apiKeyIsValid(request)) {
+    if (await apiKeyIsValid(request)) {
         next();
     }
     else {

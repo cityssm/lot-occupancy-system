@@ -1,5 +1,5 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable n/no-unpublished-import */
+/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, n/no-unpublished-import */
 
 import gulp from 'gulp'
 import changed from 'gulp-changed'
@@ -22,6 +22,7 @@ function publicSCSSFunction(): NodeJS.ReadWriteStream {
     .pipe(
       sass({ outputStyle: 'compressed', includePaths: ['node_modules'] }).on(
         'error',
+        // eslint-disable-next-line @typescript-eslint/unbound-method
         sass.logError
       )
     )

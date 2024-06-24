@@ -1,5 +1,5 @@
 import { getUserNameFromApiKey } from './functions.api.js';
-import * as configFunctions from './functions.config.js';
+import { getConfigProperty } from './functions.config.js';
 export function userIsAdmin(request) {
     return request.session?.user?.userProperties?.isAdmin ?? false;
 }
@@ -15,9 +15,7 @@ export async function apiKeyIsValid(request) {
     if (userName === undefined) {
         return false;
     }
-    return configFunctions
-        .getConfigProperty('users.canLogin')
-        .some((currentUserName) => {
+    return getConfigProperty('users.canLogin').some((currentUserName) => {
         return userName === currentUserName.toLowerCase();
     });
 }

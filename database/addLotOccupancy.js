@@ -1,11 +1,11 @@
-import * as dateTimeFunctions from '@cityssm/utils-datetime';
+import { dateStringToInteger } from '@cityssm/utils-datetime';
 import addLotOccupancyOccupant from './addLotOccupancyOccupant.js';
 import addOrUpdateLotOccupancyField from './addOrUpdateLotOccupancyField.js';
 import { acquireConnection } from './pool.js';
 export default async function addLotOccupancy(lotOccupancyForm, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
-    const occupancyStartDate = dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyStartDateString);
+    const occupancyStartDate = dateStringToInteger(lotOccupancyForm.occupancyStartDateString);
     if (occupancyStartDate <= 0) {
         console.error(lotOccupancyForm);
     }
@@ -18,7 +18,7 @@ export default async function addLotOccupancy(lotOccupancyForm, user, connectedD
         values (?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(lotOccupancyForm.occupancyTypeId, lotOccupancyForm.lotId === '' ? undefined : lotOccupancyForm.lotId, occupancyStartDate, lotOccupancyForm.occupancyEndDateString === ''
         ? undefined
-        : dateTimeFunctions.dateStringToInteger(lotOccupancyForm.occupancyEndDateString), user.userName, rightNowMillis, user.userName, rightNowMillis);
+        : dateStringToInteger(lotOccupancyForm.occupancyEndDateString), user.userName, rightNowMillis, user.userName, rightNowMillis);
     const lotOccupancyId = result.lastInsertRowid;
     const occupancyTypeFieldIds = (lotOccupancyForm.occupancyTypeFieldIds ?? '').split(',');
     for (const occupancyTypeFieldId of occupancyTypeFieldIds) {

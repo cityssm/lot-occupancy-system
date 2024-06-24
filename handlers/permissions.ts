@@ -1,7 +1,11 @@
 import type { NextFunction, Request, Response } from 'express'
 
 import { getConfigProperty } from '../helpers/functions.config.js'
-import * as userFunctions from '../helpers/functions.user.js'
+import {
+  apiKeyIsValid,
+  userCanUpdate,
+  userIsAdmin
+} from '../helpers/functions.user.js'
 
 const urlPrefix = getConfigProperty('reverseProxy.urlPrefix')
 
@@ -19,7 +23,7 @@ export function adminGetHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (userFunctions.userIsAdmin(request)) {
+  if (userIsAdmin(request)) {
     next()
     return
   }
@@ -32,7 +36,7 @@ export function adminPostHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (userFunctions.userIsAdmin(request)) {
+  if (userIsAdmin(request)) {
     next()
     return
   }
@@ -45,7 +49,7 @@ export function updateGetHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (userFunctions.userCanUpdate(request)) {
+  if (userCanUpdate(request)) {
     next()
     return
   }
@@ -58,7 +62,7 @@ export function updatePostHandler(
   response: Response,
   next: NextFunction
 ): void {
-  if (userFunctions.userCanUpdate(request)) {
+  if (userCanUpdate(request)) {
     next()
     return
   }
@@ -71,7 +75,7 @@ export async function apiGetHandler(
   response: Response,
   next: NextFunction
 ): Promise<void> {
-  if (await userFunctions.apiKeyIsValid(request)) {
+  if (await apiKeyIsValid(request)) {
     next()
   } else {
     response.redirect(`${urlPrefix}/login`)

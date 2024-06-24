@@ -22,7 +22,7 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
   /*
    * Ensure database does not already exist
    */
-  debug('Checking for ' + databasePath + '...')
+  debug(`Checking for ${databasePath}...`)
 
   const databaseInitialized = initializeDatabase()
 

@@ -1,4 +1,4 @@
-import * as dateTimeFunctions from '@cityssm/utils-datetime'
+import { dateToInteger, dateToTimeInteger } from '@cityssm/utils-datetime'
 
 import { acquireConnection } from './pool.js'
 
@@ -26,8 +26,8 @@ export default async function addLotComment(
     )
     .run(
       lotCommentForm.lotId,
-      dateTimeFunctions.dateToInteger(rightNow),
-      dateTimeFunctions.dateToTimeInteger(rightNow),
+      dateToInteger(rightNow),
+      dateToTimeInteger(rightNow),
       lotCommentForm.lotComment,
       user.userName,
       rightNow.getTime(),
