@@ -10,7 +10,7 @@ interface LotStatusSummary extends LotStatus {
   lotCount: number
 }
 
-export async function getLotStatusSummary(
+export default async function getLotStatusSummary(
   filters: GetFilters
 ): Promise<LotStatusSummary[]> {
   const database = await acquireConnection()
@@ -38,5 +38,3 @@ export async function getLotStatusSummary(
 
   return lotStatuses
 }
-
-export default getLotStatusSummary

@@ -3,7 +3,7 @@ import type { WorkOrderMilestoneType } from '../types/recordTypes.js'
 import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export async function getWorkOrderMilestoneTypes(): Promise<
+export default async function getWorkOrderMilestoneTypes(): Promise<
   WorkOrderMilestoneType[]
 > {
   const database = await acquireConnection()
@@ -38,5 +38,3 @@ export async function getWorkOrderMilestoneTypes(): Promise<
 
   return workOrderMilestoneTypes
 }
-
-export default getWorkOrderMilestoneTypes

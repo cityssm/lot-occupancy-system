@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function getPastLotOccupancyOccupants(filters, options) {
+export default async function getPastLotOccupancyOccupants(filters, options) {
     const database = await acquireConnection();
     let sqlWhereClause = ' where o.recordDelete_timeMillis is null and l.recordDelete_timeMillis is null';
     const sqlParameters = [];
@@ -38,4 +38,3 @@ export async function getPastLotOccupancyOccupants(filters, options) {
     database.release();
     return lotOccupancyOccupants;
 }
-export default getPastLotOccupancyOccupants;

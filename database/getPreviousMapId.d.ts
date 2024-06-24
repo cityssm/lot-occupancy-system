@@ -1,2 +1,1 @@
-export declare function getPreviousMapId(mapId: number | string): Promise<number | undefined>;
-export default getPreviousMapId;
+export default function getPreviousMapId(mapId: number | string): Promise<number | undefined>;

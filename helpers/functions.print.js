@@ -1,10 +1,10 @@
-import { getLot } from '../database/getLot.js';
-import { getLotOccupancy } from '../database/getLotOccupancy.js';
-import { getWorkOrder } from '../database/getWorkOrder.js';
-import * as configFunctions from './functions.config.js';
+import getLot from '../database/getLot.js';
+import getLotOccupancy from '../database/getLotOccupancy.js';
+import getWorkOrder from '../database/getWorkOrder.js';
+import { getConfigProperty } from './functions.config.js';
 const screenPrintConfigs = {
     lotOccupancy: {
-        title: `${configFunctions.getConfigProperty('aliases.lot')} ${configFunctions.getConfigProperty('aliases.occupancy')} Print`,
+        title: `${getConfigProperty('aliases.lot')} ${getConfigProperty('aliases.occupancy')} Print`,
         params: ['lotOccupancyId']
     }
 };

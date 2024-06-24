@@ -4,5 +4,5 @@ interface GetFeesFilters {
     occupancyTypeId?: number | string;
     lotTypeId?: number | string;
 }
-export declare function getFees(feeCategoryId: number, additionalFilters: GetFeesFilters, connectedDatabase?: PoolConnection): Promise<Fee[]>;
-export default getFees;
+export default function getFees(feeCategoryId: number, additionalFilters: GetFeesFilters, connectedDatabase?: PoolConnection): Promise<Fee[]>;
+export {};

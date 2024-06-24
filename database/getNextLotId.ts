@@ -2,7 +2,7 @@ import { getConfigProperty } from '../helpers/functions.config.js'
 
 import { acquireConnection } from './pool.js'
 
-export async function getNextLotId(
+export default async function getNextLotId(
   lotId: number | string
 ): Promise<number | undefined> {
   const database = await acquireConnection()
@@ -33,5 +33,3 @@ export async function getNextLotId(
 
   return result.lotId
 }
-
-export default getNextLotId

@@ -1,6 +1,6 @@
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
-export async function updateWorkOrderMilestone(milestoneForm, user) {
+export default async function updateWorkOrderMilestone(milestoneForm, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update WorkOrderMilestones
@@ -21,4 +21,3 @@ export async function updateWorkOrderMilestone(milestoneForm, user) {
     database.release();
     return result.changes > 0;
 }
-export default updateWorkOrderMilestone;

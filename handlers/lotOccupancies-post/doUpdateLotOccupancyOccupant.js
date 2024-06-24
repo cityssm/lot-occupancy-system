@@ -1,4 +1,4 @@
-import { getLotOccupancyOccupants } from '../../database/getLotOccupancyOccupants.js';
+import getLotOccupancyOccupants from '../../database/getLotOccupancyOccupants.js';
 import { updateLotOccupancyOccupant } from '../../database/updateLotOccupancyOccupant.js';
 export default async function handler(request, response) {
     const success = await updateLotOccupancyOccupant(request.body, request.session.user);

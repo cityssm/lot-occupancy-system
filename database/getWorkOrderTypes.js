@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export async function getWorkOrderTypes() {
+export default async function getWorkOrderTypes() {
     const database = await acquireConnection();
     const workOrderTypes = database
         .prepare(`select workOrderTypeId, workOrderType, orderNumber
@@ -19,4 +19,3 @@ export async function getWorkOrderTypes() {
     database.release();
     return workOrderTypes;
 }
-export default getWorkOrderTypes;

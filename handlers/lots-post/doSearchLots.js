@@ -1,4 +1,4 @@
-import { getLots } from '../../database/getLots.js';
+import getLots from '../../database/getLots.js';
 export default async function handler(request, response) {
     const result = await getLots(request.body, {
         limit: request.body.limit,

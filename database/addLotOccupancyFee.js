@@ -1,6 +1,6 @@
 import { calculateFeeAmount, calculateTaxAmount } from '../helpers/functions.fee.js';
-import { getFee } from './getFee.js';
-import { getLotOccupancy } from './getLotOccupancy.js';
+import getFee from './getFee.js';
+import getLotOccupancy from './getLotOccupancy.js';
 import { acquireConnection } from './pool.js';
 export default async function addLotOccupancyFee(lotOccupancyFeeForm, user) {
     const database = await acquireConnection();

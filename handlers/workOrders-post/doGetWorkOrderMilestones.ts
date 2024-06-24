@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { getWorkOrderMilestones } from '../../database/getWorkOrderMilestones.js'
+import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js'
 
 export default async function handler(
   request: Request,
@@ -15,4 +15,3 @@ export default async function handler(
     workOrderMilestones
   })
 }
-

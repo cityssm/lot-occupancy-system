@@ -1,8 +1,8 @@
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
-import { getLot } from '../../database/getLot.js'
-import { getMaps } from '../../database/getMaps.js'
+import getLot from '../../database/getLot.js'
+import getMaps from '../../database/getMaps.js'
 import {
   getLotOccupantTypes,
   getLotStatuses,

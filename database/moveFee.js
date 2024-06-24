@@ -1,4 +1,4 @@
-import { getFee } from './getFee.js';
+import getFee from './getFee.js';
 import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export async function moveFeeDown(feeId) {

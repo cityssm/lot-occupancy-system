@@ -1,4 +1,4 @@
-import { getLot } from '../../database/getLot.js';
+import getLot from '../../database/getLot.js';
 import { getConfigProperty } from '../../helpers/functions.config.js';
 import { getNextLotId, getPreviousLotId } from '../../helpers/functions.lots.js';
 export default async function handler(request, response) {

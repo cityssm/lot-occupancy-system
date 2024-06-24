@@ -1,8 +1,8 @@
-import { getLot } from '../database/getLot.js'
-import { getLotOccupancy } from '../database/getLotOccupancy.js'
-import { getWorkOrder } from '../database/getWorkOrder.js'
+import getLot from '../database/getLot.js'
+import getLotOccupancy from '../database/getLotOccupancy.js'
+import getWorkOrder from '../database/getWorkOrder.js'
 
-import * as configFunctions from './functions.config.js'
+import { getConfigProperty } from './functions.config.js'
 
 interface PrintConfig {
   title: string
@@ -11,9 +11,9 @@ interface PrintConfig {
 
 const screenPrintConfigs: Record<string, PrintConfig> = {
   lotOccupancy: {
-    title: `${configFunctions.getConfigProperty(
+    title: `${getConfigProperty(
       'aliases.lot'
-    )} ${configFunctions.getConfigProperty('aliases.occupancy')} Print`,
+    )} ${getConfigProperty('aliases.occupancy')} Print`,
     params: ['lotOccupancyId']
   }
 }

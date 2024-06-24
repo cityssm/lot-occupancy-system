@@ -15,13 +15,14 @@ const userFunction_configContainsPrintEJS = (printEJS: string): number => {
   return 0
 }
 
-export async function getOccupancyTypePrints(
+export default async function getOccupancyTypePrints(
   occupancyTypeId: number,
   connectedDatabase?: PoolConnection
 ): Promise<string[]> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   database.function(
+    // eslint-disable-next-line no-secrets/no-secrets
     'userFn_configContainsPrintEJS',
     userFunction_configContainsPrintEJS
   )
@@ -64,5 +65,3 @@ export async function getOccupancyTypePrints(
 
   return prints
 }
-
-export default getOccupancyTypePrints

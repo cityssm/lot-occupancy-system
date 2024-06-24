@@ -1,4 +1,4 @@
-import { getWorkOrder } from '../../database/getWorkOrder.js';
+import getWorkOrder from '../../database/getWorkOrder.js';
 import { getLotStatuses, getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
 import { getConfigProperty } from '../../helpers/functions.config.js';
 export default async function handler(request, response) {

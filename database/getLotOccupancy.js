@@ -1,12 +1,12 @@
 import { dateIntegerToString } from '@cityssm/utils-datetime';
-import { getLotOccupancyComments } from './getLotOccupancyComments.js';
-import { getLotOccupancyFees } from './getLotOccupancyFees.js';
-import { getLotOccupancyFields } from './getLotOccupancyFields.js';
-import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js';
-import { getLotOccupancyTransactions } from './getLotOccupancyTransactions.js';
+import getLotOccupancyComments from './getLotOccupancyComments.js';
+import getLotOccupancyFees from './getLotOccupancyFees.js';
+import getLotOccupancyFields from './getLotOccupancyFields.js';
+import getLotOccupancyOccupants from './getLotOccupancyOccupants.js';
+import getLotOccupancyTransactions from './getLotOccupancyTransactions.js';
 import { getWorkOrders } from './getWorkOrders.js';
 import { acquireConnection } from './pool.js';
-export async function getLotOccupancy(lotOccupancyId, connectedDatabase) {
+export default async function getLotOccupancy(lotOccupancyId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const lotOccupancy = database
@@ -43,4 +43,3 @@ export async function getLotOccupancy(lotOccupancyId, connectedDatabase) {
     }
     return lotOccupancy;
 }
-export default getLotOccupancy;

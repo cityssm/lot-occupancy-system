@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { getPastLotOccupancyOccupants } from '../../database/getPastLotOccupancyOccupants.js'
+import getPastLotOccupancyOccupants from '../../database/getPastLotOccupancyOccupants.js'
 
 export default async function handler(
   request: Request,
@@ -14,4 +14,3 @@ export default async function handler(
     occupants
   })
 }
-

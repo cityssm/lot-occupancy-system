@@ -1,4 +1,4 @@
-import { DateString } from '@cityssm/utils-datetime';
+import { type DateString } from '@cityssm/utils-datetime';
 import type { PoolConnection } from 'better-sqlite-pool';
 import type { LotOccupancy } from '../types/recordTypes.js';
 interface GetLotOccupanciesFilters {
@@ -22,8 +22,8 @@ interface GetLotOccupanciesOptions {
     includeFees: boolean;
     includeTransactions: boolean;
 }
-export declare function getLotOccupancies(filters: GetLotOccupanciesFilters, options: GetLotOccupanciesOptions, connectedDatabase?: PoolConnection): Promise<{
+export default function getLotOccupancies(filters: GetLotOccupanciesFilters, options: GetLotOccupanciesOptions, connectedDatabase?: PoolConnection): Promise<{
     count: number;
     lotOccupancies: LotOccupancy[];
 }>;
-export default getLotOccupancies;
+export {};

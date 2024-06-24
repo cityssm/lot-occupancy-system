@@ -1,7 +1,7 @@
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
-import * as configFunctions from '../helpers/functions.config.js';
-import { getLotOccupancies } from './getLotOccupancies.js';
-import { getLots } from './getLots.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
+import getLotOccupancies from './getLotOccupancies.js';
+import getLots from './getLots.js';
 import { acquireConnection } from './pool.js';
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/;
 function buildWhereClause(filters) {
@@ -14,11 +14,11 @@ function buildWhereClause(filters) {
     const date = new Date();
     const currentDateNumber = dateToInteger(date);
     date.setDate(date.getDate() -
-        configFunctions.getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays'));
+        getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays'));
     const recentBeforeDateNumber = dateToInteger(date);
     date.setDate(date.getDate() +
-        configFunctions.getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays') +
-        configFunctions.getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentAfterDays'));
+        getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays') +
+        getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentAfterDays'));
     const recentAfterDateNumber = dateToInteger(date);
     switch (filters.workOrderMilestoneDateFilter) {
         case 'upcomingMissed': {
@@ -48,8 +48,7 @@ function buildWhereClause(filters) {
     }
     if ((filters.workOrderTypeIds ?? '') !== '' &&
         commaSeparatedNumbersRegex.test(filters.workOrderTypeIds)) {
-        sqlWhereClause +=
-            ` and w.workOrderTypeId in (${filters.workOrderTypeIds})`;
+        sqlWhereClause += ` and w.workOrderTypeId in (${filters.workOrderTypeIds})`;
     }
     if (filters.workOrderMilestoneTypeIds !== undefined &&
         filters.workOrderMilestoneTypeIds !== '' &&
@@ -61,7 +60,7 @@ function buildWhereClause(filters) {
         sqlParameters
     };
 }
-export async function getWorkOrderMilestones(filters, options, connectedDatabase) {
+export default async function getWorkOrderMilestones(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
@@ -141,4 +140,3 @@ export async function getWorkOrderMilestones(filters, options, connectedDatabase
     }
     return workOrderMilestones;
 }
-export default getWorkOrderMilestones;

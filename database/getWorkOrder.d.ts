@@ -6,5 +6,5 @@ interface WorkOrderOptions {
     includeMilestones: boolean;
 }
 export declare function getWorkOrderByWorkOrderNumber(workOrderNumber: string): Promise<WorkOrder | undefined>;
-export declare function getWorkOrder(workOrderId: number | string, options: WorkOrderOptions, connectedDatabase?: PoolConnection): Promise<WorkOrder | undefined>;
-export default getWorkOrder;
+export default function getWorkOrder(workOrderId: number | string, options: WorkOrderOptions, connectedDatabase?: PoolConnection): Promise<WorkOrder | undefined>;
+export {};

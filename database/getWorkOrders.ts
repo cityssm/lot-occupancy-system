@@ -1,4 +1,5 @@
 import {
+  type DateString,
   dateIntegerToString,
   dateStringToInteger
 } from '@cityssm/utils-datetime'
@@ -10,10 +11,10 @@ import {
 } from '../helpers/functions.sqlFilters.js'
 import type { WorkOrder } from '../types/recordTypes.js'
 
-import { getLotOccupancies } from './getLotOccupancies.js'
-import { getLots } from './getLots.js'
-import { getWorkOrderComments } from './getWorkOrderComments.js'
-import { getWorkOrderMilestones } from './getWorkOrderMilestones.js'
+import getLotOccupancies from './getLotOccupancies.js'
+import getLots from './getLots.js'
+import getWorkOrderComments from './getWorkOrderComments.js'
+import getWorkOrderMilestones from './getWorkOrderMilestones.js'
 import { acquireConnection } from './pool.js'
 
 interface GetWorkOrdersFilters {
@@ -55,7 +56,7 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
 
   if ((filters.workOrderOpenDateString ?? '') !== '') {
     sqlWhereClause += ' and w.workOrderOpenDate = ?'
-    sqlParameters.push(dateStringToInteger(filters.workOrderOpenDateString!))
+    sqlParameters.push(dateStringToInteger(filters.workOrderOpenDateString as DateString))
   }
 
   const occupantNameFilters = getOccupantNameWhereClause(

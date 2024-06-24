@@ -1,6 +1,6 @@
 import type { FeeCategory } from '../types/recordTypes.js'
 
-import { getFees } from './getFees.js'
+import getFees from './getFees.js'
 import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
@@ -13,7 +13,7 @@ interface GetFeeCategoriesOptions {
   includeFees?: boolean
 }
 
-export async function getFeeCategories(
+export default async function getFeeCategories(
   filters: GetFeeCategoriesFilters,
   options: GetFeeCategoriesOptions
 ): Promise<FeeCategory[]> {
@@ -27,31 +27,25 @@ export async function getFeeCategories(
   const sqlParameters: unknown[] = []
 
   if ((filters.occupancyTypeId ?? '') !== '') {
-    sqlWhereClause +=
-      ' and feeCategoryId in (' +
-      'select feeCategoryId from Fees' +
-      ' where recordDelete_timeMillis is null' +
-      ' and (occupancyTypeId is null or occupancyTypeId = ?))'
+    sqlWhereClause += ` and feeCategoryId in (
+        select feeCategoryId from Fees where recordDelete_timeMillis is null and (occupancyTypeId is null or occupancyTypeId = ?))`
 
     sqlParameters.push(filters.occupancyTypeId)
   }
 
   if ((filters.lotTypeId ?? '') !== '') {
-    sqlWhereClause +=
-      ' and feeCategoryId in (' +
-      'select feeCategoryId from Fees' +
-      ' where recordDelete_timeMillis is null' +
-      ' and (lotTypeId is null or lotTypeId = ?))'
+    sqlWhereClause += ` and feeCategoryId in (
+        select feeCategoryId from Fees where recordDelete_timeMillis is null and (lotTypeId is null or lotTypeId = ?))`
 
     sqlParameters.push(filters.lotTypeId)
   }
 
   const feeCategories = database
     .prepare(
-      'select feeCategoryId, feeCategory, orderNumber' +
-        ' from FeeCategories' +
-        sqlWhereClause +
-        ' order by orderNumber, feeCategory'
+      `select feeCategoryId, feeCategory, orderNumber
+        from FeeCategories
+        ${sqlWhereClause}
+        order by orderNumber, feeCategory`
     )
     .all(sqlParameters) as FeeCategory[]
 
@@ -87,5 +81,3 @@ export async function getFeeCategories(
 
   return feeCategories
 }
-
-export default getFeeCategories

@@ -5,7 +5,7 @@ import {
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
 import { getConfigProperty } from '../../helpers/functions.config.js'
-import * as printFunctions from '../../helpers/functions.print.js'
+import { getPrintConfig } from '../../helpers/functions.print.js'
 
 export default async function handler(
   _request: Request,
@@ -19,7 +19,7 @@ export default async function handler(
   const occupancyTypePrintTitles = {}
 
   for (const printEJS of occupancyTypePrints) {
-    const printConfig = printFunctions.getPrintConfig(printEJS)
+    const printConfig = getPrintConfig(printEJS)
 
     if (printConfig !== undefined) {
       occupancyTypePrintTitles[printEJS] = printConfig.title

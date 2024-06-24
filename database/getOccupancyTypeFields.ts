@@ -5,7 +5,7 @@ import type { OccupancyTypeField } from '../types/recordTypes.js'
 import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export async function getOccupancyTypeFields(
+export default async function getOccupancyTypeFields(
   occupancyTypeId?: number,
   connectedDatabase?: PoolConnection
 ): Promise<OccupancyTypeField[]> {
@@ -19,16 +19,16 @@ export async function getOccupancyTypeFields(
 
   const occupancyTypeFields = database
     .prepare(
-      'select occupancyTypeFieldId,' +
-        ' occupancyTypeField, occupancyTypeFieldValues, isRequired, pattern,' +
-        ' minimumLength, maximumLength,' +
-        ' orderNumber' +
-        ' from OccupancyTypeFields' +
-        ' where recordDelete_timeMillis is null' +
-        ((occupancyTypeId ?? -1) === -1
-          ? ' and occupancyTypeId is null'
-          : ' and occupancyTypeId = ?') +
-        ' order by orderNumber, occupancyTypeField'
+      `select occupancyTypeFieldId, occupancyTypeField,
+        occupancyTypeFieldValues, isRequired, pattern, minimumLength, maximumLength, orderNumber
+        from OccupancyTypeFields
+        where recordDelete_timeMillis is null
+        ${
+          (occupancyTypeId ?? -1) === -1
+            ? ' and occupancyTypeId is null'
+            : ' and occupancyTypeId = ?'
+        }
+        order by orderNumber, occupancyTypeField`
     )
     .all(sqlParameters) as OccupancyTypeField[]
 
@@ -55,5 +55,3 @@ export async function getOccupancyTypeFields(
 
   return occupancyTypeFields
 }
-
-export default getOccupancyTypeFields

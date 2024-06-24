@@ -1,5 +1,5 @@
 import ical, { ICalEventStatus } from 'ical-generator';
-import { getWorkOrderMilestones } from '../../database/getWorkOrderMilestones.js';
+import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
 import { getConfigProperty } from '../../helpers/functions.config.js';
 import { getPrintConfig } from '../../helpers/functions.print.js';
 const calendarCompany = 'cityssm.github.io';

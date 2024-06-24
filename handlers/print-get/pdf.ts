@@ -3,7 +3,7 @@ import path from 'node:path'
 import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer'
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import camelcase from 'camelcase'
-import * as ejs from 'ejs'
+import {renderFile as renderEjsFile } from 'ejs'
 import type { NextFunction, Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
@@ -87,7 +87,7 @@ export async function handler(
   reportData.dateTimeFunctions = dateTimeFunctions
   reportData.lotOccupancyFunctions = lotOccupancyFunctions
 
-  await ejs.renderFile(reportPath, reportData, {}, ejsCallbackFunction)
+  await renderEjsFile(reportPath, reportData, {}, ejsCallbackFunction)
 }
 
 export default handler

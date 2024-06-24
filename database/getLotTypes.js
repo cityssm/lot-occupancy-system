@@ -1,7 +1,7 @@
-import { getLotTypeFields } from './getLotTypeFields.js';
+import getLotTypeFields from './getLotTypeFields.js';
 import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export async function getLotTypes() {
+export default async function getLotTypes() {
     const database = await acquireConnection();
     const lotTypes = database
         .prepare(`select lotTypeId, lotType, orderNumber
@@ -21,4 +21,3 @@ export async function getLotTypes() {
     database.release();
     return lotTypes;
 }
-export default getLotTypes;

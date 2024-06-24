@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import addWorkOrderComment, {
   type AddWorkOrderCommentForm
 } from '../../database/addWorkOrderComment.js'
-import { getWorkOrderComments } from '../../database/getWorkOrderComments.js'
+import getWorkOrderComments from '../../database/getWorkOrderComments.js'
 
 export default async function handler(
   request: Request,
@@ -14,11 +14,12 @@ export default async function handler(
     request.session.user as User
   )
 
-  const workOrderComments = await getWorkOrderComments(request.body.workOrderId)
+  const workOrderComments = await getWorkOrderComments(
+    request.body.workOrderId as string
+  )
 
   response.json({
     success: true,
     workOrderComments
   })
 }
-

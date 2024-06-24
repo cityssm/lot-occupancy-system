@@ -1,6 +1,6 @@
 import { getConfigProperty } from '../helpers/functions.config.js';
 import { acquireConnection } from './pool.js';
-export async function getNextWorkOrderNumber(connectedDatabase) {
+export default async function getNextWorkOrderNumber(connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const paddingLength = getConfigProperty('settings.workOrders.workOrderNumberLength');
     const currentYearString = new Date().getFullYear().toString();
@@ -23,4 +23,3 @@ export async function getNextWorkOrderNumber(connectedDatabase) {
     workOrderNumberIndex += 1;
     return `${currentYearString}-${workOrderNumberIndex.toString().padStart(paddingLength, '0')}`;
 }
-export default getNextWorkOrderNumber;

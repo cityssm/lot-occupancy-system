@@ -3,7 +3,7 @@ import type { WorkOrderType } from '../types/recordTypes.js'
 import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export async function getWorkOrderTypes(): Promise<WorkOrderType[]> {
+export default async function getWorkOrderTypes(): Promise<WorkOrderType[]> {
   const database = await acquireConnection()
 
   const workOrderTypes = database
@@ -36,5 +36,3 @@ export async function getWorkOrderTypes(): Promise<WorkOrderType[]> {
 
   return workOrderTypes
 }
-
-export default getWorkOrderTypes

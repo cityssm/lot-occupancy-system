@@ -3,9 +3,8 @@
 import type { Request, Response } from 'express'
 import ical, { type ICalEventData, ICalEventStatus } from 'ical-generator'
 
-import {
-  type WorkOrderMilestoneFilters,
-  getWorkOrderMilestones
+import getWorkOrderMilestones, {
+  type WorkOrderMilestoneFilters
 } from '../../database/getWorkOrderMilestones.js'
 import { getConfigProperty } from '../../helpers/functions.config.js'
 import { getPrintConfig } from '../../helpers/functions.print.js'

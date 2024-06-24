@@ -10,7 +10,7 @@ interface GetPastLotOccupancyOccupantsOptions {
   limit: number
 }
 
-export async function getPastLotOccupancyOccupants(
+export default async function getPastLotOccupancyOccupants(
   filters: GetPastLotOccupancyOccupantsFilters,
   options: GetPastLotOccupancyOccupantsOptions
 ): Promise<LotOccupancyOccupant[]> {
@@ -69,5 +69,3 @@ export async function getPastLotOccupancyOccupants(
 
   return lotOccupancyOccupants
 }
-
-export default getPastLotOccupancyOccupants

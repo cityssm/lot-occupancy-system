@@ -1,8 +1,8 @@
 import { dateIntegerToString } from '@cityssm/utils-datetime';
-import { getLotOccupancies } from './getLotOccupancies.js';
-import { getLots } from './getLots.js';
-import { getWorkOrderComments } from './getWorkOrderComments.js';
-import { getWorkOrderMilestones } from './getWorkOrderMilestones.js';
+import getLotOccupancies from './getLotOccupancies.js';
+import getLots from './getLots.js';
+import getWorkOrderComments from './getWorkOrderComments.js';
+import getWorkOrderMilestones from './getWorkOrderMilestones.js';
 import { acquireConnection } from './pool.js';
 const baseSQL = `select w.workOrderId,
     w.workOrderTypeId, t.workOrderType,
@@ -63,7 +63,6 @@ export async function getWorkOrderByWorkOrderNumber(workOrderNumber) {
         includeMilestones: true
     });
 }
-export async function getWorkOrder(workOrderId, options, connectedDatabase) {
+export default async function getWorkOrder(workOrderId, options, connectedDatabase) {
     return await _getWorkOrder(baseSQL + ' and w.workOrderId = ?', workOrderId, options, connectedDatabase);
 }
-export default getWorkOrder;

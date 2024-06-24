@@ -1,11 +1,11 @@
 import type { OccupancyType } from '../types/recordTypes.js'
 
-import { getOccupancyTypeFields } from './getOccupancyTypeFields.js'
-import { getOccupancyTypePrints } from './getOccupancyTypePrints.js'
+import getOccupancyTypeFields from './getOccupancyTypeFields.js'
+import getOccupancyTypePrints from './getOccupancyTypePrints.js'
 import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export async function getOccupancyTypes(): Promise<OccupancyType[]> {
+export default async function getOccupancyTypes(): Promise<OccupancyType[]> {
   const database = await acquireConnection()
 
   const occupancyTypes = database
@@ -49,4 +49,3 @@ export async function getOccupancyTypes(): Promise<OccupancyType[]> {
   return occupancyTypes
 }
 
-export default getOccupancyTypes

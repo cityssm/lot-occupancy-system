@@ -47,13 +47,14 @@ const occupantEmailAddressAlias = `${occupantCamelCase}EmailAddress`
 const occupantCommentTitleAlias = `${occupantCamelCase}CommentTitle`
 const occupantCommentAlias = `${occupantCamelCase}Comment`
 
-export async function getReportData(
+export default async function getReportData(
   reportName: string,
   reportParameters: ReportParameters = {}
 ): Promise<unknown[] | undefined> {
   let sql: string
   const sqlParameters: unknown[] = []
 
+  // eslint-disable-next-line sonarjs/max-switch-cases
   switch (reportName) {
     case 'maps-all': {
       sql = 'select * from Maps'
@@ -364,5 +365,3 @@ export async function getReportData(
 
   return rows
 }
-
-export default getReportData

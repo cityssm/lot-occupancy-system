@@ -10,7 +10,7 @@ interface LotTypeSummary extends LotType {
   lotCount: number
 }
 
-export async function getLotTypeSummary(
+export default async function getLotTypeSummary(
   filters: GetFilters
 ): Promise<LotTypeSummary[]> {
   const database = await acquireConnection()
@@ -38,5 +38,3 @@ export async function getLotTypeSummary(
 
   return lotTypes
 }
-
-export default getLotTypeSummary

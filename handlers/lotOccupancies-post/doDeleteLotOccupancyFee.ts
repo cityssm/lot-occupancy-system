@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import deleteLotOccupancyFee from '../../database/deleteLotOccupancyFee.js'
-import { getLotOccupancyFees } from '../../database/getLotOccupancyFees.js'
+import getLotOccupancyFees from '../../database/getLotOccupancyFees.js'
 
 export default async function handler(
   request: Request,
@@ -13,11 +13,12 @@ export default async function handler(
     request.session.user as User
   )
 
-  const lotOccupancyFees = await getLotOccupancyFees(request.body.lotOccupancyId)
+  const lotOccupancyFees = await getLotOccupancyFees(
+    request.body.lotOccupancyId
+  )
 
   response.json({
     success,
     lotOccupancyFees
   })
 }
-

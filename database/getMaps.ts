@@ -2,7 +2,7 @@ import type { MapRecord } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-export async function getMaps(): Promise<MapRecord[]> {
+export default async function getMaps(): Promise<MapRecord[]> {
   const database = await acquireConnection()
 
   const maps = database
@@ -26,5 +26,3 @@ export async function getMaps(): Promise<MapRecord[]> {
 
   return maps
 }
-
-export default getMaps

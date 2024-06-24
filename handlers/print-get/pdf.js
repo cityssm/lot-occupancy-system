@@ -2,7 +2,7 @@ import path from 'node:path';
 import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import camelcase from 'camelcase';
-import * as ejs from 'ejs';
+import { renderFile as renderEjsFile } from 'ejs';
 import * as configFunctions from '../../helpers/functions.config.js';
 import * as lotOccupancyFunctions from '../../helpers/functions.lotOccupancy.js';
 import { getPdfPrintConfig, getReportData } from '../../helpers/functions.print.js';
@@ -46,6 +46,6 @@ export async function handler(request, response, next) {
     reportData.configFunctions = configFunctions;
     reportData.dateTimeFunctions = dateTimeFunctions;
     reportData.lotOccupancyFunctions = lotOccupancyFunctions;
-    await ejs.renderFile(reportPath, reportData, {}, ejsCallbackFunction);
+    await renderEjsFile(reportPath, reportData, {}, ejsCallbackFunction);
 }
 export default handler;

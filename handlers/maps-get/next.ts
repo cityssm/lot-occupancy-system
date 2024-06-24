@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { getNextMapId } from '../../database/getNextMapId.js'
+import getNextMapId from '../../database/getNextMapId.js'
 import { getConfigProperty } from '../../helpers/functions.config.js'
 
 export default async function handler(

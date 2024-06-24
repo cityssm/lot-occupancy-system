@@ -1,4 +1,4 @@
-import { getWorkOrder } from '../../database/getWorkOrder.js';
+import getWorkOrder from '../../database/getWorkOrder.js';
 import { getConfigProperty } from '../../helpers/functions.config.js';
 export default async function handler(request, response) {
     const workOrder = await getWorkOrder(request.params.workOrderId, {

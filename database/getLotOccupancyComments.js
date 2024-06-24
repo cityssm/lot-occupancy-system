@@ -1,6 +1,6 @@
-import { dateIntegerToString, timeIntegerToString, timeIntegerToPeriodString } from '@cityssm/utils-datetime';
+import { dateIntegerToString, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
-export async function getLotOccupancyComments(lotOccupancyId, connectedDatabase) {
+export default async function getLotOccupancyComments(lotOccupancyId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
@@ -23,4 +23,3 @@ export async function getLotOccupancyComments(lotOccupancyId, connectedDatabase)
     }
     return lotComments;
 }
-export default getLotOccupancyComments;

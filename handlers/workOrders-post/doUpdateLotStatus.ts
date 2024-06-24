@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { getLots } from '../../database/getLots.js'
+import getLots from '../../database/getLots.js'
 import { updateLotStatus } from '../../database/updateLot.js'
 
 export default async function handler(
@@ -8,14 +8,14 @@ export default async function handler(
   response: Response
 ): Promise<void> {
   const success = await updateLotStatus(
-    request.body.lotId,
-    request.body.lotStatusId,
+    request.body.lotId as string,
+    request.body.lotStatusId as string,
     request.session.user as User
   )
 
   const workOrderLotsResults = await getLots(
     {
-      workOrderId: request.body.workOrderId
+      workOrderId: request.body.workOrderId as string
     },
     {
       limit: -1,
@@ -29,4 +29,3 @@ export default async function handler(
     workOrderLots: workOrderLotsResults.lots
   })
 }
-

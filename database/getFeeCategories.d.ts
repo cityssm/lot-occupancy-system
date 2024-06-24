@@ -6,5 +6,5 @@ interface GetFeeCategoriesFilters {
 interface GetFeeCategoriesOptions {
     includeFees?: boolean;
 }
-export declare function getFeeCategories(filters: GetFeeCategoriesFilters, options: GetFeeCategoriesOptions): Promise<FeeCategory[]>;
-export default getFeeCategories;
+export default function getFeeCategories(filters: GetFeeCategoriesFilters, options: GetFeeCategoriesOptions): Promise<FeeCategory[]>;
+export {};

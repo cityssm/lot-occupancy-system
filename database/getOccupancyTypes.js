@@ -1,8 +1,8 @@
-import { getOccupancyTypeFields } from './getOccupancyTypeFields.js';
-import { getOccupancyTypePrints } from './getOccupancyTypePrints.js';
+import getOccupancyTypeFields from './getOccupancyTypeFields.js';
+import getOccupancyTypePrints from './getOccupancyTypePrints.js';
 import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export async function getOccupancyTypes() {
+export default async function getOccupancyTypes() {
     const database = await acquireConnection();
     const occupancyTypes = database
         .prepare(`select occupancyTypeId, occupancyType, orderNumber
@@ -23,4 +23,3 @@ export async function getOccupancyTypes() {
     database.release();
     return occupancyTypes;
 }
-export default getOccupancyTypes;

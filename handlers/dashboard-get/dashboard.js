@@ -1,6 +1,6 @@
 import { dateToString } from '@cityssm/utils-datetime';
-import { getLotOccupancies } from '../../database/getLotOccupancies.js';
-import { getWorkOrderMilestones } from '../../database/getWorkOrderMilestones.js';
+import getLotOccupancies from '../../database/getLotOccupancies.js';
+import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
 import { getWorkOrders } from '../../database/getWorkOrders.js';
 export default async function handler(_request, response) {
     const currentDateString = dateToString(new Date());

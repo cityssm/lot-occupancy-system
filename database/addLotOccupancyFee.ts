@@ -4,8 +4,8 @@ import {
 } from '../helpers/functions.fee.js'
 import type { Fee, LotOccupancy } from '../types/recordTypes.js'
 
-import { getFee } from './getFee.js'
-import { getLotOccupancy } from './getLotOccupancy.js'
+import getFee from './getFee.js'
+import getLotOccupancy from './getLotOccupancy.js'
 import { acquireConnection } from './pool.js'
 
 export interface AddLotOccupancyFeeForm {

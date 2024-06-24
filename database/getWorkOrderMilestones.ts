@@ -8,11 +8,11 @@ import {
 } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 import type { WorkOrderMilestone } from '../types/recordTypes.js'
 
-import { getLotOccupancies } from './getLotOccupancies.js'
-import { getLots } from './getLots.js'
+import getLotOccupancies from './getLotOccupancies.js'
+import getLots from './getLots.js'
 import { acquireConnection } from './pool.js'
 
 export interface WorkOrderMilestoneFilters {
@@ -53,7 +53,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
 
   date.setDate(
     date.getDate() -
-      configFunctions.getConfigProperty(
+      getConfigProperty(
         'settings.workOrders.workOrderMilestoneDateRecentBeforeDays'
       )
   )
@@ -62,10 +62,10 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
 
   date.setDate(
     date.getDate() +
-      configFunctions.getConfigProperty(
+      getConfigProperty(
         'settings.workOrders.workOrderMilestoneDateRecentBeforeDays'
       ) +
-      configFunctions.getConfigProperty(
+      getConfigProperty(
         'settings.workOrders.workOrderMilestoneDateRecentAfterDays'
       )
   )
@@ -109,8 +109,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
     (filters.workOrderTypeIds ?? '') !== '' &&
     commaSeparatedNumbersRegex.test(filters.workOrderTypeIds!)
   ) {
-    sqlWhereClause +=
-      ` and w.workOrderTypeId in (${filters.workOrderTypeIds})`
+    sqlWhereClause += ` and w.workOrderTypeId in (${filters.workOrderTypeIds})`
   }
 
   if (
@@ -127,7 +126,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   }
 }
 
-export async function getWorkOrderMilestones(
+export default async function getWorkOrderMilestones(
   filters: WorkOrderMilestoneFilters,
   options: WorkOrderMilestoneOptions,
   connectedDatabase?: PoolConnection
@@ -241,5 +240,3 @@ export async function getWorkOrderMilestones(
 
   return workOrderMilestones
 }
-
-export default getWorkOrderMilestones

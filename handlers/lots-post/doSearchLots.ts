@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { getLots } from '../../database/getLots.js'
+import getLots from '../../database/getLots.js'
 
 export default async function handler(request: Request, response: Response): Promise<void> {
   const result = await getLots(request.body, {

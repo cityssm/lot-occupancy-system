@@ -39,7 +39,7 @@ function buildWhereClause(filters) {
         sqlParameters
     };
 }
-export async function getLots(filters, options, connectedDatabase) {
+export default async function getLots(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
     const currentDate = dateToInteger(new Date());
@@ -47,15 +47,15 @@ export async function getLots(filters, options, connectedDatabase) {
     if (options.limit !== -1) {
         count = database
             .prepare(`select count(*) as recordCount
-          from Lots l
-          left join (
-            select lotId, count(lotOccupancyId) as lotOccupancyCount from LotOccupancies
-            where recordDelete_timeMillis is null
-            and occupancyStartDate <= ${currentDate.toString()}
-            and (occupancyEndDate is null or occupancyEndDate >= ${currentDate.toString()})
-            group by lotId
-          ) o on l.lotId = o.lotId
-          ${sqlWhereClause}`)
+            from Lots l
+            left join (
+              select lotId, count(lotOccupancyId) as lotOccupancyCount from LotOccupancies
+              where recordDelete_timeMillis is null
+              and occupancyStartDate <= ${currentDate.toString()}
+              and (occupancyEndDate is null or occupancyEndDate >= ${currentDate.toString()})
+              group by lotId
+            ) o on l.lotId = o.lotId
+            ${sqlWhereClause}`)
             .get(sqlParameters).recordCount;
     }
     let lots = [];
@@ -104,4 +104,3 @@ export async function getLots(filters, options, connectedDatabase) {
         lots
     };
 }
-export default getLots;

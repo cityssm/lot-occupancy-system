@@ -3,7 +3,9 @@ import type { LotOccupantType } from '../types/recordTypes.js'
 import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export async function getLotOccupantTypes(): Promise<LotOccupantType[]> {
+export default async function getLotOccupantTypes(): Promise<
+  LotOccupantType[]
+> {
   const database = await acquireConnection()
 
   const lotOccupantTypes = database
@@ -37,5 +39,3 @@ export async function getLotOccupantTypes(): Promise<LotOccupantType[]> {
 
   return lotOccupantTypes
 }
-
-export default getLotOccupantTypes

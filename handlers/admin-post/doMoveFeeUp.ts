@@ -1,11 +1,7 @@
 import type { Request, Response } from 'express'
 
-import {
-  moveFeeUp,
-  moveFeeUpToTop
-} from '../../database/moveFee.js'
-
-import { getFeeCategories } from '../../database/getFeeCategories.js'
+import getFeeCategories from '../../database/getFeeCategories.js'
+import { moveFeeUp, moveFeeUpToTop } from '../../database/moveFee.js'
 
 export default async function handler(
   request: Request,
@@ -28,4 +24,3 @@ export default async function handler(
     feeCategories
   })
 }
-

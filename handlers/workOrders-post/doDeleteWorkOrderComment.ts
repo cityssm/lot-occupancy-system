@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { deleteRecord } from '../../database/deleteRecord.js'
-import { getWorkOrderComments } from '../../database/getWorkOrderComments.js'
+import getWorkOrderComments from '../../database/getWorkOrderComments.js'
 
 export default async function handler(
   request: Request,
@@ -9,15 +9,16 @@ export default async function handler(
 ): Promise<void> {
   const success = await deleteRecord(
     'WorkOrderComments',
-    request.body.workOrderCommentId,
+    request.body.workOrderCommentId as string,
     request.session.user as User
   )
 
-  const workOrderComments = await getWorkOrderComments(request.body.workOrderId)
+  const workOrderComments = await getWorkOrderComments(
+    request.body.workOrderId as string
+  )
 
   response.json({
     success,
     workOrderComments
   })
 }
-

@@ -1,5 +1,5 @@
-import { getLotOccupancy } from '../../database/getLotOccupancy.js';
-import { getMaps } from '../../database/getMaps.js';
+import getLotOccupancy from '../../database/getLotOccupancy.js';
+import getMaps from '../../database/getMaps.js';
 import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypePrintsById, getOccupancyTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
 import { getConfigProperty } from '../../helpers/functions.config.js';
 export default async function handler(request, response) {

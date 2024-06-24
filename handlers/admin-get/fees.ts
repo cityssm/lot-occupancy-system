@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { getFeeCategories } from '../../database/getFeeCategories.js'
+import getFeeCategories from '../../database/getFeeCategories.js'
 import {
   getLotTypes,
   getOccupancyTypes

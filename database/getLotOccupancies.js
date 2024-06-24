@@ -2,9 +2,9 @@ import { dateIntegerToString, dateStringToInteger } from '@cityssm/utils-datetim
 import { getOccupancyTypeById } from '../helpers/functions.cache.js';
 import { getConfigProperty } from '../helpers/functions.config.js';
 import { getLotNameWhereClause, getOccupancyTimeWhereClause, getOccupantNameWhereClause } from '../helpers/functions.sqlFilters.js';
-import { getLotOccupancyFees } from './getLotOccupancyFees.js';
-import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js';
-import { getLotOccupancyTransactions } from './getLotOccupancyTransactions.js';
+import getLotOccupancyFees from './getLotOccupancyFees.js';
+import getLotOccupancyOccupants from './getLotOccupancyOccupants.js';
+import getLotOccupancyTransactions from './getLotOccupancyTransactions.js';
 import { acquireConnection } from './pool.js';
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where o.recordDelete_timeMillis is null';
@@ -77,7 +77,7 @@ async function addInclusions(lotOccupancy, options, database) {
     }
     return lotOccupancy;
 }
-export async function getLotOccupancies(filters, options, connectedDatabase) {
+export default async function getLotOccupancies(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
@@ -130,4 +130,3 @@ export async function getLotOccupancies(filters, options, connectedDatabase) {
         lotOccupancies
     };
 }
-export default getLotOccupancies;

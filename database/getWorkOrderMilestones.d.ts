@@ -11,5 +11,5 @@ interface WorkOrderMilestoneOptions {
     includeWorkOrders?: boolean;
     orderBy: 'completion' | 'date';
 }
-export declare function getWorkOrderMilestones(filters: WorkOrderMilestoneFilters, options: WorkOrderMilestoneOptions, connectedDatabase?: PoolConnection): Promise<WorkOrderMilestone[]>;
-export default getWorkOrderMilestones;
+export default function getWorkOrderMilestones(filters: WorkOrderMilestoneFilters, options: WorkOrderMilestoneOptions, connectedDatabase?: PoolConnection): Promise<WorkOrderMilestone[]>;
+export {};

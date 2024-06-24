@@ -1,6 +1,6 @@
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
 import addWorkOrderLotOccupancy from './addWorkOrderLotOccupancy.js';
-import { getNextWorkOrderNumber } from './getNextWorkOrderNumber.js';
+import getNextWorkOrderNumber from './getNextWorkOrderNumber.js';
 import { acquireConnection } from './pool.js';
 export default async function addWorkOrder(workOrderForm, user) {
     const database = await acquireConnection();

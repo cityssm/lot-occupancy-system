@@ -18,11 +18,10 @@ import addWorkOrderLot from '../database/addWorkOrderLot.js'
 import addWorkOrderLotOccupancy from '../database/addWorkOrderLotOccupancy.js'
 import addWorkOrderMilestone from '../database/addWorkOrderMilestone.js'
 import closeWorkOrder from '../database/closeWorkOrder.js'
-import { getLot, getLotByLotName } from '../database/getLot.js'
-import { getLotOccupancies } from '../database/getLotOccupancies.js'
-import { getMap as getMapFromDatabase } from '../database/getMap.js'
-import {
-  getWorkOrder,
+import getLot, { getLotByLotName } from '../database/getLot.js'
+import getLotOccupancies from '../database/getLotOccupancies.js'
+import getMapFromDatabase from '../database/getMap.js'
+import getWorkOrder, {
   getWorkOrderByWorkOrderNumber
 } from '../database/getWorkOrder.js'
 import { reopenWorkOrder } from '../database/reopenWorkOrder.js'

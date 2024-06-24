@@ -1,11 +1,10 @@
 import type { Request, Response } from 'express'
 
+import getFeeCategories from '../../database/getFeeCategories.js'
 import {
   moveRecordDown,
   moveRecordDownToBottom
 } from '../../database/moveRecord.js'
-
-import { getFeeCategories } from '../../database/getFeeCategories.js'
 
 export default async function handler(
   request: Request,
@@ -13,7 +12,10 @@ export default async function handler(
 ): Promise<void> {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveRecordDownToBottom('FeeCategories', request.body.feeCategoryId)
+      ? await moveRecordDownToBottom(
+          'FeeCategories',
+          request.body.feeCategoryId
+        )
       : await moveRecordDown('FeeCategories', request.body.feeCategoryId)
 
   const feeCategories = await getFeeCategories(
@@ -28,4 +30,3 @@ export default async function handler(
     feeCategories
   })
 }
-

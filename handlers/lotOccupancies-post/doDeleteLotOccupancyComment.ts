@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { deleteRecord } from '../../database/deleteRecord.js'
-import { getLotOccupancyComments } from '../../database/getLotOccupancyComments.js'
+import getLotOccupancyComments from '../../database/getLotOccupancyComments.js'
 
 export default async function handler(
   request: Request,
@@ -22,4 +22,3 @@ export default async function handler(
     lotOccupancyComments
   })
 }
-

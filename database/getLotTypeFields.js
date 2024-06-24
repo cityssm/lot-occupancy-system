@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export async function getLotTypeFields(lotTypeId, connectedDatabase) {
+export default async function getLotTypeFields(lotTypeId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const lotTypeFields = database
         .prepare(`select lotTypeFieldId,
@@ -24,4 +24,3 @@ export async function getLotTypeFields(lotTypeId, connectedDatabase) {
     }
     return lotTypeFields;
 }
-export default getLotTypeFields;

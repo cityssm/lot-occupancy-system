@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js'
 
-export async function getNextMapId(
+export default async function getNextMapId(
   mapId: number | string
 ): Promise<number | undefined> {
   const database = await acquireConnection()
@@ -26,5 +26,3 @@ export async function getNextMapId(
 
   return result.mapId
 }
-
-export default getNextMapId

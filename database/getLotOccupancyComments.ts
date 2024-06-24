@@ -1,7 +1,7 @@
 import {
   dateIntegerToString,
-  timeIntegerToString,
-  timeIntegerToPeriodString
+  timeIntegerToPeriodString,
+  timeIntegerToString
 } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
@@ -9,7 +9,7 @@ import type { LotOccupancyComment } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-export async function getLotOccupancyComments(
+export default async function getLotOccupancyComments(
   lotOccupancyId: number | string,
   connectedDatabase?: PoolConnection
 ): Promise<LotOccupancyComment[]> {
@@ -24,6 +24,7 @@ export async function getLotOccupancyComments(
 
   const lotComments = database
     .prepare(
+      // eslint-disable-next-line no-secrets/no-secrets
       `select lotOccupancyCommentId,
         lotOccupancyCommentDate, userFn_dateIntegerToString(lotOccupancyCommentDate) as lotOccupancyCommentDateString,
         lotOccupancyCommentTime,
@@ -44,5 +45,3 @@ export async function getLotOccupancyComments(
 
   return lotComments
 }
-
-export default getLotOccupancyComments

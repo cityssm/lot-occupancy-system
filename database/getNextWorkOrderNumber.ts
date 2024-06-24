@@ -4,7 +4,7 @@ import { getConfigProperty } from '../helpers/functions.config.js'
 
 import { acquireConnection } from './pool.js'
 
-export async function getNextWorkOrderNumber(
+export default async function getNextWorkOrderNumber(
   connectedDatabase?: PoolConnection
 ): Promise<string> {
   const database = connectedDatabase ?? (await acquireConnection())
@@ -17,6 +17,7 @@ export async function getNextWorkOrderNumber(
   const regex = new RegExp(`^${currentYearString}-\\d+$`)
 
   database.function(
+    // eslint-disable-next-line no-secrets/no-secrets
     'userFn_matchesWorkOrderNumberSyntax',
     (workOrderNumber: string) => {
       return regex.test(workOrderNumber) ? 1 : 0
@@ -25,6 +26,7 @@ export async function getNextWorkOrderNumber(
 
   const workOrderNumberRecord = database
     .prepare(
+      // eslint-disable-next-line no-secrets/no-secrets
       `select workOrderNumber from WorkOrders
         where userFn_matchesWorkOrderNumberSyntax(workOrderNumber) = 1
         order by cast(substr(workOrderNumber, instr(workOrderNumber, '-') + 1) as integer) desc`
@@ -50,5 +52,3 @@ export async function getNextWorkOrderNumber(
 
   return `${currentYearString}-${workOrderNumberIndex.toString().padStart(paddingLength, '0')}`
 }
-
-export default getNextWorkOrderNumber

@@ -1,6 +1,6 @@
-import { getLotComments } from './getLotComments.js';
-import { getLotFields } from './getLotFields.js';
-import { getLotOccupancies } from './getLotOccupancies.js';
+import getLotComments from './getLotComments.js';
+import getLotFields from './getLotFields.js';
+import getLotOccupancies from './getLotOccupancies.js';
 import { acquireConnection } from './pool.js';
 const baseSQL = `select l.lotId, l.lotTypeId, t.lotType, l.lotName, l.lotStatusId, s.lotStatus,
     l.mapId, m.mapName, m.mapSVG, l.mapKey,
@@ -31,9 +31,8 @@ async function _getLot(sql, lotIdOrLotName) {
     return lot;
 }
 export async function getLotByLotName(lotName) {
-    return await _getLot(baseSQL + ' and l.lotName = ?', lotName);
+    return await _getLot(`${baseSQL} and l.lotName = ?`, lotName);
 }
-export async function getLot(lotId) {
-    return await _getLot(baseSQL + ' and l.lotId = ?', lotId);
+export default async function getLot(lotId) {
+    return await _getLot(`${baseSQL} and l.lotId = ?`, lotId);
 }
-export default getLot;

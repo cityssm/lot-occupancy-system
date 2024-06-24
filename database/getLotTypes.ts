@@ -1,10 +1,10 @@
 import type { LotType } from '../types/recordTypes.js'
 
-import { getLotTypeFields } from './getLotTypeFields.js'
+import getLotTypeFields from './getLotTypeFields.js'
 import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export async function getLotTypes(): Promise<LotType[]> {
+export default async function getLotTypes(): Promise<LotType[]> {
   const database = await acquireConnection()
 
   const lotTypes = database
@@ -39,5 +39,3 @@ export async function getLotTypes(): Promise<LotType[]> {
 
   return lotTypes
 }
-
-export default getLotTypes

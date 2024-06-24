@@ -1,5 +1,5 @@
 import papaparse from 'papaparse';
-import { getReportData } from '../../database/getReportData.js';
+import getReportData from '../../database/getReportData.js';
 export default async function handler(request, response) {
     const reportName = request.params.reportName;
     const rows = await getReportData(reportName, request.query);

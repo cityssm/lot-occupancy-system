@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export async function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
+export default async function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
     const updateOrderNumbers = !(additionalFilters.lotTypeId || additionalFilters.occupancyTypeId);
     const database = connectedDatabase ?? (await acquireConnection());
     let sqlWhereClause = ' where f.recordDelete_timeMillis is null and f.feeCategoryId = ?';
@@ -52,4 +52,3 @@ export async function getFees(feeCategoryId, additionalFilters, connectedDatabas
     }
     return fees;
 }
-export default getFees;

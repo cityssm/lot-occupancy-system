@@ -1,6 +1,6 @@
 import { getConfigProperty } from '../helpers/functions.config.js';
 import { acquireConnection } from './pool.js';
-export async function getNextLotId(lotId) {
+export default async function getNextLotId(lotId) {
     const database = await acquireConnection();
     database.function('userFn_lotNameSortName', getConfigProperty('settings.lot.lotNameSortNameFunction'));
     const result = database
@@ -17,4 +17,3 @@ export async function getNextLotId(lotId) {
     }
     return result.lotId;
 }
-export default getNextLotId;

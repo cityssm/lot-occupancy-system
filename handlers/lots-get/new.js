@@ -1,4 +1,4 @@
-import { getMaps } from '../../database/getMaps.js';
+import getMaps from '../../database/getMaps.js';
 import { getLotStatuses, getLotTypes } from '../../helpers/functions.cache.js';
 import { getConfigProperty } from '../../helpers/functions.config.js';
 export default async function handler(request, response) {

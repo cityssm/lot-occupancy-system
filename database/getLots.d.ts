@@ -14,8 +14,8 @@ interface GetLotsOptions {
     offset: number;
     includeLotOccupancyCount?: boolean;
 }
-export declare function getLots(filters: GetLotsFilters, options: GetLotsOptions, connectedDatabase?: PoolConnection): Promise<{
+export default function getLots(filters: GetLotsFilters, options: GetLotsOptions, connectedDatabase?: PoolConnection): Promise<{
     count: number;
     lots: Lot[];
 }>;
-export default getLots;
+export {};

@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function getLotOccupancyOccupants(lotOccupancyId, connectedDatabase) {
+export default async function getLotOccupancyOccupants(lotOccupancyId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const lotOccupancyOccupants = database
         .prepare(`select o.lotOccupancyId, o.lotOccupantIndex,
@@ -21,4 +21,3 @@ export async function getLotOccupancyOccupants(lotOccupancyId, connectedDatabase
     }
     return lotOccupancyOccupants;
 }
-export default getLotOccupancyOccupants;

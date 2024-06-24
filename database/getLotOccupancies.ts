@@ -1,5 +1,5 @@
 import {
-  DateString,
+  type DateString,
   dateIntegerToString,
   dateStringToInteger
 } from '@cityssm/utils-datetime'
@@ -14,9 +14,9 @@ import {
 } from '../helpers/functions.sqlFilters.js'
 import type { LotOccupancy } from '../types/recordTypes.js'
 
-import { getLotOccupancyFees } from './getLotOccupancyFees.js'
-import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js'
-import { getLotOccupancyTransactions } from './getLotOccupancyTransactions.js'
+import getLotOccupancyFees from './getLotOccupancyFees.js'
+import getLotOccupancyOccupants from './getLotOccupancyOccupants.js'
+import getLotOccupancyTransactions from './getLotOccupancyTransactions.js'
 import { acquireConnection } from './pool.js'
 
 interface GetLotOccupanciesFilters {
@@ -162,7 +162,7 @@ async function addInclusions(
   return lotOccupancy
 }
 
-export async function getLotOccupancies(
+export default async function getLotOccupancies(
   filters: GetLotOccupanciesFilters,
   options: GetLotOccupanciesOptions,
   connectedDatabase?: PoolConnection
@@ -242,5 +242,3 @@ export async function getLotOccupancies(
     lotOccupancies
   }
 }
-
-export default getLotOccupancies

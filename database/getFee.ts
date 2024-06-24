@@ -4,7 +4,7 @@ import type { Fee } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-export async function getFee(
+export default async function getFee(
   feeId: number | string,
   connectedDatabase?: PoolConnection
 ): Promise<Fee | undefined> {
@@ -36,5 +36,3 @@ export async function getFee(
 
   return fee
 }
-
-export default getFee

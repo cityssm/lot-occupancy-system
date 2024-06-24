@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import addLotOccupancyOccupant, {
   type AddLotOccupancyOccupantForm
 } from '../../database/addLotOccupancyOccupant.js'
-import { getLotOccupancyOccupants } from '../../database/getLotOccupancyOccupants.js'
+import getLotOccupancyOccupants from '../../database/getLotOccupancyOccupants.js'
 
 export default async function handler(
   request: Request,
@@ -23,4 +23,3 @@ export default async function handler(
     lotOccupancyOccupants
   })
 }
-

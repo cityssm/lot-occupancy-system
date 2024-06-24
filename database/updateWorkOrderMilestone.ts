@@ -5,7 +5,7 @@ import {
 
 import { acquireConnection } from './pool.js'
 
-interface UpdateWorkOrderMilestoneForm {
+export interface UpdateWorkOrderMilestoneForm {
   workOrderMilestoneId: string | number
   workOrderMilestoneTypeId: number | string
   workOrderMilestoneDateString: string
@@ -13,7 +13,7 @@ interface UpdateWorkOrderMilestoneForm {
   workOrderMilestoneDescription: string
 }
 
-export async function updateWorkOrderMilestone(
+export default async function updateWorkOrderMilestone(
   milestoneForm: UpdateWorkOrderMilestoneForm,
   user: User
 ): Promise<boolean> {
@@ -51,5 +51,3 @@ export async function updateWorkOrderMilestone(
 
   return result.changes > 0
 }
-
-export default updateWorkOrderMilestone

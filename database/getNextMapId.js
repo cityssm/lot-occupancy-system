@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function getNextMapId(mapId) {
+export default async function getNextMapId(mapId) {
     const database = await acquireConnection();
     const result = database
         .prepare(`select mapId
@@ -15,4 +15,3 @@ export async function getNextMapId(mapId) {
     }
     return result.mapId;
 }
-export default getNextMapId;

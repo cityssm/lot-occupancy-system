@@ -5,7 +5,7 @@ import {
 
 import { acquireConnection } from './pool.js'
 
-interface UpdateWorkOrderCommentForm {
+export interface UpdateWorkOrderCommentForm {
   workOrderCommentId: string | number
   workOrderCommentDateString: string
   workOrderCommentTimeString: string

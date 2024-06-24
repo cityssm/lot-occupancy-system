@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { getLotOccupancy } from '../../database/getLotOccupancy.js'
-
-import { getFeeCategories } from '../../database/getFeeCategories.js'
+import getFeeCategories from '../../database/getFeeCategories.js'
+import getLotOccupancy from '../../database/getLotOccupancy.js'
 
 export default async function handler(
   request: Request,
@@ -26,4 +25,3 @@ export default async function handler(
     feeCategories
   })
 }
-

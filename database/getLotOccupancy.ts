@@ -3,15 +3,15 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import type { LotOccupancy } from '../types/recordTypes.js'
 
-import { getLotOccupancyComments } from './getLotOccupancyComments.js'
-import { getLotOccupancyFees } from './getLotOccupancyFees.js'
-import { getLotOccupancyFields } from './getLotOccupancyFields.js'
-import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js'
-import { getLotOccupancyTransactions } from './getLotOccupancyTransactions.js'
+import getLotOccupancyComments from './getLotOccupancyComments.js'
+import getLotOccupancyFees from './getLotOccupancyFees.js'
+import getLotOccupancyFields from './getLotOccupancyFields.js'
+import getLotOccupancyOccupants from './getLotOccupancyOccupants.js'
+import getLotOccupancyTransactions from './getLotOccupancyTransactions.js'
 import { getWorkOrders } from './getWorkOrders.js'
 import { acquireConnection } from './pool.js'
 
-export async function getLotOccupancy(
+export default async function getLotOccupancy(
   lotOccupancyId: number | string,
   connectedDatabase?: PoolConnection
 ): Promise<LotOccupancy | undefined> {
@@ -80,5 +80,3 @@ export async function getLotOccupancy(
 
   return lotOccupancy
 }
-
-export default getLotOccupancy

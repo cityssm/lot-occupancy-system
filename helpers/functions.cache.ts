@@ -2,15 +2,23 @@ import cluster from 'node:cluster'
 
 import Debug from 'debug'
 
-import { getLotOccupantTypes as getLotOccupantTypesFromDatabase } from '../database/getLotOccupantTypes.js'
-import { getLotStatuses as getLotStatusesFromDatabase } from '../database/getLotStatuses.js'
-import { getLotTypes as getLotTypesFromDatabase } from '../database/getLotTypes.js'
-import { getOccupancyTypeFields as getOccupancyTypeFieldsFromDatabase } from '../database/getOccupancyTypeFields.js'
-import { getOccupancyTypes as getOccupancyTypesFromDatabase } from '../database/getOccupancyTypes.js'
-import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from '../database/getWorkOrderMilestoneTypes.js'
-import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from '../database/getWorkOrderTypes.js'
+import getLotOccupantTypesFromDatabase from '../database/getLotOccupantTypes.js'
+import getLotStatusesFromDatabase from '../database/getLotStatuses.js'
+import getLotTypesFromDatabase from '../database/getLotTypes.js'
+import getOccupancyTypeFieldsFromDatabase from '../database/getOccupancyTypeFields.js'
+import getOccupancyTypesFromDatabase from '../database/getOccupancyTypes.js'
+import getWorkOrderMilestoneTypesFromDatabase from '../database/getWorkOrderMilestoneTypes.js'
+import getWorkOrderTypesFromDatabase from '../database/getWorkOrderTypes.js'
 import type { ClearCacheWorkerMessage } from '../types/applicationTypes.js'
-import type * as recordTypes from '../types/recordTypes.js'
+import type {
+  LotOccupantType,
+  LotStatus,
+  LotType,
+  OccupancyType,
+  OccupancyTypeField,
+  WorkOrderMilestoneType,
+  WorkOrderType
+} from '../types/recordTypes.js'
 
 import { getConfigProperty } from './functions.config.js'
 
@@ -20,11 +28,9 @@ const debug = Debug(`lot-occupancy-system:functions.cache:${process.pid}`)
  * Lot Occupant Types
  */
 
-let lotOccupantTypes: recordTypes.LotOccupantType[] | undefined
+let lotOccupantTypes: LotOccupantType[] | undefined
 
-export async function getLotOccupantTypes(): Promise<
-  recordTypes.LotOccupantType[]
-> {
+export async function getLotOccupantTypes(): Promise<LotOccupantType[]> {
   if (lotOccupantTypes === undefined) {
     lotOccupantTypes = await getLotOccupantTypesFromDatabase()
   }
@@ -34,7 +40,7 @@ export async function getLotOccupantTypes(): Promise<
 
 export async function getLotOccupantTypeById(
   lotOccupantTypeId: number
-): Promise<recordTypes.LotOccupantType | undefined> {
+): Promise<LotOccupantType | undefined> {
   const cachedLotOccupantTypes = await getLotOccupantTypes()
 
   return cachedLotOccupantTypes.find((currentLotOccupantType) => {
@@ -44,7 +50,7 @@ export async function getLotOccupantTypeById(
 
 export async function getLotOccupantTypeByLotOccupantType(
   lotOccupantType: string
-): Promise<recordTypes.LotOccupantType | undefined> {
+): Promise<LotOccupantType | undefined> {
   const cachedLotOccupantTypes = await getLotOccupantTypes()
 
   const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase()
@@ -65,9 +71,9 @@ function clearLotOccupantTypesCache(): void {
  * Lot Statuses
  */
 
-let lotStatuses: recordTypes.LotStatus[] | undefined
+let lotStatuses: LotStatus[] | undefined
 
-export async function getLotStatuses(): Promise<recordTypes.LotStatus[]> {
+export async function getLotStatuses(): Promise<LotStatus[]> {
   if (lotStatuses === undefined) {
     lotStatuses = await getLotStatusesFromDatabase()
   }
@@ -77,7 +83,7 @@ export async function getLotStatuses(): Promise<recordTypes.LotStatus[]> {
 
 export async function getLotStatusById(
   lotStatusId: number
-): Promise<recordTypes.LotStatus | undefined> {
+): Promise<LotStatus | undefined> {
   const cachedLotStatuses = await getLotStatuses()
 
   return cachedLotStatuses.find((currentLotStatus) => {
@@ -87,7 +93,7 @@ export async function getLotStatusById(
 
 export async function getLotStatusByLotStatus(
   lotStatus: string
-): Promise<recordTypes.LotStatus | undefined> {
+): Promise<LotStatus | undefined> {
   const cachedLotStatuses = await getLotStatuses()
 
   const lotStatusLowerCase = lotStatus.toLowerCase()
@@ -105,9 +111,9 @@ function clearLotStatusesCache(): void {
  * Lot Types
  */
 
-let lotTypes: recordTypes.LotType[] | undefined
+let lotTypes: LotType[] | undefined
 
-export async function getLotTypes(): Promise<recordTypes.LotType[]> {
+export async function getLotTypes(): Promise<LotType[]> {
   if (lotTypes === undefined) {
     lotTypes = await getLotTypesFromDatabase()
   }
@@ -117,7 +123,7 @@ export async function getLotTypes(): Promise<recordTypes.LotType[]> {
 
 export async function getLotTypeById(
   lotTypeId: number
-): Promise<recordTypes.LotType | undefined> {
+): Promise<LotType | undefined> {
   const cachedLotTypes = await getLotTypes()
 
   return cachedLotTypes.find((currentLotType) => {
@@ -127,7 +133,7 @@ export async function getLotTypeById(
 
 export async function getLotTypesByLotType(
   lotType: string
-): Promise<recordTypes.LotType | undefined> {
+): Promise<LotType | undefined> {
   const cachedLotTypes = await getLotTypes()
 
   const lotTypeLowerCase = lotType.toLowerCase()
@@ -145,12 +151,10 @@ function clearLotTypesCache(): void {
  * Occupancy Types
  */
 
-let occupancyTypes: recordTypes.OccupancyType[] | undefined
-let allOccupancyTypeFields: recordTypes.OccupancyTypeField[] | undefined
+let occupancyTypes: OccupancyType[] | undefined
+let allOccupancyTypeFields: OccupancyTypeField[] | undefined
 
-export async function getOccupancyTypes(): Promise<
-  recordTypes.OccupancyType[]
-> {
+export async function getOccupancyTypes(): Promise<OccupancyType[]> {
   if (occupancyTypes === undefined) {
     occupancyTypes = await getOccupancyTypesFromDatabase()
   }
@@ -159,7 +163,7 @@ export async function getOccupancyTypes(): Promise<
 }
 
 export async function getAllOccupancyTypeFields(): Promise<
-  recordTypes.OccupancyTypeField[]
+  OccupancyTypeField[]
 > {
   if (allOccupancyTypeFields === undefined) {
     allOccupancyTypeFields = await getOccupancyTypeFieldsFromDatabase()
@@ -169,7 +173,7 @@ export async function getAllOccupancyTypeFields(): Promise<
 
 export async function getOccupancyTypeById(
   occupancyTypeId: number
-): Promise<recordTypes.OccupancyType | undefined> {
+): Promise<OccupancyType | undefined> {
   const cachedOccupancyTypes = await getOccupancyTypes()
 
   return cachedOccupancyTypes.find((currentOccupancyType) => {
@@ -179,7 +183,7 @@ export async function getOccupancyTypeById(
 
 export async function getOccupancyTypeByOccupancyType(
   occupancyTypeString: string
-): Promise<recordTypes.OccupancyType | undefined> {
+): Promise<OccupancyType | undefined> {
   const cachedOccupancyTypes = await getOccupancyTypes()
 
   const occupancyTypeLowerCase = occupancyTypeString.toLowerCase()
@@ -220,11 +224,9 @@ function clearOccupancyTypesCache(): void {
  * Work Order Types
  */
 
-let workOrderTypes: recordTypes.WorkOrderType[] | undefined
+let workOrderTypes: WorkOrderType[] | undefined
 
-export async function getWorkOrderTypes(): Promise<
-  recordTypes.WorkOrderType[]
-> {
+export async function getWorkOrderTypes(): Promise<WorkOrderType[]> {
   if (workOrderTypes === undefined) {
     workOrderTypes = await getWorkOrderTypesFromDatabase()
   }
@@ -234,7 +236,7 @@ export async function getWorkOrderTypes(): Promise<
 
 export async function getWorkOrderTypeById(
   workOrderTypeId: number
-): Promise<recordTypes.WorkOrderType | undefined> {
+): Promise<WorkOrderType | undefined> {
   const cachedWorkOrderTypes = await getWorkOrderTypes()
 
   return cachedWorkOrderTypes.find((currentWorkOrderType) => {
@@ -250,10 +252,10 @@ function clearWorkOrderTypesCache(): void {
  * Work Order Milestone Types
  */
 
-let workOrderMilestoneTypes: recordTypes.WorkOrderMilestoneType[] | undefined
+let workOrderMilestoneTypes: WorkOrderMilestoneType[] | undefined
 
 export async function getWorkOrderMilestoneTypes(): Promise<
-  recordTypes.WorkOrderMilestoneType[]
+  WorkOrderMilestoneType[]
 > {
   if (workOrderMilestoneTypes === undefined) {
     workOrderMilestoneTypes = await getWorkOrderMilestoneTypesFromDatabase()
@@ -264,7 +266,7 @@ export async function getWorkOrderMilestoneTypes(): Promise<
 
 export async function getWorkOrderMilestoneTypeById(
   workOrderMilestoneTypeId: number
-): Promise<recordTypes.WorkOrderMilestoneType | undefined> {
+): Promise<WorkOrderMilestoneType | undefined> {
   const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
 
   return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => {
@@ -277,7 +279,7 @@ export async function getWorkOrderMilestoneTypeById(
 
 export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
   workOrderMilestoneTypeString: string
-): Promise<recordTypes.WorkOrderMilestoneType | undefined> {
+): Promise<WorkOrderMilestoneType | undefined> {
   const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
 
   const workOrderMilestoneTypeLowerCase =

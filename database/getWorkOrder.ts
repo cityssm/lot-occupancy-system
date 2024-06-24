@@ -3,10 +3,10 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import type { WorkOrder } from '../types/recordTypes.js'
 
-import { getLotOccupancies } from './getLotOccupancies.js'
-import { getLots } from './getLots.js'
-import { getWorkOrderComments } from './getWorkOrderComments.js'
-import { getWorkOrderMilestones } from './getWorkOrderMilestones.js'
+import getLotOccupancies from './getLotOccupancies.js'
+import getLots from './getLots.js'
+import getWorkOrderComments from './getWorkOrderComments.js'
+import getWorkOrderMilestones from './getWorkOrderMilestones.js'
 import { acquireConnection } from './pool.js'
 
 interface WorkOrderOptions {
@@ -115,7 +115,7 @@ export async function getWorkOrderByWorkOrderNumber(
   )
 }
 
-export async function getWorkOrder(
+export default async function getWorkOrder(
   workOrderId: number | string,
   options: WorkOrderOptions,
   connectedDatabase?: PoolConnection
@@ -127,5 +127,3 @@ export async function getWorkOrder(
     connectedDatabase
   )
 }
-
-export default getWorkOrder

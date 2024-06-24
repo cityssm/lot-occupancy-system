@@ -5,12 +5,12 @@ import {
 import type { PoolConnection } from 'better-sqlite-pool'
 
 import { getConfigProperty } from '../helpers/functions.config.js'
-import * as gpFunctions from '../helpers/functions.dynamicsGP.js'
+import { getDynamicsGPDocument } from '../helpers/functions.dynamicsGP.js'
 import type { LotOccupancyTransaction } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-export async function getLotOccupancyTransactions(
+export default async function getLotOccupancyTransactions(
   lotOccupancyId: number | string,
   options: {
     includeIntegrations: boolean
@@ -45,7 +45,7 @@ export async function getLotOccupancyTransactions(
   ) {
     for (const transaction of lotOccupancyTransactions) {
       if ((transaction.externalReceiptNumber ?? '') !== '') {
-        const gpDocument = await gpFunctions.getDynamicsGPDocument(
+        const gpDocument = await getDynamicsGPDocument(
           transaction.externalReceiptNumber ?? ''
         )
 
@@ -58,5 +58,3 @@ export async function getLotOccupancyTransactions(
 
   return lotOccupancyTransactions
 }
-
-export default getLotOccupancyTransactions

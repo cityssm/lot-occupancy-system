@@ -1,7 +1,7 @@
 import {
   dateIntegerToString,
-  timeIntegerToString,
-  timeIntegerToPeriodString
+  timeIntegerToPeriodString,
+  timeIntegerToString
 } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
@@ -9,7 +9,7 @@ import type { WorkOrderComment } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-export async function getWorkOrderComments(
+export default async function getWorkOrderComments(
   workOrderId: number | string,
   connectedDatabase?: PoolConnection
 ): Promise<WorkOrderComment[]> {
@@ -44,5 +44,3 @@ export async function getWorkOrderComments(
 
   return workOrderComments
 }
-
-export default getWorkOrderComments

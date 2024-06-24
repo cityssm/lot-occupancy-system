@@ -1,6 +1,6 @@
-import * as configFunctions from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
 import * as userFunctions from '../helpers/functions.user.js';
-const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
+const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');
 const forbiddenStatus = 403;
 const forbiddenJSON = {
     success: false,

@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { getLotOccupancy } from '../../database/getLotOccupancy.js'
+import getLotOccupancy from '../../database/getLotOccupancy.js'
 import { getOccupancyTypePrintsById } from '../../helpers/functions.cache.js'
 import { getConfigProperty } from '../../helpers/functions.config.js'
 

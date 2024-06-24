@@ -1,5 +1,5 @@
 /// <reference types="cookie-parser" />
-import type { Request, Response, NextFunction } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 export declare function adminGetHandler(request: Request, response: Response, next: NextFunction): void;
 export declare function adminPostHandler(request: Request, response: Response, next: NextFunction): void;
 export declare function updateGetHandler(request: Request, response: Response, next: NextFunction): void;

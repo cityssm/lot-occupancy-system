@@ -10,7 +10,7 @@ interface GetFeesFilters {
   lotTypeId?: number | string
 }
 
-export async function getFees(
+export default async function getFees(
   feeCategoryId: number,
   additionalFilters: GetFeesFilters,
   connectedDatabase?: PoolConnection
@@ -89,5 +89,3 @@ export async function getFees(
 
   return fees
 }
-
-export default getFees

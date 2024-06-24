@@ -74,7 +74,7 @@ function buildWhereClause(filters: GetLotsFilters): {
   }
 }
 
-export async function getLots(
+export default async function getLots(
   filters: GetLotsFilters,
   options: GetLotsOptions,
   connectedDatabase?: PoolConnection
@@ -92,15 +92,15 @@ export async function getLots(
       database
         .prepare(
           `select count(*) as recordCount
-          from Lots l
-          left join (
-            select lotId, count(lotOccupancyId) as lotOccupancyCount from LotOccupancies
-            where recordDelete_timeMillis is null
-            and occupancyStartDate <= ${currentDate.toString()}
-            and (occupancyEndDate is null or occupancyEndDate >= ${currentDate.toString()})
-            group by lotId
-          ) o on l.lotId = o.lotId
-          ${sqlWhereClause}`
+            from Lots l
+            left join (
+              select lotId, count(lotOccupancyId) as lotOccupancyCount from LotOccupancies
+              where recordDelete_timeMillis is null
+              and occupancyStartDate <= ${currentDate.toString()}
+              and (occupancyEndDate is null or occupancyEndDate >= ${currentDate.toString()})
+              group by lotId
+            ) o on l.lotId = o.lotId
+            ${sqlWhereClause}`
         )
         .get(sqlParameters) as { recordCount: number }
     ).recordCount
@@ -170,5 +170,3 @@ export async function getLots(
     lots
   }
 }
-
-export default getLots

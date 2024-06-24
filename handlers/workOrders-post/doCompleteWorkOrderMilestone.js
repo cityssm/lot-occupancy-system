@@ -1,5 +1,5 @@
 import completeWorkOrderMilestone from '../../database/completeWorkOrderMilestone.js';
-import { getWorkOrderMilestones } from '../../database/getWorkOrderMilestones.js';
+import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
 export default async function handler(request, response) {
     const success = await completeWorkOrderMilestone({
         workOrderMilestoneId: request.body.workOrderMilestoneId

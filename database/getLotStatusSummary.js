@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function getLotStatusSummary(filters) {
+export default async function getLotStatusSummary(filters) {
     const database = await acquireConnection();
     let sqlWhereClause = ' where l.recordDelete_timeMillis is null';
     const sqlParameters = [];
@@ -18,4 +18,3 @@ export async function getLotStatusSummary(filters) {
     database.release();
     return lotStatuses;
 }
-export default getLotStatusSummary;

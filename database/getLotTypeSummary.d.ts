@@ -5,5 +5,5 @@ interface GetFilters {
 interface LotTypeSummary extends LotType {
     lotCount: number;
 }
-export declare function getLotTypeSummary(filters: GetFilters): Promise<LotTypeSummary[]>;
-export default getLotTypeSummary;
+export default function getLotTypeSummary(filters: GetFilters): Promise<LotTypeSummary[]>;
+export {};

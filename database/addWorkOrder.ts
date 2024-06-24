@@ -1,7 +1,11 @@
-import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime'
+import {
+  type DateString,
+  dateStringToInteger,
+  dateToInteger
+} from '@cityssm/utils-datetime'
 
 import addWorkOrderLotOccupancy from './addWorkOrderLotOccupancy.js'
-import { getNextWorkOrderNumber } from './getNextWorkOrderNumber.js'
+import getNextWorkOrderNumber from './getNextWorkOrderNumber.js'
 import { acquireConnection } from './pool.js'
 
 export interface AddWorkOrderForm {
@@ -42,10 +46,14 @@ export default async function addWorkOrder(
       workOrderForm.workOrderDescription,
       (workOrderForm.workOrderOpenDateString ?? '') === ''
         ? dateToInteger(rightNow)
-        : dateStringToInteger(workOrderForm.workOrderOpenDateString!),
+        : dateStringToInteger(
+            workOrderForm.workOrderOpenDateString as DateString
+          ),
       (workOrderForm.workOrderCloseDateString ?? '') === ''
         ? undefined
-        : dateStringToInteger(workOrderForm.workOrderCloseDateString!),
+        : dateStringToInteger(
+            workOrderForm.workOrderCloseDateString as DateString
+          ),
       user.userName,
       rightNow.getTime(),
       user.userName,

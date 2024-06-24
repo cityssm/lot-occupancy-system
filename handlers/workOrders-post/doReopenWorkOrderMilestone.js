@@ -1,4 +1,4 @@
-import { getWorkOrderMilestones } from '../../database/getWorkOrderMilestones.js';
+import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
 import { reopenWorkOrderMilestone } from '../../database/reopenWorkOrderMilestone.js';
 export default async function handler(request, response) {
     const success = await reopenWorkOrderMilestone(request.body.workOrderMilestoneId, request.session.user);

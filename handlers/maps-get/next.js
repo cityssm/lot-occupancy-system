@@ -1,4 +1,4 @@
-import { getNextMapId } from '../../database/getNextMapId.js';
+import getNextMapId from '../../database/getNextMapId.js';
 import { getConfigProperty } from '../../helpers/functions.config.js';
 export default async function handler(request, response) {
     const mapId = Number.parseInt(request.params.mapId, 10);

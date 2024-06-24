@@ -1,5 +1,5 @@
+import getFeeCategories from '../../database/getFeeCategories.js';
 import { moveFeeDown, moveFeeDownToBottom } from '../../database/moveFee.js';
-import { getFeeCategories } from '../../database/getFeeCategories.js';
 export default async function handler(request, response) {
     const success = request.body.moveToEnd === '1'
         ? await moveFeeDownToBottom(request.body.feeId)

@@ -1,7 +1,7 @@
 import {
   dateIntegerToString,
-  timeIntegerToString,
-  timeIntegerToPeriodString
+  timeIntegerToPeriodString,
+  timeIntegerToString
 } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
@@ -9,7 +9,7 @@ import type { LotComment } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-export async function getLotComments(
+export default async function getLotComments(
   lotId: number | string,
   connectedDatabase?: PoolConnection
 ): Promise<LotComment[]> {
@@ -44,5 +44,3 @@ export async function getLotComments(
 
   return lotComments
 }
-
-export default getLotComments

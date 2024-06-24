@@ -4,7 +4,7 @@ import type { LotOccupancyFee } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-export async function getLotOccupancyFees(
+export default async function getLotOccupancyFees(
   lotOccupancyId: number | string,
   connectedDatabase?: PoolConnection
 ): Promise<LotOccupancyFee[]> {
@@ -30,5 +30,3 @@ export async function getLotOccupancyFees(
 
   return lotOccupancyFees
 }
-
-export default getLotOccupancyFees

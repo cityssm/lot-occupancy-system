@@ -1,8 +1,8 @@
 import { dateIntegerToString, timeIntegerToString } from '@cityssm/utils-datetime';
 import { getConfigProperty } from '../helpers/functions.config.js';
-import * as gpFunctions from '../helpers/functions.dynamicsGP.js';
+import { getDynamicsGPDocument } from '../helpers/functions.dynamicsGP.js';
 import { acquireConnection } from './pool.js';
-export async function getLotOccupancyTransactions(lotOccupancyId, options, connectedDatabase) {
+export default async function getLotOccupancyTransactions(lotOccupancyId, options, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
@@ -23,7 +23,7 @@ export async function getLotOccupancyTransactions(lotOccupancyId, options, conne
         getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
         for (const transaction of lotOccupancyTransactions) {
             if ((transaction.externalReceiptNumber ?? '') !== '') {
-                const gpDocument = await gpFunctions.getDynamicsGPDocument(transaction.externalReceiptNumber ?? '');
+                const gpDocument = await getDynamicsGPDocument(transaction.externalReceiptNumber ?? '');
                 if (gpDocument !== undefined) {
                     transaction.dynamicsGPDocument = gpDocument;
                 }
@@ -32,4 +32,3 @@ export async function getLotOccupancyTransactions(lotOccupancyId, options, conne
     }
     return lotOccupancyTransactions;
 }
-export default getLotOccupancyTransactions;

@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express'
 
-import { getLotStatusSummary } from '../../database/getLotStatusSummary.js'
-import { getLotTypeSummary } from '../../database/getLotTypeSummary.js'
-import { getMap } from '../../database/getMap.js'
+import getLotStatusSummary from '../../database/getLotStatusSummary.js'
+import getLotTypeSummary from '../../database/getLotTypeSummary.js'
+import getMap from '../../database/getMap.js'
 import { getConfigProperty } from '../../helpers/functions.config.js'
 
 export default async function handler(

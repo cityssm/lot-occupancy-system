@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function getFee(feeId, connectedDatabase) {
+export default async function getFee(feeId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const fee = database
         .prepare(`select f.feeId,
@@ -23,4 +23,3 @@ export async function getFee(feeId, connectedDatabase) {
     }
     return fee;
 }
-export default getFee;

@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { getLotOccupancy } from '../../database/getLotOccupancy.js'
-import { getMaps } from '../../database/getMaps.js'
+import getLotOccupancy from '../../database/getLotOccupancy.js'
+import getMaps from '../../database/getMaps.js'
 import {
   getLotOccupantTypes,
   getLotStatuses,

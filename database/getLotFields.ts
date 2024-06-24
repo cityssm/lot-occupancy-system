@@ -4,7 +4,7 @@ import type { LotField } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-export async function getLotFields(
+export default async function getLotFields(
   lotId: number | string,
   connectedDatabase?: PoolConnection
 ): Promise<LotField[]> {
@@ -47,5 +47,3 @@ export async function getLotFields(
 
   return lotFields
 }
-
-export default getLotFields

@@ -1,7 +1,7 @@
 import { dateToString } from '@cityssm/utils-datetime';
 import addLotOccupancy from './addLotOccupancy.js';
 import addLotOccupancyOccupant from './addLotOccupancyOccupant.js';
-import { getLotOccupancy } from './getLotOccupancy.js';
+import getLotOccupancy from './getLotOccupancy.js';
 import { acquireConnection } from './pool.js';
 export default async function copyLotOccupancy(oldLotOccupancyId, user) {
     const database = await acquireConnection();

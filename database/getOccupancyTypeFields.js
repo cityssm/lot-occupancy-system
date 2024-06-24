@@ -1,22 +1,20 @@
 import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export async function getOccupancyTypeFields(occupancyTypeId, connectedDatabase) {
+export default async function getOccupancyTypeFields(occupancyTypeId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const sqlParameters = [];
     if ((occupancyTypeId ?? -1) !== -1) {
         sqlParameters.push(occupancyTypeId);
     }
     const occupancyTypeFields = database
-        .prepare('select occupancyTypeFieldId,' +
-        ' occupancyTypeField, occupancyTypeFieldValues, isRequired, pattern,' +
-        ' minimumLength, maximumLength,' +
-        ' orderNumber' +
-        ' from OccupancyTypeFields' +
-        ' where recordDelete_timeMillis is null' +
-        ((occupancyTypeId ?? -1) === -1
-            ? ' and occupancyTypeId is null'
-            : ' and occupancyTypeId = ?') +
-        ' order by orderNumber, occupancyTypeField')
+        .prepare(`select occupancyTypeFieldId, occupancyTypeField,
+        occupancyTypeFieldValues, isRequired, pattern, minimumLength, maximumLength, orderNumber
+        from OccupancyTypeFields
+        where recordDelete_timeMillis is null
+        ${(occupancyTypeId ?? -1) === -1
+        ? ' and occupancyTypeId is null'
+        : ' and occupancyTypeId = ?'}
+        order by orderNumber, occupancyTypeField`)
         .all(sqlParameters);
     let expectedOrderNumber = 0;
     for (const occupancyTypeField of occupancyTypeFields) {
@@ -31,4 +29,3 @@ export async function getOccupancyTypeFields(occupancyTypeId, connectedDatabase)
     }
     return occupancyTypeFields;
 }
-export default getOccupancyTypeFields;

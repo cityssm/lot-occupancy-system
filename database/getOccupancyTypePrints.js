@@ -7,7 +7,7 @@ const userFunction_configContainsPrintEJS = (printEJS) => {
     }
     return 0;
 };
-export async function getOccupancyTypePrints(occupancyTypeId, connectedDatabase) {
+export default async function getOccupancyTypePrints(occupancyTypeId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_configContainsPrintEJS', userFunction_configContainsPrintEJS);
     const results = database
@@ -37,4 +37,3 @@ export async function getOccupancyTypePrints(occupancyTypeId, connectedDatabase)
     }
     return prints;
 }
-export default getOccupancyTypePrints;

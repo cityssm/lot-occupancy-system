@@ -35,7 +35,7 @@ const occupantPhoneNumberAlias = `${occupantCamelCase}PhoneNumber`;
 const occupantEmailAddressAlias = `${occupantCamelCase}EmailAddress`;
 const occupantCommentTitleAlias = `${occupantCamelCase}CommentTitle`;
 const occupantCommentAlias = `${occupantCamelCase}Comment`;
-export async function getReportData(reportName, reportParameters = {}) {
+export default async function getReportData(reportName, reportParameters = {}) {
     let sql;
     const sqlParameters = [];
     switch (reportName) {
@@ -287,4 +287,3 @@ export async function getReportData(reportName, reportParameters = {}) {
     database.release();
     return rows;
 }
-export default getReportData;
