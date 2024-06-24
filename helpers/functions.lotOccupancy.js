@@ -1,10 +1,9 @@
 export function filterOccupantsByLotOccupantType(lotOccupancy, lotOccupantType) {
     const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase();
-    const occupants = (lotOccupancy.lotOccupancyOccupants ?? []).filter((possibleOccupant) => {
+    return (lotOccupancy.lotOccupancyOccupants ?? []).filter((possibleOccupant) => {
         return (possibleOccupant.lotOccupantType.toLowerCase() ===
             lotOccupantTypeLowerCase);
     });
-    return occupants;
 }
 export function getFieldValueByOccupancyTypeField(lotOccupancy, occupancyTypeField) {
     const occupancyTypeFieldLowerCase = occupancyTypeField.toLowerCase();
@@ -19,7 +18,7 @@ export function getFieldValueByOccupancyTypeField(lotOccupancy, occupancyTypeFie
 }
 export function getFeesByFeeCategory(lotOccupancy, feeCategory, feeCategoryContains = false) {
     const feeCategoryLowerCase = feeCategory.toLowerCase();
-    const fees = (lotOccupancy.lotOccupancyFees ?? []).filter((possibleFee) => {
+    return (lotOccupancy.lotOccupancyFees ?? []).filter((possibleFee) => {
         return feeCategoryContains
             ? possibleFee.feeCategory
                 .toLowerCase()
@@ -27,7 +26,6 @@ export function getFeesByFeeCategory(lotOccupancy, feeCategory, feeCategoryConta
             : possibleFee.feeCategory.toLowerCase() ===
                 feeCategoryLowerCase;
     });
-    return fees;
 }
 export function getTransactionTotal(lotOccupancy) {
     let transactionTotal = 0;

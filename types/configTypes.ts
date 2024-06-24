@@ -11,7 +11,7 @@ export interface Config {
   }
   activeDirectory?: ConfigActiveDirectory
   users: {
-    testing?: string[]
+    testing?: Array<`*${string}`>
     canLogin?: string[]
     canUpdate?: string[]
     isAdmin?: string[]

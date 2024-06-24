@@ -6,7 +6,7 @@ export function filterOccupantsByLotOccupantType(
 ): recordTypes.LotOccupancyOccupant[] {
   const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase()
 
-  const occupants = (lotOccupancy.lotOccupancyOccupants ?? []).filter(
+  return (lotOccupancy.lotOccupancyOccupants ?? []).filter(
     (possibleOccupant) => {
       return (
         (possibleOccupant.lotOccupantType as string).toLowerCase() ===
@@ -14,8 +14,6 @@ export function filterOccupantsByLotOccupantType(
       )
     }
   )
-
-  return occupants
 }
 
 export function getFieldValueByOccupancyTypeField(
@@ -47,7 +45,7 @@ export function getFeesByFeeCategory(
 ): recordTypes.LotOccupancyFee[] {
   const feeCategoryLowerCase = feeCategory.toLowerCase()
 
-  const fees = (lotOccupancy.lotOccupancyFees ?? []).filter((possibleFee) => {
+  return (lotOccupancy.lotOccupancyFees ?? []).filter((possibleFee) => {
     return feeCategoryContains
       ? (possibleFee.feeCategory as string)
           .toLowerCase()
@@ -55,8 +53,6 @@ export function getFeesByFeeCategory(
       : (possibleFee.feeCategory as string).toLowerCase() ===
           feeCategoryLowerCase
   })
-
-  return fees
 }
 
 export function getTransactionTotal(

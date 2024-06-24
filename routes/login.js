@@ -32,7 +32,7 @@ async function postHandler(request, response) {
         if (useTestDatabases && userName === passwordPlain) {
             isAuthenticated = getConfigProperty('users.testing').includes(userName);
             if (isAuthenticated) {
-                debug('Authenticated testing user: ' + userName);
+                debug(`Authenticated testing user: ${userName}`);
             }
         }
     }
