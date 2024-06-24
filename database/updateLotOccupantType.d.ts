@@ -1,8 +1,7 @@
-interface UpdateLotOccupantTypeForm {
+export interface UpdateLotOccupantTypeForm {
     lotOccupantTypeId: number | string;
     lotOccupantType: string;
     fontAwesomeIconClass: string;
     occupantCommentTitle: string;
 }
-export declare function updateLotOccupantType(lotOccupantTypeForm: UpdateLotOccupantTypeForm, user: User): Promise<boolean>;
-export default updateLotOccupantType;
+export default function updateLotOccupantType(lotOccupantTypeForm: UpdateLotOccupantTypeForm, user: User): Promise<boolean>;

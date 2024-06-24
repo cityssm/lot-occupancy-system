@@ -1,5 +1,5 @@
+import updateOccupancyTypeField from '../../database/updateOccupancyTypeField.js';
 import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
-import { updateOccupancyTypeField } from '../../database/updateOccupancyTypeField.js';
 export default async function handler(request, response) {
     const success = await updateOccupancyTypeField(request.body, request.session.user);
     const occupancyTypes = await getOccupancyTypes();

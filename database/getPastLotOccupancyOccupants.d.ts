@@ -1,5 +1,5 @@
 import type { LotOccupancyOccupant } from '../types/recordTypes.js';
-interface GetPastLotOccupancyOccupantsFilters {
+export interface GetPastLotOccupancyOccupantsFilters {
     searchFilter: string;
 }
 interface GetPastLotOccupancyOccupantsOptions {

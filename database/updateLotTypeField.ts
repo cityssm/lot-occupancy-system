@@ -2,7 +2,7 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 import { acquireConnection } from './pool.js'
 
-interface UpdateLotTypeFieldForm {
+export interface UpdateLotTypeFieldForm {
   lotTypeFieldId: number | string
   lotTypeField: string
   isRequired: '0' | '1'
@@ -12,7 +12,7 @@ interface UpdateLotTypeFieldForm {
   lotTypeFieldValues: string
 }
 
-export async function updateLotTypeField(
+export default async function updateLotTypeField(
   lotTypeFieldForm: UpdateLotTypeFieldForm,
   user: User
 ): Promise<boolean> {
@@ -50,5 +50,3 @@ export async function updateLotTypeField(
 
   return result.changes > 0
 }
-
-export default updateLotTypeField

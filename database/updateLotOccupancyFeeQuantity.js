@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function updateLotOccupancyFeeQuantity(feeQuantityForm, user) {
+export default async function updateLotOccupancyFeeQuantity(feeQuantityForm, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update LotOccupancyFees
@@ -13,4 +13,3 @@ export async function updateLotOccupancyFeeQuantity(feeQuantityForm, user) {
     database.release();
     return result.changes > 0;
 }
-export default updateLotOccupancyFeeQuantity;

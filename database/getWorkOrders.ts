@@ -17,7 +17,7 @@ import getWorkOrderComments from './getWorkOrderComments.js'
 import getWorkOrderMilestones from './getWorkOrderMilestones.js'
 import { acquireConnection } from './pool.js'
 
-interface GetWorkOrdersFilters {
+export interface GetWorkOrdersFilters {
   workOrderTypeId?: number | string
   workOrderOpenStatus?: '' | 'open' | 'closed'
   workOrderOpenDateString?: string
@@ -56,7 +56,9 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
 
   if ((filters.workOrderOpenDateString ?? '') !== '') {
     sqlWhereClause += ' and w.workOrderOpenDate = ?'
-    sqlParameters.push(dateStringToInteger(filters.workOrderOpenDateString as DateString))
+    sqlParameters.push(
+      dateStringToInteger(filters.workOrderOpenDateString as DateString)
+    )
   }
 
   const occupantNameFilters = getOccupantNameWhereClause(

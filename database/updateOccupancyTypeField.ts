@@ -2,7 +2,7 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 import { acquireConnection } from './pool.js'
 
-interface UpdateOccupancyTypeFieldForm {
+export interface UpdateOccupancyTypeFieldForm {
   occupancyTypeFieldId: number | string
   occupancyTypeField: string
   isRequired: '0' | '1'
@@ -12,7 +12,7 @@ interface UpdateOccupancyTypeFieldForm {
   occupancyTypeFieldValues: string
 }
 
-export async function updateOccupancyTypeField(
+export default async function updateOccupancyTypeField(
   occupancyTypeFieldForm: UpdateOccupancyTypeFieldForm,
   user: User
 ): Promise<boolean> {
@@ -50,5 +50,3 @@ export async function updateOccupancyTypeField(
 
   return result.changes > 0
 }
-
-export default updateOccupancyTypeField

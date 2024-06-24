@@ -1,4 +1,4 @@
-interface UpdateOccupancyTypeFieldForm {
+export interface UpdateOccupancyTypeFieldForm {
     occupancyTypeFieldId: number | string;
     occupancyTypeField: string;
     isRequired: '0' | '1';
@@ -7,5 +7,4 @@ interface UpdateOccupancyTypeFieldForm {
     pattern?: string;
     occupancyTypeFieldValues: string;
 }
-export declare function updateOccupancyTypeField(occupancyTypeFieldForm: UpdateOccupancyTypeFieldForm, user: User): Promise<boolean>;
-export default updateOccupancyTypeField;
+export default function updateOccupancyTypeField(occupancyTypeFieldForm: UpdateOccupancyTypeFieldForm, user: User): Promise<boolean>;

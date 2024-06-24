@@ -1,5 +1,5 @@
 import { type DateString } from '@cityssm/utils-datetime';
-interface UpdateLotOccupancyForm {
+export interface UpdateLotOccupancyForm {
     lotOccupancyId: string | number;
     occupancyTypeId: string | number;
     lotId: string | number;
@@ -8,5 +8,4 @@ interface UpdateLotOccupancyForm {
     occupancyTypeFieldIds?: string;
     [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown;
 }
-export declare function updateLotOccupancy(lotOccupancyForm: UpdateLotOccupancyForm, user: User): Promise<boolean>;
-export default updateLotOccupancy;
+export default function updateLotOccupancy(lotOccupancyForm: UpdateLotOccupancyForm, user: User): Promise<boolean>;

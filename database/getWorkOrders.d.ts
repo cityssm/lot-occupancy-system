@@ -1,6 +1,6 @@
 import type { PoolConnection } from 'better-sqlite-pool';
 import type { WorkOrder } from '../types/recordTypes.js';
-interface GetWorkOrdersFilters {
+export interface GetWorkOrdersFilters {
     workOrderTypeId?: number | string;
     workOrderOpenStatus?: '' | 'open' | 'closed';
     workOrderOpenDateString?: string;

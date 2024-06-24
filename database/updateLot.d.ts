@@ -1,4 +1,4 @@
-interface UpdateLotForm {
+export interface UpdateLotForm {
     lotId: string | number;
     lotName: string;
     lotTypeId: string | number;
@@ -10,6 +10,5 @@ interface UpdateLotForm {
     lotTypeFieldIds?: string;
     [lotFieldValue_lotTypeFieldId: string]: unknown;
 }
-export declare function updateLot(lotForm: UpdateLotForm, user: User): Promise<boolean>;
+export default function updateLot(lotForm: UpdateLotForm, user: User): Promise<boolean>;
 export declare function updateLotStatus(lotId: number | string, lotStatusId: number | string, user: User): Promise<boolean>;
-export default updateLot;

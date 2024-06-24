@@ -1,9 +1,9 @@
-interface UpdateWorkOrderForm {
+import { type DateString } from '@cityssm/utils-datetime';
+export interface UpdateWorkOrderForm {
     workOrderId: string;
     workOrderNumber: string;
     workOrderTypeId: string;
     workOrderDescription: string;
-    workOrderOpenDateString: string;
+    workOrderOpenDateString: DateString;
 }
-export declare function updateWorkOrder(workOrderForm: UpdateWorkOrderForm, user: User): Promise<boolean>;
-export default updateWorkOrder;
+export default function updateWorkOrder(workOrderForm: UpdateWorkOrderForm, user: User): Promise<boolean>;

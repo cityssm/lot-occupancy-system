@@ -4,7 +4,7 @@ import addOrUpdateLotOccupancyField from './addOrUpdateLotOccupancyField.js'
 import deleteLotOccupancyField from './deleteLotOccupancyField.js'
 import { acquireConnection } from './pool.js'
 
-interface UpdateLotOccupancyForm {
+export interface UpdateLotOccupancyForm {
   lotOccupancyId: string | number
   occupancyTypeId: string | number
   lotId: string | number
@@ -16,7 +16,7 @@ interface UpdateLotOccupancyForm {
   [lotOccupancyFieldValue_occupancyTypeFieldId: string]: unknown
 }
 
-export async function updateLotOccupancy(
+export default async function updateLotOccupancy(
   lotOccupancyForm: UpdateLotOccupancyForm,
   user: User
 ): Promise<boolean> {
@@ -79,5 +79,3 @@ export async function updateLotOccupancy(
 
   return result.changes > 0
 }
-
-export default updateLotOccupancy

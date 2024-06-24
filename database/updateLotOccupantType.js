@@ -1,6 +1,6 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
-export async function updateLotOccupantType(lotOccupantTypeForm, user) {
+export default async function updateLotOccupantType(lotOccupantTypeForm, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update LotOccupantTypes
@@ -16,4 +16,3 @@ export async function updateLotOccupantType(lotOccupantTypeForm, user) {
     clearCacheByTableName('LotOccupantTypes');
     return result.changes > 0;
 }
-export default updateLotOccupantType;

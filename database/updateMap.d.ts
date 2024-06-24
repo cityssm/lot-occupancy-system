@@ -1,4 +1,4 @@
-interface UpdateMapForm {
+export interface UpdateMapForm {
     mapId: string;
     mapName: string;
     mapDescription: string;
@@ -12,5 +12,4 @@ interface UpdateMapForm {
     mapPostalCode: string;
     mapPhoneNumber: string;
 }
-export declare function updateMap(mapForm: UpdateMapForm, user: User): Promise<boolean>;
-export default updateMap;
+export default function updateMap(mapForm: UpdateMapForm, user: User): Promise<boolean>;

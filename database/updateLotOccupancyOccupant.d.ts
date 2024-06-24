@@ -1,4 +1,4 @@
-interface UpdateLotOccupancyOccupantForm {
+export interface UpdateLotOccupancyOccupantForm {
     lotOccupancyId: string | number;
     lotOccupantIndex: string | number;
     lotOccupantTypeId: string | number;
@@ -13,5 +13,4 @@ interface UpdateLotOccupancyOccupantForm {
     occupantEmailAddress: string;
     occupantComment: string;
 }
-export declare function updateLotOccupancyOccupant(lotOccupancyOccupantForm: UpdateLotOccupancyOccupantForm, user: User): Promise<boolean>;
-export default updateLotOccupancyOccupant;
+export default function updateLotOccupancyOccupant(lotOccupancyOccupantForm: UpdateLotOccupancyOccupantForm, user: User): Promise<boolean>;

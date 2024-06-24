@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function updateMap(mapForm, user) {
+export default async function updateMap(mapForm, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update Maps
@@ -22,4 +22,3 @@ export async function updateMap(mapForm, user) {
     database.release();
     return result.changes > 0;
 }
-export default updateMap;

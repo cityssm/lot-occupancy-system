@@ -1,4 +1,6 @@
 import {
+  type DateString,
+  type TimeString,
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
@@ -7,12 +9,12 @@ import { acquireConnection } from './pool.js'
 
 export interface UpdateWorkOrderCommentForm {
   workOrderCommentId: string | number
-  workOrderCommentDateString: string
-  workOrderCommentTimeString: string
+  workOrderCommentDateString: DateString
+  workOrderCommentTimeString: TimeString
   workOrderComment: string
 }
 
-export async function updateWorkOrderComment(
+export default async function updateWorkOrderComment(
   commentForm: UpdateWorkOrderCommentForm,
   user: User
 ): Promise<boolean> {
@@ -42,5 +44,3 @@ export async function updateWorkOrderComment(
 
   return result.changes > 0
 }
-
-export default updateWorkOrderComment

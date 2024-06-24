@@ -1,21 +1,23 @@
 import {
+  type DateString,
+  type TimeString,
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 
 import { acquireConnection } from './pool.js'
 
-interface UpdateLotOccupancyTransactionForm {
+export interface UpdateLotOccupancyTransactionForm {
   lotOccupancyId: string | number
   transactionIndex: string | number
-  transactionDateString: string
-  transactionTimeString: string
+  transactionDateString: DateString
+  transactionTimeString: TimeString
   transactionAmount: string | number
   externalReceiptNumber: string
   transactionNote: string
 }
 
-export async function updateLotOccupancyTransaction(
+export default async function updateLotOccupancyTransaction(
   lotOccupancyTransactionForm: UpdateLotOccupancyTransactionForm,
   user: User
 ): Promise<boolean> {
@@ -51,5 +53,3 @@ export async function updateLotOccupancyTransaction(
 
   return result.changes > 0
 }
-
-export default updateLotOccupancyTransaction

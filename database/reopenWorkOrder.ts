@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js'
 
-export async function reopenWorkOrder(
+export default async function reopenWorkOrder(
   workOrderId: number | string,
   user: User
 ): Promise<boolean> {
@@ -21,5 +21,3 @@ export async function reopenWorkOrder(
 
   return result.changes > 0
 }
-
-export default reopenWorkOrder

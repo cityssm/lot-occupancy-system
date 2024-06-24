@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js'
 
-interface UpdateLotOccupancyOccupantForm {
+export interface UpdateLotOccupancyOccupantForm {
   lotOccupancyId: string | number
   lotOccupantIndex: string | number
   lotOccupantTypeId: string | number
@@ -16,7 +16,7 @@ interface UpdateLotOccupancyOccupantForm {
   occupantComment: string
 }
 
-export async function updateLotOccupancyOccupant(
+export default async function updateLotOccupancyOccupant(
   lotOccupancyOccupantForm: UpdateLotOccupancyOccupantForm,
   user: User
 ): Promise<boolean> {
@@ -64,5 +64,3 @@ export async function updateLotOccupancyOccupant(
 
   return results.changes > 0
 }
-
-export default updateLotOccupancyOccupant

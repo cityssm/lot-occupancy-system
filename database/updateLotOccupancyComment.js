@@ -1,6 +1,6 @@
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
-export async function updateLotOccupancyComment(commentForm, user) {
+export default async function updateLotOccupancyComment(commentForm, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update LotOccupancyComments
@@ -15,4 +15,3 @@ export async function updateLotOccupancyComment(commentForm, user) {
     database.release();
     return result.changes > 0;
 }
-export default updateLotOccupancyComment;

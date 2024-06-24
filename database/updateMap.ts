@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js'
 
-interface UpdateMapForm {
+export interface UpdateMapForm {
   mapId: string
   mapName: string
   mapDescription: string
@@ -15,7 +15,7 @@ interface UpdateMapForm {
   mapPhoneNumber: string
 }
 
-export async function updateMap(
+export default async function updateMap(
   mapForm: UpdateMapForm,
   user: User
 ): Promise<boolean> {
@@ -61,5 +61,3 @@ export async function updateMap(
 
   return result.changes > 0
 }
-
-export default updateMap

@@ -1,16 +1,16 @@
-import { dateStringToInteger } from '@cityssm/utils-datetime'
+import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
 
 import { acquireConnection } from './pool.js'
 
-interface UpdateWorkOrderForm {
+export interface UpdateWorkOrderForm {
   workOrderId: string
   workOrderNumber: string
   workOrderTypeId: string
   workOrderDescription: string
-  workOrderOpenDateString: string
+  workOrderOpenDateString: DateString
 }
 
-export async function updateWorkOrder(
+export default async function updateWorkOrder(
   workOrderForm: UpdateWorkOrderForm,
   user: User
 ): Promise<boolean> {
@@ -42,5 +42,3 @@ export async function updateWorkOrder(
 
   return result.changes > 0
 }
-
-export default updateWorkOrder

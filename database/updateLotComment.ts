@@ -7,14 +7,14 @@ import {
 
 import { acquireConnection } from './pool.js'
 
-interface UpdateLotCommentForm {
+export interface UpdateLotCommentForm {
   lotCommentId: string | number
   lotCommentDateString: DateString
   lotCommentTimeString: TimeString
   lotComment: string
 }
 
-export async function updateLotComment(
+export default async function updateLotComment(
   commentForm: UpdateLotCommentForm,
   user: User
 ): Promise<boolean> {
@@ -44,5 +44,3 @@ export async function updateLotComment(
 
   return result.changes > 0
 }
-
-export default updateLotComment

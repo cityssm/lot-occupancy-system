@@ -1,4 +1,4 @@
-interface UpdateFeeForm {
+export interface UpdateFeeForm {
     feeId: string;
     feeCategoryId: string;
     feeName: string;
@@ -14,5 +14,4 @@ interface UpdateFeeForm {
     quantityUnit?: string;
     isRequired: '' | '1';
 }
-export declare function updateFee(feeForm: UpdateFeeForm, user: User): Promise<boolean>;
-export default updateFee;
+export default function updateFee(feeForm: UpdateFeeForm, user: User): Promise<boolean>;

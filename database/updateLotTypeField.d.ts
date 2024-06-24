@@ -1,4 +1,4 @@
-interface UpdateLotTypeFieldForm {
+export interface UpdateLotTypeFieldForm {
     lotTypeFieldId: number | string;
     lotTypeField: string;
     isRequired: '0' | '1';
@@ -7,5 +7,4 @@ interface UpdateLotTypeFieldForm {
     pattern?: string;
     lotTypeFieldValues: string;
 }
-export declare function updateLotTypeField(lotTypeFieldForm: UpdateLotTypeFieldForm, user: User): Promise<boolean>;
-export default updateLotTypeField;
+export default function updateLotTypeField(lotTypeFieldForm: UpdateLotTypeFieldForm, user: User): Promise<boolean>;

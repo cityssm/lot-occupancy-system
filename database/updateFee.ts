@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js'
 
-interface UpdateFeeForm {
+export interface UpdateFeeForm {
   feeId: string
   feeCategoryId: string
   feeName: string
@@ -17,7 +17,7 @@ interface UpdateFeeForm {
   isRequired: '' | '1'
 }
 
-export async function updateFee(
+export default async function updateFee(
   feeForm: UpdateFeeForm,
   user: User
 ): Promise<boolean> {
@@ -69,5 +69,3 @@ export async function updateFee(
 
   return result.changes > 0
 }
-
-export default updateFee

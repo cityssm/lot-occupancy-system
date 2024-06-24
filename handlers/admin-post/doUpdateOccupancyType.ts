@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express'
 
+import { updateRecord } from '../../database/updateRecord.js'
 import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
-import { updateRecord } from '../../database/updateRecord.js'
 
 export default async function handler(
   request: Request,
@@ -12,8 +12,8 @@ export default async function handler(
 ): Promise<void> {
   const success = await updateRecord(
     'OccupancyTypes',
-    request.body.occupancyTypeId,
-    request.body.occupancyType,
+    request.body.occupancyTypeId as string,
+    request.body.occupancyType as string,
     request.session.user as User
   )
 
@@ -26,4 +26,3 @@ export default async function handler(
     allOccupancyTypeFields
   })
 }
-

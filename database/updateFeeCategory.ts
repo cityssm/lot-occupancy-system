@@ -1,11 +1,11 @@
 import { updateRecord } from './updateRecord.js'
 
-interface UpdateFeeCategoryForm {
+export interface UpdateFeeCategoryForm {
   feeCategoryId: number | string
   feeCategory: string
 }
 
-export async function updateFeeCategory(
+export default async function updateFeeCategory(
   feeCategoryForm: UpdateFeeCategoryForm,
   user: User
 ): Promise<boolean> {
@@ -16,5 +16,3 @@ export async function updateFeeCategory(
     user
   )
 }
-
-export default updateFeeCategory

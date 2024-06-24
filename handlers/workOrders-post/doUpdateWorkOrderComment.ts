@@ -1,9 +1,8 @@
 import type { Request, Response } from 'express'
 
 import getWorkOrderComments from '../../database/getWorkOrderComments.js'
-import {
-  type UpdateWorkOrderCommentForm,
-  updateWorkOrderComment
+import updateWorkOrderComment, {
+  type UpdateWorkOrderCommentForm
 } from '../../database/updateWorkOrderComment.js'
 
 export default async function handler(

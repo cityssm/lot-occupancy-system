@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
 import { updateRecord } from '../../database/updateRecord.js'
+import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
 
 export default async function handler(
   request: Request,
@@ -9,8 +9,8 @@ export default async function handler(
 ): Promise<void> {
   const success = await updateRecord(
     'WorkOrderMilestoneTypes',
-    request.body.workOrderMilestoneTypeId,
-    request.body.workOrderMilestoneType,
+    request.body.workOrderMilestoneTypeId as string,
+    request.body.workOrderMilestoneType as string,
     request.session.user as User
   )
 
@@ -21,4 +21,3 @@ export default async function handler(
     workOrderMilestoneTypes
   })
 }
-

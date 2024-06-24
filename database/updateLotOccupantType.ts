@@ -2,14 +2,14 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 import { acquireConnection } from './pool.js'
 
-interface UpdateLotOccupantTypeForm {
+export interface UpdateLotOccupantTypeForm {
   lotOccupantTypeId: number | string
   lotOccupantType: string
   fontAwesomeIconClass: string
   occupantCommentTitle: string
 }
 
-export async function updateLotOccupantType(
+export default async function updateLotOccupantType(
   lotOccupantTypeForm: UpdateLotOccupantTypeForm,
   user: User
 ): Promise<boolean> {
@@ -41,5 +41,3 @@ export async function updateLotOccupantType(
 
   return result.changes > 0
 }
-
-export default updateLotOccupantType

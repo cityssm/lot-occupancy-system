@@ -1,6 +1,6 @@
 import { acquireConnection } from './pool.js'
 
-export async function reopenWorkOrderMilestone(
+export default async function reopenWorkOrderMilestone(
   workOrderMilestoneId: number | string,
   user: User
 ): Promise<boolean> {
@@ -22,5 +22,3 @@ export async function reopenWorkOrderMilestone(
 
   return result.changes > 0
 }
-
-export default reopenWorkOrderMilestone

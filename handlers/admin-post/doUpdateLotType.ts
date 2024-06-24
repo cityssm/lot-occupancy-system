@@ -9,8 +9,8 @@ export default async function handler(
 ): Promise<void> {
   const success = await updateRecord(
     'LotTypes',
-    request.body.lotTypeId,
-    request.body.lotType,
+    request.body.lotTypeId as string,
+    request.body.lotType as string,
     request.session.user as User
   )
 

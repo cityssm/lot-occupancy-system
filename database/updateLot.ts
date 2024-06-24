@@ -2,7 +2,7 @@ import addOrUpdateLotField from './addOrUpdateLotField.js'
 import deleteLotField from './deleteLotField.js'
 import { acquireConnection } from './pool.js'
 
-interface UpdateLotForm {
+export interface UpdateLotForm {
   lotId: string | number
   lotName: string
   lotTypeId: string | number
@@ -18,7 +18,7 @@ interface UpdateLotForm {
   [lotFieldValue_lotTypeFieldId: string]: unknown
 }
 
-export async function updateLot(
+export default async function updateLot(
   lotForm: UpdateLotForm,
   user: User
 ): Promise<boolean> {
@@ -108,5 +108,3 @@ export async function updateLotStatus(
 
   return result.changes > 0
 }
-
-export default updateLot

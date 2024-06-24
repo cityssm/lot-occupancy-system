@@ -2,7 +2,7 @@ import type { LotOccupancyOccupant } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-interface GetPastLotOccupancyOccupantsFilters {
+export interface GetPastLotOccupancyOccupantsFilters {
   searchFilter: string
 }
 

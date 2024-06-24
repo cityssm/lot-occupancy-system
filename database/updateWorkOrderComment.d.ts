@@ -1,8 +1,8 @@
+import { type DateString, type TimeString } from '@cityssm/utils-datetime';
 export interface UpdateWorkOrderCommentForm {
     workOrderCommentId: string | number;
-    workOrderCommentDateString: string;
-    workOrderCommentTimeString: string;
+    workOrderCommentDateString: DateString;
+    workOrderCommentTimeString: TimeString;
     workOrderComment: string;
 }
-export declare function updateWorkOrderComment(commentForm: UpdateWorkOrderCommentForm, user: User): Promise<boolean>;
-export default updateWorkOrderComment;
+export default function updateWorkOrderComment(commentForm: UpdateWorkOrderCommentForm, user: User): Promise<boolean>;

@@ -1,7 +1,7 @@
 import addOrUpdateLotField from './addOrUpdateLotField.js';
 import deleteLotField from './deleteLotField.js';
 import { acquireConnection } from './pool.js';
-export async function updateLot(lotForm, user) {
+export default async function updateLot(lotForm, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update Lots
@@ -47,4 +47,3 @@ export async function updateLotStatus(lotId, lotStatusId, user) {
     database.release();
     return result.changes > 0;
 }
-export default updateLot;

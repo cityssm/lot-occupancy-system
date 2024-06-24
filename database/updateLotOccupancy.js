@@ -2,7 +2,7 @@ import { dateStringToInteger } from '@cityssm/utils-datetime';
 import addOrUpdateLotOccupancyField from './addOrUpdateLotOccupancyField.js';
 import deleteLotOccupancyField from './deleteLotOccupancyField.js';
 import { acquireConnection } from './pool.js';
-export async function updateLotOccupancy(lotOccupancyForm, user) {
+export default async function updateLotOccupancy(lotOccupancyForm, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update LotOccupancies
@@ -33,4 +33,3 @@ export async function updateLotOccupancy(lotOccupancyForm, user) {
     database.release();
     return result.changes > 0;
 }
-export default updateLotOccupancy;

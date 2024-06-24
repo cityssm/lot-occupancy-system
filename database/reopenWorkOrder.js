@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export async function reopenWorkOrder(workOrderId, user) {
+export default async function reopenWorkOrder(workOrderId, user) {
     const database = await acquireConnection();
     const result = database
         .prepare(`update WorkOrders
@@ -12,4 +12,3 @@ export async function reopenWorkOrder(workOrderId, user) {
     database.release();
     return result.changes > 0;
 }
-export default reopenWorkOrder;
