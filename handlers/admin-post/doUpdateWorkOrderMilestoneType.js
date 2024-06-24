@@ -1,6 +1,6 @@
 import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js';
 import { updateRecord } from '../../database/updateRecord.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const success = await updateRecord('WorkOrderMilestoneTypes', request.body.workOrderMilestoneTypeId, request.body.workOrderMilestoneType, request.session.user);
     const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
     response.json({
@@ -8,4 +8,3 @@ export async function handler(request, response) {
         workOrderMilestoneTypes
     });
 }
-export default handler;

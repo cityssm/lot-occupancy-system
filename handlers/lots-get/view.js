@@ -1,7 +1,7 @@
 import { getLot } from '../../database/getLot.js';
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getNextLotId, getPreviousLotId } from '../../helpers/functions.lots.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const lot = await getLot(request.params.lotId);
     if (lot === undefined) {
         response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
@@ -17,4 +17,3 @@ export async function handler(request, response) {
         void getPreviousLotId(lot.lotId);
     });
 }
-export default handler;

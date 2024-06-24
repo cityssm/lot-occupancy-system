@@ -3,7 +3,7 @@ import { getLotTypeSummary } from '../../database/getLotTypeSummary.js';
 import { getMap } from '../../database/getMap.js';
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getMapSVGs } from '../../helpers/functions.map.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const map = await getMap(request.params.mapId);
     if (map === undefined) {
         response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/maps/?error=mapIdNotFound`);
@@ -25,4 +25,3 @@ export async function handler(request, response) {
         lotStatusSummary
     });
 }
-export default handler;

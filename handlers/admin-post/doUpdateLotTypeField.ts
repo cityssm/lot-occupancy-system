@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import { getLotTypes } from '../../helpers/functions.cache.js'
 import { updateLotTypeField } from '../../database/updateLotTypeField.js'
 
-export async function handler(
+export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
@@ -20,4 +20,3 @@ export async function handler(
   })
 }
 
-export default handler

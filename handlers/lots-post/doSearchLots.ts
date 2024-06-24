@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import { getLots } from '../../database/getLots.js'
 
-export async function handler(request: Request, response: Response): Promise<void> {
+export default async function handler(request: Request, response: Response): Promise<void> {
   const result = await getLots(request.body, {
     limit: request.body.limit,
     offset: request.body.offset,
@@ -16,4 +16,3 @@ export async function handler(request: Request, response: Response): Promise<voi
   })
 }
 
-export default handler

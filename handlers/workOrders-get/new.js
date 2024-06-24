@@ -1,6 +1,6 @@
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime';
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const currentDate = new Date();
     const workOrder = {
         workOrderOpenDate: dateToInteger(currentDate),
@@ -14,4 +14,3 @@ export async function handler(request, response) {
         workOrderTypes
     });
 }
-export default handler;

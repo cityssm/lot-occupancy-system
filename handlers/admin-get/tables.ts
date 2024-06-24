@@ -8,7 +8,10 @@ import {
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
 
-export async function handler(_request: Request, response: Response): Promise<void> {
+export default async function handler(
+  _request: Request,
+  response: Response
+): Promise<void> {
   const workOrderTypes = await getWorkOrderTypes()
   const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
   const lotStatuses = await getLotStatuses()
@@ -25,5 +28,3 @@ export async function handler(_request: Request, response: Response): Promise<vo
     fontAwesomeIconClasses
   })
 }
-
-export default handler

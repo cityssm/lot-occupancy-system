@@ -1,5 +1,5 @@
 import { getPastLotOccupancyOccupants } from '../../database/getPastLotOccupancyOccupants.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const occupants = await getPastLotOccupancyOccupants(request.body, {
         limit: Number.parseInt(request.body.limit, 10)
     });
@@ -7,4 +7,3 @@ export async function handler(request, response) {
         occupants
     });
 }
-export default handler;

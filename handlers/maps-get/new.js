@@ -1,6 +1,6 @@
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getMapSVGs } from '../../helpers/functions.map.js';
-export async function handler(_request, response) {
+export default async function handler(_request, response) {
     const map = {
         mapCity: configFunctions.getConfigProperty('settings.map.mapCityDefault'),
         mapProvince: configFunctions.getConfigProperty('settings.map.mapProvinceDefault')
@@ -13,4 +13,3 @@ export async function handler(_request, response) {
         mapSVGs
     });
 }
-export default handler;

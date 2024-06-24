@@ -12,7 +12,7 @@ import {
 } from '../../helpers/functions.cache.js'
 import * as configFunctions from '../../helpers/functions.config.js'
 
-export async function handler(request: Request, response: Response): Promise<void> {
+export default async function handler(request: Request, response: Response): Promise<void> {
   const lotOccupancy = await getLotOccupancy(request.params.lotOccupancyId)
 
   if (lotOccupancy === undefined) {
@@ -51,4 +51,3 @@ export async function handler(request: Request, response: Response): Promise<voi
   })
 }
 
-export default handler

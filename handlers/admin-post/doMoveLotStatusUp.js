@@ -1,6 +1,6 @@
 import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js';
 import { getLotStatuses } from '../../helpers/functions.cache.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const success = request.body.moveToEnd === '1'
         ? await moveRecordUpToTop('LotStatuses', request.body.lotStatusId)
         : await moveRecordUp('LotStatuses', request.body.lotStatusId);
@@ -10,4 +10,3 @@ export async function handler(request, response) {
         lotStatuses
     });
 }
-export default handler;

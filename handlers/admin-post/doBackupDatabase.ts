@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import { backupDatabase } from '../../helpers/functions.database.js'
 
-export async function handler(
+export default async function handler(
   _request: Request,
   response: Response
 ): Promise<void> {
@@ -24,5 +24,3 @@ export async function handler(
     })
   }
 }
-
-export default handler

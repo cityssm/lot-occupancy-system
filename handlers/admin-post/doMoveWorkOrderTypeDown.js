@@ -1,6 +1,6 @@
 import { moveRecordDown, moveRecordDownToBottom } from '../../database/moveRecord.js';
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const success = request.body.moveToEnd === '1'
         ? await moveRecordDownToBottom('WorkOrderTypes', request.body.workOrderTypeId)
         : await moveRecordDown('WorkOrderTypes', request.body.workOrderTypeId);
@@ -10,4 +10,3 @@ export async function handler(request, response) {
         workOrderTypes
     });
 }
-export default handler;

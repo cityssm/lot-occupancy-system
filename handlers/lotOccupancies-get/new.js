@@ -3,7 +3,7 @@ import { getLot } from '../../database/getLot.js';
 import { getMaps } from '../../database/getMaps.js';
 import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypes } from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const startDate = new Date();
     const lotOccupancy = {
         occupancyStartDate: dateToInteger(startDate),
@@ -34,4 +34,3 @@ export async function handler(request, response) {
         isCreate: true
     });
 }
-export default handler;

@@ -6,7 +6,7 @@ import {
   getScreenPrintConfig
 } from '../../helpers/functions.print.js'
 
-export async function handler(
+export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
@@ -43,4 +43,3 @@ export async function handler(
   response.render(`print/screen/${printName}`, reportData)
 }
 
-export default handler

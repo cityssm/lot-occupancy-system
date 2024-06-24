@@ -1,6 +1,6 @@
 import { getLotTypes } from '../../helpers/functions.cache.js';
 import { updateLotTypeField } from '../../database/updateLotTypeField.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const success = await updateLotTypeField(request.body, request.session.user);
     const lotTypes = await getLotTypes();
     response.json({
@@ -8,4 +8,3 @@ export async function handler(request, response) {
         lotTypes
     });
 }
-export default handler;

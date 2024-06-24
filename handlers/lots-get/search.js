@@ -1,7 +1,7 @@
 import { getMaps } from '../../database/getMaps.js';
 import { getLotTypes, getLotStatuses } from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const maps = await getMaps();
     const lotTypes = await getLotTypes();
     const lotStatuses = await getLotStatuses();
@@ -15,4 +15,3 @@ export async function handler(request, response) {
         lotStatusId: request.query.lotStatusId
     });
 }
-export default handler;

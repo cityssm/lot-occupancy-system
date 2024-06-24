@@ -1,6 +1,6 @@
 import { getLotOccupancy } from '../../database/getLotOccupancy.js';
 import { getFeeCategories } from '../../database/getFeeCategories.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const lotOccupancyId = request.body.lotOccupancyId;
     const lotOccupancy = (await getLotOccupancy(lotOccupancyId));
     const feeCategories = await getFeeCategories({
@@ -13,4 +13,3 @@ export async function handler(request, response) {
         feeCategories
     });
 }
-export default handler;

@@ -2,7 +2,7 @@ import { dateToString } from '@cityssm/utils-datetime';
 import { getLotOccupancies } from '../../database/getLotOccupancies.js';
 import { getWorkOrderMilestones } from '../../database/getWorkOrderMilestones.js';
 import { getWorkOrders } from '../../database/getWorkOrders.js';
-export async function handler(_request, response) {
+export default async function handler(_request, response) {
     const currentDateString = dateToString(new Date());
     const workOrderMilestones = await getWorkOrderMilestones({
         workOrderMilestoneDateFilter: 'date',
@@ -33,4 +33,3 @@ export async function handler(_request, response) {
         lotOccupancyCount: lotOccupancyResults.count
     });
 }
-export default handler;

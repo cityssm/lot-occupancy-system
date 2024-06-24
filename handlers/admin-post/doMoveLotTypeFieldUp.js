@@ -1,6 +1,6 @@
 import { moveLotTypeFieldUp, moveLotTypeFieldUpToTop } from '../../database/moveLotTypeField.js';
 import { getLotTypes } from '../../helpers/functions.cache.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const success = request.body.moveToEnd === '1'
         ? await moveLotTypeFieldUpToTop(request.body.lotTypeFieldId)
         : await moveLotTypeFieldUp(request.body.lotTypeFieldId);
@@ -10,4 +10,3 @@ export async function handler(request, response) {
         lotTypes
     });
 }
-export default handler;

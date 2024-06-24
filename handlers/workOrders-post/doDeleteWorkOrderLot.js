@@ -1,6 +1,6 @@
 import deleteWorkOrderLot from '../../database/deleteWorkOrderLot.js';
 import { getLots } from '../../database/getLots.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const success = await deleteWorkOrderLot(request.body.workOrderId, request.body.lotId, request.session.user);
     const workOrderLotsResults = await getLots({
         workOrderId: request.body.workOrderId
@@ -14,4 +14,3 @@ export async function handler(request, response) {
         workOrderLots: workOrderLotsResults.lots
     });
 }
-export default handler;

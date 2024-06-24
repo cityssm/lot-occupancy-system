@@ -1,6 +1,6 @@
 import { getFeeCategories } from '../../database/getFeeCategories.js';
 import { updateFeeCategory } from '../../database/updateFeeCategory.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const success = await updateFeeCategory(request.body, request.session.user);
     const feeCategories = await getFeeCategories({}, {
         includeFees: true
@@ -10,4 +10,3 @@ export async function handler(request, response) {
         feeCategories
     });
 }
-export default handler;

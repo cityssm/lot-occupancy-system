@@ -1,4 +1,4 @@
-import { Router, type RequestHandler } from 'express'
+import { type RequestHandler, Router } from 'express'
 
 import handler_database from '../handlers/admin-get/database.js'
 import handler_fees from '../handlers/admin-get/fees.js'

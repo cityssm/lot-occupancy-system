@@ -1,5 +1,5 @@
 import { backupDatabase } from '../../helpers/functions.database.js';
-export async function handler(_request, response) {
+export default async function handler(_request, response) {
     const backupDatabasePath = await backupDatabase();
     if (typeof backupDatabasePath === 'string') {
         const backupDatabasePathSplit = backupDatabasePath.split(/[/\\]/g);
@@ -16,4 +16,3 @@ export async function handler(_request, response) {
         });
     }
 }
-export default handler;

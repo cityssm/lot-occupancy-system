@@ -1,6 +1,6 @@
 import papaparse from 'papaparse';
 import { getReportData } from '../../database/getReportData.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const reportName = request.params.reportName;
     const rows = await getReportData(reportName, request.query);
     if (rows === undefined) {
@@ -15,4 +15,3 @@ export async function handler(request, response) {
     response.setHeader('Content-Type', 'text/csv');
     response.send(csv);
 }
-export default handler;

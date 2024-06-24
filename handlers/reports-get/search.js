@@ -1,7 +1,7 @@
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import { getLotStatuses, getLotTypes } from '../../helpers/functions.cache.js';
 import { getMaps } from '../../database/getMaps.js';
-export async function handler(_request, response) {
+export default async function handler(_request, response) {
     const rightNow = new Date();
     const maps = await getMaps();
     const lotTypes = await getLotTypes();
@@ -14,4 +14,3 @@ export async function handler(_request, response) {
         lotStatuses
     });
 }
-export default handler;

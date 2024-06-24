@@ -1,6 +1,6 @@
 import { deleteRecord } from '../../database/deleteRecord.js';
 import { getFeeCategories } from '../../database/getFeeCategories.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const success = await deleteRecord('FeeCategories', request.body.feeCategoryId, request.session.user);
     const feeCategories = await getFeeCategories({}, {
         includeFees: true
@@ -10,4 +10,3 @@ export async function handler(request, response) {
         feeCategories
     });
 }
-export default handler;

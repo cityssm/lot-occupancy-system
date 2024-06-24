@@ -4,7 +4,7 @@ import closeWorkOrder, {
   type CloseWorkOrderForm
 } from '../../database/closeWorkOrder.js'
 
-export async function handler(
+export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
@@ -18,4 +18,3 @@ export async function handler(
   })
 }
 
-export default handler

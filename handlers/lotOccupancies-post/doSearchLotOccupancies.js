@@ -1,5 +1,5 @@
 import { getLotOccupancies } from '../../database/getLotOccupancies.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const result = await getLotOccupancies(request.body, {
         limit: request.body.limit,
         offset: request.body.offset,
@@ -13,4 +13,3 @@ export async function handler(request, response) {
         lotOccupancies: result.lotOccupancies
     });
 }
-export default handler;

@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import deleteLotOccupancyOccupant from '../../database/deleteLotOccupancyOccupant.js'
 import { getLotOccupancyOccupants } from '../../database/getLotOccupancyOccupants.js'
 
-export async function handler(
+export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
@@ -23,4 +23,3 @@ export async function handler(
   })
 }
 
-export default handler

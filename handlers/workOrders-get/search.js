@@ -1,5 +1,5 @@
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const workOrderOpenDateString = request.query.workOrderOpenDateString;
     const workOrderTypes = await getWorkOrderTypes();
     response.render('workOrder-search', {
@@ -8,4 +8,3 @@ export async function handler(request, response) {
         workOrderOpenDateString
     });
 }
-export default handler;

@@ -1,5 +1,5 @@
 import { getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const workOrderTypes = await getWorkOrderTypes();
     const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
     response.render('workOrder-outlook', {
@@ -8,4 +8,3 @@ export async function handler(request, response) {
         workOrderMilestoneTypes
     });
 }
-export default handler;

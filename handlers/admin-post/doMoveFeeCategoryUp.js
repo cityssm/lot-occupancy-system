@@ -1,6 +1,6 @@
 import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js';
 import { getFeeCategories } from '../../database/getFeeCategories.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const success = request.body.moveToEnd === '1'
         ? await moveRecordUpToTop('FeeCategories', request.body.feeCategoryId)
         : await moveRecordUp('FeeCategories', request.body.feeCategoryId);
@@ -12,4 +12,3 @@ export async function handler(request, response) {
         feeCategories
     });
 }
-export default handler;

@@ -5,7 +5,7 @@ import { getLotOccupancies } from '../../database/getLotOccupancies.js'
 import { getWorkOrderMilestones } from '../../database/getWorkOrderMilestones.js'
 import { getWorkOrders } from '../../database/getWorkOrders.js'
 
-export async function handler(
+export default async function handler(
   _request: Request,
   response: Response
 ): Promise<void> {
@@ -53,4 +53,3 @@ export async function handler(
   })
 }
 
-export default handler

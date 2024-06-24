@@ -15,7 +15,7 @@ import {
 import * as configFunctions from '../../helpers/functions.config.js'
 import type { LotOccupancy } from '../../types/recordTypes.js'
 
-export async function handler(
+export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
@@ -59,4 +59,3 @@ export async function handler(
   })
 }
 
-export default handler

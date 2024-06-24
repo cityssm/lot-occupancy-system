@@ -263,7 +263,7 @@ function buildEventLocation(milestone: WorkOrderMilestone): string {
   return lotNames.join(', ')
 }
 
-export async function handler(
+export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
@@ -425,4 +425,3 @@ export async function handler(
   calendar.serve(response)
 }
 
-export default handler

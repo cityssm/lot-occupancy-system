@@ -9,7 +9,7 @@ import {
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
 
-export async function handler(
+export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
@@ -34,4 +34,3 @@ export async function handler(
   })
 }
 
-export default handler

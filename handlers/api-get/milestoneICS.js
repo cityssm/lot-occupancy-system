@@ -173,7 +173,7 @@ function buildEventLocation(milestone) {
     }
     return lotNames.join(', ');
 }
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const urlRoot = getUrlRoot(request);
     const workOrderMilestoneFilters = {
         workOrderTypeIds: request.query.workOrderTypeIds,
@@ -267,4 +267,3 @@ export async function handler(request, response) {
     }
     calendar.serve(response);
 }
-export default handler;

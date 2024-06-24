@@ -1,5 +1,5 @@
 import { getDynamicsGPDocument } from '../../helpers/functions.dynamicsGP.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const externalReceiptNumber = request.body.externalReceiptNumber;
     const dynamicsGPDocument = await getDynamicsGPDocument(externalReceiptNumber);
     if (dynamicsGPDocument === undefined) {
@@ -14,4 +14,3 @@ export async function handler(request, response) {
         });
     }
 }
-export default handler;

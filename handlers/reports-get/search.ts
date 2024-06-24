@@ -4,7 +4,7 @@ import type { Request, Response } from 'express'
 import { getLotStatuses, getLotTypes } from '../../helpers/functions.cache.js'
 import { getMaps } from '../../database/getMaps.js'
 
-export async function handler(_request: Request, response: Response): Promise<void> {
+export default async function handler(_request: Request, response: Response): Promise<void> {
   const rightNow = new Date()
 
   const maps = await getMaps()
@@ -20,4 +20,3 @@ export async function handler(_request: Request, response: Response): Promise<vo
   })
 }
 
-export default handler

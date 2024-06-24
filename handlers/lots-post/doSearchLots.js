@@ -1,5 +1,5 @@
 import { getLots } from '../../database/getLots.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const result = await getLots(request.body, {
         limit: request.body.limit,
         offset: request.body.offset,
@@ -11,4 +11,3 @@ export async function handler(request, response) {
         lots: result.lots
     });
 }
-export default handler;

@@ -1,4 +1,4 @@
-import { Router, type RequestHandler } from 'express'
+import { type RequestHandler, Router } from 'express'
 
 import handler_milestoneICS from '../handlers/api-get/milestoneICS.js'
 

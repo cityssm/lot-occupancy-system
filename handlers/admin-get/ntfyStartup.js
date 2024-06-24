@@ -1,5 +1,5 @@
 import * as configFunctions from '../../helpers/functions.config.js';
-export function handler(_request, response) {
+export default function handler(_request, response) {
     if (configFunctions.getConfigProperty('application.ntfyStartup') === undefined) {
         response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
             '/dashboard/?error=ntfyNotConfigured');
@@ -9,4 +9,3 @@ export function handler(_request, response) {
         headTitle: 'Ntfy Startup Notification'
     });
 }
-export default handler;

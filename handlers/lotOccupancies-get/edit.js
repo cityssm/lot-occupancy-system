@@ -2,7 +2,7 @@ import { getLotOccupancy } from '../../database/getLotOccupancy.js';
 import { getMaps } from '../../database/getMaps.js';
 import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypePrintsById, getOccupancyTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const lotOccupancy = await getLotOccupancy(request.params.lotOccupancyId);
     if (lotOccupancy === undefined) {
         response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/lotOccupancies/?error=lotOccupancyIdNotFound`);
@@ -28,4 +28,3 @@ export async function handler(request, response) {
         isCreate: false
     });
 }
-export default handler;

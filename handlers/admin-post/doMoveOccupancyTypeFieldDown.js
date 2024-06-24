@@ -1,6 +1,6 @@
 import { moveOccupancyTypeFieldDown, moveOccupancyTypeFieldDownToBottom } from '../../database/moveOccupancyTypeField.js';
 import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const occupancyTypeFieldId = Number.parseInt(request.body.occupancyTypeFieldId, 10);
     const success = request.body.moveToEnd === '1'
         ? await moveOccupancyTypeFieldDownToBottom(occupancyTypeFieldId)
@@ -13,4 +13,3 @@ export async function handler(request, response) {
         allOccupancyTypeFields
     });
 }
-export default handler;

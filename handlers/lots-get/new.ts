@@ -5,7 +5,7 @@ import * as cacheFunctions from '../../helpers/functions.cache.js'
 import * as configFunctions from '../../helpers/functions.config.js'
 import type { Lot } from '../../types/recordTypes.js'
 
-export async function handler(
+export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
@@ -42,4 +42,3 @@ export async function handler(
   })
 }
 
-export default handler

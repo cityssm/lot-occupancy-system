@@ -5,7 +5,7 @@ import addLotComment, {
 } from '../../database/addLotComment.js'
 import { getLotComments } from '../../database/getLotComments.js'
 
-export async function handler(
+export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
@@ -22,4 +22,3 @@ export async function handler(
   })
 }
 
-export default handler

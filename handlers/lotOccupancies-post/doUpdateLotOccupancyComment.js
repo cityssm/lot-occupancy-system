@@ -1,6 +1,6 @@
 import { getLotOccupancyComments } from '../../database/getLotOccupancyComments.js';
 import { updateLotOccupancyComment } from '../../database/updateLotOccupancyComment.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const success = await updateLotOccupancyComment(request.body, request.session.user);
     const lotOccupancyComments = await getLotOccupancyComments(request.body.lotOccupancyId);
     response.json({
@@ -8,4 +8,3 @@ export async function handler(request, response) {
         lotOccupancyComments
     });
 }
-export default handler;

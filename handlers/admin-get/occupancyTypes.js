@@ -1,7 +1,7 @@
 import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
 import * as printFunctions from '../../helpers/functions.print.js';
-export async function handler(_request, response) {
+export default async function handler(_request, response) {
     const occupancyTypes = await getOccupancyTypes();
     const allOccupancyTypeFields = await getAllOccupancyTypeFields();
     const occupancyTypePrints = configFunctions.getConfigProperty('settings.lotOccupancy.prints');
@@ -19,4 +19,3 @@ export async function handler(_request, response) {
         occupancyTypePrintTitles
     });
 }
-export default handler;

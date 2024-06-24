@@ -6,7 +6,7 @@ import {
 } from '../../database/moveRecord.js'
 import { getFeeCategories } from '../../database/getFeeCategories.js'
 
-export async function handler(
+export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
@@ -28,4 +28,3 @@ export async function handler(
   })
 }
 
-export default handler

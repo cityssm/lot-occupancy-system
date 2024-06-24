@@ -7,7 +7,7 @@ import * as configFunctions from '../../helpers/functions.config.js';
 import * as lotOccupancyFunctions from '../../helpers/functions.lotOccupancy.js';
 import { getPdfPrintConfig, getReportData } from '../../helpers/functions.print.js';
 const attachmentOrInline = configFunctions.getConfigProperty('settings.printPdf.contentDisposition');
-export async function handler(request, response, next) {
+export default async function handler(request, response, next) {
     const printName = request.params.printName;
     if (!configFunctions
         .getConfigProperty('settings.lotOccupancy.prints')
@@ -48,4 +48,3 @@ export async function handler(request, response, next) {
     reportData.lotOccupancyFunctions = lotOccupancyFunctions;
     await ejs.renderFile(reportPath, reportData, {}, ejsCallbackFunction);
 }
-export default handler;

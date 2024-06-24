@@ -1,5 +1,5 @@
 import { getWorkOrders } from '../../database/getWorkOrders.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const result = await getWorkOrders(request.body, {
         limit: request.body.limit,
         offset: request.body.offset,
@@ -11,4 +11,3 @@ export async function handler(request, response) {
         workOrders: result.workOrders
     });
 }
-export default handler;

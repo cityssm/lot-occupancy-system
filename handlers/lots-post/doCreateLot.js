@@ -1,6 +1,6 @@
 import addLot from '../../database/addLot.js';
 import { clearNextPreviousLotIdCache } from '../../helpers/functions.lots.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const lotId = await addLot(request.body, request.session.user);
     response.json({
         success: true,
@@ -10,4 +10,3 @@ export async function handler(request, response) {
         clearNextPreviousLotIdCache(-1);
     });
 }
-export default handler;

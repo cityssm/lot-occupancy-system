@@ -2,7 +2,7 @@ import { getLot } from '../../database/getLot.js';
 import { getMaps } from '../../database/getMaps.js';
 import * as cacheFunctions from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const lot = await getLot(request.params.lotId);
     if (lot === undefined) {
         response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
@@ -21,4 +21,3 @@ export async function handler(request, response) {
         lotStatuses
     });
 }
-export default handler;

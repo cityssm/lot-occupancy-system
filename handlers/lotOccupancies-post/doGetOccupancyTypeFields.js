@@ -1,5 +1,5 @@
 import { getOccupancyTypeById, getAllOccupancyTypeFields } from '../../helpers/functions.cache.js';
-export async function handler(request, response) {
+export default async function handler(request, response) {
     const allOccupancyTypeFields = await getAllOccupancyTypeFields();
     const result = (await getOccupancyTypeById(Number.parseInt(request.body.occupancyTypeId, 10)));
     const occupancyTypeFields = [...allOccupancyTypeFields];
@@ -8,4 +8,3 @@ export async function handler(request, response) {
         occupancyTypeFields
     });
 }
-export default handler;
