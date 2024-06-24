@@ -19,6 +19,7 @@ describe('config.cemetery.ssm', () => {
 
 describe('functions.cache', () => {
   const badId = -3
+  // eslint-disable-next-line no-secrets/no-secrets
   const badName = 'qwertyuiopasdfghjklzxcvbnm'
 
   before(() => {
@@ -477,7 +478,7 @@ describe('functions.user', () => {
     it('authenticates with a valid API key', async () => {
       const apiKeysJSON: Record<string, string> = JSON.parse(
         fs.readFileSync('data/apiKeys.json', 'utf8')
-      )
+      ) as Record<string, string>
 
       const apiKey = Object.values(apiKeysJSON)[0]
 

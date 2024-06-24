@@ -49,14 +49,12 @@ function buildWhereClause(filters) {
     if ((filters.workOrderTypeIds ?? '') !== '' &&
         commaSeparatedNumbersRegex.test(filters.workOrderTypeIds)) {
         sqlWhereClause +=
-            ' and w.workOrderTypeId in (' + filters.workOrderTypeIds + ')';
+            ` and w.workOrderTypeId in (${filters.workOrderTypeIds})`;
     }
-    if ((filters.workOrderMilestoneTypeIds ?? '') !== '' &&
+    if (filters.workOrderMilestoneTypeIds !== undefined &&
+        filters.workOrderMilestoneTypeIds !== '' &&
         commaSeparatedNumbersRegex.test(filters.workOrderMilestoneTypeIds)) {
-        sqlWhereClause +=
-            ' and m.workOrderMilestoneTypeId in (' +
-                filters.workOrderMilestoneTypeIds +
-                ')';
+        sqlWhereClause += ` and m.workOrderMilestoneTypeId in (${filters.workOrderMilestoneTypeIds})`;
     }
     return {
         sqlWhereClause,

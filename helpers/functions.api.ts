@@ -11,7 +11,7 @@ let apiKeys: Record<string, string>
 async function loadApiKeys(): Promise<void> {
   try {
     const fileData = await fs.readFile(apiKeyPath, 'utf8')
-    apiKeys = JSON.parse(fileData)
+    apiKeys = JSON.parse(fileData) as Record<string, string>
   } catch (error) {
     debug(error)
     apiKeys = {}

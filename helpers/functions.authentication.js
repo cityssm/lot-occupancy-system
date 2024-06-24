@@ -6,7 +6,7 @@ async function authenticateViaActiveDirectory(userName, password) {
     return await new Promise((resolve) => {
         try {
             const ad = new ActiveDirectory(activeDirectoryConfig);
-            ad.authenticate(userDomain + '\\' + userName, password, (error, auth) => {
+            ad.authenticate(`${userDomain}\\${userName}`, password, (error, auth) => {
                 let authenticated = false;
                 if ((error ?? '') === '') {
                     authenticated = auth;

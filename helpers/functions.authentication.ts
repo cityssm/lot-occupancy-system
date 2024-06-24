@@ -4,7 +4,8 @@ import * as configFunctions from './functions.config.js'
 
 const userDomain = configFunctions.getConfigProperty('application.userDomain')
 
-const activeDirectoryConfig = configFunctions.getConfigProperty('activeDirectory')
+const activeDirectoryConfig =
+  configFunctions.getConfigProperty('activeDirectory')
 
 async function authenticateViaActiveDirectory(
   userName: string,
@@ -14,7 +15,7 @@ async function authenticateViaActiveDirectory(
     try {
       const ad = new ActiveDirectory(activeDirectoryConfig)
 
-      ad.authenticate(userDomain + '\\' + userName, password, (error, auth) => {
+      ad.authenticate(`${userDomain}\\${userName}`, password, (error, auth) => {
         let authenticated = false
 
         if ((error ?? '') === '') {

@@ -1,4 +1,5 @@
 import {
+  type DateString,
   dateIntegerToString,
   dateStringToInteger,
   dateToInteger,
@@ -100,7 +101,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   if ((filters.workOrderMilestoneDateString ?? '') !== '') {
     sqlWhereClause += ' and m.workOrderMilestoneDate = ?'
     sqlParameters.push(
-      dateStringToInteger(filters.workOrderMilestoneDateString!)
+      dateStringToInteger(filters.workOrderMilestoneDateString as DateString)
     )
   }
 
@@ -109,17 +110,15 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
     commaSeparatedNumbersRegex.test(filters.workOrderTypeIds!)
   ) {
     sqlWhereClause +=
-      ' and w.workOrderTypeId in (' + filters.workOrderTypeIds! + ')'
+      ` and w.workOrderTypeId in (${filters.workOrderTypeIds})`
   }
 
   if (
-    (filters.workOrderMilestoneTypeIds ?? '') !== '' &&
+    filters.workOrderMilestoneTypeIds !== undefined &&
+    filters.workOrderMilestoneTypeIds !== '' &&
     commaSeparatedNumbersRegex.test(filters.workOrderMilestoneTypeIds!)
   ) {
-    sqlWhereClause +=
-      ' and m.workOrderMilestoneTypeId in (' +
-      filters.workOrderMilestoneTypeIds! +
-      ')'
+    sqlWhereClause += ` and m.workOrderMilestoneTypeId in (${filters.workOrderMilestoneTypeIds})`
   }
 
   return {
