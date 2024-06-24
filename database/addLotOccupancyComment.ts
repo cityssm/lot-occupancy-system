@@ -1,4 +1,6 @@
 import {
+  type DateString,
+  type TimeString,
   dateStringToInteger,
   dateToInteger,
   dateToTimeInteger,
@@ -21,14 +23,14 @@ export default async function addLotOccupancyComment(
   const rightNow = new Date()
 
   let lotOccupancyCommentDate: number
-  let lotOccupancyCommentTime: number
+  let lotOccupancyCommentTime: number | undefined
 
   if (commentForm.lotOccupancyCommentDateString) {
     lotOccupancyCommentDate = dateStringToInteger(
-      commentForm.lotOccupancyCommentDateString
+      commentForm.lotOccupancyCommentDateString as DateString
     )
     lotOccupancyCommentTime = timeStringToInteger(
-      commentForm.lotOccupancyCommentTimeString ?? ''
+      (commentForm.lotOccupancyCommentTimeString as TimeString) ?? ''
     )
   } else {
     lotOccupancyCommentDate = dateToInteger(rightNow)

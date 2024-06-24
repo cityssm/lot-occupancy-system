@@ -7,7 +7,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 export async function moveFeeDown(feeId: number | string): Promise<boolean> {
   const database = await acquireConnection()
 
-  const currentFee = await getFee(feeId, database)
+  const currentFee = (await getFee(feeId, database)) as Fee
 
   database
     .prepare(
@@ -22,7 +22,7 @@ export async function moveFeeDown(feeId: number | string): Promise<boolean> {
   const success = updateRecordOrderNumber(
     'Fees',
     feeId,
-    currentFee.orderNumber! + 1,
+    currentFee.orderNumber + 1,
     database
   )
 
@@ -36,7 +36,7 @@ export async function moveFeeDownToBottom(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
-  const currentFee = await getFee(feeId, database)
+  const currentFee = (await getFee(feeId, database)) as Fee
 
   const maxOrderNumber = (
     database
@@ -70,9 +70,9 @@ export async function moveFeeDownToBottom(
 export async function moveFeeUp(feeId: number): Promise<boolean> {
   const database = await acquireConnection()
 
-  const currentFee = await getFee(feeId, database)
+  const currentFee = (await getFee(feeId, database)) as Fee
 
-  if (currentFee.orderNumber! <= 0) {
+  if (currentFee.orderNumber <= 0) {
     database.release()
     return true
   }
@@ -90,7 +90,7 @@ export async function moveFeeUp(feeId: number): Promise<boolean> {
   const success = updateRecordOrderNumber(
     'Fees',
     feeId,
-    currentFee.orderNumber! - 1,
+    currentFee.orderNumber - 1,
     database
   )
 
@@ -104,7 +104,7 @@ export async function moveFeeUpToTop(feeId: number | string): Promise<boolean> {
 
   const currentFee = (await getFee(feeId, database)) as Fee
 
-  if (currentFee.orderNumber! > 0) {
+  if (currentFee.orderNumber > 0) {
     updateRecordOrderNumber('Fees', feeId, -1, database)
 
     database

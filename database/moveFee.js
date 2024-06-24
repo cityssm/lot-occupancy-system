@@ -3,7 +3,7 @@ import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export async function moveFeeDown(feeId) {
     const database = await acquireConnection();
-    const currentFee = await getFee(feeId, database);
+    const currentFee = (await getFee(feeId, database));
     database
         .prepare(`update Fees
         set orderNumber = orderNumber - 1
@@ -17,7 +17,7 @@ export async function moveFeeDown(feeId) {
 }
 export async function moveFeeDownToBottom(feeId) {
     const database = await acquireConnection();
-    const currentFee = await getFee(feeId, database);
+    const currentFee = (await getFee(feeId, database));
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
         from Fees
@@ -38,7 +38,7 @@ export async function moveFeeDownToBottom(feeId) {
 }
 export async function moveFeeUp(feeId) {
     const database = await acquireConnection();
-    const currentFee = await getFee(feeId, database);
+    const currentFee = (await getFee(feeId, database));
     if (currentFee.orderNumber <= 0) {
         database.release();
         return true;

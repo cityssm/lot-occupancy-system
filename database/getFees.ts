@@ -41,7 +41,7 @@ export async function getFees(
 
   const fees = database
     .prepare(
-      `select f.feeId,
+      `select f.feeId, f.feeCategoryId,
         f.feeName, f.feeDescription, f.feeAccount,
         f.occupancyTypeId, o.occupancyType,
         f.lotTypeId, l.lotType,

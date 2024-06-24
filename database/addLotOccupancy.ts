@@ -38,7 +38,7 @@ export default async function addLotOccupancy(
   const rightNowMillis = Date.now()
 
   const occupancyStartDate = dateTimeFunctions.dateStringToInteger(
-    lotOccupancyForm.occupancyStartDateString
+    lotOccupancyForm.occupancyStartDateString as dateTimeFunctions.DateString
   )
 
   if (occupancyStartDate <= 0) {
@@ -61,7 +61,7 @@ export default async function addLotOccupancy(
       lotOccupancyForm.occupancyEndDateString === ''
         ? undefined
         : dateTimeFunctions.dateStringToInteger(
-            lotOccupancyForm.occupancyEndDateString
+            lotOccupancyForm.occupancyEndDateString as dateTimeFunctions.DateString
           ),
       user.userName,
       rightNowMillis,
