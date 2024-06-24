@@ -57,12 +57,12 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
     return workOrder;
 }
 export async function getWorkOrderByWorkOrderNumber(workOrderNumber) {
-    return await _getWorkOrder(baseSQL + ' and w.workOrderNumber = ?', workOrderNumber, {
+    return await _getWorkOrder(`${baseSQL} and w.workOrderNumber = ?`, workOrderNumber, {
         includeLotsAndLotOccupancies: true,
         includeComments: true,
         includeMilestones: true
     });
 }
 export default async function getWorkOrder(workOrderId, options, connectedDatabase) {
-    return await _getWorkOrder(baseSQL + ' and w.workOrderId = ?', workOrderId, options, connectedDatabase);
+    return await _getWorkOrder(`${baseSQL} and w.workOrderId = ?`, workOrderId, options, connectedDatabase);
 }

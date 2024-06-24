@@ -9,8 +9,7 @@ export default async function handler(request, response) {
     }
     const printConfig = getScreenPrintConfig(printName);
     if (printConfig === undefined) {
-        response.redirect(getConfigProperty('reverseProxy.urlPrefix') +
-            '/dashboard/?error=printConfigNotFound');
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotFound`);
         return;
     }
     const reportData = await getReportData(printConfig, request.query);

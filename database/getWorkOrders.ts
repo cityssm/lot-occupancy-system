@@ -67,23 +67,27 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
   )
   if (occupantNameFilters.sqlParameters.length > 0) {
     sqlWhereClause +=
-      ' and w.workOrderId in (' +
-      'select workOrderId from WorkOrderLotOccupancies o' +
-      ' where recordDelete_timeMillis is null' +
-      ' and o.lotOccupancyId in (select lotOccupancyId from LotOccupancyOccupants o where recordDelete_timeMillis is null' +
-      occupantNameFilters.sqlWhereClause +
-      ')' +
-      ')'
+      ` and w.workOrderId in (
+        select workOrderId from WorkOrderLotOccupancies o
+        where recordDelete_timeMillis is null
+        and o.lotOccupancyId in (
+          select lotOccupancyId from LotOccupancyOccupants o where recordDelete_timeMillis is null
+          ${occupantNameFilters.sqlWhereClause}
+        ))`
     sqlParameters.push(...occupantNameFilters.sqlParameters)
   }
 
   const lotNameFilters = getLotNameWhereClause(filters.lotName, '', 'l')
   if (lotNameFilters.sqlParameters.length > 0) {
     sqlWhereClause +=
-      ' and w.workOrderId in (' +
-      'select workOrderId from WorkOrderLots where recordDelete_timeMillis is null and lotId in (select lotId from Lots l where recordDelete_timeMillis is null' +
-      lotNameFilters.sqlWhereClause +
-      '))'
+      ` and w.workOrderId in (
+        select workOrderId from WorkOrderLots
+        where recordDelete_timeMillis is null
+        and lotId in (
+          select lotId from Lots l
+          where recordDelete_timeMillis is null
+          ${lotNameFilters.sqlWhereClause}
+        ))`
     sqlParameters.push(...lotNameFilters.sqlParameters)
   }
 

@@ -3,7 +3,7 @@ import path from 'node:path'
 import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer'
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import camelcase from 'camelcase'
-import {renderFile as renderEjsFile } from 'ejs'
+import { renderFile as renderEjsFile } from 'ejs'
 import type { NextFunction, Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
@@ -44,8 +44,7 @@ export async function handler(
 
   if (printConfig === undefined) {
     response.redirect(
-      configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
-        '/dashboard/?error=printConfigNotFound'
+      `${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotFound`
     )
     return
   }

@@ -19,9 +19,10 @@ function buildWhereClause(filters) {
     const occupantNameFilters = getOccupantNameWhereClause(filters.occupantName, 'o');
     if (occupantNameFilters.sqlParameters.length > 0) {
         sqlWhereClause +=
-            ' and o.lotOccupancyId in (select lotOccupancyId from LotOccupancyOccupants o where recordDelete_timeMillis is null' +
-                occupantNameFilters.sqlWhereClause +
-                ')';
+            ` and o.lotOccupancyId in (
+        select lotOccupancyId from LotOccupancyOccupants o
+        where recordDelete_timeMillis is null
+        ${occupantNameFilters.sqlWhereClause})`;
         sqlParameters.push(...occupantNameFilters.sqlParameters);
     }
     if ((filters.occupancyTypeId ?? '') !== '') {
@@ -106,8 +107,8 @@ export default async function getLotOccupancies(filters, options, connectedDatab
           left join LotTypes lt on l.lotTypeId = lt.lotTypeId
           left join Maps m on l.mapId = m.mapId
           ${sqlWhereClause}
-          order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId, o.lotOccupancyId desc` +
-            (isLimited ? ` limit ${options.limit} offset ${options.offset}` : ''))
+          order by o.occupancyStartDate desc, ifnull(o.occupancyEndDate, 99999999) desc, l.lotName, o.lotId, o.lotOccupancyId desc
+          ${isLimited ? ` limit ${options.limit} offset ${options.offset}` : ''}`)
             .all(sqlParameters);
         if (!isLimited) {
             count = lotOccupancies.length;

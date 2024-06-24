@@ -32,8 +32,7 @@ export default async function handler(
 
   if (printConfig === undefined) {
     response.redirect(
-      getConfigProperty('reverseProxy.urlPrefix') +
-        '/dashboard/?error=printConfigNotFound'
+      `${getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotFound`
     )
     return
   }

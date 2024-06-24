@@ -23,14 +23,11 @@ function escapeHTML(stringToEscape: string): string {
 }
 
 function getUrlRoot(request: Request): string {
-  return (
-    'http://' +
-    request.hostname +
-    (getConfigProperty('application.httpPort') === 80
+  return `http://${request.hostname}${
+    getConfigProperty('application.httpPort') === 80
       ? ''
-      : `:${getConfigProperty('application.httpPort')}`) +
-    getConfigProperty('reverseProxy.urlPrefix')
-  )
+      : `:${getConfigProperty('application.httpPort')}`
+  }${getConfigProperty('reverseProxy.urlPrefix')}`
 }
 
 function getWorkOrderUrl(
@@ -59,10 +56,7 @@ function buildEventSummary(milestone: WorkOrderMilestone): string {
           summary += ': '
         }
 
-        summary +=
-          (occupant.occupantName ?? '') +
-          ' ' +
-          (occupant.occupantFamilyName ?? '')
+        summary += `${occupant.occupantName ?? ''} ${occupant.occupantFamilyName ?? ''}`
       }
     }
   }

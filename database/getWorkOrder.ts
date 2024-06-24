@@ -105,7 +105,7 @@ export async function getWorkOrderByWorkOrderNumber(
   workOrderNumber: string
 ): Promise<WorkOrder | undefined> {
   return await _getWorkOrder(
-    baseSQL + ' and w.workOrderNumber = ?',
+    `${baseSQL} and w.workOrderNumber = ?`,
     workOrderNumber,
     {
       includeLotsAndLotOccupancies: true,
@@ -121,7 +121,7 @@ export default async function getWorkOrder(
   connectedDatabase?: PoolConnection
 ): Promise<WorkOrder | undefined> {
   return await _getWorkOrder(
-    baseSQL + ' and w.workOrderId = ?',
+    `${baseSQL} and w.workOrderId = ?`,
     workOrderId,
     options,
     connectedDatabase

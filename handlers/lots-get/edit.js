@@ -5,7 +5,7 @@ import { getConfigProperty } from '../../helpers/functions.config.js';
 export default async function handler(request, response) {
     const lot = await getLot(request.params.lotId);
     if (lot === undefined) {
-        response.redirect(getConfigProperty('reverseProxy.urlPrefix') + '/lots/?error=lotIdNotFound');
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/lots/?error=lotIdNotFound`);
         return;
     }
     const maps = await getMaps();

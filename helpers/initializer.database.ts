@@ -120,7 +120,7 @@ export function initializeDatabase(): boolean {
     .get()
 
   if (row === undefined) {
-    debugSQL('Creating ' + databasePath)
+    debugSQL(`Creating ${databasePath}`)
 
     for (const sql of createStatements) {
       lotOccupancyDB.prepare(sql).run()

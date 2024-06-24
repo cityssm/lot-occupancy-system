@@ -80,7 +80,7 @@ export function initializeDatabase() {
         .prepare("select name from sqlite_master where type = 'table' and name = 'WorkOrderMilestones'")
         .get();
     if (row === undefined) {
-        debugSQL('Creating ' + databasePath);
+        debugSQL(`Creating ${databasePath}`);
         for (const sql of createStatements) {
             lotOccupancyDB.prepare(sql).run();
         }

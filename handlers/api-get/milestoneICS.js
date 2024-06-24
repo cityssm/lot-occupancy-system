@@ -9,12 +9,9 @@ function escapeHTML(stringToEscape) {
     return stringToEscape.replaceAll(/[^\d a-z]/gi, (c) => `&#${c.codePointAt(0)};`);
 }
 function getUrlRoot(request) {
-    return ('http://' +
-        request.hostname +
-        (getConfigProperty('application.httpPort') === 80
-            ? ''
-            : `:${getConfigProperty('application.httpPort')}`) +
-        getConfigProperty('reverseProxy.urlPrefix'));
+    return `http://${request.hostname}${getConfigProperty('application.httpPort') === 80
+        ? ''
+        : `:${getConfigProperty('application.httpPort')}`}${getConfigProperty('reverseProxy.urlPrefix')}`;
 }
 function getWorkOrderUrl(request, milestone) {
     return `${getUrlRoot(request)}/workOrders/${milestone.workOrderId}`;
@@ -32,10 +29,7 @@ function buildEventSummary(milestone) {
                 if (summary !== '') {
                     summary += ': ';
                 }
-                summary +=
-                    (occupant.occupantName ?? '') +
-                        ' ' +
-                        (occupant.occupantFamilyName ?? '');
+                summary += `${occupant.occupantName ?? ''} ${occupant.occupantFamilyName ?? ''}`;
             }
         }
     }
