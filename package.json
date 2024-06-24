@@ -38,7 +38,6 @@
     "@cityssm/configurator": "^0.1.0",
     "@cityssm/date-diff": "^2.2.3",
     "@cityssm/dynamics-gp": "^1.0.3",
-    "@cityssm/expressjs-server-js": "^2.3.3",
     "@cityssm/font-awesome-v5-iconclasses": "^0.1.0",
     "@cityssm/ntfy-publish": "^1.0.1",
     "@cityssm/pdf-puppeteer": "^4.2.0",
