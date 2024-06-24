@@ -1,11 +1,11 @@
 import { getLotStatusSummary } from '../../database/getLotStatusSummary.js';
 import { getLotTypeSummary } from '../../database/getLotTypeSummary.js';
 import { getMap } from '../../database/getMap.js';
-import * as configFunctions from '../../helpers/functions.config.js';
+import { getConfigProperty } from '../../helpers/functions.config.js';
 export default async function handler(request, response) {
     const map = await getMap(request.params.mapId);
     if (map === undefined) {
-        response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/maps/?error=mapIdNotFound`);
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/maps/?error=mapIdNotFound`);
         return;
     }
     const lotTypeSummary = await getLotTypeSummary({

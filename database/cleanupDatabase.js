@@ -1,10 +1,10 @@
-import * as configFunctions from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
 import { acquireConnection } from './pool.js';
 export default async function cleanupDatabase(user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const recordDeleteTimeMillisMin = rightNowMillis -
-        configFunctions.getConfigProperty('settings.adminCleanup.recordDeleteAgeDays') *
+        getConfigProperty('settings.adminCleanup.recordDeleteAgeDays') *
             86_400 *
             1000;
     let inactivatedRecordCount = 0;

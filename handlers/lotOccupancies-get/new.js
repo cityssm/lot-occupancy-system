@@ -2,7 +2,7 @@ import { dateToInteger, dateToString } from '@cityssm/utils-datetime';
 import { getLot } from '../../database/getLot.js';
 import { getMaps } from '../../database/getMaps.js';
 import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypes } from '../../helpers/functions.cache.js';
-import * as configFunctions from '../../helpers/functions.config.js';
+import { getConfigProperty } from '../../helpers/functions.config.js';
 export default async function handler(request, response) {
     const startDate = new Date();
     const lotOccupancy = {
@@ -24,7 +24,7 @@ export default async function handler(request, response) {
     const lotStatuses = await getLotStatuses();
     const maps = await getMaps();
     response.render('lotOccupancy-edit', {
-        headTitle: `Create a New ${configFunctions.getConfigProperty('aliases.occupancy')} Record`,
+        headTitle: `Create a New ${getConfigProperty('aliases.occupancy')} Record`,
         lotOccupancy,
         occupancyTypes,
         lotOccupantTypes,

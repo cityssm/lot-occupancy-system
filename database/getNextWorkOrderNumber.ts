@@ -1,6 +1,6 @@
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 
 import { acquireConnection } from './pool.js'
 
@@ -9,12 +9,12 @@ export async function getNextWorkOrderNumber(
 ): Promise<string> {
   const database = connectedDatabase ?? (await acquireConnection())
 
-  const paddingLength = configFunctions.getConfigProperty(
+  const paddingLength = getConfigProperty(
     'settings.workOrders.workOrderNumberLength'
   )
   const currentYearString = new Date().getFullYear().toString()
 
-  const regex = new RegExp('^' + currentYearString + '-\\d+$')
+  const regex = new RegExp(`^${currentYearString}-\\d+$`)
 
   database.function(
     'userFn_matchesWorkOrderNumberSyntax',
@@ -48,11 +48,7 @@ export async function getNextWorkOrderNumber(
 
   workOrderNumberIndex += 1
 
-  return (
-    currentYearString +
-    '-' +
-    workOrderNumberIndex.toString().padStart(paddingLength, '0')
-  )
+  return `${currentYearString}-${workOrderNumberIndex.toString().padStart(paddingLength, '0')}`
 }
 
 export default getNextWorkOrderNumber

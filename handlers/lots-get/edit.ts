@@ -2,8 +2,8 @@ import type { Request, Response } from 'express'
 
 import { getLot } from '../../database/getLot.js'
 import { getMaps } from '../../database/getMaps.js'
-import * as cacheFunctions from '../../helpers/functions.cache.js'
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getLotStatuses, getLotTypes } from '../../helpers/functions.cache.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 
 export default async function handler(
   request: Request,
@@ -13,15 +13,14 @@ export default async function handler(
 
   if (lot === undefined) {
     response.redirect(
-      configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
-        '/lots/?error=lotIdNotFound'
+      getConfigProperty('reverseProxy.urlPrefix') + '/lots/?error=lotIdNotFound'
     )
     return
   }
 
   const maps = await getMaps()
-  const lotTypes = await cacheFunctions.getLotTypes()
-  const lotStatuses = await cacheFunctions.getLotStatuses()
+  const lotTypes = await getLotTypes()
+  const lotStatuses = await getLotStatuses()
 
   response.render('lot-edit', {
     headTitle: lot.lotName,
@@ -32,4 +31,3 @@ export default async function handler(
     lotStatuses
   })
 }
-

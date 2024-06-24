@@ -1,9 +1,10 @@
+import { DateString } from '@cityssm/utils-datetime';
 import type { PoolConnection } from 'better-sqlite-pool';
 import type { LotOccupancy } from '../types/recordTypes.js';
 interface GetLotOccupanciesFilters {
     lotId?: number | string;
     occupancyTime?: '' | 'past' | 'current' | 'future';
-    occupancyStartDateString?: string;
+    occupancyStartDateString?: DateString;
     occupancyEffectiveDateString?: string;
     occupantName?: string;
     occupancyTypeId?: number | string;

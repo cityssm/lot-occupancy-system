@@ -1,6 +1,6 @@
-import { getLotStatuses, getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
-import * as configFunctions from '../../helpers/functions.config.js';
 import { getWorkOrder } from '../../database/getWorkOrder.js';
+import { getLotStatuses, getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
+import { getConfigProperty } from '../../helpers/functions.config.js';
 export default async function handler(request, response) {
     const workOrder = await getWorkOrder(request.params.workOrderId, {
         includeLotsAndLotOccupancies: true,
@@ -8,11 +8,11 @@ export default async function handler(request, response) {
         includeMilestones: true
     });
     if (workOrder === undefined) {
-        response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/workOrders/?error=workOrderIdNotFound`);
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/workOrders/?error=workOrderIdNotFound`);
         return;
     }
     if (workOrder.workOrderCloseDate) {
-        response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/workOrders/${workOrder.workOrderId.toString()}/?error=workOrderIsClosed`);
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/workOrders/${workOrder.workOrderId.toString()}/?error=workOrderIsClosed`);
         return;
     }
     const workOrderTypes = await getWorkOrderTypes();

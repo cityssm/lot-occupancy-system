@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { getLot } from '../../database/getLot.js'
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 import { getNextLotId, getPreviousLotId } from '../../helpers/functions.lots.js'
 
 export default async function handler(
@@ -12,8 +12,7 @@ export default async function handler(
 
   if (lot === undefined) {
     response.redirect(
-      configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
-        '/lots/?error=lotIdNotFound'
+      `${getConfigProperty('reverseProxy.urlPrefix')}/lots/?error=lotIdNotFound`
     )
     return
   }
@@ -28,4 +27,3 @@ export default async function handler(
     void getPreviousLotId(lot.lotId)
   })
 }
-

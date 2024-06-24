@@ -1,6 +1,6 @@
 import { dateIntegerToString, dateStringToInteger } from '@cityssm/utils-datetime';
 import { getOccupancyTypeById } from '../helpers/functions.cache.js';
-import * as configFunctions from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
 import { getLotNameWhereClause, getOccupancyTimeWhereClause, getOccupantNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import { getLotOccupancyFees } from './getLotOccupancyFees.js';
 import { getLotOccupancyOccupants } from './getLotOccupancyOccupants.js';
@@ -116,7 +116,7 @@ export async function getLotOccupancies(filters, options, connectedDatabase) {
             const occupancyType = await getOccupancyTypeById(lotOccupancy.occupancyTypeId);
             if (occupancyType !== undefined) {
                 lotOccupancy.printEJS = (occupancyType.occupancyTypePrints ?? []).includes('*')
-                    ? configFunctions.getConfigProperty('settings.lotOccupancy.prints')[0]
+                    ? getConfigProperty('settings.lotOccupancy.prints')[0]
                     : occupancyType.occupancyTypePrints[0];
             }
             await addInclusions(lotOccupancy, options, database);

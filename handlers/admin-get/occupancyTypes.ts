@@ -4,7 +4,7 @@ import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 import * as printFunctions from '../../helpers/functions.print.js'
 
 export default async function handler(
@@ -14,9 +14,7 @@ export default async function handler(
   const occupancyTypes = await getOccupancyTypes()
   const allOccupancyTypeFields = await getAllOccupancyTypeFields()
 
-  const occupancyTypePrints = configFunctions.getConfigProperty(
-    'settings.lotOccupancy.prints'
-  )
+  const occupancyTypePrints = getConfigProperty('settings.lotOccupancy.prints')
 
   const occupancyTypePrintTitles = {}
 
@@ -29,7 +27,7 @@ export default async function handler(
   }
 
   response.render('admin-occupancyTypes', {
-    headTitle: `${configFunctions.getConfigProperty('aliases.occupancy')} Type Management`,
+    headTitle: `${getConfigProperty('aliases.occupancy')} Type Management`,
     occupancyTypes,
     allOccupancyTypeFields,
     occupancyTypePrintTitles

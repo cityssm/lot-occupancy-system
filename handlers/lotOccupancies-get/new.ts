@@ -1,7 +1,4 @@
-import {
-  dateToInteger,
-  dateToString
-} from '@cityssm/utils-datetime'
+import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
 import { getLot } from '../../database/getLot.js'
@@ -12,7 +9,7 @@ import {
   getLotTypes,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 import type { LotOccupancy } from '../../types/recordTypes.js'
 
 export default async function handler(
@@ -44,9 +41,7 @@ export default async function handler(
   const maps = await getMaps()
 
   response.render('lotOccupancy-edit', {
-    headTitle: `Create a New ${configFunctions.getConfigProperty(
-      'aliases.occupancy'
-    )} Record`,
+    headTitle: `Create a New ${getConfigProperty('aliases.occupancy')} Record`,
     lotOccupancy,
 
     occupancyTypes,
@@ -58,4 +53,3 @@ export default async function handler(
     isCreate: true
   })
 }
-

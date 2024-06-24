@@ -10,22 +10,18 @@ import {
 import type { DynamicsGPLookup } from '../types/configTypes.js'
 import type { DynamicsGPDocument } from '../types/recordTypes.js'
 
-import * as configFunctions from './functions.config.js'
+import { getConfigProperty } from './functions.config.js'
 
 let gp: DynamicsGP
 
-if (configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
-  gp = new DynamicsGP(
-    configFunctions.getConfigProperty('settings.dynamicsGP.mssqlConfig')
-  )
+if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
+  gp = new DynamicsGP(getConfigProperty('settings.dynamicsGP.mssqlConfig'))
 }
 
 function filterCashReceipt(
   cashReceipt: DiamondCashReceipt
 ): DiamondCashReceipt | undefined {
-  const accountCodes = configFunctions.getConfigProperty(
-    'settings.dynamicsGP.accountCodes'
-  )
+  const accountCodes = getConfigProperty('settings.dynamicsGP.accountCodes')
 
   if (accountCodes.length > 0) {
     for (const detail of cashReceipt.details) {
@@ -47,9 +43,7 @@ function filterCashReceipt(
 }
 
 function filterInvoice(invoice: GPInvoice): GPInvoice | undefined {
-  const itemNumbers = configFunctions.getConfigProperty(
-    'settings.dynamicsGP.itemNumbers'
-  )
+  const itemNumbers = getConfigProperty('settings.dynamicsGP.itemNumbers')
 
   for (const itemNumber of itemNumbers) {
     const found = invoice.lineItems.some((itemRecord) => {
@@ -71,7 +65,7 @@ function filterExtendedInvoice(
     return undefined
   }
 
-  const trialBalanceCodes = configFunctions.getConfigProperty(
+  const trialBalanceCodes = getConfigProperty(
     'settings.dynamicsGP.trialBalanceCodes'
   )
 
@@ -143,9 +137,8 @@ async function _getDynamicsGPDocument(
       break
     }
     case 'diamond/extendedInvoice': {
-      let invoice = await gp.getDiamondExtendedInvoiceByInvoiceNumber(
-        documentNumber
-      )
+      let invoice =
+        await gp.getDiamondExtendedInvoiceByInvoiceNumber(documentNumber)
 
       if (invoice !== undefined) {
         invoice = filterExtendedInvoice(invoice)
@@ -176,15 +169,13 @@ async function _getDynamicsGPDocument(
 export async function getDynamicsGPDocument(
   documentNumber: string
 ): Promise<DynamicsGPDocument | undefined> {
-  if (
-    !configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled')
-  ) {
+  if (!getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
     return undefined
   }
 
   let document: DynamicsGPDocument | undefined
 
-  for (const lookupType of configFunctions.getConfigProperty(
+  for (const lookupType of getConfigProperty(
     'settings.dynamicsGP.lookupOrder'
   )) {
     document = await _getDynamicsGPDocument(documentNumber, lookupType)

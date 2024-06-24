@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import { getLotOccupancy } from '../../database/getLotOccupancy.js'
 import { getOccupancyTypePrintsById } from '../../helpers/functions.cache.js'
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 
 export default async function handler(
   request: Request,
@@ -12,7 +12,7 @@ export default async function handler(
 
   if (lotOccupancy === undefined) {
     response.redirect(
-      `${configFunctions.getConfigProperty(
+      `${getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/lotOccupancies/?error=lotOccupancyIdNotFound`
     )
@@ -24,9 +24,8 @@ export default async function handler(
   )
 
   response.render('lotOccupancy-view', {
-    headTitle: `${configFunctions.getConfigProperty('aliases.occupancy')} View`,
+    headTitle: `${getConfigProperty('aliases.occupancy')} View`,
     lotOccupancy,
     occupancyTypePrints
   })
 }
-

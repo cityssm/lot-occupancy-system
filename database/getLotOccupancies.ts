@@ -1,11 +1,12 @@
 import {
+  DateString,
   dateIntegerToString,
   dateStringToInteger
 } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
 import { getOccupancyTypeById } from '../helpers/functions.cache.js'
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 import {
   getLotNameWhereClause,
   getOccupancyTimeWhereClause,
@@ -21,7 +22,7 @@ import { acquireConnection } from './pool.js'
 interface GetLotOccupanciesFilters {
   lotId?: number | string
   occupancyTime?: '' | 'past' | 'current' | 'future'
-  occupancyStartDateString?: string
+  occupancyStartDateString?: DateString
   occupancyEffectiveDateString?: string
   occupantName?: string
   occupancyTypeId?: number | string
@@ -87,7 +88,9 @@ function buildWhereClause(filters: GetLotOccupanciesFilters): {
 
   if ((filters.occupancyStartDateString ?? '') !== '') {
     sqlWhereClause += ' and o.occupancyStartDate = ?'
-    sqlParameters.push(dateStringToInteger(filters.occupancyStartDateString!))
+    sqlParameters.push(
+      dateStringToInteger(filters.occupancyStartDateString as DateString)
+    )
   }
 
   if ((filters.occupancyEffectiveDateString ?? '') !== '') {
@@ -96,8 +99,8 @@ function buildWhereClause(filters: GetLotOccupanciesFilters): {
         or (o.occupancyStartDate <= ? and o.occupancyEndDate >= ?)
       )`
     sqlParameters.push(
-      dateStringToInteger(filters.occupancyEffectiveDateString!),
-      dateStringToInteger(filters.occupancyEffectiveDateString!)
+      dateStringToInteger(filters.occupancyEffectiveDateString as DateString),
+      dateStringToInteger(filters.occupancyEffectiveDateString as DateString)
     )
   }
 
@@ -222,7 +225,7 @@ export async function getLotOccupancies(
         lotOccupancy.printEJS = (
           occupancyType.occupancyTypePrints ?? []
         ).includes('*')
-          ? configFunctions.getConfigProperty('settings.lotOccupancy.prints')[0]
+          ? getConfigProperty('settings.lotOccupancy.prints')[0]
           : occupancyType.occupancyTypePrints![0]
       }
 

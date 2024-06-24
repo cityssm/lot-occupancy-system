@@ -17,7 +17,7 @@ const attachmentOrInline = configFunctions.getConfigProperty(
   'settings.printPdf.contentDisposition'
 )
 
-export default async function handler(
+export async function handler(
   request: Request,
   response: Response,
   next: NextFunction
@@ -90,3 +90,4 @@ export default async function handler(
   await ejs.renderFile(reportPath, reportData, {}, ejsCallbackFunction)
 }
 
+export default handler

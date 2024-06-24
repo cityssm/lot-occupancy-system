@@ -1,10 +1,10 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import * as configFunctions from '../../../helpers/functions.config.js'
+import { getConfigProperty } from '../../../helpers/functions.config.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { MapRecord } from '../../../types/recordTypes.js'
-import { logout, login } from '../../support/index.js'
+import { login, logout } from '../../support/index.js'
 
 describe('Update - Maps', () => {
   beforeEach('Loads page', () => {
@@ -56,12 +56,12 @@ describe('Update - Maps', () => {
 
     cy.get("input[name='mapCity']").should(
       'have.value',
-      configFunctions.getConfigProperty('settings.map.mapCityDefault')
+      getConfigProperty('settings.map.mapCityDefault')
     )
 
     cy.get("input[name='mapProvince']").should(
       'have.value',
-      configFunctions.getConfigProperty('settings.map.mapProvinceDefault')
+      getConfigProperty('settings.map.mapProvinceDefault')
     )
 
     cy.log('Submit the form')
@@ -93,11 +93,11 @@ describe('Update - Maps', () => {
 
       cy.get("input[name='mapCity']").should(
         'have.value',
-        configFunctions.getConfigProperty('settings.map.mapCityDefault')
+        getConfigProperty('settings.map.mapCityDefault')
       )
       cy.get("input[name='mapProvince']").should(
         'have.value',
-        configFunctions.getConfigProperty('settings.map.mapProvinceDefault')
+        getConfigProperty('settings.map.mapProvinceDefault')
       )
 
       cy.get("input[name='mapPostalCode']").should(

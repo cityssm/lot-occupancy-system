@@ -1,6 +1,6 @@
 import { getMaps } from '../../database/getMaps.js';
-import * as cacheFunctions from '../../helpers/functions.cache.js';
-import * as configFunctions from '../../helpers/functions.config.js';
+import { getLotStatuses, getLotTypes } from '../../helpers/functions.cache.js';
+import { getConfigProperty } from '../../helpers/functions.config.js';
 export default async function handler(request, response) {
     const lot = {
         lotId: -1,
@@ -17,10 +17,10 @@ export default async function handler(request, response) {
             lot.mapName = map.mapName;
         }
     }
-    const lotTypes = await cacheFunctions.getLotTypes();
-    const lotStatuses = await cacheFunctions.getLotStatuses();
+    const lotTypes = await getLotTypes();
+    const lotStatuses = await getLotStatuses();
     response.render('lot-edit', {
-        headTitle: `Create a New ${configFunctions.getConfigProperty('aliases.lot')}`,
+        headTitle: `Create a New ${getConfigProperty('aliases.lot')}`,
         lot,
         isCreate: true,
         maps,

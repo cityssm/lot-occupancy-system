@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import { getLotStatusSummary } from '../../database/getLotStatusSummary.js'
 import { getLotTypeSummary } from '../../database/getLotTypeSummary.js'
 import { getMap } from '../../database/getMap.js'
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 
 export default async function handler(
   request: Request,
@@ -13,7 +13,7 @@ export default async function handler(
 
   if (map === undefined) {
     response.redirect(
-      `${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/maps/?error=mapIdNotFound`
+      `${getConfigProperty('reverseProxy.urlPrefix')}/maps/?error=mapIdNotFound`
     )
     return
   }
@@ -33,4 +33,3 @@ export default async function handler(
     lotStatusSummary
   })
 }
-

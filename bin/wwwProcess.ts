@@ -7,7 +7,7 @@ import Debug from 'debug'
 import exitHook from 'exit-hook'
 
 import { app } from '../app.js'
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 
 const debug = Debug(`lot-occupancy-system:wwwProcess:${process.pid}`)
 
@@ -58,11 +58,11 @@ function onListening(server: http.Server): void {
  * Initialize HTTP
  */
 
-process.title = `${configFunctions.getConfigProperty(
+process.title = `${getConfigProperty(
   'application.applicationName'
 )} (Worker)`
 
-const httpPort = configFunctions.getConfigProperty('application.httpPort')
+const httpPort = getConfigProperty('application.httpPort')
 
 const httpServer = http.createServer(app)
 

@@ -7,7 +7,7 @@ import ntfyPublish, { type NtfyMessageOptions } from '@cityssm/ntfy-publish'
 import Debug from 'debug'
 import exitHook from 'exit-hook'
 
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 import type { WorkerMessage } from '../types/applicationTypes.js'
 
 const debug = Debug(`lot-occupancy-system:www:${process.pid}`)
@@ -15,13 +15,11 @@ const debug = Debug(`lot-occupancy-system:www:${process.pid}`)
 const directoryName = dirname(fileURLToPath(import.meta.url))
 
 const processCount = Math.min(
-  configFunctions.getConfigProperty('application.maximumProcesses'),
+  getConfigProperty('application.maximumProcesses'),
   os.cpus().length
 )
 
-process.title = `${configFunctions.getConfigProperty(
-  'application.applicationName'
-)} (Primary)`
+process.title = `${getConfigProperty('application.applicationName')} (Primary)`
 
 debug(`Primary pid:   ${process.pid}`)
 debug(`Primary title: ${process.title}`)
@@ -59,7 +57,7 @@ cluster.on('exit', (worker) => {
   cluster.fork()
 })
 
-const ntfyStartupConfig = configFunctions.getConfigProperty('application.ntfyStartup')
+const ntfyStartupConfig = getConfigProperty('application.ntfyStartup')
 
 if (ntfyStartupConfig !== undefined) {
   const topic = ntfyStartupConfig.topic
@@ -67,14 +65,14 @@ if (ntfyStartupConfig !== undefined) {
 
   const ntfyStartupMessage: NtfyMessageOptions = {
     topic,
-    title: configFunctions.getConfigProperty('application.applicationName'),
+    title: getConfigProperty('application.applicationName'),
     message: 'Application Started',
     tags: ['arrow_up']
   }
 
   const ntfyShutdownMessage: NtfyMessageOptions = {
     topic,
-    title: configFunctions.getConfigProperty('application.applicationName'),
+    title: getConfigProperty('application.applicationName'),
     message: 'Application Shut Down',
     tags: ['arrow_down']
   }

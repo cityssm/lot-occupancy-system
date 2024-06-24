@@ -1,11 +1,10 @@
 import { getLot } from '../../database/getLot.js';
-import * as configFunctions from '../../helpers/functions.config.js';
+import { getConfigProperty } from '../../helpers/functions.config.js';
 import { getNextLotId, getPreviousLotId } from '../../helpers/functions.lots.js';
 export default async function handler(request, response) {
     const lot = await getLot(request.params.lotId);
     if (lot === undefined) {
-        response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
-            '/lots/?error=lotIdNotFound');
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/lots/?error=lotIdNotFound`);
         return;
     }
     response.render('lot-view', {

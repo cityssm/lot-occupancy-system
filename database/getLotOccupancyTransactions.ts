@@ -4,7 +4,7 @@ import {
 } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 import * as gpFunctions from '../helpers/functions.dynamicsGP.js'
 import type { LotOccupancyTransaction } from '../types/recordTypes.js'
 
@@ -41,7 +41,7 @@ export async function getLotOccupancyTransactions(
 
   if (
     (options?.includeIntegrations ?? false) &&
-    configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled')
+    getConfigProperty('settings.dynamicsGP.integrationIsEnabled')
   ) {
     for (const transaction of lotOccupancyTransactions) {
       if ((transaction.externalReceiptNumber ?? '') !== '') {

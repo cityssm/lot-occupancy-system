@@ -1,10 +1,10 @@
-import * as configFunctions from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
 import { acquireConnection } from './pool.js';
 export async function getNextWorkOrderNumber(connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
-    const paddingLength = configFunctions.getConfigProperty('settings.workOrders.workOrderNumberLength');
+    const paddingLength = getConfigProperty('settings.workOrders.workOrderNumberLength');
     const currentYearString = new Date().getFullYear().toString();
-    const regex = new RegExp('^' + currentYearString + '-\\d+$');
+    const regex = new RegExp(`^${currentYearString}-\\d+$`);
     database.function('userFn_matchesWorkOrderNumberSyntax', (workOrderNumber) => {
         return regex.test(workOrderNumber) ? 1 : 0;
     });
@@ -21,8 +21,6 @@ export async function getNextWorkOrderNumber(connectedDatabase) {
         workOrderNumberIndex = Number.parseInt(workOrderNumberRecord.workOrderNumber.split('-')[1], 10);
     }
     workOrderNumberIndex += 1;
-    return (currentYearString +
-        '-' +
-        workOrderNumberIndex.toString().padStart(paddingLength, '0'));
+    return `${currentYearString}-${workOrderNumberIndex.toString().padStart(paddingLength, '0')}`;
 }
 export default getNextWorkOrderNumber;

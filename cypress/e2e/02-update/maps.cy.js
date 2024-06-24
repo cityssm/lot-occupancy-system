@@ -1,6 +1,6 @@
-import * as configFunctions from '../../../helpers/functions.config.js';
+import { getConfigProperty } from '../../../helpers/functions.config.js';
 import { testUpdate } from '../../../test/_globals.js';
-import { logout, login } from '../../support/index.js';
+import { login, logout } from '../../support/index.js';
 describe('Update - Maps', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -37,8 +37,8 @@ describe('Update - Maps', () => {
                 .type(mapJSON.mapLongitude.toString());
         });
         cy.log('Ensure the default city and province are used');
-        cy.get("input[name='mapCity']").should('have.value', configFunctions.getConfigProperty('settings.map.mapCityDefault'));
-        cy.get("input[name='mapProvince']").should('have.value', configFunctions.getConfigProperty('settings.map.mapProvinceDefault'));
+        cy.get("input[name='mapCity']").should('have.value', getConfigProperty('settings.map.mapCityDefault'));
+        cy.get("input[name='mapProvince']").should('have.value', getConfigProperty('settings.map.mapProvinceDefault'));
         cy.log('Submit the form');
         cy.get('#form--map').submit();
         cy.wait(1000);
@@ -50,8 +50,8 @@ describe('Update - Maps', () => {
             cy.get("textarea[name='mapDescription']").should('have.value', mapJSON.mapDescription);
             cy.get("input[name='mapAddress1']").should('have.value', mapJSON.mapAddress1);
             cy.get("input[name='mapAddress2']").should('have.value', mapJSON.mapAddress2);
-            cy.get("input[name='mapCity']").should('have.value', configFunctions.getConfigProperty('settings.map.mapCityDefault'));
-            cy.get("input[name='mapProvince']").should('have.value', configFunctions.getConfigProperty('settings.map.mapProvinceDefault'));
+            cy.get("input[name='mapCity']").should('have.value', getConfigProperty('settings.map.mapCityDefault'));
+            cy.get("input[name='mapProvince']").should('have.value', getConfigProperty('settings.map.mapProvinceDefault'));
             cy.get("input[name='mapPostalCode']").should('have.value', mapJSON.mapPostalCode);
             cy.get("input[name='mapPhoneNumber']").should('have.value', mapJSON.mapPhoneNumber);
             cy.get("input[name='mapLatitude']").should('have.value', mapJSON.mapLatitude.toString());

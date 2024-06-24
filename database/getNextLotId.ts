@@ -1,4 +1,4 @@
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 
 import { acquireConnection } from './pool.js'
 
@@ -9,7 +9,7 @@ export async function getNextLotId(
 
   database.function(
     'userFn_lotNameSortName',
-    configFunctions.getConfigProperty('settings.lot.lotNameSortNameFunction')
+    getConfigProperty('settings.lot.lotNameSortNameFunction')
   )
 
   const result = database

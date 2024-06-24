@@ -25,7 +25,7 @@ import handler_doUpdateLotOccupancyFeeQuantity from '../handlers/lotOccupancies-
 import handler_doUpdateLotOccupancyOccupant from '../handlers/lotOccupancies-post/doUpdateLotOccupancyOccupant.js';
 import handler_doUpdateLotOccupancyTransaction from '../handlers/lotOccupancies-post/doUpdateLotOccupancyTransaction.js';
 import * as permissionHandlers from '../handlers/permissions.js';
-import * as configFunctions from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
 export const router = Router();
 router.get('/', handler_search);
 router.post('/doSearchLotOccupancies', handler_doSearchLotOccupancies);
@@ -48,7 +48,7 @@ router.post('/doGetFees', permissionHandlers.updatePostHandler, handler_doGetFee
 router.post('/doAddLotOccupancyFee', permissionHandlers.updatePostHandler, handler_doAddLotOccupancyFee);
 router.post('/doUpdateLotOccupancyFeeQuantity', permissionHandlers.updatePostHandler, handler_doUpdateLotOccupancyFeeQuantity);
 router.post('/doDeleteLotOccupancyFee', permissionHandlers.updatePostHandler, handler_doDeleteLotOccupancyFee);
-if (configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
+if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
     router.post('/doGetDynamicsGPDocument', permissionHandlers.updatePostHandler, handler_doGetDynamicsGPDocument);
 }
 router.post('/doAddLotOccupancyTransaction', permissionHandlers.updatePostHandler, handler_doAddLotOccupancyTransaction);

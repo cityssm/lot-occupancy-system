@@ -7,7 +7,7 @@ import { getOccupancyTypeFields as getOccupancyTypeFieldsFromDatabase } from '..
 import { getOccupancyTypes as getOccupancyTypesFromDatabase } from '../database/getOccupancyTypes.js';
 import { getWorkOrderMilestoneTypes as getWorkOrderMilestoneTypesFromDatabase } from '../database/getWorkOrderMilestoneTypes.js';
 import { getWorkOrderTypes as getWorkOrderTypesFromDatabase } from '../database/getWorkOrderTypes.js';
-import * as configFunctions from './functions.config.js';
+import { getConfigProperty } from './functions.config.js';
 const debug = Debug(`lot-occupancy-system:functions.cache:${process.pid}`);
 let lotOccupantTypes;
 export async function getLotOccupantTypes() {
@@ -114,7 +114,7 @@ export async function getOccupancyTypePrintsById(occupancyTypeId) {
         return [];
     }
     if (occupancyType.occupancyTypePrints.includes('*')) {
-        return configFunctions.getConfigProperty('settings.lotOccupancy.prints');
+        return getConfigProperty('settings.lotOccupancy.prints');
     }
     return occupancyType.occupancyTypePrints ?? [];
 }

@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { getPreviousMapId } from '../../database/getPreviousMapId.js'
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 
 export default async function handler(
   request: Request,
@@ -13,7 +13,7 @@ export default async function handler(
 
   if (previousMapId === undefined) {
     response.redirect(
-      `${configFunctions.getConfigProperty(
+      `${getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/maps/?error=noPreviousMapIdFound`
     )
@@ -21,9 +21,8 @@ export default async function handler(
   }
 
   response.redirect(
-    `${configFunctions.getConfigProperty(
+    `${getConfigProperty(
       'reverseProxy.urlPrefix'
     )}/maps/${previousMapId.toString()}`
   )
 }
-

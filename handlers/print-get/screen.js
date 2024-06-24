@@ -1,19 +1,15 @@
-import * as configFunctions from '../../helpers/functions.config.js';
+import { getConfigProperty } from '../../helpers/functions.config.js';
 import { getReportData, getScreenPrintConfig } from '../../helpers/functions.print.js';
 export default async function handler(request, response) {
     const printName = request.params.printName;
-    if (!configFunctions
-        .getConfigProperty('settings.lotOccupancy.prints')
-        .includes(`screen/${printName}`) &&
-        !configFunctions
-            .getConfigProperty('settings.workOrders.prints')
-            .includes(`screen/${printName}`)) {
-        response.redirect(`${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotAllowed`);
+    if (!getConfigProperty('settings.lotOccupancy.prints').includes(`screen/${printName}`) &&
+        !getConfigProperty('settings.workOrders.prints').includes(`screen/${printName}`)) {
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotAllowed`);
         return;
     }
     const printConfig = getScreenPrintConfig(printName);
     if (printConfig === undefined) {
-        response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
+        response.redirect(getConfigProperty('reverseProxy.urlPrefix') +
             '/dashboard/?error=printConfigNotFound');
         return;
     }

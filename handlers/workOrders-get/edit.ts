@@ -1,12 +1,12 @@
 import type { Request, Response } from 'express'
 
+import { getWorkOrder } from '../../database/getWorkOrder.js'
 import {
   getLotStatuses,
   getWorkOrderMilestoneTypes,
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
-import * as configFunctions from '../../helpers/functions.config.js'
-import { getWorkOrder } from '../../database/getWorkOrder.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 
 export default async function handler(
   request: Request,
@@ -20,7 +20,7 @@ export default async function handler(
 
   if (workOrder === undefined) {
     response.redirect(
-      `${configFunctions.getConfigProperty(
+      `${getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/workOrders/?error=workOrderIdNotFound`
     )
@@ -29,9 +29,9 @@ export default async function handler(
 
   if (workOrder.workOrderCloseDate) {
     response.redirect(
-      `${configFunctions.getConfigProperty(
+      `${getConfigProperty(
         'reverseProxy.urlPrefix'
-      )}/workOrders/${workOrder.workOrderId!.toString()}/?error=workOrderIsClosed`
+      )}/workOrders/${workOrder.workOrderId.toString()}/?error=workOrderIsClosed`
     )
     return
   }
@@ -43,7 +43,7 @@ export default async function handler(
   const lotStatuses = await getLotStatuses()
 
   response.render('workOrder-edit', {
-    headTitle: `Work Order #${workOrder.workOrderNumber!}`,
+    headTitle: `Work Order #${workOrder.workOrderNumber}`,
     workOrder,
     isCreate: false,
     workOrderTypes,
@@ -51,4 +51,3 @@ export default async function handler(
     lotStatuses
   })
 }
-

@@ -1,11 +1,11 @@
 import { DynamicsGP } from '@cityssm/dynamics-gp';
-import * as configFunctions from './functions.config.js';
+import { getConfigProperty } from './functions.config.js';
 let gp;
-if (configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
-    gp = new DynamicsGP(configFunctions.getConfigProperty('settings.dynamicsGP.mssqlConfig'));
+if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
+    gp = new DynamicsGP(getConfigProperty('settings.dynamicsGP.mssqlConfig'));
 }
 function filterCashReceipt(cashReceipt) {
-    const accountCodes = configFunctions.getConfigProperty('settings.dynamicsGP.accountCodes');
+    const accountCodes = getConfigProperty('settings.dynamicsGP.accountCodes');
     if (accountCodes.length > 0) {
         for (const detail of cashReceipt.details) {
             if (accountCodes.includes(detail.accountCode)) {
@@ -22,7 +22,7 @@ function filterCashReceipt(cashReceipt) {
     return cashReceipt;
 }
 function filterInvoice(invoice) {
-    const itemNumbers = configFunctions.getConfigProperty('settings.dynamicsGP.itemNumbers');
+    const itemNumbers = getConfigProperty('settings.dynamicsGP.itemNumbers');
     for (const itemNumber of itemNumbers) {
         const found = invoice.lineItems.some((itemRecord) => {
             return itemRecord.itemNumber === itemNumber;
@@ -37,7 +37,7 @@ function filterExtendedInvoice(invoice) {
     if (filterInvoice(invoice) === undefined) {
         return undefined;
     }
-    const trialBalanceCodes = configFunctions.getConfigProperty('settings.dynamicsGP.trialBalanceCodes');
+    const trialBalanceCodes = getConfigProperty('settings.dynamicsGP.trialBalanceCodes');
     if (trialBalanceCodes.length > 0 &&
         trialBalanceCodes.includes(invoice.trialBalanceCode ?? '')) {
         return invoice;
@@ -115,11 +115,11 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
     return document;
 }
 export async function getDynamicsGPDocument(documentNumber) {
-    if (!configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
+    if (!getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
         return undefined;
     }
     let document;
-    for (const lookupType of configFunctions.getConfigProperty('settings.dynamicsGP.lookupOrder')) {
+    for (const lookupType of getConfigProperty('settings.dynamicsGP.lookupOrder')) {
         document = await _getDynamicsGPDocument(documentNumber, lookupType);
         if (document !== undefined) {
             break;

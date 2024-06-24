@@ -4,13 +4,13 @@
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import camelCase from 'camelcase'
 
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 
 import { acquireConnection } from './pool.js'
 
 export type ReportParameters = Record<string, string | number>
 
-const mapCamelCase = camelCase(configFunctions.getConfigProperty('aliases.map'))
+const mapCamelCase = camelCase(getConfigProperty('aliases.map'))
 const mapNameAlias = `${mapCamelCase}Name`
 const mapDescriptionAlias = `${mapCamelCase}Description`
 const mapAddress1Alias = `${mapCamelCase}Address1`
@@ -20,23 +20,19 @@ const mapProvinceAlias = `${mapCamelCase}Province`
 const mapPostalCodeAlias = `${mapCamelCase}PostalCode`
 const mapPhoneNumberAlias = `${mapCamelCase}PhoneNumber`
 
-const lotCamelCase = camelCase(configFunctions.getConfigProperty('aliases.lot'))
+const lotCamelCase = camelCase(getConfigProperty('aliases.lot'))
 const lotIdAlias = `${lotCamelCase}Id`
 const lotNameAlias = `${lotCamelCase}Name`
 const lotTypeAlias = `${lotCamelCase}Type`
 const lotStatusAlias = `${lotCamelCase}Status`
 
-const occupancyCamelCase = camelCase(
-  configFunctions.getConfigProperty('aliases.occupancy')
-)
+const occupancyCamelCase = camelCase(getConfigProperty('aliases.occupancy'))
 const lotOccupancyIdAlias = `${occupancyCamelCase}Id`
 const occupancyTypeAlias = `${occupancyCamelCase}Type`
 const occupancyStartDateAlias = `${occupancyCamelCase}StartDate`
 const occupancyEndDateAlias = `${occupancyCamelCase}EndDate`
 
-const occupantCamelCase = camelCase(
-  configFunctions.getConfigProperty('aliases.occupant')
-)
+const occupantCamelCase = camelCase(getConfigProperty('aliases.occupant'))
 const lotOccupantIndexAlias = `${occupantCamelCase}Index`
 const lotOccupantTypeAlias = `${occupantCamelCase}Type`
 const occupantNameAlias = `${occupantCamelCase}Name`
@@ -235,7 +231,7 @@ export async function getReportData(
 
       sqlParameters.push(
         dateTimeFunctions.dateStringToInteger(
-          reportParameters.transactionDateString as string
+          reportParameters.transactionDateString as dateTimeFunctions.DateString
         )
       )
       break

@@ -1,7 +1,7 @@
 import { dateToInteger } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 import { getLotNameWhereClause } from '../helpers/functions.sqlFilters.js'
 import type { Lot } from '../types/recordTypes.js'
 
@@ -113,7 +113,7 @@ export async function getLots(
 
     database.function(
       'userFn_lotNameSortName',
-      configFunctions.getConfigProperty('settings.lot.lotNameSortNameFunction')
+      getConfigProperty('settings.lot.lotNameSortNameFunction')
     )
 
     if (includeLotOccupancyCount) {

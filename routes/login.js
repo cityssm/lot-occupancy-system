@@ -3,11 +3,11 @@ import { Router } from 'express';
 import { useTestDatabases } from '../data/databasePaths.js';
 import { getApiKey } from '../helpers/functions.api.js';
 import * as authenticationFunctions from '../helpers/functions.authentication.js';
-import * as configFunctions from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
 const debug = Debug('lot-occupancy-system:login');
 export const router = Router();
 function getHandler(request, response) {
-    const sessionCookieName = configFunctions.getConfigProperty('session.cookieName');
+    const sessionCookieName = getConfigProperty('session.cookieName');
     if (request.session.user !== undefined &&
         request.cookies[sessionCookieName] !== undefined) {
         const redirectURL = authenticationFunctions.getSafeRedirectURL((request.query.redirect ?? ''));
@@ -30,9 +30,7 @@ async function postHandler(request, response) {
     let isAuthenticated = false;
     if (userName.startsWith('*')) {
         if (useTestDatabases && userName === passwordPlain) {
-            isAuthenticated = configFunctions
-                .getConfigProperty('users.testing')
-                .includes(userName);
+            isAuthenticated = getConfigProperty('users.testing').includes(userName);
             if (isAuthenticated) {
                 debug('Authenticated testing user: ' + userName);
             }
@@ -44,20 +42,14 @@ async function postHandler(request, response) {
     let userObject;
     if (isAuthenticated) {
         const userNameLowerCase = userName.toLowerCase();
-        const canLogin = configFunctions
-            .getConfigProperty('users.canLogin')
-            .some((currentUserName) => {
+        const canLogin = getConfigProperty('users.canLogin').some((currentUserName) => {
             return userNameLowerCase === currentUserName.toLowerCase();
         });
         if (canLogin) {
-            const canUpdate = configFunctions
-                .getConfigProperty('users.canUpdate')
-                .some((currentUserName) => {
+            const canUpdate = getConfigProperty('users.canUpdate').some((currentUserName) => {
                 return userNameLowerCase === currentUserName.toLowerCase();
             });
-            const isAdmin = configFunctions
-                .getConfigProperty('users.isAdmin')
-                .some((currentUserName) => {
+            const isAdmin = getConfigProperty('users.isAdmin').some((currentUserName) => {
                 return userNameLowerCase === currentUserName.toLowerCase();
             });
             const apiKey = await getApiKey(userNameLowerCase);

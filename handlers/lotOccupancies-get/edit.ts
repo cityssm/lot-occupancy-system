@@ -10,14 +10,17 @@ import {
   getOccupancyTypes,
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 
-export default async function handler(request: Request, response: Response): Promise<void> {
+export default async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const lotOccupancy = await getLotOccupancy(request.params.lotOccupancyId)
 
   if (lotOccupancy === undefined) {
     response.redirect(
-      `${configFunctions.getConfigProperty(
+      `${getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/lotOccupancies/?error=lotOccupancyIdNotFound`
     )
@@ -36,7 +39,7 @@ export default async function handler(request: Request, response: Response): Pro
   const workOrderTypes = await getWorkOrderTypes()
 
   response.render('lotOccupancy-edit', {
-    headTitle: `${configFunctions.getConfigProperty('aliases.occupancy')} Update`,
+    headTitle: `${getConfigProperty('aliases.occupancy')} Update`,
     lotOccupancy,
     occupancyTypePrints,
 
@@ -50,4 +53,3 @@ export default async function handler(request: Request, response: Response): Pro
     isCreate: false
   })
 }
-

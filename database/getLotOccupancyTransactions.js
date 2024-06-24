@@ -1,5 +1,5 @@
 import { dateIntegerToString, timeIntegerToString } from '@cityssm/utils-datetime';
-import * as configFunctions from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
 import * as gpFunctions from '../helpers/functions.dynamicsGP.js';
 import { acquireConnection } from './pool.js';
 export async function getLotOccupancyTransactions(lotOccupancyId, options, connectedDatabase) {
@@ -20,7 +20,7 @@ export async function getLotOccupancyTransactions(lotOccupancyId, options, conne
         database.release();
     }
     if ((options?.includeIntegrations ?? false) &&
-        configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
+        getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
         for (const transaction of lotOccupancyTransactions) {
             if ((transaction.externalReceiptNumber ?? '') !== '') {
                 const gpDocument = await gpFunctions.getDynamicsGPDocument(transaction.externalReceiptNumber ?? '');

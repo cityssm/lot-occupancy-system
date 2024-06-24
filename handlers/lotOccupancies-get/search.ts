@@ -5,7 +5,7 @@ import {
   getLotTypes,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 
 export default async function handler(
   request: Request,
@@ -16,11 +16,10 @@ export default async function handler(
   const occupancyTypes = await getOccupancyTypes()
 
   response.render('lotOccupancy-search', {
-    headTitle: `${configFunctions.getConfigProperty('aliases.occupancy')} Search`,
+    headTitle: `${getConfigProperty('aliases.occupancy')} Search`,
     maps,
     lotTypes,
     occupancyTypes,
     mapId: request.query.mapId
   })
 }
-

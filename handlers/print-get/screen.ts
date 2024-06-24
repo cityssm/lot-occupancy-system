@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 import {
   getReportData,
   getScreenPrintConfig
@@ -13,15 +13,15 @@ export default async function handler(
   const printName = request.params.printName
 
   if (
-    !configFunctions
-      .getConfigProperty('settings.lotOccupancy.prints')
-      .includes(`screen/${printName}`) &&
-    !configFunctions
-      .getConfigProperty('settings.workOrders.prints')
-      .includes(`screen/${printName}`)
+    !getConfigProperty('settings.lotOccupancy.prints').includes(
+      `screen/${printName}`
+    ) &&
+    !getConfigProperty('settings.workOrders.prints').includes(
+      `screen/${printName}`
+    )
   ) {
     response.redirect(
-      `${configFunctions.getConfigProperty(
+      `${getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/dashboard/?error=printConfigNotAllowed`
     )
@@ -32,7 +32,7 @@ export default async function handler(
 
   if (printConfig === undefined) {
     response.redirect(
-      configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
+      getConfigProperty('reverseProxy.urlPrefix') +
         '/dashboard/?error=printConfigNotFound'
     )
     return
@@ -42,4 +42,3 @@ export default async function handler(
 
   response.render(`print/screen/${printName}`, reportData)
 }
-

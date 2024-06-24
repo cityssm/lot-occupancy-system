@@ -7,21 +7,19 @@ import {
   type WorkOrderMilestoneFilters,
   getWorkOrderMilestones
 } from '../../database/getWorkOrderMilestones.js'
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 import { getPrintConfig } from '../../helpers/functions.print.js'
 import type { WorkOrderMilestone } from '../../types/recordTypes.js'
 
 const calendarCompany = 'cityssm.github.io'
-const calendarProduct = configFunctions.getConfigProperty(
-  'application.applicationName'
-)
+const calendarProduct = getConfigProperty('application.applicationName')
 
 const timeStringSplitRegex = /[ :-]/
 
 function escapeHTML(stringToEscape: string): string {
   return stringToEscape.replaceAll(
     /[^\d a-z]/gi,
-    (c) => `&#${c.codePointAt(0)!};`
+    (c) => `&#${c.codePointAt(0)};`
   )
 }
 
@@ -29,10 +27,10 @@ function getUrlRoot(request: Request): string {
   return (
     'http://' +
     request.hostname +
-    (configFunctions.getConfigProperty('application.httpPort') === 80
+    (getConfigProperty('application.httpPort') === 80
       ? ''
-      : `:${configFunctions.getConfigProperty('application.httpPort')}`) +
-    configFunctions.getConfigProperty('reverseProxy.urlPrefix')
+      : `:${getConfigProperty('application.httpPort')}`) +
+    getConfigProperty('reverseProxy.urlPrefix')
   )
 }
 
@@ -40,7 +38,7 @@ function getWorkOrderUrl(
   request: Request,
   milestone: WorkOrderMilestone
 ): string {
-  return `${getUrlRoot(request)}/workOrders/${milestone.workOrderId!}`
+  return `${getUrlRoot(request)}/workOrders/${milestone.workOrderId}`
 }
 
 function buildEventSummary(milestone: WorkOrderMilestone): string {
@@ -53,8 +51,8 @@ function buildEventSummary(milestone: WorkOrderMilestone): string {
 
   let occupantCount = 0
 
-  for (const lotOccupancy of milestone.workOrderLotOccupancies!) {
-    for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
+  for (const lotOccupancy of milestone.workOrderLotOccupancies ?? []) {
+    for (const occupant of lotOccupancy.lotOccupancyOccupants ?? []) {
       occupantCount += 1
 
       if (occupantCount === 1) {
@@ -88,47 +86,45 @@ function buildEventDescriptionHTML_occupancies(
     const urlRoot = getUrlRoot(request)
 
     descriptionHTML = `<h2>
-      Related ${escapeHTML(configFunctions.getConfigProperty('aliases.occupancies'))}
+      Related ${escapeHTML(getConfigProperty('aliases.occupancies'))}
       </h2>
       <table border="1">
       <thead><tr>
-      <th>${escapeHTML(
-        configFunctions.getConfigProperty('aliases.occupancy')
-      )} Type</th>
-      <th>${escapeHTML(configFunctions.getConfigProperty('aliases.lot'))}</th>
+      <th>${escapeHTML(getConfigProperty('aliases.occupancy'))} Type</th>
+      <th>${escapeHTML(getConfigProperty('aliases.lot'))}</th>
       <th>Start Date</th>
       <th>End Date</th>
-      <th>${escapeHTML(configFunctions.getConfigProperty('aliases.occupants'))}</th>
+      <th>${escapeHTML(getConfigProperty('aliases.occupants'))}</th>
       </tr></thead>
       <tbody>`
 
-    for (const occupancy of milestone.workOrderLotOccupancies!) {
+    for (const occupancy of milestone.workOrderLotOccupancies ?? []) {
       descriptionHTML += `<tr>
           <td>
-            <a href="${urlRoot}/lotOccupancies/${occupancy.lotOccupancyId!}">
-              ${escapeHTML(occupancy.occupancyType!)}
+            <a href="${urlRoot}/lotOccupancies/${occupancy.lotOccupancyId}">
+              ${escapeHTML(occupancy.occupancyType ?? '')}
             </a>
           </td>
           <td>
             ${occupancy.lotName ? escapeHTML(occupancy.lotName) : '(Not Set)'}
           </td>
           <td>
-            ${occupancy.occupancyStartDateString!}
+            ${occupancy.occupancyStartDateString}
           </td>
           <td>
             ${
               occupancy.occupancyEndDate
-                ? occupancy.occupancyEndDateString!
+                ? occupancy.occupancyEndDateString
                 : '(No End Date)'
             }
           </td>
           <td>`
 
-      for (const occupant of occupancy.lotOccupancyOccupants!) {
+      for (const occupant of occupancy.lotOccupancyOccupants ?? []) {
         descriptionHTML += `${escapeHTML(
           occupant.lotOccupantType!
-        )}: ${escapeHTML(occupant.occupantName!)} ${escapeHTML(
-          occupant.occupantFamilyName!
+        )}: ${escapeHTML(occupant.occupantName ?? '')} ${escapeHTML(
+          occupant.occupantFamilyName ?? ''
         )}<br />`
       }
 
@@ -152,23 +148,23 @@ function buildEventDescriptionHTML_lots(
     const urlRoot = getUrlRoot(request)
 
     descriptionHTML += `<h2>
-      Related ${escapeHTML(configFunctions.getConfigProperty('aliases.lots'))}
+      Related ${escapeHTML(getConfigProperty('aliases.lots'))}
       </h2>
       <table border="1"><thead><tr>
       <th>
-        ${escapeHTML(configFunctions.getConfigProperty('aliases.lot'))} Type
+        ${escapeHTML(getConfigProperty('aliases.lot'))} Type
       </th>
       <th>
-        ${escapeHTML(configFunctions.getConfigProperty('aliases.map'))}
+        ${escapeHTML(getConfigProperty('aliases.map'))}
       </th>
       <th>
-        ${escapeHTML(configFunctions.getConfigProperty('aliases.lot'))} Type
+        ${escapeHTML(getConfigProperty('aliases.lot'))} Type
       </th>
       <th>Status</th>
       </tr></thead>
       <tbody>`
 
-    for (const lot of milestone.workOrderLots!) {
+    for (const lot of milestone.workOrderLots ?? []) {
       descriptionHTML += `<tr>
         <td>
           <a href="${urlRoot}/lots/${lot.lotId.toString()}">
@@ -194,7 +190,7 @@ function buildEventDescriptionHTML_prints(
 ): string {
   let descriptionHTML = ''
 
-  const prints = configFunctions.getConfigProperty('settings.workOrders.prints')
+  const prints = getConfigProperty('settings.workOrders.prints')
 
   if (prints.length > 0) {
     const urlRoot = getUrlRoot(request)
@@ -256,7 +252,7 @@ function buildEventLocation(milestone: WorkOrderMilestone): string {
   const lotNames: string[] = []
 
   if (milestone.workOrderLots!.length > 0) {
-    for (const lot of milestone.workOrderLots!) {
+    for (const lot of milestone.workOrderLots ?? []) {
       lotNames.push(`${lot.mapName ?? ''}: ${lot.lotName ?? ''}`)
     }
   }
@@ -388,14 +384,14 @@ export default async function handler(
     // Set organizer / attendees
     if (milestone.workOrderLotOccupancies!.length > 0) {
       let organizerSet = false
-      for (const lotOccupancy of milestone.workOrderLotOccupancies!) {
-        for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
+      for (const lotOccupancy of milestone.workOrderLotOccupancies ?? []) {
+        for (const occupant of lotOccupancy.lotOccupancyOccupants ?? []) {
           if (organizerSet) {
             calendarEvent.createAttendee({
               name: `${occupant.occupantName ?? ''} ${
                 occupant.occupantFamilyName ?? ''
               }`,
-              email: configFunctions.getConfigProperty(
+              email: getConfigProperty(
                 'settings.workOrders.calendarEmailAddress'
               )
             })
@@ -404,7 +400,7 @@ export default async function handler(
               name: `${occupant.occupantName ?? ''} ${
                 occupant.occupantFamilyName ?? ''
               }`,
-              email: configFunctions.getConfigProperty(
+              email: getConfigProperty(
                 'settings.workOrders.calendarEmailAddress'
               )
             })
@@ -415,13 +411,10 @@ export default async function handler(
     } else {
       calendarEvent.organizer({
         name: milestone.recordCreate_userName!,
-        email: configFunctions.getConfigProperty(
-          'settings.workOrders.calendarEmailAddress'
-        )
+        email: getConfigProperty('settings.workOrders.calendarEmailAddress')
       })
     }
   }
 
   calendar.serve(response)
 }
-

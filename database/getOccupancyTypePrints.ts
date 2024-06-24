@@ -1,12 +1,10 @@
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 
 import { acquireConnection } from './pool.js'
 
-const availablePrints = configFunctions.getConfigProperty(
-  'settings.lotOccupancy.prints'
-)
+const availablePrints = getConfigProperty('settings.lotOccupancy.prints')
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const userFunction_configContainsPrintEJS = (printEJS: string): number => {
