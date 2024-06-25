@@ -1120,7 +1120,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function renderMilestones() {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d, _e, _f;
         // Clear milestones panel
         const milestonesPanelElement = document.querySelector('#panel--milestones');
         const panelBlockElementsToDelete = milestonesPanelElement.querySelectorAll('.panel-block');
@@ -1198,9 +1198,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 .querySelector('.button--editMilestone')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', editMilestone);
             (_e = panelBlockElement
                 .querySelector('.button--completeMilestone')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', completeMilestone);
-            panelBlockElement
-                .querySelector('.button--deleteMilestone')
-                .addEventListener('click', deleteMilestone);
+            (_f = panelBlockElement
+                .querySelector('.button--deleteMilestone')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', deleteMilestone);
             milestonesPanelElement.append(panelBlockElement);
         }
         bulmaJS.init(milestonesPanelElement);

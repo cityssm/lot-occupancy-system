@@ -1,14 +1,16 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../types/globalTypes'
-import type * as recordTypes from '../types/recordTypes'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type * as globalTypes from '../types/globalTypes.js'
+import type * as recordTypes from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+
+declare const exports: Record<string, unknown>
 
 type ResponseJSON =
   | {
@@ -32,11 +34,11 @@ type ResponseJSON =
     '#container--occupancyTypePrints'
   ) as HTMLElement
 
-  let occupancyTypes: recordTypes.OccupancyType[] = exports.occupancyTypes
+  let occupancyTypes = exports.occupancyTypes as recordTypes.OccupancyType[]
   delete exports.occupancyTypes
 
-  let allOccupancyTypeFields: recordTypes.OccupancyTypeField[] =
-    exports.allOccupancyTypeFields
+  let allOccupancyTypeFields =
+    exports.allOccupancyTypeFields as recordTypes.OccupancyTypeField[]
   delete exports.allOccupancyTypeFields
 
   const expandedOccupancyTypes = new Set<number>()
@@ -49,7 +51,7 @@ type ResponseJSON =
     ) as HTMLElement
 
     const occupancyTypeId = Number.parseInt(
-      occupancyTypeElement.dataset.occupancyTypeId!,
+      occupancyTypeElement.dataset.occupancyTypeId ?? '',
       10
     )
 
@@ -59,6 +61,7 @@ type ResponseJSON =
       expandedOccupancyTypes.add(occupancyTypeId)
     }
 
+    // eslint-disable-next-line no-unsanitized/property
     toggleButtonElement.innerHTML = expandedOccupancyTypes.has(occupancyTypeId)
       ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
       : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
@@ -71,19 +74,21 @@ type ResponseJSON =
     }
   }
 
-  function occupancyTypeResponseHandler(responseJSON: {
-    success: boolean
-    errorMessage?: string
-    occupancyTypes?: recordTypes.OccupancyType[]
-    allOccupancyTypeFields?: recordTypes.OccupancyTypeField[]
-  }): void {
+  function occupancyTypeResponseHandler(rawResponseJSON: unknown): void {
+    const responseJSON = rawResponseJSON as {
+      success: boolean
+      errorMessage?: string
+      occupancyTypes: recordTypes.OccupancyType[]
+      allOccupancyTypeFields: recordTypes.OccupancyTypeField[]
+    }
+
     if (responseJSON.success) {
-      occupancyTypes = responseJSON.occupancyTypes!
-      allOccupancyTypeFields = responseJSON.allOccupancyTypeFields!
+      occupancyTypes = responseJSON.occupancyTypes
+      allOccupancyTypeFields = responseJSON.allOccupancyTypeFields
       renderOccupancyTypes()
     } else {
       bulmaJS.alert({
-        title: 'Error Updating ' + los.escapedAliases.Occupancy + ' Type',
+        title: `Error Updating ${los.escapedAliases.Occupancy} Type`,
         message: responseJSON.errorMessage ?? '',
         contextualColorName: 'danger'
       })
@@ -96,13 +101,13 @@ type ResponseJSON =
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--occupancyType'
         ) as HTMLElement
-      ).dataset.occupancyTypeId!,
+      ).dataset.occupancyTypeId ?? '',
       10
     )
 
     function doDelete(): void {
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doDeleteOccupancyType',
+        `${los.urlPrefix}/admin/doDeleteOccupancyType`,
         {
           occupancyTypeId
         },
@@ -127,13 +132,13 @@ type ResponseJSON =
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--occupancyType'
         ) as HTMLElement
-      ).dataset.occupancyTypeId!,
+      ).dataset.occupancyTypeId ?? '',
       10
     )
 
     const occupancyType = occupancyTypes.find((currentOccupancyType) => {
       return occupancyTypeId === currentOccupancyType.occupancyTypeId
-    })!
+    }) as recordTypes.OccupancyType
 
     let editCloseModalFunction: () => void
 
@@ -141,7 +146,7 @@ type ResponseJSON =
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doUpdateOccupancyType',
+        `${los.urlPrefix}/admin/doUpdateOccupancyType`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -176,7 +181,7 @@ type ResponseJSON =
           ) as HTMLInputElement
         ).focus()
 
-        modalElement.querySelector('form')!.addEventListener('submit', doEdit)
+        modalElement.querySelector('form')?.addEventListener('submit', doEdit)
 
         bulmaJS.toggleHtmlClipped()
       },
@@ -192,7 +197,7 @@ type ResponseJSON =
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--occupancyType'
         ) as HTMLElement
-      ).dataset.occupancyTypeId!,
+      ).dataset.occupancyTypeId ?? '',
       10
     )
 
@@ -202,7 +207,7 @@ type ResponseJSON =
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doAddOccupancyTypeField',
+        `${los.urlPrefix}/admin/doAddOccupancyTypeField`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -241,7 +246,7 @@ type ResponseJSON =
           ) as HTMLInputElement
         ).focus()
 
-        modalElement.querySelector('form')!.addEventListener('submit', doAdd)
+        modalElement.querySelector('form')?.addEventListener('submit', doAdd)
 
         bulmaJS.toggleHtmlClipped()
       },
@@ -288,13 +293,13 @@ type ResponseJSON =
 
     const occupancyTypeField = (
       occupancyType
-        ? occupancyType.occupancyTypeFields!
+        ? occupancyType.occupancyTypeFields ?? []
         : allOccupancyTypeFields
     ).find((currentOccupancyTypeField) => {
       return (
         currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId
       )
-    })!
+    }) as recordTypes.OccupancyTypeField
 
     let minimumLengthElement: HTMLInputElement
     let maximumLengthElement: HTMLInputElement
@@ -323,7 +328,7 @@ type ResponseJSON =
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doUpdateOccupancyTypeField',
+        `${los.urlPrefix}/admin/doUpdateOccupancyTypeField`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -338,7 +343,7 @@ type ResponseJSON =
 
     function doDelete(): void {
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doDeleteOccupancyTypeField',
+        `${los.urlPrefix}/admin/doDeleteOccupancyTypeField`,
         {
           occupancyTypeFieldId
         },
@@ -373,44 +378,44 @@ type ResponseJSON =
           modalElement.querySelector(
             '#occupancyTypeFieldEdit--occupancyTypeFieldId'
           ) as HTMLInputElement
-        ).value = occupancyTypeField.occupancyTypeFieldId!.toString()
+        ).value = occupancyTypeField.occupancyTypeFieldId.toString()
         ;(
           modalElement.querySelector(
             '#occupancyTypeFieldEdit--occupancyTypeField'
           ) as HTMLInputElement
-        ).value = occupancyTypeField.occupancyTypeField!
+        ).value = occupancyTypeField.occupancyTypeField ?? ''
         ;(
           modalElement.querySelector(
             '#occupancyTypeFieldEdit--isRequired'
           ) as HTMLSelectElement
-        ).value = occupancyTypeField.isRequired ? '1' : '0'
+        ).value = (occupancyTypeField.isRequired ?? false) ? '1' : '0'
 
         minimumLengthElement = modalElement.querySelector(
           '#occupancyTypeFieldEdit--minimumLength'
         ) as HTMLInputElement
 
         minimumLengthElement.value =
-          occupancyTypeField.minimumLength!.toString()
+          occupancyTypeField.minimumLength?.toString() ?? ''
 
         maximumLengthElement = modalElement.querySelector(
           '#occupancyTypeFieldEdit--maximumLength'
         ) as HTMLInputElement
 
         maximumLengthElement.value =
-          occupancyTypeField.maximumLength!.toString()
+          occupancyTypeField.maximumLength?.toString() ?? ''
 
         patternElement = modalElement.querySelector(
           '#occupancyTypeFieldEdit--pattern'
         ) as HTMLInputElement
 
-        patternElement.value = occupancyTypeField.pattern!
+        patternElement.value = occupancyTypeField.pattern ?? ''
 
         occupancyTypeFieldValuesElement = modalElement.querySelector(
           '#occupancyTypeFieldEdit--occupancyTypeFieldValues'
         ) as HTMLTextAreaElement
 
         occupancyTypeFieldValuesElement.value =
-          occupancyTypeField.occupancyTypeFieldValues!
+          occupancyTypeField.occupancyTypeFieldValues ?? ''
 
         toggleInputFields()
       },
@@ -421,7 +426,7 @@ type ResponseJSON =
         bulmaJS.toggleHtmlClipped()
         cityssm.enableNavBlocker()
 
-        modalElement.querySelector('form')!.addEventListener('submit', doUpdate)
+        modalElement.querySelector('form')?.addEventListener('submit', doUpdate)
 
         minimumLengthElement.addEventListener('keyup', updateMaximumLengthMin)
         updateMaximumLengthMin()
@@ -432,8 +437,8 @@ type ResponseJSON =
         )
 
         modalElement
-          .querySelector('#button--deleteOccupancyTypeField')!
-          .addEventListener('click', confirmDoDelete)
+          .querySelector('#button--deleteOccupancyTypeField')
+          ?.addEventListener('click', confirmDoDelete)
       },
       onremoved: () => {
         bulmaJS.toggleHtmlClipped()
@@ -450,7 +455,7 @@ type ResponseJSON =
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--occupancyTypeField'
         ) as HTMLElement
-      ).dataset.occupancyTypeFieldId!,
+      ).dataset.occupancyTypeFieldId ?? '',
       10
     )
 
@@ -459,7 +464,7 @@ type ResponseJSON =
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--occupancyType'
         ) as HTMLElement
-      ).dataset.occupancyTypeId!,
+      ).dataset.occupancyTypeId ?? '',
       10
     )
 
@@ -495,17 +500,16 @@ type ResponseJSON =
     occupancyTypeFields: recordTypes.OccupancyTypeField[]
   ): void {
     if (occupancyTypeFields.length === 0) {
+      // eslint-disable-next-line no-unsanitized/method
       panelElement.insertAdjacentHTML(
         'beforeend',
-        '<div class="panel-block is-block' +
-          (!occupancyTypeId || expandedOccupancyTypes.has(occupancyTypeId)
+        `<div class="panel-block is-block ${
+          !occupancyTypeId || expandedOccupancyTypes.has(occupancyTypeId)
             ? ''
-            : ' is-hidden') +
-          '">' +
-          '<div class="message is-info">' +
-          '<p class="message-body">There are no additional fields.</p>' +
-          '</div>' +
-          '</div>'
+            : ' is-hidden'
+        }">
+        <div class="message is-info"><p class="message-body">There are no additional fields.</p></div>
+        </div>`
       )
     } else {
       for (const occupancyTypeField of occupancyTypeFields) {
@@ -518,30 +522,30 @@ type ResponseJSON =
         }
 
         panelBlockElement.dataset.occupancyTypeFieldId =
-          occupancyTypeField.occupancyTypeFieldId!.toString()
+          occupancyTypeField.occupancyTypeFieldId.toString()
 
-        panelBlockElement.innerHTML =
-          '<div class="level is-mobile">' +
-          '<div class="level-left">' +
-          ('<div class="level-item">' +
-            '<a class="has-text-weight-bold button--editOccupancyTypeField" href="#">' +
-            cityssm.escapeHTML(occupancyTypeField.occupancyTypeField ?? '') +
-            '</a>' +
-            '</div>') +
-          '</div>' +
-          '<div class="level-right">' +
-          ('<div class="level-item">' +
-            los.getMoveUpDownButtonFieldHTML(
-              'button--moveOccupancyTypeFieldUp',
-              'button--moveOccupancyTypeFieldDown'
-            ) +
-            '</div>') +
-          '</div>' +
-          '</div>'
+        // eslint-disable-next-line no-unsanitized/property
+        panelBlockElement.innerHTML = `<div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <a class="has-text-weight-bold button--editOccupancyTypeField" href="#">
+                ${cityssm.escapeHTML(occupancyTypeField.occupancyTypeField ?? '')}
+              </a>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              ${los.getMoveUpDownButtonFieldHTML(
+                'button--moveOccupancyTypeFieldUp',
+                'button--moveOccupancyTypeFieldDown'
+              )}
+            </div>
+          </div>
+          </div>`
 
         panelBlockElement
-          .querySelector('.button--editOccupancyTypeField')!
-          .addEventListener('click', openEditOccupancyTypeFieldByClick)
+          .querySelector('.button--editOccupancyTypeField')
+          ?.addEventListener('click', openEditOccupancyTypeFieldByClick)
         ;(
           panelBlockElement.querySelector(
             '.button--moveOccupancyTypeFieldUp'
@@ -559,11 +563,12 @@ type ResponseJSON =
   }
 
   function openAddOccupancyTypePrint(clickEvent: Event): void {
-    const occupancyTypeId = (
-      (clickEvent.currentTarget as HTMLElement).closest(
-        '.container--occupancyTypePrintList'
-      ) as HTMLElement
-    ).dataset.occupancyTypeId!
+    const occupancyTypeId =
+      (
+        (clickEvent.currentTarget as HTMLElement).closest(
+          '.container--occupancyTypePrintList'
+        ) as HTMLElement
+      ).dataset.occupancyTypeId ?? ''
 
     let closeAddModalFunction: () => void
 
@@ -571,7 +576,7 @@ type ResponseJSON =
       formEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doAddOccupancyTypePrint',
+        `${los.urlPrefix}/admin/doAddOccupancyTypePrint`,
         formEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -599,7 +604,7 @@ type ResponseJSON =
         ) as HTMLSelectElement
 
         for (const [printEJS, printTitle] of Object.entries(
-          exports.occupancyTypePrintTitles
+          exports.occupancyTypePrintTitles as Record<string, string>
         )) {
           const optionElement = document.createElement('option')
           optionElement.value = printEJS
@@ -630,8 +635,10 @@ type ResponseJSON =
       los.urlPrefix +
         '/admin/' +
         (buttonElement.dataset.direction === 'up'
-          ? 'doMoveOccupancyTypePrintUp'
-          : 'doMoveOccupancyTypePrintDown'),
+          ? // eslint-disable-next-line no-secrets/no-secrets
+            'doMoveOccupancyTypePrintUp'
+          : // eslint-disable-next-line no-secrets/no-secrets
+            'doMoveOccupancyTypePrintDown'),
       {
         occupancyTypeId,
         printEJS,
@@ -658,7 +665,7 @@ type ResponseJSON =
 
     function doDelete(): void {
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doDeleteOccupancyTypePrint',
+        `${los.urlPrefix}/admin/doDeleteOccupancyTypePrint`,
         {
           occupancyTypeId,
           printEJS
@@ -687,10 +694,10 @@ type ResponseJSON =
       panelElement.insertAdjacentHTML(
         'beforeend',
         `<div class="panel-block is-block">
-                    <div class="message is-info">
-                        <p class="message-body">There are no prints associated with this record.</p>
-                    </div>
-                </div>`
+          <div class="message is-info">
+            <p class="message-body">There are no prints associated with this record.</p>
+          </div>
+          </div>`
       )
     } else {
       for (const printEJS of occupancyTypePrints) {
@@ -713,33 +720,30 @@ type ResponseJSON =
           printIconClass = 'fa-file'
         }
 
-        panelBlockElement.innerHTML =
-          '<div class="level is-mobile">' +
-          '<div class="level-left">' +
-          ('<div class="level-item">' +
-            '<i class="fas fa-fw ' +
-            printIconClass +
-            '" aria-hidden="true"></i>' +
-            '</div>') +
-          ('<div class="level-item">' +
-            cityssm.escapeHTML(printTitle || printEJS) +
-            '</div>') +
-          '</div>' +
-          '<div class="level-right">' +
-          ('<div class="level-item">' +
-            los.getMoveUpDownButtonFieldHTML(
-              'button--moveOccupancyTypePrintUp',
-              'button--moveOccupancyTypePrintDown'
-            ) +
-            '</div>') +
-          ('<div class="level-item">' +
-            '<button class="button is-small is-danger button--deleteOccupancyTypePrint" data-tooltip="Delete" type="button" aria-label="Delete Print">' +
-            '<i class="fas fa-trash" aria-hidden="true"></i>' +
-            '</button>' +
-            '</div>' +
-            '</div>') +
-          '</div>' +
-          '</div>'
+        // eslint-disable-next-line no-unsanitized/property
+        panelBlockElement.innerHTML = `<div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <i class="fas fa-fw ${printIconClass}" aria-hidden="true"></i>
+            </div>
+            <div class="level-item">
+              ${cityssm.escapeHTML(printTitle || printEJS)}
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              ${los.getMoveUpDownButtonFieldHTML(
+                'button--moveOccupancyTypePrintUp',
+                'button--moveOccupancyTypePrintDown'
+              )}
+            </div>
+            <div class="level-item">
+              <button class="button is-small is-danger button--deleteOccupancyTypePrint" data-tooltip="Delete" type="button" aria-label="Delete Print">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          </div>`
         ;(
           panelBlockElement.querySelector(
             '.button--moveOccupancyTypePrintUp'
@@ -752,8 +756,8 @@ type ResponseJSON =
         ).addEventListener('click', moveOccupancyTypePrint)
 
         panelBlockElement
-          .querySelector('.button--deleteOccupancyTypePrint')!
-          .addEventListener('click', deleteOccupancyTypePrint)
+          .querySelector('.button--deleteOccupancyTypePrint')
+          ?.addEventListener('click', deleteOccupancyTypePrint)
 
         panelElement.append(panelBlockElement)
       }
@@ -761,28 +765,26 @@ type ResponseJSON =
   }
 
   function renderOccupancyTypes(): void {
-    occupancyTypesContainerElement.innerHTML =
-      '<div class="panel container--occupancyType" id="container--allOccupancyTypeFields" data-occupancy-type-id="">' +
-      '<div class="panel-heading">' +
-      ('<div class="level is-mobile">' +
-        ('<div class="level-left">' +
-          '<div class="level-item">' +
-          ('<h2 class="title is-4">(All ' +
-            los.escapedAliases.Occupancy +
-            ' Types)</h2>') +
-          '</div>' +
-          '</div>') +
-        ('<div class="level-right">' +
-          ('<div class="level-item">' +
-            '<button class="button is-success is-small button--addOccupancyTypeField" type="button">' +
-            '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
-            '<span>Add Field</span>' +
-            '</button>' +
-            '</div>') +
-          '</div>') +
-        '</div>') +
-      '</div>' +
-      '</div>'
+    // eslint-disable-next-line no-unsanitized/property
+    occupancyTypesContainerElement.innerHTML = `<div class="panel container--occupancyType" id="container--allOccupancyTypeFields" data-occupancy-type-id="">
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="title is-4">(All ${los.escapedAliases.Occupancy} Types)</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <button class="button is-success is-small button--addOccupancyTypeField" type="button">
+                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add Field</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>`
 
     occupancyTypePrintsContainerElement.innerHTML = ''
 
@@ -795,169 +797,168 @@ type ResponseJSON =
     )
 
     occupancyTypesContainerElement
-      .querySelector('.button--addOccupancyTypeField')!
-      .addEventListener('click', openAddOccupancyTypeField)
+      .querySelector('.button--addOccupancyTypeField')
+      ?.addEventListener('click', openAddOccupancyTypeField)
 
     if (occupancyTypes.length === 0) {
+      // eslint-disable-next-line no-unsanitized/method
       occupancyTypesContainerElement.insertAdjacentHTML(
         'afterbegin',
         `<div class="message is-warning>
-                <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
-                </div>`
+          <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
+          </div>`
       )
 
+      // eslint-disable-next-line no-unsanitized/method
       occupancyTypePrintsContainerElement.insertAdjacentHTML(
         'afterbegin',
         `<div class="message is-warning>
-                <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
-                </div>`
+          <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
+          </div>`
       )
 
       return
     }
 
     for (const occupancyType of occupancyTypes) {
-      // Types and Fields
-      {
-        const occupancyTypeContainer = document.createElement('div')
+      /*
+       * Types and Fields
+       */
 
-        occupancyTypeContainer.className = 'panel container--occupancyType'
+      const occupancyTypeContainer = document.createElement('div')
 
-        occupancyTypeContainer.dataset.occupancyTypeId =
-          occupancyType.occupancyTypeId.toString()
+      occupancyTypeContainer.className = 'panel container--occupancyType'
 
-        occupancyTypeContainer.innerHTML =
-          '<div class="panel-heading">' +
-          '<div class="level is-mobile">' +
-          ('<div class="level-left">' +
-            '<div class="level-item">' +
-            '<button class="button is-small button--toggleOccupancyTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">' +
-            (expandedOccupancyTypes.has(occupancyType.occupancyTypeId)
-              ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
-              : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>') +
-            '</button>' +
-            '</div>' +
-            '<div class="level-item">' +
-            '<h2 class="title is-4">' +
-            cityssm.escapeHTML(occupancyType.occupancyType) +
-            '</h2>' +
-            '</div>' +
-            '</div>') +
-          ('<div class="level-right">' +
-            ('<div class="level-item">' +
-              '<button class="button is-danger is-small button--deleteOccupancyType" type="button">' +
-              '<span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>' +
-              '<span>Delete</span>' +
-              '</button>' +
-              '</div>') +
-            ('<div class="level-item">' +
-              '<button class="button is-primary is-small button--editOccupancyType" type="button">' +
-              '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
-              '<span>Edit ' +
-              los.escapedAliases.Occupancy +
-              ' Type</span>' +
-              '</button>' +
-              '</div>') +
-            ('<div class="level-item">' +
-              '<button class="button is-success is-small button--addOccupancyTypeField" type="button">' +
-              '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
-              '<span>Add Field</span>' +
-              '</button>' +
-              '</div>') +
-            ('<div class="level-item">' +
-              los.getMoveUpDownButtonFieldHTML(
+      occupancyTypeContainer.dataset.occupancyTypeId =
+        occupancyType.occupancyTypeId.toString()
+
+      // eslint-disable-next-line no-unsanitized/property
+      occupancyTypeContainer.innerHTML = `<div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <button class="button is-small button--toggleOccupancyTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
+                ${
+                  expandedOccupancyTypes.has(occupancyType.occupancyTypeId)
+                    ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
+                    : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
+                }
+              </button>
+            </div>
+            <div class="level-item">
+              <h2 class="title is-4">${cityssm.escapeHTML(occupancyType.occupancyType)}</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <button class="button is-danger is-small button--deleteOccupancyType" type="button">
+                <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
+                <span>Delete</span>
+              </button>
+            </div>
+            <div class="level-item">
+              <button class="button is-primary is-small button--editOccupancyType" type="button">
+                <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                <span>Edit ${los.escapedAliases.Occupancy} Type</span>
+              </button>
+            </div>
+            <div class="level-item">
+              <button class="button is-success is-small button--addOccupancyTypeField" type="button">
+                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add Field</span>
+              </button>
+            </div>
+            <div class="level-item">
+              ${los.getMoveUpDownButtonFieldHTML(
                 'button--moveOccupancyTypeUp',
                 'button--moveOccupancyTypeDown'
-              ) +
-              '</div>') +
-            '</div>') +
-          '</div>' +
-          '</div>'
+              )}
+            </div>
+          </div>
+        </div>
+        </div>`
 
-        renderOccupancyTypeFields(
-          occupancyTypeContainer,
-          occupancyType.occupancyTypeId,
-          occupancyType.occupancyTypeFields!
-        )
+      renderOccupancyTypeFields(
+        occupancyTypeContainer,
+        occupancyType.occupancyTypeId,
+        occupancyType.occupancyTypeFields ?? []
+      )
 
-        occupancyTypeContainer
-          .querySelector('.button--toggleOccupancyTypeFields')!
-          .addEventListener('click', toggleOccupancyTypeFields)
+      occupancyTypeContainer
+        .querySelector('.button--toggleOccupancyTypeFields')
+        ?.addEventListener('click', toggleOccupancyTypeFields)
 
-        occupancyTypeContainer
-          .querySelector('.button--deleteOccupancyType')!
-          .addEventListener('click', deleteOccupancyType)
+      occupancyTypeContainer
+        .querySelector('.button--deleteOccupancyType')
+        ?.addEventListener('click', deleteOccupancyType)
 
-        occupancyTypeContainer
-          .querySelector('.button--editOccupancyType')!
-          .addEventListener('click', openEditOccupancyType)
+      occupancyTypeContainer
+        .querySelector('.button--editOccupancyType')
+        ?.addEventListener('click', openEditOccupancyType)
 
-        occupancyTypeContainer
-          .querySelector('.button--addOccupancyTypeField')!
-          .addEventListener('click', openAddOccupancyTypeField)
-        ;(
-          occupancyTypeContainer.querySelector(
-            '.button--moveOccupancyTypeUp'
-          ) as HTMLButtonElement
-        ).addEventListener('click', moveOccupancyType)
-        ;(
-          occupancyTypeContainer.querySelector(
-            '.button--moveOccupancyTypeDown'
-          ) as HTMLButtonElement
-        ).addEventListener('click', moveOccupancyType)
+      occupancyTypeContainer
+        .querySelector('.button--addOccupancyTypeField')
+        ?.addEventListener('click', openAddOccupancyTypeField)
+      ;(
+        occupancyTypeContainer.querySelector(
+          '.button--moveOccupancyTypeUp'
+        ) as HTMLButtonElement
+      ).addEventListener('click', moveOccupancyType)
+      ;(
+        occupancyTypeContainer.querySelector(
+          '.button--moveOccupancyTypeDown'
+        ) as HTMLButtonElement
+      ).addEventListener('click', moveOccupancyType)
 
-        occupancyTypesContainerElement.append(occupancyTypeContainer)
-      }
+      occupancyTypesContainerElement.append(occupancyTypeContainer)
 
-      // Prints
-      {
-        const occupancyTypePrintContainer = document.createElement('div')
+      /*
+       * Prints
+       */
 
-        occupancyTypePrintContainer.className =
-          'panel container--occupancyTypePrintList'
+      const occupancyTypePrintContainer = document.createElement('div')
 
-        occupancyTypePrintContainer.dataset.occupancyTypeId =
-          occupancyType.occupancyTypeId.toString()
+      occupancyTypePrintContainer.className =
+        'panel container--occupancyTypePrintList'
 
-        occupancyTypePrintContainer.innerHTML =
-          '<div class="panel-heading">' +
-          '<div class="level is-mobile">' +
-          ('<div class="level-left">' +
-            '<div class="level-item">' +
-            '<h2 class="title is-4">' +
-            cityssm.escapeHTML(occupancyType.occupancyType) +
-            '</h2>' +
-            '</div>' +
-            '</div>') +
-          ('<div class="level-right">' +
-            ('<div class="level-item">' +
-              '<button class="button is-success is-small button--addOccupancyTypePrint" type="button">' +
-              '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
-              '<span>Add Print</span>' +
-              '</button>' +
-              '</div>') +
-            '</div>') +
-          '</div>' +
-          '</div>'
+      occupancyTypePrintContainer.dataset.occupancyTypeId =
+        occupancyType.occupancyTypeId.toString()
 
-        renderOccupancyTypePrints(
-          occupancyTypePrintContainer,
-          occupancyType.occupancyTypeId,
-          occupancyType.occupancyTypePrints!
-        )
+      occupancyTypePrintContainer.innerHTML = `<div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="title is-4">${cityssm.escapeHTML(occupancyType.occupancyType)}</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <button class="button is-success is-small button--addOccupancyTypePrint" type="button">
+                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add Print</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        </div>`
 
-        occupancyTypePrintContainer
-          .querySelector('.button--addOccupancyTypePrint')!
-          .addEventListener('click', openAddOccupancyTypePrint)
+      renderOccupancyTypePrints(
+        occupancyTypePrintContainer,
+        occupancyType.occupancyTypeId,
+        occupancyType.occupancyTypePrints ?? []
+      )
 
-        occupancyTypePrintsContainerElement.append(occupancyTypePrintContainer)
-      }
+      occupancyTypePrintContainer
+        .querySelector('.button--addOccupancyTypePrint')
+        ?.addEventListener('click', openAddOccupancyTypePrint)
+
+      occupancyTypePrintsContainerElement.append(occupancyTypePrintContainer)
     }
   }
 
   document
-    .querySelector('#button--addOccupancyType')!
-    .addEventListener('click', () => {
+    .querySelector('#button--addOccupancyType')
+    ?.addEventListener('click', () => {
       let addCloseModalFunction: () => void
 
       function doAdd(submitEvent: SubmitEvent): void {
@@ -971,7 +972,7 @@ type ResponseJSON =
 
             if (responseJSON.success) {
               addCloseModalFunction()
-              occupancyTypes = responseJSON.occupancyTypes!
+              occupancyTypes = responseJSON.occupancyTypes
               renderOccupancyTypes()
             } else {
               bulmaJS.alert({
@@ -985,10 +986,10 @@ type ResponseJSON =
       }
 
       cityssm.openHtmlModal('adminOccupancyTypes-addOccupancyType', {
-        onshow: (modalElement) => {
+        onshow(modalElement) {
           los.populateAliases(modalElement)
         },
-        onshown: (modalElement, closeModalFunction) => {
+        onshown(modalElement, closeModalFunction) {
           addCloseModalFunction = closeModalFunction
           ;(
             modalElement.querySelector(
@@ -996,11 +997,11 @@ type ResponseJSON =
             ) as HTMLInputElement
           ).focus()
 
-          modalElement.querySelector('form')!.addEventListener('submit', doAdd)
+          modalElement.querySelector('form')?.addEventListener('submit', doAdd)
 
           bulmaJS.toggleHtmlClipped()
         },
-        onremoved: () => {
+        onremoved() {
           bulmaJS.toggleHtmlClipped()
         }
       })

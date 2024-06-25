@@ -673,8 +673,8 @@ declare const exports: Record<string, unknown>
         ?.addEventListener('click', completeMilestone)
 
       panelBlockElement
-        .querySelector('.button--deleteMilestone')!
-        .addEventListener('click', deleteMilestone)
+        .querySelector('.button--deleteMilestone')
+        ?.addEventListener('click', deleteMilestone)
 
       milestonesPanelElement.append(panelBlockElement)
     }
