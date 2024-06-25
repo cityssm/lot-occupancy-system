@@ -17,6 +17,7 @@ export interface CacheLotIdsWorkerMessage extends WorkerMessage {
 
 export interface ClearNextPreviousLotIdsCacheWorkerMessage
   extends WorkerMessage {
+  // eslint-disable-next-line no-secrets/no-secrets
   messageType: 'clearNextPreviousLotIdCache'
   lotId: number
 }

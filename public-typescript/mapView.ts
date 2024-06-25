@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 import type * as Leaflet from 'leaflet'
 
 declare const L
@@ -9,10 +7,10 @@ declare const L
 
   if (mapContainerElement !== null) {
     const mapLatitude = Number.parseFloat(
-      mapContainerElement.dataset.mapLatitude!
+      mapContainerElement.dataset.mapLatitude ?? ''
     )
     const mapLongitude = Number.parseFloat(
-      mapContainerElement.dataset.mapLongitude!
+      mapContainerElement.dataset.mapLongitude ?? ''
     )
 
     const mapCoordinates: Leaflet.LatLngTuple = [mapLatitude, mapLongitude]

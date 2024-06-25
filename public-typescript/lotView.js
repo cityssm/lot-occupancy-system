@@ -1,10 +1,12 @@
 "use strict";
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    var _a;
     const mapContainerElement = document.querySelector('#lot--map');
-    if (mapContainerElement) {
+    if (mapContainerElement !== null) {
         ;
-        exports.los.highlightMap(mapContainerElement, mapContainerElement.dataset.mapKey, 'success');
+        exports.los.highlightMap(mapContainerElement, (_a = mapContainerElement.dataset.mapKey) !== null && _a !== void 0 ? _a : '', 'success');
     }
 })();

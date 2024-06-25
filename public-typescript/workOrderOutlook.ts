@@ -1,7 +1,9 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../types/globalTypes'
+import type * as globalTypes from '../types/globalTypes.js'
 
+declare const exports: Record<string, unknown>
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -68,7 +70,6 @@ import type * as globalTypes from '../types/globalTypes'
       changeEvent.currentTarget as HTMLInputElement
     ).checked
   })
-
   ;(
     document.querySelector(
       '#icsFilters--workOrderMilestoneTypeIds-all'
