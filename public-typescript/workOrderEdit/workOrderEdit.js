@@ -25,9 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     workOrderFormElement.addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
-        cityssm.postJSON(los.urlPrefix +
-            '/workOrders/' +
-            (isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'), submitEvent.currentTarget, (rawResponseJSON) => {
+        cityssm.postJSON(`${los.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`, submitEvent.currentTarget, (rawResponseJSON) => {
             var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
@@ -236,7 +234,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             return currentMilestone.workOrderMilestoneId === workOrderMilestoneId;
         });
         function doComplete() {
-            cityssm.postJSON(los.urlPrefix + '/workOrders/doCompleteWorkOrderMilestone', {
+            cityssm.postJSON(`${los.urlPrefix}/workOrders/doCompleteWorkOrderMilestone`, {
                 workOrderId,
                 workOrderMilestoneId
             }, processMilestoneResponse);
@@ -279,7 +277,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const workOrderMilestoneId = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId;
         function doDelete() {
-            cityssm.postJSON(los.urlPrefix + '/workOrders/doDeleteWorkOrderMilestone', {
+            cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrderMilestone`, {
                 workOrderMilestoneId,
                 workOrderId
             }, processMilestoneResponse);
@@ -295,8 +293,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function editMilestone(clickEvent) {
+        var _a;
         clickEvent.preventDefault();
-        const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId, 10);
+        const workOrderMilestoneId = Number.parseInt((_a = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId) !== null && _a !== void 0 ? _a : '', 10);
         const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
             return currentMilestone.workOrderMilestoneId === workOrderMilestoneId;
         });
@@ -314,7 +313,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('workOrder-editMilestone', {
             onshow(modalElement) {
-                var _a, _b, _c, _d, _e;
+                var _a, _b, _c, _d, _e, _f;
                 ;
                 modalElement.querySelector('#milestoneEdit--workOrderId').value = workOrderId;
                 modalElement.querySelector('#milestoneEdit--workOrderMilestoneId').value = (_b = (_a = workOrderMilestone.workOrderMilestoneId) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : '';
@@ -337,18 +336,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const optionElement = document.createElement('option');
                     optionElement.value =
                         workOrderMilestone.workOrderMilestoneTypeId.toString();
-                    optionElement.textContent = workOrderMilestone.workOrderMilestoneType;
+                    optionElement.textContent = (_c = workOrderMilestone.workOrderMilestoneType) !== null && _c !== void 0 ? _c : '';
                     optionElement.selected = true;
                     milestoneTypeElement.append(optionElement);
                 }
                 workOrderMilestoneDateStringElement = modalElement.querySelector('#milestoneEdit--workOrderMilestoneDateString');
-                workOrderMilestoneDateStringElement.value = (_c = workOrderMilestone.workOrderMilestoneDateString) !== null && _c !== void 0 ? _c : '';
+                workOrderMilestoneDateStringElement.value =
+                    (_d = workOrderMilestone.workOrderMilestoneDateString) !== null && _d !== void 0 ? _d : '';
                 if (workOrderMilestone.workOrderMilestoneTime) {
                     ;
-                    modalElement.querySelector('#milestoneEdit--workOrderMilestoneTimeString').value = (_d = workOrderMilestone.workOrderMilestoneTimeString) !== null && _d !== void 0 ? _d : '';
+                    modalElement.querySelector('#milestoneEdit--workOrderMilestoneTimeString').value = (_e = workOrderMilestone.workOrderMilestoneTimeString) !== null && _e !== void 0 ? _e : '';
                 }
                 ;
-                modalElement.querySelector('#milestoneEdit--workOrderMilestoneDescription').value = (_e = workOrderMilestone.workOrderMilestoneDescription) !== null && _e !== void 0 ? _e : '';
+                modalElement.querySelector('#milestoneEdit--workOrderMilestoneDescription').value = (_f = workOrderMilestone.workOrderMilestoneDescription) !== null && _f !== void 0 ? _f : '';
             },
             onshown(modalElement, closeModalFunction) {
                 var _a;
@@ -381,6 +381,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             panelBlockElement.className = 'panel-block is-block container--milestone';
             panelBlockElement.dataset.workOrderMilestoneId =
                 milestone.workOrderMilestoneId.toString();
+            // eslint-disable-next-line no-unsanitized/property
             panelBlockElement.innerHTML =
                 '<div class="columns is-mobile">' +
                     ('<div class="column is-narrow">' +

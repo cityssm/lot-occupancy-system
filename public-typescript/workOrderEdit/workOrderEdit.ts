@@ -49,9 +49,7 @@ declare const exports: Record<string, unknown>
     submitEvent.preventDefault()
 
     cityssm.postJSON(
-      los.urlPrefix +
-        '/workOrders/' +
-        (isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'),
+      `${los.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`,
       submitEvent.currentTarget,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
@@ -346,7 +344,7 @@ declare const exports: Record<string, unknown>
 
     function doComplete(): void {
       cityssm.postJSON(
-        los.urlPrefix + '/workOrders/doCompleteWorkOrderMilestone',
+        `${los.urlPrefix}/workOrders/doCompleteWorkOrderMilestone`,
         {
           workOrderId,
           workOrderMilestoneId
@@ -415,7 +413,7 @@ declare const exports: Record<string, unknown>
 
     function doDelete(): void {
       cityssm.postJSON(
-        los.urlPrefix + '/workOrders/doDeleteWorkOrderMilestone',
+        `${los.urlPrefix}/workOrders/doDeleteWorkOrderMilestone`,
         {
           workOrderMilestoneId,
           workOrderId
@@ -443,13 +441,13 @@ declare const exports: Record<string, unknown>
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--milestone'
         ) as HTMLElement
-      ).dataset.workOrderMilestoneId!,
+      ).dataset.workOrderMilestoneId ?? '',
       10
     )
 
     const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
       return currentMilestone.workOrderMilestoneId === workOrderMilestoneId
-    })!
+    }) as recordTypes.WorkOrderMilestone
 
     let editCloseModalFunction: () => void
     let workOrderMilestoneDateStringElement: HTMLInputElement
@@ -519,18 +517,17 @@ declare const exports: Record<string, unknown>
           const optionElement = document.createElement('option')
           optionElement.value =
             workOrderMilestone.workOrderMilestoneTypeId.toString()
-          optionElement.textContent = workOrderMilestone.workOrderMilestoneType!
+          optionElement.textContent = workOrderMilestone.workOrderMilestoneType ?? ''
           optionElement.selected = true
           milestoneTypeElement.append(optionElement)
         }
 
-        workOrderMilestoneDateStringElement = (
-          modalElement.querySelector(
-            '#milestoneEdit--workOrderMilestoneDateString'
-          ) as HTMLInputElement
-        )
-        
-        workOrderMilestoneDateStringElement.value = workOrderMilestone.workOrderMilestoneDateString ?? ''
+        workOrderMilestoneDateStringElement = modalElement.querySelector(
+          '#milestoneEdit--workOrderMilestoneDateString'
+        ) as HTMLInputElement
+
+        workOrderMilestoneDateStringElement.value =
+          workOrderMilestone.workOrderMilestoneDateString ?? ''
 
         if (workOrderMilestone.workOrderMilestoneTime) {
           ;(
@@ -559,15 +556,12 @@ declare const exports: Record<string, unknown>
           '#milestoneEdit--conflictingMilestonesPanel'
         ) as HTMLElement
 
-        workOrderMilestoneDateStringElement.addEventListener(
-          'change',
-          () => {
-            refreshConflictingMilestones(
-              workOrderMilestoneDateStringElement.value,
-              conflictingMilestonePanelElement
-            )
-          }
-        )
+        workOrderMilestoneDateStringElement.addEventListener('change', () => {
+          refreshConflictingMilestones(
+            workOrderMilestoneDateStringElement.value,
+            conflictingMilestonePanelElement
+          )
+        })
 
         refreshConflictingMilestones(
           workOrderMilestoneDateStringElement.value,
@@ -600,14 +594,15 @@ declare const exports: Record<string, unknown>
       panelBlockElement.dataset.workOrderMilestoneId =
         milestone.workOrderMilestoneId!.toString()
 
+      // eslint-disable-next-line no-unsanitized/property
       panelBlockElement.innerHTML =
         '<div class="columns is-mobile">' +
         ('<div class="column is-narrow">' +
           (milestone.workOrderMilestoneCompletionDate
             ? '<span class="button is-static" data-tooltip="Completed ' +
-              milestone.workOrderMilestoneCompletionDateString! +
+              milestone.workOrderMilestoneCompletionDateString +
               '" aria-label="Completed ' +
-              milestone.workOrderMilestoneCompletionDateString! +
+              milestone.workOrderMilestoneCompletionDateString +
               '">' +
               '<span class="icon is-small"><i class="fas fa-check" aria-hidden="true"></i></span>' +
               '</span>'
@@ -625,7 +620,7 @@ declare const exports: Record<string, unknown>
             ? '<span class="has-text-grey">(No Set Date)</span>'
             : milestone.workOrderMilestoneDateString) +
           (milestone.workOrderMilestoneTime
-            ? ' ' + milestone.workOrderMilestoneTimePeriodString!
+            ? ' ' + milestone.workOrderMilestoneTimePeriodString
             : '') +
           '<br />' +
           '<span class="is-size-7">' +
@@ -692,7 +687,6 @@ declare const exports: Record<string, unknown>
     document
       .querySelector('#button--addMilestone')
       ?.addEventListener('click', () => {
-
         let addFormElement: HTMLFormElement
         let workOrderMilestoneDateStringElement: HTMLInputElement
         let addCloseModalFunction: () => void
@@ -774,7 +768,6 @@ declare const exports: Record<string, unknown>
             workOrderMilestoneDateStringElement.valueAsDate = new Date()
           },
           onshown(modalElement, closeModalFunction) {
-
             addCloseModalFunction = closeModalFunction
 
             los.initializeDatePickers(modalElement)
