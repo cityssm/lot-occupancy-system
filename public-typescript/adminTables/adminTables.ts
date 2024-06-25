@@ -1,6 +1,9 @@
-/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../../types/globalTypes'
+import type * as globalTypes from '../../types/globalTypes.js'
+
+declare const exports: Record<string, unknown>
 ;(() => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const los = exports.los as globalTypes.LOS
@@ -11,15 +14,23 @@ import type * as globalTypes from '../../types/globalTypes'
 
     const fontAwesomeIconClass = inputElement.value
 
-    inputElement
-      .closest('.field')!
-      .querySelectorAll(
+    // eslint-disable-next-line no-unsanitized/property
+    ;(
+      inputElement.closest('.field')?.querySelectorAll(
         '.button.is-static'
-      )[1].innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      ) as NodeListOf<HTMLButtonElement>
+    )[1].innerHTML =
+      `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`
   }
 
   //=include adminTablesWorkOrderTypes.js
+
+  // eslint-disable-next-line no-secrets/no-secrets
   //=include adminTablesWorkOrderMilestoneTypes.js
+
   //=include adminTablesLotStatuses.js
+
+  // eslint-disable-next-line no-secrets/no-secrets
   //=include adminTablesLotOccupantTypes.js
 })()

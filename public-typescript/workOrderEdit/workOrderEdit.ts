@@ -355,13 +355,14 @@ declare const exports: Record<string, unknown>
 
     bulmaJS.confirm({
       title: 'Complete Milestone',
-      message:
-        'Are you sure you want to complete this milestone?' +
-        (workOrderMilestone.workOrderMilestoneDateString !== undefined &&
-        workOrderMilestone.workOrderMilestoneDateString !== '' &&
-        workOrderMilestone.workOrderMilestoneDateString > currentDateString
-          ? '<br /><strong>Note that this milestone is expected to be completed in the future.</strong>'
-          : ''),
+      message: `Are you sure you want to complete this milestone?
+        ${
+          workOrderMilestone.workOrderMilestoneDateString !== undefined &&
+          workOrderMilestone.workOrderMilestoneDateString !== '' &&
+          workOrderMilestone.workOrderMilestoneDateString > currentDateString
+            ? '<br /><strong>Note that this milestone is expected to be completed in the future.</strong>'
+            : ''
+        }`,
       messageIsHtml: true,
       contextualColorName: 'warning',
       okButton: {
