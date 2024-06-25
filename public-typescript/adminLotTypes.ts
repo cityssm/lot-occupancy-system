@@ -1,14 +1,16 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../types/globalTypes'
-import type * as recordTypes from '../types/recordTypes'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type * as globalTypes from '../types/globalTypes.js'
+import type * as recordTypes from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+
+declare const exports: Record<string, unknown>
 
 type ResponseJSON =
   | {
@@ -27,7 +29,7 @@ type ResponseJSON =
     '#container--lotTypes'
   ) as HTMLElement
 
-  let lotTypes: recordTypes.LotType[] = exports.lotTypes
+  let lotTypes = exports.lotTypes as recordTypes.LotType[]
   delete exports.lotTypes
 
   const expandedLotTypes = new Set<number>()
@@ -39,7 +41,10 @@ type ResponseJSON =
       '.container--lotType'
     ) as HTMLElement
 
-    const lotTypeId = Number.parseInt(lotTypeElement.dataset.lotTypeId!, 10)
+    const lotTypeId = Number.parseInt(
+      lotTypeElement.dataset.lotTypeId ?? '',
+      10
+    )
 
     if (expandedLotTypes.has(lotTypeId)) {
       expandedLotTypes.delete(lotTypeId)
@@ -47,6 +52,7 @@ type ResponseJSON =
       expandedLotTypes.add(lotTypeId)
     }
 
+    // eslint-disable-next-line no-unsanitized/property
     toggleButtonElement.innerHTML = expandedLotTypes.has(lotTypeId)
       ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
       : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
@@ -58,9 +64,10 @@ type ResponseJSON =
     }
   }
 
-  function lotTypeResponseHandler(responseJSON: ResponseJSON): void {
+  function lotTypeResponseHandler(rawResponseJSON: unknown): void {
+    const responseJSON = rawResponseJSON as ResponseJSON
     if (responseJSON.success) {
-      lotTypes = responseJSON.lotTypes!
+      lotTypes = responseJSON.lotTypes
       renderLotTypes()
     } else {
       bulmaJS.alert({
@@ -77,13 +84,13 @@ type ResponseJSON =
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--lotType'
         ) as HTMLElement
-      ).dataset.lotTypeId!,
+      ).dataset.lotTypeId ?? '',
       10
     )
 
     function doDelete(): void {
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doDeleteLotType',
+        `${los.urlPrefix}/admin/doDeleteLotType`,
         {
           lotTypeId
         },
@@ -108,13 +115,13 @@ type ResponseJSON =
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--lotType'
         ) as HTMLElement
-      ).dataset.lotTypeId!,
+      ).dataset.lotTypeId ?? '',
       10
     )
 
     const lotType = lotTypes.find((currentLotType) => {
       return lotTypeId === currentLotType.lotTypeId
-    })!
+    }) as recordTypes.LotType
 
     let editCloseModalFunction: () => void
 
@@ -122,7 +129,7 @@ type ResponseJSON =
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doUpdateLotType',
+        `${los.urlPrefix}/admin/doUpdateLotType`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -157,7 +164,7 @@ type ResponseJSON =
           ) as HTMLInputElement
         ).focus()
 
-        modalElement.querySelector('form')!.addEventListener('submit', doEdit)
+        modalElement.querySelector('form')?.addEventListener('submit', doEdit)
 
         bulmaJS.toggleHtmlClipped()
       },
@@ -173,7 +180,7 @@ type ResponseJSON =
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--lotType'
         ) as HTMLElement
-      ).dataset.lotTypeId!,
+      ).dataset.lotTypeId ?? '',
       10
     )
 
@@ -183,7 +190,7 @@ type ResponseJSON =
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doAddLotTypeField',
+        `${los.urlPrefix}/admin/doAddLotTypeField`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -193,7 +200,10 @@ type ResponseJSON =
 
           if (responseJSON.success) {
             addCloseModalFunction()
-            openEditLotTypeField(lotTypeId, responseJSON.lotTypeFieldId!)
+            openEditLotTypeField(
+              lotTypeId,
+              responseJSON.lotTypeFieldId as number
+            )
           }
         }
       )
@@ -219,7 +229,7 @@ type ResponseJSON =
           ) as HTMLInputElement
         ).focus()
 
-        modalElement.querySelector('form')!.addEventListener('submit', doAdd)
+        modalElement.querySelector('form')?.addEventListener('submit', doAdd)
 
         bulmaJS.toggleHtmlClipped()
       },
@@ -256,11 +266,13 @@ type ResponseJSON =
   ): void {
     const lotType = lotTypes.find((currentLotType) => {
       return currentLotType.lotTypeId === lotTypeId
-    })!
+    }) as recordTypes.LotType
 
-    const lotTypeField = lotType.lotTypeFields!.find((currentLotTypeField) => {
-      return currentLotTypeField.lotTypeFieldId === lotTypeFieldId
-    })!
+    const lotTypeField = (lotType.lotTypeFields ?? []).find(
+      (currentLotTypeField) => {
+        return currentLotTypeField.lotTypeFieldId === lotTypeFieldId
+      }
+    ) as recordTypes.LotTypeField
 
     let minimumLengthElement: HTMLInputElement
     let maximumLengthElement: HTMLInputElement
@@ -289,7 +301,7 @@ type ResponseJSON =
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doUpdateLotTypeField',
+        `${los.urlPrefix}/admin/doUpdateLotTypeField`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -304,7 +316,7 @@ type ResponseJSON =
 
     function doDelete(): void {
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doDeleteLotTypeField',
+        `${los.urlPrefix}/admin/doDeleteLotTypeField`,
         {
           lotTypeFieldId
         },
@@ -344,7 +356,7 @@ type ResponseJSON =
           modalElement.querySelector(
             '#lotTypeFieldEdit--lotTypeField'
           ) as HTMLInputElement
-        ).value = lotTypeField.lotTypeField!
+        ).value = lotTypeField.lotTypeField ?? ''
         ;(
           modalElement.querySelector(
             '#lotTypeFieldEdit--isRequired'
@@ -355,25 +367,27 @@ type ResponseJSON =
           '#lotTypeFieldEdit--minimumLength'
         ) as HTMLInputElement
 
-        minimumLengthElement.value = lotTypeField.minimumLength!.toString()
+        minimumLengthElement.value =
+          lotTypeField.minimumLength?.toString() ?? ''
 
         maximumLengthElement = modalElement.querySelector(
           '#lotTypeFieldEdit--maximumLength'
         ) as HTMLInputElement
 
-        maximumLengthElement.value = lotTypeField.maximumLength!.toString()
+        maximumLengthElement.value =
+          lotTypeField.maximumLength?.toString() ?? ''
 
         patternElement = modalElement.querySelector(
           '#lotTypeFieldEdit--pattern'
         ) as HTMLInputElement
 
-        patternElement.value = lotTypeField.pattern!
+        patternElement.value = lotTypeField.pattern ?? ''
 
         lotTypeFieldValuesElement = modalElement.querySelector(
           '#lotTypeFieldEdit--lotTypeFieldValues'
         ) as HTMLTextAreaElement
 
-        lotTypeFieldValuesElement.value = lotTypeField.lotTypeFieldValues!
+        lotTypeFieldValuesElement.value = lotTypeField.lotTypeFieldValues ?? ''
 
         toggleInputFields()
       },
@@ -384,7 +398,7 @@ type ResponseJSON =
         bulmaJS.toggleHtmlClipped()
         cityssm.enableNavBlocker()
 
-        modalElement.querySelector('form')!.addEventListener('submit', doUpdate)
+        modalElement.querySelector('form')?.addEventListener('submit', doUpdate)
 
         minimumLengthElement.addEventListener('keyup', updateMaximumLengthMin)
         updateMaximumLengthMin()
@@ -392,8 +406,8 @@ type ResponseJSON =
         lotTypeFieldValuesElement.addEventListener('keyup', toggleInputFields)
 
         modalElement
-          .querySelector('#button--deleteLotTypeField')!
-          .addEventListener('click', confirmDoDelete)
+          .querySelector('#button--deleteLotTypeField')
+          ?.addEventListener('click', confirmDoDelete)
       },
       onremoved() {
         bulmaJS.toggleHtmlClipped()
@@ -410,7 +424,7 @@ type ResponseJSON =
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--lotTypeField'
         ) as HTMLElement
-      ).dataset.lotTypeFieldId!,
+      ).dataset.lotTypeFieldId ?? '',
       10
     )
 
@@ -419,7 +433,7 @@ type ResponseJSON =
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--lotType'
         ) as HTMLElement
-      ).dataset.lotTypeId!,
+      ).dataset.lotTypeId ?? '',
       10
     )
 
@@ -453,15 +467,13 @@ type ResponseJSON =
     lotTypeFields: recordTypes.LotTypeField[]
   ): void {
     if (lotTypeFields.length === 0) {
+      // eslint-disable-next-line no-unsanitized/method
       panelElement.insertAdjacentHTML(
         'beforeend',
-        '<div class="panel-block is-block' +
-          (expandedLotTypes.has(lotTypeId) ? '' : ' is-hidden') +
-          '">' +
-          '<div class="message is-info">' +
-          '<p class="message-body">There are no additional fields.</p>' +
-          '</div>' +
-          '</div>'
+        `<div class="panel-block is-block
+          ${expandedLotTypes.has(lotTypeId) ? '' : ' is-hidden'}">
+          <div class="message is-info"><p class="message-body">There are no additional fields.</p></div>
+          </div>`
       )
     } else {
       for (const lotTypeField of lotTypeFields) {
@@ -476,28 +488,28 @@ type ResponseJSON =
         panelBlockElement.dataset.lotTypeFieldId =
           lotTypeField.lotTypeFieldId.toString()
 
-        panelBlockElement.innerHTML =
-          '<div class="level is-mobile">' +
-          '<div class="level-left">' +
-          ('<div class="level-item">' +
-            '<a class="has-text-weight-bold button--editLotTypeField" href="#">' +
-            cityssm.escapeHTML(lotTypeField.lotTypeField ?? '') +
-            '</a>' +
-            '</div>') +
-          '</div>' +
-          '<div class="level-right">' +
-          ('<div class="level-item">' +
-            los.getMoveUpDownButtonFieldHTML(
-              'button--moveLotTypeFieldUp',
-              'button--moveLotTypeFieldDown'
-            ) +
-            '</div>') +
-          '</div>' +
-          '</div>'
+        // eslint-disable-next-line no-unsanitized/property
+        panelBlockElement.innerHTML = `<div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <a class="has-text-weight-bold button--editLotTypeField" href="#">
+                ${cityssm.escapeHTML(lotTypeField.lotTypeField ?? '')}
+              </a>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              ${los.getMoveUpDownButtonFieldHTML(
+                'button--moveLotTypeFieldUp',
+                'button--moveLotTypeFieldDown'
+              )}
+            </div>
+          </div>
+          </div>`
 
         panelBlockElement
-          .querySelector('.button--editLotTypeField')!
-          .addEventListener('click', openEditLotTypeFieldByClick)
+          .querySelector('.button--editLotTypeField')
+          ?.addEventListener('click', openEditLotTypeFieldByClick)
         ;(
           panelBlockElement.querySelector(
             '.button--moveLotTypeFieldUp'
@@ -518,11 +530,12 @@ type ResponseJSON =
     containerElement.innerHTML = ''
 
     if (lotTypes.length === 0) {
+      // eslint-disable-next-line no-unsanitized/method
       containerElement.insertAdjacentHTML(
         'afterbegin',
         `<div class="message is-warning>
-                <p class="message-body">There are no active ${los.escapedAliases.lot} types.</p>
-                </div>`
+          <p class="message-body">There are no active ${los.escapedAliases.lot} types.</p>
+          </div>`
       )
 
       return
@@ -535,75 +548,73 @@ type ResponseJSON =
 
       lotTypeContainer.dataset.lotTypeId = lotType.lotTypeId.toString()
 
-      lotTypeContainer.innerHTML =
-        '<div class="panel-heading">' +
-        '<div class="level is-mobile">' +
-        ('<div class="level-left">' +
-          '<div class="level-item">' +
-          '<button class="button is-small button--toggleLotTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">' +
-          (expandedLotTypes.has(lotType.lotTypeId)
-            ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
-            : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>') +
-          '</button>' +
-          '</div>' +
-          '<div class="level-item">' +
-          '<h2 class="title is-4">' +
-          cityssm.escapeHTML(lotType.lotType) +
-          '</h2>' +
-          '</div>' +
-          '</div>') +
-        ('<div class="level-right">' +
-          ('<div class="level-item">' +
-            '<button class="button is-danger is-small button--deleteLotType" type="button">' +
-            '<span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>' +
-            '<span>Delete</span>' +
-            '</button>' +
-            '</div>') +
-          ('<div class="level-item">' +
-            '<button class="button is-primary is-small button--editLotType" type="button">' +
-            '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
-            '<span>Edit ' +
-            los.escapedAliases.Lot +
-            ' Type</span>' +
-            '</button>' +
-            '</div>') +
-          ('<div class="level-item">' +
-            '<button class="button is-success is-small button--addLotTypeField" type="button">' +
-            '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
-            '<span>Add Field</span>' +
-            '</button>' +
-            '</div>') +
-          ('<div class="level-item">' +
-            los.getMoveUpDownButtonFieldHTML(
-              'button--moveLotTypeUp',
-              'button--moveLotTypeDown'
-            ) +
-            '</div>') +
-          '</div>') +
-        '</div>' +
-        '</div>'
+      // eslint-disable-next-line no-unsanitized/property
+      lotTypeContainer.innerHTML = `<div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <button class="button is-small button--toggleLotTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
+              ${
+                expandedLotTypes.has(lotType.lotTypeId)
+                  ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
+                  : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
+              }
+              </button>
+            </div>
+            <div class="level-item">
+              <h2 class="title is-4">${cityssm.escapeHTML(lotType.lotType)}</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <button class="button is-danger is-small button--deleteLotType" type="button">
+                <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
+                <span>Delete</span>
+              </button>
+            </div>
+            <div class="level-item">
+              <button class="button is-primary is-small button--editLotType" type="button">
+                <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                <span>Edit ${los.escapedAliases.Lot} Type</span>
+              </button>
+            </div>
+            <div class="level-item">
+              <button class="button is-success is-small button--addLotTypeField" type="button">
+                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add Field</span>
+              </button>
+            </div>
+            <div class="level-item">
+              ${los.getMoveUpDownButtonFieldHTML(
+                'button--moveLotTypeUp',
+                'button--moveLotTypeDown'
+              )}
+            </div>
+          </div>
+        </div>
+        </div>`
 
       renderLotTypeFields(
         lotTypeContainer,
         lotType.lotTypeId,
-        lotType.lotTypeFields!
+        lotType.lotTypeFields ?? []
       )
 
       lotTypeContainer
-        .querySelector('.button--toggleLotTypeFields')!
-        .addEventListener('click', toggleLotTypeFields)
+        .querySelector('.button--toggleLotTypeFields')
+        ?.addEventListener('click', toggleLotTypeFields)
 
       lotTypeContainer
-        .querySelector('.button--deleteLotType')!
-        .addEventListener('click', deleteLotType)
+        .querySelector('.button--deleteLotType')
+        ?.addEventListener('click', deleteLotType)
 
       lotTypeContainer
-        .querySelector('.button--editLotType')!
-        .addEventListener('click', openEditLotType)
+        .querySelector('.button--editLotType')
+        ?.addEventListener('click', openEditLotType)
 
       lotTypeContainer
-        .querySelector('.button--addLotTypeField')!
-        .addEventListener('click', openAddLotTypeField)
+        .querySelector('.button--addLotTypeField')
+        ?.addEventListener('click', openAddLotTypeField)
       ;(
         lotTypeContainer.querySelector(
           '.button--moveLotTypeUp'
@@ -620,22 +631,22 @@ type ResponseJSON =
   }
 
   document
-    .querySelector('#button--addLotType')!
-    .addEventListener('click', () => {
+    .querySelector('#button--addLotType')
+    ?.addEventListener('click', () => {
       let addCloseModalFunction: () => void
 
       function doAdd(submitEvent: SubmitEvent): void {
         submitEvent.preventDefault()
 
         cityssm.postJSON(
-          los.urlPrefix + '/admin/doAddLotType',
+          `${los.urlPrefix}/admin/doAddLotType`,
           submitEvent.currentTarget,
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as ResponseJSON
 
             if (responseJSON.success) {
               addCloseModalFunction()
-              lotTypes = responseJSON.lotTypes!
+              lotTypes = responseJSON.lotTypes
               renderLotTypes()
             } else {
               bulmaJS.alert({
@@ -660,7 +671,7 @@ type ResponseJSON =
             ) as HTMLInputElement
           ).focus()
 
-          modalElement.querySelector('form')!.addEventListener('submit', doAdd)
+          modalElement.querySelector('form')?.addEventListener('submit', doAdd)
 
           bulmaJS.toggleHtmlClipped()
         },
