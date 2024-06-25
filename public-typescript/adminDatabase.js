@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     var _a, _b;
     const los = exports.los;
     function doBackup() {
-        cityssm.postJSON(los.urlPrefix + '/admin/doBackupDatabase', {}, (rawResponseJSON) => {
+        cityssm.postJSON(`${los.urlPrefix}/admin/doBackupDatabase`, {}, (rawResponseJSON) => {
             var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
@@ -27,7 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function doCleanup() {
-        cityssm.postJSON(los.urlPrefix + '/admin/doCleanupDatabase', {}, (rawResponseJSON) => {
+        cityssm.postJSON(`${los.urlPrefix}/admin/doCleanupDatabase`, {}, (rawResponseJSON) => {
             var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {

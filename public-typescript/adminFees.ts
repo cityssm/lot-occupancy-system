@@ -1,14 +1,16 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../types/globalTypes'
-import type * as recordTypes from '../types/recordTypes'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type * as globalTypes from '../types/globalTypes.js'
+import type * as recordTypes from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+
+declare const exports: Record<string, unknown>
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -16,7 +18,7 @@ declare const bulmaJS: BulmaJS
     '#container--feeCategories'
   ) as HTMLElement
 
-  let feeCategories: recordTypes.FeeCategory[] = exports.feeCategories
+  let feeCategories = exports.feeCategories as recordTypes.FeeCategory[]
   delete exports.feeCategories
 
   type ResponseJSON =
@@ -48,45 +50,45 @@ declare const bulmaJS: BulmaJS
       feeCategoryContainerElement.dataset.feeCategoryId =
         feeCategory.feeCategoryId.toString()
 
-      feeCategoryContainerElement.innerHTML =
-        '<div class="panel-heading">' +
-        '<div class="columns">' +
-        ('<div class="column">' +
-          '<h2 class="title is-4">' +
-          cityssm.escapeHTML(feeCategory.feeCategory ?? '') +
-          '</h2>' +
-          '</div>') +
-        ('<div class="column is-narrow">' +
-          '<div class="field is-grouped is-justify-content-end">' +
-          (feeCategory.fees.length === 0
-            ? '<div class="control">' +
-              '<button class="button is-small is-danger button--deleteFeeCategory" type="button">' +
-              '<span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>' +
-              '<span>Delete Category</span>' +
-              '</button>' +
-              '</div>'
-            : '') +
-          ('<div class="control">' +
-            '<button class="button is-small is-primary button--editFeeCategory" type="button">' +
-            '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
-            '<span>Edit Category</span>' +
-            '</button>' +
-            '</div>') +
-          ('<div class="control">' +
-            '<button class="button is-small is-success button--addFee" data-cy="addFee" type="button">' +
-            '<span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>' +
-            '<span>Add Fee</span>' +
-            '</button>' +
-            '</div>') +
-          ('<div class="control">' +
-            los.getMoveUpDownButtonFieldHTML(
-              'button--moveFeeCategoryUp',
-              'button--moveFeeCategoryDown'
-            ) +
-            '</div>') +
-          '</div>') +
-        '</div>' +
-        '</div>'
+      // eslint-disable-next-line no-unsanitized/property
+      feeCategoryContainerElement.innerHTML = `<div class="panel-heading">
+        <div class="columns">
+          <div class="column">
+            <h2 class="title is-4">${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}</h2>
+          </div>
+          <div class="column is-narrow">
+            <div class="field is-grouped is-justify-content-end">
+            ${
+              feeCategory.fees.length === 0
+                ? `<div class="control">
+                    <button class="button is-small is-danger button--deleteFeeCategory" type="button">
+                    <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
+                    <span>Delete Category</span>
+                    </button>
+                    </div>`
+                : ''
+            }
+            <div class="control">
+              <button class="button is-small is-primary button--editFeeCategory" type="button">
+                <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                <span>Edit Category</span>
+              </button>
+            </div>
+            <div class="control">
+              <button class="button is-small is-success button--addFee" data-cy="addFee" type="button">
+                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add Fee</span>
+              </button>
+            </div>
+            <div class="control">
+              ${los.getMoveUpDownButtonFieldHTML(
+                'button--moveFeeCategoryUp',
+                'button--moveFeeCategoryDown'
+              )}
+            </div>
+          </div>
+        </div>
+        </div>`
 
       if (feeCategory.fees.length === 0) {
         feeCategoryContainerElement.insertAdjacentHTML(
@@ -103,8 +105,8 @@ declare const bulmaJS: BulmaJS
         )
 
         feeCategoryContainerElement
-          .querySelector('.button--deleteFeeCategory')!
-          .addEventListener('click', confirmDeleteFeeCategory)
+          .querySelector('.button--deleteFeeCategory')
+          ?.addEventListener('click', confirmDeleteFeeCategory)
       }
 
       for (const fee of feeCategory.fees) {
@@ -118,6 +120,7 @@ declare const bulmaJS: BulmaJS
           fee.occupancyTypeId !== undefined ||
           fee.lotTypeId !== undefined
 
+        // eslint-disable-next-line no-unsanitized/property
         panelBlockElement.innerHTML =
           '<div class="columns">' +
           ('<div class="column is-half">' +
@@ -128,7 +131,7 @@ declare const bulmaJS: BulmaJS
             '<small>' +
             cityssm
               .escapeHTML(fee.feeDescription ?? '')
-              .replace(/\n/g, '<br />') +
+              .replaceAll('\n', '<br />') +
             '</small>' +
             '</p>' +
             (hasTagsBlock
@@ -196,8 +199,8 @@ declare const bulmaJS: BulmaJS
           '</div>'
 
         panelBlockElement
-          .querySelector('a')!
-          .addEventListener('click', openEditFee)
+          .querySelector('a')
+          ?.addEventListener('click', openEditFee)
         ;(
           panelBlockElement.querySelector(
             '.button--moveFeeUp'
@@ -213,12 +216,12 @@ declare const bulmaJS: BulmaJS
       }
 
       feeCategoryContainerElement
-        .querySelector('.button--editFeeCategory')!
-        .addEventListener('click', openEditFeeCategory)
+        .querySelector('.button--editFeeCategory')
+        ?.addEventListener('click', openEditFeeCategory)
 
       feeCategoryContainerElement
-        .querySelector('.button--addFee')!
-        .addEventListener('click', openAddFee)
+        .querySelector('.button--addFee')
+        ?.addEventListener('click', openAddFee)
       ;(
         feeCategoryContainerElement.querySelector(
           '.button--moveFeeCategoryUp'
@@ -239,15 +242,15 @@ declare const bulmaJS: BulmaJS
    */
 
   document
-    .querySelector('#button--addFeeCategory')!
-    .addEventListener('click', () => {
+    .querySelector('#button--addFeeCategory')
+    ?.addEventListener('click', () => {
       let addCloseModalFunction: () => void
 
       function doAddFeeCategory(submitEvent: SubmitEvent): void {
         submitEvent.preventDefault()
 
         cityssm.postJSON(
-          los.urlPrefix + '/admin/doAddFeeCategory',
+          `${los.urlPrefix}/admin/doAddFeeCategory`,
           submitEvent.currentTarget,
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as ResponseJSON
@@ -278,8 +281,8 @@ declare const bulmaJS: BulmaJS
 
           addCloseModalFunction = closeModalFunction
           modalElement
-            .querySelector('form')!
-            .addEventListener('submit', doAddFeeCategory)
+            .querySelector('form')
+            ?.addEventListener('submit', doAddFeeCategory)
         },
         onremoved() {
           bulmaJS.toggleHtmlClipped()
@@ -312,7 +315,7 @@ declare const bulmaJS: BulmaJS
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doUpdateFeeCategory',
+        `${los.urlPrefix}/admin/doUpdateFeeCategory`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -343,7 +346,7 @@ declare const bulmaJS: BulmaJS
           modalElement.querySelector(
             '#feeCategoryEdit--feeCategory'
           ) as HTMLInputElement
-        ).value = feeCategory.feeCategory!
+        ).value = feeCategory.feeCategory
       },
       onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
@@ -351,8 +354,8 @@ declare const bulmaJS: BulmaJS
         editCloseModalFunction = closeModalFunction
 
         modalElement
-          .querySelector('form')!
-          .addEventListener('submit', doUpdateFeeCategory)
+          .querySelector('form')
+          ?.addEventListener('submit', doUpdateFeeCategory)
         ;(
           modalElement.querySelector(
             '#feeCategoryEdit--feeCategory'
@@ -371,13 +374,13 @@ declare const bulmaJS: BulmaJS
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--feeCategory'
         ) as HTMLElement
-      ).dataset.feeCategoryId!,
+      ).dataset.feeCategoryId ?? '',
       10
     )
 
     function doDelete(): void {
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doDeleteFeeCategory',
+        `${los.urlPrefix}/admin/doDeleteFeeCategory`,
         {
           feeCategoryId
         },
@@ -385,7 +388,7 @@ declare const bulmaJS: BulmaJS
           const responseJSON = rawResponseJSON as ResponseJSON
 
           if (responseJSON.success) {
-            feeCategories = responseJSON.feeCategories!
+            feeCategories = responseJSON.feeCategories
             renderFeeCategories()
           } else {
             bulmaJS.alert({
@@ -412,9 +415,9 @@ declare const bulmaJS: BulmaJS
   function moveFeeCategory(clickEvent: MouseEvent): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
-    const feeCategoryId = (
-      buttonElement.closest('.container--feeCategory') as HTMLElement
-    ).dataset.feeCategoryId!
+    const feeCategoryId =
+      (buttonElement.closest('.container--feeCategory') as HTMLElement).dataset
+        .feeCategoryId ?? ''
 
     cityssm.postJSON(
       los.urlPrefix +
@@ -430,7 +433,7 @@ declare const bulmaJS: BulmaJS
         const responseJSON = rawResponseJSON as ResponseJSON
 
         if (responseJSON.success) {
-          feeCategories = responseJSON.feeCategories!
+          feeCategories = responseJSON.feeCategories
           renderFeeCategories()
         } else {
           bulmaJS.alert({
@@ -453,7 +456,7 @@ declare const bulmaJS: BulmaJS
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--feeCategory'
         ) as HTMLElement
-      ).dataset.feeCategoryId!,
+      ).dataset.feeCategoryId ?? '',
       10
     )
 
@@ -463,7 +466,7 @@ declare const bulmaJS: BulmaJS
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doAddFee',
+        `${los.urlPrefix}/admin/doAddFee`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -492,7 +495,7 @@ declare const bulmaJS: BulmaJS
         for (const feeCategory of feeCategories) {
           const optionElement = document.createElement('option')
           optionElement.value = feeCategory.feeCategoryId.toString()
-          optionElement.textContent = feeCategory.feeCategory!
+          optionElement.textContent = feeCategory.feeCategory
 
           if (feeCategory.feeCategoryId === feeCategoryId) {
             optionElement.selected = true
@@ -536,7 +539,7 @@ declare const bulmaJS: BulmaJS
 
         addCloseModalFunction = closeModalFunction
 
-        modalElement.querySelector('form')!.addEventListener('submit', doAddFee)
+        modalElement.querySelector('form')?.addEventListener('submit', doAddFee)
         ;(
           modalElement.querySelector('#feeAdd--feeName') as HTMLInputElement
         ).focus()
@@ -553,13 +556,13 @@ declare const bulmaJS: BulmaJS
 
           if (feeFunctionElement.value === '') {
             feeFunctionElement
-              .closest('.select')!
-              .classList.remove('is-success')
+              .closest('.select')
+              ?.classList.remove('is-success')
 
             feeAmountElement.classList.add('is-success')
             feeAmountElement.disabled = false
           } else {
-            feeFunctionElement.closest('.select')!.classList.add('is-success')
+            feeFunctionElement.closest('.select')?.classList.add('is-success')
 
             feeAmountElement.classList.remove('is-success')
             feeAmountElement.disabled = true
@@ -567,8 +570,8 @@ declare const bulmaJS: BulmaJS
         })
 
         modalElement
-          .querySelector('#feeAdd--taxPercentage')!
-          .addEventListener('keyup', () => {
+          .querySelector('#feeAdd--taxPercentage')
+          ?.addEventListener('keyup', () => {
             const taxAmountElement = modalElement.querySelector(
               '#feeAdd--taxAmount'
             ) as HTMLInputElement
@@ -591,8 +594,8 @@ declare const bulmaJS: BulmaJS
           })
 
         modalElement
-          .querySelector('#feeAdd--includeQuantity')!
-          .addEventListener('change', () => {
+          .querySelector('#feeAdd--includeQuantity')
+          ?.addEventListener('change', () => {
             ;(
               modalElement.querySelector(
                 '#feeAdd--quantityUnit'
@@ -621,7 +624,7 @@ declare const bulmaJS: BulmaJS
     const feeId = Number.parseInt(feeContainerElement.dataset.feeId!, 10)
     const feeCategoryId = Number.parseInt(
       (feeContainerElement.closest('.container--feeCategory') as HTMLElement)
-        .dataset.feeCategoryId!
+        .dataset.feeCategoryId ?? ''
     )
 
     const feeCategory = feeCategories.find((currentFeeCategory) => {
@@ -639,13 +642,13 @@ declare const bulmaJS: BulmaJS
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/admin/doUpdateFee',
+        `${los.urlPrefix}/admin/doUpdateFee`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
 
           if (responseJSON.success) {
-            feeCategories = responseJSON.feeCategories!
+            feeCategories = responseJSON.feeCategories
             editCloseModalFunction()
             renderFeeCategories()
           } else {
@@ -664,7 +667,7 @@ declare const bulmaJS: BulmaJS
 
       function doDelete(): void {
         cityssm.postJSON(
-          los.urlPrefix + '/admin/doDeleteFee',
+          `${los.urlPrefix}/admin/doDeleteFee`,
           {
             feeId
           },
@@ -672,7 +675,7 @@ declare const bulmaJS: BulmaJS
             const responseJSON = rawResponseJSON as ResponseJSON
 
             if (responseJSON.success) {
-              feeCategories = responseJSON.feeCategories!
+              feeCategories = responseJSON.feeCategories
               editCloseModalFunction()
               renderFeeCategories()
             } else {
@@ -707,12 +710,12 @@ declare const bulmaJS: BulmaJS
       ) as HTMLSelectElement
 
       if (feeFunctionElement.value === '') {
-        feeFunctionElement.closest('.select')!.classList.remove('is-success')
+        feeFunctionElement.closest('.select')?.classList.remove('is-success')
 
         feeAmountElement.classList.add('is-success')
         feeAmountElement.disabled = false
       } else {
-        feeFunctionElement.closest('.select')!.classList.add('is-success')
+        feeFunctionElement.closest('.select')?.classList.add('is-success')
 
         feeAmountElement.classList.remove('is-success')
         feeAmountElement.disabled = true
@@ -769,7 +772,7 @@ declare const bulmaJS: BulmaJS
         for (const feeCategory of feeCategories) {
           const optionElement = document.createElement('option')
           optionElement.value = feeCategory.feeCategoryId.toString()
-          optionElement.textContent = feeCategory.feeCategory!
+          optionElement.textContent = feeCategory.feeCategory
 
           if (feeCategory.feeCategoryId === feeCategoryId) {
             optionElement.selected = true
@@ -827,8 +830,8 @@ declare const bulmaJS: BulmaJS
         ).value = fee.feeAmount ? fee.feeAmount.toFixed(2) : ''
 
         modalElement
-          .querySelector('#feeEdit--feeFunction')!
-          .addEventListener('change', toggleFeeFields)
+          .querySelector('#feeEdit--feeFunction')
+          ?.addEventListener('change', toggleFeeFields)
 
         toggleFeeFields()
         ;(
@@ -878,16 +881,16 @@ declare const bulmaJS: BulmaJS
         editCloseModalFunction = closeModalFunction
 
         modalElement
-          .querySelector('form')!
-          .addEventListener('submit', doUpdateFee)
+          .querySelector('form')
+          ?.addEventListener('submit', doUpdateFee)
 
         bulmaJS.init(modalElement)
 
         modalElement
-          .querySelector('.button--deleteFee')!
-          .addEventListener('click', confirmDeleteFee)
+          .querySelector('.button--deleteFee')
+          ?.addEventListener('click', confirmDeleteFee)
       },
-      onremoved: () => {
+      onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
     })
@@ -900,7 +903,7 @@ declare const bulmaJS: BulmaJS
       '.container--fee'
     ) as HTMLElement
 
-    const feeId = feeContainerElement.dataset.feeId!
+    const feeId = feeContainerElement.dataset.feeId ?? ''
 
     cityssm.postJSON(
       los.urlPrefix +
@@ -916,7 +919,7 @@ declare const bulmaJS: BulmaJS
         const responseJSON = rawResponseJSON as ResponseJSON
 
         if (responseJSON.success) {
-          feeCategories = responseJSON.feeCategories!
+          feeCategories = responseJSON.feeCategories
           renderFeeCategories()
         } else {
           bulmaJS.alert({
