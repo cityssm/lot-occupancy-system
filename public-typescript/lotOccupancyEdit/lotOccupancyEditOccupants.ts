@@ -112,69 +112,72 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
       if (!lotOccupantTypeSelected) {
         const optionElement = document.createElement('option')
 
-        optionElement.value = lotOccupancyOccupant.lotOccupantTypeId!.toString()
-        optionElement.textContent = lotOccupancyOccupant.lotOccupantType!
+        optionElement.value =
+          lotOccupancyOccupant.lotOccupantTypeId?.toString() ?? ''
+        optionElement.textContent = lotOccupancyOccupant.lotOccupantType ?? ''
 
         optionElement.dataset.occupantCommentTitle =
-          lotOccupancyOccupant.occupantCommentTitle!
+          lotOccupancyOccupant.occupantCommentTitle
 
         optionElement.dataset.fontAwesomeIconClass =
-          lotOccupancyOccupant.fontAwesomeIconClass!
+          lotOccupancyOccupant.fontAwesomeIconClass
 
         optionElement.selected = true
 
         lotOccupantTypeSelectElement.append(optionElement)
       }
 
-      modalElement.querySelector(
-        '#lotOccupancyOccupantEdit--fontAwesomeIconClass'
-      )!.innerHTML =
-        `<i class="fas fa-fw fa-${lotOccupancyOccupant.fontAwesomeIconClass!}" aria-hidden="true"></i>`
+      ;(
+        modalElement.querySelector(
+          '#lotOccupancyOccupantEdit--fontAwesomeIconClass'
+        ) as HTMLElement
+      ).innerHTML =
+        `<i class="fas fa-fw fa-${cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass ?? '')}" aria-hidden="true"></i>`
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantName'
         ) as HTMLInputElement
-      ).value = lotOccupancyOccupant.occupantName!
+      ).value = lotOccupancyOccupant.occupantName ?? ''
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantFamilyName'
         ) as HTMLInputElement
-      ).value = lotOccupancyOccupant.occupantFamilyName!
+      ).value = lotOccupancyOccupant.occupantFamilyName ?? ''
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantAddress1'
         ) as HTMLInputElement
-      ).value = lotOccupancyOccupant.occupantAddress1!
+      ).value = lotOccupancyOccupant.occupantAddress1 ?? ''
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantAddress2'
         ) as HTMLInputElement
-      ).value = lotOccupancyOccupant.occupantAddress2!
+      ).value = lotOccupancyOccupant.occupantAddress2 ?? ''
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantCity'
         ) as HTMLInputElement
-      ).value = lotOccupancyOccupant.occupantCity!
+      ).value = lotOccupancyOccupant.occupantCity ?? ''
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantProvince'
         ) as HTMLInputElement
-      ).value = lotOccupancyOccupant.occupantProvince!
+      ).value = lotOccupancyOccupant.occupantProvince ?? ''
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantPostalCode'
         ) as HTMLInputElement
-      ).value = lotOccupancyOccupant.occupantPostalCode!
+      ).value = lotOccupancyOccupant.occupantPostalCode ?? ''
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantPhoneNumber'
         ) as HTMLInputElement
-      ).value = lotOccupancyOccupant.occupantPhoneNumber!
+      ).value = lotOccupancyOccupant.occupantPhoneNumber ?? ''
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantEmailAddress'
         ) as HTMLInputElement
-      ).value = lotOccupancyOccupant.occupantEmailAddress!
+      ).value = lotOccupancyOccupant.occupantEmailAddress ?? ''
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantCommentTitle'
@@ -182,12 +185,12 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
       ).textContent =
         (lotOccupancyOccupant.occupantCommentTitle ?? '') === ''
           ? 'Comment'
-          : lotOccupancyOccupant.occupantCommentTitle!
+          : lotOccupancyOccupant.occupantCommentTitle ?? ''
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantComment'
         ) as HTMLTextAreaElement
-      ).value = lotOccupancyOccupant.occupantComment!
+      ).value = lotOccupancyOccupant.occupantComment ?? ''
     },
     onshown(modalElement, closeModalFunction) {
       bulmaJS.toggleHtmlClipped()
@@ -203,10 +206,12 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
           lotOccupantTypeIdElement.selectedOptions[0].dataset
             .fontAwesomeIconClass ?? 'user'
 
-        modalElement.querySelector(
-          '#lotOccupancyOccupantEdit--fontAwesomeIconClass'
-        )!.innerHTML =
-          `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`
+        ;(
+          modalElement.querySelector(
+            '#lotOccupancyOccupantEdit--fontAwesomeIconClass'
+          ) as HTMLElement
+        ).innerHTML =
+          `<i class="fas fa-fw fa-${cityssm.escapeHTML(fontAwesomeIconClass)}" aria-hidden="true"></i>`
 
         let occupantCommentTitle =
           lotOccupantTypeIdElement.selectedOptions[0].dataset
@@ -222,7 +227,7 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
         ).textContent = occupantCommentTitle
       })
 
-      editFormElement = modalElement.querySelector('form')!
+      editFormElement = modalElement.querySelector('form') as HTMLFormElement
       editFormElement.addEventListener('submit', editOccupant)
 
       editCloseModalFunction = closeModalFunction
@@ -236,11 +241,11 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
 function deleteLotOccupancyOccupant(clickEvent: Event): void {
   const lotOccupantIndex = (clickEvent.currentTarget as HTMLElement).closest(
     'tr'
-  )!.dataset.lotOccupantIndex
+  )?.dataset.lotOccupantIndex
 
   function doDelete(): void {
     cityssm.postJSON(
-      los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancyOccupant',
+      `${los.urlPrefix}/lotOccupancies/doDeleteLotOccupancyOccupant`,
       {
         lotOccupancyId,
         lotOccupantIndex
@@ -257,7 +262,7 @@ function deleteLotOccupancyOccupant(clickEvent: Event): void {
           renderLotOccupancyOccupants()
         } else {
           bulmaJS.alert({
-            title: 'Error Removing ' + los.escapedAliases.Occupant,
+            title: `Error Removing ${los.escapedAliases.Occupant}`,
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
@@ -270,7 +275,7 @@ function deleteLotOccupancyOccupant(clickEvent: Event): void {
     title: `Remove ${los.escapedAliases.Occupant}?`,
     message: `Are you sure you want to remove this ${los.escapedAliases.occupant}?`,
     okButton: {
-      text: 'Yes, Remove ' + los.escapedAliases.Occupant,
+      text: `Yes, Remove ${los.escapedAliases.Occupant}`,
       callbackFunction: doDelete
     },
     contextualColorName: 'warning'
@@ -285,6 +290,7 @@ function renderLotOccupancyOccupants(): void {
   cityssm.clearElement(occupantsContainer)
 
   if (lotOccupancyOccupants.length === 0) {
+    // eslint-disable-next-line no-unsanitized/property
     occupantsContainer.innerHTML = `<div class="message is-warning">
         <p class="message-body">There are no ${los.escapedAliases.occupants} associated with this record.</p>
         </div>`
@@ -295,6 +301,7 @@ function renderLotOccupancyOccupants(): void {
   const tableElement = document.createElement('table')
   tableElement.className = 'table is-fullwidth is-striped is-hoverable'
 
+  // eslint-disable-next-line no-unsanitized/property
   tableElement.innerHTML = `<thead><tr>
       <th>${los.escapedAliases.Occupant}</th>
       <th>Address</th>
@@ -309,38 +316,38 @@ function renderLotOccupancyOccupants(): void {
     tableRowElement.dataset.lotOccupantIndex =
       lotOccupancyOccupant.lotOccupantIndex!.toString()
 
+    // eslint-disable-next-line no-unsanitized/property
     tableRowElement.innerHTML =
       '<td>' +
       cityssm.escapeHTML(
         (lotOccupancyOccupant.occupantName ?? '') === '' &&
           (lotOccupancyOccupant.occupantFamilyName ?? '') === ''
           ? '(No Name)'
-          : lotOccupancyOccupant.occupantName! +
-              ' ' +
-              lotOccupancyOccupant.occupantFamilyName!
+          : `${lotOccupancyOccupant.occupantName} ${lotOccupancyOccupant.occupantFamilyName}`
       ) +
       '<br />' +
       ('<span class="tag">' +
         '<i class="fas fa-fw fa-' +
-        cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass!) +
+        cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass ?? '') +
         '" aria-hidden="true"></i>' +
         ' <span class="ml-1">' +
-        cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType!) +
+        cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType ?? '') +
         '</span>' +
         '</span>') +
       '</td>' +
       ('<td>' +
         ((lotOccupancyOccupant.occupantAddress1 ?? '') === ''
           ? ''
-          : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1!) +
+          : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1 ?? '') +
             '<br />') +
         ((lotOccupancyOccupant.occupantAddress2 ?? '') === ''
           ? ''
-          : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2!) +
+          : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2 ?? '') +
             '<br />') +
         ((lotOccupancyOccupant.occupantCity ?? '') === ''
           ? ''
-          : cityssm.escapeHTML(lotOccupancyOccupant.occupantCity!) + ', ') +
+          : cityssm.escapeHTML(lotOccupancyOccupant.occupantCity ?? '') +
+            ', ') +
         cityssm.escapeHTML(lotOccupancyOccupant.occupantProvince ?? '') +
         '<br />' +
         cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode ?? '') +
@@ -348,18 +355,20 @@ function renderLotOccupancyOccupants(): void {
       ('<td>' +
         ((lotOccupancyOccupant.occupantPhoneNumber ?? '') === ''
           ? ''
-          : cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber!) +
+          : cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber ?? '') +
             '<br />') +
         ((lotOccupancyOccupant.occupantEmailAddress ?? '') === ''
           ? ''
-          : cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress!)) +
+          : cityssm.escapeHTML(
+              lotOccupancyOccupant.occupantEmailAddress ?? ''
+            )) +
         '</td>') +
       ('<td>' +
         '<span data-tooltip="' +
         cityssm.escapeHTML(
           (lotOccupancyOccupant.occupantCommentTitle ?? '') === ''
             ? 'Comment'
-            : lotOccupancyOccupant.occupantCommentTitle!
+            : lotOccupancyOccupant.occupantCommentTitle ?? ''
         ) +
         '">' +
         cityssm.escapeHTML(lotOccupancyOccupant.occupantComment ?? '') +
@@ -372,7 +381,7 @@ function renderLotOccupancyOccupants(): void {
           ' <span>Edit</span>' +
           '</button>') +
         ('<button class="button is-light is-danger button--delete" data-tooltip="Delete ' +
-          cityssm.escapeHTML(exports.aliases.occupant) +
+          los.escapedAliases.Occupant +
           '" type="button" aria-label="Delete">' +
           '<i class="fas fa-trash" aria-hidden="true"></i>' +
           '</button>') +
@@ -380,14 +389,14 @@ function renderLotOccupancyOccupants(): void {
         '</td>')
 
     tableRowElement
-      .querySelector('.button--edit')!
-      .addEventListener('click', openEditLotOccupancyOccupant)
+      .querySelector('.button--edit')
+      ?.addEventListener('click', openEditLotOccupancyOccupant)
 
     tableRowElement
-      .querySelector('.button--delete')!
-      .addEventListener('click', deleteLotOccupancyOccupant)
+      .querySelector('.button--delete')
+      ?.addEventListener('click', deleteLotOccupancyOccupant)
 
-    tableElement.querySelector('tbody')!.append(tableRowElement)
+    tableElement.querySelector('tbody')?.append(tableRowElement)
   }
 
   occupantsContainer.append(tableElement)
@@ -413,9 +422,11 @@ if (isCreate) {
       occupantCommentTitle = 'Comment'
     }
 
-    formElement.querySelector(
-      '#lotOccupancy--occupantCommentTitle'
-    )!.textContent = occupantCommentTitle
+    ;(
+      formElement.querySelector(
+        '#lotOccupancy--occupantCommentTitle'
+      ) as HTMLElement
+    ).textContent = occupantCommentTitle
   })
 } else {
   renderLotOccupancyOccupants()
@@ -435,17 +446,17 @@ document
       formOrObject: HTMLFormElement | recordTypes.LotOccupancyOccupant
     ): void {
       cityssm.postJSON(
-        los.urlPrefix + '/lotOccupancies/doAddLotOccupancyOccupant',
+        `${los.urlPrefix}/lotOccupancies/doAddLotOccupancyOccupant`,
         formOrObject,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
             errorMessage?: string
-            lotOccupancyOccupants?: recordTypes.LotOccupancyOccupant[]
+            lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[]
           }
 
           if (responseJSON.success) {
-            lotOccupancyOccupants = responseJSON.lotOccupancyOccupants!
+            lotOccupancyOccupants = responseJSON.lotOccupancyOccupants
             addCloseModalFunction()
             renderLotOccupancyOccupants()
           } else {
@@ -478,8 +489,8 @@ document
 
       const lotOccupantTypeId = (
         panelBlockElement
-          .closest('.modal')!
-          .querySelector(
+          .closest('.modal')
+          ?.querySelector(
             '#lotOccupancyOccupantCopy--lotOccupantTypeId'
           ) as HTMLSelectElement
       ).value
@@ -507,19 +518,19 @@ document
           ) as HTMLInputElement
         ).value === ''
       ) {
-        searchResultsElement.innerHTML =
-          '<div class="message is-info">' +
-          '<p class="message-body">Enter a partial name or address in the search field above.</p>' +
-          '</div>'
+        searchResultsElement.innerHTML = `<div class="message is-info">
+          <p class="message-body">Enter a partial name or address in the search field above.</p>
+          </div>`
 
         return
       }
 
+      // eslint-disable-next-line no-unsanitized/property
       searchResultsElement.innerHTML =
         los.getLoadingParagraphHTML('Searching...')
 
       cityssm.postJSON(
-        los.urlPrefix + '/lotOccupancies/doSearchPastOccupants',
+        `${los.urlPrefix}/lotOccupancies/doSearchPastOccupants`,
         searchFormElement,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
@@ -536,35 +547,31 @@ document
             panelBlockElement.className = 'panel-block is-block'
             panelBlockElement.dataset.index = index.toString()
 
-            panelBlockElement.innerHTML =
-              '<strong>' +
-              cityssm.escapeHTML(occupant.occupantName ?? '') +
-              ' ' +
-              cityssm.escapeHTML(occupant.occupantFamilyName ?? '') +
-              '</strong>' +
-              '<br />' +
-              '<div class="columns">' +
-              ('<div class="column">' +
-                cityssm.escapeHTML(occupant.occupantAddress1 ?? '') +
-                '<br />' +
-                ((occupant.occupantAddress2 ?? '') === ''
-                  ? ''
-                  : cityssm.escapeHTML(occupant.occupantAddress2!) + '<br />') +
-                cityssm.escapeHTML(occupant.occupantCity ?? '') +
-                ', ' +
-                cityssm.escapeHTML(occupant.occupantProvince ?? '') +
-                '<br />' +
-                cityssm.escapeHTML(occupant.occupantPostalCode ?? '') +
-                '</div>') +
-              ('<div class="column">' +
-                ((occupant.occupantPhoneNumber ?? '') === ''
-                  ? ''
-                  : cityssm.escapeHTML(occupant.occupantPhoneNumber!) +
-                    '<br />') +
-                cityssm.escapeHTML(occupant.occupantEmailAddress ?? '') +
-                '<br />' +
-                '</div>') +
-              '</div>'
+            // eslint-disable-next-line no-unsanitized/property
+            panelBlockElement.innerHTML = `<strong>
+                ${cityssm.escapeHTML(occupant.occupantName ?? '')} ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
+              </strong><br />
+              <div class="columns">
+                <div class="column">
+                  ${cityssm.escapeHTML(occupant.occupantAddress1 ?? '')}<br />
+                  ${
+                    (occupant.occupantAddress2 ?? '') === ''
+                      ? ''
+                      : cityssm.escapeHTML(occupant.occupantAddress2 ?? '') +
+                        '<br />'
+                  }${cityssm.escapeHTML(occupant.occupantCity ?? '')}, ${cityssm.escapeHTML(occupant.occupantProvince ?? '')}<br />
+                  ${cityssm.escapeHTML(occupant.occupantPostalCode ?? '')}
+                </div>
+                <div class="column">
+                ${
+                  (occupant.occupantPhoneNumber ?? '') === ''
+                    ? ''
+                    : cityssm.escapeHTML(occupant.occupantPhoneNumber ?? '') +
+                      '<br />'
+                }
+                ${cityssm.escapeHTML(occupant.occupantEmailAddress ?? '')}<br />
+                </div>
+                </div>`
 
             panelBlockElement.addEventListener('click', addOccupantFromCopy)
 
@@ -614,12 +621,12 @@ document
           modalElement.querySelector(
             '#lotOccupancyOccupantAdd--occupantCity'
           ) as HTMLInputElement
-        ).value = exports.occupantCityDefault
+        ).value = exports.occupantCityDefault as string
         ;(
           modalElement.querySelector(
             '#lotOccupancyOccupantAdd--occupantProvince'
           ) as HTMLInputElement
-        ).value = exports.occupantProvinceDefault
+        ).value = exports.occupantProvinceDefault as string
       },
       onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
@@ -636,10 +643,10 @@ document
             lotOccupantTypeIdElement.selectedOptions[0].dataset
               .fontAwesomeIconClass ?? 'user'
 
-          modalElement.querySelector(
+          ;(modalElement.querySelector(
             '#lotOccupancyOccupantAdd--fontAwesomeIconClass'
-          )!.innerHTML =
-            `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`
+          ) as HTMLElement).innerHTML =
+            `<i class="fas fa-fw fa-${cityssm.escapeHTML(fontAwesomeIconClass)}" aria-hidden="true"></i>`
 
           let occupantCommentTitle =
             lotOccupantTypeIdElement.selectedOptions[0].dataset
@@ -649,9 +656,9 @@ document
             occupantCommentTitle = 'Comment'
           }
 
-          modalElement.querySelector(
+          ;(modalElement.querySelector(
             '#lotOccupancyOccupantAdd--occupantCommentTitle'
-          )!.textContent = occupantCommentTitle
+          ) as HTMLElement).textContent = occupantCommentTitle
         })
 
         addFormElement = modalElement.querySelector(
