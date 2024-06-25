@@ -474,8 +474,8 @@ declare const exports: Record<string, unknown>
       const selectedLotElement = clickEvent.currentTarget as HTMLElement
 
       renderSelectedLotAndClose(
-        selectedLotElement.dataset.lotId!,
-        selectedLotElement.dataset.lotName!
+        selectedLotElement.dataset.lotId ?? '',
+        selectedLotElement.dataset.lotName ?? ''
       )
     }
 

@@ -1,12 +1,13 @@
 "use strict";
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 let lotOccupancyOccupants = exports.lotOccupancyOccupants;
 delete exports.lotOccupancyOccupants;
 function openEditLotOccupancyOccupant(clickEvent) {
-    const lotOccupantIndex = Number.parseInt(clickEvent.currentTarget.closest('tr').dataset
-        .lotOccupantIndex, 10);
+    var _a, _b;
+    const lotOccupantIndex = Number.parseInt((_b = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.lotOccupantIndex) !== null && _b !== void 0 ? _b : '', 10);
     const lotOccupancyOccupant = lotOccupancyOccupants.find((currentLotOccupancyOccupant) => {
         return currentLotOccupancyOccupant.lotOccupantIndex === lotOccupantIndex;
     });
@@ -14,7 +15,7 @@ function openEditLotOccupancyOccupant(clickEvent) {
     let editCloseModalFunction;
     function editOccupant(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doUpdateLotOccupancyOccupant', editFormElement, (rawResponseJSON) => {
+        cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doUpdateLotOccupancyOccupant`, editFormElement, (rawResponseJSON) => {
             var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
@@ -24,7 +25,7 @@ function openEditLotOccupancyOccupant(clickEvent) {
             }
             else {
                 bulmaJS.alert({
-                    title: 'Error Updating ' + los.escapedAliases.Occupant,
+                    title: `Error Updating ${los.escapedAliases.Occupant}`,
                     message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                     contextualColorName: 'danger'
                 });
@@ -65,7 +66,8 @@ function openEditLotOccupancyOccupant(clickEvent) {
                 optionElement.selected = true;
                 lotOccupantTypeSelectElement.append(optionElement);
             }
-            modalElement.querySelector('#lotOccupancyOccupantEdit--fontAwesomeIconClass').innerHTML = `<i class="fas fa-fw fa-${lotOccupancyOccupant.fontAwesomeIconClass}" aria-hidden="true"></i>`;
+            modalElement.querySelector('#lotOccupancyOccupantEdit--fontAwesomeIconClass').innerHTML =
+                `<i class="fas fa-fw fa-${lotOccupancyOccupant.fontAwesomeIconClass}" aria-hidden="true"></i>`;
             modalElement.querySelector('#lotOccupancyOccupantEdit--occupantName').value = lotOccupancyOccupant.occupantName;
             modalElement.querySelector('#lotOccupancyOccupantEdit--occupantFamilyName').value = lotOccupancyOccupant.occupantFamilyName;
             modalElement.querySelector('#lotOccupancyOccupantEdit--occupantAddress1').value = lotOccupancyOccupant.occupantAddress1;
@@ -89,7 +91,8 @@ function openEditLotOccupancyOccupant(clickEvent) {
                 var _a, _b;
                 const fontAwesomeIconClass = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
                     .fontAwesomeIconClass) !== null && _a !== void 0 ? _a : 'user';
-                modalElement.querySelector('#lotOccupancyOccupantEdit--fontAwesomeIconClass').innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
+                modalElement.querySelector('#lotOccupancyOccupantEdit--fontAwesomeIconClass').innerHTML =
+                    `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
                 let occupantCommentTitle = (_b = lotOccupantTypeIdElement.selectedOptions[0].dataset
                     .occupantCommentTitle) !== null && _b !== void 0 ? _b : '';
                 if (occupantCommentTitle === '') {
@@ -165,9 +168,12 @@ function renderLotOccupancyOccupants() {
             lotOccupancyOccupant.lotOccupantIndex.toString();
         tableRowElement.innerHTML =
             '<td>' +
-                cityssm.escapeHTML(((_a = lotOccupancyOccupant.occupantName) !== null && _a !== void 0 ? _a : '') === '' && ((_b = lotOccupancyOccupant.occupantFamilyName) !== null && _b !== void 0 ? _b : '') === ''
+                cityssm.escapeHTML(((_a = lotOccupancyOccupant.occupantName) !== null && _a !== void 0 ? _a : '') === '' &&
+                    ((_b = lotOccupancyOccupant.occupantFamilyName) !== null && _b !== void 0 ? _b : '') === ''
                     ? '(No Name)'
-                    : lotOccupancyOccupant.occupantName + ' ' + lotOccupancyOccupant.occupantFamilyName) +
+                    : lotOccupancyOccupant.occupantName +
+                        ' ' +
+                        lotOccupancyOccupant.occupantFamilyName) +
                 '<br />' +
                 ('<span class="tag">' +
                     '<i class="fas fa-fw fa-' +
@@ -390,7 +396,8 @@ else {
                 var _a, _b;
                 const fontAwesomeIconClass = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
                     .fontAwesomeIconClass) !== null && _a !== void 0 ? _a : 'user';
-                modalElement.querySelector('#lotOccupancyOccupantAdd--fontAwesomeIconClass').innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
+                modalElement.querySelector('#lotOccupancyOccupantAdd--fontAwesomeIconClass').innerHTML =
+                    `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
                 let occupantCommentTitle = (_b = lotOccupantTypeIdElement.selectedOptions[0].dataset
                     .occupantCommentTitle) !== null && _b !== void 0 ? _b : '';
                 if (occupantCommentTitle === '') {

@@ -311,9 +311,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             lotSelectCloseModalFunction();
         }
         function selectExistingLot(clickEvent) {
+            var _a, _b;
             clickEvent.preventDefault();
             const selectedLotElement = clickEvent.currentTarget;
-            renderSelectedLotAndClose(selectedLotElement.dataset.lotId, selectedLotElement.dataset.lotName);
+            renderSelectedLotAndClose((_a = selectedLotElement.dataset.lotId) !== null && _a !== void 0 ? _a : '', (_b = selectedLotElement.dataset.lotName) !== null && _b !== void 0 ? _b : '');
         }
         function searchLots() {
             // eslint-disable-next-line no-unsanitized/property

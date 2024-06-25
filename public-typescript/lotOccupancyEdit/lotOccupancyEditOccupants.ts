@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../../types/globalTypes'
-import type * as recordTypes from '../../types/recordTypes'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type * as globalTypes from '../../types/globalTypes.js'
+import type * as recordTypes from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -16,14 +16,17 @@ declare const lotOccupancyId: string
 declare const isCreate: boolean
 declare const formElement: HTMLFormElement
 
-let lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[] =
-  exports.lotOccupancyOccupants
+declare const exports: Record<string, unknown>
+
+let lotOccupancyOccupants =
+  exports.lotOccupancyOccupants as recordTypes.LotOccupancyOccupant[]
+
 delete exports.lotOccupancyOccupants
 
 function openEditLotOccupancyOccupant(clickEvent: Event): void {
   const lotOccupantIndex = Number.parseInt(
-    (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
-      .lotOccupantIndex!,
+    (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+      .lotOccupantIndex ?? '',
     10
   )
 
@@ -40,22 +43,22 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
-      los.urlPrefix + '/lotOccupancies/doUpdateLotOccupancyOccupant',
+      `${los.urlPrefix}/lotOccupancies/doUpdateLotOccupancyOccupant`,
       editFormElement,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          lotOccupancyOccupants?: recordTypes.LotOccupancyOccupant[]
+          lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[]
         }
 
         if (responseJSON.success) {
-          lotOccupancyOccupants = responseJSON.lotOccupancyOccupants!
+          lotOccupancyOccupants = responseJSON.lotOccupancyOccupants
           editCloseModalFunction()
           renderLotOccupancyOccupants()
         } else {
           bulmaJS.alert({
-            title: 'Error Updating ' + los.escapedAliases.Occupant,
+            title: `Error Updating ${los.escapedAliases.Occupant}`,
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
@@ -125,7 +128,8 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
 
       modalElement.querySelector(
         '#lotOccupancyOccupantEdit--fontAwesomeIconClass'
-      )!.innerHTML = `<i class="fas fa-fw fa-${lotOccupancyOccupant.fontAwesomeIconClass!}" aria-hidden="true"></i>`
+      )!.innerHTML =
+        `<i class="fas fa-fw fa-${lotOccupancyOccupant.fontAwesomeIconClass!}" aria-hidden="true"></i>`
       ;(
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--occupantName'
@@ -201,7 +205,8 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
 
         modalElement.querySelector(
           '#lotOccupancyOccupantEdit--fontAwesomeIconClass'
-        )!.innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`
+        )!.innerHTML =
+          `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`
 
         let occupantCommentTitle =
           lotOccupantTypeIdElement.selectedOptions[0].dataset
@@ -307,9 +312,12 @@ function renderLotOccupancyOccupants(): void {
     tableRowElement.innerHTML =
       '<td>' +
       cityssm.escapeHTML(
-        (lotOccupancyOccupant.occupantName ?? '') === '' && (lotOccupancyOccupant.occupantFamilyName ?? '') === ''
+        (lotOccupancyOccupant.occupantName ?? '') === '' &&
+          (lotOccupancyOccupant.occupantFamilyName ?? '') === ''
           ? '(No Name)'
-          : lotOccupancyOccupant.occupantName! + ' ' + lotOccupancyOccupant.occupantFamilyName!
+          : lotOccupancyOccupant.occupantName! +
+              ' ' +
+              lotOccupancyOccupant.occupantFamilyName!
       ) +
       '<br />' +
       ('<span class="tag">' +
@@ -630,7 +638,8 @@ document
 
           modalElement.querySelector(
             '#lotOccupancyOccupantAdd--fontAwesomeIconClass'
-          )!.innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`
+          )!.innerHTML =
+            `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`
 
           let occupantCommentTitle =
             lotOccupantTypeIdElement.selectedOptions[0].dataset
