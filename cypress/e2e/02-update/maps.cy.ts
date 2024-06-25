@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 import { getConfigProperty } from '../../../helpers/functions.config.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { MapRecord } from '../../../types/recordTypes.js'
@@ -32,24 +29,32 @@ describe('Update - Maps', () => {
 
     // eslint-disable-next-line promise/catch-or-return, promise/always-return
     cy.fixture('map.json').then((mapJSON: MapRecord) => {
-      cy.get("input[name='mapName']").clear().type(mapJSON.mapName!)
+      cy.get("input[name='mapName']")
+        .clear()
+        .type(mapJSON.mapName ?? '')
       cy.get("textarea[name='mapDescription']")
         .clear()
-        .type(mapJSON.mapDescription!)
+        .type(mapJSON.mapDescription ?? '')
 
-      cy.get("input[name='mapAddress1']").clear().type(mapJSON.mapAddress1!)
-      cy.get("input[name='mapAddress2']").clear().type(mapJSON.mapAddress2!)
-      cy.get("input[name='mapPostalCode']").clear().type(mapJSON.mapPostalCode!)
+      cy.get("input[name='mapAddress1']")
+        .clear()
+        .type(mapJSON.mapAddress1 ?? '')
+      cy.get("input[name='mapAddress2']")
+        .clear()
+        .type(mapJSON.mapAddress2 ?? '')
+      cy.get("input[name='mapPostalCode']")
+        .clear()
+        .type(mapJSON.mapPostalCode ?? '')
       cy.get("input[name='mapPhoneNumber']")
         .clear()
-        .type(mapJSON.mapPhoneNumber!)
+        .type(mapJSON.mapPhoneNumber ?? '')
 
       cy.get("input[name='mapLatitude']")
         .clear()
-        .type(mapJSON.mapLatitude!.toString())
+        .type(mapJSON.mapLatitude?.toString() ?? '')
       cy.get("input[name='mapLongitude']")
         .clear()
-        .type(mapJSON.mapLongitude!.toString())
+        .type(mapJSON.mapLongitude?.toString() ?? '')
     })
 
     cy.log('Ensure the default city and province are used')
@@ -111,11 +116,11 @@ describe('Update - Maps', () => {
 
       cy.get("input[name='mapLatitude']").should(
         'have.value',
-        mapJSON.mapLatitude!.toString()
+        mapJSON.mapLatitude?.toString()
       )
       cy.get("input[name='mapLongitude']").should(
         'have.value',
-        mapJSON.mapLongitude!.toString()
+        mapJSON.mapLongitude?.toString()
       )
     })
   })

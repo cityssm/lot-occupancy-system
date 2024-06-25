@@ -1,10 +1,7 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/no-non-null-assertion, promise/always-return, promise/catch-or-return */
-
 import * as configFunctions from '../../../helpers/functions.config.js'
 import { testAdmin } from '../../../test/_globals.js'
 import type { Fee } from '../../../types/recordTypes.js'
-import { logout, login, ajaxDelayMillis } from '../../support/index.js'
+import { ajaxDelayMillis, login, logout } from '../../support/index.js'
 
 describe('Admin - Fee Management', () => {
   beforeEach('Loads page', () => {
