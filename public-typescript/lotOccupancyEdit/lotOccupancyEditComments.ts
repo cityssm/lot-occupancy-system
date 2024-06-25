@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../../types/globalTypes'
-import type * as recordTypes from '../../types/recordTypes'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type * as globalTypes from '../../types/globalTypes.js'
+import type * as recordTypes from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -14,14 +14,16 @@ declare const los: globalTypes.LOS
 
 declare const lotOccupancyId: string
 
-let lotOccupancyComments: recordTypes.LotOccupancyComment[] =
-  exports.lotOccupancyComments
+declare const exports: Record<string, unknown>
+
+let lotOccupancyComments =
+  exports.lotOccupancyComments as recordTypes.LotOccupancyComment[]
 delete exports.lotOccupancyComments
 
 function openEditLotOccupancyComment(clickEvent: Event): void {
   const lotOccupancyCommentId = Number.parseInt(
-    (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
-      .lotOccupancyCommentId!,
+    (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+      .lotOccupancyCommentId ?? '',
     10
   )
 
@@ -41,15 +43,17 @@ function openEditLotOccupancyComment(clickEvent: Event): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
-      los.urlPrefix + '/lotOccupancies/doUpdateLotOccupancyComment',
+      `${los.urlPrefix}/lotOccupancies/doUpdateLotOccupancyComment`,
       editFormElement,
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        lotOccupancyComments?: recordTypes.LotOccupancyComment[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          lotOccupancyComments?: recordTypes.LotOccupancyComment[]
+        }
+
         if (responseJSON.success) {
-          lotOccupancyComments = responseJSON.lotOccupancyComments!
+          lotOccupancyComments = responseJSON.lotOccupancyComments ?? []
           editCloseModalFunction()
           renderLotOccupancyComments()
         } else {
@@ -80,26 +84,26 @@ function openEditLotOccupancyComment(clickEvent: Event): void {
         modalElement.querySelector(
           '#lotOccupancyCommentEdit--lotOccupancyComment'
         ) as HTMLInputElement
-      ).value = lotOccupancyComment.lotOccupancyComment!
+      ).value = lotOccupancyComment.lotOccupancyComment ?? ''
 
       const lotOccupancyCommentDateStringElement = modalElement.querySelector(
         '#lotOccupancyCommentEdit--lotOccupancyCommentDateString'
       ) as HTMLInputElement
 
       lotOccupancyCommentDateStringElement.value =
-        lotOccupancyComment.lotOccupancyCommentDateString!
+        lotOccupancyComment.lotOccupancyCommentDateString ?? ''
 
       const currentDateString = cityssm.dateToString(new Date())
 
       lotOccupancyCommentDateStringElement.max =
         lotOccupancyComment.lotOccupancyCommentDateString! <= currentDateString
           ? currentDateString
-          : lotOccupancyComment.lotOccupancyCommentDateString!
+          : lotOccupancyComment.lotOccupancyCommentDateString ?? ''
       ;(
         modalElement.querySelector(
           '#lotOccupancyCommentEdit--lotOccupancyCommentTimeString'
         ) as HTMLInputElement
-      ).value = lotOccupancyComment.lotOccupancyCommentTimeString!
+      ).value = lotOccupancyComment.lotOccupancyCommentTimeString ?? ''
     },
     onshown(modalElement, closeModalFunction) {
       bulmaJS.toggleHtmlClipped()
@@ -111,7 +115,8 @@ function openEditLotOccupancyComment(clickEvent: Event): void {
         ) as HTMLTextAreaElement
       ).focus()
 
-      editFormElement = modalElement.querySelector('form')!
+      editFormElement = modalElement.querySelector('form') as HTMLFormElement
+
       editFormElement.addEventListener('submit', editComment)
 
       editCloseModalFunction = closeModalFunction
@@ -124,23 +129,25 @@ function openEditLotOccupancyComment(clickEvent: Event): void {
 
 function deleteLotOccupancyComment(clickEvent: Event): void {
   const lotOccupancyCommentId = Number.parseInt(
-    (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
-      .lotOccupancyCommentId!,
+    (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+      .lotOccupancyCommentId ?? '',
     10
   )
 
   function doDelete(): void {
     cityssm.postJSON(
-      los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancyComment',
+      `${los.urlPrefix}/lotOccupancies/doDeleteLotOccupancyComment`,
       {
         lotOccupancyId,
         lotOccupancyCommentId
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        lotOccupancyComments: recordTypes.LotOccupancyComment[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          lotOccupancyComments: recordTypes.LotOccupancyComment[]
+        }
+
         if (responseJSON.success) {
           lotOccupancyComments = responseJSON.lotOccupancyComments
           renderLotOccupancyComments()
@@ -172,63 +179,60 @@ function renderLotOccupancyComments(): void {
   ) as HTMLElement
 
   if (lotOccupancyComments.length === 0) {
-    containerElement.innerHTML =
-      '<div class="message is-info">' +
-      '<p class="message-body">There are no comments associated with this record.</p>' +
-      '</div>'
+    containerElement.innerHTML = `<div class="message is-info">
+      <p class="message-body">There are no comments associated with this record.</p>
+      </div>`
     return
   }
 
   const tableElement = document.createElement('table')
   tableElement.className = 'table is-fullwidth is-striped is-hoverable'
-  tableElement.innerHTML =
-    '<thead><tr>' +
-    '<th>Commentor</th>' +
-    '<th>Comment Date</th>' +
-    '<th>Comment</th>' +
-    '<th class="is-hidden-print"><span class="is-sr-only">Options</span></th>' +
-    '</tr></thead>' +
-    '<tbody></tbody>'
+  tableElement.innerHTML = `<thead><tr>
+    <th>Commentor</th>
+    <th>Comment Date</th>
+    <th>Comment</th>
+    <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+    </tr></thead>
+    <tbody></tbody>`
 
   for (const lotOccupancyComment of lotOccupancyComments) {
     const tableRowElement = document.createElement('tr')
     tableRowElement.dataset.lotOccupancyCommentId =
-      lotOccupancyComment.lotOccupancyCommentId!.toString()
+      lotOccupancyComment.lotOccupancyCommentId?.toString()
 
-    tableRowElement.innerHTML =
-      '<td>' +
-      cityssm.escapeHTML(lotOccupancyComment.recordCreate_userName ?? '') +
-      '</td>' +
-      '<td>' +
-      (lotOccupancyComment.lotOccupancyCommentDateString ?? '') +
-      (lotOccupancyComment.lotOccupancyCommentTime === 0
-        ? ''
-        : ' ' + lotOccupancyComment.lotOccupancyCommentTimePeriodString!) +
-      '</td>' +
-      '<td>' +
-      cityssm.escapeHTML(lotOccupancyComment.lotOccupancyComment ?? '') +
-      '</td>' +
-      ('<td class="is-hidden-print">' +
-        '<div class="buttons are-small is-justify-content-end">' +
-        ('<button class="button is-primary button--edit" type="button">' +
-          '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
-          ' <span>Edit</span>' +
-          '</button>') +
-        ('<button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">' +
-          '<i class="fas fa-trash" aria-hidden="true"></i>' +
-          '</button>') +
-        '</div>' +
-        '</td>')
-
-    tableRowElement
-      .querySelector('.button--edit')!
-      .addEventListener('click', openEditLotOccupancyComment)
+    tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(lotOccupancyComment.recordCreate_userName ?? '')}</td>
+      <td>
+      ${cityssm.escapeHTML(
+        lotOccupancyComment.lotOccupancyCommentDateString ?? ''
+      )}
+      ${cityssm.escapeHTML(
+        lotOccupancyComment.lotOccupancyCommentTime === 0
+          ? ''
+          : lotOccupancyComment.lotOccupancyCommentTimePeriodString ?? ''
+      )}
+      </td>
+      <td>${cityssm.escapeHTML(lotOccupancyComment.lotOccupancyComment ?? '')}</td>
+      <td class="is-hidden-print">
+        <div class="buttons are-small is-justify-content-end">
+        <button class="button is-primary button--edit" type="button">
+          <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+          <span>Edit</span>
+        </button>
+        <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
+          <i class="fas fa-trash" aria-hidden="true"></i>
+        </button>
+        </div>
+      </td>`
 
     tableRowElement
-      .querySelector('.button--delete')!
-      .addEventListener('click', deleteLotOccupancyComment)
+      .querySelector('.button--edit')
+      ?.addEventListener('click', openEditLotOccupancyComment)
 
-    tableElement.querySelector('tbody')!.append(tableRowElement)
+    tableRowElement
+      .querySelector('.button--delete')
+      ?.addEventListener('click', deleteLotOccupancyComment)
+
+    tableElement.querySelector('tbody')?.append(tableRowElement)
   }
 
   containerElement.innerHTML = ''
@@ -243,15 +247,17 @@ document.querySelector('#button--addComment')?.addEventListener('click', () => {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
-      los.urlPrefix + '/lotOccupancies/doAddLotOccupancyComment',
+      `${los.urlPrefix}/lotOccupancies/doAddLotOccupancyComment`,
       addFormElement,
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        lotOccupancyComments?: recordTypes.LotOccupancyComment[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          lotOccupancyComments: recordTypes.LotOccupancyComment[]
+        }
+
         if (responseJSON.success) {
-          lotOccupancyComments = responseJSON.lotOccupancyComments!
+          lotOccupancyComments = responseJSON.lotOccupancyComments
           addCloseModalFunction()
           renderLotOccupancyComments()
         } else {
@@ -282,7 +288,8 @@ document.querySelector('#button--addComment')?.addEventListener('click', () => {
         ) as HTMLTextAreaElement
       ).focus()
 
-      addFormElement = modalElement.querySelector('form')!
+      addFormElement = modalElement.querySelector('form') as HTMLFormElement
+
       addFormElement.addEventListener('submit', addComment)
 
       addCloseModalFunction = closeModalFunction
