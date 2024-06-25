@@ -121,82 +121,74 @@ declare const exports: Record<string, unknown>
           fee.lotTypeId !== undefined
 
         // eslint-disable-next-line no-unsanitized/property
-        panelBlockElement.innerHTML =
-          '<div class="columns">' +
-          ('<div class="column is-half">' +
-            '<p>' +
-            '<a class="has-text-weight-bold" href="#">' +
-            cityssm.escapeHTML(fee.feeName ?? '') +
-            '</a><br />' +
-            '<small>' +
-            cityssm
-              .escapeHTML(fee.feeDescription ?? '')
-              .replaceAll('\n', '<br />') +
-            '</small>' +
-            '</p>' +
-            (hasTagsBlock
-              ? '<p class="tags">' +
-                (fee.isRequired ?? false
-                  ? '<span class="tag is-warning">Required</span>'
-                  : '') +
-                ((fee.occupancyTypeId ?? -1) === -1
-                  ? ''
-                  : ' <span class="tag has-tooltip-bottom" data-tooltip="' +
-                    los.escapedAliases.Occupancy +
-                    ' Type Filter">' +
-                    '<span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span> ' +
-                    '<span>' +
-                    cityssm.escapeHTML(fee.occupancyType ?? '') +
-                    '</span>' +
-                    '</span>') +
-                ((fee.lotTypeId ?? -1) === -1
-                  ? ''
-                  : ' <span class="tag has-tooltip-bottom" data-tooltip="' +
-                    los.escapedAliases.Lot +
-                    ' Type Filter">' +
-                    '<span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span> ' +
-                    '<span>' +
-                    cityssm.escapeHTML(fee.lotType ?? '') +
-                    '</span>' +
-                    '</span>') +
-                '</p>'
-              : '') +
-            '</div>') +
-          ('<div class="column">' +
-            '<div class="columns is-mobile">' +
-            ('<div class="column has-text-centered">' +
-              (fee.feeFunction
-                ? cityssm.escapeHTML(fee.feeFunction) +
-                  '<br />' +
-                  '<small>Fee Function</small>'
-                : '$' +
-                  (fee.feeAmount ?? 0).toFixed(2) +
-                  '<br />' +
-                  '<small>Fee</small>') +
-              '</div>') +
-            ('<div class="column has-text-centered">' +
-              (fee.taxPercentage
-                ? fee.taxPercentage.toString() + '%'
-                : '$' + (fee.taxAmount ?? 0).toFixed(2)) +
-              '<br /><small>Tax</small>' +
-              '</div>') +
-            ('<div class="column has-text-centered">' +
-              (fee.includeQuantity
-                ? cityssm.escapeHTML(fee.quantityUnit ?? '') +
-                  '<br />' +
-                  '<small>Quantity</small>'
-                : '') +
-              '</div>') +
-            '</div>' +
-            '</div>') +
-          ('<div class="column is-narrow">' +
-            los.getMoveUpDownButtonFieldHTML(
+        panelBlockElement.innerHTML = `<div class="columns">
+          <div class="column is-half">
+            <p>
+              <a class="has-text-weight-bold" href="#">${cityssm.escapeHTML(fee.feeName ?? '')}</a><br />
+              <small>
+                ${cityssm
+                  .escapeHTML(fee.feeDescription ?? '')
+                  .replaceAll('\n', '<br />')}
+              </small>
+            </p>
+            ${
+              hasTagsBlock
+                ? '<p class="tags">' +
+                  (fee.isRequired ?? false
+                    ? '<span class="tag is-warning">Required</span>'
+                    : '') +
+                  ((fee.occupancyTypeId ?? -1) === -1
+                    ? ''
+                    : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Occupancy} Type Filter">
+                        <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
+                        <span>${cityssm.escapeHTML(fee.occupancyType ?? '')}</span>
+                        </span>`) +
+                  ((fee.lotTypeId ?? -1) === -1
+                    ? ''
+                    : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Lot} Type Filter">
+                        <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
+                        <span>${cityssm.escapeHTML(fee.lotType ?? '')}</span>
+                        </span>`) +
+                  '</p>'
+                : ''
+            }
+          </div>
+          <div class="column">
+            <div class="columns is-mobile">
+              <div class="column has-text-centered">
+                ${
+                  fee.feeFunction
+                    ? `${cityssm.escapeHTML(fee.feeFunction)}<br />
+                        <small>Fee Function</small>`
+                    : `$${(fee.feeAmount ?? 0).toFixed(2)}<br />
+                        <small>Fee</small>`
+                }
+              </div>
+              <div class="column has-text-centered">
+                ${
+                  fee.taxPercentage
+                    ? `${fee.taxPercentage.toString()}%`
+                    : `$${(fee.taxAmount ?? 0).toFixed(2)}`
+                }<br />
+                <small>Tax</small>
+              </div>
+              <div class="column has-text-centered">
+                ${
+                  fee.includeQuantity
+                    ? `${cityssm.escapeHTML(fee.quantityUnit ?? '')}<br />
+                        <small>Quantity</small>`
+                    : ''
+                }
+              </div>
+            </div>
+          </div>
+          <div class="column is-narrow">
+            ${los.getMoveUpDownButtonFieldHTML(
               'button--moveFeeUp',
               'button--moveFeeDown'
-            ) +
-            '</div>' +
-            '</div>') +
-          '</div>'
+            )}
+          </div>
+        </div>`
 
         panelBlockElement
           .querySelector('a')
@@ -301,13 +293,13 @@ declare const exports: Record<string, unknown>
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--feeCategory'
         ) as HTMLElement
-      ).dataset.feeCategoryId!,
+      ).dataset.feeCategoryId ?? '',
       10
     )
 
     const feeCategory = feeCategories.find((currentFeeCategory) => {
       return currentFeeCategory.feeCategoryId === feeCategoryId
-    })!
+    }) as recordTypes.FeeCategory
 
     let editCloseModalFunction: () => void
 
@@ -621,7 +613,7 @@ declare const exports: Record<string, unknown>
       clickEvent.currentTarget as HTMLElement
     ).closest('.container--fee') as HTMLElement
 
-    const feeId = Number.parseInt(feeContainerElement.dataset.feeId!, 10)
+    const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10)
     const feeCategoryId = Number.parseInt(
       (feeContainerElement.closest('.container--feeCategory') as HTMLElement)
         .dataset.feeCategoryId ?? ''
@@ -629,11 +621,11 @@ declare const exports: Record<string, unknown>
 
     const feeCategory = feeCategories.find((currentFeeCategory) => {
       return currentFeeCategory.feeCategoryId === feeCategoryId
-    })!
+    }) as recordTypes.FeeCategory
 
     const fee = feeCategory.fees.find((currentFee) => {
       return currentFee.feeId === feeId
-    })!
+    }) as recordTypes.Fee
 
     let editCloseModalFunction: () => void
     let editModalElement: HTMLElement

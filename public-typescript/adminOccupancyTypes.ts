@@ -219,7 +219,7 @@ type ResponseJSON =
             addCloseModalFunction()
             openEditOccupancyTypeField(
               occupancyTypeId,
-              responseJSON.occupancyTypeFieldId!
+              responseJSON.occupancyTypeFieldId ?? 0
             )
           }
         }

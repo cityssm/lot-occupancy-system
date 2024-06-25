@@ -334,13 +334,13 @@ declare const exports: Record<string, unknown>
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--milestone'
         ) as HTMLElement
-      ).dataset.workOrderMilestoneId!,
+      ).dataset.workOrderMilestoneId ?? '',
       10
     )
 
     const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
       return currentMilestone.workOrderMilestoneId === workOrderMilestoneId
-    })!
+    }) as recordTypes.WorkOrderMilestone
 
     function doComplete(): void {
       cityssm.postJSON(
@@ -357,8 +357,9 @@ declare const exports: Record<string, unknown>
       title: 'Complete Milestone',
       message:
         'Are you sure you want to complete this milestone?' +
-        (workOrderMilestone.workOrderMilestoneDateString !== '' &&
-        workOrderMilestone.workOrderMilestoneDateString! > currentDateString
+        (workOrderMilestone.workOrderMilestoneDateString !== undefined &&
+        workOrderMilestone.workOrderMilestoneDateString !== '' &&
+        workOrderMilestone.workOrderMilestoneDateString > currentDateString
           ? '<br /><strong>Note that this milestone is expected to be completed in the future.</strong>'
           : ''),
       messageIsHtml: true,
@@ -517,7 +518,8 @@ declare const exports: Record<string, unknown>
           const optionElement = document.createElement('option')
           optionElement.value =
             workOrderMilestone.workOrderMilestoneTypeId.toString()
-          optionElement.textContent = workOrderMilestone.workOrderMilestoneType ?? ''
+          optionElement.textContent =
+            workOrderMilestone.workOrderMilestoneType ?? ''
           optionElement.selected = true
           milestoneTypeElement.append(optionElement)
         }
@@ -592,7 +594,7 @@ declare const exports: Record<string, unknown>
       panelBlockElement.className = 'panel-block is-block container--milestone'
 
       panelBlockElement.dataset.workOrderMilestoneId =
-        milestone.workOrderMilestoneId!.toString()
+        milestone.workOrderMilestoneId?.toString()
 
       // eslint-disable-next-line no-unsanitized/property
       panelBlockElement.innerHTML =

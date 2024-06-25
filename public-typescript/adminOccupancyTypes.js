@@ -108,12 +108,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(`${los.urlPrefix}/admin/doAddOccupancyTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
+                var _a;
                 const responseJSON = rawResponseJSON;
                 expandedOccupancyTypes.add(occupancyTypeId);
                 occupancyTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     addCloseModalFunction();
-                    openEditOccupancyTypeField(occupancyTypeId, responseJSON.occupancyTypeFieldId);
+                    openEditOccupancyTypeField(occupancyTypeId, (_a = responseJSON.occupancyTypeFieldId) !== null && _a !== void 0 ? _a : 0);
                 }
             });
         }
