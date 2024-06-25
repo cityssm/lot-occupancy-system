@@ -13,7 +13,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .querySelectorAll('.button.is-static')[1].innerHTML = `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
     }
     "use strict";
-    /* eslint-disable @typescript-eslint/indent */
     /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
     Object.defineProperty(exports, "__esModule", { value: true });
     let workOrderTypes = exports.workOrderTypes;
@@ -189,7 +188,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     renderWorkOrderTypes();
     
     "use strict";
-    /* eslint-disable @typescript-eslint/indent */
     /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
     Object.defineProperty(exports, "__esModule", { value: true });
     let workOrderMilestoneTypes = exports.workOrderMilestoneTypes;
@@ -364,7 +362,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     renderWorkOrderMilestoneTypes();
     
     "use strict";
-    /* eslint-disable @typescript-eslint/indent */
     /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
     Object.defineProperty(exports, "__esModule", { value: true });
     let lotStatuses = exports.lotStatuses;
@@ -541,7 +538,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     renderLotStatuses();
     
     "use strict";
-    /* eslint-disable @typescript-eslint/indent */
     /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
     Object.defineProperty(exports, "__esModule", { value: true });
     let lotOccupantTypes = exports.lotOccupantTypes;

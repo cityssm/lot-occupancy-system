@@ -1,16 +1,17 @@
-/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair */
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../../types/globalTypes'
-import type * as recordTypes from '../../types/recordTypes'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type * as globalTypes from '../../types/globalTypes.js'
+import type * as recordTypes from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as globalTypes.LOS
+  const los = (exports as Record<string, unknown>).los as globalTypes.LOS
 
   const lotOccupancyId = (
     document.querySelector('#lotOccupancy--lotOccupancyId') as HTMLInputElement
@@ -45,9 +46,7 @@ declare const bulmaJS: BulmaJS
     formEvent.preventDefault()
 
     cityssm.postJSON(
-      los.urlPrefix +
-        '/lotOccupancies/' +
-        (isCreate ? 'doCreateLotOccupancy' : 'doUpdateLotOccupancy'),
+      `${los.urlPrefix}/lotOccupancies/${isCreate ? 'doCreateLotOccupancy' : 'doUpdateLotOccupancy'}`,
       formElement,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
@@ -73,7 +72,7 @@ declare const bulmaJS: BulmaJS
           }
         } else {
           bulmaJS.alert({
-            title: 'Error Saving ' + los.escapedAliases.Occupancy,
+            title: `Error Saving ${los.escapedAliases.Occupancy}`,
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
@@ -90,7 +89,7 @@ declare const bulmaJS: BulmaJS
 
   function doCopy(): void {
     cityssm.postJSON(
-      los.urlPrefix + '/lotOccupancies/doCopyLotOccupancy',
+      `${los.urlPrefix}/lotOccupancies/doCopyLotOccupancy`,
       {
         lotOccupancyId
       },
@@ -150,7 +149,7 @@ declare const bulmaJS: BulmaJS
 
       function doDelete(): void {
         cityssm.postJSON(
-          los.urlPrefix + '/lotOccupancies/doDeleteLotOccupancy',
+          `${los.urlPrefix}/lotOccupancies/doDeleteLotOccupancy`,
           {
             lotOccupancyId
           },
@@ -196,7 +195,7 @@ declare const bulmaJS: BulmaJS
         formEvent.preventDefault()
 
         cityssm.postJSON(
-          los.urlPrefix + '/workOrders/doCreateWorkOrder',
+          `${los.urlPrefix}/workOrders/doCreateWorkOrder`,
           formEvent.currentTarget,
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
@@ -250,8 +249,8 @@ declare const bulmaJS: BulmaJS
             '#workOrderCreate--workOrderTypeId'
           ) as HTMLSelectElement
 
-          const workOrderTypes =
-            exports.workOrderTypes as recordTypes.WorkOrderType[]
+          const workOrderTypes = (exports as Record<string, unknown>)
+            .workOrderTypes as recordTypes.WorkOrderType[]
 
           if (workOrderTypes.length === 1) {
             workOrderTypeSelectElement.innerHTML = ''
@@ -301,6 +300,7 @@ declare const bulmaJS: BulmaJS
 
     occupancyTypeIdElement.addEventListener('change', () => {
       if (occupancyTypeIdElement.value === '') {
+        // eslint-disable-next-line no-unsanitized/property
         lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
           <p class="message-body">Select the ${los.escapedAliases.occupancy} type to load the available fields.</p>
           </div>`
@@ -319,6 +319,7 @@ declare const bulmaJS: BulmaJS
           }
 
           if (responseJSON.occupancyTypeFields.length === 0) {
+            // eslint-disable-next-line no-unsanitized/property
             lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
               <p class="message-body">There are no additional fields for this ${los.escapedAliases.occupancy} type.</p>
               </div>`
@@ -332,17 +333,15 @@ declare const bulmaJS: BulmaJS
 
           for (const occupancyTypeField of responseJSON.occupancyTypeFields) {
             occupancyTypeFieldIds +=
-              ',' + occupancyTypeField.occupancyTypeFieldId!.toString()
+              ',' + occupancyTypeField.occupancyTypeFieldId.toString()
 
-            const fieldName =
-              'lotOccupancyFieldValue_' +
-              occupancyTypeField.occupancyTypeFieldId!.toString()
+            const fieldName = `lotOccupancyFieldValue_${occupancyTypeField.occupancyTypeFieldId.toString()}`
 
-            const fieldId = 'lotOccupancy--' + fieldName
+            const fieldId = `lotOccupancy--${fieldName}`
 
             const fieldElement = document.createElement('div')
             fieldElement.className = 'field'
-            fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label><div class="control"></div>`
+            fieldElement.innerHTML = `<label class="label" for="${cityssm.escapeHTML(fieldId)}"></label><div class="control"></div>`
             ;(
               fieldElement.querySelector('label') as HTMLLabelElement
             ).textContent = occupancyTypeField.occupancyTypeField as string
@@ -365,7 +364,7 @@ declare const bulmaJS: BulmaJS
                 occupancyTypeField.maximumLength as number
 
               if ((occupancyTypeField.pattern ?? '') !== '') {
-                inputElement.pattern = occupancyTypeField.pattern!
+                inputElement.pattern = occupancyTypeField.pattern as string
               }
 
               ;(fieldElement.querySelector('.control') as HTMLElement).append(
@@ -375,7 +374,7 @@ declare const bulmaJS: BulmaJS
               ;(
                 fieldElement.querySelector('.control') as HTMLElement
               ).innerHTML = `<div class="select is-fullwidth">
-                  <select id="${fieldId}" name="${fieldName}">
+                  <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
                   <option value="">(Not Set)</option>
                   </select>
                   </div>`
@@ -405,9 +404,9 @@ declare const bulmaJS: BulmaJS
 
           lotOccupancyFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
-            `<input name="occupancyTypeFieldIds" type="hidden" value="${occupancyTypeFieldIds.slice(
-              1
-            )}" />`
+            // eslint-disable-next-line no-secrets/no-secrets
+            `<input name="occupancyTypeFieldIds" type="hidden"
+              value="${cityssm.escapeHTML(occupancyTypeFieldIds.slice(1))}" />`
           )
         }
       )
@@ -481,11 +480,12 @@ declare const bulmaJS: BulmaJS
     }
 
     function searchLots(): void {
+      // eslint-disable-next-line no-unsanitized/property
       lotSelectResultsElement.innerHTML =
         los.getLoadingParagraphHTML('Searching...')
 
       cityssm.postJSON(
-        los.urlPrefix + '/lots/doSearchLots',
+        `${los.urlPrefix}/lots/doSearchLots`,
         lotSelectFormElement,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
@@ -512,23 +512,19 @@ declare const bulmaJS: BulmaJS
             panelBlockElement.dataset.lotId = lot.lotId.toString()
             panelBlockElement.dataset.lotName = lot.lotName
 
-            panelBlockElement.innerHTML =
-              '<div class="columns">' +
-              ('<div class="column">' +
-                cityssm.escapeHTML(lot.lotName ?? '') +
-                '<br />' +
-                '<span class="is-size-7">' +
-                cityssm.escapeHTML(lot.mapName ?? '') +
-                '</span>' +
-                '</div>') +
-              ('<div class="column">' +
-                cityssm.escapeHTML(lot.lotStatus as string) +
-                '<br />' +
-                '<span class="is-size-7">' +
-                (lot.lotOccupancyCount! > 0 ? 'Currently Occupied' : '') +
-                '</span>' +
-                '</div>') +
-              '</div>'
+            // eslint-disable-next-line no-unsanitized/property
+            panelBlockElement.innerHTML = `<div class="columns">
+              <div class="column">
+                ${cityssm.escapeHTML(lot.lotName ?? '')}<br />
+                <span class="is-size-7">${cityssm.escapeHTML(lot.mapName ?? '')}</span>
+              </div>
+              <div class="column">
+                ${cityssm.escapeHTML(lot.lotStatus as string)}<br />
+                <span class="is-size-7">
+                  ${lot.lotOccupancyCount! > 0 ? 'Currently Occupied' : ''}
+                </span>
+              </div>
+              </div>`
 
             panelBlockElement.addEventListener('click', selectExistingLot)
 
@@ -551,7 +547,7 @@ declare const bulmaJS: BulmaJS
       ).value
 
       cityssm.postJSON(
-        los.urlPrefix + '/lots/doCreateLot',
+        `${los.urlPrefix}/lots/doCreateLot`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {

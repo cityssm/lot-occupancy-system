@@ -1,5 +1,5 @@
 "use strict";
-/* eslint-disable spaced-comment, @typescript-eslint/indent, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     var _a, _b, _c;

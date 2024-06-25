@@ -1,10 +1,12 @@
 "use strict";
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     /*
      * Unsaved Changes
      */
+    var _a, _b, _c, _d;
     let _hasUnsavedChanges = false;
     function setUnsavedChanges() {
         if (!hasUnsavedChanges()) {
@@ -80,7 +82,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         displayMode: 'dialog'
     };
     function initializeDatePickers(containerElement) {
-        var _a, _b;
+        var _a, _b, _c;
         const dateElements = containerElement.querySelectorAll("input[type='date']");
         for (const dateElement of dateElements) {
             const datePickerOptions = Object.assign({}, datePickerBaseOptions);
@@ -110,7 +112,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
             });
             // Get the datepicker container element
-            const datepickerElement = containerElement.querySelector('#' + cal._id);
+            const datepickerElement = containerElement.querySelector(`#${cal._id}`);
             // Override the previous and next month button styles
             const datePickerNavButtonElements = datepickerElement.querySelectorAll('.datepicker-nav button.is-text');
             for (const datePickerNavButtonElement of datePickerNavButtonElements) {
@@ -133,84 +135,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // Apply a label
             const labelElement = document.querySelector("label[for='" + dateElement.id + "']");
             if (labelElement !== null) {
-                datepickerElement
-                    .querySelector('.datetimepicker-dummy-input')
-                    .setAttribute('aria-label', (_b = labelElement.textContent) !== null && _b !== void 0 ? _b : '');
+                (_b = datepickerElement
+                    .querySelector('.datetimepicker-dummy-input')) === null || _b === void 0 ? void 0 : _b.setAttribute('aria-label', (_c = labelElement.textContent) !== null && _c !== void 0 ? _c : '');
             }
         }
     }
-    /*
-      const timePickerBaseOptions: BulmaCalendarOptions = {
-          type: "time",
-          timeFormat: "hh:mm",
-          color: "info",
-          displayMode: "dialog",
-          validateLabel: "Set Time",
-          minuteSteps: 1
-      };
-  
-      const initializeTimePickers = (containerElement: HTMLElement) => {
-  
-          const timeElements = containerElement.querySelectorAll(
-              "input[type='time']"
-          ) as NodeListOf<HTMLInputElement>;
-  
-          for (const timeElement of timeElements) {
-              const timePickerOptions = Object.assign({}, timePickerBaseOptions);
-  
-              if (timeElement.required) {
-                  timePickerOptions.showClearButton = false;
-              }
-  
-              const cal = exports.bulmaCalendar.attach(timeElement, timePickerOptions)[0];
-  
-              // trigger change event on original element
-              cal.on("save", () => {
-                  timeElement.value = cal.value();
-                  timeElement.dispatchEvent(new Event("change"));
-              });
-  
-              // Disable html scrolling when calendar is open
-              cal.on("show", () => {
-                  document.querySelector("html")!.classList.add("is-clipped");
-              });
-  
-              // Reenable scrolling, if a modal window is not open
-              cal.on("hide", () => {
-                  bulmaJS.toggleHtmlClipped();
-              });
-  
-              // Get the datepicker container element
-              const timePickerElement = containerElement.querySelector("#" + cal._id) as HTMLElement;
-  
-              // Remove "cancel" button
-  
-              const timePickerCancelButtonElement = timePickerElement.querySelector(
-                  ".datetimepicker-footer-cancel"
-              );
-  
-              if (timePickerCancelButtonElement) {
-                  timePickerCancelButtonElement.remove();
-              }
-  
-              // Override the clear button style
-  
-              const clearButtonElement = timePickerElement.querySelector(
-                  ".datetimepicker-clear-button"
-              ) as HTMLElement;
-  
-              if (clearButtonElement) {
-                  if (timeElement.required) {
-                      clearButtonElement.remove();
-                  } else {
-                      clearButtonElement.dataset.tooltip = "Clear";
-                      clearButtonElement.innerHTML =
-                          '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
-                  }
-              }
-          }
-      };
-      */
     /*
      * Aliases
      */
@@ -301,27 +230,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     function getMoveUpDownButtonFieldHTML(upButtonClassNames, downButtonClassNames, isSmall = true) {
         return `<div class="field has-addons">
-            <div class="control">
-            <button
-                class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
-                data-tooltip="Move Up" data-direction="up" type="button" aria-label="Move Up">
-            <i class="fas fa-arrow-up" aria-hidden="true"></i>
-            </button>
-            </div>
-            <div class="control">
-            <button
-                class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
-                data-tooltip="Move Down" data-direction="down" type="button" aria-label="Move Down">
-            <i class="fas fa-arrow-down" aria-hidden="true"></i>
-            </button>
-            </div>
-            </div>`;
+      <div class="control">
+      <button
+          class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
+          data-tooltip="Move Up" data-direction="up" type="button" aria-label="Move Up">
+      <i class="fas fa-arrow-up" aria-hidden="true"></i>
+      </button>
+      </div>
+      <div class="control">
+      <button
+          class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
+          data-tooltip="Move Down" data-direction="down" type="button" aria-label="Move Down">
+      <i class="fas fa-arrow-down" aria-hidden="true"></i>
+      </button>
+      </div>
+      </div>`;
     }
     function getLoadingParagraphHTML(captionText = 'Loading...') {
         return `<p class="has-text-centered has-text-grey">
-            <i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />
-            ${cityssm.escapeHTML(captionText)}
-            </p>`;
+      <i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />
+      ${cityssm.escapeHTML(captionText)}
+      </p>`;
     }
     function getSearchResultsPagerHTML(limit, offset, count) {
         return ('<div class="level">' +
@@ -337,19 +266,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '</div>') +
             ('<div class="level-right">' +
                 (offset > 0
-                    ? '<div class="level-item">' +
-                        '<button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">' +
-                        '<i class="fas fa-arrow-left" aria-hidden="true"></i>' +
-                        '</button>' +
-                        '</div>'
+                    ? `<div class="level-item">
+              <button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+              </button>
+              </div>`
                     : '') +
                 (limit + offset < count
-                    ? '<div class="level-item">' +
-                        '<button class="button is-rounded is-link" data-page="next" type="button" title="Next">' +
-                        '<span>Next</span>' +
-                        '<span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>' +
-                        '</button>' +
-                        '</div>'
+                    ? `<div class="level-item">
+              <button class="button is-rounded is-link" data-page="next" type="button" title="Next">
+                <span>Next</span>
+                <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+              </button>
+              </div>`
                     : '') +
                 '</div>') +
             '</div>');
@@ -357,7 +286,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * URLs
      */
-    const urlPrefix = document.querySelector('main').dataset.urlPrefix;
+    const urlPrefix = (_b = (_a = document.querySelector('main')) === null || _a === void 0 ? void 0 : _a.dataset.urlPrefix) !== null && _b !== void 0 ? _b : '';
     function getRecordURL(recordTypePlural, recordId, edit, time) {
         return (urlPrefix +
             '/' +
@@ -387,7 +316,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     const los = {
         urlPrefix,
-        apiKey: document.querySelector('main').dataset.apiKey,
+        apiKey: (_d = (_c = document.querySelector('main')) === null || _c === void 0 ? void 0 : _c.dataset.apiKey) !== null && _d !== void 0 ? _d : '',
         dynamicsGPIntegrationIsEnabled,
         highlightMap,
         initializeUnlockFieldButtons,

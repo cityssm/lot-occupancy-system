@@ -1,5 +1,5 @@
 "use strict";
-/* eslint-disable @typescript-eslint/indent, unicorn/prefer-module */
+/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 let lotOccupancyFees = exports.lotOccupancyFees;
 delete exports.lotOccupancyFees;

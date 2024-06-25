@@ -1,12 +1,17 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../types/globalTypes'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 import type { Options as BulmaCalendarOptions } from 'bulma-calendar'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+
+import type * as globalTypes from '../types/globalTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+declare const exports: Record<string, unknown> & {
+  aliases: Record<string, string>
+}
 ;(() => {
   /*
    * Unsaved Changes
@@ -71,7 +76,7 @@ declare const bulmaJS: BulmaJS
   function unlockField(clickEvent: Event): void {
     const fieldElement = (clickEvent.currentTarget as HTMLElement).closest(
       '.field'
-    )!
+    ) as HTMLElement
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const inputOrSelectElement = fieldElement.querySelector(
@@ -158,7 +163,9 @@ declare const bulmaJS: BulmaJS
       })
 
       // Get the datepicker container element
-      const datepickerElement = containerElement.querySelector('#' + (cal._id as string))!
+      const datepickerElement = containerElement.querySelector(
+        `#${cal._id as string}`
+      )!
 
       // Override the previous and next month button styles
       const datePickerNavButtonElements = datepickerElement.querySelectorAll(
@@ -194,84 +201,11 @@ declare const bulmaJS: BulmaJS
 
       if (labelElement !== null) {
         datepickerElement
-          .querySelector('.datetimepicker-dummy-input')!
-          .setAttribute('aria-label', labelElement.textContent ?? '')
+          .querySelector('.datetimepicker-dummy-input')
+          ?.setAttribute('aria-label', labelElement.textContent ?? '')
       }
     }
   }
-
-  /*
-    const timePickerBaseOptions: BulmaCalendarOptions = {
-        type: "time",
-        timeFormat: "hh:mm",
-        color: "info",
-        displayMode: "dialog",
-        validateLabel: "Set Time",
-        minuteSteps: 1
-    };
-
-    const initializeTimePickers = (containerElement: HTMLElement) => {
-
-        const timeElements = containerElement.querySelectorAll(
-            "input[type='time']"
-        ) as NodeListOf<HTMLInputElement>;
-
-        for (const timeElement of timeElements) {
-            const timePickerOptions = Object.assign({}, timePickerBaseOptions);
-
-            if (timeElement.required) {
-                timePickerOptions.showClearButton = false;
-            }
-
-            const cal = exports.bulmaCalendar.attach(timeElement, timePickerOptions)[0];
-
-            // trigger change event on original element
-            cal.on("save", () => {
-                timeElement.value = cal.value();
-                timeElement.dispatchEvent(new Event("change"));
-            });
-
-            // Disable html scrolling when calendar is open
-            cal.on("show", () => {
-                document.querySelector("html")!.classList.add("is-clipped");
-            });
-
-            // Reenable scrolling, if a modal window is not open
-            cal.on("hide", () => {
-                bulmaJS.toggleHtmlClipped();
-            });
-
-            // Get the datepicker container element
-            const timePickerElement = containerElement.querySelector("#" + cal._id) as HTMLElement;
-
-            // Remove "cancel" button
-
-            const timePickerCancelButtonElement = timePickerElement.querySelector(
-                ".datetimepicker-footer-cancel"
-            );
-
-            if (timePickerCancelButtonElement) {
-                timePickerCancelButtonElement.remove();
-            }
-
-            // Override the clear button style
-
-            const clearButtonElement = timePickerElement.querySelector(
-                ".datetimepicker-clear-button"
-            ) as HTMLElement;
-
-            if (clearButtonElement) {
-                if (timeElement.required) {
-                    clearButtonElement.remove();
-                } else {
-                    clearButtonElement.dataset.tooltip = "Clear";
-                    clearButtonElement.innerHTML =
-                        '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
-                }
-            }
-        }
-    };
-    */
 
   /*
    * Aliases
@@ -400,32 +334,28 @@ declare const bulmaJS: BulmaJS
     isSmall = true
   ): string {
     return `<div class="field has-addons">
-            <div class="control">
-            <button
-                class="button ${
-                  isSmall ? 'is-small' : ''
-                } ${upButtonClassNames}"
-                data-tooltip="Move Up" data-direction="up" type="button" aria-label="Move Up">
-            <i class="fas fa-arrow-up" aria-hidden="true"></i>
-            </button>
-            </div>
-            <div class="control">
-            <button
-                class="button ${
-                  isSmall ? 'is-small' : ''
-                } ${downButtonClassNames}"
-                data-tooltip="Move Down" data-direction="down" type="button" aria-label="Move Down">
-            <i class="fas fa-arrow-down" aria-hidden="true"></i>
-            </button>
-            </div>
-            </div>`
+      <div class="control">
+      <button
+          class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
+          data-tooltip="Move Up" data-direction="up" type="button" aria-label="Move Up">
+      <i class="fas fa-arrow-up" aria-hidden="true"></i>
+      </button>
+      </div>
+      <div class="control">
+      <button
+          class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
+          data-tooltip="Move Down" data-direction="down" type="button" aria-label="Move Down">
+      <i class="fas fa-arrow-down" aria-hidden="true"></i>
+      </button>
+      </div>
+      </div>`
   }
 
   function getLoadingParagraphHTML(captionText = 'Loading...'): string {
     return `<p class="has-text-centered has-text-grey">
-            <i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />
-            ${cityssm.escapeHTML(captionText)}
-            </p>`
+      <i class="fas fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />
+      ${cityssm.escapeHTML(captionText)}
+      </p>`
   }
 
   function getSearchResultsPagerHTML(
@@ -447,19 +377,19 @@ declare const bulmaJS: BulmaJS
         '</div>') +
       ('<div class="level-right">' +
         (offset > 0
-          ? '<div class="level-item">' +
-            '<button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">' +
-            '<i class="fas fa-arrow-left" aria-hidden="true"></i>' +
-            '</button>' +
-            '</div>'
+          ? `<div class="level-item">
+              <button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+              </button>
+              </div>`
           : '') +
         (limit + offset < count
-          ? '<div class="level-item">' +
-            '<button class="button is-rounded is-link" data-page="next" type="button" title="Next">' +
-            '<span>Next</span>' +
-            '<span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>' +
-            '</button>' +
-            '</div>'
+          ? `<div class="level-item">
+              <button class="button is-rounded is-link" data-page="next" type="button" title="Next">
+                <span>Next</span>
+                <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+              </button>
+              </div>`
           : '') +
         '</div>') +
       '</div>'
@@ -470,7 +400,7 @@ declare const bulmaJS: BulmaJS
    * URLs
    */
 
-  const urlPrefix = document.querySelector('main')!.dataset.urlPrefix!
+  const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
   function getRecordURL(
     recordTypePlural: 'maps' | 'lots' | 'lotOccupancies' | 'workOrders',
@@ -524,7 +454,8 @@ declare const bulmaJS: BulmaJS
    * Settings
    */
 
-  const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled as boolean
+  const dynamicsGPIntegrationIsEnabled =
+    exports.dynamicsGPIntegrationIsEnabled as boolean
 
   /*
    * Declare LOS
@@ -532,7 +463,7 @@ declare const bulmaJS: BulmaJS
 
   const los: globalTypes.LOS = {
     urlPrefix,
-    apiKey: document.querySelector('main')!.dataset.apiKey!,
+    apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
     dynamicsGPIntegrationIsEnabled,
     highlightMap,
     initializeUnlockFieldButtons,

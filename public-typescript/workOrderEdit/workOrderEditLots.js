@@ -1,5 +1,4 @@
 "use strict";
-/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
