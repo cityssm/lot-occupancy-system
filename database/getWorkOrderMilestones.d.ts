@@ -1,9 +1,10 @@
+import { type DateString } from '@cityssm/utils-datetime';
 import type { PoolConnection } from 'better-sqlite-pool';
 import type { WorkOrderMilestone } from '../types/recordTypes.js';
 export interface WorkOrderMilestoneFilters {
     workOrderId?: number | string;
     workOrderMilestoneDateFilter?: 'upcomingMissed' | 'recent' | 'date' | 'blank' | 'notBlank';
-    workOrderMilestoneDateString?: string;
+    workOrderMilestoneDateString?: '' | DateString;
     workOrderTypeIds?: string;
     workOrderMilestoneTypeIds?: string;
 }

@@ -1,6 +1,6 @@
 <div class="modal" role="dialog">
   <div class="modal-background"></div>
-  <div class="modal-card">
+  <div class="modal-card" style="width:1000px">
     <header class="modal-card-head">
       <h3 class="modal-card-title">Add Milestone</h3>
       <button
@@ -10,84 +10,95 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <form id="form--milestoneAdd">
-        <input
-          id="milestoneAdd--workOrderId"
-          name="workOrderId"
-          type="hidden"
-          value=""
-        />
-
-        <div class="field">
-          <label class="label" for="milestoneAdd--workOrderMilestoneTypeId"
-            >Milestone Type</label
-          >
-          <div class="control">
-            <div class="select is-fullwidth">
-              <select
-                id="milestoneAdd--workOrderMilestoneTypeId"
-                name="workOrderMilestoneTypeId"
-              >
-                <option value="">(No Milestone Type)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column">
+      <div class="columns">
+        <div class="column">
+          <form id="form--milestoneAdd">
+            <input
+              id="milestoneAdd--workOrderId"
+              name="workOrderId"
+              type="hidden"
+              value=""
+            />
+    
             <div class="field">
-              <label
-                class="label"
-                for="milestoneAdd--workOrderMilestoneDateString"
-                >Milestone Date</label
+              <label class="label" for="milestoneAdd--workOrderMilestoneTypeId"
+                >Milestone Type</label
               >
-              <div class="control has-icons-left">
-                <input
-                  class="input"
-                  id="milestoneAdd--workOrderMilestoneDateString"
-                  name="workOrderMilestoneDateString"
-                  type="date"
-                />
-                <span class="icon is-left">
-                  <i class="fas fa-calendar" aria-hidden="true"></i>
-                </span>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    id="milestoneAdd--workOrderMilestoneTypeId"
+                    name="workOrderMilestoneTypeId"
+                  >
+                    <option value="">(No Milestone Type)</option>
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label
-                class="label"
-                for="milestoneAdd--workOrderMilestoneTimeString"
-                >Milestone Time</label
-              >
-              <div class="control has-icons-left">
-                <input
-                  class="input"
-                  id="milestoneAdd--workOrderMilestoneTimeString"
-                  name="workOrderMilestoneTimeString"
-                  type="time"
-                />
-                <span class="icon is-left">
-                  <i class="fas fa-clock" aria-hidden="true"></i>
-                </span>
+            <div class="columns">
+              <div class="column">
+                <div class="field">
+                  <label
+                    class="label"
+                    for="milestoneAdd--workOrderMilestoneDateString"
+                    >Milestone Date</label
+                  >
+                  <div class="control has-icons-left">
+                    <input
+                      class="input"
+                      id="milestoneAdd--workOrderMilestoneDateString"
+                      name="workOrderMilestoneDateString"
+                      type="date"
+                    />
+                    <span class="icon is-left">
+                      <i class="fas fa-calendar" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label
+                    class="label"
+                    for="milestoneAdd--workOrderMilestoneTimeString"
+                    >Milestone Time</label
+                  >
+                  <div class="control has-icons-left">
+                    <input
+                      class="input"
+                      id="milestoneAdd--workOrderMilestoneTimeString"
+                      name="workOrderMilestoneTimeString"
+                      type="time"
+                    />
+                    <span class="icon is-left">
+                      <i class="fas fa-clock" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
+            <div class="field">
+              <label class="label" for="milestoneAdd--workOrderMilestoneDescription"
+                >Description</label
+              >
+              <div class="control">
+                <textarea
+                  class="textarea"
+                  id="milestoneAdd--workOrderMilestoneDescription"
+                  name="workOrderMilestoneDescription"
+                ></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="column">
+          <div class="panel is-info" id="milestoneAdd--conflictingMilestonesPanel">
+            <h4 class="panel-heading">
+              Potentially Conflicting Milestones
+            </h4>
           </div>
         </div>
-        <div class="field">
-          <label class="label" for="milestoneAdd--workOrderMilestoneDescription"
-            >Description</label
-          >
-          <div class="control">
-            <textarea
-              class="textarea"
-              id="milestoneAdd--workOrderMilestoneDescription"
-              name="workOrderMilestoneDescription"
-            ></textarea>
-          </div>
-        </div>
-      </form>
+      </div>
     </section>
     <footer class="modal-card-foot justify-right">
       <button class="button is-success" type="submit" form="form--milestoneAdd">

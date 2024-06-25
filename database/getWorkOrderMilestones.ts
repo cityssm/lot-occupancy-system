@@ -23,7 +23,7 @@ export interface WorkOrderMilestoneFilters {
     | 'date'
     | 'blank'
     | 'notBlank'
-  workOrderMilestoneDateString?: string
+  workOrderMilestoneDateString?: '' | DateString
   workOrderTypeIds?: string
   workOrderMilestoneTypeIds?: string
 }
@@ -33,6 +33,7 @@ interface WorkOrderMilestoneOptions {
   orderBy: 'completion' | 'date'
 }
 
+// eslint-disable-next-line security/detect-unsafe-regex
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/
 
 function buildWhereClause(filters: WorkOrderMilestoneFilters): {
@@ -98,16 +99,17 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
     }
   }
 
-  if ((filters.workOrderMilestoneDateString ?? '') !== '') {
+  if (filters.workOrderMilestoneDateString !== undefined && filters.workOrderMilestoneDateString !== '') {
     sqlWhereClause += ' and m.workOrderMilestoneDate = ?'
     sqlParameters.push(
-      dateStringToInteger(filters.workOrderMilestoneDateString as DateString)
+      dateStringToInteger(filters.workOrderMilestoneDateString)
     )
   }
 
   if (
-    (filters.workOrderTypeIds ?? '') !== '' &&
-    commaSeparatedNumbersRegex.test(filters.workOrderTypeIds!)
+    filters.workOrderTypeIds !== undefined &&
+    filters.workOrderTypeIds !== '' &&
+    commaSeparatedNumbersRegex.test(filters.workOrderTypeIds)
   ) {
     sqlWhereClause += ` and w.workOrderTypeId in (${filters.workOrderTypeIds})`
   }
@@ -115,7 +117,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   if (
     filters.workOrderMilestoneTypeIds !== undefined &&
     filters.workOrderMilestoneTypeIds !== '' &&
-    commaSeparatedNumbersRegex.test(filters.workOrderMilestoneTypeIds!)
+    commaSeparatedNumbersRegex.test(filters.workOrderMilestoneTypeIds)
   ) {
     sqlWhereClause += ` and m.workOrderMilestoneTypeId in (${filters.workOrderMilestoneTypeIds})`
   }

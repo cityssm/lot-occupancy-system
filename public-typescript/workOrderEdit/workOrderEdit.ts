@@ -1,13 +1,16 @@
-/* eslint-disable spaced-comment, @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type * as globalTypes from '../../types/globalTypes'
-import type * as recordTypes from '../../types/recordTypes'
+import type * as globalTypes from '../../types/globalTypes.js'
+import type * as recordTypes from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+
+declare const exports: Record<string, unknown>
 ;(() => {
   const los = exports.los as globalTypes.LOS
 
@@ -23,8 +26,8 @@ declare const bulmaJS: BulmaJS
 
   los.initializeDatePickers(
     workOrderFormElement
-      .querySelector('#workOrderEdit--workOrderOpenDateString')!
-      .closest('.field') as HTMLElement
+      .querySelector('#workOrderEdit--workOrderOpenDateString')
+      ?.closest('.field') as HTMLElement
   )
   los.initializeUnlockFieldButtons(workOrderFormElement)
 
@@ -96,7 +99,7 @@ declare const bulmaJS: BulmaJS
 
   function doClose(): void {
     cityssm.postJSON(
-      los.urlPrefix + '/workOrders/doCloseWorkOrder',
+      `${los.urlPrefix}/workOrders/doCloseWorkOrder`,
       {
         workOrderId
       },
@@ -122,7 +125,7 @@ declare const bulmaJS: BulmaJS
 
   function doDelete(): void {
     cityssm.postJSON(
-      los.urlPrefix + '/workOrders/doDeleteWorkOrder',
+      `${los.urlPrefix}/workOrders/doDeleteWorkOrder`,
       {
         workOrderId
       },
@@ -134,7 +137,7 @@ declare const bulmaJS: BulmaJS
 
         if (responseJSON.success) {
           clearUnsavedChanges()
-          window.location.href = los.urlPrefix + '/workOrders'
+          window.location.href = `${los.urlPrefix}/workOrders`
         } else {
           bulmaJS.alert({
             title: 'Error Deleting Work Order',
@@ -225,15 +228,94 @@ declare const bulmaJS: BulmaJS
    * Milestones
    */
 
+  function clearPanelBlockElements(panelElement: HTMLElement): void {
+    for (const panelBlockElement of panelElement.querySelectorAll(
+      '.panel-block'
+    )) {
+      panelBlockElement.remove()
+    }
+  }
+
+  function refreshConflictingMilestones(
+    workOrderMilestoneDateString: string,
+    targetPanelElement: HTMLElement
+  ): void {
+    // Clear panel-block elements
+    clearPanelBlockElements(targetPanelElement)
+
+    // eslint-disable-next-line no-unsanitized/method
+    targetPanelElement.insertAdjacentHTML(
+      'beforeend',
+      `<div class="panel-block is-block">
+      ${los.getLoadingParagraphHTML('Loading conflicting milestones...')}
+      </div>`
+    )
+
+    cityssm.postJSON(
+      `${los.urlPrefix}/workOrders/doGetWorkOrderMilestones`,
+      {
+        workOrderMilestoneDateFilter: 'date',
+        workOrderMilestoneDateString
+      },
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          workOrderMilestones: recordTypes.WorkOrderMilestone[]
+        }
+
+        const workOrderMilestones = responseJSON.workOrderMilestones.filter(
+          (possibleMilestone) => {
+            return possibleMilestone.workOrderId.toString() !== workOrderId
+          }
+        )
+
+        clearPanelBlockElements(targetPanelElement)
+
+        for (const milestone of workOrderMilestones) {
+          targetPanelElement.insertAdjacentHTML(
+            'beforeend',
+            `<div class="panel-block is-block">
+              <div class="columns">
+                <div class="column is-5">
+                  ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === 0 ? 'No Time' : milestone.workOrderMilestoneTimePeriodString ?? '')}<br />
+                  <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
+                </div>
+                <div class="column">
+                  ${cityssm.escapeHTML(milestone.workOrderNumber ?? '')}<br />
+                  <span class="is-size-7">
+                    ${cityssm.escapeHTML(milestone.workOrderDescription ?? '')}
+                  </span>
+                </div>
+              </div>
+              </div>`
+          )
+        }
+
+        if (workOrderMilestones.length === 0) {
+          targetPanelElement.insertAdjacentHTML(
+            'beforeend',
+            `<div class="panel-block is-block">
+              <div class="message is-info">
+                <p class="message-body">
+                  There are no milestones on other work orders scheduled for
+                  ${cityssm.escapeHTML(workOrderMilestoneDateString)}.
+                </p>
+              </div>
+              </div>`
+          )
+        }
+      }
+    )
+  }
+
   function processMilestoneResponse(rawResponseJSON: unknown): void {
     const responseJSON = rawResponseJSON as {
       success: boolean
       errorMessage?: string
-      workOrderMilestones?: recordTypes.WorkOrderMilestone[]
+      workOrderMilestones: recordTypes.WorkOrderMilestone[]
     }
 
     if (responseJSON.success) {
-      workOrderMilestones = responseJSON.workOrderMilestones!
+      workOrderMilestones = responseJSON.workOrderMilestones
       renderMilestones()
     } else {
       bulmaJS.alert({
@@ -370,12 +452,13 @@ declare const bulmaJS: BulmaJS
     })!
 
     let editCloseModalFunction: () => void
+    let workOrderMilestoneDateStringElement: HTMLInputElement
 
     function doEdit(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/workOrders/doUpdateWorkOrderMilestone',
+        `${los.urlPrefix}/workOrders/doUpdateWorkOrderMilestone`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
@@ -403,7 +486,7 @@ declare const bulmaJS: BulmaJS
           modalElement.querySelector(
             '#milestoneEdit--workOrderMilestoneId'
           ) as HTMLInputElement
-        ).value = workOrderMilestone.workOrderMilestoneId!.toString()
+        ).value = workOrderMilestone.workOrderMilestoneId?.toString() ?? ''
 
         const milestoneTypeElement = modalElement.querySelector(
           '#milestoneEdit--workOrderMilestoneTypeId'
@@ -441,25 +524,27 @@ declare const bulmaJS: BulmaJS
           milestoneTypeElement.append(optionElement)
         }
 
-        ;(
+        workOrderMilestoneDateStringElement = (
           modalElement.querySelector(
             '#milestoneEdit--workOrderMilestoneDateString'
           ) as HTMLInputElement
-        ).value = workOrderMilestone.workOrderMilestoneDateString!
+        )
+        
+        workOrderMilestoneDateStringElement.value = workOrderMilestone.workOrderMilestoneDateString ?? ''
 
         if (workOrderMilestone.workOrderMilestoneTime) {
           ;(
             modalElement.querySelector(
               '#milestoneEdit--workOrderMilestoneTimeString'
             ) as HTMLInputElement
-          ).value = workOrderMilestone.workOrderMilestoneTimeString!
+          ).value = workOrderMilestone.workOrderMilestoneTimeString ?? ''
         }
 
         ;(
           modalElement.querySelector(
             '#milestoneEdit--workOrderMilestoneDescription'
           ) as HTMLTextAreaElement
-        ).value = workOrderMilestone.workOrderMilestoneDescription!
+        ).value = workOrderMilestone.workOrderMilestoneDescription ?? ''
       },
       onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
@@ -468,7 +553,26 @@ declare const bulmaJS: BulmaJS
 
         los.initializeDatePickers(modalElement)
         // los.initializeTimePickers(modalElement);
-        modalElement.querySelector('form')!.addEventListener('submit', doEdit)
+        modalElement.querySelector('form')?.addEventListener('submit', doEdit)
+
+        const conflictingMilestonePanelElement = document.querySelector(
+          '#milestoneEdit--conflictingMilestonesPanel'
+        ) as HTMLElement
+
+        workOrderMilestoneDateStringElement.addEventListener(
+          'change',
+          () => {
+            refreshConflictingMilestones(
+              workOrderMilestoneDateStringElement.value,
+              conflictingMilestonePanelElement
+            )
+          }
+        )
+
+        refreshConflictingMilestones(
+          workOrderMilestoneDateStringElement.value,
+          conflictingMilestonePanelElement
+        )
       },
       onremoved() {
         bulmaJS.toggleHtmlClipped()
@@ -588,8 +692,9 @@ declare const bulmaJS: BulmaJS
     document
       .querySelector('#button--addMilestone')
       ?.addEventListener('click', () => {
-        let addModalElement: HTMLElement
+
         let addFormElement: HTMLFormElement
+        let workOrderMilestoneDateStringElement: HTMLInputElement
         let addCloseModalFunction: () => void
 
         function doAdd(submitEvent: SubmitEvent): void {
@@ -601,7 +706,7 @@ declare const bulmaJS: BulmaJS
 
           function _doAdd(): void {
             cityssm.postJSON(
-              los.urlPrefix + '/workOrders/doAddWorkOrderMilestone',
+              `${los.urlPrefix}/workOrders/doAddWorkOrderMilestone`,
               addFormElement,
               (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON as {
@@ -619,11 +724,7 @@ declare const bulmaJS: BulmaJS
             )
           }
 
-          const milestoneDateString = (
-            addModalElement.querySelector(
-              '#milestoneAdd--workOrderMilestoneDateString'
-            ) as HTMLInputElement
-          ).value
+          const milestoneDateString = workOrderMilestoneDateStringElement.value
 
           if (
             milestoneDateString !== '' &&
@@ -666,14 +767,14 @@ declare const bulmaJS: BulmaJS
               milestoneTypeElement.append(optionElement)
             }
 
-            ;(
-              modalElement.querySelector(
-                '#milestoneAdd--workOrderMilestoneDateString'
-              ) as HTMLInputElement
-            ).valueAsDate = new Date()
+            workOrderMilestoneDateStringElement = modalElement.querySelector(
+              '#milestoneAdd--workOrderMilestoneDateString'
+            ) as HTMLInputElement
+
+            workOrderMilestoneDateStringElement.valueAsDate = new Date()
           },
           onshown(modalElement, closeModalFunction) {
-            addModalElement = modalElement
+
             addCloseModalFunction = closeModalFunction
 
             los.initializeDatePickers(modalElement)
@@ -686,8 +787,29 @@ declare const bulmaJS: BulmaJS
               ) as HTMLSelectElement
             ).focus()
 
-            addFormElement = modalElement.querySelector('form')!
+            addFormElement = modalElement.querySelector(
+              'form'
+            ) as HTMLFormElement
             addFormElement.addEventListener('submit', doAdd)
+
+            const conflictingMilestonePanelElement = document.querySelector(
+              '#milestoneAdd--conflictingMilestonesPanel'
+            ) as HTMLElement
+
+            workOrderMilestoneDateStringElement.addEventListener(
+              'change',
+              () => {
+                refreshConflictingMilestones(
+                  workOrderMilestoneDateStringElement.value,
+                  conflictingMilestonePanelElement
+                )
+              }
+            )
+
+            refreshConflictingMilestones(
+              workOrderMilestoneDateStringElement.value,
+              conflictingMilestonePanelElement
+            )
           },
           onremoved() {
             bulmaJS.toggleHtmlClipped()

@@ -42,11 +42,12 @@ function buildWhereClause(filters) {
             break;
         }
     }
-    if ((filters.workOrderMilestoneDateString ?? '') !== '') {
+    if (filters.workOrderMilestoneDateString !== undefined && filters.workOrderMilestoneDateString !== '') {
         sqlWhereClause += ' and m.workOrderMilestoneDate = ?';
         sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString));
     }
-    if ((filters.workOrderTypeIds ?? '') !== '' &&
+    if (filters.workOrderTypeIds !== undefined &&
+        filters.workOrderTypeIds !== '' &&
         commaSeparatedNumbersRegex.test(filters.workOrderTypeIds)) {
         sqlWhereClause += ` and w.workOrderTypeId in (${filters.workOrderTypeIds})`;
     }
