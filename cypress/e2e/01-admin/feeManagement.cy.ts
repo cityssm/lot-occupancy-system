@@ -27,7 +27,7 @@ describe('Admin - Fee Management', () => {
     cy.checkA11y()
 
     cy.fixture('fee.json').then((fee: Fee) => {
-      cy.get(".modal input[name='feeCategory']").type(fee.feeCategory!)
+      cy.get(".modal input[name='feeCategory']").type(fee.feeCategory ?? '')
 
       cy.get(".modal button[type='submit']").click()
 
@@ -49,13 +49,15 @@ describe('Admin - Fee Management', () => {
     cy.checkA11y()
 
     cy.fixture('fee.json').then((fee: Fee) => {
-      cy.get(".modal input[name='feeName']").type(fee.feeName!)
+      cy.get(".modal input[name='feeName']").type(fee.feeName ?? '')
 
-      cy.get(".modal textarea[name='feeDescription']").type(fee.feeDescription!)
+      cy.get(".modal textarea[name='feeDescription']").type(
+        fee.feeDescription ?? ''
+      )
 
       cy.get(".modal input[name='feeAmount']")
         .clear()
-        .type(fee.feeAmount!.toString())
+        .type(fee.feeAmount?.toString() ?? '')
 
       cy.get(".modal input[name='taxAmount']").should('be.disabled')
 
@@ -74,7 +76,7 @@ describe('Admin - Fee Management', () => {
 
       cy.get(".modal input[name='quantityUnit']")
         .should('not.be.disabled')
-        .type(fee.quantityUnit!)
+        .type(fee.quantityUnit ?? '')
 
       cy.get(".modal button[type='submit']").click()
 

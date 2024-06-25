@@ -19,7 +19,7 @@ describe('Admin - Fee Management', () => {
         cy.injectAxe();
         cy.checkA11y();
         cy.fixture('fee.json').then((fee) => {
-            cy.get(".modal input[name='feeCategory']").type(fee.feeCategory);
+            cy.get(".modal input[name='feeCategory']").type(fee.feeCategory ?? '');
             cy.get(".modal button[type='submit']").click();
             cy.wait(ajaxDelayMillis);
             cy.get('.container--feeCategory .panel-heading .title').should('contain.text', fee.feeCategory);
@@ -31,11 +31,11 @@ describe('Admin - Fee Management', () => {
         cy.injectAxe();
         cy.checkA11y();
         cy.fixture('fee.json').then((fee) => {
-            cy.get(".modal input[name='feeName']").type(fee.feeName);
-            cy.get(".modal textarea[name='feeDescription']").type(fee.feeDescription);
+            cy.get(".modal input[name='feeName']").type(fee.feeName ?? '');
+            cy.get(".modal textarea[name='feeDescription']").type(fee.feeDescription ?? '');
             cy.get(".modal input[name='feeAmount']")
                 .clear()
-                .type(fee.feeAmount.toString());
+                .type(fee.feeAmount?.toString() ?? '');
             cy.get(".modal input[name='taxAmount']").should('be.disabled');
             cy.get(".modal input[name='taxPercentage']")
                 .invoke('val')
@@ -46,7 +46,7 @@ describe('Admin - Fee Management', () => {
             cy.get(".modal select[name='includeQuantity']").select('1');
             cy.get(".modal input[name='quantityUnit']")
                 .should('not.be.disabled')
-                .type(fee.quantityUnit);
+                .type(fee.quantityUnit ?? '');
             cy.get(".modal button[type='submit']").click();
             cy.wait(ajaxDelayMillis);
             cy.get('.container--fee a').should('contain.text', fee.feeName);

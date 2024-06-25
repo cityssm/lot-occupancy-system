@@ -28,8 +28,8 @@ function getFeeGrandTotal(): number {
 
   for (const lotOccupancyFee of lotOccupancyFees) {
     feeGrandTotal +=
-      (lotOccupancyFee.feeAmount! + lotOccupancyFee.taxAmount!) *
-      lotOccupancyFee.quantity!
+      ((lotOccupancyFee.feeAmount ?? 0) + (lotOccupancyFee.taxAmount ?? 0)) *
+      (lotOccupancyFee.quantity ?? 0)
   }
 
   return feeGrandTotal
@@ -41,9 +41,10 @@ function editLotOccupancyFeeQuantity(clickEvent: Event): void {
       .feeId ?? '',
     10
   )
+
   const fee = lotOccupancyFees.find((possibleFee) => {
     return possibleFee.feeId === feeId
-  })!
+  }) as recordTypes.LotOccupancyFee
 
   let updateCloseModalFunction: () => void
 
@@ -56,11 +57,11 @@ function editLotOccupancyFeeQuantity(clickEvent: Event): void {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          lotOccupancyFees?: recordTypes.LotOccupancyFee[]
+          lotOccupancyFees: recordTypes.LotOccupancyFee[]
         }
 
         if (responseJSON.success) {
-          lotOccupancyFees = responseJSON.lotOccupancyFees!
+          lotOccupancyFees = responseJSON.lotOccupancyFees
           renderLotOccupancyFees()
           updateCloseModalFunction()
         } else {
@@ -226,7 +227,7 @@ function renderLotOccupancyFees(): void {
               <td>=</td>`
       }
       <td class="has-text-right">
-        $${(lotOccupancyFee.feeAmount! * lotOccupancyFee.quantity!).toFixed(2)}
+        $${((lotOccupancyFee.feeAmount ?? 0) * (lotOccupancyFee.quantity ?? 0)).toFixed(2)}
       </td>
       <td class="is-hidden-print">
       <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
@@ -256,8 +257,11 @@ function renderLotOccupancyFees(): void {
       .querySelector('tbody')
       ?.append(tableRowElement)
 
-    feeAmountTotal += lotOccupancyFee.feeAmount! * lotOccupancyFee.quantity!
-    taxAmountTotal += lotOccupancyFee.taxAmount! * lotOccupancyFee.quantity!
+    feeAmountTotal +=
+      (lotOccupancyFee.feeAmount ?? 0) * (lotOccupancyFee.quantity ?? 0)
+
+    taxAmountTotal +=
+      (lotOccupancyFee.taxAmount ?? 0) * (lotOccupancyFee.quantity ?? 0)
   }
 
   ;(
@@ -373,11 +377,11 @@ addFeeButtonElement.addEventListener('click', () => {
 
     const feeCategory = feeCategories.find((currentFeeCategory) => {
       return currentFeeCategory.feeCategoryId === feeCategoryId
-    })!
+    }) as recordTypes.FeeCategory
 
     const fee = feeCategory.fees.find((currentFee) => {
       return currentFee.feeId === feeId
-    })!
+    }) as recordTypes.Fee
 
     if (fee.includeQuantity ?? false) {
       doSetQuantityAndAddFee(fee)
@@ -532,7 +536,7 @@ function editLotOccupancyTransaction(clickEvent: Event): void {
 
   const transaction = lotOccupancyTransactions.find((possibleTransaction) => {
     return possibleTransaction.transactionIndex === transactionIndex
-  })!
+  }) as recordTypes.LotOccupancyTransaction
 
   let editCloseModalFunction: () => void
 
