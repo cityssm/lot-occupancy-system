@@ -626,7 +626,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function renderLotOccupancyOccupants() {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y;
         const occupantsContainer = document.querySelector('#container--lotOccupancyOccupants');
         cityssm.clearElement(occupantsContainer);
         if (lotOccupancyOccupants.length === 0) {
@@ -650,77 +650,58 @@ Object.defineProperty(exports, "__esModule", { value: true });
         for (const lotOccupancyOccupant of lotOccupancyOccupants) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.lotOccupantIndex =
-                lotOccupancyOccupant.lotOccupantIndex.toString();
+                (_a = lotOccupancyOccupant.lotOccupantIndex) === null || _a === void 0 ? void 0 : _a.toString();
             // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML =
-                '<td>' +
-                    cityssm.escapeHTML(((_a = lotOccupancyOccupant.occupantName) !== null && _a !== void 0 ? _a : '') === '' &&
-                        ((_b = lotOccupancyOccupant.occupantFamilyName) !== null && _b !== void 0 ? _b : '') === ''
-                        ? '(No Name)'
-                        : `${lotOccupancyOccupant.occupantName} ${lotOccupancyOccupant.occupantFamilyName}`) +
-                    '<br />' +
-                    ('<span class="tag">' +
-                        '<i class="fas fa-fw fa-' +
-                        cityssm.escapeHTML((_c = lotOccupancyOccupant.fontAwesomeIconClass) !== null && _c !== void 0 ? _c : '') +
-                        '" aria-hidden="true"></i>' +
-                        ' <span class="ml-1">' +
-                        cityssm.escapeHTML((_d = lotOccupancyOccupant.lotOccupantType) !== null && _d !== void 0 ? _d : '') +
-                        '</span>' +
-                        '</span>') +
-                    '</td>' +
-                    ('<td>' +
-                        (((_e = lotOccupancyOccupant.occupantAddress1) !== null && _e !== void 0 ? _e : '') === ''
-                            ? ''
-                            : cityssm.escapeHTML((_f = lotOccupancyOccupant.occupantAddress1) !== null && _f !== void 0 ? _f : '') +
-                                '<br />') +
-                        (((_g = lotOccupancyOccupant.occupantAddress2) !== null && _g !== void 0 ? _g : '') === ''
-                            ? ''
-                            : cityssm.escapeHTML((_h = lotOccupancyOccupant.occupantAddress2) !== null && _h !== void 0 ? _h : '') +
-                                '<br />') +
-                        (((_j = lotOccupancyOccupant.occupantCity) !== null && _j !== void 0 ? _j : '') === ''
-                            ? ''
-                            : cityssm.escapeHTML((_k = lotOccupancyOccupant.occupantCity) !== null && _k !== void 0 ? _k : '') +
-                                ', ') +
-                        cityssm.escapeHTML((_l = lotOccupancyOccupant.occupantProvince) !== null && _l !== void 0 ? _l : '') +
-                        '<br />' +
-                        cityssm.escapeHTML((_m = lotOccupancyOccupant.occupantPostalCode) !== null && _m !== void 0 ? _m : '') +
-                        '</td>') +
-                    ('<td>' +
-                        (((_o = lotOccupancyOccupant.occupantPhoneNumber) !== null && _o !== void 0 ? _o : '') === ''
-                            ? ''
-                            : cityssm.escapeHTML((_p = lotOccupancyOccupant.occupantPhoneNumber) !== null && _p !== void 0 ? _p : '') +
-                                '<br />') +
-                        (((_q = lotOccupancyOccupant.occupantEmailAddress) !== null && _q !== void 0 ? _q : '') === ''
-                            ? ''
-                            : cityssm.escapeHTML((_r = lotOccupancyOccupant.occupantEmailAddress) !== null && _r !== void 0 ? _r : '')) +
-                        '</td>') +
-                    ('<td>' +
-                        '<span data-tooltip="' +
-                        cityssm.escapeHTML(((_s = lotOccupancyOccupant.occupantCommentTitle) !== null && _s !== void 0 ? _s : '') === ''
-                            ? 'Comment'
-                            : (_t = lotOccupancyOccupant.occupantCommentTitle) !== null && _t !== void 0 ? _t : '') +
-                        '">' +
-                        cityssm.escapeHTML((_u = lotOccupancyOccupant.occupantComment) !== null && _u !== void 0 ? _u : '') +
-                        '</span>' +
-                        '</td>') +
-                    ('<td class="is-hidden-print">' +
-                        '<div class="buttons are-small is-justify-content-end">' +
-                        ('<button class="button is-primary button--edit" type="button">' +
-                            '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
-                            ' <span>Edit</span>' +
-                            '</button>') +
-                        ('<button class="button is-light is-danger button--delete" data-tooltip="Delete ' +
-                            los.escapedAliases.Occupant +
-                            '" type="button" aria-label="Delete">' +
-                            '<i class="fas fa-trash" aria-hidden="true"></i>' +
-                            '</button>') +
-                        '</div>' +
-                        '</td>');
-            (_v = tableRowElement
-                .querySelector('.button--edit')) === null || _v === void 0 ? void 0 : _v.addEventListener('click', openEditLotOccupancyOccupant);
+            tableRowElement.innerHTML = `<td>
+            ${cityssm.escapeHTML(((_b = lotOccupancyOccupant.occupantName) !== null && _b !== void 0 ? _b : '') === '' &&
+                ((_c = lotOccupancyOccupant.occupantFamilyName) !== null && _c !== void 0 ? _c : '') === ''
+                ? '(No Name)'
+                : `${lotOccupancyOccupant.occupantName} ${lotOccupancyOccupant.occupantFamilyName}`)}<br />
+            <span class="tag">
+              <i class="fas fa-fw fa-${cityssm.escapeHTML((_d = lotOccupancyOccupant.fontAwesomeIconClass) !== null && _d !== void 0 ? _d : '')}" aria-hidden="true"></i>
+              <span class="ml-1">${cityssm.escapeHTML((_e = lotOccupancyOccupant.lotOccupantType) !== null && _e !== void 0 ? _e : '')}</span>
+            </span>
+          </td><td>
+            ${((_f = lotOccupancyOccupant.occupantAddress1) !== null && _f !== void 0 ? _f : '') === ''
+                ? ''
+                : cityssm.escapeHTML((_g = lotOccupancyOccupant.occupantAddress1) !== null && _g !== void 0 ? _g : '') +
+                    '<br />'}
+            ${((_h = lotOccupancyOccupant.occupantAddress2) !== null && _h !== void 0 ? _h : '') === ''
+                ? ''
+                : cityssm.escapeHTML((_j = lotOccupancyOccupant.occupantAddress2) !== null && _j !== void 0 ? _j : '') +
+                    '<br />'}
+            ${((_k = lotOccupancyOccupant.occupantCity) !== null && _k !== void 0 ? _k : '') === ''
+                ? ''
+                : cityssm.escapeHTML((_l = lotOccupancyOccupant.occupantCity) !== null && _l !== void 0 ? _l : '') + ', '}
+            ${cityssm.escapeHTML((_m = lotOccupancyOccupant.occupantProvince) !== null && _m !== void 0 ? _m : '')}<br />
+            ${cityssm.escapeHTML((_o = lotOccupancyOccupant.occupantPostalCode) !== null && _o !== void 0 ? _o : '')}</td><td>${((_p = lotOccupancyOccupant.occupantPhoneNumber) !== null && _p !== void 0 ? _p : '') === ''
+                ? ''
+                : cityssm.escapeHTML((_q = lotOccupancyOccupant.occupantPhoneNumber) !== null && _q !== void 0 ? _q : '') + '<br />'}
+            ${((_r = lotOccupancyOccupant.occupantEmailAddress) !== null && _r !== void 0 ? _r : '') === ''
+                ? ''
+                : cityssm.escapeHTML((_s = lotOccupancyOccupant.occupantEmailAddress) !== null && _s !== void 0 ? _s : '')}
+          </td><td>
+            <span data-tooltip="${cityssm.escapeHTML(((_t = lotOccupancyOccupant.occupantCommentTitle) !== null && _t !== void 0 ? _t : '') === ''
+                ? 'Comment'
+                : (_u = lotOccupancyOccupant.occupantCommentTitle) !== null && _u !== void 0 ? _u : '')}">
+            ${cityssm.escapeHTML((_v = lotOccupancyOccupant.occupantComment) !== null && _v !== void 0 ? _v : '')}
+            </span>
+          </td><td class="is-hidden-print">
+            <div class="buttons are-small is-justify-content-end">
+              <button class="button is-primary button--edit" type="button">
+                <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                <span>Edit</span>
+              </button>
+              <button class="button is-light is-danger button--delete" data-tooltip="Delete ${los.escapedAliases.Occupant}" type="button" aria-label="Delete">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </td>`;
             (_w = tableRowElement
-                .querySelector('.button--delete')) === null || _w === void 0 ? void 0 : _w.addEventListener('click', deleteLotOccupancyOccupant);
-            (_x = tableElement.querySelector('tbody')) === null || _x === void 0 ? void 0 : _x.append(tableRowElement);
+                .querySelector('.button--edit')) === null || _w === void 0 ? void 0 : _w.addEventListener('click', openEditLotOccupancyOccupant);
+            (_x = tableRowElement
+                .querySelector('.button--delete')) === null || _x === void 0 ? void 0 : _x.addEventListener('click', deleteLotOccupancyOccupant);
+            (_y = tableElement.querySelector('tbody')) === null || _y === void 0 ? void 0 : _y.append(tableRowElement);
         }
         occupantsContainer.append(tableElement);
     }
@@ -774,12 +755,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         let pastOccupantSearchResults = [];
         function addOccupantFromCopy(clickEvent) {
-            var _a;
+            var _a, _b;
             clickEvent.preventDefault();
             const panelBlockElement = clickEvent.currentTarget;
-            const occupant = pastOccupantSearchResults[Number.parseInt(panelBlockElement.dataset.index, 10)];
-            const lotOccupantTypeId = ((_a = panelBlockElement
-                .closest('.modal')) === null || _a === void 0 ? void 0 : _a.querySelector('#lotOccupancyOccupantCopy--lotOccupantTypeId')).value;
+            const occupant = pastOccupantSearchResults[Number.parseInt((_a = panelBlockElement.dataset.index) !== null && _a !== void 0 ? _a : '', 10)];
+            const lotOccupantTypeId = ((_b = panelBlockElement
+                .closest('.modal')) === null || _b === void 0 ? void 0 : _b.querySelector('#lotOccupancyOccupantCopy--lotOccupantTypeId')).value;
             if (lotOccupantTypeId === '') {
                 bulmaJS.alert({
                     title: `No ${los.escapedAliases.Occupant} Type Selected`,

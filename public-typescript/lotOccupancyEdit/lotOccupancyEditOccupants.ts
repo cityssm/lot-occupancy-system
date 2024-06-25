@@ -34,7 +34,7 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
     (currentLotOccupancyOccupant) => {
       return currentLotOccupancyOccupant.lotOccupantIndex === lotOccupantIndex
     }
-  )!
+  ) as recordTypes.LotOccupancyOccupant
 
   let editFormElement: HTMLFormElement
   let editCloseModalFunction: () => void
@@ -314,79 +314,72 @@ function renderLotOccupancyOccupants(): void {
   for (const lotOccupancyOccupant of lotOccupancyOccupants) {
     const tableRowElement = document.createElement('tr')
     tableRowElement.dataset.lotOccupantIndex =
-      lotOccupancyOccupant.lotOccupantIndex!.toString()
+      lotOccupancyOccupant.lotOccupantIndex?.toString()
 
     // eslint-disable-next-line no-unsanitized/property
-    tableRowElement.innerHTML =
-      '<td>' +
-      cityssm.escapeHTML(
-        (lotOccupancyOccupant.occupantName ?? '') === '' &&
-          (lotOccupancyOccupant.occupantFamilyName ?? '') === ''
-          ? '(No Name)'
-          : `${lotOccupancyOccupant.occupantName} ${lotOccupancyOccupant.occupantFamilyName}`
-      ) +
-      '<br />' +
-      ('<span class="tag">' +
-        '<i class="fas fa-fw fa-' +
-        cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass ?? '') +
-        '" aria-hidden="true"></i>' +
-        ' <span class="ml-1">' +
-        cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType ?? '') +
-        '</span>' +
-        '</span>') +
-      '</td>' +
-      ('<td>' +
-        ((lotOccupancyOccupant.occupantAddress1 ?? '') === ''
-          ? ''
-          : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1 ?? '') +
-            '<br />') +
-        ((lotOccupancyOccupant.occupantAddress2 ?? '') === ''
-          ? ''
-          : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2 ?? '') +
-            '<br />') +
-        ((lotOccupancyOccupant.occupantCity ?? '') === ''
-          ? ''
-          : cityssm.escapeHTML(lotOccupancyOccupant.occupantCity ?? '') +
-            ', ') +
-        cityssm.escapeHTML(lotOccupancyOccupant.occupantProvince ?? '') +
-        '<br />' +
-        cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode ?? '') +
-        '</td>') +
-      ('<td>' +
-        ((lotOccupancyOccupant.occupantPhoneNumber ?? '') === ''
-          ? ''
-          : cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber ?? '') +
-            '<br />') +
-        ((lotOccupancyOccupant.occupantEmailAddress ?? '') === ''
-          ? ''
-          : cityssm.escapeHTML(
-              lotOccupancyOccupant.occupantEmailAddress ?? ''
-            )) +
-        '</td>') +
-      ('<td>' +
-        '<span data-tooltip="' +
-        cityssm.escapeHTML(
+    tableRowElement.innerHTML = `<td>
+        ${cityssm.escapeHTML(
+          (lotOccupancyOccupant.occupantName ?? '') === '' &&
+            (lotOccupancyOccupant.occupantFamilyName ?? '') === ''
+            ? '(No Name)'
+            : `${lotOccupancyOccupant.occupantName} ${lotOccupancyOccupant.occupantFamilyName}`
+        )}<br />
+        <span class="tag">
+          <i class="fas fa-fw fa-${cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass ?? '')}" aria-hidden="true"></i>
+          <span class="ml-1">${cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType ?? '')}</span>
+        </span>
+      </td><td>
+        ${
+          (lotOccupancyOccupant.occupantAddress1 ?? '') === ''
+            ? ''
+            : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1 ?? '') +
+              '<br />'
+        }
+        ${
+          (lotOccupancyOccupant.occupantAddress2 ?? '') === ''
+            ? ''
+            : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2 ?? '') +
+              '<br />'
+        }
+        ${
+          (lotOccupancyOccupant.occupantCity ?? '') === ''
+            ? ''
+            : cityssm.escapeHTML(lotOccupancyOccupant.occupantCity ?? '') + ', '
+        }
+        ${cityssm.escapeHTML(lotOccupancyOccupant.occupantProvince ?? '')}<br />
+        ${cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode ?? '')}</td><td>${
+          (lotOccupancyOccupant.occupantPhoneNumber ?? '') === ''
+            ? ''
+            : cityssm.escapeHTML(
+                lotOccupancyOccupant.occupantPhoneNumber ?? ''
+              ) + '<br />'
+        }
+        ${
+          (lotOccupancyOccupant.occupantEmailAddress ?? '') === ''
+            ? ''
+            : cityssm.escapeHTML(
+                lotOccupancyOccupant.occupantEmailAddress ?? ''
+              )
+        }
+      </td><td>
+        <span data-tooltip="${cityssm.escapeHTML(
           (lotOccupancyOccupant.occupantCommentTitle ?? '') === ''
             ? 'Comment'
             : lotOccupancyOccupant.occupantCommentTitle ?? ''
-        ) +
-        '">' +
-        cityssm.escapeHTML(lotOccupancyOccupant.occupantComment ?? '') +
-        '</span>' +
-        '</td>') +
-      ('<td class="is-hidden-print">' +
-        '<div class="buttons are-small is-justify-content-end">' +
-        ('<button class="button is-primary button--edit" type="button">' +
-          '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
-          ' <span>Edit</span>' +
-          '</button>') +
-        ('<button class="button is-light is-danger button--delete" data-tooltip="Delete ' +
-          los.escapedAliases.Occupant +
-          '" type="button" aria-label="Delete">' +
-          '<i class="fas fa-trash" aria-hidden="true"></i>' +
-          '</button>') +
-        '</div>' +
-        '</td>')
+        )}">
+        ${cityssm.escapeHTML(lotOccupancyOccupant.occupantComment ?? '')}
+        </span>
+      </td><td class="is-hidden-print">
+        <div class="buttons are-small is-justify-content-end">
+          <button class="button is-primary button--edit" type="button">
+            <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+            <span>Edit</span>
+          </button>
+          <button class="button is-light is-danger button--delete" data-tooltip="Delete ${los.escapedAliases.Occupant}" type="button" aria-label="Delete">
+            <i class="fas fa-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>`
 
     tableRowElement
       .querySelector('.button--edit')
@@ -484,7 +477,7 @@ document
 
       const occupant =
         pastOccupantSearchResults[
-          Number.parseInt(panelBlockElement.dataset.index!, 10)
+          Number.parseInt(panelBlockElement.dataset.index ?? '', 10)
         ]
 
       const lotOccupantTypeId = (
@@ -643,9 +636,11 @@ document
             lotOccupantTypeIdElement.selectedOptions[0].dataset
               .fontAwesomeIconClass ?? 'user'
 
-          ;(modalElement.querySelector(
-            '#lotOccupancyOccupantAdd--fontAwesomeIconClass'
-          ) as HTMLElement).innerHTML =
+          ;(
+            modalElement.querySelector(
+              '#lotOccupancyOccupantAdd--fontAwesomeIconClass'
+            ) as HTMLElement
+          ).innerHTML =
             `<i class="fas fa-fw fa-${cityssm.escapeHTML(fontAwesomeIconClass)}" aria-hidden="true"></i>`
 
           let occupantCommentTitle =
@@ -656,9 +651,11 @@ document
             occupantCommentTitle = 'Comment'
           }
 
-          ;(modalElement.querySelector(
-            '#lotOccupancyOccupantAdd--occupantCommentTitle'
-          ) as HTMLElement).textContent = occupantCommentTitle
+          ;(
+            modalElement.querySelector(
+              '#lotOccupancyOccupantAdd--occupantCommentTitle'
+            ) as HTMLElement
+          ).textContent = occupantCommentTitle
         })
 
         addFormElement = modalElement.querySelector(
