@@ -1,19 +1,17 @@
 import path from 'node:path'
 
 import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer'
-import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import camelcase from 'camelcase'
 import { renderFile as renderEjsFile } from 'ejs'
 import type { NextFunction, Request, Response } from 'express'
 
-import * as configFunctions from '../../helpers/functions.config.js'
-import * as lotOccupancyFunctions from '../../helpers/functions.lotOccupancy.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 import {
   getPdfPrintConfig,
   getReportData
 } from '../../helpers/functions.print.js'
 
-const attachmentOrInline = configFunctions.getConfigProperty(
+const attachmentOrInline = getConfigProperty(
   'settings.printPdf.contentDisposition'
 )
 
@@ -25,15 +23,15 @@ export async function handler(
   const printName = request.params.printName
 
   if (
-    !configFunctions
-      .getConfigProperty('settings.lotOccupancy.prints')
-      .includes(`pdf/${printName}`) &&
-    !configFunctions
-      .getConfigProperty('settings.workOrders.prints')
-      .includes(`pdf/${printName}`)
+    !getConfigProperty('settings.lotOccupancy.prints').includes(
+      `pdf/${printName}`
+    ) &&
+    !getConfigProperty('settings.workOrders.prints').includes(
+      `pdf/${printName}`
+    )
   ) {
     response.redirect(
-      `${configFunctions.getConfigProperty(
+      `${getConfigProperty(
         'reverseProxy.urlPrefix'
       )}/dashboard/?error=printConfigNotAllowed`
     )
@@ -44,7 +42,7 @@ export async function handler(
 
   if (printConfig === undefined) {
     response.redirect(
-      `${configFunctions.getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotFound`
+      `${getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotFound`
     )
     return
   }
@@ -56,7 +54,7 @@ export async function handler(
   function pdfCallbackFunction(pdf: Buffer): void {
     response.setHeader(
       'Content-Disposition',
-      `${attachmentOrInline}; filename=${camelcase(printConfig!.title)}.pdf`
+      `${attachmentOrInline}; filename=${camelcase(printConfig?.title ?? 'export')}.pdf`
     )
 
     response.setHeader('Content-Type', 'application/pdf')
@@ -81,10 +79,6 @@ export async function handler(
 
     pdfCallbackFunction(pdf)
   }
-
-  reportData.configFunctions = configFunctions
-  reportData.dateTimeFunctions = dateTimeFunctions
-  reportData.lotOccupancyFunctions = lotOccupancyFunctions
 
   await renderEjsFile(reportPath, reportData, {}, ejsCallbackFunction)
 }

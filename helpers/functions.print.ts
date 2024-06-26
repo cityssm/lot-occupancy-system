@@ -1,19 +1,35 @@
+import * as dateTimeFunctions from '@cityssm/utils-datetime'
+
 import getLot from '../database/getLot.js'
 import getLotOccupancy from '../database/getLotOccupancy.js'
 import getWorkOrder from '../database/getWorkOrder.js'
+import type { Lot, LotOccupancy, WorkOrder } from '../types/recordTypes.js'
 
-import { getConfigProperty } from './functions.config.js'
+import * as configFunctions from './functions.config.js'
+import * as lotOccupancyFunctions from './functions.lotOccupancy.js'
 
 interface PrintConfig {
   title: string
   params: string[]
 }
 
+interface ReportData {
+  headTitle: string
+
+  lot?: Lot
+  lotOccupancy?: LotOccupancy
+  workOrder?: WorkOrder
+
+  configFunctions: unknown
+  dateTimeFunctions: unknown
+  lotOccupancyFunctions: unknown
+}
+
 const screenPrintConfigs: Record<string, PrintConfig> = {
   lotOccupancy: {
-    title: `${getConfigProperty(
+    title: `${configFunctions.getConfigProperty(
       'aliases.lot'
-    )} ${getConfigProperty('aliases.occupancy')} Print`,
+    )} ${configFunctions.getConfigProperty('aliases.occupancy')} Print`,
     params: ['lotOccupancyId']
   }
 }
@@ -69,9 +85,12 @@ export function getPrintConfig(
 export async function getReportData(
   printConfig: PrintConfig,
   requestQuery: Record<string, unknown>
-): Promise<Record<string, unknown>> {
-  const reportData: Record<string, unknown> = {
-    headTitle: printConfig.title
+): Promise<ReportData> {
+  const reportData: ReportData = {
+    headTitle: printConfig.title,
+    configFunctions,
+    dateTimeFunctions,
+    lotOccupancyFunctions
   }
 
   if (
@@ -80,8 +99,8 @@ export async function getReportData(
   ) {
     const lotOccupancy = await getLotOccupancy(requestQuery.lotOccupancyId)
 
-    if ((lotOccupancy?.lotId ?? -1) !== -1) {
-      reportData.lot = getLot(lotOccupancy!.lotId!)
+    if (lotOccupancy !== undefined && (lotOccupancy?.lotId ?? -1) !== -1) {
+      reportData.lot = await getLot(lotOccupancy.lotId ?? -1)
     }
 
     reportData.lotOccupancy = lotOccupancy

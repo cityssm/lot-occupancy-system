@@ -1,10 +1,12 @@
+import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import getLot from '../database/getLot.js';
 import getLotOccupancy from '../database/getLotOccupancy.js';
 import getWorkOrder from '../database/getWorkOrder.js';
-import { getConfigProperty } from './functions.config.js';
+import * as configFunctions from './functions.config.js';
+import * as lotOccupancyFunctions from './functions.lotOccupancy.js';
 const screenPrintConfigs = {
     lotOccupancy: {
-        title: `${getConfigProperty('aliases.lot')} ${getConfigProperty('aliases.occupancy')} Print`,
+        title: `${configFunctions.getConfigProperty('aliases.lot')} ${configFunctions.getConfigProperty('aliases.occupancy')} Print`,
         params: ['lotOccupancyId']
     }
 };
@@ -46,13 +48,16 @@ export function getPrintConfig(screenOrPdfPrintName) {
 }
 export async function getReportData(printConfig, requestQuery) {
     const reportData = {
-        headTitle: printConfig.title
+        headTitle: printConfig.title,
+        configFunctions,
+        dateTimeFunctions,
+        lotOccupancyFunctions
     };
     if (printConfig.params.includes('lotOccupancyId') &&
         typeof requestQuery.lotOccupancyId === 'string') {
         const lotOccupancy = await getLotOccupancy(requestQuery.lotOccupancyId);
-        if ((lotOccupancy?.lotId ?? -1) !== -1) {
-            reportData.lot = getLot(lotOccupancy.lotId);
+        if (lotOccupancy !== undefined && (lotOccupancy?.lotId ?? -1) !== -1) {
+            reportData.lot = await getLot(lotOccupancy.lotId ?? -1);
         }
         reportData.lotOccupancy = lotOccupancy;
     }
