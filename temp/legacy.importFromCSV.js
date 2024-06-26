@@ -20,7 +20,7 @@ import getLot, { getLotByLotName } from '../database/getLot.js';
 import getLotOccupancies from '../database/getLotOccupancies.js';
 import getMapFromDatabase from '../database/getMap.js';
 import getWorkOrder, { getWorkOrderByWorkOrderNumber } from '../database/getWorkOrder.js';
-import { reopenWorkOrder } from '../database/reopenWorkOrder.js';
+import reopenWorkOrder from '../database/reopenWorkOrder.js';
 import { updateLotStatus } from '../database/updateLot.js';
 import * as importData from './legacy.importFromCsv.data.js';
 import * as importIds from './legacy.importFromCsv.ids.js';

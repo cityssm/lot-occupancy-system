@@ -24,7 +24,7 @@ import getMapFromDatabase from '../database/getMap.js'
 import getWorkOrder, {
   getWorkOrderByWorkOrderNumber
 } from '../database/getWorkOrder.js'
-import { reopenWorkOrder } from '../database/reopenWorkOrder.js'
+import reopenWorkOrder from '../database/reopenWorkOrder.js'
 import { updateLotStatus } from '../database/updateLot.js'
 // eslint-disable-next-line import/namespace
 import type * as recordTypes from '../types/recordTypes.js'
