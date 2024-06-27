@@ -266,6 +266,24 @@
         </div>
         <div class="is-hidden" id="tab--lotOccupancyOccupantAdd-copy">
           <div class="box">
+            <div class="field mb-4">
+              <label
+                class="label"
+                for="lotOccupancyOccupantCopy--lotOccupantTypeId"
+                >New <span class="alias" data-alias="Occupant"></span> Type</label
+              >
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    id="lotOccupancyOccupantCopy--lotOccupantTypeId"
+                    name="lotOccupantTypeId"
+                    required
+                  >
+                    <option value="">(Select a Type)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
             <form id="form--lotOccupancyOccupantCopy">
               <input name="limit" type="hidden" value="50" />
               <div class="field">
@@ -288,24 +306,6 @@
                 </div>
               </div>
             </form>
-          </div>
-          <div class="field">
-            <label
-              class="label"
-              for="lotOccupancyOccupantCopy--lotOccupantTypeId"
-              ><span class="alias" data-alias="Occupant"></span> Type</label
-            >
-            <div class="control">
-              <div class="select is-fullwidth">
-                <select
-                  id="lotOccupancyOccupantCopy--lotOccupantTypeId"
-                  name="lotOccupantTypeId"
-                  required
-                >
-                  <option value="">(Select a Type)</option>
-                </select>
-              </div>
-            </div>
           </div>
           <div id="lotOccupancyOccupantCopy--searchResults"></div>
         </div>
