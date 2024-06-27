@@ -30,7 +30,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let svgElementToHighlight;
         // eslint-disable-next-line no-constant-condition
         while (true) {
-            svgElementToHighlight = mapContainerElement.querySelector('#' + svgId);
+            svgElementToHighlight = mapContainerElement.querySelector(`#${svgId}`);
             if (svgElementToHighlight !== null || !svgId.includes('-')) {
                 break;
             }
@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         if (svgElementToHighlight !== null) {
             // eslint-disable-next-line unicorn/no-null
             svgElementToHighlight.style.fill = '';
-            svgElementToHighlight.classList.add('highlight', 'is-' + contextualClass);
+            svgElementToHighlight.classList.add('highlight', `is-${contextualClass}`);
             const childPathElements = svgElementToHighlight.querySelectorAll('path');
             for (const pathElement of childPathElements) {
                 // eslint-disable-next-line unicorn/no-null
@@ -134,7 +134,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             }
             // Apply a label
-            const labelElement = document.querySelector("label[for='" + dateElement.id + "']");
+            const labelElement = document.querySelector(`label[for='${dateElement.id}']`);
             if (labelElement !== null) {
                 (_b = datepickerElement
                     .querySelector('.datetimepicker-dummy-input')) === null || _b === void 0 ? void 0 : _b.setAttribute('aria-label', (_c = labelElement.textContent) !== null && _c !== void 0 ? _c : '');
@@ -262,35 +262,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
       </p>`;
     }
     function getSearchResultsPagerHTML(limit, offset, count) {
-        return ('<div class="level">' +
-            ('<div class="level-left">' +
-                '<div class="level-item has-text-weight-bold">' +
-                'Displaying ' +
-                (offset + 1).toString() +
-                ' to ' +
-                Math.min(count, limit + offset).toString() +
-                ' of ' +
-                count.toString() +
-                '</div>' +
-                '</div>') +
-            ('<div class="level-right">' +
-                (offset > 0
-                    ? `<div class="level-item">
-              <button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">
-                <i class="fas fa-arrow-left" aria-hidden="true"></i>
-              </button>
-              </div>`
-                    : '') +
-                (limit + offset < count
-                    ? `<div class="level-item">
-              <button class="button is-rounded is-link" data-page="next" type="button" title="Next">
-                <span>Next</span>
-                <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
-              </button>
-              </div>`
-                    : '') +
-                '</div>') +
-            '</div>');
+        return `<div class="level">
+      <div class="level-left">
+        <div class="level-item has-text-weight-bold">
+          Displaying
+          ${(offset + 1).toString()}
+          to
+          ${Math.min(count, limit + offset).toString()}
+          of
+          ${count.toString()}
+        </div>
+      </div>
+      <div class="level-right">
+        ${offset > 0
+            ? `<div class="level-item">
+                <button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">
+                  <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                </button>
+                </div>`
+            : ''}
+        ${limit + offset < count
+            ? `<div class="level-item">
+                <button class="button is-rounded is-link" data-page="next" type="button" title="Next">
+                  <span>Next</span>
+                  <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </button>
+                </div>`
+            : ''}
+      </div>
+      </div>`;
     }
     /*
      * URLs
@@ -300,9 +300,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         return (urlPrefix +
             '/' +
             recordTypePlural +
-            (recordId ? '/' + recordId.toString() : '') +
+            (recordId ? `/${recordId.toString()}` : '') +
             (recordId && edit ? '/edit' : '') +
-            (time ? '/?t=' + Date.now().toString() : ''));
+            (time ? `/?t=${Date.now().toString()}` : ''));
     }
     function getMapURL(mapId = '', edit = false, time = false) {
         return getRecordURL('maps', mapId, edit, time);

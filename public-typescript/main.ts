@@ -69,7 +69,7 @@ declare const exports: Record<string, unknown> & {
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
-      svgElementToHighlight = mapContainerElement.querySelector('#' + svgId)
+      svgElementToHighlight = mapContainerElement.querySelector(`#${svgId}`)
 
       if (svgElementToHighlight !== null || !svgId.includes('-')) {
         break
@@ -82,7 +82,7 @@ declare const exports: Record<string, unknown> & {
       // eslint-disable-next-line unicorn/no-null
       svgElementToHighlight.style.fill = ''
 
-      svgElementToHighlight.classList.add('highlight', 'is-' + contextualClass)
+      svgElementToHighlight.classList.add('highlight', `is-${contextualClass}`)
 
       const childPathElements = svgElementToHighlight.querySelectorAll('path')
       for (const pathElement of childPathElements) {
@@ -215,7 +215,7 @@ declare const exports: Record<string, unknown> & {
 
       // Apply a label
       const labelElement = document.querySelector(
-        "label[for='" + dateElement.id + "']"
+        `label[for='${dateElement.id}']`
       )
 
       if (labelElement !== null) {
@@ -392,37 +392,39 @@ declare const exports: Record<string, unknown> & {
     offset: number,
     count: number
   ): string {
-    return (
-      '<div class="level">' +
-      ('<div class="level-left">' +
-        '<div class="level-item has-text-weight-bold">' +
-        'Displaying ' +
-        (offset + 1).toString() +
-        ' to ' +
-        Math.min(count, limit + offset).toString() +
-        ' of ' +
-        count.toString() +
-        '</div>' +
-        '</div>') +
-      ('<div class="level-right">' +
-        (offset > 0
-          ? `<div class="level-item">
-              <button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">
-                <i class="fas fa-arrow-left" aria-hidden="true"></i>
-              </button>
-              </div>`
-          : '') +
-        (limit + offset < count
-          ? `<div class="level-item">
-              <button class="button is-rounded is-link" data-page="next" type="button" title="Next">
-                <span>Next</span>
-                <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
-              </button>
-              </div>`
-          : '') +
-        '</div>') +
-      '</div>'
-    )
+    return `<div class="level">
+      <div class="level-left">
+        <div class="level-item has-text-weight-bold">
+          Displaying
+          ${(offset + 1).toString()}
+          to
+          ${Math.min(count, limit + offset).toString()}
+          of
+          ${count.toString()}
+        </div>
+      </div>
+      <div class="level-right">
+        ${
+          offset > 0
+            ? `<div class="level-item">
+                <button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">
+                  <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                </button>
+                </div>`
+            : ''
+        }
+        ${
+          limit + offset < count
+            ? `<div class="level-item">
+                <button class="button is-rounded is-link" data-page="next" type="button" title="Next">
+                  <span>Next</span>
+                  <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </button>
+                </div>`
+            : ''
+        }
+      </div>
+      </div>`
   }
 
   /*
@@ -441,9 +443,9 @@ declare const exports: Record<string, unknown> & {
       urlPrefix +
       '/' +
       recordTypePlural +
-      (recordId ? '/' + recordId.toString() : '') +
+      (recordId ? `/${recordId.toString()}` : '') +
       (recordId && edit ? '/edit' : '') +
-      (time ? '/?t=' + Date.now().toString() : '')
+      (time ? `/?t=${Date.now().toString()}` : '')
     )
   }
 
