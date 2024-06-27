@@ -211,18 +211,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * Colours
      */
-    const hues = ['red', 'green', 'orange', 'blue', 'pink', 'yellow', 'purple'];
+    const hues = [
+        'red',
+        'green',
+        'orange',
+        'blue',
+        'pink',
+        'yellow',
+        'purple'
+    ];
     const luminosity = ['bright', 'light', 'dark'];
     function getRandomColor(seedString) {
         let actualSeedString = seedString;
         if (actualSeedString.length < 2) {
-            actualSeedString = actualSeedString + 'a1';
+            actualSeedString += 'a1';
         }
         return exports.randomColor({
             seed: actualSeedString + actualSeedString,
-            hue: hues[actualSeedString.codePointAt(actualSeedString.length - 1) % hues.length],
-            luminosity: luminosity[actualSeedString.codePointAt(actualSeedString.length - 2) %
-                luminosity.length]
+            hue: hues[actualSeedString.codePointAt(actualSeedString.length - 1) %
+                hues.length],
+            luminosity: luminosity[actualSeedString.codePointAt(actualSeedString.length - 2) % luminosity.length]
         });
     }
     /*

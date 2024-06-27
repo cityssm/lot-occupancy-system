@@ -264,11 +264,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function moveOccupancyTypeField(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const occupancyTypeFieldId = clickEvent.currentTarget.closest('.container--occupancyTypeField').dataset.occupancyTypeFieldId;
-        cityssm.postJSON(los.urlPrefix +
-            '/admin/' +
-            (buttonElement.dataset.direction === 'up'
-                ? 'doMoveOccupancyTypeFieldUp'
-                : 'doMoveOccupancyTypeFieldDown'), {
+        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+            ? 'doMoveOccupancyTypeFieldUp'
+            : // eslint-disable-next-line no-secrets/no-secrets
+                'doMoveOccupancyTypeFieldDown'}`, {
             occupancyTypeFieldId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, occupancyTypeResponseHandler);

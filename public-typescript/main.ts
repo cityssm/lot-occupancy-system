@@ -7,10 +7,29 @@ import type { Options as BulmaCalendarOptions } from 'bulma-calendar'
 
 import type * as globalTypes from '../types/globalTypes.js'
 
+type RandomColorHue =
+  | 'red'
+  | 'orange'
+  | 'yellow'
+  | 'green'
+  | 'blue'
+  | 'purple'
+  | 'pink'
+  | 'monochrome'
+type RandomColorLuminosity = 'bright' | 'light' | 'dark'
+
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 declare const exports: Record<string, unknown> & {
   aliases: Record<string, string>
+  randomColor: (options?: {
+    hue?: RandomColorHue
+    luminosity?: RandomColorLuminosity
+    count?: number
+    seed?: number | string
+    format?: 'rgb' | 'rgba' | 'rgbArray' | 'hsl' | 'hsla' | 'hslArray' | 'hex'
+    alpha?: number
+  }) => string
 }
 ;(() => {
   /*
@@ -301,25 +320,35 @@ declare const exports: Record<string, unknown> & {
    * Colours
    */
 
-  const hues = ['red', 'green', 'orange', 'blue', 'pink', 'yellow', 'purple']
-  const luminosity = ['bright', 'light', 'dark']
+  const hues = [
+    'red',
+    'green',
+    'orange',
+    'blue',
+    'pink',
+    'yellow',
+    'purple'
+  ] as RandomColorHue[]
+  const luminosity = ['bright', 'light', 'dark'] as RandomColorLuminosity[]
 
   function getRandomColor(seedString: string): string {
     let actualSeedString = seedString
 
     if (actualSeedString.length < 2) {
-      actualSeedString = actualSeedString + 'a1'
+      actualSeedString += 'a1'
     }
 
     return exports.randomColor({
       seed: actualSeedString + actualSeedString,
       hue: hues[
-        actualSeedString.codePointAt(actualSeedString.length - 1)! % hues.length
+        (actualSeedString.codePointAt(actualSeedString.length - 1) as number) %
+          hues.length
       ],
       luminosity:
         luminosity[
-          actualSeedString.codePointAt(actualSeedString.length - 2)! %
-            luminosity.length
+          (actualSeedString.codePointAt(
+            actualSeedString.length - 2
+          ) as number) % luminosity.length
         ]
     })
   }

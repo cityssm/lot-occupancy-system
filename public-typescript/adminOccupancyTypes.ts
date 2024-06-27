@@ -388,7 +388,7 @@ type ResponseJSON =
           modalElement.querySelector(
             '#occupancyTypeFieldEdit--isRequired'
           ) as HTMLSelectElement
-        ).value = (occupancyTypeField.isRequired ?? false) ? '1' : '0'
+        ).value = occupancyTypeField.isRequired ?? false ? '1' : '0'
 
         minimumLengthElement = modalElement.querySelector(
           '#occupancyTypeFieldEdit--minimumLength'
@@ -481,11 +481,12 @@ type ResponseJSON =
     ).dataset.occupancyTypeFieldId
 
     cityssm.postJSON(
-      los.urlPrefix +
-        '/admin/' +
-        (buttonElement.dataset.direction === 'up'
+      `${los.urlPrefix}/admin/${
+        buttonElement.dataset.direction === 'up'
           ? 'doMoveOccupancyTypeFieldUp'
-          : 'doMoveOccupancyTypeFieldDown'),
+          : // eslint-disable-next-line no-secrets/no-secrets
+            'doMoveOccupancyTypeFieldDown'
+      }`,
       {
         occupancyTypeFieldId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
