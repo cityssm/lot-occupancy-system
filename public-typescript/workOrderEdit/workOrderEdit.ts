@@ -598,66 +598,67 @@ declare const exports: Record<string, unknown>
         milestone.workOrderMilestoneId?.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      panelBlockElement.innerHTML =
-        '<div class="columns is-mobile">' +
-        ('<div class="column is-narrow">' +
-          (milestone.workOrderMilestoneCompletionDate
-            ? '<span class="button is-static" data-tooltip="Completed ' +
-              milestone.workOrderMilestoneCompletionDateString +
-              '" aria-label="Completed ' +
-              milestone.workOrderMilestoneCompletionDateString +
-              '">' +
-              '<span class="icon is-small"><i class="fas fa-check" aria-hidden="true"></i></span>' +
-              '</span>'
-            : '<button class="button button--completeMilestone" data-tooltip="Incomplete" type="button" aria-label="Incomplete">' +
-              '<span class="icon is-small"><i class="far fa-square" aria-hidden="true"></i></span>' +
-              '</button>') +
-          '</div>') +
-        ('<div class="column">' +
-          (milestone.workOrderMilestoneTypeId
-            ? '<strong>' +
-              cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '') +
-              '</strong><br />'
-            : '') +
-          (milestone.workOrderMilestoneDate === 0
-            ? '<span class="has-text-grey">(No Set Date)</span>'
-            : milestone.workOrderMilestoneDateString) +
-          (milestone.workOrderMilestoneTime
-            ? ' ' + milestone.workOrderMilestoneTimePeriodString
-            : '') +
-          '<br />' +
-          '<span class="is-size-7">' +
-          cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '') +
-          '</span>' +
-          '</div>') +
-        ('<div class="column is-narrow">' +
-          '<div class="dropdown is-right">' +
-          ('<div class="dropdown-trigger">' +
-            '<button class="button is-small" data-tooltip="Options" type="button" aria-label="Options">' +
-            '<i class="fas fa-ellipsis-v" aria-hidden="true"></i>' +
-            '</button>' +
-            '</div>') +
-          ('<div class="dropdown-menu">' +
-            '<div class="dropdown-content">' +
-            (milestone.workOrderMilestoneCompletionDate
-              ? '<a class="dropdown-item button--reopenMilestone" href="#">' +
-                '<span class="icon is-small"><i class="fas fa-times" aria-hidden="true"></i></span>' +
-                ' <span>Reopen Milestone</span>' +
-                '</a>'
-              : '<a class="dropdown-item button--editMilestone" href="#">' +
-                '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
-                ' <span>Edit Milestone</span>' +
-                '</a>') +
-            '<hr class="dropdown-divider" />' +
-            '<a class="dropdown-item button--deleteMilestone" href="#">' +
-            '<span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>' +
-            ' <span>Delete Milestone</span>' +
-            '</a>' +
-            '</div>' +
-            '</div>') +
-          '</div>' +
-          '</div>') +
-        '</div>'
+      panelBlockElement.innerHTML = `<div class="columns is-mobile">
+        <div class="column is-narrow">
+          ${
+            milestone.workOrderMilestoneCompletionDate
+              ? `<span class="button is-static"
+                  data-tooltip="Completed ${milestone.workOrderMilestoneCompletionDateString}"
+                  aria-label="Completed ${milestone.workOrderMilestoneCompletionDateString}">
+                  <span class="icon is-small"><i class="fas fa-check" aria-hidden="true"></i></span>
+                  </span>`
+              : `<button class="button button--completeMilestone" data-tooltip="Incomplete" type="button" aria-label="Incomplete">
+                  <span class="icon is-small"><i class="far fa-square" aria-hidden="true"></i></span>
+                  </button>`
+          }
+        </div><div class="column">
+          ${
+            milestone.workOrderMilestoneTypeId
+              ? `<strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong><br />`
+              : ''
+          }
+          ${
+            milestone.workOrderMilestoneDate === 0
+              ? '<span class="has-text-grey">(No Set Date)</span>'
+              : milestone.workOrderMilestoneDateString
+          }
+          ${
+            milestone.workOrderMilestoneTime
+              ? ` ${milestone.workOrderMilestoneTimePeriodString}`
+              : ''
+          }<br />
+          <span class="is-size-7">
+            ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}
+          </span>
+        </div><div class="column is-narrow">
+          <div class="dropdown is-right">
+            <div class="dropdown-trigger">
+              <button class="button is-small" data-tooltip="Options" type="button" aria-label="Options">
+                <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content">
+                ${
+                  milestone.workOrderMilestoneCompletionDate
+                    ? `<a class="dropdown-item button--reopenMilestone" href="#">
+                        <span class="icon is-small"><i class="fas fa-times" aria-hidden="true"></i></span>
+                        <span>Reopen Milestone</span>
+                        </a>`
+                    : `<a class="dropdown-item button--editMilestone" href="#">
+                        <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                        <span>Edit Milestone</span>
+                        </a>`
+                }
+                <hr class="dropdown-divider" />
+                <a class="dropdown-item button--deleteMilestone" href="#">
+                  <span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
+                  <span>Delete Milestone</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div></div>`
 
       panelBlockElement
         .querySelector('.button--reopenMilestone')

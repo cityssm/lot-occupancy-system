@@ -380,7 +380,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 los.populateAliases(modalElement);
             },
             onshown(modalElement, closeModalFunction) {
-                var _a;
+                var _a, _b;
                 bulmaJS.toggleHtmlClipped();
                 lotSelectModalElement = modalElement;
                 lotSelectCloseModalFunction = closeModalFunction;
@@ -428,7 +428,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const optionElement = document.createElement('option');
                     optionElement.value = map.mapId.toString();
                     optionElement.textContent =
-                        ((_a = map.mapName) !== null && _a !== void 0 ? _a : '') === '' ? '(No Name)' : map.mapName;
+                        ((_a = map.mapName) !== null && _a !== void 0 ? _a : '') === '' ? '(No Name)' : (_b = map.mapName) !== null && _b !== void 0 ? _b : '';
                     mapElement.append(optionElement);
                 }
                 ;
@@ -449,7 +449,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         else {
-            window.open(los.urlPrefix + '/lots/' + lotId);
+            window.open(`${los.urlPrefix}/lots/${lotId}`);
         }
     });
     (_e = document
@@ -1586,7 +1586,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     .querySelector('tbody')) === null || _g === void 0 ? void 0 : _g.append(tableRowElement);
             }
             ;
-            lotOccupancyTransactionsContainerElement.querySelector('#lotOccupancyTransactions--grandTotal').textContent = '$' + transactionGrandTotal.toFixed(2);
+            lotOccupancyTransactionsContainerElement.querySelector('#lotOccupancyTransactions--grandTotal').textContent = `\$${transactionGrandTotal.toFixed(2)}`;
             const feeGrandTotal = getFeeGrandTotal();
             if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
                 lotOccupancyTransactionsContainerElement.insertAdjacentHTML('afterbegin', `<div class="message is-warning">
@@ -1596,7 +1596,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     <div class="level-item">Outstanding Balance</div>
                   </div>
                   <div class="level-right">
-                    <div class="level-item">$${cityssm.escapeHTML((feeGrandTotal - transactionGrandTotal).toFixed(2))}</div>
+                    <div class="level-item">
+                      $${cityssm.escapeHTML((feeGrandTotal - transactionGrandTotal).toFixed(2))}
+                    </div>
                   </div>
                 </div>
                 </div></div>`);

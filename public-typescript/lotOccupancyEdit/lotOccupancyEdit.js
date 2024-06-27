@@ -380,7 +380,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 los.populateAliases(modalElement);
             },
             onshown(modalElement, closeModalFunction) {
-                var _a;
+                var _a, _b;
                 bulmaJS.toggleHtmlClipped();
                 lotSelectModalElement = modalElement;
                 lotSelectCloseModalFunction = closeModalFunction;
@@ -428,7 +428,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const optionElement = document.createElement('option');
                     optionElement.value = map.mapId.toString();
                     optionElement.textContent =
-                        ((_a = map.mapName) !== null && _a !== void 0 ? _a : '') === '' ? '(No Name)' : map.mapName;
+                        ((_a = map.mapName) !== null && _a !== void 0 ? _a : '') === '' ? '(No Name)' : (_b = map.mapName) !== null && _b !== void 0 ? _b : '';
                     mapElement.append(optionElement);
                 }
                 ;
@@ -449,7 +449,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         else {
-            window.open(los.urlPrefix + '/lots/' + lotId);
+            window.open(`${los.urlPrefix}/lots/${lotId}`);
         }
     });
     (_e = document

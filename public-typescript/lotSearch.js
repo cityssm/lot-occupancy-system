@@ -65,7 +65,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function getLots() {
         // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Lots}...`);
-        cityssm.postJSON(los.urlPrefix + '/lots/doSearchLots', searchFilterFormElement, renderLots);
+        cityssm.postJSON(`${los.urlPrefix}/lots/doSearchLots`, searchFilterFormElement, renderLots);
     }
     function resetOffsetAndGetLots() {
         offsetElement.value = '0';

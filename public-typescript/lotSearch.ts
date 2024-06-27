@@ -121,7 +121,7 @@ declare const exports: Record<string, unknown>
     )
 
     cityssm.postJSON(
-      los.urlPrefix + '/lots/doSearchLots',
+      `${los.urlPrefix}/lots/doSearchLots`,
       searchFilterFormElement,
       renderLots
     )

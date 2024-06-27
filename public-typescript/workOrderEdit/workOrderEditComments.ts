@@ -1,33 +1,35 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type * as globalTypes from '../../types/globalTypes'
-import type * as recordTypes from '../../types/recordTypes'
+import type { LOS } from '../../types/globalTypes.js'
+import type * as recordTypes from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const los: globalTypes.LOS
+declare const exports: Record<string, unknown>
+declare const los: LOS
 
 declare const workOrderId: string
 declare const isCreate: boolean
 
-let workOrderComments: recordTypes.WorkOrderComment[] =
-  exports.workOrderComments
+let workOrderComments =
+  exports.workOrderComments as recordTypes.WorkOrderComment[]
 delete exports.workOrderComments
 
 function openEditWorkOrderComment(clickEvent: Event): void {
   const workOrderCommentId = Number.parseInt(
-    (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
-      .workOrderCommentId!,
+    (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+      .workOrderCommentId ?? '',
     10
   )
 
   const workOrderComment = workOrderComments.find((currentComment) => {
     return currentComment.workOrderCommentId === workOrderCommentId
-  })!
+  }) as recordTypes.WorkOrderComment
 
   let editFormElement: HTMLFormElement
   let editCloseModalFunction: () => void
@@ -36,15 +38,17 @@ function openEditWorkOrderComment(clickEvent: Event): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
-      los.urlPrefix + '/workOrders/doUpdateWorkOrderComment',
+      `${los.urlPrefix}/workOrders/doUpdateWorkOrderComment`,
       editFormElement,
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        workOrderComments?: recordTypes.WorkOrderComment[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          workOrderComments: recordTypes.WorkOrderComment[]
+        }
+
         if (responseJSON.success) {
-          workOrderComments = responseJSON.workOrderComments!
+          workOrderComments = responseJSON.workOrderComments
           editCloseModalFunction()
           renderWorkOrderComments()
         } else {
@@ -74,26 +78,26 @@ function openEditWorkOrderComment(clickEvent: Event): void {
         modalElement.querySelector(
           '#workOrderCommentEdit--workOrderComment'
         ) as HTMLInputElement
-      ).value = workOrderComment.workOrderComment!
+      ).value = workOrderComment.workOrderComment ?? ''
 
       const workOrderCommentDateStringElement = modalElement.querySelector(
         '#workOrderCommentEdit--workOrderCommentDateString'
       ) as HTMLInputElement
 
       workOrderCommentDateStringElement.value =
-        workOrderComment.workOrderCommentDateString!
+        workOrderComment.workOrderCommentDateString ?? ''
 
       const currentDateString = cityssm.dateToString(new Date())
 
       workOrderCommentDateStringElement.max =
         workOrderComment.workOrderCommentDateString! <= currentDateString
           ? currentDateString
-          : workOrderComment.workOrderCommentDateString!
+          : workOrderComment.workOrderCommentDateString ?? ''
       ;(
         modalElement.querySelector(
           '#workOrderCommentEdit--workOrderCommentTimeString'
         ) as HTMLInputElement
-      ).value = workOrderComment.workOrderCommentTimeString!
+      ).value = workOrderComment.workOrderCommentTimeString ?? ''
     },
     onshown(modalElement, closeModalFunction) {
       bulmaJS.toggleHtmlClipped()
@@ -105,7 +109,7 @@ function openEditWorkOrderComment(clickEvent: Event): void {
         ) as HTMLTextAreaElement
       ).focus()
 
-      editFormElement = modalElement.querySelector('form')!
+      editFormElement = modalElement.querySelector('form') as HTMLFormElement
       editFormElement.addEventListener('submit', editComment)
 
       editCloseModalFunction = closeModalFunction
@@ -118,23 +122,25 @@ function openEditWorkOrderComment(clickEvent: Event): void {
 
 function deleteWorkOrderComment(clickEvent: Event): void {
   const workOrderCommentId = Number.parseInt(
-    (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
-      .workOrderCommentId!,
+    (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+      .workOrderCommentId ?? '',
     10
   )
 
   function doDelete(): void {
     cityssm.postJSON(
-      los.urlPrefix + '/workOrders/doDeleteWorkOrderComment',
+      `${los.urlPrefix}/workOrders/doDeleteWorkOrderComment`,
       {
         workOrderId,
         workOrderCommentId
       },
-      (responseJSON: {
-        success: boolean
-        errorMessage?: string
-        workOrderComments: recordTypes.WorkOrderComment[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          workOrderComments: recordTypes.WorkOrderComment[]
+        }
+
         if (responseJSON.success) {
           workOrderComments = responseJSON.workOrderComments
           renderWorkOrderComments()
@@ -182,43 +188,43 @@ function renderWorkOrderComments(): void {
 
   for (const workOrderComment of workOrderComments) {
     const tableRowElement = document.createElement('tr')
+
     tableRowElement.dataset.workOrderCommentId =
-      workOrderComment.workOrderCommentId!.toString()
+      workOrderComment.workOrderCommentId?.toString()
 
-    tableRowElement.innerHTML =
-      '<td>' +
-      cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '') +
-      '</td>' +
-      '<td>' +
-      workOrderComment.workOrderCommentDateString +
-      (workOrderComment.workOrderCommentTime === 0
-        ? ''
-        : ' ' + workOrderComment.workOrderCommentTimePeriodString!) +
-      '</td>' +
-      '<td>' +
-      cityssm.escapeHTML(workOrderComment.workOrderComment ?? '') +
-      '</td>' +
-      ('<td class="is-hidden-print">' +
-        '<div class="buttons are-small is-justify-content-end">' +
-        ('<button class="button is-primary button--edit" type="button">' +
-          '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
-          ' <span>Edit</span>' +
-          '</button>') +
-        ('<button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">' +
-          '<i class="fas fa-trash" aria-hidden="true"></i>' +
-          '</button>') +
-        '</div>' +
-        '</td>')
-
-    tableRowElement
-      .querySelector('.button--edit')!
-      .addEventListener('click', openEditWorkOrderComment)
+    // eslint-disable-next-line no-unsanitized/property
+    tableRowElement.innerHTML = `<td>
+        ${cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '')}
+      </td><td>
+        ${workOrderComment.workOrderCommentDateString}
+        ${
+          workOrderComment.workOrderCommentTime === 0
+            ? ''
+            : ' ' + workOrderComment.workOrderCommentTimePeriodString
+        }
+      </td><td>
+        ${cityssm.escapeHTML(workOrderComment.workOrderComment ?? '')}
+      </td><td class="is-hidden-print">
+        <div class="buttons are-small is-justify-content-end">
+          <button class="button is-primary button--edit" type="button">
+            <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+            <span>Edit</span>
+          </button>
+          <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
+            <i class="fas fa-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>`
 
     tableRowElement
-      .querySelector('.button--delete')!
-      .addEventListener('click', deleteWorkOrderComment)
+      .querySelector('.button--edit')
+      ?.addEventListener('click', openEditWorkOrderComment)
 
-    tableElement.querySelector('tbody')!.append(tableRowElement)
+    tableRowElement
+      .querySelector('.button--delete')
+      ?.addEventListener('click', deleteWorkOrderComment)
+
+    tableElement.querySelector('tbody')?.append(tableRowElement)
   }
 
   containerElement.innerHTML = ''
@@ -232,14 +238,16 @@ function openAddCommentModal(): void {
     formEvent.preventDefault()
 
     cityssm.postJSON(
-      los.urlPrefix + '/workOrders/doAddWorkOrderComment',
+      `${los.urlPrefix}/workOrders/doAddWorkOrderComment`,
       formEvent.currentTarget,
-      (responseJSON: {
-        success: boolean
-        workOrderComments?: recordTypes.WorkOrderComment[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          workOrderComments: recordTypes.WorkOrderComment[]
+        }
+
         if (responseJSON.success) {
-          workOrderComments = responseJSON.workOrderComments!
+          workOrderComments = responseJSON.workOrderComments
           renderWorkOrderComments()
           addCommentCloseModalFunction()
         }
@@ -255,9 +263,10 @@ function openAddCommentModal(): void {
           '#workOrderCommentAdd--workOrderId'
         ) as HTMLInputElement
       ).value = workOrderId
+
       modalElement
-        .querySelector('form')!
-        .addEventListener('submit', doAddComment)
+        .querySelector('form')
+        ?.addEventListener('submit', doAddComment)
     },
     onshown(modalElement, closeModalFunction) {
       bulmaJS.toggleHtmlClipped()

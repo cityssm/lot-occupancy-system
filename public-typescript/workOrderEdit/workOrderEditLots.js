@@ -1,5 +1,6 @@
 "use strict";
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 let workOrderLots = exports.workOrderLots;
@@ -9,7 +10,7 @@ delete exports.workOrderLotOccupancies;
 function deleteLotOccupancy(clickEvent) {
     const lotOccupancyId = clickEvent.currentTarget.closest('.container--lotOccupancy').dataset.lotOccupancyId;
     function doDelete() {
-        cityssm.postJSON(los.urlPrefix + '/workOrders/doDeleteWorkOrderLotOccupancy', {
+        cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrderLotOccupancy`, {
             workOrderId,
             lotOccupancyId
         }, (rawResponseJSON) => {
@@ -39,7 +40,7 @@ function deleteLotOccupancy(clickEvent) {
     });
 }
 function addLot(lotId, callbackFunction) {
-    cityssm.postJSON(los.urlPrefix + '/workOrders/doAddWorkOrderLot', {
+    cityssm.postJSON(`${los.urlPrefix}/workOrders/doAddWorkOrderLot`, {
         workOrderId,
         lotId
     }, (rawResponseJSON) => {
@@ -62,7 +63,7 @@ function addLot(lotId, callbackFunction) {
     });
 }
 function addLotOccupancy(lotOccupancyId, callbackFunction) {
-    cityssm.postJSON(los.urlPrefix + '/workOrders/doAddWorkOrderLotOccupancy', {
+    cityssm.postJSON(`${los.urlPrefix}/workOrders/doAddWorkOrderLotOccupancy`, {
         workOrderId,
         lotOccupancyId
     }, (rawResponseJSON) => {
@@ -74,7 +75,7 @@ function addLotOccupancy(lotOccupancyId, callbackFunction) {
         }
         else {
             bulmaJS.alert({
-                title: 'Error Adding ' + los.escapedAliases.Occupancy,
+                title: `Error Adding ${los.escapedAliases.Occupancy}`,
                 message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                 contextualColorName: 'danger'
             });
@@ -85,19 +86,22 @@ function addLotOccupancy(lotOccupancyId, callbackFunction) {
     });
 }
 function addLotFromLotOccupancy(clickEvent) {
-    const lotId = clickEvent.currentTarget.dataset.lotId;
+    var _a;
+    const lotId = (_a = clickEvent.currentTarget.dataset.lotId) !== null && _a !== void 0 ? _a : '';
     addLot(lotId);
 }
 function renderRelatedOccupancies() {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f;
     const occupanciesContainerElement = document.querySelector('#container--lotOccupancies');
     document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent = workOrderLotOccupancies.length.toString();
     if (workOrderLotOccupancies.length === 0) {
+        // eslint-disable-next-line no-unsanitized/property
         occupanciesContainerElement.innerHTML = `<div class="message is-info">
       <p class="message-body">There are no ${los.escapedAliases.occupancies} associated with this work order.</p>
       </div>`;
         return;
     }
+    // eslint-disable-next-line no-unsanitized/property
     occupanciesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
     <thead><tr>
     <th class="has-width-1"></th>
@@ -121,44 +125,33 @@ function renderRelatedOccupancies() {
             workOrderLots.some((lot) => {
                 return lotOccupancy.lotId === lot.lotId;
             });
-        rowElement.innerHTML =
-            '<td class="is-width-1 has-text-centered">' +
-                (isActive
-                    ? '<i class="fas fa-play" title="Current ' +
-                        los.escapedAliases.Occupancy +
-                        '"></i>'
-                    : '<i class="fas fa-stop" title="Previous ' +
-                        los.escapedAliases.Occupancy +
-                        '"></i>') +
-                '</td>' +
-                ('<td>' +
-                    '<a class="has-text-weight-bold" href="' +
-                    los.getLotOccupancyURL(lotOccupancy.lotOccupancyId) +
-                    '">' +
-                    cityssm.escapeHTML((_a = lotOccupancy.occupancyType) !== null && _a !== void 0 ? _a : '') +
-                    '</a><br />' +
-                    `<span class="is-size-7">#${lotOccupancy.lotOccupancyId}</span>` +
-                    '</td>');
+        // eslint-disable-next-line no-unsanitized/property
+        rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
+      ${isActive
+            ? `<i class="fas fa-play" title="Current ${los.escapedAliases.Occupancy}"></i>`
+            : `<i class="fas fa-stop" title="Previous ${los.escapedAliases.Occupancy}"></i>`}
+      </td><td>
+        <a class="has-text-weight-bold" href="${los.getLotOccupancyURL(lotOccupancy.lotOccupancyId)}">
+          ${cityssm.escapeHTML((_a = lotOccupancy.occupancyType) !== null && _a !== void 0 ? _a : '')}
+        </a><br />
+        <span class="is-size-7">#${lotOccupancy.lotOccupancyId}</span>
+      </td>`;
         if (lotOccupancy.lotId) {
-            rowElement.insertAdjacentHTML('beforeend', '<td>' +
-                cityssm.escapeHTML((_b = lotOccupancy.lotName) !== null && _b !== void 0 ? _b : '') +
-                (hasLotRecord
-                    ? ''
-                    : ' <button class="button is-small is-light is-success button--addLot"' +
-                        ' data-lot-id="' +
-                        lotOccupancy.lotId.toString() +
-                        '"' +
-                        ' data-tooltip="Add ' +
-                        los.escapedAliases.Lot +
-                        '"' +
-                        ' aria-label="Add ' +
-                        los.escapedAliases.Lot +
-                        '" type="button">' +
-                        '<i class="fas fa-plus" aria-hidden="true"></i>' +
-                        '</button>') +
-                '</td>');
+            // eslint-disable-next-line no-unsanitized/method
+            rowElement.insertAdjacentHTML('beforeend', `<td>
+          ${cityssm.escapeHTML((_b = lotOccupancy.lotName) !== null && _b !== void 0 ? _b : '')}
+          ${hasLotRecord
+                ? ''
+                : ` <button class="button is-small is-light is-success button--addLot"
+                  data-lot-id="${lotOccupancy.lotId.toString()}"
+                  data-tooltip="Add ${los.escapedAliases.Lot}"
+                  aria-label="Add ${los.escapedAliases.Lot}" type="button">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                  </button>`}
+        </td>`);
         }
         else {
+            // eslint-disable-next-line no-unsanitized/method
             rowElement.insertAdjacentHTML('beforeend', `<td><span class="has-text-grey">(No ${los.escapedAliases.Lot})</span></td>`);
         }
         let occupantsHTML = '';
@@ -174,41 +167,39 @@ function renderRelatedOccupancies() {
         ${cityssm.escapeHTML(occupant.occupantFamilyName)}
         </li>`;
         }
-        rowElement.insertAdjacentHTML('beforeend', '<td>' +
-            lotOccupancy.occupancyStartDateString +
-            '</td>' +
-            ('<td>' +
-                (lotOccupancy.occupancyEndDate
-                    ? lotOccupancy.occupancyEndDateString
-                    : '<span class="has-text-grey">(No End Date)</span>') +
-                '</td>') +
-            ('<td>' +
-                (lotOccupancy.lotOccupancyOccupants.length === 0
-                    ? `<span class="has-text-grey">(No ${los.escapedAliases.Occupants})</span>`
-                    : `<ul class="fa-ul ml-5">${occupantsHTML}</ul>`) +
-                '</td>') +
-            ('<td>' +
-                '<button class="button is-small is-light is-danger button--deleteLotOccupancy" data-tooltip="Delete Relationship" type="button">' +
-                '<i class="fas fa-trash" aria-hidden="true"></i>' +
-                '</button>' +
-                '</td>'));
+        // eslint-disable-next-line no-unsanitized/method
+        rowElement.insertAdjacentHTML('beforeend', `<td>
+          ${lotOccupancy.occupancyStartDateString}
+        </td><td>
+          ${lotOccupancy.occupancyEndDate
+            ? lotOccupancy.occupancyEndDateString
+            : '<span class="has-text-grey">(No End Date)</span>'}
+        </td><td>
+          ${lotOccupancy.lotOccupancyOccupants.length === 0
+            ? `<span class="has-text-grey">(No ${los.escapedAliases.Occupants})</span>`
+            : `<ul class="fa-ul ml-5">${occupantsHTML}</ul>`}
+        </td><td>
+          <button class="button is-small is-light is-danger button--deleteLotOccupancy" data-tooltip="Delete Relationship" type="button">
+            <i class="fas fa-trash" aria-hidden="true"></i>
+          </button>
+        </td>`);
         (_d = rowElement
             .querySelector('.button--addLot')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', addLotFromLotOccupancy);
-        rowElement
-            .querySelector('.button--deleteLotOccupancy')
-            .addEventListener('click', deleteLotOccupancy);
-        occupanciesContainerElement.querySelector('tbody').append(rowElement);
+        (_e = rowElement
+            .querySelector('.button--deleteLotOccupancy')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', deleteLotOccupancy);
+        (_f = occupanciesContainerElement.querySelector('tbody')) === null || _f === void 0 ? void 0 : _f.append(rowElement);
     }
 }
 function openEditLotStatus(clickEvent) {
-    const lotId = Number.parseInt(clickEvent.currentTarget.closest('.container--lot').dataset.lotId, 10);
+    var _a;
+    const lotId = Number.parseInt((_a = clickEvent.currentTarget.closest('.container--lot').dataset.lotId) !== null && _a !== void 0 ? _a : '', 10);
     const lot = workOrderLots.find((possibleLot) => {
         return possibleLot.lotId === lotId;
     });
     let editCloseModalFunction;
     function doUpdateLotStatus(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(los.urlPrefix + '/workOrders/doUpdateLotStatus', submitEvent.currentTarget, (rawResponseJSON) => {
+        cityssm.postJSON(`${los.urlPrefix}/workOrders/doUpdateLotStatus`, submitEvent.currentTarget, (rawResponseJSON) => {
             var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
@@ -227,9 +218,10 @@ function openEditLotStatus(clickEvent) {
     }
     cityssm.openHtmlModal('lot-editLotStatus', {
         onshow(modalElement) {
+            var _a, _b, _c;
             los.populateAliases(modalElement);
             modalElement.querySelector('#lotStatusEdit--lotId').value = lotId.toString();
-            modalElement.querySelector('#lotStatusEdit--lotName').value = lot.lotName;
+            modalElement.querySelector('#lotStatusEdit--lotName').value = (_a = lot.lotName) !== null && _a !== void 0 ? _a : '';
             const lotStatusElement = modalElement.querySelector('#lotStatusEdit--lotStatusId');
             let lotStatusFound = false;
             for (const lotStatus of exports.lotStatuses) {
@@ -244,22 +236,22 @@ function openEditLotStatus(clickEvent) {
             if (!lotStatusFound && lot.lotStatusId) {
                 const optionElement = document.createElement('option');
                 optionElement.value = lot.lotStatusId.toString();
-                optionElement.textContent = lot.lotStatus;
+                optionElement.textContent = (_b = lot.lotStatus) !== null && _b !== void 0 ? _b : '';
                 lotStatusElement.append(optionElement);
             }
             if (lot.lotStatusId) {
                 lotStatusElement.value = lot.lotStatusId.toString();
             }
-            modalElement
-                .querySelector('form')
-                .insertAdjacentHTML('beforeend', `<input name="workOrderId" type="hidden" value="${workOrderId}" />`);
+            // eslint-disable-next-line no-unsanitized/method
+            (_c = modalElement
+                .querySelector('form')) === null || _c === void 0 ? void 0 : _c.insertAdjacentHTML('beforeend', `<input name="workOrderId" type="hidden" value="${workOrderId}" />`);
         },
         onshown(modalElement, closeModalFunction) {
+            var _a;
             editCloseModalFunction = closeModalFunction;
             bulmaJS.toggleHtmlClipped();
-            modalElement
-                .querySelector('form')
-                .addEventListener('submit', doUpdateLotStatus);
+            (_a = modalElement
+                .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doUpdateLotStatus);
         },
         onremoved() {
             bulmaJS.toggleHtmlClipped();
@@ -269,7 +261,7 @@ function openEditLotStatus(clickEvent) {
 function deleteLot(clickEvent) {
     const lotId = clickEvent.currentTarget.closest('.container--lot').dataset.lotId;
     function doDelete() {
-        cityssm.postJSON(los.urlPrefix + '/workOrders/doDeleteWorkOrderLot', {
+        cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrderLot`, {
             workOrderId,
             lotId
         }, (rawResponseJSON) => {
@@ -299,59 +291,57 @@ function deleteLot(clickEvent) {
     });
 }
 function renderRelatedLots() {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f, _g;
     const lotsContainerElement = document.querySelector('#container--lots');
     document.querySelector(".tabs a[href='#relatedTab--lots'] .tag").textContent = workOrderLots.length.toString();
     if (workOrderLots.length === 0) {
+        // eslint-disable-next-line no-unsanitized/property
         lotsContainerElement.innerHTML = `<div class="message is-info">
-            <p class="message-body">There are no ${los.escapedAliases.lots} associated with this work order.</p>
-            </div>`;
+      <p class="message-body">There are no ${los.escapedAliases.lots} associated with this work order.</p>
+      </div>`;
         return;
     }
+    // eslint-disable-next-line no-unsanitized/property
     lotsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-        <thead><tr>
-        <th>${los.escapedAliases.Lot}</th>
-        <th>${los.escapedAliases.Map}</th>
-        <th>${los.escapedAliases.Lot} Type</th>
-        <th>Status</th>
-        <th class="has-width-1"></th>
-        </tr></thead>
-        <tbody></tbody>
-        </table>`;
+    <thead><tr>
+      <th>${los.escapedAliases.Lot}</th>
+      <th>${los.escapedAliases.Map}</th>
+      <th>${los.escapedAliases.Lot} Type</th>
+      <th>Status</th>
+      <th class="has-width-1"></th>
+    </tr></thead>
+    <tbody></tbody>
+    </table>`;
     for (const lot of workOrderLots) {
         const rowElement = document.createElement('tr');
         rowElement.className = 'container--lot';
         rowElement.dataset.lotId = lot.lotId.toString();
-        rowElement.innerHTML =
-            '<td>' +
-                '<a class="has-text-weight-bold" href="' +
-                los.getLotURL(lot.lotId) +
-                '">' +
-                cityssm.escapeHTML((_a = lot.lotName) !== null && _a !== void 0 ? _a : '') +
-                '</a>' +
-                '</td>' +
-                `<td>${cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '')}</td>` +
-                `<td>${cityssm.escapeHTML((_c = lot.lotType) !== null && _c !== void 0 ? _c : '')}</td>` +
-                ('<td>' +
-                    (lot.lotStatusId
-                        ? cityssm.escapeHTML((_d = lot.lotStatus) !== null && _d !== void 0 ? _d : '')
-                        : '<span class="has-text-grey">(No Status)</span>') +
-                    '</td>') +
-                `<td class="is-nowrap">
+        // eslint-disable-next-line no-unsanitized/property
+        rowElement.innerHTML = `<td>
+        <a class="has-text-weight-bold" href="${los.getLotURL(lot.lotId)}">
+          ${cityssm.escapeHTML((_a = lot.lotName) !== null && _a !== void 0 ? _a : '')}
+        </a>
+      </td><td>
+        ${cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '')}
+      </td><td>
+        ${cityssm.escapeHTML((_c = lot.lotType) !== null && _c !== void 0 ? _c : '')}
+      </td><td>
+        ${lot.lotStatusId
+            ? cityssm.escapeHTML((_d = lot.lotStatus) !== null && _d !== void 0 ? _d : '')
+            : '<span class="has-text-grey">(No Status)</span>'}
+      </td><td class="is-nowrap">
         <button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">
         <i class="fas fa-pencil-alt" aria-hidden="true"></i>
         </button>
         <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">
         <i class="fas fa-trash" aria-hidden="true"></i>
         </button>
-        </td>`;
-        rowElement
-            .querySelector('.button--editLotStatus')
-            .addEventListener('click', openEditLotStatus);
-        rowElement
-            .querySelector('.button--deleteLot')
-            .addEventListener('click', deleteLot);
-        lotsContainerElement.querySelector('tbody').append(rowElement);
+      </td>`;
+        (_e = rowElement
+            .querySelector('.button--editLotStatus')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', openEditLotStatus);
+        (_f = rowElement
+            .querySelector('.button--deleteLot')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', deleteLot);
+        (_g = lotsContainerElement.querySelector('tbody')) === null || _g === void 0 ? void 0 : _g.append(rowElement);
     }
 }
 function renderRelatedLotsAndOccupancies() {
@@ -360,8 +350,9 @@ function renderRelatedLotsAndOccupancies() {
 }
 renderRelatedLotsAndOccupancies();
 function doAddLotOccupancy(clickEvent) {
+    var _a;
     const rowElement = clickEvent.currentTarget.closest('tr');
-    const lotOccupancyId = rowElement.dataset.lotOccupancyId;
+    const lotOccupancyId = (_a = rowElement.dataset.lotOccupancyId) !== null && _a !== void 0 ? _a : '';
     addLotOccupancy(lotOccupancyId, (success) => {
         if (success) {
             rowElement.remove();
@@ -376,10 +367,11 @@ function doAddLotOccupancy(clickEvent) {
         if (event) {
             event.preventDefault();
         }
+        // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML =
             los.getLoadingParagraphHTML('Searching...');
-        cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doSearchLotOccupancies', searchFormElement, (rawResponseJSON) => {
-            var _a, _b;
+        cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doSearchLotOccupancies`, searchFormElement, (rawResponseJSON) => {
+            var _a, _b, _c, _d;
             const responseJSON = rawResponseJSON;
             if (responseJSON.lotOccupancies.length === 0) {
                 searchResultsContainerElement.innerHTML = `<div class="message is-info">
@@ -387,6 +379,7 @@ function doAddLotOccupancy(clickEvent) {
               </div>`;
                 return;
             }
+            // eslint-disable-next-line no-unsanitized/property
             searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
             <thead><tr>
             <th class="has-width-1"></th>
@@ -417,32 +410,32 @@ function doAddLotOccupancy(clickEvent) {
                         '</td>');
                 }
                 else {
+                    // eslint-disable-next-line no-unsanitized/method
                     rowElement.insertAdjacentHTML('beforeend', `<td><span class="has-text-grey">(No ${los.escapedAliases.Lot})</span></td>`);
                 }
-                rowElement.insertAdjacentHTML('beforeend', `<td>${lotOccupancy.occupancyStartDateString}</td>` +
-                    ('<td>' +
-                        (lotOccupancy.occupancyEndDate
-                            ? lotOccupancy.occupancyEndDateString
-                            : '<span class="has-text-grey">(No End Date)</span>') +
-                        '</td>') +
-                    ('<td>' +
-                        (lotOccupancy.lotOccupancyOccupants.length === 0
-                            ? `<span class="has-text-grey">(No ${cityssm.escapeHTML(los.escapedAliases.Occupants)})</span>`
-                            : cityssm.escapeHTML(lotOccupancy.lotOccupancyOccupants[0].occupantName +
-                                ' ' +
-                                lotOccupancy.lotOccupancyOccupants[0]
-                                    .occupantFamilyName) +
-                                (lotOccupancy.lotOccupancyOccupants.length > 1
-                                    ? ' plus ' +
-                                        (lotOccupancy.lotOccupancyOccupants.length - 1).toString()
-                                    : '')) +
-                        '</td>'));
-                rowElement
-                    .querySelector('.button--addLotOccupancy')
-                    .addEventListener('click', doAddLotOccupancy);
-                searchResultsContainerElement
-                    .querySelector('tbody')
-                    .append(rowElement);
+                // eslint-disable-next-line no-unsanitized/method
+                rowElement.insertAdjacentHTML('beforeend', `<td>
+                  ${lotOccupancy.occupancyStartDateString}
+                </td><td>
+                  ${lotOccupancy.occupancyEndDate
+                    ? lotOccupancy.occupancyEndDateString
+                    : '<span class="has-text-grey">(No End Date)</span>'}
+                </td><td>
+                  ${lotOccupancy.lotOccupancyOccupants.length === 0
+                    ? `<span class="has-text-grey">
+                          (No ${cityssm.escapeHTML(los.escapedAliases.Occupants)})
+                          </span>`
+                    : cityssm.escapeHTML(`${lotOccupancy.lotOccupancyOccupants[0].occupantName}
+                            ${lotOccupancy.lotOccupancyOccupants[0]
+                        .occupantFamilyName}`) +
+                        (lotOccupancy.lotOccupancyOccupants.length > 1
+                            ? ` plus
+                              ${(lotOccupancy.lotOccupancyOccupants.length - 1).toString()}`
+                            : '')}</td>`);
+                (_c = rowElement
+                    .querySelector('.button--addLotOccupancy')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', doAddLotOccupancy);
+                (_d = searchResultsContainerElement
+                    .querySelector('tbody')) === null || _d === void 0 ? void 0 : _d.append(rowElement);
             }
         });
     }
@@ -470,8 +463,9 @@ function doAddLotOccupancy(clickEvent) {
     });
 });
 function doAddLot(clickEvent) {
+    var _a;
     const rowElement = clickEvent.currentTarget.closest('tr');
-    const lotId = rowElement.dataset.lotId;
+    const lotId = (_a = rowElement.dataset.lotId) !== null && _a !== void 0 ? _a : '';
     addLot(lotId, (success) => {
         if (success) {
             rowElement.remove();
@@ -485,18 +479,19 @@ function doAddLot(clickEvent) {
         if (event) {
             event.preventDefault();
         }
+        // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML =
             los.getLoadingParagraphHTML('Searching...');
-        cityssm.postJSON(los.urlPrefix + '/lots/doSearchLots', searchFormElement, (rawResponseJSON) => {
-            var _a, _b, _c, _d;
+        cityssm.postJSON(`${los.urlPrefix}/lots/doSearchLots`, searchFormElement, (rawResponseJSON) => {
+            var _a, _b, _c, _d, _e, _f;
             const responseJSON = rawResponseJSON;
             if (responseJSON.lots.length === 0) {
-                searchResultsContainerElement.innerHTML =
-                    '<div class="message is-info">' +
-                        '<p class="message-body">There are no records that meet the search criteria.</p>' +
-                        '</div>';
+                searchResultsContainerElement.innerHTML = `<div class="message is-info">
+            <p class="message-body">There are no records that meet the search criteria.</p>
+            </div>`;
                 return;
             }
+            // eslint-disable-next-line no-unsanitized/property
             searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
           <thead><tr>
           <th class="has-width-1"></th>
@@ -511,26 +506,23 @@ function doAddLot(clickEvent) {
                 const rowElement = document.createElement('tr');
                 rowElement.className = 'container--lot';
                 rowElement.dataset.lotId = lot.lotId.toString();
-                rowElement.innerHTML =
-                    '<td class="has-text-centered">' +
-                        '<button class="button is-small is-success button--addLot" data-tooltip="Add" type="button" aria-label="Add">' +
-                        '<i class="fas fa-plus" aria-hidden="true"></i>' +
-                        '</button>' +
-                        '</td>' +
-                        ('<td class="has-text-weight-bold">' +
-                            cityssm.escapeHTML((_a = lot.lotName) !== null && _a !== void 0 ? _a : '') +
-                            '</td>') +
-                        '<td>' +
-                        cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '') +
-                        '</td>' +
-                        ('<td>' + cityssm.escapeHTML((_c = lot.lotType) !== null && _c !== void 0 ? _c : '') + '</td>') +
-                        ('<td>' + cityssm.escapeHTML((_d = lot.lotStatus) !== null && _d !== void 0 ? _d : '') + '</td>');
-                rowElement
-                    .querySelector('.button--addLot')
-                    .addEventListener('click', doAddLot);
-                searchResultsContainerElement
-                    .querySelector('tbody')
-                    .append(rowElement);
+                rowElement.innerHTML = `<td class="has-text-centered">
+              <button class="button is-small is-success button--addLot" data-tooltip="Add" type="button" aria-label="Add">
+                <i class="fas fa-plus" aria-hidden="true"></i>
+              </button>
+            </td><td class="has-text-weight-bold">
+              ${cityssm.escapeHTML((_a = lot.lotName) !== null && _a !== void 0 ? _a : '')}
+            </td><td>
+              ${cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '')}
+            </td><td>
+              ${cityssm.escapeHTML((_c = lot.lotType) !== null && _c !== void 0 ? _c : '')}
+            </td><td>
+              ${cityssm.escapeHTML((_d = lot.lotStatus) !== null && _d !== void 0 ? _d : '')}
+            </td>`;
+                (_e = rowElement
+                    .querySelector('.button--addLot')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', doAddLot);
+                (_f = searchResultsContainerElement
+                    .querySelector('tbody')) === null || _f === void 0 ? void 0 : _f.append(rowElement);
             }
         });
     }
@@ -550,13 +542,13 @@ function doAddLot(clickEvent) {
             doSearch();
         },
         onshown(modalElement) {
+            var _a;
             bulmaJS.toggleHtmlClipped();
             const lotNameElement = modalElement.querySelector('#lotSearch--lotName');
             lotNameElement.addEventListener('change', doSearch);
             lotNameElement.focus();
-            modalElement
-                .querySelector('#lotSearch--lotStatusId')
-                .addEventListener('change', doSearch);
+            (_a = modalElement
+                .querySelector('#lotSearch--lotStatusId')) === null || _a === void 0 ? void 0 : _a.addEventListener('change', doSearch);
             searchFormElement.addEventListener('submit', doSearch);
         },
         onremoved() {

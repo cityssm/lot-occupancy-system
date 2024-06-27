@@ -514,7 +514,7 @@ function renderLotOccupancyTransactions() {
             .querySelector('tbody')) === null || _g === void 0 ? void 0 : _g.append(tableRowElement);
     }
     ;
-    lotOccupancyTransactionsContainerElement.querySelector('#lotOccupancyTransactions--grandTotal').textContent = '$' + transactionGrandTotal.toFixed(2);
+    lotOccupancyTransactionsContainerElement.querySelector('#lotOccupancyTransactions--grandTotal').textContent = `\$${transactionGrandTotal.toFixed(2)}`;
     const feeGrandTotal = getFeeGrandTotal();
     if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
         lotOccupancyTransactionsContainerElement.insertAdjacentHTML('afterbegin', `<div class="message is-warning">
@@ -524,7 +524,9 @@ function renderLotOccupancyTransactions() {
             <div class="level-item">Outstanding Balance</div>
           </div>
           <div class="level-right">
-            <div class="level-item">$${cityssm.escapeHTML((feeGrandTotal - transactionGrandTotal).toFixed(2))}</div>
+            <div class="level-item">
+              $${cityssm.escapeHTML((feeGrandTotal - transactionGrandTotal).toFixed(2))}
+            </div>
           </div>
         </div>
         </div></div>`);

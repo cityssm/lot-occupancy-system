@@ -661,7 +661,7 @@ declare const exports: Record<string, unknown>
           const optionElement = document.createElement('option')
           optionElement.value = map.mapId!.toString()
           optionElement.textContent =
-            (map.mapName ?? '') === '' ? '(No Name)' : map.mapName!
+            (map.mapName ?? '') === '' ? '(No Name)' : map.mapName ?? ''
           mapElement.append(optionElement)
         }
 
@@ -688,7 +688,7 @@ declare const exports: Record<string, unknown>
           contextualColorName: 'info'
         })
       } else {
-        window.open(los.urlPrefix + '/lots/' + lotId)
+        window.open(`${los.urlPrefix}/lots/${lotId}`)
       }
     })
 

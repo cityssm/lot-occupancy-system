@@ -784,7 +784,7 @@ function renderLotOccupancyTransactions(): void {
     lotOccupancyTransactionsContainerElement.querySelector(
       '#lotOccupancyTransactions--grandTotal'
     ) as HTMLElement
-  ).textContent = '$' + transactionGrandTotal.toFixed(2)
+  ).textContent = `\$${transactionGrandTotal.toFixed(2)}`
 
   const feeGrandTotal = getFeeGrandTotal()
 
@@ -798,7 +798,9 @@ function renderLotOccupancyTransactions(): void {
             <div class="level-item">Outstanding Balance</div>
           </div>
           <div class="level-right">
-            <div class="level-item">$${cityssm.escapeHTML((feeGrandTotal - transactionGrandTotal).toFixed(2))}</div>
+            <div class="level-item">
+              $${cityssm.escapeHTML((feeGrandTotal - transactionGrandTotal).toFixed(2))}
+            </div>
           </div>
         </div>
         </div></div>`
