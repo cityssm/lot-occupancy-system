@@ -309,7 +309,7 @@ declare const exports: Record<string, unknown>
       }
 
       cityssm.postJSON(
-        los.urlPrefix + '/lotOccupancies/doGetOccupancyTypeFields',
+        `${los.urlPrefix}/lotOccupancies/doGetOccupancyTypeFields`,
         {
           occupancyTypeId: occupancyTypeIdElement.value
         },

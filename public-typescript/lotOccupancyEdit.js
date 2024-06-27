@@ -203,7 +203,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>`;
                 return;
             }
-            cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doGetOccupancyTypeFields', {
+            cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doGetOccupancyTypeFields`, {
                 occupancyTypeId: occupancyTypeIdElement.value
             }, (rawResponseJSON) => {
                 var _a, _b;
@@ -664,19 +664,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </td><td>
             ${((_f = lotOccupancyOccupant.occupantAddress1) !== null && _f !== void 0 ? _f : '') === ''
                 ? ''
-                : cityssm.escapeHTML((_g = lotOccupancyOccupant.occupantAddress1) !== null && _g !== void 0 ? _g : '') +
-                    '<br />'}
+                : `${cityssm.escapeHTML((_g = lotOccupancyOccupant.occupantAddress1) !== null && _g !== void 0 ? _g : '')}<br />`}
             ${((_h = lotOccupancyOccupant.occupantAddress2) !== null && _h !== void 0 ? _h : '') === ''
                 ? ''
-                : cityssm.escapeHTML((_j = lotOccupancyOccupant.occupantAddress2) !== null && _j !== void 0 ? _j : '') +
-                    '<br />'}
+                : `${cityssm.escapeHTML((_j = lotOccupancyOccupant.occupantAddress2) !== null && _j !== void 0 ? _j : '')}<br />`}
             ${((_k = lotOccupancyOccupant.occupantCity) !== null && _k !== void 0 ? _k : '') === ''
                 ? ''
-                : cityssm.escapeHTML((_l = lotOccupancyOccupant.occupantCity) !== null && _l !== void 0 ? _l : '') + ', '}
+                : `${cityssm.escapeHTML((_l = lotOccupancyOccupant.occupantCity) !== null && _l !== void 0 ? _l : '')}, `}
             ${cityssm.escapeHTML((_m = lotOccupancyOccupant.occupantProvince) !== null && _m !== void 0 ? _m : '')}<br />
-            ${cityssm.escapeHTML((_o = lotOccupancyOccupant.occupantPostalCode) !== null && _o !== void 0 ? _o : '')}</td><td>${((_p = lotOccupancyOccupant.occupantPhoneNumber) !== null && _p !== void 0 ? _p : '') === ''
+            ${cityssm.escapeHTML((_o = lotOccupancyOccupant.occupantPostalCode) !== null && _o !== void 0 ? _o : '')}
+          </td><td>
+            ${((_p = lotOccupancyOccupant.occupantPhoneNumber) !== null && _p !== void 0 ? _p : '') === ''
                 ? ''
-                : cityssm.escapeHTML((_q = lotOccupancyOccupant.occupantPhoneNumber) !== null && _q !== void 0 ? _q : '') + '<br />'}
+                : `${cityssm.escapeHTML((_q = lotOccupancyOccupant.occupantPhoneNumber) !== null && _q !== void 0 ? _q : '')}<br />`}
             ${((_r = lotOccupancyOccupant.occupantEmailAddress) !== null && _r !== void 0 ? _r : '') === ''
                 ? ''
                 : cityssm.escapeHTML((_s = lotOccupancyOccupant.occupantEmailAddress) !== null && _s !== void 0 ? _s : '')}
@@ -805,15 +805,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                       ${cityssm.escapeHTML((_c = occupant.occupantAddress1) !== null && _c !== void 0 ? _c : '')}<br />
                       ${((_d = occupant.occupantAddress2) !== null && _d !== void 0 ? _d : '') === ''
                         ? ''
-                        : cityssm.escapeHTML((_e = occupant.occupantAddress2) !== null && _e !== void 0 ? _e : '') +
-                            '<br />'}${cityssm.escapeHTML((_f = occupant.occupantCity) !== null && _f !== void 0 ? _f : '')}, ${cityssm.escapeHTML((_g = occupant.occupantProvince) !== null && _g !== void 0 ? _g : '')}<br />
+                        : `${cityssm.escapeHTML((_e = occupant.occupantAddress2) !== null && _e !== void 0 ? _e : '')}<br />`}${cityssm.escapeHTML((_f = occupant.occupantCity) !== null && _f !== void 0 ? _f : '')}, ${cityssm.escapeHTML((_g = occupant.occupantProvince) !== null && _g !== void 0 ? _g : '')}<br />
                       ${cityssm.escapeHTML((_h = occupant.occupantPostalCode) !== null && _h !== void 0 ? _h : '')}
                     </div>
                     <div class="column">
                     ${((_j = occupant.occupantPhoneNumber) !== null && _j !== void 0 ? _j : '') === ''
                         ? ''
-                        : cityssm.escapeHTML((_k = occupant.occupantPhoneNumber) !== null && _k !== void 0 ? _k : '') +
-                            '<br />'}
+                        : `${cityssm.escapeHTML((_k = occupant.occupantPhoneNumber) !== null && _k !== void 0 ? _k : '')}<br />`}
                     ${cityssm.escapeHTML((_l = occupant.occupantEmailAddress) !== null && _l !== void 0 ? _l : '')}<br />
                     </div>
                     </div>`;
@@ -1251,9 +1249,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     ((_p = lotOccupancyFee.taxAmount) !== null && _p !== void 0 ? _p : 0) * ((_q = lotOccupancyFee.quantity) !== null && _q !== void 0 ? _q : 0);
             }
             ;
-            lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--feeAmountTotal').textContent = '$' + feeAmountTotal.toFixed(2);
-            lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--taxAmountTotal').textContent = '$' + taxAmountTotal.toFixed(2);
-            lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--grandTotal').textContent = '$' + (feeAmountTotal + taxAmountTotal).toFixed(2);
+            lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--feeAmountTotal').textContent = `$${feeAmountTotal.toFixed(2)}`;
+            lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--taxAmountTotal').textContent = `$${taxAmountTotal.toFixed(2)}`;
+            lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--grandTotal').textContent = `$${(feeAmountTotal + taxAmountTotal).toFixed(2)}`;
             renderLotOccupancyTransactions();
         }
         const addFeeButtonElement = document.querySelector('#button--addFee');
@@ -1343,7 +1341,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     categoryContainerElement.className = 'container--feeCategory';
                     categoryContainerElement.dataset.feeCategoryId =
                         feeCategory.feeCategoryId.toString();
-                    categoryContainerElement.innerHTML = `<h4 class="title is-5 mt-2">${cityssm.escapeHTML((_a = feeCategory.feeCategory) !== null && _a !== void 0 ? _a : '')}</h4>
+                    categoryContainerElement.innerHTML = `<h4 class="title is-5 mt-2">
+                ${cityssm.escapeHTML((_a = feeCategory.feeCategory) !== null && _a !== void 0 ? _a : '')}
+                </h4>
                 <div class="panel mb-5"></div>`;
                     let hasFees = false;
                     for (const fee of feeCategory.fees) {

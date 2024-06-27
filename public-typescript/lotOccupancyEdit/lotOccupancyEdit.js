@@ -203,7 +203,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>`;
                 return;
             }
-            cityssm.postJSON(los.urlPrefix + '/lotOccupancies/doGetOccupancyTypeFields', {
+            cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doGetOccupancyTypeFields`, {
                 occupancyTypeId: occupancyTypeIdElement.value
             }, (rawResponseJSON) => {
                 var _a, _b;

@@ -177,9 +177,9 @@ function renderLotOccupancyFees() {
             ((_p = lotOccupancyFee.taxAmount) !== null && _p !== void 0 ? _p : 0) * ((_q = lotOccupancyFee.quantity) !== null && _q !== void 0 ? _q : 0);
     }
     ;
-    lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--feeAmountTotal').textContent = '$' + feeAmountTotal.toFixed(2);
-    lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--taxAmountTotal').textContent = '$' + taxAmountTotal.toFixed(2);
-    lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--grandTotal').textContent = '$' + (feeAmountTotal + taxAmountTotal).toFixed(2);
+    lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--feeAmountTotal').textContent = `$${feeAmountTotal.toFixed(2)}`;
+    lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--taxAmountTotal').textContent = `$${taxAmountTotal.toFixed(2)}`;
+    lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--grandTotal').textContent = `$${(feeAmountTotal + taxAmountTotal).toFixed(2)}`;
     renderLotOccupancyTransactions();
 }
 const addFeeButtonElement = document.querySelector('#button--addFee');
@@ -269,7 +269,9 @@ addFeeButtonElement.addEventListener('click', () => {
             categoryContainerElement.className = 'container--feeCategory';
             categoryContainerElement.dataset.feeCategoryId =
                 feeCategory.feeCategoryId.toString();
-            categoryContainerElement.innerHTML = `<h4 class="title is-5 mt-2">${cityssm.escapeHTML((_a = feeCategory.feeCategory) !== null && _a !== void 0 ? _a : '')}</h4>
+            categoryContainerElement.innerHTML = `<h4 class="title is-5 mt-2">
+        ${cityssm.escapeHTML((_a = feeCategory.feeCategory) !== null && _a !== void 0 ? _a : '')}
+        </h4>
         <div class="panel mb-5"></div>`;
             let hasFees = false;
             for (const fee of feeCategory.fees) {

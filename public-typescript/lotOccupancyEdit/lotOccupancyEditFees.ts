@@ -268,17 +268,17 @@ function renderLotOccupancyFees(): void {
     lotOccupancyFeesContainerElement.querySelector(
       '#lotOccupancyFees--feeAmountTotal'
     ) as HTMLElement
-  ).textContent = '$' + feeAmountTotal.toFixed(2)
+  ).textContent = `$${feeAmountTotal.toFixed(2)}`
   ;(
     lotOccupancyFeesContainerElement.querySelector(
       '#lotOccupancyFees--taxAmountTotal'
     ) as HTMLElement
-  ).textContent = '$' + taxAmountTotal.toFixed(2)
+  ).textContent = `$${taxAmountTotal.toFixed(2)}`
   ;(
     lotOccupancyFeesContainerElement.querySelector(
       '#lotOccupancyFees--grandTotal'
     ) as HTMLElement
-  ).textContent = '$' + (feeAmountTotal + taxAmountTotal).toFixed(2)
+  ).textContent = `$${(feeAmountTotal + taxAmountTotal).toFixed(2)}`
 
   renderLotOccupancyTransactions()
 }
@@ -406,7 +406,9 @@ addFeeButtonElement.addEventListener('click', () => {
       categoryContainerElement.dataset.feeCategoryId =
         feeCategory.feeCategoryId.toString()
 
-      categoryContainerElement.innerHTML = `<h4 class="title is-5 mt-2">${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}</h4>
+      categoryContainerElement.innerHTML = `<h4 class="title is-5 mt-2">
+        ${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}
+        </h4>
         <div class="panel mb-5"></div>`
 
       let hasFees = false

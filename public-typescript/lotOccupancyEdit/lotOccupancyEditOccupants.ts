@@ -332,27 +332,27 @@ function renderLotOccupancyOccupants(): void {
         ${
           (lotOccupancyOccupant.occupantAddress1 ?? '') === ''
             ? ''
-            : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1 ?? '') +
-              '<br />'
+            : `${cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1 ?? '')}<br />`
         }
         ${
           (lotOccupancyOccupant.occupantAddress2 ?? '') === ''
             ? ''
-            : cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2 ?? '') +
-              '<br />'
+            : `${cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2 ?? '')}<br />`
         }
         ${
           (lotOccupancyOccupant.occupantCity ?? '') === ''
             ? ''
-            : cityssm.escapeHTML(lotOccupancyOccupant.occupantCity ?? '') + ', '
+            : `${cityssm.escapeHTML(lotOccupancyOccupant.occupantCity ?? '')}, `
         }
         ${cityssm.escapeHTML(lotOccupancyOccupant.occupantProvince ?? '')}<br />
-        ${cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode ?? '')}</td><td>${
+        ${cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode ?? '')}
+      </td><td>
+        ${
           (lotOccupancyOccupant.occupantPhoneNumber ?? '') === ''
             ? ''
-            : cityssm.escapeHTML(
+            : `${cityssm.escapeHTML(
                 lotOccupancyOccupant.occupantPhoneNumber ?? ''
-              ) + '<br />'
+              )}<br />`
         }
         ${
           (lotOccupancyOccupant.occupantEmailAddress ?? '') === ''
@@ -551,8 +551,7 @@ document
                   ${
                     (occupant.occupantAddress2 ?? '') === ''
                       ? ''
-                      : cityssm.escapeHTML(occupant.occupantAddress2 ?? '') +
-                        '<br />'
+                      : `${cityssm.escapeHTML(occupant.occupantAddress2 ?? '')}<br />`
                   }${cityssm.escapeHTML(occupant.occupantCity ?? '')}, ${cityssm.escapeHTML(occupant.occupantProvince ?? '')}<br />
                   ${cityssm.escapeHTML(occupant.occupantPostalCode ?? '')}
                 </div>
@@ -560,8 +559,7 @@ document
                 ${
                   (occupant.occupantPhoneNumber ?? '') === ''
                     ? ''
-                    : cityssm.escapeHTML(occupant.occupantPhoneNumber ?? '') +
-                      '<br />'
+                    : `${cityssm.escapeHTML(occupant.occupantPhoneNumber ?? '')}<br />`
                 }
                 ${cityssm.escapeHTML(occupant.occupantEmailAddress ?? '')}<br />
                 </div>
