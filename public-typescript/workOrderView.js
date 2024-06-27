@@ -1,14 +1,16 @@
 "use strict";
-/* eslint-disable unicorn/prefer-module, @typescript-eslint/no-non-null-assertion */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    var _a;
     const los = exports.los;
     const reopenWorkOrderButtonElement = document.querySelector('#button--reopenWorkOrder');
     if (reopenWorkOrderButtonElement !== null) {
-        const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId;
+        const workOrderId = (_a = reopenWorkOrderButtonElement.dataset.workOrderId) !== null && _a !== void 0 ? _a : '';
         reopenWorkOrderButtonElement.addEventListener('click', () => {
             function doReopen() {
-                cityssm.postJSON(los.urlPrefix + '/workOrders/doReopenWorkOrder', {
+                cityssm.postJSON(`${los.urlPrefix}/workOrders/doReopenWorkOrder`, {
                     workOrderId
                 }, (rawResponseJSON) => {
                     var _a;

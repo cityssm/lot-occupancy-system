@@ -1,14 +1,17 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../types/globalTypes'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type { LOS } from '../types/globalTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+
+declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as globalTypes.LOS
+  const los = exports.los as LOS
 
   const mapId = (document.querySelector('#map--mapId') as HTMLInputElement)
     .value
@@ -34,7 +37,7 @@ declare const bulmaJS: BulmaJS
     formEvent.preventDefault()
 
     cityssm.postJSON(
-      los.urlPrefix + '/maps/' + (isCreate ? 'doCreateMap' : 'doUpdateMap'),
+      `${los.urlPrefix}/maps/${isCreate ? 'doCreateMap' : 'doUpdateMap'}`,
       mapForm,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
@@ -50,13 +53,13 @@ declare const bulmaJS: BulmaJS
             window.location.href = los.getMapURL(responseJSON.mapId, true)
           } else {
             bulmaJS.alert({
-              message: los.escapedAliases.Map + ' Updated Successfully',
+              message: `${los.escapedAliases.Map} Updated Successfully`,
               contextualColorName: 'success'
             })
           }
         } else {
           bulmaJS.alert({
-            title: 'Error Updating ' + los.escapedAliases.Map,
+            title: `Error Updating ${los.escapedAliases.Map}`,
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
@@ -81,7 +84,7 @@ declare const bulmaJS: BulmaJS
 
       function doDelete(): void {
         cityssm.postJSON(
-          los.urlPrefix + '/maps/doDeleteMap',
+          `${los.urlPrefix}/maps/doDeleteMap`,
           {
             mapId
           },
@@ -95,7 +98,7 @@ declare const bulmaJS: BulmaJS
               window.location.href = los.getMapURL()
             } else {
               bulmaJS.alert({
-                title: 'Error Deleting ' + los.escapedAliases.Map,
+                title: `Error Deleting ${los.escapedAliases.Map}`,
                 message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
@@ -105,7 +108,7 @@ declare const bulmaJS: BulmaJS
       }
 
       bulmaJS.confirm({
-        title: 'Delete ' + los.escapedAliases.Map,
+        title: `Delete ${los.escapedAliases.Map}`,
         message: `Are you sure you want to delete this ${los.escapedAliases.map} and all related ${los.escapedAliases.lots}?`,
         contextualColorName: 'warning',
         okButton: {

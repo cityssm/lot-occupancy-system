@@ -1,13 +1,16 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../types/globalTypes'
-import type * as recordTypes from '../types/recordTypes'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
+import type { LOS } from '../types/globalTypes.js'
+import type * as recordTypes from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
+
+declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as globalTypes.LOS
+  const los = exports.los as LOS
 
   const searchFilterFormElement = document.querySelector(
     '#form--searchFilters'
@@ -25,12 +28,15 @@ declare const cityssm: cityssmGlobal
     '#searchFilter--offset'
   ) as HTMLInputElement
 
-  function renderLots(responseJSON: {
-    count: number
-    offset: number
-    lots: recordTypes.Lot[]
-  }): void {
+  function renderLots(rawResponseJSON): void {
+    const responseJSON = rawResponseJSON as {
+      count: number
+      offset: number
+      lots: recordTypes.Lot[]
+    }
+
     if (responseJSON.lots.length === 0) {
+      // eslint-disable-next-line no-unsanitized/property
       searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no ${los.escapedAliases.lots} that meet the search criteria.</p>
         </div>`
@@ -41,48 +47,51 @@ declare const cityssm: cityssmGlobal
     const resultsTbodyElement = document.createElement('tbody')
 
     for (const lot of responseJSON.lots) {
+      // eslint-disable-next-line no-unsanitized/method
       resultsTbodyElement.insertAdjacentHTML(
         'beforeend',
-        '<tr>' +
-          ('<td>' +
-            '<a class="has-text-weight-bold" href="' +
-            los.getLotURL(lot.lotId) +
-            '">' +
-            cityssm.escapeHTML(lot.lotName ?? '') +
-            '</a>' +
-            '</td>') +
-          ('<td>' +
-            '<a href="' +
-            los.getMapURL(lot.mapId) +
-            '">' +
-            (lot.mapName
-              ? cityssm.escapeHTML(lot.mapName)
-              : '<span class="has-text-grey">(No Name)</span>') +
-            '</a>' +
-            '</td>') +
-          ('<td>' + cityssm.escapeHTML(lot.lotType ?? '') + '</td>') +
-          ('<td>' +
-            (lot.lotStatusId
-              ? cityssm.escapeHTML(lot.lotStatus!)
-              : '<span class="has-text-grey">(No Status)</span>') +
-            '<br />' +
-            ((lot.lotOccupancyCount ?? 0) > 0
-              ? '<span class="is-size-7">Currently Occupied</span>'
-              : '') +
-            '</td>') +
-          '</tr>'
+        `<tr>
+          <td>
+            <a class="has-text-weight-bold" href="${los.getLotURL(lot.lotId)}">
+              ${cityssm.escapeHTML(lot.lotName ?? '')}
+            </a>
+          </td><td>
+            <a href="${los.getMapURL(lot.mapId)}">
+              ${
+                lot.mapName
+                  ? cityssm.escapeHTML(lot.mapName)
+                  : '<span class="has-text-grey">(No Name)</span>'
+              }
+            </a>
+          </td><td>
+            ${cityssm.escapeHTML(lot.lotType ?? '')}
+          </td><td>
+            ${
+              lot.lotStatusId
+                ? cityssm.escapeHTML(lot.lotStatus ?? '')
+                : '<span class="has-text-grey">(No Status)</span>'
+            }<br />
+            ${
+              (lot.lotOccupancyCount ?? 0) > 0
+                ? '<span class="is-size-7">Currently Occupied</span>'
+                : ''
+            }
+          </td>
+          </tr>`
       )
     }
 
+    // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
-            <thead><tr>
-            <th>${los.escapedAliases.Lot}</th>
-            <th>${los.escapedAliases.Map}</th>
-            <th>${los.escapedAliases.Lot} Type</th>
-            <th>Status</th>
-            </tr></thead>
-            <table>`
+      <thead><tr>
+      <th>${los.escapedAliases.Lot}</th>
+      <th>${los.escapedAliases.Map}</th>
+      <th>${los.escapedAliases.Lot} Type</th>
+      <th>Status</th>
+      </tr></thead>
+      <table>`
 
+    // eslint-disable-next-line no-unsanitized/method
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
       los.getSearchResultsPagerHTML(
@@ -93,8 +102,8 @@ declare const cityssm: cityssmGlobal
     )
 
     searchResultsContainerElement
-      .querySelector('table')!
-      .append(resultsTbodyElement)
+      .querySelector('table')
+      ?.append(resultsTbodyElement)
 
     searchResultsContainerElement
       .querySelector("button[data-page='previous']")
@@ -106,6 +115,7 @@ declare const cityssm: cityssmGlobal
   }
 
   function getLots(): void {
+    // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
       `Loading ${los.escapedAliases.Lots}...`
     )

@@ -1,15 +1,18 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../types/globalTypes'
-import type * as recordTypes from '../types/recordTypes'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
+import type { LOS } from '../types/globalTypes.js'
+import type * as recordTypes from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
-;(() => {
-  const los = exports.los as globalTypes.LOS
 
-  const maps: recordTypes.MapRecord[] = exports.maps
+declare const exports: Record<string, unknown>
+;(() => {
+  const los = exports.los as LOS
+
+  const maps = exports.maps as recordTypes.MapRecord[]
 
   const searchFilterElement = document.querySelector(
     '#searchFilter--map'
@@ -20,6 +23,7 @@ declare const cityssm: cityssmGlobal
   ) as HTMLElement
 
   function renderResults(): void {
+    // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
       `Loading ${los.escapedAliases.Maps}...`
     )
@@ -52,61 +56,67 @@ declare const cityssm: cityssmGlobal
 
       searchResultCount += 1
 
+      // eslint-disable-next-line no-unsanitized/method
       searchResultsTbodyElement.insertAdjacentHTML(
         'beforeend',
-        '<tr>' +
-          ('<td>' +
-            '<a class="has-text-weight-bold" href="' +
-            los.getMapURL(map.mapId) +
-            '">' +
-            cityssm.escapeHTML(
-              map.mapName! === '' ? '(No Name)' : map.mapName!
-            ) +
-            '</a><br />' +
-            '<span class="is-size-7">' +
-            cityssm.escapeHTML(map.mapDescription ?? '') +
-            '</span>' +
-            '</td>') +
-          ('<td>' +
-            ((map.mapAddress1 ?? '') === ''
-              ? ''
-              : cityssm.escapeHTML(map.mapAddress1 ?? '') + '<br />') +
-            ((map.mapAddress2 ?? '') === ''
-              ? ''
-              : cityssm.escapeHTML(map.mapAddress2 ?? '') + '<br />') +
-            (map.mapCity || map.mapProvince
-              ? cityssm.escapeHTML(map.mapCity ?? '') +
-                ', ' +
-                cityssm.escapeHTML(map.mapProvince ?? '') +
-                '<br />'
-              : '') +
-            ((map.mapPostalCode ?? '') === ''
-              ? ''
-              : cityssm.escapeHTML(map.mapPostalCode ?? '')) +
-            '</td>') +
-          ('<td>' + cityssm.escapeHTML(map.mapPhoneNumber ?? '') + '</td>') +
-          '<td class="has-text-centered">' +
-          (map.mapLatitude && map.mapLongitude
-            ? '<span data-tooltip="Has Geographic Coordinates"><i class="fas fa-map-marker-alt" aria-label="Has Geographic Coordinates"></i></span>'
-            : '') +
-          '</td>' +
-          '<td class="has-text-centered">' +
-          ((map.mapSVG ?? '') === ''
-            ? ''
-            : '<span data-tooltip="Has Image"><i class="fas fa-image" aria-label="Has Image"></i></span>') +
-          '</td>' +
-          `<td class="has-text-right">
-            <a href="${
-              los.urlPrefix
-            }/lots?mapId=${map.mapId!}">${map.lotCount!}</a>
-            </td>` +
-          '</tr>'
+        `<tr>
+          <td>
+            <a class="has-text-weight-bold" href="${los.getMapURL(map.mapId)}">
+              ${cityssm.escapeHTML(
+                (map.mapName ?? '') === '' ? '(No Name)' : map.mapName ?? ''
+              )}
+            </a><br />
+            <span class="is-size-7">
+              ${cityssm.escapeHTML(map.mapDescription ?? '')}
+            </span>
+          </td><td>
+            ${
+              (map.mapAddress1 ?? '') === ''
+                ? ''
+                : `${cityssm.escapeHTML(map.mapAddress1 ?? '')}<br />`
+            }
+            ${
+              (map.mapAddress2 ?? '') === ''
+                ? ''
+                : `${cityssm.escapeHTML(map.mapAddress2 ?? '')}<br />`
+            }
+            ${
+              map.mapCity || map.mapProvince
+                ? `${cityssm.escapeHTML(map.mapCity ?? '')}, ${cityssm.escapeHTML(map.mapProvince ?? '')}<br />`
+                : ''
+            }
+            ${
+              (map.mapPostalCode ?? '') === ''
+                ? ''
+                : cityssm.escapeHTML(map.mapPostalCode ?? '')
+            }
+          </td><td>
+            ${cityssm.escapeHTML(map.mapPhoneNumber ?? '')}
+          </td><td class="has-text-centered">
+            ${
+              map.mapLatitude && map.mapLongitude
+                ? `<span data-tooltip="Has Geographic Coordinates">
+                    <i class="fas fa-map-marker-alt" aria-label="Has Geographic Coordinates"></i>
+                    </span>`
+                : ''
+            }
+          </td><td class="has-text-centered">
+            ${
+              (map.mapSVG ?? '') === ''
+                ? ''
+                : '<span data-tooltip="Has Image"><i class="fas fa-image" aria-label="Has Image"></i></span>'
+            }
+          </td><td class="has-text-right">
+            <a href="${los.urlPrefix}/lots?mapId=${map.mapId}">${map.lotCount}</a>
+          </td>
+          </tr>`
       )
     }
 
     searchResultsContainerElement.innerHTML = ''
 
     if (searchResultCount === 0) {
+      // eslint-disable-next-line no-unsanitized/property
       searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no ${los.escapedAliases.maps} that meet the search criteria.</p>
         </div>`
@@ -116,6 +126,7 @@ declare const cityssm: cityssmGlobal
       searchResultsTableElement.className =
         'table is-fullwidth is-striped is-hoverable has-sticky-header'
 
+      // eslint-disable-next-line no-unsanitized/property
       searchResultsTableElement.innerHTML = `<thead><tr>
         <th>${los.escapedAliases.Map}</th>
         <th>Address</th>
@@ -134,8 +145,8 @@ declare const cityssm: cityssmGlobal
   searchFilterElement.addEventListener('keyup', renderResults)
 
   document
-    .querySelector('#form--searchFilters')!
-    .addEventListener('submit', (formEvent) => {
+    .querySelector('#form--searchFilters')
+    ?.addEventListener('submit', (formEvent) => {
       formEvent.preventDefault()
       renderResults()
     })

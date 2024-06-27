@@ -1,16 +1,18 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../types/globalTypes'
-import type * as recordTypes from '../types/recordTypes'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type { LOS } from '../types/globalTypes.js'
+import type * as recordTypes from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+
+declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as globalTypes.LOS
+  const los = exports.los as LOS
 
   const lotId = (document.querySelector('#lot--lotId') as HTMLInputElement)
     .value
@@ -40,7 +42,7 @@ declare const bulmaJS: BulmaJS
     formEvent.preventDefault()
 
     cityssm.postJSON(
-      los.urlPrefix + '/lots/' + (isCreate ? 'doCreateLot' : 'doUpdateLot'),
+      `${los.urlPrefix}/lots/${isCreate ? 'doCreateLot' : 'doUpdateLot'}`,
       formElement,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
@@ -56,13 +58,13 @@ declare const bulmaJS: BulmaJS
             window.location.href = los.getLotURL(responseJSON.lotId, true, true)
           } else {
             bulmaJS.alert({
-              message: los.escapedAliases.Lot + ' Updated Successfully',
+              message: `${los.escapedAliases.Lot} Updated Successfully`,
               contextualColorName: 'success'
             })
           }
         } else {
           bulmaJS.alert({
-            title: 'Error Updating ' + los.escapedAliases.Lot,
+            title: `Error Updating ${los.escapedAliases.Lot}`,
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
@@ -88,7 +90,7 @@ declare const bulmaJS: BulmaJS
 
       function doDelete(): void {
         cityssm.postJSON(
-          los.urlPrefix + '/lots/doDeleteLot',
+          `${los.urlPrefix}/lots/doDeleteLot`,
           {
             lotId
           },
@@ -113,7 +115,7 @@ declare const bulmaJS: BulmaJS
       }
 
       bulmaJS.confirm({
-        title: 'Delete ' + los.escapedAliases.Lot,
+        title: `Delete ${los.escapedAliases.Lot}`,
         message: `Are you sure you want to delete this ${los.escapedAliases.lot}?`,
         contextualColorName: 'warning',
         okButton: {
@@ -136,6 +138,7 @@ declare const bulmaJS: BulmaJS
 
     lotTypeIdElement.addEventListener('change', () => {
       if (lotTypeIdElement.value === '') {
+        // eslint-disable-next-line no-unsanitized/property
         lotFieldsContainerElement.innerHTML = `<div class="message is-info">
           <p class="message-body">Select the ${los.escapedAliases.lot} type to load the available fields.</p>
           </div>`
@@ -144,7 +147,7 @@ declare const bulmaJS: BulmaJS
       }
 
       cityssm.postJSON(
-        los.urlPrefix + '/lots/doGetLotTypeFields',
+        `${los.urlPrefix}/lots/doGetLotTypeFields`,
         {
           lotTypeId: lotTypeIdElement.value
         },
@@ -154,8 +157,11 @@ declare const bulmaJS: BulmaJS
           }
 
           if (responseJSON.lotTypeFields.length === 0) {
+            // eslint-disable-next-line no-unsanitized/property
             lotFieldsContainerElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">There are no additional fields for this ${los.escapedAliases.lot} type.</p>
+              <p class="message-body">
+                There are no additional fields for this ${los.escapedAliases.lot} type.
+              </p>
               </div>`
 
             return
@@ -168,13 +174,14 @@ declare const bulmaJS: BulmaJS
           for (const lotTypeField of responseJSON.lotTypeFields) {
             lotTypeFieldIds += ',' + lotTypeField.lotTypeFieldId.toString()
 
-            const fieldName =
-              'lotFieldValue_' + lotTypeField.lotTypeFieldId.toString()
+            const fieldName = `lotFieldValue_${lotTypeField.lotTypeFieldId.toString()}`
 
-            const fieldId = 'lot--' + fieldName
+            const fieldId = `lot--${fieldName}`
 
             const fieldElement = document.createElement('div')
             fieldElement.className = 'field'
+
+            // eslint-disable-next-line no-unsanitized/property
             fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label>
               <div class="control"></div>`
             ;(
@@ -200,13 +207,14 @@ declare const bulmaJS: BulmaJS
                 inputElement.pattern = lotTypeField.pattern!
               }
 
-              fieldElement.querySelector('.control')!.append(inputElement)
+              fieldElement.querySelector('.control')?.append(inputElement)
             } else {
-              fieldElement.querySelector(
-                '.control'
-              )!.innerHTML = `<div class="select is-fullwidth">
-                                <select id="${fieldId}" name="${fieldName}"><option value="">(Not Set)</option></select>
-                                </div>`
+              // eslint-disable-next-line no-unsanitized/property
+              ;(
+                fieldElement.querySelector('.control') as HTMLElement
+              ).innerHTML = `<div class="select is-fullwidth">
+                  <select id="${fieldId}" name="${fieldName}"><option value="">(Not Set)</option></select>
+                  </div>`
 
               const selectElement = fieldElement.querySelector(
                 'select'
@@ -232,7 +240,7 @@ declare const bulmaJS: BulmaJS
           lotFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
             `<input name="lotTypeFieldIds" type="hidden"
-                            value="${lotTypeFieldIds.slice(1)}" />`
+              value="${cityssm.escapeHTML(lotTypeFieldIds.slice(1))}" />`
           )
         }
       )
@@ -245,17 +253,17 @@ declare const bulmaJS: BulmaJS
         bulmaJS.confirm({
           title: 'Confirm Change',
           message: `Are you sure you want to change the ${los.escapedAliases.lot} type?\n
-                        This change affects the additional fields associated with this record.`,
+            This change affects the additional fields associated with this record.`,
           contextualColorName: 'warning',
           okButton: {
             text: 'Yes, Keep the Change',
-            callbackFunction: () => {
+            callbackFunction() {
               refreshAfterSave = true
             }
           },
           cancelButton: {
             text: 'Revert the Change',
-            callbackFunction: () => {
+            callbackFunction() {
               lotTypeIdElement.value = originalLotTypeId
             }
           }
@@ -266,19 +274,19 @@ declare const bulmaJS: BulmaJS
 
   // Comments
 
-  let lotComments: recordTypes.LotComment[] = exports.lotComments
+  let lotComments = exports.lotComments as recordTypes.LotComment[]
   delete exports.lotComments
 
   function openEditLotComment(clickEvent: Event): void {
     const lotCommentId = Number.parseInt(
-      (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
-        .lotCommentId!,
+      (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+        .lotCommentId ?? '',
       10
     )
 
     const lotComment = lotComments.find((currentLotComment) => {
       return currentLotComment.lotCommentId === lotCommentId
-    })!
+    }) as recordTypes.LotComment
 
     let editFormElement: HTMLFormElement
     let editCloseModalFunction: () => void
@@ -287,17 +295,17 @@ declare const bulmaJS: BulmaJS
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/lots/doUpdateLotComment',
+        `${los.urlPrefix}/lots/doUpdateLotComment`,
         editFormElement,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
             errorMessage?: string
-            lotComments?: recordTypes.LotComment[]
+            lotComments: recordTypes.LotComment[]
           }
 
           if (responseJSON.success) {
-            lotComments = responseJSON.lotComments!
+            lotComments = responseJSON.lotComments
             editCloseModalFunction()
             renderLotComments()
           } else {
@@ -312,7 +320,7 @@ declare const bulmaJS: BulmaJS
     }
 
     cityssm.openHtmlModal('lot-editComment', {
-      onshow: (modalElement) => {
+      onshow(modalElement) {
         los.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
@@ -328,27 +336,28 @@ declare const bulmaJS: BulmaJS
           modalElement.querySelector(
             '#lotCommentEdit--lotComment'
           ) as HTMLInputElement
-        ).value = lotComment.lotComment!
+        ).value = lotComment.lotComment ?? ''
 
         const lotCommentDateStringElement = modalElement.querySelector(
           '#lotCommentEdit--lotCommentDateString'
         ) as HTMLInputElement
 
-        lotCommentDateStringElement.value = lotComment.lotCommentDateString!
+        lotCommentDateStringElement.value =
+          lotComment.lotCommentDateString ?? ''
 
         const currentDateString = cityssm.dateToString(new Date())
 
         lotCommentDateStringElement.max =
           lotComment.lotCommentDateString! <= currentDateString
             ? currentDateString
-            : lotComment.lotCommentDateString!
+            : lotComment.lotCommentDateString ?? ''
         ;(
           modalElement.querySelector(
             '#lotCommentEdit--lotCommentTimeString'
           ) as HTMLInputElement
-        ).value = lotComment.lotCommentTimeString!
+        ).value = lotComment.lotCommentTimeString ?? ''
       },
-      onshown: (modalElement, closeModalFunction) => {
+      onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
 
         los.initializeDatePickers(modalElement)
@@ -359,12 +368,12 @@ declare const bulmaJS: BulmaJS
           ) as HTMLTextAreaElement
         ).focus()
 
-        editFormElement = modalElement.querySelector('form')!
+        editFormElement = modalElement.querySelector('form') as HTMLFormElement
         editFormElement.addEventListener('submit', editComment)
 
         editCloseModalFunction = closeModalFunction
       },
-      onremoved: () => {
+      onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
     })
@@ -372,14 +381,14 @@ declare const bulmaJS: BulmaJS
 
   function deleteLotComment(clickEvent: Event): void {
     const lotCommentId = Number.parseInt(
-      (clickEvent.currentTarget as HTMLElement).closest('tr')!.dataset
-        .lotCommentId!,
+      (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+        .lotCommentId ?? '',
       10
     )
 
     function doDelete(): void {
       cityssm.postJSON(
-        los.urlPrefix + '/lots/doDeleteLotComment',
+        `${los.urlPrefix}/lots/doDeleteLotComment`,
         {
           lotId,
           lotCommentId
@@ -423,59 +432,58 @@ declare const bulmaJS: BulmaJS
 
     if (lotComments.length === 0) {
       containerElement.innerHTML = `<div class="message is-info">
-                <p class="message-body">There are no comments to display.</p>
-                </div>`
+        <p class="message-body">There are no comments to display.</p>
+        </div>`
       return
     }
 
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-fullwidth is-striped is-hoverable'
     tableElement.innerHTML = `<thead><tr>
-            <th>Commentor</th>
-            <th>Comment Date</th>
-            <th>Comment</th>
-            <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-            </tr></thead>
-            <tbody></tbody>`
+      <th>Commentor</th>
+      <th>Comment Date</th>
+      <th>Comment</th>
+      <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+      </tr></thead>
+      <tbody></tbody>`
 
     for (const lotComment of lotComments) {
       const tableRowElement = document.createElement('tr')
-      tableRowElement.dataset.lotCommentId = lotComment.lotCommentId!.toString()
+      tableRowElement.dataset.lotCommentId = lotComment.lotCommentId?.toString()
 
-      tableRowElement.innerHTML =
-        '<td>' +
-        cityssm.escapeHTML(lotComment.recordCreate_userName ?? '') +
-        '</td>' +
-        '<td>' +
-        lotComment.lotCommentDateString! +
-        (lotComment.lotCommentTime === 0
-          ? ''
-          : ' ' + lotComment.lotCommentTimePeriodString!) +
-        '</td>' +
-        '<td>' +
-        cityssm.escapeHTML(lotComment.lotComment ?? '') +
-        '</td>' +
-        ('<td class="is-hidden-print">' +
-          '<div class="buttons are-small is-justify-content-end">' +
-          ('<button class="button is-primary button--edit" type="button">' +
-            '<span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>' +
-            ' <span>Edit</span>' +
-            '</button>') +
-          ('<button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">' +
-            '<i class="fas fa-trash" aria-hidden="true"></i>' +
-            '</button>') +
-          '</div>' +
-          '</td>')
-
-      tableRowElement
-        .querySelector('.button--edit')!
-        .addEventListener('click', openEditLotComment)
+      // eslint-disable-next-line no-unsanitized/property
+      tableRowElement.innerHTML = `<td>
+          ${cityssm.escapeHTML(lotComment.recordCreate_userName ?? '')}
+        </td><td>
+          ${lotComment.lotCommentDateString}
+          ${
+            lotComment.lotCommentTime === 0
+              ? ''
+              : ' ' + lotComment.lotCommentTimePeriodString
+          }
+        </td><td>
+          ${cityssm.escapeHTML(lotComment.lotComment ?? '')}
+        </td><td class="is-hidden-print">
+          <div class="buttons are-small is-justify-content-end">
+            <button class="button is-primary button--edit" type="button">
+              <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+              <span>Edit</span>
+            </button>
+            <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
+              <i class="fas fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>`
 
       tableRowElement
-        .querySelector('.button--delete')!
-        .addEventListener('click', deleteLotComment)
+        .querySelector('.button--edit')
+        ?.addEventListener('click', openEditLotComment)
 
-      tableElement.querySelector('tbody')!.append(tableRowElement)
+      tableRowElement
+        .querySelector('.button--delete')
+        ?.addEventListener('click', deleteLotComment)
+
+      tableElement.querySelector('tbody')?.append(tableRowElement)
     }
 
     containerElement.innerHTML = ''
@@ -489,16 +497,16 @@ declare const bulmaJS: BulmaJS
       formEvent.preventDefault()
 
       cityssm.postJSON(
-        los.urlPrefix + '/lots/doAddLotComment',
+        `${los.urlPrefix}/lots/doAddLotComment`,
         formEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
-            lotComments?: recordTypes.LotComment[]
+            lotComments: recordTypes.LotComment[]
           }
 
           if (responseJSON.success) {
-            lotComments = responseJSON.lotComments!
+            lotComments = responseJSON.lotComments
             renderLotComments()
             addCommentCloseModalFunction()
           }
@@ -515,8 +523,8 @@ declare const bulmaJS: BulmaJS
           ) as HTMLInputElement
         ).value = lotId
         modalElement
-          .querySelector('form')!
-          .addEventListener('submit', doAddComment)
+          .querySelector('form')
+          ?.addEventListener('submit', doAddComment)
       },
       onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
@@ -538,8 +546,8 @@ declare const bulmaJS: BulmaJS
 
   if (!isCreate) {
     document
-      .querySelector('#lotComments--add')!
-      .addEventListener('click', openAddCommentModal)
+      .querySelector('#lotComments--add')
+      ?.addEventListener('click', openAddCommentModal)
     renderLotComments()
   }
 })()

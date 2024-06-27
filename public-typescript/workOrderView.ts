@@ -1,26 +1,28 @@
-/* eslint-disable unicorn/prefer-module, @typescript-eslint/no-non-null-assertion */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../types/globalTypes'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type { LOS } from '../types/globalTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+
+declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as globalTypes.LOS
+  const los = exports.los as LOS
 
   const reopenWorkOrderButtonElement: HTMLButtonElement | null =
     document.querySelector('#button--reopenWorkOrder')
 
   if (reopenWorkOrderButtonElement !== null) {
-    const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId!
+    const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId ?? ''
 
     reopenWorkOrderButtonElement.addEventListener('click', () => {
       function doReopen(): void {
         cityssm.postJSON(
-          los.urlPrefix + '/workOrders/doReopenWorkOrder',
+          `${los.urlPrefix}/workOrders/doReopenWorkOrder`,
           {
             workOrderId
           },

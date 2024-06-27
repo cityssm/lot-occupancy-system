@@ -5,7 +5,7 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 import type { Options as BulmaCalendarOptions } from 'bulma-calendar'
 
-import type * as globalTypes from '../types/globalTypes.js'
+import type { LOS } from '../types/globalTypes.js'
 
 type RandomColorHue =
   | 'red'
@@ -492,7 +492,7 @@ declare const exports: Record<string, unknown> & {
    * Declare LOS
    */
 
-  const los: globalTypes.LOS = {
+  const los: LOS = {
     urlPrefix,
     apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
     dynamicsGPIntegrationIsEnabled,

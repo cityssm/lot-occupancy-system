@@ -1,12 +1,16 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as recordTypes from '../types/recordTypes'
-import type * as globalTypes from '../types/globalTypes'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+
+import type { LOS } from '../types/globalTypes.js'
+import type * as recordTypes from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
+
+declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as globalTypes.LOS
+  const los = exports.los as LOS
 
   const workOrderSearchFiltersFormElement = document.querySelector(
     '#form--searchFilters'
@@ -53,14 +57,14 @@ declare const cityssm: cityssmGlobal
         currentPanelElement.className = 'panel'
 
         currentPanelElement.innerHTML = `<h2 class="panel-heading">
-          ${
+          ${cityssm.escapeHTML(
             milestone.workOrderMilestoneDate === 0
               ? 'No Set Date'
-              : milestone.workOrderMilestoneDateString!
-          }
+              : milestone.workOrderMilestoneDateString ?? ''
+          )}
           </h2>`
 
-        currentPanelDateString = milestone.workOrderMilestoneDateString!
+        currentPanelDateString = milestone.workOrderMilestoneDateString ?? ''
       }
 
       const panelBlockElement = document.createElement('div')
@@ -77,7 +81,7 @@ declare const cityssm: cityssmGlobal
 
       let lotOccupancyHTML = ''
 
-      for (const lot of milestone.workOrderLots!) {
+      for (const lot of milestone.workOrderLots ?? []) {
         lotOccupancyHTML += `<li class="has-tooltip-left"
           data-tooltip="${cityssm.escapeHTML(lot.mapName ?? '')}">
           <span class="fa-li">
@@ -88,8 +92,8 @@ declare const cityssm: cityssmGlobal
           </li>`
       }
 
-      for (const lotOccupancy of milestone.workOrderLotOccupancies!) {
-        for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
+      for (const lotOccupancy of milestone.workOrderLotOccupancies ?? []) {
+        for (const occupant of lotOccupancy.lotOccupancyOccupants ?? []) {
           lotOccupancyHTML += `<li class="has-tooltip-left"
             data-tooltip="${cityssm.escapeHTML(
               occupant.lotOccupantType ?? ''
@@ -104,51 +108,46 @@ declare const cityssm: cityssmGlobal
         }
       }
 
-      panelBlockElement.innerHTML =
-        '<div class="columns">' +
-        ('<div class="column is-narrow">' +
-          '<span class="icon is-small">' +
-          (milestone.workOrderMilestoneCompletionDate
-            ? '<i class="fas fa-check" aria-label="Completed"></i>'
-            : '<i class="far fa-square has-text-grey" aria-label="Incomplete"></i>') +
-          '</span>' +
-          '</div>') +
-        ('<div class="column">' +
-          (milestone.workOrderMilestoneTime === 0
-            ? ''
-            : milestone.workOrderMilestoneTimePeriodString! + '<br />') +
-          (milestone.workOrderMilestoneTypeId
-            ? '<strong>' +
-              cityssm.escapeHTML(milestone.workOrderMilestoneType!) +
-              '</strong><br />'
-            : '') +
-          '<span class="is-size-7">' +
-          cityssm.escapeHTML(milestone.workOrderMilestoneDescription!) +
-          '</span>' +
-          '</div>') +
-        ('<div class="column">' +
-          '<i class="fas fa-circle" style="color:' +
-          los.getRandomColor(milestone.workOrderNumber ?? '') +
-          '" aria-hidden="true"></i>' +
-          ' <a class="has-text-weight-bold" href="' +
-          los.getWorkOrderURL(milestone.workOrderId) +
-          '">' +
-          cityssm.escapeHTML(milestone.workOrderNumber ?? '') +
-          '</a><br />' +
-          '<span class="is-size-7">' +
-          cityssm.escapeHTML(milestone.workOrderDescription ?? '') +
-          '</span>' +
-          '</div>') +
-        ('<div class="column is-size-7">' +
-          (lotOccupancyHTML === ''
-            ? ''
-            : '<ul class="fa-ul ml-4">' + lotOccupancyHTML + '</ul>') +
-          '</div>') +
-        '</div>'
+      // eslint-disable-next-line no-unsanitized/property
+      panelBlockElement.innerHTML = `<div class="columns">
+        <div class="column is-narrow">
+          <span class="icon is-small">
+            ${
+              milestone.workOrderMilestoneCompletionDate
+                ? '<i class="fas fa-check" aria-label="Completed"></i>'
+                : '<i class="far fa-square has-text-grey" aria-label="Incomplete"></i>'
+            }
+          </span>
+        </div><div class="column">
+          ${
+            milestone.workOrderMilestoneTime === 0
+              ? ''
+              : `${milestone.workOrderMilestoneTimePeriodString}<br />`
+          }
+          ${
+            milestone.workOrderMilestoneTypeId
+              ? `<strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong><br />`
+              : ''
+          }
+          <span class="is-size-7">
+            ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}
+          </span>
+        </div><div class="column">
+          <i class="fas fa-circle" style="color:${los.getRandomColor(milestone.workOrderNumber ?? '')}" aria-hidden="true"></i>
+          <a class="has-text-weight-bold" href="${los.getWorkOrderURL(milestone.workOrderId)}">
+            ${cityssm.escapeHTML(milestone.workOrderNumber ?? '')}
+          </a><br />
+          <span class="is-size-7">${cityssm.escapeHTML(milestone.workOrderDescription ?? '')}</span>
+        </div><div class="column is-size-7">
+          ${
+            lotOccupancyHTML === ''
+              ? ''
+              : '<ul class="fa-ul ml-4">' + lotOccupancyHTML + '</ul>'
+          }</div></div>`
       ;(currentPanelElement as HTMLElement).append(panelBlockElement)
     }
 
-    milestoneCalendarContainerElement.append(currentPanelElement!)
+    milestoneCalendarContainerElement.append(currentPanelElement as HTMLElement)
   }
 
   function getMilestones(event?: Event): void {
@@ -156,12 +155,13 @@ declare const cityssm: cityssmGlobal
       event.preventDefault()
     }
 
+    // eslint-disable-next-line no-unsanitized/property
     milestoneCalendarContainerElement.innerHTML = los.getLoadingParagraphHTML(
       'Loading Milestones...'
     )
 
     cityssm.postJSON(
-      los.urlPrefix + '/workOrders/doGetWorkOrderMilestones',
+      `${los.urlPrefix}/workOrders/doGetWorkOrderMilestones`,
       workOrderSearchFiltersFormElement,
       (responseJSON) => {
         renderMilestones(
@@ -176,8 +176,11 @@ declare const cityssm: cityssmGlobal
   }
 
   workOrderMilestoneDateFilterElement.addEventListener('change', () => {
-    workOrderMilestoneDateStringElement.closest('fieldset')!.disabled =
-      workOrderMilestoneDateFilterElement.value !== 'date'
+    ;(
+      workOrderMilestoneDateStringElement.closest(
+        'fieldset'
+      ) as HTMLFieldSetElement
+    ).disabled = workOrderMilestoneDateFilterElement.value !== 'date'
     getMilestones()
   })
 
