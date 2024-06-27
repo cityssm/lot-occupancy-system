@@ -633,13 +633,13 @@ type ResponseJSON =
     ).dataset.occupancyTypeId
 
     cityssm.postJSON(
-      los.urlPrefix +
-        '/admin/' +
-        (buttonElement.dataset.direction === 'up'
+      `${los.urlPrefix}/admin/${
+        buttonElement.dataset.direction === 'up'
           ? // eslint-disable-next-line no-secrets/no-secrets
             'doMoveOccupancyTypePrintUp'
           : // eslint-disable-next-line no-secrets/no-secrets
-            'doMoveOccupancyTypePrintDown'),
+            'doMoveOccupancyTypePrintDown'
+      }`,
       {
         occupancyTypeId,
         printEJS,
@@ -966,7 +966,7 @@ type ResponseJSON =
         submitEvent.preventDefault()
 
         cityssm.postJSON(
-          los.urlPrefix + '/admin/doAddOccupancyType',
+          `${los.urlPrefix}/admin/doAddOccupancyType`,
           submitEvent.currentTarget,
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as ResponseJSON

@@ -102,7 +102,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(`${los.urlPrefix}/lots/doGetLotTypeFields`, {
                 lotTypeId: lotTypeIdElement.value
             }, (rawResponseJSON) => {
-                var _a, _b;
+                var _a, _b, _c;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.lotTypeFields.length === 0) {
                     // eslint-disable-next-line no-unsanitized/property
@@ -135,9 +135,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         inputElement.minLength = lotTypeField.minimumLength;
                         inputElement.maxLength = lotTypeField.maximumLength;
                         if (((_a = lotTypeField.pattern) !== null && _a !== void 0 ? _a : '') !== '') {
-                            inputElement.pattern = lotTypeField.pattern;
+                            inputElement.pattern = (_b = lotTypeField.pattern) !== null && _b !== void 0 ? _b : '';
                         }
-                        (_b = fieldElement.querySelector('.control')) === null || _b === void 0 ? void 0 : _b.append(inputElement);
+                        (_c = fieldElement.querySelector('.control')) === null || _c === void 0 ? void 0 : _c.append(inputElement);
                     }
                     else {
                         // eslint-disable-next-line no-unsanitized/property
@@ -308,7 +308,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           ${lotComment.lotCommentDateString}
           ${lotComment.lotCommentTime === 0
                 ? ''
-                : ' ' + lotComment.lotCommentTimePeriodString}
+                : ` ${lotComment.lotCommentTimePeriodString}`}
         </td><td>
           ${cityssm.escapeHTML((_c = lotComment.lotComment) !== null && _c !== void 0 ? _c : '')}
         </td><td class="is-hidden-print">

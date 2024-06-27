@@ -111,7 +111,7 @@ declare const exports: Record<string, unknown>
             ${
               relatedHTML === ''
                 ? ''
-                : '<ul class="fa-ul ml-5 is-size-7">' + relatedHTML + '</ul>'
+                : `<ul class="fa-ul ml-5 is-size-7">${relatedHTML}</ul>`
             }
           </td><td>
             <ul class="fa-ul ml-5 is-size-7">
@@ -137,11 +137,11 @@ declare const exports: Record<string, unknown>
             ${
               workOrder.workOrderMilestoneCount === 0
                 ? '-'
-                : (
+                : `${(
                     workOrder.workOrderMilestoneCompletionCount ?? ''
-                  ).toString() +
-                  ' / ' +
-                  (workOrder.workOrderMilestoneCount ?? '').toString()
+                  ).toString()}
+                  /
+                  ${(workOrder.workOrderMilestoneCount ?? '').toString()}`
             }
           </td>
           ${

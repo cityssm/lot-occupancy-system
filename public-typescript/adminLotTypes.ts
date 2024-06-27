@@ -247,11 +247,11 @@ type ResponseJSON =
     ).dataset.lotTypeId
 
     cityssm.postJSON(
-      los.urlPrefix +
-        '/admin/' +
-        (buttonElement.dataset.direction === 'up'
+      `${los.urlPrefix}/admin/${
+        buttonElement.dataset.direction === 'up'
           ? 'doMoveLotTypeUp'
-          : 'doMoveLotTypeDown'),
+          : 'doMoveLotTypeDown'
+      }`,
       {
         lotTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
@@ -448,11 +448,11 @@ type ResponseJSON =
     ).dataset.lotTypeFieldId
 
     cityssm.postJSON(
-      los.urlPrefix +
-        '/admin/' +
-        (buttonElement.dataset.direction === 'up'
+      `${los.urlPrefix}/admin/${
+        buttonElement.dataset.direction === 'up'
           ? 'doMoveLotTypeFieldUp'
-          : 'doMoveLotTypeFieldDown'),
+          : 'doMoveLotTypeFieldDown'
+      }`,
       {
         lotTypeFieldId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'

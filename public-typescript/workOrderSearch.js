@@ -65,7 +65,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </td><td>
             ${relatedHTML === ''
                 ? ''
-                : '<ul class="fa-ul ml-5 is-size-7">' + relatedHTML + '</ul>'}
+                : `<ul class="fa-ul ml-5 is-size-7">${relatedHTML}</ul>`}
           </td><td>
             <ul class="fa-ul ml-5 is-size-7">
               <li class="has-tooltip-left"
@@ -87,9 +87,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </td><td>
             ${workOrder.workOrderMilestoneCount === 0
                 ? '-'
-                : ((_r = workOrder.workOrderMilestoneCompletionCount) !== null && _r !== void 0 ? _r : '').toString() +
-                    ' / ' +
-                    ((_s = workOrder.workOrderMilestoneCount) !== null && _s !== void 0 ? _s : '').toString()}
+                : `${((_r = workOrder.workOrderMilestoneCompletionCount) !== null && _r !== void 0 ? _r : '').toString()}
+                  /
+                  ${((_s = workOrder.workOrderMilestoneCount) !== null && _s !== void 0 ? _s : '').toString()}`}
           </td>
           ${workOrderPrints.length > 0
                 ? `<td>

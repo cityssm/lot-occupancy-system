@@ -92,7 +92,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </div><div class="column is-size-7">
           ${lotOccupancyHTML === ''
                 ? ''
-                : '<ul class="fa-ul ml-4">' + lotOccupancyHTML + '</ul>'}</div></div>`;
+                : `<ul class="fa-ul ml-4">${lotOccupancyHTML}</ul>`}</div></div>`;
             currentPanelElement.append(panelBlockElement);
         }
         milestoneCalendarContainerElement.append(currentPanelElement);

@@ -88,23 +88,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </small>
             </p>
             ${hasTagsBlock
-                    ? '<p class="tags">' +
-                        (((_g = fee.isRequired) !== null && _g !== void 0 ? _g : false)
-                            ? '<span class="tag is-warning">Required</span>'
-                            : '') +
-                        (((_h = fee.occupancyTypeId) !== null && _h !== void 0 ? _h : -1) === -1
-                            ? ''
-                            : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Occupancy} Type Filter">
+                    ? `<p class="tags">
+                    ${((_g = fee.isRequired) !== null && _g !== void 0 ? _g : false)
+                        ? '<span class="tag is-warning">Required</span>'
+                        : ''}
+                    ${((_h = fee.occupancyTypeId) !== null && _h !== void 0 ? _h : -1) === -1
+                        ? ''
+                        : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Occupancy} Type Filter">
                         <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
                         <span>${cityssm.escapeHTML((_j = fee.occupancyType) !== null && _j !== void 0 ? _j : '')}</span>
-                        </span>`) +
-                        (((_k = fee.lotTypeId) !== null && _k !== void 0 ? _k : -1) === -1
-                            ? ''
-                            : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Lot} Type Filter">
+                        </span>`}
+                    ${((_k = fee.lotTypeId) !== null && _k !== void 0 ? _k : -1) === -1
+                        ? ''
+                        : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Lot} Type Filter">
                         <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
                         <span>${cityssm.escapeHTML((_l = fee.lotType) !== null && _l !== void 0 ? _l : '')}</span>
-                        </span>`) +
-                        '</p>'
+                        </span>`}
+                    </p>`
                     : ''}
           </div>
           <div class="column">
@@ -271,11 +271,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const buttonElement = clickEvent.currentTarget;
         const feeCategoryId = (_a = buttonElement.closest('.container--feeCategory').dataset
             .feeCategoryId) !== null && _a !== void 0 ? _a : '';
-        cityssm.postJSON(los.urlPrefix +
-            '/admin/' +
-            (buttonElement.dataset.direction === 'up'
-                ? 'doMoveFeeCategoryUp'
-                : 'doMoveFeeCategoryDown'), {
+        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+            ? 'doMoveFeeCategoryUp'
+            : 'doMoveFeeCategoryDown'}`, {
             feeCategoryId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, (rawResponseJSON) => {
@@ -582,11 +580,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const buttonElement = clickEvent.currentTarget;
         const feeContainerElement = buttonElement.closest('.container--fee');
         const feeId = (_a = feeContainerElement.dataset.feeId) !== null && _a !== void 0 ? _a : '';
-        cityssm.postJSON(los.urlPrefix +
-            '/admin/' +
-            (buttonElement.dataset.direction === 'up'
-                ? 'doMoveFeeUp'
-                : 'doMoveFeeDown'), {
+        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+            ? 'doMoveFeeUp'
+            : 'doMoveFeeDown'}`, {
             feeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, (rawResponseJSON) => {

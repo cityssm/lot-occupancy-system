@@ -142,7 +142,7 @@ declare const exports: Record<string, unknown>
           ${
             lotOccupancyHTML === ''
               ? ''
-              : '<ul class="fa-ul ml-4">' + lotOccupancyHTML + '</ul>'
+              : `<ul class="fa-ul ml-4">${lotOccupancyHTML}</ul>`
           }</div></div>`
       ;(currentPanelElement as HTMLElement).append(panelBlockElement)
     }

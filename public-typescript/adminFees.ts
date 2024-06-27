@@ -133,23 +133,29 @@ declare const exports: Record<string, unknown>
             </p>
             ${
               hasTagsBlock
-                ? '<p class="tags">' +
-                  (fee.isRequired ?? false
-                    ? '<span class="tag is-warning">Required</span>'
-                    : '') +
-                  ((fee.occupancyTypeId ?? -1) === -1
-                    ? ''
-                    : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Occupancy} Type Filter">
+                ? `<p class="tags">
+                    ${
+                      fee.isRequired ?? false
+                        ? '<span class="tag is-warning">Required</span>'
+                        : ''
+                    }
+                    ${
+                      (fee.occupancyTypeId ?? -1) === -1
+                        ? ''
+                        : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Occupancy} Type Filter">
                         <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
                         <span>${cityssm.escapeHTML(fee.occupancyType ?? '')}</span>
-                        </span>`) +
-                  ((fee.lotTypeId ?? -1) === -1
-                    ? ''
-                    : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Lot} Type Filter">
+                        </span>`
+                    }
+                    ${
+                      (fee.lotTypeId ?? -1) === -1
+                        ? ''
+                        : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Lot} Type Filter">
                         <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
                         <span>${cityssm.escapeHTML(fee.lotType ?? '')}</span>
-                        </span>`) +
-                  '</p>'
+                        </span>`
+                    }
+                    </p>`
                 : ''
             }
           </div>
@@ -412,11 +418,11 @@ declare const exports: Record<string, unknown>
         .feeCategoryId ?? ''
 
     cityssm.postJSON(
-      los.urlPrefix +
-        '/admin/' +
-        (buttonElement.dataset.direction === 'up'
+      `${los.urlPrefix}/admin/${
+        buttonElement.dataset.direction === 'up'
           ? 'doMoveFeeCategoryUp'
-          : 'doMoveFeeCategoryDown'),
+          : 'doMoveFeeCategoryDown'
+      }`,
       {
         feeCategoryId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
@@ -898,11 +904,11 @@ declare const exports: Record<string, unknown>
     const feeId = feeContainerElement.dataset.feeId ?? ''
 
     cityssm.postJSON(
-      los.urlPrefix +
-        '/admin/' +
-        (buttonElement.dataset.direction === 'up'
+      `${los.urlPrefix}/admin/${
+        buttonElement.dataset.direction === 'up'
           ? 'doMoveFeeUp'
-          : 'doMoveFeeDown'),
+          : 'doMoveFeeDown'
+      }`,
       {
         feeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'

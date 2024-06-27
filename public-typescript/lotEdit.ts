@@ -204,7 +204,7 @@ declare const exports: Record<string, unknown>
               inputElement.maxLength = lotTypeField.maximumLength as number
 
               if ((lotTypeField.pattern ?? '') !== '') {
-                inputElement.pattern = lotTypeField.pattern!
+                inputElement.pattern = lotTypeField.pattern ?? ''
               }
 
               fieldElement.querySelector('.control')?.append(inputElement)
@@ -459,7 +459,7 @@ declare const exports: Record<string, unknown>
           ${
             lotComment.lotCommentTime === 0
               ? ''
-              : ' ' + lotComment.lotCommentTimePeriodString
+              : ` ${lotComment.lotCommentTimePeriodString}`
           }
         </td><td>
           ${cityssm.escapeHTML(lotComment.lotComment ?? '')}

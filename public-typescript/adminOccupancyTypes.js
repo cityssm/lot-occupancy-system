@@ -352,13 +352,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const buttonElement = clickEvent.currentTarget;
         const printEJS = buttonElement.closest('.container--occupancyTypePrint').dataset.printEJS;
         const occupancyTypeId = buttonElement.closest('.container--occupancyTypePrintList').dataset.occupancyTypeId;
-        cityssm.postJSON(los.urlPrefix +
-            '/admin/' +
-            (buttonElement.dataset.direction === 'up'
-                ? // eslint-disable-next-line no-secrets/no-secrets
-                    'doMoveOccupancyTypePrintUp'
-                : // eslint-disable-next-line no-secrets/no-secrets
-                    'doMoveOccupancyTypePrintDown'), {
+        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+            ? // eslint-disable-next-line no-secrets/no-secrets
+                'doMoveOccupancyTypePrintUp'
+            : // eslint-disable-next-line no-secrets/no-secrets
+                'doMoveOccupancyTypePrintDown'}`, {
             occupancyTypeId,
             printEJS,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
@@ -571,7 +569,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(los.urlPrefix + '/admin/doAddOccupancyType', submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${los.urlPrefix}/admin/doAddOccupancyType`, submitEvent.currentTarget, (rawResponseJSON) => {
                 var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {

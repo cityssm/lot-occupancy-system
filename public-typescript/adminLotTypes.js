@@ -136,11 +136,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function moveLotType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const lotTypeId = buttonElement.closest('.container--lotType').dataset.lotTypeId;
-        cityssm.postJSON(los.urlPrefix +
-            '/admin/' +
-            (buttonElement.dataset.direction === 'up'
-                ? 'doMoveLotTypeUp'
-                : 'doMoveLotTypeDown'), {
+        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+            ? 'doMoveLotTypeUp'
+            : 'doMoveLotTypeDown'}`, {
             lotTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, lotTypeResponseHandler);
@@ -253,11 +251,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function moveLotTypeField(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const lotTypeFieldId = buttonElement.closest('.container--lotTypeField').dataset.lotTypeFieldId;
-        cityssm.postJSON(los.urlPrefix +
-            '/admin/' +
-            (buttonElement.dataset.direction === 'up'
-                ? 'doMoveLotTypeFieldUp'
-                : 'doMoveLotTypeFieldDown'), {
+        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+            ? 'doMoveLotTypeFieldUp'
+            : 'doMoveLotTypeFieldDown'}`, {
             lotTypeFieldId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, lotTypeResponseHandler);
