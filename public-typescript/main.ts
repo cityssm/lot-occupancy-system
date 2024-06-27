@@ -173,7 +173,7 @@ declare const exports: Record<string, unknown> & {
 
       // Disable html scrolling when calendar is open
       cal.on('show', () => {
-        document.querySelector('html')!.classList.add('is-clipped')
+        document.querySelector('html')?.classList.add('is-clipped')
       })
 
       // Reenable scrolling, if a modal window is not open
@@ -184,7 +184,7 @@ declare const exports: Record<string, unknown> & {
       // Get the datepicker container element
       const datepickerElement = containerElement.querySelector(
         `#${cal._id as string}`
-      )!
+      ) as HTMLElement
 
       // Override the previous and next month button styles
       const datePickerNavButtonElements = datepickerElement.querySelectorAll(

@@ -105,7 +105,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
             // Disable html scrolling when calendar is open
             cal.on('show', () => {
-                document.querySelector('html').classList.add('is-clipped');
+                var _a;
+                (_a = document.querySelector('html')) === null || _a === void 0 ? void 0 : _a.classList.add('is-clipped');
             });
             // Reenable scrolling, if a modal window is not open
             cal.on('hide', () => {
