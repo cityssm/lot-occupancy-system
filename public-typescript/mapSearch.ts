@@ -4,7 +4,7 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../types/globalTypes.js'
-import type * as recordTypes from '../types/recordTypes.js'
+import type { MapRecord } from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 
@@ -12,7 +12,7 @@ declare const exports: Record<string, unknown>
 ;(() => {
   const los = exports.los as LOS
 
-  const maps = exports.maps as recordTypes.MapRecord[]
+  const maps = exports.maps as MapRecord[]
 
   const searchFilterElement = document.querySelector(
     '#searchFilter--map'

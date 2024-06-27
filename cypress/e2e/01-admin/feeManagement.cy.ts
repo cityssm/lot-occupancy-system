@@ -1,4 +1,4 @@
-import * as configFunctions from '../../../helpers/functions.config.js'
+import { getConfigProperty } from '../../../helpers/functions.config.js'
 import { testAdmin } from '../../../test/_globals.js'
 import type { Fee } from '../../../types/recordTypes.js'
 import { ajaxDelayMillis, login, logout } from '../../support/index.js'
@@ -65,9 +65,7 @@ describe('Admin - Fee Management', () => {
         .invoke('val')
         .should(
           'equal',
-          configFunctions
-            .getConfigProperty('settings.fees.taxPercentageDefault')
-            .toString()
+          getConfigProperty('settings.fees.taxPercentageDefault').toString()
         )
 
       cy.get(".modal input[name='quantityUnit']").should('be.disabled')

@@ -1,4 +1,6 @@
 "use strict";
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     var _a, _b;

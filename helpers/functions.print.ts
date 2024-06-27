@@ -1,3 +1,4 @@
+// skipcq: JS-C1003 - Added to ReportData
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 
 import getLot from '../database/getLot.js'
@@ -5,7 +6,9 @@ import getLotOccupancy from '../database/getLotOccupancy.js'
 import getWorkOrder from '../database/getWorkOrder.js'
 import type { Lot, LotOccupancy, WorkOrder } from '../types/recordTypes.js'
 
+// skipcq: JS-C1003 - Added to ReportData
 import * as configFunctions from './functions.config.js'
+// skipcq: JS-C1003 - Added to ReportData
 import * as lotOccupancyFunctions from './functions.lotOccupancy.js'
 
 interface PrintConfig {

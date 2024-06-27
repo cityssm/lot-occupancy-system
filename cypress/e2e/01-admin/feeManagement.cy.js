@@ -1,4 +1,4 @@
-import * as configFunctions from '../../../helpers/functions.config.js';
+import { getConfigProperty } from '../../../helpers/functions.config.js';
 import { testAdmin } from '../../../test/_globals.js';
 import { ajaxDelayMillis, login, logout } from '../../support/index.js';
 describe('Admin - Fee Management', () => {
@@ -39,9 +39,7 @@ describe('Admin - Fee Management', () => {
             cy.get(".modal input[name='taxAmount']").should('be.disabled');
             cy.get(".modal input[name='taxPercentage']")
                 .invoke('val')
-                .should('equal', configFunctions
-                .getConfigProperty('settings.fees.taxPercentageDefault')
-                .toString());
+                .should('equal', getConfigProperty('settings.fees.taxPercentageDefault').toString());
             cy.get(".modal input[name='quantityUnit']").should('be.disabled');
             cy.get(".modal select[name='includeQuantity']").select('1');
             cy.get(".modal input[name='quantityUnit']")

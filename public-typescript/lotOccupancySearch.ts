@@ -4,7 +4,7 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../types/globalTypes.js'
-import type * as recordTypes from '../types/recordTypes.js'
+import type { LotOccupancy } from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 
@@ -33,7 +33,7 @@ declare const exports: Record<string, unknown>
     const responseJSON = rawResponseJSON as {
       count: number
       offset: number
-      lotOccupancies: recordTypes.LotOccupancy[]
+      lotOccupancies: LotOccupancy[]
     }
 
     if (responseJSON.lotOccupancies.length === 0) {
