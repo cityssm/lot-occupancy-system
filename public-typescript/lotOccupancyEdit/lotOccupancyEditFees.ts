@@ -784,7 +784,7 @@ function renderLotOccupancyTransactions(): void {
     lotOccupancyTransactionsContainerElement.querySelector(
       '#lotOccupancyTransactions--grandTotal'
     ) as HTMLElement
-  ).textContent = `\$${transactionGrandTotal.toFixed(2)}`
+  ).textContent = `$${transactionGrandTotal.toFixed(2)}`
 
   const feeGrandTotal = getFeeGrandTotal()
 

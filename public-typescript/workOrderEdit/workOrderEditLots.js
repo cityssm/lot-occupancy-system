@@ -91,7 +91,7 @@ function addLotFromLotOccupancy(clickEvent) {
     addLot(lotId);
 }
 function renderRelatedOccupancies() {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     const occupanciesContainerElement = document.querySelector('#container--lotOccupancies');
     document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent = workOrderLotOccupancies.length.toString();
     if (workOrderLotOccupancies.length === 0) {
@@ -157,14 +157,14 @@ function renderRelatedOccupancies() {
         let occupantsHTML = '';
         for (const occupant of lotOccupancy.lotOccupancyOccupants) {
             occupantsHTML += `<li class="has-tooltip-left"
-        data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType)}">
+        data-tooltip="${cityssm.escapeHTML((_c = occupant.lotOccupantType) !== null && _c !== void 0 ? _c : '')}">
         <span class="fa-li">
-        <i class="fas fa-fw fa-${cityssm.escapeHTML(((_c = occupant.fontAwesomeIconClass) !== null && _c !== void 0 ? _c : '') === ''
+        <i class="fas fa-fw fa-${cityssm.escapeHTML(((_d = occupant.fontAwesomeIconClass) !== null && _d !== void 0 ? _d : '') === ''
                 ? 'user'
-                : occupant.fontAwesomeIconClass)}" aria-label="${los.escapedAliases.Occupant}"></i>
+                : (_e = occupant.fontAwesomeIconClass) !== null && _e !== void 0 ? _e : '')}" aria-label="${los.escapedAliases.Occupant}"></i>
         </span>
-        ${cityssm.escapeHTML(occupant.occupantName)}
-        ${cityssm.escapeHTML(occupant.occupantFamilyName)}
+        ${cityssm.escapeHTML((_f = occupant.occupantName) !== null && _f !== void 0 ? _f : '')}
+        ${cityssm.escapeHTML((_g = occupant.occupantFamilyName) !== null && _g !== void 0 ? _g : '')}
         </li>`;
         }
         // eslint-disable-next-line no-unsanitized/method
@@ -183,11 +183,11 @@ function renderRelatedOccupancies() {
             <i class="fas fa-trash" aria-hidden="true"></i>
           </button>
         </td>`);
-        (_d = rowElement
-            .querySelector('.button--addLot')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', addLotFromLotOccupancy);
-        (_e = rowElement
-            .querySelector('.button--deleteLotOccupancy')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', deleteLotOccupancy);
-        (_f = occupanciesContainerElement.querySelector('tbody')) === null || _f === void 0 ? void 0 : _f.append(rowElement);
+        (_h = rowElement
+            .querySelector('.button--addLot')) === null || _h === void 0 ? void 0 : _h.addEventListener('click', addLotFromLotOccupancy);
+        (_j = rowElement
+            .querySelector('.button--deleteLotOccupancy')) === null || _j === void 0 ? void 0 : _j.addEventListener('click', deleteLotOccupancy);
+        (_k = occupanciesContainerElement.querySelector('tbody')) === null || _k === void 0 ? void 0 : _k.append(rowElement);
     }
 }
 function openEditLotStatus(clickEvent) {

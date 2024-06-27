@@ -514,7 +514,7 @@ function renderLotOccupancyTransactions() {
             .querySelector('tbody')) === null || _g === void 0 ? void 0 : _g.append(tableRowElement);
     }
     ;
-    lotOccupancyTransactionsContainerElement.querySelector('#lotOccupancyTransactions--grandTotal').textContent = `\$${transactionGrandTotal.toFixed(2)}`;
+    lotOccupancyTransactionsContainerElement.querySelector('#lotOccupancyTransactions--grandTotal').textContent = `$${transactionGrandTotal.toFixed(2)}`;
     const feeGrandTotal = getFeeGrandTotal();
     if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
         lotOccupancyTransactionsContainerElement.insertAdjacentHTML('afterbegin', `<div class="message is-warning">

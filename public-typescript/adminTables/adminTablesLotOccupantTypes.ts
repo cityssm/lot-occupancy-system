@@ -1,25 +1,27 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/prefer-module */
 
-import type * as globalTypes from '../../types/globalTypes'
-import type * as recordTypes from '../../types/recordTypes'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type { LOS } from '../../types/globalTypes.js'
+import type { LotOccupantType } from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const los: globalTypes.LOS
+declare const los: LOS
+declare const exports: Record<string, unknown>
+
 declare const refreshFontAwesomeIcon: (changeEvent: Event) => void
 
-let lotOccupantTypes: recordTypes.LotOccupantType[] = exports.lotOccupantTypes
+let lotOccupantTypes = exports.lotOccupantTypes as LotOccupantType[]
 delete exports.lotOccupantTypes
 
 type ResponseJSON =
   | {
       success: true
-      lotOccupantTypes: recordTypes.LotOccupantType[]
+      lotOccupantTypes: LotOccupantType[]
     }
   | {
       success: false
@@ -30,13 +32,13 @@ function updateLotOccupantType(submitEvent: SubmitEvent): void {
   submitEvent.preventDefault()
 
   cityssm.postJSON(
-    los.urlPrefix + '/admin/doUpdateLotOccupantType',
+    `${los.urlPrefix}/admin/doUpdateLotOccupantType`,
     submitEvent.currentTarget,
     (rawResponseJSON) => {
       const responseJSON = rawResponseJSON as ResponseJSON
 
       if (responseJSON.success) {
-        lotOccupantTypes = responseJSON.lotOccupantTypes!
+        lotOccupantTypes = responseJSON.lotOccupantTypes
 
         bulmaJS.alert({
           message: `${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type Updated Successfully`,
@@ -56,13 +58,13 @@ function updateLotOccupantType(submitEvent: SubmitEvent): void {
 function deleteLotOccupantType(clickEvent: Event): void {
   const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest(
     'tr'
-  )!
+  ) as HTMLTableRowElement
 
   const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId
 
   function doDelete(): void {
     cityssm.postJSON(
-      los.urlPrefix + '/admin/doDeleteLotOccupantType',
+      `${los.urlPrefix}/admin/doDeleteLotOccupantType`,
       {
         lotOccupantTypeId
       },
@@ -70,7 +72,7 @@ function deleteLotOccupantType(clickEvent: Event): void {
         const responseJSON = rawResponseJSON as ResponseJSON
 
         if (responseJSON.success) {
-          lotOccupantTypes = responseJSON.lotOccupantTypes!
+          lotOccupantTypes = responseJSON.lotOccupantTypes
 
           if (lotOccupantTypes.length === 0) {
             renderLotOccupantTypes()
@@ -109,16 +111,16 @@ function deleteLotOccupantType(clickEvent: Event): void {
 function moveLotOccupantType(clickEvent: MouseEvent): void {
   const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
-  const tableRowElement = buttonElement.closest('tr')!
+  const tableRowElement = buttonElement.closest('tr') as HTMLTableRowElement
 
   const lotOccupantTypeId = tableRowElement.dataset.lotOccupantTypeId
 
   cityssm.postJSON(
-    los.urlPrefix +
-      '/admin/' +
-      (buttonElement.dataset.direction === 'up'
+    `${los.urlPrefix}/admin/${
+      buttonElement.dataset.direction === 'up'
         ? 'doMoveLotOccupantTypeUp'
-        : 'doMoveLotOccupantTypeDown'),
+        : 'doMoveLotOccupantTypeDown'
+    }`,
     {
       lotOccupantTypeId,
       moveToEnd: clickEvent.shiftKey ? '1' : '0'
@@ -127,7 +129,7 @@ function moveLotOccupantType(clickEvent: MouseEvent): void {
       const responseJSON = rawResponseJSON as ResponseJSON
 
       if (responseJSON.success) {
-        lotOccupantTypes = responseJSON.lotOccupantTypes!
+        lotOccupantTypes = responseJSON.lotOccupantTypes
         renderLotOccupantTypes()
       } else {
         bulmaJS.alert({
@@ -146,6 +148,7 @@ function renderLotOccupantTypes(): void {
   ) as HTMLTableSectionElement
 
   if (lotOccupantTypes.length === 0) {
+    // eslint-disable-next-line no-unsanitized/property
     containerElement.innerHTML = `<tr><td colspan="3">
       <div class="message is-warning">
       <p class="message-body">There are no active ${los.escapedAliases.lot} ${los.escapedAliases.occupant} types.</p>
@@ -163,104 +166,82 @@ function renderLotOccupantTypes(): void {
     tableRowElement.dataset.lotOccupantTypeId =
       lotOccupantType.lotOccupantTypeId.toString()
 
-    const formId =
-      'form--lotOccupantType-' + lotOccupantType.lotOccupantTypeId.toString()
+    const formId = `form--lotOccupantType-${lotOccupantType.lotOccupantTypeId.toString()}`
 
-    tableRowElement.innerHTML =
-      '<td>' +
-      ('<div class="field">' +
-        '<div class="control">' +
-        '<input class="input" name="lotOccupantType" type="text"' +
-        (' value="' +
-          cityssm.escapeHTML(lotOccupantType.lotOccupantType) +
-          '"') +
-        (' form="' + formId + '"') +
-        (' aria-label="' +
-          los.escapedAliases.Lot +
-          ' ' +
-          los.escapedAliases.Occupant +
-          ' Type"') +
-        ' maxlength="100" required />' +
-        '</div>' +
-        '</div>') +
-      '</td>' +
-      '<td>' +
-      ('<div class="field has-addons">' +
-        '<div class="control"><span class="button is-static">fa-</span></div>' +
-        '<div class="control">' +
-        '<input class="input" name="fontAwesomeIconClass" type="text"' +
-        (' value="' +
-          cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass) +
-          '"') +
-        (' form="' + formId + '"') +
-        ' list="datalist--fontAwesomeIconClass"' +
-        ' aria-label="Icon Name"' +
-        ' maxlength="50" />' +
-        '</div>' +
-        '<div class="control"><span class="button is-static">' +
-        '<i class="fas fa-fw fa-' +
-        cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass) +
-        '"></i></span></div>' +
-        '</div>') +
-      '</td>' +
-      '<td>' +
-      ('<div class="field">' +
-        '<div class="control">' +
-        '<input class="input" name="occupantCommentTitle" type="text"' +
-        (' value="' +
-          cityssm.escapeHTML(lotOccupantType.occupantCommentTitle) +
-          '"') +
-        (' form="' + formId + '"') +
-        (' aria-label="' + los.escapedAliases.Occupant + ' Comment Title"') +
-        ' maxlength="50" />' +
-        '</div>' +
-        '</div>') +
-      '</td>' +
-      ('<td>' +
-        ('<form id="' + formId + '">') +
-        '<input name="lotOccupantTypeId" type="hidden"' +
-        (' value="' + lotOccupantType.lotOccupantTypeId.toString() + '"') +
-        ' />' +
-        '<button class="button is-success" type="submit" aria-label="Save"><i class="fas fa-save" aria-hidden="true"></i></button>' +
-        '</form>' +
-        '</td>') +
-      '<td class="is-nowrap">' +
-      '<div class="field is-grouped">' +
-      '<div class="control">' +
-      los.getMoveUpDownButtonFieldHTML(
-        'button--moveLotOccupantTypeUp',
-        'button--moveLotOccupantTypeDown',
-        false
-      ) +
-      '</div>' +
-      '<div class="control">' +
-      '<button class="button is-danger is-light button--deleteLotOccupantType"' +
-      ' data-tooltip="Delete ' +
-      los.escapedAliases.Lot +
-      ' ' +
-      los.escapedAliases.Occupant +
-      ' Type" type="button"' +
-      ' aria-label="Delete ' +
-      los.escapedAliases.Lot +
-      ' ' +
-      los.escapedAliases.Occupant +
-      ' Type">' +
-      '<i class="fas fa-trash" aria-hidden="true"></i>' +
-      '</button>' +
-      '</div>' +
-      '</div>' +
-      '</td>'
+    // eslint-disable-next-line no-unsanitized/property
+    tableRowElement.innerHTML = `<td>
+        <div class="field">
+          <div class="control">
+            <input class="input" name="lotOccupantType" type="text"
+              value="${cityssm.escapeHTML(lotOccupantType.lotOccupantType)}"
+              form="${formId}"
+              aria-label="${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type" maxlength="100" required />
+          </div>
+        </div>
+      </td><td>
+        <div class="field has-addons">
+          <div class="control">
+            <span class="button is-static">fa-</span>
+          </div>
+          <div class="control">
+            <input class="input" name="fontAwesomeIconClass" type="text"
+              value="${cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass)}"
+              form="${formId}"
+              list="datalist--fontAwesomeIconClass" aria-label="Icon Name" maxlength="50" />
+          </div>
+          <div class="control">
+            <span class="button is-static">
+              <i class="fas fa-fw fa-${cityssm.escapeHTML(lotOccupantType.fontAwesomeIconClass)}"></i>
+            </span>
+          </div>
+        </div>
+      </td><td>
+        <div class="field">
+          <div class="control">
+            <input class="input" name="occupantCommentTitle" type="text"
+              value="${cityssm.escapeHTML(lotOccupantType.occupantCommentTitle)}"
+              form="${formId}"
+              aria-label="${los.escapedAliases.Occupant} Comment Title" maxlength="50" />
+          </div>
+        </div>
+      </td><td>
+        <form id="${formId}">
+          <input name="lotOccupantTypeId" type="hidden"
+            value="${lotOccupantType.lotOccupantTypeId.toString()}" />
+          <button class="button is-success" type="submit" aria-label="Save">
+            <i class="fas fa-save" aria-hidden="true"></i>
+          </button>
+        </form>
+      </td><td class="is-nowrap">
+        <div class="field is-grouped">
+          <div class="control">
+            ${los.getMoveUpDownButtonFieldHTML(
+              'button--moveLotOccupantTypeUp',
+              'button--moveLotOccupantTypeDown',
+              false
+            )}
+          </div>
+          <div class="control">
+            <button class="button is-danger is-light button--deleteLotOccupantType"
+              data-tooltip="Delete ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type"
+              type="button"
+              aria-label="Delete ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type">
+              <i class="fas fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </td>`
 
     const fontAwesomeInputElement = tableRowElement.querySelector(
       "input[name='fontAwesomeIconClass']"
-    )!
+    ) as HTMLInputElement
 
     fontAwesomeInputElement.addEventListener('keyup', refreshFontAwesomeIcon)
     fontAwesomeInputElement.addEventListener('change', refreshFontAwesomeIcon)
 
     tableRowElement
-      .querySelector('form')!
-      .addEventListener('submit', updateLotOccupantType)
+      .querySelector('form')
+      ?.addEventListener('submit', updateLotOccupantType)
     ;(
       tableRowElement.querySelector(
         '.button--moveLotOccupantTypeUp'
@@ -273,8 +254,8 @@ function renderLotOccupantTypes(): void {
     ).addEventListener('click', moveLotOccupantType)
 
     tableRowElement
-      .querySelector('.button--deleteLotOccupantType')!
-      .addEventListener('click', deleteLotOccupantType)
+      .querySelector('.button--deleteLotOccupantType')
+      ?.addEventListener('click', deleteLotOccupantType)
 
     containerElement.append(tableRowElement)
   }
@@ -287,16 +268,16 @@ function renderLotOccupantTypes(): void {
   const formElement = submitEvent.currentTarget as HTMLFormElement
 
   cityssm.postJSON(
-    los.urlPrefix + '/admin/doAddLotOccupantType',
+    `${los.urlPrefix}/admin/doAddLotOccupantType`,
     formElement,
     (rawResponseJSON) => {
       const responseJSON = rawResponseJSON as ResponseJSON
 
       if (responseJSON.success) {
-        lotOccupantTypes = responseJSON.lotOccupantTypes!
+        lotOccupantTypes = responseJSON.lotOccupantTypes
         renderLotOccupantTypes()
         formElement.reset()
-        formElement.querySelector('input')!.focus()
+        formElement.querySelector('input')?.focus()
       } else {
         bulmaJS.alert({
           title: `Error Adding ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,

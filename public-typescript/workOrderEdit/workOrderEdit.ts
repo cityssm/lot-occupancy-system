@@ -4,15 +4,15 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type * as globalTypes from '../../types/globalTypes.js'
-import type * as recordTypes from '../../types/recordTypes.js'
+import type { LOS } from '../../types/globalTypes.js'
+import type { WorkOrderMilestone, WorkOrderMilestoneType } from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as globalTypes.LOS
+  const los = exports.los as LOS
 
   const workOrderId = (
     document.querySelector('#workOrderEdit--workOrderId') as HTMLInputElement
@@ -147,7 +147,7 @@ declare const exports: Record<string, unknown>
     )
   }
 
-  let workOrderMilestones: recordTypes.WorkOrderMilestone[]
+  let workOrderMilestones: WorkOrderMilestone[]
 
   document
     .querySelector('#button--closeWorkOrder')
@@ -257,7 +257,7 @@ declare const exports: Record<string, unknown>
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          workOrderMilestones: recordTypes.WorkOrderMilestone[]
+          workOrderMilestones: WorkOrderMilestone[]
         }
 
         const workOrderMilestones = responseJSON.workOrderMilestones.filter(
@@ -309,7 +309,7 @@ declare const exports: Record<string, unknown>
     const responseJSON = rawResponseJSON as {
       success: boolean
       errorMessage?: string
-      workOrderMilestones: recordTypes.WorkOrderMilestone[]
+      workOrderMilestones: WorkOrderMilestone[]
     }
 
     if (responseJSON.success) {
@@ -340,7 +340,7 @@ declare const exports: Record<string, unknown>
 
     const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
       return currentMilestone.workOrderMilestoneId === workOrderMilestoneId
-    }) as recordTypes.WorkOrderMilestone
+    }) as WorkOrderMilestone
 
     function doComplete(): void {
       cityssm.postJSON(
@@ -449,7 +449,7 @@ declare const exports: Record<string, unknown>
 
     const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
       return currentMilestone.workOrderMilestoneId === workOrderMilestoneId
-    }) as recordTypes.WorkOrderMilestone
+    }) as WorkOrderMilestone
 
     let editCloseModalFunction: () => void
     let workOrderMilestoneDateStringElement: HTMLInputElement
@@ -464,7 +464,7 @@ declare const exports: Record<string, unknown>
           const responseJSON = rawResponseJSON as {
             success: boolean
             errorMessage?: string
-            workOrderMilestones?: recordTypes.WorkOrderMilestone[]
+            workOrderMilestones?: WorkOrderMilestone[]
           }
 
           processMilestoneResponse(responseJSON)
@@ -494,7 +494,7 @@ declare const exports: Record<string, unknown>
 
         let milestoneTypeFound = false
 
-        for (const milestoneType of exports.workOrderMilestoneTypes as recordTypes.WorkOrderMilestoneType[]) {
+        for (const milestoneType of exports.workOrderMilestoneTypes as WorkOrderMilestoneType[]) {
           const optionElement = document.createElement('option')
 
           optionElement.value =
@@ -517,11 +517,15 @@ declare const exports: Record<string, unknown>
           workOrderMilestone.workOrderMilestoneTypeId
         ) {
           const optionElement = document.createElement('option')
+
           optionElement.value =
             workOrderMilestone.workOrderMilestoneTypeId.toString()
+
           optionElement.textContent =
             workOrderMilestone.workOrderMilestoneType ?? ''
+
           optionElement.selected = true
+
           milestoneTypeElement.append(optionElement)
         }
 
@@ -683,7 +687,7 @@ declare const exports: Record<string, unknown>
 
   if (!isCreate) {
     workOrderMilestones =
-      exports.workOrderMilestones as recordTypes.WorkOrderMilestone[]
+      exports.workOrderMilestones as WorkOrderMilestone[]
     delete exports.workOrderMilestones
 
     renderMilestones()
@@ -710,7 +714,7 @@ declare const exports: Record<string, unknown>
                 const responseJSON = rawResponseJSON as {
                   success: boolean
                   errorMessage?: string
-                  workOrderMilestones?: recordTypes.WorkOrderMilestone[]
+                  workOrderMilestones?: WorkOrderMilestone[]
                 }
 
                 processMilestoneResponse(responseJSON)
@@ -755,7 +759,7 @@ declare const exports: Record<string, unknown>
               '#milestoneAdd--workOrderMilestoneTypeId'
             ) as HTMLSelectElement
 
-            for (const milestoneType of exports.workOrderMilestoneTypes as recordTypes.WorkOrderMilestoneType[]) {
+            for (const milestoneType of exports.workOrderMilestoneTypes as WorkOrderMilestoneType[]) {
               const optionElement = document.createElement('option')
 
               optionElement.value =

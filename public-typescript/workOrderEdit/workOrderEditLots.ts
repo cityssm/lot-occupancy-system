@@ -5,7 +5,7 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../../types/globalTypes.js'
-import type * as recordTypes from '../../types/recordTypes.js'
+import type { Lot, LotOccupancy, LotStatus } from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -15,11 +15,10 @@ declare const los: LOS
 
 declare const workOrderId: string
 
-let workOrderLots = exports.workOrderLots as recordTypes.Lot[]
+let workOrderLots = exports.workOrderLots as Lot[]
 delete exports.workOrderLots
 
-let workOrderLotOccupancies =
-  exports.workOrderLotOccupancies as recordTypes.LotOccupancy[]
+let workOrderLotOccupancies = exports.workOrderLotOccupancies as LotOccupancy[]
 delete exports.workOrderLotOccupancies
 
 function deleteLotOccupancy(clickEvent: Event): void {
@@ -40,7 +39,7 @@ function deleteLotOccupancy(clickEvent: Event): void {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          workOrderLotOccupancies: recordTypes.LotOccupancy[]
+          workOrderLotOccupancies: LotOccupancy[]
         }
 
         if (responseJSON.success) {
@@ -82,7 +81,7 @@ function addLot(
       const responseJSON = rawResponseJSON as {
         success: boolean
         errorMessage?: string
-        workOrderLots: recordTypes.Lot[]
+        workOrderLots: Lot[]
       }
 
       if (responseJSON.success) {
@@ -117,7 +116,7 @@ function addLotOccupancy(
       const responseJSON = rawResponseJSON as {
         success: boolean
         errorMessage?: string
-        workOrderLotOccupancies: recordTypes.LotOccupancy[]
+        workOrderLotOccupancies: LotOccupancy[]
       }
 
       if (responseJSON.success) {
@@ -239,16 +238,16 @@ function renderRelatedOccupancies(): void {
 
     for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
       occupantsHTML += `<li class="has-tooltip-left"
-        data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType!)}">
+        data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
         <span class="fa-li">
         <i class="fas fa-fw fa-${cityssm.escapeHTML(
           (occupant.fontAwesomeIconClass ?? '') === ''
             ? 'user'
-            : occupant.fontAwesomeIconClass!
+            : occupant.fontAwesomeIconClass ?? ''
         )}" aria-label="${los.escapedAliases.Occupant}"></i>
         </span>
-        ${cityssm.escapeHTML(occupant.occupantName!)}
-        ${cityssm.escapeHTML(occupant.occupantFamilyName!)}
+        ${cityssm.escapeHTML(occupant.occupantName ?? '')}
+        ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
         </li>`
     }
 
@@ -300,7 +299,7 @@ function openEditLotStatus(clickEvent: Event): void {
 
   const lot = workOrderLots.find((possibleLot) => {
     return possibleLot.lotId === lotId
-  }) as recordTypes.Lot
+  }) as Lot
 
   let editCloseModalFunction: () => void
 
@@ -314,7 +313,7 @@ function openEditLotStatus(clickEvent: Event): void {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          workOrderLots: recordTypes.Lot[]
+          workOrderLots: Lot[]
         }
 
         if (responseJSON.success) {
@@ -350,7 +349,7 @@ function openEditLotStatus(clickEvent: Event): void {
 
       let lotStatusFound = false
 
-      for (const lotStatus of exports.lotStatuses as recordTypes.LotStatus[]) {
+      for (const lotStatus of exports.lotStatuses as LotStatus[]) {
         const optionElement = document.createElement('option')
         optionElement.value = lotStatus.lotStatusId.toString()
         optionElement.textContent = lotStatus.lotStatus
@@ -414,7 +413,7 @@ function deleteLot(clickEvent: Event): void {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          workOrderLots: recordTypes.Lot[]
+          workOrderLots: Lot[]
         }
 
         if (responseJSON.success) {
@@ -557,7 +556,7 @@ document
         searchFormElement,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            lotOccupancies: recordTypes.LotOccupancy[]
+            lotOccupancies: LotOccupancy[]
           }
 
           if (responseJSON.lotOccupancies.length === 0) {
@@ -745,7 +744,7 @@ document.querySelector('#button--addLot')?.addEventListener('click', () => {
       `${los.urlPrefix}/lots/doSearchLots`,
       searchFormElement,
       (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as { lots: recordTypes.Lot[] }
+        const responseJSON = rawResponseJSON as { lots: Lot[] }
 
         if (responseJSON.lots.length === 0) {
           searchResultsContainerElement.innerHTML = `<div class="message is-info">
@@ -817,7 +816,7 @@ document.querySelector('#button--addLot')?.addEventListener('click', () => {
         '#lotSearch--lotStatusId'
       ) as HTMLSelectElement
 
-      for (const lotStatus of exports.lotStatuses as recordTypes.LotStatus[]) {
+      for (const lotStatus of exports.lotStatuses as LotStatus[]) {
         const optionElement = document.createElement('option')
         optionElement.value = lotStatus.lotStatusId.toString()
         optionElement.textContent = lotStatus.lotStatus
