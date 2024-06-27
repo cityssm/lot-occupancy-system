@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import * as permissionHandlers from '../handlers/permissions.js';
+import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js';
 import handler_edit from '../handlers/workOrders-get/edit.js';
 import handler_milestoneCalendar from '../handlers/workOrders-get/milestoneCalendar.js';
 import handler_new from '../handlers/workOrders-get/new.js';
@@ -36,30 +36,30 @@ router.post('/doGetWorkOrderMilestones', handler_doGetWorkOrderMilestones);
 // Outlook Integration
 router.get('/outlook', handler_outlook);
 // New
-router.get('/new', permissionHandlers.updateGetHandler, handler_new);
-router.post('/doCreateWorkOrder', permissionHandlers.updatePostHandler, handler_doCreateWorkOrder);
+router.get('/new', updateGetHandler, handler_new);
+router.post('/doCreateWorkOrder', updatePostHandler, handler_doCreateWorkOrder);
 // View
 router.get('/:workOrderId', handler_view);
-router.post('/doReopenWorkOrder', permissionHandlers.updatePostHandler, handler_doReopenWorkOrder);
+router.post('/doReopenWorkOrder', updatePostHandler, handler_doReopenWorkOrder);
 // Edit
-router.get('/:workOrderId/edit', permissionHandlers.updateGetHandler, handler_edit);
-router.post('/doUpdateWorkOrder', permissionHandlers.updatePostHandler, handler_doUpdateWorkOrder);
-router.post('/doCloseWorkOrder', permissionHandlers.updatePostHandler, handler_doCloseWorkOrder);
-router.post('/doDeleteWorkOrder', permissionHandlers.updatePostHandler, handler_doDeleteWorkOrder);
+router.get('/:workOrderId/edit', updateGetHandler, handler_edit);
+router.post('/doUpdateWorkOrder', updatePostHandler, handler_doUpdateWorkOrder);
+router.post('/doCloseWorkOrder', updatePostHandler, handler_doCloseWorkOrder);
+router.post('/doDeleteWorkOrder', updatePostHandler, handler_doDeleteWorkOrder);
 // Lot Occupancy
-router.post('/doAddWorkOrderLotOccupancy', permissionHandlers.updatePostHandler, handler_doAddWorkOrderLotOccupancy);
-router.post('/doDeleteWorkOrderLotOccupancy', permissionHandlers.updatePostHandler, handler_doDeleteWorkOrderLotOccupancy);
-router.post('/doAddWorkOrderLot', permissionHandlers.updatePostHandler, handler_doAddWorkOrderLot);
-router.post('/doUpdateLotStatus', permissionHandlers.updatePostHandler, handler_doUpdateLotStatus);
-router.post('/doDeleteWorkOrderLot', permissionHandlers.updatePostHandler, handler_doDeleteWorkOrderLot);
+router.post('/doAddWorkOrderLotOccupancy', updatePostHandler, handler_doAddWorkOrderLotOccupancy);
+router.post('/doDeleteWorkOrderLotOccupancy', updatePostHandler, handler_doDeleteWorkOrderLotOccupancy);
+router.post('/doAddWorkOrderLot', updatePostHandler, handler_doAddWorkOrderLot);
+router.post('/doUpdateLotStatus', updatePostHandler, handler_doUpdateLotStatus);
+router.post('/doDeleteWorkOrderLot', updatePostHandler, handler_doDeleteWorkOrderLot);
 // Comments
-router.post('/doAddWorkOrderComment', permissionHandlers.updatePostHandler, handler_doAddWorkOrderComment);
-router.post('/doUpdateWorkOrderComment', permissionHandlers.updatePostHandler, handler_doUpdateWorkOrderComment);
-router.post('/doDeleteWorkOrderComment', permissionHandlers.updatePostHandler, handler_doDeleteWorkOrderComment);
+router.post('/doAddWorkOrderComment', updatePostHandler, handler_doAddWorkOrderComment);
+router.post('/doUpdateWorkOrderComment', updatePostHandler, handler_doUpdateWorkOrderComment);
+router.post('/doDeleteWorkOrderComment', updatePostHandler, handler_doDeleteWorkOrderComment);
 // Milestones
-router.post('/doAddWorkOrderMilestone', permissionHandlers.updatePostHandler, handler_doAddWorkOrderMilestone);
-router.post('/doUpdateWorkOrderMilestone', permissionHandlers.updatePostHandler, handler_doUpdateWorkOrderMilestone);
-router.post('/doCompleteWorkOrderMilestone', permissionHandlers.updatePostHandler, handler_doCompleteWorkOrderMilestone);
-router.post('/doReopenWorkOrderMilestone', permissionHandlers.updatePostHandler, handler_doReopenWorkOrderMilestone);
-router.post('/doDeleteWorkOrderMilestone', permissionHandlers.updatePostHandler, handler_doDeleteWorkOrderMilestone);
+router.post('/doAddWorkOrderMilestone', updatePostHandler, handler_doAddWorkOrderMilestone);
+router.post('/doUpdateWorkOrderMilestone', updatePostHandler, handler_doUpdateWorkOrderMilestone);
+router.post('/doCompleteWorkOrderMilestone', updatePostHandler, handler_doCompleteWorkOrderMilestone);
+router.post('/doReopenWorkOrderMilestone', updatePostHandler, handler_doReopenWorkOrderMilestone);
+router.post('/doDeleteWorkOrderMilestone', updatePostHandler, handler_doDeleteWorkOrderMilestone);
 export default router;

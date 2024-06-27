@@ -9,17 +9,13 @@ import handler_view from '../handlers/maps-get/view.js'
 import handler_doCreateMap from '../handlers/maps-post/doCreateMap.js'
 import handler_doDeleteMap from '../handlers/maps-post/doDeleteMap.js'
 import handler_doUpdateMap from '../handlers/maps-post/doUpdateMap.js'
-import * as permissionHandlers from '../handlers/permissions.js'
+import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js'
 
 export const router = Router()
 
 router.get('/', handler_search as RequestHandler)
 
-router.get(
-  '/new',
-  permissionHandlers.updateGetHandler,
-  handler_new as RequestHandler
-)
+router.get('/new', updateGetHandler, handler_new as RequestHandler)
 
 router.get('/:mapId', handler_view as RequestHandler)
 
@@ -27,27 +23,23 @@ router.get('/:mapId/next', handler_next as RequestHandler)
 
 router.get('/:mapId/previous', handler_previous as RequestHandler)
 
-router.get(
-  '/:mapId/edit',
-  permissionHandlers.updateGetHandler,
-  handler_edit as RequestHandler
-)
+router.get('/:mapId/edit', updateGetHandler, handler_edit as RequestHandler)
 
 router.post(
   '/doCreateMap',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doCreateMap as RequestHandler
 )
 
 router.post(
   '/doUpdateMap',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doUpdateMap as RequestHandler
 )
 
 router.post(
   '/doDeleteMap',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doDeleteMap as RequestHandler
 )
 

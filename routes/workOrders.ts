@@ -1,6 +1,6 @@
 import { type RequestHandler, Router } from 'express'
 
-import * as permissionHandlers from '../handlers/permissions.js'
+import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js'
 import handler_edit from '../handlers/workOrders-get/edit.js'
 import handler_milestoneCalendar from '../handlers/workOrders-get/milestoneCalendar.js'
 import handler_new from '../handlers/workOrders-get/new.js'
@@ -51,15 +51,11 @@ router.get('/outlook', handler_outlook as RequestHandler)
 
 // New
 
-router.get(
-  '/new',
-  permissionHandlers.updateGetHandler,
-  handler_new as RequestHandler
-)
+router.get('/new', updateGetHandler, handler_new as RequestHandler)
 
 router.post(
   '/doCreateWorkOrder',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doCreateWorkOrder as RequestHandler
 )
 
@@ -69,7 +65,7 @@ router.get('/:workOrderId', handler_view as RequestHandler)
 
 router.post(
   '/doReopenWorkOrder',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doReopenWorkOrder as RequestHandler
 )
 
@@ -77,25 +73,25 @@ router.post(
 
 router.get(
   '/:workOrderId/edit',
-  permissionHandlers.updateGetHandler,
+  updateGetHandler,
   handler_edit as RequestHandler
 )
 
 router.post(
   '/doUpdateWorkOrder',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doUpdateWorkOrder as RequestHandler
 )
 
 router.post(
   '/doCloseWorkOrder',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doCloseWorkOrder as RequestHandler
 )
 
 router.post(
   '/doDeleteWorkOrder',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doDeleteWorkOrder as RequestHandler
 )
 
@@ -103,31 +99,31 @@ router.post(
 
 router.post(
   '/doAddWorkOrderLotOccupancy',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doAddWorkOrderLotOccupancy as RequestHandler
 )
 
 router.post(
   '/doDeleteWorkOrderLotOccupancy',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doDeleteWorkOrderLotOccupancy as RequestHandler
 )
 
 router.post(
   '/doAddWorkOrderLot',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doAddWorkOrderLot as RequestHandler
 )
 
 router.post(
   '/doUpdateLotStatus',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doUpdateLotStatus as RequestHandler
 )
 
 router.post(
   '/doDeleteWorkOrderLot',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doDeleteWorkOrderLot as RequestHandler
 )
 
@@ -135,19 +131,19 @@ router.post(
 
 router.post(
   '/doAddWorkOrderComment',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doAddWorkOrderComment as RequestHandler
 )
 
 router.post(
   '/doUpdateWorkOrderComment',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doUpdateWorkOrderComment as RequestHandler
 )
 
 router.post(
   '/doDeleteWorkOrderComment',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doDeleteWorkOrderComment as RequestHandler
 )
 
@@ -155,31 +151,31 @@ router.post(
 
 router.post(
   '/doAddWorkOrderMilestone',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doAddWorkOrderMilestone as RequestHandler
 )
 
 router.post(
   '/doUpdateWorkOrderMilestone',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doUpdateWorkOrderMilestone as RequestHandler
 )
 
 router.post(
   '/doCompleteWorkOrderMilestone',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doCompleteWorkOrderMilestone as RequestHandler
 )
 
 router.post(
   '/doReopenWorkOrderMilestone',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doReopenWorkOrderMilestone as RequestHandler
 )
 
 router.post(
   '/doDeleteWorkOrderMilestone',
-  permissionHandlers.updatePostHandler,
+  updatePostHandler,
   handler_doDeleteWorkOrderMilestone as RequestHandler
 )
 
