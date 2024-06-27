@@ -91,18 +91,15 @@
         Sault Ste. Marie Ontario &nbsp; P6A 5X6
       </p>
       <p>
-          Contract No.
-          <span class="field">
-              <%= lotOccupancy.lotOccupancyId %>
-          </span>
+        Contract No.
+        <span class="field">
+          <%= lotOccupancy.lotOccupancyId %>
+        </span>
       </p>
       <p>
         Date of Purchase
         <span class="field">
-          &nbsp;
-          <% if (lotOccupancy.lotOccupancyTransactions.length > 0) { %>
-              <%= lotOccupancy.lotOccupancyTransactions[0].transactionDateString %>
-          <% } %>
+          <%= lotOccupancy.occupancyStartDateString %>
         </span>
       </p>
       <table class="layout-table is-10pt" style="table-layout:fixed">
