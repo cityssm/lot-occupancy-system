@@ -6,7 +6,9 @@ export default async function getLotOccupancyComments(lotOccupancyId, connectedD
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     const lotComments = database
-        .prepare(`select lotOccupancyCommentId,
+        .prepare(
+    // eslint-disable-next-line no-secrets/no-secrets
+    `select lotOccupancyCommentId,
         lotOccupancyCommentDate, userFn_dateIntegerToString(lotOccupancyCommentDate) as lotOccupancyCommentDateString,
         lotOccupancyCommentTime,
         userFn_timeIntegerToString(lotOccupancyCommentTime) as lotOccupancyCommentTimeString,

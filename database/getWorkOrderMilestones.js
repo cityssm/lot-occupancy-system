@@ -3,6 +3,7 @@ import { getConfigProperty } from '../helpers/functions.config.js';
 import getLotOccupancies from './getLotOccupancies.js';
 import getLots from './getLots.js';
 import { acquireConnection } from './pool.js';
+// eslint-disable-next-line security/detect-unsafe-regex
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/;
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null';
@@ -66,7 +67,9 @@ export default async function getWorkOrderMilestones(filters, options, connected
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
+    // Filters
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
+    // Order By
     let orderByClause = '';
     switch (options.orderBy) {
         case 'completion': {
@@ -84,6 +87,8 @@ export default async function getWorkOrderMilestones(filters, options, connected
             break;
         }
     }
+    // Query
+    // eslint-disable-next-line no-secrets/no-secrets
     const sql = `select m.workOrderMilestoneId,
     m.workOrderMilestoneTypeId, t.workOrderMilestoneType,
     m.workOrderMilestoneDate,

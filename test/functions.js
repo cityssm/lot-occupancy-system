@@ -1,8 +1,11 @@
 import assert from 'node:assert';
 import fs from 'node:fs';
 import { lotNameSortNameFunction } from '../data/config.cemetery.ssm.js';
+// skipcq: JS-C1003 - Testing functions
 import * as cacheFunctions from '../helpers/functions.cache.js';
+// skipcq: JS-C1003 - Testing functions
 import * as sqlFilterFunctions from '../helpers/functions.sqlFilters.js';
+// skipcq: JS-C1003 - Testing functions
 import * as userFunctions from '../helpers/functions.user.js';
 describe('config.cemetery.ssm', () => {
     it('Sorts burial site names', () => {
@@ -13,6 +16,7 @@ describe('config.cemetery.ssm', () => {
 });
 describe('functions.cache', () => {
     const badId = -3;
+    // eslint-disable-next-line no-secrets/no-secrets
     const badName = 'qwertyuiopasdfghjklzxcvbnm';
     before(() => {
         cacheFunctions.clearCaches();

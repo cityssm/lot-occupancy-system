@@ -14,13 +14,13 @@ export default async function handler(_request, response) {
     const workOrderResults = await getWorkOrders({
         workOrderOpenDateString: currentDateString
     }, {
-        limit: 1,
+        limit: 1, // only using the count
         offset: 0
     });
     const lotOccupancyResults = await getLotOccupancies({
         occupancyStartDateString: currentDateString
     }, {
-        limit: 1,
+        limit: 1, // only using the count
         offset: 0,
         includeFees: false,
         includeOccupants: false,

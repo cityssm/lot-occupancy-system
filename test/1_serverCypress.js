@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 import assert from 'node:assert';
 import { exec } from 'node:child_process';
 import * as http from 'node:http';
@@ -34,6 +35,7 @@ describe('lot-occupancy-system', () => {
             httpServer.close();
         }
         catch {
+            // ignore
         }
     });
     it(`Ensure server starts on port ${portNumber.toString()}`, () => {

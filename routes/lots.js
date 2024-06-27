@@ -15,8 +15,14 @@ import handler_doUpdateLot from '../handlers/lots-post/doUpdateLot.js';
 import handler_doUpdateLotComment from '../handlers/lots-post/doUpdateLotComment.js';
 import * as permissionHandlers from '../handlers/permissions.js';
 export const router = Router();
+/*
+ * Lot Search
+ */
 router.get('/', handler_search);
 router.post('/doSearchLots', handler_doSearchLots);
+/*
+ * Lot View / Edit
+ */
 router.get('/new', permissionHandlers.updateGetHandler, handler_new);
 router.get('/:lotId', handler_view);
 router.get('/:lotId/next', handler_next);

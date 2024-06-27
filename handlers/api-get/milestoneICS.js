@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 import ical, { ICalEventStatus } from 'ical-generator';
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
 import { getConfigProperty } from '../../helpers/functions.config.js';
@@ -38,6 +39,7 @@ function buildEventSummary(milestone) {
     }
     return summary;
 }
+// eslint-disable-next-line @typescript-eslint/naming-convention
 function buildEventDescriptionHTML_occupancies(request, milestone) {
     let descriptionHTML = '';
     if (milestone.workOrderLotOccupancies.length > 0) {
@@ -82,6 +84,7 @@ function buildEventDescriptionHTML_occupancies(request, milestone) {
     }
     return descriptionHTML;
 }
+// eslint-disable-next-line @typescript-eslint/naming-convention
 function buildEventDescriptionHTML_lots(request, milestone) {
     let descriptionHTML = '';
     if (milestone.workOrderLots.length > 0) {
@@ -118,6 +121,7 @@ function buildEventDescriptionHTML_lots(request, milestone) {
     }
     return descriptionHTML;
 }
+// eslint-disable-next-line @typescript-eslint/naming-convention
 function buildEventDescriptionHTML_prints(request, milestone) {
     let descriptionHTML = '';
     const prints = getConfigProperty('settings.workOrders.prints');
@@ -169,6 +173,9 @@ function buildEventLocation(milestone) {
 }
 export default async function handler(request, response) {
     const urlRoot = getUrlRoot(request);
+    /*
+     * Get work order milestones
+     */
     const workOrderMilestoneFilters = {
         workOrderTypeIds: request.query.workOrderTypeIds,
         workOrderMilestoneTypeIds: request.query.workOrderMilestoneTypeIds
@@ -184,6 +191,9 @@ export default async function handler(request, response) {
         includeWorkOrders: true,
         orderBy: 'date'
     });
+    /*
+     * Create calendar object
+     */
     const calendar = ical({
         name: 'Work Order Milestone Calendar',
         url: `${urlRoot}/workOrders`
@@ -196,13 +206,19 @@ export default async function handler(request, response) {
         company: calendarCompany,
         product: calendarProduct
     });
+    /*
+     * Loop through milestones
+     */
     for (const milestone of workOrderMilestones) {
         const milestoneTimePieces = `${milestone.workOrderMilestoneDateString} ${milestone.workOrderMilestoneTimeString}`.split(timeStringSplitRegex);
         const milestoneDate = new Date(Number.parseInt(milestoneTimePieces[0], 10), Number.parseInt(milestoneTimePieces[1], 10) - 1, Number.parseInt(milestoneTimePieces[2], 10), Number.parseInt(milestoneTimePieces[3], 10), Number.parseInt(milestoneTimePieces[4], 10));
         const milestoneEndDate = new Date(milestoneDate.getTime());
         milestoneEndDate.setHours(milestoneEndDate.getHours() + 1);
+        // Build summary (title in Outlook)
         const summary = buildEventSummary(milestone);
+        // Build URL
         const workOrderUrl = getWorkOrderUrl(request, milestone);
+        // Create event
         const eventData = {
             start: milestoneDate,
             created: new Date(milestone.recordCreate_timeMillis),
@@ -216,22 +232,27 @@ export default async function handler(request, response) {
             eventData.end = milestoneEndDate;
         }
         const calendarEvent = calendar.createEvent(eventData);
+        // Build description
         const descriptionHTML = buildEventDescriptionHTML(request, milestone);
         calendarEvent.description({
             plain: workOrderUrl,
             html: descriptionHTML
         });
+        // Set status
         if (milestone.workOrderMilestoneCompletionDate) {
             calendarEvent.status(ICalEventStatus.CONFIRMED);
         }
+        // Add categories
         const categories = buildEventCategoryList(milestone);
         for (const category of categories) {
             calendarEvent.createCategory({
                 name: category
             });
         }
+        // Set location
         const location = buildEventLocation(milestone);
         calendarEvent.location(location);
+        // Set organizer / attendees
         if (milestone.workOrderLotOccupancies.length > 0) {
             let organizerSet = false;
             for (const lotOccupancy of milestone.workOrderLotOccupancies ?? []) {

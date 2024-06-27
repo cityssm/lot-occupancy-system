@@ -1,8 +1,11 @@
+// skipcq: JS-C1003 - Added to ReportData
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import getLot from '../database/getLot.js';
 import getLotOccupancy from '../database/getLotOccupancy.js';
 import getWorkOrder from '../database/getWorkOrder.js';
+// skipcq: JS-C1003 - Added to ReportData
 import * as configFunctions from './functions.config.js';
+// skipcq: JS-C1003 - Added to ReportData
 import * as lotOccupancyFunctions from './functions.lotOccupancy.js';
 const screenPrintConfigs = {
     lotOccupancy: {
@@ -22,6 +25,7 @@ const pdfPrintConfigs = {
         title: 'Work Order Field Sheet - Comment Log',
         params: ['workOrderId']
     },
+    // Occupancy
     'ssm.cemetery.burialPermit': {
         title: 'Burial Permit',
         params: ['lotOccupancyId']

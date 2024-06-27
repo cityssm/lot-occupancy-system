@@ -5,7 +5,7 @@ import getNextLotIdFromDatabase from '../database/getNextLotId.js';
 import getPreviousLotIdFromDatabase from '../database/getPreviousLotId.js';
 const debug = Debug(`lot-occupancy-system:functions.lots:${process.pid}`);
 const cacheOptions = {
-    stdTTL: 2 * 60,
+    stdTTL: 2 * 60, // two minutes
     useClones: false
 };
 const previousLotIdCache = new NodeCache(cacheOptions);

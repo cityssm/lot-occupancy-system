@@ -27,13 +27,20 @@ import routerReports from './routes/reports.js';
 import routerWorkOrders from './routes/workOrders.js';
 import { version } from './version.js';
 const debug = Debug(`lot-occupancy-system:app:${process.pid}`);
+/*
+ * INITIALIZE THE DATABASE
+ */
 initializeDatabase();
+/*
+ * INITIALIZE APP
+ */
 const _dirname = '.';
 export const app = express();
 app.disable('X-Powered-By');
 if (!configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
     app.set('etag', false);
 }
+// View engine setup
 app.set('views', path.join(_dirname, 'views'));
 app.set('view engine', 'ejs');
 if (!configFunctions.getConfigProperty('reverseProxy.disableCompression')) {
@@ -51,10 +58,16 @@ app.use(cookieParser());
 app.use(csurf({
     cookie: true
 }));
+/*
+ * Rate Limiter
+ */
 app.use(rateLimit({
     windowMs: 10_000,
     max: useTestDatabases ? 1_000_000 : 200
 }));
+/*
+ * STATIC ROUTES
+ */
 const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
 if (urlPrefix !== '') {
     debug(`urlPrefix = ${urlPrefix}`);
@@ -66,8 +79,12 @@ app.use(`${urlPrefix}/lib/cityssm-bulma-webapp-js`, express.static(path.join('no
 app.use(`${urlPrefix}/lib/fa`, express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free')));
 app.use(`${urlPrefix}/lib/leaflet`, express.static(path.join('node_modules', 'leaflet', 'dist')));
 app.use(`${urlPrefix}/lib/randomcolor/randomColor.js`, express.static(path.join('node_modules', 'randomcolor', 'randomColor.js')));
+/*
+ * SESSION MANAGEMENT
+ */
 const sessionCookieName = configFunctions.getConfigProperty('session.cookieName');
 const FileStoreSession = FileStore(session);
+// Initialize session
 app.use(session({
     store: new FileStoreSession({
         path: './data/sessions',
@@ -84,6 +101,7 @@ app.use(session({
         sameSite: 'strict'
     }
 }));
+// Clear cookie if no corresponding session
 app.use((request, response, next) => {
     if (Object.hasOwn(request.cookies, sessionCookieName) &&
         !Object.hasOwn(request.session, 'user')) {
@@ -91,6 +109,7 @@ app.use((request, response, next) => {
     }
     next();
 });
+// Redirect logged in users
 const sessionChecker = (request, response, next) => {
     if (Object.hasOwn(request.session, 'user') &&
         Object.hasOwn(request.cookies, sessionCookieName)) {
@@ -100,6 +119,10 @@ const sessionChecker = (request, response, next) => {
     const redirectUrl = getSafeRedirectURL(request.originalUrl);
     response.redirect(`${urlPrefix}/login?redirect=${encodeURIComponent(redirectUrl)}`);
 };
+/*
+ * ROUTES
+ */
+// Make the user and config objects available to the templates
 app.use((request, response, next) => {
     response.locals.buildNumber = version;
     response.locals.user = request.session.user;
@@ -140,6 +163,7 @@ app.get(`${urlPrefix}/logout`, (request, response) => {
         response.redirect(`${urlPrefix}/login`);
     }
 });
+// Catch 404 and forward to error handler
 app.use((request, _response, next) => {
     debug(request.url);
     next(createError(404, `File not found: ${request.url}`));

@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 import { DynamicsGP } from '@cityssm/dynamics-gp';
 import { getConfigProperty } from './functions.config.js';
 let gp;

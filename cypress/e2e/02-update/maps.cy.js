@@ -18,6 +18,7 @@ describe('Update - Maps', () => {
         cy.injectAxe();
         cy.checkA11y();
         cy.log('Populate the fields');
+        // eslint-disable-next-line promise/catch-or-return, promise/always-return
         cy.fixture('map.json').then((mapJSON) => {
             cy.get("input[name='mapName']")
                 .clear()
@@ -53,6 +54,7 @@ describe('Update - Maps', () => {
         cy.location('pathname')
             .should('not.contain', '/new')
             .should('contain', '/edit');
+        // eslint-disable-next-line promise/catch-or-return, promise/always-return
         cy.fixture('map.json').then((mapJSON) => {
             cy.get("input[name='mapName']").should('have.value', mapJSON.mapName);
             cy.get("textarea[name='mapDescription']").should('have.value', mapJSON.mapDescription);

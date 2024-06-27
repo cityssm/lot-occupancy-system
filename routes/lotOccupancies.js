@@ -27,27 +27,35 @@ import handler_doUpdateLotOccupancyTransaction from '../handlers/lotOccupancies-
 import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js';
 import { getConfigProperty } from '../helpers/functions.config.js';
 export const router = Router();
+// Search
 router.get('/', handler_search);
 router.post('/doSearchLotOccupancies', handler_doSearchLotOccupancies);
+// Create
 router.get('/new', updateGetHandler, handler_new);
 router.post('/doGetOccupancyTypeFields', updatePostHandler, handler_doGetOccupancyTypeFields);
 router.post('/doCreateLotOccupancy', updatePostHandler, handler_doCreateLotOccupancy);
+// View
 router.get('/:lotOccupancyId', handler_view);
+// Edit
 router.get('/:lotOccupancyId/edit', updateGetHandler, handler_edit);
 router.post('/doUpdateLotOccupancy', updatePostHandler, handler_doUpdateLotOccupancy);
 router.post('/doCopyLotOccupancy', updatePostHandler, handler_doCopyLotOccupancy);
 router.post('/doDeleteLotOccupancy', updatePostHandler, handler_doDeleteLotOccupancy);
+// Occupants
 router.post('/doSearchPastOccupants', updatePostHandler, handler_doSearchPastOccupants);
 router.post('/doAddLotOccupancyOccupant', updatePostHandler, handler_doAddLotOccupancyOccupant);
 router.post('/doUpdateLotOccupancyOccupant', updatePostHandler, handler_doUpdateLotOccupancyOccupant);
 router.post('/doDeleteLotOccupancyOccupant', updatePostHandler, handler_doDeleteLotOccupancyOccupant);
+// Comments
 router.post('/doAddLotOccupancyComment', updatePostHandler, handler_doAddLotOccupancyComment);
 router.post('/doUpdateLotOccupancyComment', updatePostHandler, handler_doUpdateLotOccupancyComment);
 router.post('/doDeleteLotOccupancyComment', updatePostHandler, handler_doDeleteLotOccupancyComment);
+// Fees
 router.post('/doGetFees', updatePostHandler, handler_doGetFees);
 router.post('/doAddLotOccupancyFee', updatePostHandler, handler_doAddLotOccupancyFee);
 router.post('/doUpdateLotOccupancyFeeQuantity', updatePostHandler, handler_doUpdateLotOccupancyFeeQuantity);
 router.post('/doDeleteLotOccupancyFee', updatePostHandler, handler_doDeleteLotOccupancyFee);
+// Transactions
 if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
     router.post('/doGetDynamicsGPDocument', updatePostHandler, handler_doGetDynamicsGPDocument);
 }

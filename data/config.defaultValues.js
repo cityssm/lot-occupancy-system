@@ -36,6 +36,7 @@ export const configDefaultValues = {
     'settings.lot.lotNamePattern': undefined,
     'settings.lot.lotNameHelpText': '',
     'settings.lot.lotNameSortNameFunction': (lotName) => lotName,
+    // eslint-disable-next-line no-secrets/no-secrets
     'settings.lotOccupancy.occupancyEndDateIsRequired': true,
     'settings.lotOccupancy.occupantCityDefault': '',
     'settings.lotOccupancy.occupantProvinceDefault': '',
@@ -50,6 +51,7 @@ export const configDefaultValues = {
     'settings.printPdf.contentDisposition': 'attachment',
     'settings.dynamicsGP.integrationIsEnabled': false,
     'settings.dynamicsGP.mssqlConfig': undefined,
+    // eslint-disable-next-line no-secrets/no-secrets
     'settings.dynamicsGP.lookupOrder': ['invoice'],
     'settings.dynamicsGP.accountCodes': [],
     'settings.dynamicsGP.itemNumbers': [],

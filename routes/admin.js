@@ -61,7 +61,11 @@ import handler_doUpdateOccupancyType from '../handlers/admin-post/doUpdateOccupa
 import handler_doUpdateOccupancyTypeField from '../handlers/admin-post/doUpdateOccupancyTypeField.js';
 import handler_doUpdateWorkOrderMilestoneType from '../handlers/admin-post/doUpdateWorkOrderMilestoneType.js';
 import handler_doUpdateWorkOrderType from '../handlers/admin-post/doUpdateWorkOrderType.js';
+// Ntfy Startup
 export const router = Router();
+/*
+ * Fees
+ */
 router.get('/fees', handler_fees);
 router.post('/doAddFeeCategory', handler_doAddFeeCategory);
 router.post('/doUpdateFeeCategory', handler_doUpdateFeeCategory);
@@ -73,55 +77,73 @@ router.post('/doUpdateFee', handler_doUpdateFee);
 router.post('/doMoveFeeUp', handler_doMoveFeeUp);
 router.post('/doMoveFeeDown', handler_doMoveFeeDown);
 router.post('/doDeleteFee', handler_doDeleteFee);
+/*
+ * Occupancy Type Management
+ */
 router.get('/occupancyTypes', handler_occupancyTypes);
 router.post('/doAddOccupancyType', handler_doAddOccupancyType);
 router.post('/doUpdateOccupancyType', handler_doUpdateOccupancyType);
 router.post('/doMoveOccupancyTypeUp', handler_doMoveOccupancyTypeUp);
 router.post('/doMoveOccupancyTypeDown', handler_doMoveOccupancyTypeDown);
 router.post('/doDeleteOccupancyType', handler_doDeleteOccupancyType);
+// Occupancy Type Fields
 router.post('/doAddOccupancyTypeField', handler_doAddOccupancyTypeField);
 router.post('/doUpdateOccupancyTypeField', handler_doUpdateOccupancyTypeField);
 router.post('/doMoveOccupancyTypeFieldUp', handler_doMoveOccupancyTypeFieldUp);
 router.post('/doMoveOccupancyTypeFieldDown', handler_doMoveOccupancyTypeFieldDown);
 router.post('/doDeleteOccupancyTypeField', handler_doDeleteOccupancyTypeField);
+// Occupancy Type Prints
 router.post('/doAddOccupancyTypePrint', handler_doAddOccupancyTypePrint);
 router.post('/doMoveOccupancyTypePrintUp', handler_doMoveOccupancyTypePrintUp);
 router.post('/doMoveOccupancyTypePrintDown', handler_doMoveOccupancyTypePrintDown);
 router.post('/doDeleteOccupancyTypePrint', handler_doDeleteOccupancyTypePrint);
+/*
+ * Lot Type Management
+ */
 router.get('/lotTypes', handler_lotTypes);
 router.post('/doAddLotType', handler_doAddLotType);
 router.post('/doUpdateLotType', handler_doUpdateLotType);
 router.post('/doMoveLotTypeUp', handler_doMoveLotTypeUp);
 router.post('/doMoveLotTypeDown', handler_doMoveLotTypeDown);
 router.post('/doDeleteLotType', handler_doDeleteLotType);
+// Lot Type Fields
 router.post('/doAddLotTypeField', handler_doAddLotTypeField);
 router.post('/doUpdateLotTypeField', handler_doUpdateLotTypeField);
 router.post('/doMoveLotTypeFieldUp', handler_doMoveLotTypeFieldUp);
 router.post('/doMoveLotTypeFieldDown', handler_doMoveLotTypeFieldDown);
 router.post('/doDeleteLotTypeField', handler_doDeleteLotTypeField);
+/*
+ * Config Tables
+ */
 router.get('/tables', handler_tables);
+// Config Tables - Work Order Types
 router.post('/doAddWorkOrderType', handler_doAddWorkOrderType);
 router.post('/doUpdateWorkOrderType', handler_doUpdateWorkOrderType);
 router.post('/doMoveWorkOrderTypeUp', handler_doMoveWorkOrderTypeUp);
 router.post('/doMoveWorkOrderTypeDown', handler_doMoveWorkOrderTypeDown);
 router.post('/doDeleteWorkOrderType', handler_doDeleteWorkOrderType);
+// Config Tables - Work Order Milestone Types
 router.post('/doAddWorkOrderMilestoneType', handler_doAddWorkOrderMilestoneType);
 router.post('/doUpdateWorkOrderMilestoneType', handler_doUpdateWorkOrderMilestoneType);
 router.post('/doMoveWorkOrderMilestoneTypeUp', handler_doMoveWorkOrderMilestoneTypeUp);
 router.post('/doMoveWorkOrderMilestoneTypeDown', handler_doMoveWorkOrderMilestoneTypeDown);
 router.post('/doDeleteWorkOrderMilestoneType', handler_doDeleteWorkOrderMilestoneType);
+// Config Tables - Lot Statuses
 router.post('/doAddLotStatus', handler_doAddLotStatus);
 router.post('/doUpdateLotStatus', handler_doUpdateLotStatus);
 router.post('/doMoveLotStatusUp', handler_doMoveLotStatusUp);
 router.post('/doMoveLotStatusDown', handler_doMoveLotStatusDown);
 router.post('/doDeleteLotStatus', handler_doDeleteLotStatus);
+// Config Tables - Lot Occupant Types
 router.post('/doAddLotOccupantType', handler_doAddLotOccupantType);
 router.post('/doUpdateLotOccupantType', handler_doUpdateLotOccupantType);
 router.post('/doMoveLotOccupantTypeUp', handler_doMoveLotOccupantTypeUp);
 router.post('/doMoveLotOccupantTypeDown', handler_doMoveLotOccupantTypeDown);
 router.post('/doDeleteLotOccupantType', handler_doDeleteLotOccupantType);
+// Database Maintenance
 router.get('/database', handler_database);
 router.post('/doBackupDatabase', handler_doBackupDatabase);
 router.post('/doCleanupDatabase', handler_doCleanupDatabase);
+// Ntfy Startup
 router.get('/ntfyStartup', handler_ntfyStartup);
 export default router;

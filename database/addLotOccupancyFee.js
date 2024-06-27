@@ -5,6 +5,7 @@ import { acquireConnection } from './pool.js';
 export default async function addLotOccupancyFee(lotOccupancyFeeForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
+    // Calculate fee and tax (if not set)
     let feeAmount;
     let taxAmount;
     if ((lotOccupancyFeeForm.feeAmount ?? '') === '') {
@@ -23,6 +24,7 @@ export default async function addLotOccupancyFee(lotOccupancyFeeForm, user) {
                 ? Number.parseFloat(lotOccupancyFeeForm.taxAmount)
                 : 0;
     }
+    // Check if record already exists
     const record = database
         .prepare(`select feeAmount, taxAmount, recordDelete_timeMillis
         from LotOccupancyFees
@@ -69,6 +71,7 @@ export default async function addLotOccupancyFee(lotOccupancyFeeForm, user) {
             return true;
         }
     }
+    // Create new record
     const result = database
         .prepare(`insert into LotOccupancyFees (
         lotOccupancyId, feeId,

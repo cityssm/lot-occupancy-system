@@ -20,6 +20,7 @@ async function importMaps() {
         }
     }
     catch {
+        // ignore
     }
     finally {
         try {
@@ -28,6 +29,7 @@ async function importMaps() {
             }
         }
         catch {
+            // ignore
         }
     }
 }

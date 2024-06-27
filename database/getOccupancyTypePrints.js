@@ -1,6 +1,7 @@
 import { getConfigProperty } from '../helpers/functions.config.js';
 import { acquireConnection } from './pool.js';
 const availablePrints = getConfigProperty('settings.lotOccupancy.prints');
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const userFunction_configContainsPrintEJS = (printEJS) => {
     if (printEJS === '*' || availablePrints.includes(printEJS)) {
         return 1;
@@ -9,7 +10,9 @@ const userFunction_configContainsPrintEJS = (printEJS) => {
 };
 export default async function getOccupancyTypePrints(occupancyTypeId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
-    database.function('userFn_configContainsPrintEJS', userFunction_configContainsPrintEJS);
+    database.function(
+    // eslint-disable-next-line no-secrets/no-secrets
+    'userFn_configContainsPrintEJS', userFunction_configContainsPrintEJS);
     const results = database
         .prepare(`select printEJS, orderNumber
         from OccupancyTypePrints

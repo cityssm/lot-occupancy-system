@@ -9,6 +9,9 @@ export default async function cleanupDatabase(user) {
             1000;
     let inactivatedRecordCount = 0;
     let purgedRecordCount = 0;
+    /*
+     * Work Order Comments
+     */
     inactivatedRecordCount += database
         .prepare(`update WorkOrderComments
         set recordDelete_userName = ?,
@@ -20,6 +23,9 @@ export default async function cleanupDatabase(user) {
     purgedRecordCount += database
         .prepare('delete from WorkOrderComments where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Work Order Lot Occupancies
+     */
     inactivatedRecordCount += database
         .prepare(`update WorkOrderLotOccupancies
         set recordDelete_userName = ?,
@@ -31,6 +37,9 @@ export default async function cleanupDatabase(user) {
     purgedRecordCount += database
         .prepare('delete from WorkOrderLotOccupancies where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Work Order Lots
+     */
     inactivatedRecordCount += database
         .prepare(`update WorkOrderLots
         set recordDelete_userName = ?,
@@ -42,6 +51,9 @@ export default async function cleanupDatabase(user) {
     purgedRecordCount += database
         .prepare('delete from WorkOrderLots where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Work Order Milestones
+     */
     inactivatedRecordCount += database
         .prepare(`update WorkOrderMilestones
         set recordDelete_userName = ?,
@@ -53,6 +65,9 @@ export default async function cleanupDatabase(user) {
     purgedRecordCount += database
         .prepare('delete from WorkOrderMilestones where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Work Orders
+     */
     purgedRecordCount += database
         .prepare(`delete from WorkOrders
         where recordDelete_timeMillis <= ?
@@ -61,17 +76,26 @@ export default async function cleanupDatabase(user) {
         and workOrderId not in (select workOrderId from WorkOrderLots)
         and workOrderId not in (select workOrderId from WorkOrderMilestones)`)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Work Order Milestone Types
+     */
     purgedRecordCount += database
         .prepare(`delete from WorkOrderMilestoneTypes
         where recordDelete_timeMillis <= ?
         and workOrderMilestoneTypeId not in (
           select workOrderMilestoneTypeId from WorkOrderMilestones)`)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Work Order Types
+     */
     purgedRecordCount += database
         .prepare(`delete from WorkOrderTypes
         where recordDelete_timeMillis <= ?
         and workOrderTypeId not in (select workOrderTypeId from WorkOrders)`)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Lot Occupancy Comments
+     */
     inactivatedRecordCount += database
         .prepare(`update LotOccupancyComments
         set recordDelete_userName = ?,
@@ -83,6 +107,9 @@ export default async function cleanupDatabase(user) {
     purgedRecordCount += database
         .prepare('delete from LotOccupancyComments where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Lot Occupancy Fields
+     */
     inactivatedRecordCount += database
         .prepare(`update LotOccupancyFields
         set recordDelete_userName = ?,
@@ -93,6 +120,9 @@ export default async function cleanupDatabase(user) {
     purgedRecordCount += database
         .prepare('delete from LotOccupancyFields where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Lot Occupancy Occupants
+     */
     inactivatedRecordCount += database
         .prepare(`update LotOccupancyOccupants
         set recordDelete_userName = ?,
@@ -103,12 +133,19 @@ export default async function cleanupDatabase(user) {
     purgedRecordCount += database
         .prepare('delete from LotOccupancyOccupants where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Lot Occupancy Fees/Transactions
+     * - Maintain financials, do not delete related.
+     */
     purgedRecordCount += database
         .prepare('delete from LotOccupancyFees where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
     purgedRecordCount += database
         .prepare('delete from LotOccupancyTransactions where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Lot Occupancies
+     */
     purgedRecordCount += database
         .prepare(`delete from LotOccupancies
         where recordDelete_timeMillis <= ?
@@ -119,6 +156,9 @@ export default async function cleanupDatabase(user) {
         and lotOccupancyId not in (select lotOccupancyId from LotOccupancyTransactions)
         and lotOccupancyId not in (select lotOccupancyId from WorkOrderLotOccupancies)`)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Fees
+     */
     inactivatedRecordCount += database
         .prepare(`update Fees
         set recordDelete_userName = ?,
@@ -131,11 +171,17 @@ export default async function cleanupDatabase(user) {
         where recordDelete_timeMillis <= ?
         and feeId not in (select feeId from LotOccupancyFees)`)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Fee Categories
+     */
     purgedRecordCount += database
         .prepare(`delete from FeeCategories
         where recordDelete_timeMillis <= ?
         and feeCategoryId not in (select feeCategoryId from Fees)`)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Occupancy Type Fields
+     */
     inactivatedRecordCount += database
         .prepare(`update OccupancyTypeFields
         set recordDelete_userName = ?,
@@ -148,6 +194,9 @@ export default async function cleanupDatabase(user) {
         where recordDelete_timeMillis <= ?
         and occupancyTypeFieldId not in (select occupancyTypeFieldId from LotOccupancyFields)`)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Occupancy Type Prints
+     */
     inactivatedRecordCount += database
         .prepare(`update OccupancyTypePrints
         set recordDelete_userName = ?,
@@ -158,6 +207,9 @@ export default async function cleanupDatabase(user) {
     purgedRecordCount += database
         .prepare('delete from OccupancyTypePrints where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Occupancy Types
+     */
     purgedRecordCount += database
         .prepare(`delete from OccupancyTypes
         where recordDelete_timeMillis <= ?
@@ -166,11 +218,17 @@ export default async function cleanupDatabase(user) {
         and occupancyTypeId not in (select occupancyTypeId from LotOccupancies)
         and occupancyTypeId not in (select occupancyTypeId from Fees)`)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Lot Occupant Types
+     */
     purgedRecordCount += database
         .prepare(`delete from LotOccupantTypes
         where recordDelete_timeMillis <= ?
         and lotOccupantTypeId not in (select lotOccupantTypeId from LotOccupancyOccupants)`)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Lot Comments
+     */
     inactivatedRecordCount += database
         .prepare(`update LotComments
         set recordDelete_userName = ?,
@@ -181,6 +239,9 @@ export default async function cleanupDatabase(user) {
     purgedRecordCount += database
         .prepare('delete from LotComments where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Lot Fields
+     */
     inactivatedRecordCount += database
         .prepare(`update LotFields
         set recordDelete_userName = ?,
@@ -191,6 +252,9 @@ export default async function cleanupDatabase(user) {
     purgedRecordCount += database
         .prepare('delete from LotFields where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Lots
+     */
     inactivatedRecordCount += database
         .prepare(`update Lots
         set recordDelete_userName = ?,
@@ -206,11 +270,17 @@ export default async function cleanupDatabase(user) {
         and lotId not in (select lotId from LotOccupancies)
         and lotId not in (select lotId from WorkOrderLots)`)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Lot Statuses
+     */
     purgedRecordCount += database
         .prepare(`delete from LotStatuses
         where recordDelete_timeMillis <= ?
         and lotStatusId not in (select lotStatusId from Lots)`)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Lot Type Fields
+     */
     inactivatedRecordCount += database
         .prepare(`update LotTypeFields
         set recordDelete_userName = ?,
@@ -223,6 +293,9 @@ export default async function cleanupDatabase(user) {
         where recordDelete_timeMillis <= ?
         and lotTypeFieldId not in (select lotTypeFieldId from LotFields)`)
         .run(recordDeleteTimeMillisMin).changes;
+    /*
+     * Lot Types
+     */
     purgedRecordCount += database
         .prepare(`delete from LotTypes
         where recordDelete_timeMillis <= ?

@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 import assert from 'node:assert';
 import fs from 'node:fs/promises';
 import { lotOccupancyDB as databasePath, useTestDatabases } from '../data/databasePaths.js';

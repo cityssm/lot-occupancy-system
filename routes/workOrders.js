@@ -27,27 +27,36 @@ import handler_doUpdateWorkOrder from '../handlers/workOrders-post/doUpdateWorkO
 import handler_doUpdateWorkOrderComment from '../handlers/workOrders-post/doUpdateWorkOrderComment.js';
 import handler_doUpdateWorkOrderMilestone from '../handlers/workOrders-post/doUpdateWorkOrderMilestone.js';
 export const router = Router();
+// Search
 router.get('/', handler_search);
 router.post('/doSearchWorkOrders', handler_doSearchWorkOrders);
+// Milestone Calendar
 router.get('/milestoneCalendar', handler_milestoneCalendar);
 router.post('/doGetWorkOrderMilestones', handler_doGetWorkOrderMilestones);
+// Outlook Integration
 router.get('/outlook', handler_outlook);
+// New
 router.get('/new', permissionHandlers.updateGetHandler, handler_new);
 router.post('/doCreateWorkOrder', permissionHandlers.updatePostHandler, handler_doCreateWorkOrder);
+// View
 router.get('/:workOrderId', handler_view);
 router.post('/doReopenWorkOrder', permissionHandlers.updatePostHandler, handler_doReopenWorkOrder);
+// Edit
 router.get('/:workOrderId/edit', permissionHandlers.updateGetHandler, handler_edit);
 router.post('/doUpdateWorkOrder', permissionHandlers.updatePostHandler, handler_doUpdateWorkOrder);
 router.post('/doCloseWorkOrder', permissionHandlers.updatePostHandler, handler_doCloseWorkOrder);
 router.post('/doDeleteWorkOrder', permissionHandlers.updatePostHandler, handler_doDeleteWorkOrder);
+// Lot Occupancy
 router.post('/doAddWorkOrderLotOccupancy', permissionHandlers.updatePostHandler, handler_doAddWorkOrderLotOccupancy);
 router.post('/doDeleteWorkOrderLotOccupancy', permissionHandlers.updatePostHandler, handler_doDeleteWorkOrderLotOccupancy);
 router.post('/doAddWorkOrderLot', permissionHandlers.updatePostHandler, handler_doAddWorkOrderLot);
 router.post('/doUpdateLotStatus', permissionHandlers.updatePostHandler, handler_doUpdateLotStatus);
 router.post('/doDeleteWorkOrderLot', permissionHandlers.updatePostHandler, handler_doDeleteWorkOrderLot);
+// Comments
 router.post('/doAddWorkOrderComment', permissionHandlers.updatePostHandler, handler_doAddWorkOrderComment);
 router.post('/doUpdateWorkOrderComment', permissionHandlers.updatePostHandler, handler_doUpdateWorkOrderComment);
 router.post('/doDeleteWorkOrderComment', permissionHandlers.updatePostHandler, handler_doDeleteWorkOrderComment);
+// Milestones
 router.post('/doAddWorkOrderMilestone', permissionHandlers.updatePostHandler, handler_doAddWorkOrderMilestone);
 router.post('/doUpdateWorkOrderMilestone', permissionHandlers.updatePostHandler, handler_doUpdateWorkOrderMilestone);
 router.post('/doCompleteWorkOrderMilestone', permissionHandlers.updatePostHandler, handler_doCompleteWorkOrderMilestone);

@@ -12,6 +12,9 @@ export default async function copyLotOccupancy(oldLotOccupancyId, user) {
         occupancyStartDateString: dateToString(new Date()),
         occupancyEndDateString: ''
     }, user, database);
+    /*
+     * Copy Fields
+     */
     const rightNowMillis = Date.now();
     for (const occupancyField of oldLotOccupancy.lotOccupancyFields ?? []) {
         database
@@ -22,6 +25,9 @@ export default async function copyLotOccupancy(oldLotOccupancyId, user) {
           values (?, ?, ?, ?, ?, ?, ?)`)
             .run(newLotOccupancyId, occupancyField.occupancyTypeFieldId, occupancyField.lotOccupancyFieldValue, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
+    /*
+     * Copy Occupants
+     */
     for (const occupant of oldLotOccupancy.lotOccupancyOccupants ?? []) {
         await addLotOccupancyOccupant({
             lotOccupancyId: newLotOccupancyId,

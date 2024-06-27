@@ -1,6 +1,11 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/no-await-expression-member */
 import sqlite from 'better-sqlite3';
 import { lotOccupancyDB as databasePath } from '../data/databasePaths.js';
 import * as cacheFunctions from '../helpers/functions.cache.js';
+/*
+ * Fee IDs
+ */
 const feeCache = new Map();
 export function getFeeIdByFeeDescription(feeDescription) {
     if (feeCache.keys.length === 0) {
@@ -17,6 +22,9 @@ export function getFeeIdByFeeDescription(feeDescription) {
     }
     return feeCache.get(feeDescription);
 }
+/*
+ * Lot Occupant Type IDs
+ */
 export const preneedOwnerLotOccupantTypeId = (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Preneed Owner'))
     .lotOccupantTypeId;
 export const funeralDirectorLotOccupantTypeId = (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Funeral Director')).lotOccupantTypeId;
@@ -24,9 +32,15 @@ export const deceasedLotOccupantTypeId = (await cacheFunctions.getLotOccupantTyp
     .lotOccupantTypeId;
 export const purchaserLotOccupantTypeId = (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Purchaser'))
     .lotOccupantTypeId;
+/*
+ * Lot Status IDs
+ */
 export const availableLotStatusId = (await cacheFunctions.getLotStatusByLotStatus('Available')).lotStatusId;
 export const reservedLotStatusId = (await cacheFunctions.getLotStatusByLotStatus('Reserved')).lotStatusId;
 export const takenLotStatusId = (await cacheFunctions.getLotStatusByLotStatus('Taken')).lotStatusId;
+/*
+ * Lot Type IDs
+ */
 const casketLotTypeId = (await cacheFunctions.getLotTypesByLotType('Casket Grave')).lotTypeId;
 const columbariumLotTypeId = (await cacheFunctions.getLotTypesByLotType('Columbarium')).lotTypeId;
 const crematoriumLotTypeId = (await cacheFunctions.getLotTypesByLotType('Crematorium')).lotTypeId;
@@ -55,12 +69,21 @@ export function getLotTypeId(dataRow) {
     }
     return casketLotTypeId;
 }
+/*
+ * Occupancy Type IDs
+ */
 export const preneedOccupancyType = (await cacheFunctions.getOccupancyTypeByOccupancyType('Preneed'));
 export const deceasedOccupancyType = (await cacheFunctions.getOccupancyTypeByOccupancyType('Interment'));
 export const cremationOccupancyType = (await cacheFunctions.getOccupancyTypeByOccupancyType('Cremation'));
+/*
+ * Work Order Milestone Type IDs
+ */
 export const acknowledgedWorkOrderMilestoneTypeId = (await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Acknowledged'))?.workOrderMilestoneTypeId;
 export const deathWorkOrderMilestoneTypeId = (await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Death'))?.workOrderMilestoneTypeId;
 export const funeralWorkOrderMilestoneTypeId = (await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Funeral'))?.workOrderMilestoneTypeId;
 export const cremationWorkOrderMilestoneTypeId = (await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Cremation'))?.workOrderMilestoneTypeId;
 export const intermentWorkOrderMilestoneTypeId = (await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Interment'))?.workOrderMilestoneTypeId;
+/*
+ * Work Order Type IDs
+ */
 export const workOrderTypeId = 1;

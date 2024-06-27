@@ -105,6 +105,12 @@ const cemeteryToMapName = {
 const mapCache = new Map();
 async function getMap(dataRow) {
     const mapCacheKey = dataRow.cemetery;
+    /*
+      if (masterRow.CM_CEMETERY === "HS" &&
+          (masterRow.CM_BLOCK === "F" || masterRow.CM_BLOCK === "G" || masterRow.CM_BLOCK === "H" || masterRow.CM_BLOCK === "J")) {
+          mapCacheKey += "-" + masterRow.CM_BLOCK;
+      }
+      */
     if (mapCache.has(mapCacheKey)) {
         return mapCache.get(mapCacheKey);
     }
@@ -181,14 +187,17 @@ async function importFromMasterCSV() {
                     masterRow.CM_INTERMENT_YR !== '0') {
                     occupancyEndDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
                 }
+                // if purchase date unavailable
                 if (preneedOccupancyStartDateString === '0000-00-00' &&
                     occupancyEndDateString !== '') {
                     preneedOccupancyStartDateString = occupancyEndDateString;
                 }
+                // if end date unavailable
                 if (preneedOccupancyStartDateString === '0000-00-00' &&
                     masterRow.CM_DEATH_YR !== '' &&
                     masterRow.CM_DEATH_YR !== '0') {
                     preneedOccupancyStartDateString = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
+                    // if death took place, and there's no preneed end date
                     if (occupancyEndDateString === '0000-00-00' ||
                         occupancyEndDateString === '') {
                         occupancyEndDateString = preneedOccupancyStartDateString;
@@ -251,6 +260,7 @@ async function importFromMasterCSV() {
             let deceasedLotOccupancyId;
             if (masterRow.CM_DECEASED_NAME !== '') {
                 deceasedOccupancyStartDateString = formatDateString(masterRow.CM_INTERMENT_YR, masterRow.CM_INTERMENT_MON, masterRow.CM_INTERMENT_DAY);
+                // if interment date unavailable
                 if (deceasedOccupancyStartDateString === '0000-00-00' &&
                     masterRow.CM_DEATH_YR !== '' &&
                     masterRow.CM_DEATH_YR !== '0') {
@@ -331,6 +341,20 @@ async function importFromMasterCSV() {
                         occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber,
                         occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress
                     }, user);
+                    /*
+                      addOrUpdateLotOccupancyField(
+                        {
+                            lotOccupancyId: deceasedLotOccupancyId,
+                            occupancyTypeFieldId: allOccupancyTypeFields.find(
+                                (occupancyTypeField) => {
+                                    return occupancyTypeField.occupancyTypeField === "Funeral Home";
+                                }
+                            ).occupancyTypeFieldId,
+                            lotOccupancyFieldValue: masterRow.CM_FUNERAL_HOME
+                        },
+                        user
+                      );
+                    */
                 }
                 if (masterRow.CM_FUNERAL_YR !== '') {
                     const lotOccupancyFieldValue = formatDateString(masterRow.CM_FUNERAL_YR, masterRow.CM_FUNERAL_MON, masterRow.CM_FUNERAL_DAY);
@@ -811,6 +835,18 @@ async function importFromWorkOrderCSV() {
                     occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber,
                     occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress
                 }, user);
+                /*
+                  addOrUpdateLotOccupancyField(
+                    {
+                        lotOccupancyId: lotOccupancyId,
+                        occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                            return occupancyTypeField.occupancyTypeField === "Funeral Home";
+                        }).occupancyTypeFieldId,
+                        lotOccupancyFieldValue: workOrderRow.WO_FUNERAL_HOME
+                    },
+                    user
+                  );
+                */
             }
             if (workOrderRow.WO_FUNERAL_YR !== '') {
                 const lotOccupancyFieldValue = formatDateString(workOrderRow.WO_FUNERAL_YR, workOrderRow.WO_FUNERAL_MON, workOrderRow.WO_FUNERAL_DAY);
@@ -850,6 +886,7 @@ async function importFromWorkOrderCSV() {
                 workOrderId: workOrder.workOrderId,
                 lotOccupancyId
             }, user);
+            // Milestones
             let hasIncompleteMilestones = !workOrderRow.WO_CONFIRMATION_IN;
             let maxMilestoneCompletionDateString = workOrderOpenDateString;
             if (importIds.acknowledgedWorkOrderMilestoneTypeId) {
@@ -971,6 +1008,7 @@ async function importFromWorkOrderCSV() {
 console.log(`Started ${new Date().toLocaleString()}`);
 console.time('importFromCsv');
 purgeTables();
+// purgeConfigTables();
 await importFromMasterCSV();
 await importFromPrepaidCSV();
 await importFromWorkOrderCSV();

@@ -9,6 +9,9 @@ import getWorkOrderMilestoneTypesFromDatabase from '../database/getWorkOrderMile
 import getWorkOrderTypesFromDatabase from '../database/getWorkOrderTypes.js';
 import { getConfigProperty } from './functions.config.js';
 const debug = Debug(`lot-occupancy-system:functions.cache:${process.pid}`);
+/*
+ * Lot Occupant Types
+ */
 let lotOccupantTypes;
 export async function getLotOccupantTypes() {
     if (lotOccupantTypes === undefined) {
@@ -33,6 +36,9 @@ export async function getLotOccupantTypeByLotOccupantType(lotOccupantType) {
 function clearLotOccupantTypesCache() {
     lotOccupantTypes = undefined;
 }
+/*
+ * Lot Statuses
+ */
 let lotStatuses;
 export async function getLotStatuses() {
     if (lotStatuses === undefined) {
@@ -56,6 +62,9 @@ export async function getLotStatusByLotStatus(lotStatus) {
 function clearLotStatusesCache() {
     lotStatuses = undefined;
 }
+/*
+ * Lot Types
+ */
 let lotTypes;
 export async function getLotTypes() {
     if (lotTypes === undefined) {
@@ -79,6 +88,9 @@ export async function getLotTypesByLotType(lotType) {
 function clearLotTypesCache() {
     lotTypes = undefined;
 }
+/*
+ * Occupancy Types
+ */
 let occupancyTypes;
 let allOccupancyTypeFields;
 export async function getOccupancyTypes() {
@@ -122,6 +134,9 @@ function clearOccupancyTypesCache() {
     occupancyTypes = undefined;
     allOccupancyTypeFields = undefined;
 }
+/*
+ * Work Order Types
+ */
 let workOrderTypes;
 export async function getWorkOrderTypes() {
     if (workOrderTypes === undefined) {
@@ -138,6 +153,9 @@ export async function getWorkOrderTypeById(workOrderTypeId) {
 function clearWorkOrderTypesCache() {
     workOrderTypes = undefined;
 }
+/*
+ * Work Order Milestone Types
+ */
 let workOrderMilestoneTypes;
 export async function getWorkOrderMilestoneTypes() {
     if (workOrderMilestoneTypes === undefined) {

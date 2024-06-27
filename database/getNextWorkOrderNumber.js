@@ -5,11 +5,15 @@ export default async function getNextWorkOrderNumber(connectedDatabase) {
     const paddingLength = getConfigProperty('settings.workOrders.workOrderNumberLength');
     const currentYearString = new Date().getFullYear().toString();
     const regex = new RegExp(`^${currentYearString}-\\d+$`);
-    database.function('userFn_matchesWorkOrderNumberSyntax', (workOrderNumber) => {
+    database.function(
+    // eslint-disable-next-line no-secrets/no-secrets
+    'userFn_matchesWorkOrderNumberSyntax', (workOrderNumber) => {
         return regex.test(workOrderNumber) ? 1 : 0;
     });
     const workOrderNumberRecord = database
-        .prepare(`select workOrderNumber from WorkOrders
+        .prepare(
+    // eslint-disable-next-line no-secrets/no-secrets
+    `select workOrderNumber from WorkOrders
         where userFn_matchesWorkOrderNumberSyntax(workOrderNumber) = 1
         order by cast(substr(workOrderNumber, instr(workOrderNumber, '-') + 1) as integer) desc`)
         .get();

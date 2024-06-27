@@ -68,6 +68,7 @@ if (process.env.STARTUP_TEST === 'true') {
     debug(`Killing processes in ${killSeconds} seconds...`);
     setTimeout(() => {
         debug('Killing processes');
+        // eslint-disable-next-line n/no-process-exit, unicorn/no-process-exit
         process.exit(0);
     }, 10_000);
 }
