@@ -538,6 +538,7 @@ document
           for (const [index, occupant] of pastOccupantSearchResults.entries()) {
             const panelBlockElement = document.createElement('a')
             panelBlockElement.className = 'panel-block is-block'
+            panelBlockElement.href = '#'
             panelBlockElement.dataset.index = index.toString()
 
             // eslint-disable-next-line no-unsanitized/property
