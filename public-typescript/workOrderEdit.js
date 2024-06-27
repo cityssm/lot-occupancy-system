@@ -559,9 +559,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         ${cityssm.escapeHTML((_a = lotOccupancy.occupancyType) !== null && _a !== void 0 ? _a : '')}
                       </td>`;
                         if (lotOccupancy.lotId) {
-                            rowElement.insertAdjacentHTML('beforeend', '<td>' +
-                                cityssm.escapeHTML((_b = lotOccupancy.lotName) !== null && _b !== void 0 ? _b : '') +
-                                '</td>');
+                            rowElement.insertAdjacentHTML('beforeend', `<td>${cityssm.escapeHTML((_b = lotOccupancy.lotName) !== null && _b !== void 0 ? _b : '')}</td>`);
                         }
                         else {
                             // eslint-disable-next-line no-unsanitized/method

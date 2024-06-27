@@ -218,8 +218,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 lotOccupancyFieldsContainerElement.innerHTML = '';
                 let occupancyTypeFieldIds = '';
                 for (const occupancyTypeField of responseJSON.occupancyTypeFields) {
-                    occupancyTypeFieldIds +=
-                        ',' + occupancyTypeField.occupancyTypeFieldId.toString();
+                    occupancyTypeFieldIds += `,${occupancyTypeField.occupancyTypeFieldId.toString()}`;
                     const fieldName = `lotOccupancyFieldValue_${occupancyTypeField.occupancyTypeFieldId.toString()}`;
                     const fieldId = `lotOccupancy--${fieldName}`;
                     const fieldElement = document.createElement('div');

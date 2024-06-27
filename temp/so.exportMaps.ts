@@ -19,19 +19,19 @@ async function importMaps(): Promise<void> {
   try {
     pool = await sql.connect(soMSSQL)
 
-    const result: sqlTypes.IResult<MapLayer> = await pool.query(
-      'select m.ID as mapId, m.Name as mapName,' +
-        ' l.ID as layerId, l.Name as layerName, l.Image as layerImage' +
-        ' from Legacy_Maps m' +
-        ' left join Legacy_Layers l on m.ID = l.Map_ID'
-    )
+    const result = await pool.query(
+      `select m.ID as mapId, m.Name as mapName,
+        l.ID as layerId, l.Name as layerName, l.Image as layerImage
+        from Legacy_Maps m
+        left join Legacy_Layers l on m.ID = l.Map_ID`
+    ) as sqlTypes.IResult<MapLayer>
 
     for (const layer of result.recordset) {
       const imageBuffer = layer.layerImage as unknown as Buffer
 
       const fileName = `${layer.mapName} - ${layer.layerName} (${layer.mapId}, ${layer.layerId}).wmf`
 
-      fs.writeFile('./temp/wmf/' + fileName, imageBuffer, (error) => {
+      fs.writeFile(`./temp/wmf/${fileName}`, imageBuffer, (error) => {
         if (error) {
           console.log(error)
         }

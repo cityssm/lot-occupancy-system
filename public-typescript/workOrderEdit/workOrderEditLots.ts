@@ -598,9 +598,7 @@ document
             if (lotOccupancy.lotId) {
               rowElement.insertAdjacentHTML(
                 'beforeend',
-                '<td>' +
-                  cityssm.escapeHTML(lotOccupancy.lotName ?? '') +
-                  '</td>'
+                `<td>${cityssm.escapeHTML(lotOccupancy.lotName ?? '')}</td>`
               )
             } else {
               // eslint-disable-next-line no-unsanitized/method

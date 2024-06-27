@@ -5,7 +5,14 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../../types/globalTypes.js'
-import type { Lot, LotStatus, LotType, MapRecord, OccupancyTypeField, WorkOrderType } from '../../types/recordTypes.js'
+import type {
+  Lot,
+  LotStatus,
+  LotType,
+  MapRecord,
+  OccupancyTypeField,
+  WorkOrderType
+} from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -332,8 +339,7 @@ declare const exports: Record<string, unknown>
           let occupancyTypeFieldIds = ''
 
           for (const occupancyTypeField of responseJSON.occupancyTypeFields) {
-            occupancyTypeFieldIds +=
-              ',' + occupancyTypeField.occupancyTypeFieldId.toString()
+            occupancyTypeFieldIds += `,${occupancyTypeField.occupancyTypeFieldId.toString()}`
 
             const fieldName = `lotOccupancyFieldValue_${occupancyTypeField.occupancyTypeFieldId.toString()}`
 
