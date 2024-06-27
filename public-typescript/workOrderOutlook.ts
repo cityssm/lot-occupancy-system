@@ -20,17 +20,12 @@ declare const exports: Record<string, unknown>
   ) as HTMLTextAreaElement
 
   function updateCalendarURL(): void {
-    let url =
+    let url = `${
       window.location.href.slice(
         0,
         Math.max(0, window.location.href.indexOf(window.location.pathname) + 1)
-      ) +
-      los.urlPrefix +
-      'api/' +
-      los.apiKey +
-      '/' +
-      'milestoneICS/' +
-      '?'
+      ) + los.urlPrefix
+    }api/${los.apiKey}/milestoneICS/?`
 
     if (
       !workOrderTypeIdsElement.disabled &&
@@ -39,10 +34,10 @@ declare const exports: Record<string, unknown>
       url += 'workOrderTypeIds='
 
       for (const optionElement of workOrderTypeIdsElement.selectedOptions) {
-        url += optionElement.value + ','
+        url += `${optionElement.value},`
       }
 
-      url = url.slice(0, -1) + '&'
+      url = `${url.slice(0, -1)}&`
     }
 
     if (
@@ -52,10 +47,10 @@ declare const exports: Record<string, unknown>
       url += 'workOrderMilestoneTypeIds='
 
       for (const optionElement of workOrderMilestoneTypeIdsElement.selectedOptions) {
-        url += optionElement.value + ','
+        url += `${optionElement.value},`
       }
 
-      url = url.slice(0, -1) + '&'
+      url = `${url.slice(0, -1)}&`
     }
 
     calendarLinkElement.value = url.slice(0, -1)

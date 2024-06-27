@@ -116,7 +116,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 lotFieldsContainerElement.innerHTML = '';
                 let lotTypeFieldIds = '';
                 for (const lotTypeField of responseJSON.lotTypeFields) {
-                    lotTypeFieldIds += ',' + lotTypeField.lotTypeFieldId.toString();
+                    lotTypeFieldIds += `,${lotTypeField.lotTypeFieldId.toString()}`;
                     const fieldName = `lotFieldValue_${lotTypeField.lotTypeFieldId.toString()}`;
                     const fieldId = `lot--${fieldName}`;
                     const fieldElement = document.createElement('div');

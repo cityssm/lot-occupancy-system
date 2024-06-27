@@ -266,11 +266,11 @@ type ResponseJSON =
     ).dataset.occupancyTypeId
 
     cityssm.postJSON(
-      los.urlPrefix +
-        '/admin/' +
-        (buttonElement.dataset.direction === 'up'
+      `${los.urlPrefix}/admin/${
+        buttonElement.dataset.direction === 'up'
           ? 'doMoveOccupancyTypeUp'
-          : 'doMoveOccupancyTypeDown'),
+          : 'doMoveOccupancyTypeDown'
+      }`,
       {
         occupancyTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'

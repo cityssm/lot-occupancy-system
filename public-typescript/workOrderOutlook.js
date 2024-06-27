@@ -8,28 +8,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const workOrderMilestoneTypeIdsElement = document.querySelector('#icsFilters--workOrderMilestoneTypeIds');
     const calendarLinkElement = document.querySelector('#icsFilters--calendarURL');
     function updateCalendarURL() {
-        let url = window.location.href.slice(0, Math.max(0, window.location.href.indexOf(window.location.pathname) + 1)) +
-            los.urlPrefix +
-            'api/' +
-            los.apiKey +
-            '/' +
-            'milestoneICS/' +
-            '?';
+        let url = `${window.location.href.slice(0, Math.max(0, window.location.href.indexOf(window.location.pathname) + 1)) + los.urlPrefix}api/${los.apiKey}/milestoneICS/?`;
         if (!workOrderTypeIdsElement.disabled &&
             workOrderTypeIdsElement.selectedOptions.length > 0) {
             url += 'workOrderTypeIds=';
             for (const optionElement of workOrderTypeIdsElement.selectedOptions) {
-                url += optionElement.value + ',';
+                url += `${optionElement.value},`;
             }
-            url = url.slice(0, -1) + '&';
+            url = `${url.slice(0, -1)}&`;
         }
         if (!workOrderMilestoneTypeIdsElement.disabled &&
             workOrderMilestoneTypeIdsElement.selectedOptions.length > 0) {
             url += 'workOrderMilestoneTypeIds=';
             for (const optionElement of workOrderMilestoneTypeIdsElement.selectedOptions) {
-                url += optionElement.value + ',';
+                url += `${optionElement.value},`;
             }
-            url = url.slice(0, -1) + '&';
+            url = `${url.slice(0, -1)}&`;
         }
         calendarLinkElement.value = url.slice(0, -1);
     }

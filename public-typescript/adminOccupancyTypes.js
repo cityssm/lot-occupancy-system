@@ -141,11 +141,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function moveOccupancyType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const occupancyTypeId = clickEvent.currentTarget.closest('.container--occupancyType').dataset.occupancyTypeId;
-        cityssm.postJSON(los.urlPrefix +
-            '/admin/' +
-            (buttonElement.dataset.direction === 'up'
-                ? 'doMoveOccupancyTypeUp'
-                : 'doMoveOccupancyTypeDown'), {
+        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+            ? 'doMoveOccupancyTypeUp'
+            : 'doMoveOccupancyTypeDown'}`, {
             occupancyTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, occupancyTypeResponseHandler);
