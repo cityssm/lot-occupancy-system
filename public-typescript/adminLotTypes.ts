@@ -5,7 +5,7 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../types/globalTypes.js'
-import type * as recordTypes from '../types/recordTypes.js'
+import type { LotType, LotTypeField } from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -15,7 +15,7 @@ declare const exports: Record<string, unknown>
 type ResponseJSON =
   | {
       success: true
-      lotTypes: recordTypes.LotType[]
+      lotTypes: LotType[]
       lotTypeFieldId?: number
     }
   | {
@@ -29,7 +29,7 @@ type ResponseJSON =
     '#container--lotTypes'
   ) as HTMLElement
 
-  let lotTypes = exports.lotTypes as recordTypes.LotType[]
+  let lotTypes = exports.lotTypes as LotType[]
   delete exports.lotTypes
 
   const expandedLotTypes = new Set<number>()
@@ -121,7 +121,7 @@ type ResponseJSON =
 
     const lotType = lotTypes.find((currentLotType) => {
       return lotTypeId === currentLotType.lotTypeId
-    }) as recordTypes.LotType
+    }) as LotType
 
     let editCloseModalFunction: () => void
 
@@ -266,13 +266,13 @@ type ResponseJSON =
   ): void {
     const lotType = lotTypes.find((currentLotType) => {
       return currentLotType.lotTypeId === lotTypeId
-    }) as recordTypes.LotType
+    }) as LotType
 
     const lotTypeField = (lotType.lotTypeFields ?? []).find(
       (currentLotTypeField) => {
         return currentLotTypeField.lotTypeFieldId === lotTypeFieldId
       }
-    ) as recordTypes.LotTypeField
+    ) as LotTypeField
 
     let minimumLengthElement: HTMLInputElement
     let maximumLengthElement: HTMLInputElement
@@ -464,7 +464,7 @@ type ResponseJSON =
   function renderLotTypeFields(
     panelElement: HTMLElement,
     lotTypeId: number,
-    lotTypeFields: recordTypes.LotTypeField[]
+    lotTypeFields: LotTypeField[]
   ): void {
     if (lotTypeFields.length === 0) {
       // eslint-disable-next-line no-unsanitized/method

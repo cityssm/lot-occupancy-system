@@ -41,7 +41,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <span class="fa-li">
               <i class="fas fa-fw fa-${cityssm.escapeHTML(((_h = occupant.fontAwesomeIconClass) !== null && _h !== void 0 ? _h : '') === ''
                         ? 'user'
-                        : (_j = occupant.fontAwesomeIconClass) !== null && _j !== void 0 ? _j : '')}" aria-label="${los.escapedAliases.occupant}"></i></span>
+                        : (_j = occupant.fontAwesomeIconClass) !== null && _j !== void 0 ? _j : '')}" aria-label="${los.escapedAliases.occupant}"></i>
+            </span>
             ${cityssm.escapeHTML(((_k = occupant.occupantName) !== null && _k !== void 0 ? _k : '') === '' &&
                         ((_l = occupant.occupantFamilyName) !== null && _l !== void 0 ? _l : '') === ''
                         ? '(No Name)'

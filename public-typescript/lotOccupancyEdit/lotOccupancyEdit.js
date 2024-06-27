@@ -361,15 +361,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             submitEvent.preventDefault();
             const lotName = lotSelectModalElement.querySelector('#lotCreate--lotName').value;
             cityssm.postJSON(`${los.urlPrefix}/lots/doCreateLot`, submitEvent.currentTarget, (rawResponseJSON) => {
-                var _a;
+                var _a, _b;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    renderSelectedLotAndClose(responseJSON.lotId, lotName);
+                    renderSelectedLotAndClose((_a = responseJSON.lotId) !== null && _a !== void 0 ? _a : '', lotName);
                 }
                 else {
                     bulmaJS.alert({
                         title: `Error Creating ${los.escapedAliases.Lot}`,
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: (_b = responseJSON.errorMessage) !== null && _b !== void 0 ? _b : '',
                         contextualColorName: 'danger'
                     });
                 }

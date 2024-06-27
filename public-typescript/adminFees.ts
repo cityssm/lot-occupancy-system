@@ -5,7 +5,12 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../types/globalTypes.js'
-import type * as recordTypes from '../types/recordTypes.js'
+import type {
+  Fee,
+  FeeCategory,
+  LotType,
+  OccupancyType
+} from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -18,13 +23,13 @@ declare const exports: Record<string, unknown>
     '#container--feeCategories'
   ) as HTMLElement
 
-  let feeCategories = exports.feeCategories as recordTypes.FeeCategory[]
+  let feeCategories = exports.feeCategories as FeeCategory[]
   delete exports.feeCategories
 
   type ResponseJSON =
     | {
         success: true
-        feeCategories: recordTypes.FeeCategory[]
+        feeCategories: FeeCategory[]
       }
     | {
         success: false
@@ -305,7 +310,7 @@ declare const exports: Record<string, unknown>
 
     const feeCategory = feeCategories.find((currentFeeCategory) => {
       return currentFeeCategory.feeCategoryId === feeCategoryId
-    }) as recordTypes.FeeCategory
+    }) as FeeCategory
 
     let editCloseModalFunction: () => void
 
@@ -506,7 +511,7 @@ declare const exports: Record<string, unknown>
           '#feeAdd--occupancyTypeId'
         ) as HTMLSelectElement
 
-        for (const occupancyType of exports.occupancyTypes as recordTypes.OccupancyType[]) {
+        for (const occupancyType of exports.occupancyTypes as OccupancyType[]) {
           const optionElement = document.createElement('option')
           optionElement.value = occupancyType.occupancyTypeId.toString()
           optionElement.textContent = occupancyType.occupancyType
@@ -517,7 +522,7 @@ declare const exports: Record<string, unknown>
           '#feeAdd--lotTypeId'
         ) as HTMLSelectElement
 
-        for (const lotType of exports.lotTypes as recordTypes.LotType[]) {
+        for (const lotType of exports.lotTypes as LotType[]) {
           const optionElement = document.createElement('option')
           optionElement.value = lotType.lotTypeId.toString()
           optionElement.textContent = lotType.lotType
@@ -627,11 +632,11 @@ declare const exports: Record<string, unknown>
 
     const feeCategory = feeCategories.find((currentFeeCategory) => {
       return currentFeeCategory.feeCategoryId === feeCategoryId
-    }) as recordTypes.FeeCategory
+    }) as FeeCategory
 
     const fee = feeCategory.fees.find((currentFee) => {
       return currentFee.feeId === feeId
-    }) as recordTypes.Fee
+    }) as Fee
 
     let editCloseModalFunction: () => void
     let editModalElement: HTMLElement
@@ -795,7 +800,7 @@ declare const exports: Record<string, unknown>
           '#feeEdit--occupancyTypeId'
         ) as HTMLSelectElement
 
-        for (const occupancyType of exports.occupancyTypes as recordTypes.OccupancyType[]) {
+        for (const occupancyType of exports.occupancyTypes as OccupancyType[]) {
           const optionElement = document.createElement('option')
           optionElement.value = occupancyType.occupancyTypeId.toString()
           optionElement.textContent = occupancyType.occupancyType
@@ -811,7 +816,7 @@ declare const exports: Record<string, unknown>
           '#feeEdit--lotTypeId'
         ) as HTMLSelectElement
 
-        for (const lotType of exports.lotTypes as recordTypes.LotType[]) {
+        for (const lotType of exports.lotTypes as LotType[]) {
           const optionElement = document.createElement('option')
           optionElement.value = lotType.lotTypeId.toString()
           optionElement.textContent = lotType.lotType

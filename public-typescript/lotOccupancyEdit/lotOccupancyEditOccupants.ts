@@ -4,13 +4,16 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type * as globalTypes from '../../types/globalTypes.js'
-import type * as recordTypes from '../../types/recordTypes.js'
+import type { LOS } from '../../types/globalTypes.js'
+import type {
+  LotOccupancyOccupant,
+  LotOccupantType
+} from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const los: globalTypes.LOS
+declare const los: LOS
 
 declare const lotOccupancyId: string
 declare const isCreate: boolean
@@ -19,7 +22,7 @@ declare const formElement: HTMLFormElement
 declare const exports: Record<string, unknown>
 
 let lotOccupancyOccupants =
-  exports.lotOccupancyOccupants as recordTypes.LotOccupancyOccupant[]
+  exports.lotOccupancyOccupants as LotOccupancyOccupant[]
 
 delete exports.lotOccupancyOccupants
 
@@ -34,7 +37,7 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
     (currentLotOccupancyOccupant) => {
       return currentLotOccupancyOccupant.lotOccupantIndex === lotOccupantIndex
     }
-  ) as recordTypes.LotOccupancyOccupant
+  ) as LotOccupancyOccupant
 
   let editFormElement: HTMLFormElement
   let editCloseModalFunction: () => void
@@ -49,7 +52,7 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[]
+          lotOccupancyOccupants: LotOccupancyOccupant[]
         }
 
         if (responseJSON.success) {
@@ -87,7 +90,7 @@ function openEditLotOccupancyOccupant(clickEvent: Event): void {
 
       let lotOccupantTypeSelected = false
 
-      for (const lotOccupantType of exports.lotOccupantTypes as recordTypes.LotOccupantType[]) {
+      for (const lotOccupantType of exports.lotOccupantTypes as LotOccupantType[]) {
         const optionElement = document.createElement('option')
         optionElement.value = lotOccupantType.lotOccupantTypeId.toString()
         optionElement.textContent = lotOccupantType.lotOccupantType
@@ -254,7 +257,7 @@ function deleteLotOccupancyOccupant(clickEvent: Event): void {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[]
+          lotOccupancyOccupants: LotOccupancyOccupant[]
         }
 
         if (responseJSON.success) {
@@ -436,7 +439,7 @@ document
     let searchResultsElement: HTMLElement
 
     function addOccupant(
-      formOrObject: HTMLFormElement | recordTypes.LotOccupancyOccupant
+      formOrObject: HTMLFormElement | LotOccupancyOccupant
     ): void {
       cityssm.postJSON(
         `${los.urlPrefix}/lotOccupancies/doAddLotOccupancyOccupant`,
@@ -445,7 +448,7 @@ document
           const responseJSON = rawResponseJSON as {
             success: boolean
             errorMessage?: string
-            lotOccupancyOccupants: recordTypes.LotOccupancyOccupant[]
+            lotOccupancyOccupants: LotOccupancyOccupant[]
           }
 
           if (responseJSON.success) {
@@ -468,7 +471,7 @@ document
       addOccupant(addFormElement)
     }
 
-    let pastOccupantSearchResults: recordTypes.LotOccupancyOccupant[] = []
+    let pastOccupantSearchResults: LotOccupancyOccupant[] = []
 
     function addOccupantFromCopy(clickEvent: MouseEvent): void {
       clickEvent.preventDefault()
@@ -527,7 +530,7 @@ document
         searchFormElement,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            occupants: recordTypes.LotOccupancyOccupant[]
+            occupants: LotOccupancyOccupant[]
           }
 
           pastOccupantSearchResults = responseJSON.occupants
@@ -593,7 +596,7 @@ document
           '#lotOccupancyOccupantCopy--lotOccupantTypeId'
         ) as HTMLSelectElement
 
-        for (const lotOccupantType of exports.lotOccupantTypes as recordTypes.LotOccupantType[]) {
+        for (const lotOccupantType of exports.lotOccupantTypes as LotOccupantType[]) {
           const optionElement = document.createElement('option')
           optionElement.value = lotOccupantType.lotOccupantTypeId.toString()
           optionElement.textContent = lotOccupantType.lotOccupantType

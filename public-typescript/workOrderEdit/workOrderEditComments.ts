@@ -5,7 +5,7 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../../types/globalTypes.js'
-import type * as recordTypes from '../../types/recordTypes.js'
+import type { WorkOrderComment } from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -17,7 +17,7 @@ declare const workOrderId: string
 declare const isCreate: boolean
 
 let workOrderComments =
-  exports.workOrderComments as recordTypes.WorkOrderComment[]
+  exports.workOrderComments as WorkOrderComment[]
 delete exports.workOrderComments
 
 function openEditWorkOrderComment(clickEvent: Event): void {
@@ -29,7 +29,7 @@ function openEditWorkOrderComment(clickEvent: Event): void {
 
   const workOrderComment = workOrderComments.find((currentComment) => {
     return currentComment.workOrderCommentId === workOrderCommentId
-  }) as recordTypes.WorkOrderComment
+  }) as WorkOrderComment
 
   let editFormElement: HTMLFormElement
   let editCloseModalFunction: () => void
@@ -44,7 +44,7 @@ function openEditWorkOrderComment(clickEvent: Event): void {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          workOrderComments: recordTypes.WorkOrderComment[]
+          workOrderComments: WorkOrderComment[]
         }
 
         if (responseJSON.success) {
@@ -138,7 +138,7 @@ function deleteWorkOrderComment(clickEvent: Event): void {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          workOrderComments: recordTypes.WorkOrderComment[]
+          workOrderComments: WorkOrderComment[]
         }
 
         if (responseJSON.success) {
@@ -243,7 +243,7 @@ function openAddCommentModal(): void {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          workOrderComments: recordTypes.WorkOrderComment[]
+          workOrderComments: WorkOrderComment[]
         }
 
         if (responseJSON.success) {

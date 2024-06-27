@@ -4,19 +4,25 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type * as globalTypes from '../../types/globalTypes.js'
-import type * as recordTypes from '../../types/recordTypes.js'
+import type { LOS } from '../../types/globalTypes.js'
+import type {
+  DynamicsGPDocument,
+  Fee,
+  FeeCategory,
+  LotOccupancyFee,
+  LotOccupancyTransaction
+} from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const los: globalTypes.LOS
+declare const los: LOS
 
 declare const lotOccupancyId: string
 
 declare const exports: Record<string, unknown>
 
-let lotOccupancyFees = exports.lotOccupancyFees as recordTypes.LotOccupancyFee[]
+let lotOccupancyFees = exports.lotOccupancyFees as LotOccupancyFee[]
 delete exports.lotOccupancyFees
 
 const lotOccupancyFeesContainerElement = document.querySelector(
@@ -44,7 +50,7 @@ function editLotOccupancyFeeQuantity(clickEvent: Event): void {
 
   const fee = lotOccupancyFees.find((possibleFee) => {
     return possibleFee.feeId === feeId
-  }) as recordTypes.LotOccupancyFee
+  }) as LotOccupancyFee
 
   let updateCloseModalFunction: () => void
 
@@ -57,7 +63,7 @@ function editLotOccupancyFeeQuantity(clickEvent: Event): void {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          lotOccupancyFees: recordTypes.LotOccupancyFee[]
+          lotOccupancyFees: LotOccupancyFee[]
         }
 
         if (responseJSON.success) {
@@ -136,7 +142,7 @@ function deleteLotOccupancyFee(clickEvent: Event): void {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          lotOccupancyFees: recordTypes.LotOccupancyFee[]
+          lotOccupancyFees: LotOccupancyFee[]
         }
 
         if (responseJSON.success) {
@@ -296,7 +302,7 @@ addFeeButtonElement.addEventListener('click', () => {
     return
   }
 
-  let feeCategories: recordTypes.FeeCategory[]
+  let feeCategories: FeeCategory[]
 
   let feeFilterElement: HTMLInputElement
   let feeFilterResultsElement: HTMLElement
@@ -313,7 +319,7 @@ addFeeButtonElement.addEventListener('click', () => {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          lotOccupancyFees: recordTypes.LotOccupancyFee[]
+          lotOccupancyFees: LotOccupancyFee[]
         }
 
         if (responseJSON.success) {
@@ -331,7 +337,7 @@ addFeeButtonElement.addEventListener('click', () => {
     )
   }
 
-  function doSetQuantityAndAddFee(fee: recordTypes.Fee): void {
+  function doSetQuantityAndAddFee(fee: Fee): void {
     let quantityElement: HTMLInputElement
     let quantityCloseModalFunction: () => void
 
@@ -377,11 +383,11 @@ addFeeButtonElement.addEventListener('click', () => {
 
     const feeCategory = feeCategories.find((currentFeeCategory) => {
       return currentFeeCategory.feeCategoryId === feeCategoryId
-    }) as recordTypes.FeeCategory
+    }) as FeeCategory
 
     const fee = feeCategory.fees.find((currentFee) => {
       return currentFee.feeId === feeId
-    }) as recordTypes.Fee
+    }) as Fee
 
     if (fee.includeQuantity ?? false) {
       doSetQuantityAndAddFee(fee)
@@ -485,7 +491,7 @@ addFeeButtonElement.addEventListener('click', () => {
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            feeCategories: recordTypes.FeeCategory[]
+            feeCategories: FeeCategory[]
           }
 
           feeCategories = responseJSON.feeCategories
@@ -512,7 +518,7 @@ addFeeButtonElement.addEventListener('click', () => {
 })
 
 let lotOccupancyTransactions =
-  exports.lotOccupancyTransactions as recordTypes.LotOccupancyTransaction[]
+  exports.lotOccupancyTransactions as LotOccupancyTransaction[]
 delete exports.lotOccupancyTransactions
 
 const lotOccupancyTransactionsContainerElement = document.querySelector(
@@ -538,7 +544,7 @@ function editLotOccupancyTransaction(clickEvent: Event): void {
 
   const transaction = lotOccupancyTransactions.find((possibleTransaction) => {
     return possibleTransaction.transactionIndex === transactionIndex
-  }) as recordTypes.LotOccupancyTransaction
+  }) as LotOccupancyTransaction
 
   let editCloseModalFunction: () => void
 
@@ -551,7 +557,7 @@ function editLotOccupancyTransaction(clickEvent: Event): void {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          lotOccupancyTransactions: recordTypes.LotOccupancyTransaction[]
+          lotOccupancyTransactions: LotOccupancyTransaction[]
         }
 
         if (responseJSON.success) {
@@ -646,7 +652,7 @@ function deleteLotOccupancyTransaction(clickEvent: Event): void {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          lotOccupancyTransactions: recordTypes.LotOccupancyTransaction[]
+          lotOccupancyTransactions: LotOccupancyTransaction[]
         }
 
         if (responseJSON.success) {
@@ -828,7 +834,7 @@ addTransactionButtonElement.addEventListener('click', () => {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          lotOccupancyTransactions: recordTypes.LotOccupancyTransaction[]
+          lotOccupancyTransactions: LotOccupancyTransaction[]
         }
 
         if (responseJSON.success) {
@@ -872,7 +878,7 @@ addTransactionButtonElement.addEventListener('click', () => {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          dynamicsGPDocument?: recordTypes.DynamicsGPDocument
+          dynamicsGPDocument?: DynamicsGPDocument
         }
 
         if (

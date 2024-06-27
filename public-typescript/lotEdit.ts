@@ -5,7 +5,7 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../types/globalTypes.js'
-import type * as recordTypes from '../types/recordTypes.js'
+import type { LotComment, LotTypeField } from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -153,7 +153,7 @@ declare const exports: Record<string, unknown>
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            lotTypeFields: recordTypes.LotTypeField[]
+            lotTypeFields: LotTypeField[]
           }
 
           if (responseJSON.lotTypeFields.length === 0) {
@@ -274,7 +274,7 @@ declare const exports: Record<string, unknown>
 
   // Comments
 
-  let lotComments = exports.lotComments as recordTypes.LotComment[]
+  let lotComments = exports.lotComments as LotComment[]
   delete exports.lotComments
 
   function openEditLotComment(clickEvent: Event): void {
@@ -286,7 +286,7 @@ declare const exports: Record<string, unknown>
 
     const lotComment = lotComments.find((currentLotComment) => {
       return currentLotComment.lotCommentId === lotCommentId
-    }) as recordTypes.LotComment
+    }) as LotComment
 
     let editFormElement: HTMLFormElement
     let editCloseModalFunction: () => void
@@ -301,7 +301,7 @@ declare const exports: Record<string, unknown>
           const responseJSON = rawResponseJSON as {
             success: boolean
             errorMessage?: string
-            lotComments: recordTypes.LotComment[]
+            lotComments: LotComment[]
           }
 
           if (responseJSON.success) {
@@ -397,7 +397,7 @@ declare const exports: Record<string, unknown>
           const responseJSON = rawResponseJSON as {
             success: boolean
             errorMessage?: string
-            lotComments: recordTypes.LotComment[]
+            lotComments: LotComment[]
           }
 
           if (responseJSON.success) {
@@ -502,7 +502,7 @@ declare const exports: Record<string, unknown>
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
-            lotComments: recordTypes.LotComment[]
+            lotComments: LotComment[]
           }
 
           if (responseJSON.success) {

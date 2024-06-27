@@ -4,7 +4,7 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../types/globalTypes.js'
-import type * as recordTypes from '../types/recordTypes.js'
+import type { WorkOrderMilestone } from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 
@@ -30,9 +30,7 @@ declare const exports: Record<string, unknown>
     '#container--milestoneCalendar'
   ) as HTMLElement
 
-  function renderMilestones(
-    workOrderMilestones: recordTypes.WorkOrderMilestone[]
-  ): void {
+  function renderMilestones(workOrderMilestones: WorkOrderMilestone[]): void {
     if (workOrderMilestones.length === 0) {
       milestoneCalendarContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no milestones that meet the search criteria.</p>
@@ -167,7 +165,7 @@ declare const exports: Record<string, unknown>
         renderMilestones(
           (
             responseJSON as {
-              workOrderMilestones: recordTypes.WorkOrderMilestone[]
+              workOrderMilestones: WorkOrderMilestone[]
             }
           ).workOrderMilestones
         )

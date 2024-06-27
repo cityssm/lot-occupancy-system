@@ -4,20 +4,19 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type * as globalTypes from '../../types/globalTypes.js'
-import type * as recordTypes from '../../types/recordTypes.js'
+import type { LOS } from '../../types/globalTypes.js'
+import type { LotOccupancyComment } from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const los: globalTypes.LOS
+declare const los: LOS
 
 declare const lotOccupancyId: string
 
 declare const exports: Record<string, unknown>
 
-let lotOccupancyComments =
-  exports.lotOccupancyComments as recordTypes.LotOccupancyComment[]
+let lotOccupancyComments = exports.lotOccupancyComments as LotOccupancyComment[]
 delete exports.lotOccupancyComments
 
 function openEditLotOccupancyComment(clickEvent: Event): void {
@@ -34,7 +33,7 @@ function openEditLotOccupancyComment(clickEvent: Event): void {
         lotOccupancyCommentId
       )
     }
-  )!
+  ) as LotOccupancyComment
 
   let editFormElement: HTMLFormElement
   let editCloseModalFunction: () => void
@@ -49,7 +48,7 @@ function openEditLotOccupancyComment(clickEvent: Event): void {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          lotOccupancyComments?: recordTypes.LotOccupancyComment[]
+          lotOccupancyComments?: LotOccupancyComment[]
         }
 
         if (responseJSON.success) {
@@ -145,7 +144,7 @@ function deleteLotOccupancyComment(clickEvent: Event): void {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          lotOccupancyComments: recordTypes.LotOccupancyComment[]
+          lotOccupancyComments: LotOccupancyComment[]
         }
 
         if (responseJSON.success) {
@@ -253,7 +252,7 @@ document.querySelector('#button--addComment')?.addEventListener('click', () => {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          lotOccupancyComments: recordTypes.LotOccupancyComment[]
+          lotOccupancyComments: LotOccupancyComment[]
         }
 
         if (responseJSON.success) {

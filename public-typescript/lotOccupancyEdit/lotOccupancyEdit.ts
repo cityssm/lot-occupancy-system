@@ -4,14 +4,14 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type * as globalTypes from '../../types/globalTypes.js'
-import type * as recordTypes from '../../types/recordTypes.js'
+import type { LOS } from '../../types/globalTypes.js'
+import type { Lot, LotStatus, LotType, MapRecord, OccupancyTypeField, WorkOrderType } from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = (exports as Record<string, unknown>).los as globalTypes.LOS
+  const los = exports.los as LOS
 
   const lotOccupancyId = (
     document.querySelector('#lotOccupancy--lotOccupancyId') as HTMLInputElement
@@ -250,7 +250,7 @@ declare const exports: Record<string, unknown>
           ) as HTMLSelectElement
 
           const workOrderTypes = (exports as Record<string, unknown>)
-            .workOrderTypes as recordTypes.WorkOrderType[]
+            .workOrderTypes as WorkOrderType[]
 
           if (workOrderTypes.length === 1) {
             workOrderTypeSelectElement.innerHTML = ''
@@ -315,7 +315,7 @@ declare const exports: Record<string, unknown>
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            occupancyTypeFields: recordTypes.OccupancyTypeField[]
+            occupancyTypeFields: OccupancyTypeField[]
           }
 
           if (responseJSON.occupancyTypeFields.length === 0) {
@@ -490,7 +490,7 @@ declare const exports: Record<string, unknown>
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             count: number
-            lots: recordTypes.Lot[]
+            lots: Lot[]
           }
 
           if (responseJSON.count === 0) {
@@ -557,7 +557,7 @@ declare const exports: Record<string, unknown>
           }
 
           if (responseJSON.success) {
-            renderSelectedLotAndClose(responseJSON.lotId!, lotName)
+            renderSelectedLotAndClose(responseJSON.lotId ?? '', lotName)
           } else {
             bulmaJS.alert({
               title: `Error Creating ${los.escapedAliases.Lot}`,
@@ -635,7 +635,7 @@ declare const exports: Record<string, unknown>
           '#lotCreate--lotTypeId'
         ) as HTMLSelectElement
 
-        for (const lotType of exports.lotTypes as recordTypes.LotType[]) {
+        for (const lotType of exports.lotTypes as LotType[]) {
           const optionElement = document.createElement('option')
           optionElement.value = lotType.lotTypeId.toString()
           optionElement.textContent = lotType.lotType
@@ -646,7 +646,7 @@ declare const exports: Record<string, unknown>
           '#lotCreate--lotStatusId'
         ) as HTMLSelectElement
 
-        for (const lotStatus of exports.lotStatuses as recordTypes.LotStatus[]) {
+        for (const lotStatus of exports.lotStatuses as LotStatus[]) {
           const optionElement = document.createElement('option')
           optionElement.value = lotStatus.lotStatusId.toString()
           optionElement.textContent = lotStatus.lotStatus
@@ -657,7 +657,7 @@ declare const exports: Record<string, unknown>
           '#lotCreate--mapId'
         ) as HTMLSelectElement
 
-        for (const map of exports.maps as recordTypes.MapRecord[]) {
+        for (const map of exports.maps as MapRecord[]) {
           const optionElement = document.createElement('option')
           optionElement.value = map.mapId!.toString()
           optionElement.textContent =

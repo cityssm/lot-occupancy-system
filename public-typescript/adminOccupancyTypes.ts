@@ -5,7 +5,7 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../types/globalTypes.js'
-import type * as recordTypes from '../types/recordTypes.js'
+import type { OccupancyType, OccupancyTypeField } from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -15,8 +15,8 @@ declare const exports: Record<string, unknown>
 type ResponseJSON =
   | {
       success: true
-      occupancyTypes: recordTypes.OccupancyType[]
-      allOccupancyTypeFields: recordTypes.OccupancyTypeField[]
+      occupancyTypes: OccupancyType[]
+      allOccupancyTypeFields: OccupancyTypeField[]
       occupancyTypeFieldId?: number
     }
   | {
@@ -34,11 +34,11 @@ type ResponseJSON =
     '#container--occupancyTypePrints'
   ) as HTMLElement
 
-  let occupancyTypes = exports.occupancyTypes as recordTypes.OccupancyType[]
+  let occupancyTypes = exports.occupancyTypes as OccupancyType[]
   delete exports.occupancyTypes
 
   let allOccupancyTypeFields =
-    exports.allOccupancyTypeFields as recordTypes.OccupancyTypeField[]
+    exports.allOccupancyTypeFields as OccupancyTypeField[]
   delete exports.allOccupancyTypeFields
 
   const expandedOccupancyTypes = new Set<number>()
@@ -78,8 +78,8 @@ type ResponseJSON =
     const responseJSON = rawResponseJSON as {
       success: boolean
       errorMessage?: string
-      occupancyTypes: recordTypes.OccupancyType[]
-      allOccupancyTypeFields: recordTypes.OccupancyTypeField[]
+      occupancyTypes: OccupancyType[]
+      allOccupancyTypeFields: OccupancyTypeField[]
     }
 
     if (responseJSON.success) {
@@ -138,7 +138,7 @@ type ResponseJSON =
 
     const occupancyType = occupancyTypes.find((currentOccupancyType) => {
       return occupancyTypeId === currentOccupancyType.occupancyTypeId
-    }) as recordTypes.OccupancyType
+    }) as OccupancyType
 
     let editCloseModalFunction: () => void
 
@@ -283,7 +283,7 @@ type ResponseJSON =
     occupancyTypeId: number,
     occupancyTypeFieldId: number
   ): void {
-    let occupancyType: recordTypes.OccupancyType | undefined
+    let occupancyType: OccupancyType | undefined
 
     if (occupancyTypeId) {
       occupancyType = occupancyTypes.find((currentOccupancyType) => {
@@ -299,7 +299,7 @@ type ResponseJSON =
       return (
         currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId
       )
-    }) as recordTypes.OccupancyTypeField
+    }) as OccupancyTypeField
 
     let minimumLengthElement: HTMLInputElement
     let maximumLengthElement: HTMLInputElement
@@ -498,7 +498,7 @@ type ResponseJSON =
   function renderOccupancyTypeFields(
     panelElement: HTMLElement,
     occupancyTypeId: number | undefined,
-    occupancyTypeFields: recordTypes.OccupancyTypeField[]
+    occupancyTypeFields: OccupancyTypeField[]
   ): void {
     if (occupancyTypeFields.length === 0) {
       // eslint-disable-next-line no-unsanitized/method

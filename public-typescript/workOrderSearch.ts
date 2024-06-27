@@ -4,7 +4,7 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../types/globalTypes.js'
-import type * as recordTypes from '../types/recordTypes.js'
+import type { WorkOrder } from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 
@@ -37,7 +37,7 @@ declare const exports: Record<string, unknown>
     const responseJSON = rawResponseJSON as {
       count: number
       offset: number
-      workOrders: recordTypes.WorkOrder[]
+      workOrders: WorkOrder[]
     }
 
     if (responseJSON.workOrders.length === 0) {
@@ -79,7 +79,8 @@ declare const exports: Record<string, unknown>
                 (occupant.fontAwesomeIconClass ?? '') === ''
                   ? 'user'
                   : occupant.fontAwesomeIconClass ?? ''
-              )}" aria-label="${los.escapedAliases.occupant}"></i></span>
+              )}" aria-label="${los.escapedAliases.occupant}"></i>
+            </span>
             ${cityssm.escapeHTML(
               (occupant.occupantName ?? '') === '' &&
                 (occupant.occupantFamilyName ?? '') === ''
