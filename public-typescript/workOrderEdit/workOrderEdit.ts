@@ -383,7 +383,7 @@ declare const exports: Record<string, unknown>
 
     function doReopen(): void {
       cityssm.postJSON(
-        los.urlPrefix + '/workOrders/doReopenWorkOrderMilestone',
+        `${los.urlPrefix}/workOrders/doReopenWorkOrderMilestone`,
         {
           workOrderId,
           workOrderMilestoneId

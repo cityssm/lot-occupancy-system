@@ -200,7 +200,7 @@ function renderWorkOrderComments(): void {
         ${
           workOrderComment.workOrderCommentTime === 0
             ? ''
-            : ' ' + workOrderComment.workOrderCommentTimePeriodString
+            : workOrderComment.workOrderCommentTimePeriodString
         }
       </td><td>
         ${cityssm.escapeHTML(workOrderComment.workOrderComment ?? '')}

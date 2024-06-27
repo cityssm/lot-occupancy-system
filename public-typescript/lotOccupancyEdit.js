@@ -1658,9 +1658,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             '<i class="fas fa-check-circle" aria-hidden="true"></i>';
                     }
                     else {
-                        helpTextElement.textContent =
-                            'Matching Document: $' +
-                                responseJSON.dynamicsGPDocument.documentTotal.toFixed(2);
+                        helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)}`;
                         iconElement.innerHTML =
                             '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i>';
                     }

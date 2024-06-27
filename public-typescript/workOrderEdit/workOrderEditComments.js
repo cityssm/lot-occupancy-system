@@ -122,7 +122,7 @@ function renderWorkOrderComments() {
         ${workOrderComment.workOrderCommentDateString}
         ${workOrderComment.workOrderCommentTime === 0
             ? ''
-            : ' ' + workOrderComment.workOrderCommentTimePeriodString}
+            : workOrderComment.workOrderCommentTimePeriodString}
       </td><td>
         ${cityssm.escapeHTML((_c = workOrderComment.workOrderComment) !== null && _c !== void 0 ? _c : '')}
       </td><td class="is-hidden-print">

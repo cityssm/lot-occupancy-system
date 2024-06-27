@@ -840,7 +840,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${workOrderComment.workOrderCommentDateString}
             ${workOrderComment.workOrderCommentTime === 0
                 ? ''
-                : ' ' + workOrderComment.workOrderCommentTimePeriodString}
+                : workOrderComment.workOrderCommentTimePeriodString}
           </td><td>
             ${cityssm.escapeHTML((_c = workOrderComment.workOrderComment) !== null && _c !== void 0 ? _c : '')}
           </td><td class="is-hidden-print">
@@ -1003,7 +1003,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const workOrderMilestoneId = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId;
         function doReopen() {
-            cityssm.postJSON(los.urlPrefix + '/workOrders/doReopenWorkOrderMilestone', {
+            cityssm.postJSON(`${los.urlPrefix}/workOrders/doReopenWorkOrderMilestone`, {
                 workOrderId,
                 workOrderMilestoneId
             }, processMilestoneResponse);

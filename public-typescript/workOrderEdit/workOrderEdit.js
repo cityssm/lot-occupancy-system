@@ -260,7 +260,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const workOrderMilestoneId = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId;
         function doReopen() {
-            cityssm.postJSON(los.urlPrefix + '/workOrders/doReopenWorkOrderMilestone', {
+            cityssm.postJSON(`${los.urlPrefix}/workOrders/doReopenWorkOrderMilestone`, {
                 workOrderId,
                 workOrderMilestoneId
             }, processMilestoneResponse);
