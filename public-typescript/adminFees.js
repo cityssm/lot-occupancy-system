@@ -44,7 +44,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <div class="control">
               <button class="button is-small is-primary button--editFeeCategory" type="button">
                 <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-                <span>Edit Category</span>
+                <span>
+                ${feeCategory.isGroupedFee
+                ? 'Edit Grouped Fee'
+                : 'Edit Category'}
+                </span>
               </button>
             </div>
             <div class="control">
