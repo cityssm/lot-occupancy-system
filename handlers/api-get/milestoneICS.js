@@ -94,7 +94,7 @@ function buildEventDescriptionHTML_lots(request, milestone) {
       </h2>
       <table border="1"><thead><tr>
       <th>
-        ${escapeHTML(getConfigProperty('aliases.lot'))} Type
+        ${escapeHTML(getConfigProperty('aliases.lot'))}
       </th>
       <th>
         ${escapeHTML(getConfigProperty('aliases.map'))}
