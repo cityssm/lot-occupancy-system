@@ -280,7 +280,7 @@ export default async function handler(request, response) {
             });
         }
     }
-    response.setHeader('Content-Disposition', `inline; filename=calendar.ics`);
+    response.setHeader('Content-Disposition', 'inline; filename=calendar.ics');
     response.setHeader('Content-Type', 'text/calendar; charset=utf-8');
     response.send(calendar.toString());
 }
