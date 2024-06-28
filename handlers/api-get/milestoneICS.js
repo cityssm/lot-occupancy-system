@@ -76,7 +76,7 @@ function buildEventDescriptionHTML_occupancies(request, milestone) {
           </td>
           <td>`;
             for (const occupant of occupancy.lotOccupancyOccupants ?? []) {
-                descriptionHTML += `${escapeHTML(occupant.lotOccupantType)}: ${escapeHTML(occupant.occupantName ?? '')} ${escapeHTML(occupant.occupantFamilyName ?? '')}<br />`;
+                descriptionHTML += `${escapeHTML(occupant.lotOccupantType ?? '')}: ${escapeHTML(occupant.occupantName ?? '')} ${escapeHTML(occupant.occupantFamilyName ?? '')}<br />`;
             }
             descriptionHTML += '</td></tr>';
         }
@@ -155,7 +155,7 @@ function buildEventDescriptionHTML(request, milestone) {
 function buildEventCategoryList(milestone) {
     const categories = [];
     if (milestone.workOrderMilestoneTypeId) {
-        categories.push(milestone.workOrderMilestoneType, milestone.workOrderType ?? '');
+        categories.push(milestone.workOrderMilestoneType ?? '', milestone.workOrderType ?? '');
     }
     if (milestone.workOrderMilestoneCompletionDate) {
         categories.push('Completed');
@@ -200,7 +200,7 @@ export default async function handler(request, response) {
     });
     if (request.query.workOrderId && workOrderMilestones.length > 0) {
         calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber}`);
-        calendar.url(`${urlRoot}/workOrders/${workOrderMilestones[0].workOrderId.toString()}`);
+        calendar.url(`${urlRoot}/workOrders/${workOrderMilestones[0].workOrderId?.toString()}`);
     }
     calendar.prodId({
         company: calendarCompany,
@@ -221,9 +221,9 @@ export default async function handler(request, response) {
         // Create event
         const eventData = {
             start: milestoneDate,
-            created: new Date(milestone.recordCreate_timeMillis),
-            stamp: new Date(milestone.recordCreate_timeMillis),
-            lastModified: new Date(Math.max(milestone.recordUpdate_timeMillis, milestone.workOrderRecordUpdate_timeMillis)),
+            created: new Date(milestone.recordCreate_timeMillis ?? 0),
+            stamp: new Date(milestone.recordCreate_timeMillis ?? 0),
+            lastModified: new Date(Math.max(milestone.recordUpdate_timeMillis ?? 0, milestone.workOrderRecordUpdate_timeMillis ?? 0)),
             allDay: !milestone.workOrderMilestoneTime,
             summary,
             url: workOrderUrl
@@ -275,10 +275,12 @@ export default async function handler(request, response) {
         }
         else {
             calendarEvent.organizer({
-                name: milestone.recordCreate_userName,
+                name: milestone.recordCreate_userName ?? '',
                 email: getConfigProperty('settings.workOrders.calendarEmailAddress')
             });
         }
     }
-    calendar.serve(response);
+    response.setHeader('Content-Disposition', `inline; filename=calendar.ics`);
+    response.setHeader('Content-Type', 'text/calendar; charset=utf-8');
+    response.send(calendar.toString());
 }

@@ -115,7 +115,7 @@ function buildEventDescriptionHTML_occupancies(
 
       for (const occupant of occupancy.lotOccupancyOccupants ?? []) {
         descriptionHTML += `${escapeHTML(
-          occupant.lotOccupantType!
+          occupant.lotOccupantType ?? ''
         )}: ${escapeHTML(occupant.occupantName ?? '')} ${escapeHTML(
           occupant.occupantFamilyName ?? ''
         )}<br />`
@@ -196,7 +196,7 @@ function buildEventDescriptionHTML_prints(
       if (printConfig) {
         descriptionHTML += `<p>
           ${escapeHTML(printConfig.title)}<br />
-          ${urlRoot}/print/${printName}/?workOrderId=${milestone.workOrderId!.toString()}
+          ${urlRoot}/print/${printName}/?workOrderId=${milestone.workOrderId.toString()}
           </p>`
       }
     }
@@ -229,7 +229,7 @@ function buildEventCategoryList(milestone: WorkOrderMilestone): string[] {
 
   if (milestone.workOrderMilestoneTypeId) {
     categories.push(
-      milestone.workOrderMilestoneType!,
+      milestone.workOrderMilestoneType ?? '',
       milestone.workOrderType ?? ''
     )
   }
@@ -292,7 +292,7 @@ export default async function handler(
   if (request.query.workOrderId && workOrderMilestones.length > 0) {
     calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber}`)
     calendar.url(
-      `${urlRoot}/workOrders/${workOrderMilestones[0].workOrderId!.toString()}`
+      `${urlRoot}/workOrders/${workOrderMilestones[0].workOrderId?.toString()}`
     )
   }
 
@@ -330,12 +330,12 @@ export default async function handler(
     // Create event
     const eventData: ICalEventData = {
       start: milestoneDate,
-      created: new Date(milestone.recordCreate_timeMillis!),
-      stamp: new Date(milestone.recordCreate_timeMillis!),
+      created: new Date(milestone.recordCreate_timeMillis ?? 0),
+      stamp: new Date(milestone.recordCreate_timeMillis ?? 0),
       lastModified: new Date(
         Math.max(
-          milestone.recordUpdate_timeMillis!,
-          milestone.workOrderRecordUpdate_timeMillis!
+          milestone.recordUpdate_timeMillis ?? 0,
+          milestone.workOrderRecordUpdate_timeMillis ?? 0
         )
       ),
       allDay: !milestone.workOrderMilestoneTime,
@@ -403,11 +403,15 @@ export default async function handler(
       }
     } else {
       calendarEvent.organizer({
-        name: milestone.recordCreate_userName!,
+        name: milestone.recordCreate_userName ?? '',
         email: getConfigProperty('settings.workOrders.calendarEmailAddress')
       })
     }
   }
 
-  calendar.serve(response)
+  response.setHeader('Content-Disposition', `inline; filename=calendar.ics`)
+
+  response.setHeader('Content-Type', 'text/calendar; charset=utf-8')
+
+  response.send(calendar.toString())
 }
