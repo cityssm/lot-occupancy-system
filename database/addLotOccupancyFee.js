@@ -2,8 +2,8 @@ import { calculateFeeAmount, calculateTaxAmount } from '../helpers/functions.fee
 import getFee from './getFee.js';
 import getLotOccupancy from './getLotOccupancy.js';
 import { acquireConnection } from './pool.js';
-export default async function addLotOccupancyFee(lotOccupancyFeeForm, user) {
-    const database = await acquireConnection();
+export default async function addLotOccupancyFee(lotOccupancyFeeForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     // Calculate fee and tax (if not set)
     let feeAmount;
@@ -24,62 +24,66 @@ export default async function addLotOccupancyFee(lotOccupancyFeeForm, user) {
                 ? Number.parseFloat(lotOccupancyFeeForm.taxAmount)
                 : 0;
     }
-    // Check if record already exists
-    const record = database
-        .prepare(`select feeAmount, taxAmount, recordDelete_timeMillis
-        from LotOccupancyFees
-        where lotOccupancyId = ?
-        and feeId = ?`)
-        .get(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
-    if (record) {
-        if (record.recordDelete_timeMillis) {
-            database
-                .prepare(`delete from LotOccupancyFees
-            where recordDelete_timeMillis is not null
-            and lotOccupancyId = ?
-            and feeId = ?`)
-                .run(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
+    try {
+        // Check if record already exists
+        const record = database
+            .prepare(`select feeAmount, taxAmount, recordDelete_timeMillis
+          from LotOccupancyFees
+          where lotOccupancyId = ?
+          and feeId = ?`)
+            .get(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
+        if (record) {
+            if (record.recordDelete_timeMillis) {
+                database
+                    .prepare(`delete from LotOccupancyFees
+              where recordDelete_timeMillis is not null
+              and lotOccupancyId = ?
+              and feeId = ?`)
+                    .run(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
+            }
+            else if (record.feeAmount === feeAmount &&
+                record.taxAmount === taxAmount) {
+                database
+                    .prepare(`update LotOccupancyFees
+              set quantity = quantity + ?,
+              recordUpdate_userName = ?,
+              recordUpdate_timeMillis = ?
+              where lotOccupancyId = ?
+              and feeId = ?`)
+                    .run(lotOccupancyFeeForm.quantity, user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
+                return true;
+            }
+            else {
+                const quantity = typeof lotOccupancyFeeForm.quantity === 'string'
+                    ? Number.parseFloat(lotOccupancyFeeForm.quantity)
+                    : lotOccupancyFeeForm.quantity;
+                database
+                    .prepare(`update LotOccupancyFees
+              set feeAmount = (feeAmount * quantity) + ?,
+              taxAmount = (taxAmount * quantity) + ?,
+              quantity = 1,
+              recordUpdate_userName = ?,
+              recordUpdate_timeMillis = ?
+              where lotOccupancyId = ?
+              and feeId = ?`)
+                    .run(feeAmount * quantity, taxAmount * quantity, user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
+                return true;
+            }
         }
-        else if (record.feeAmount === feeAmount &&
-            record.taxAmount === taxAmount) {
-            database
-                .prepare(`update LotOccupancyFees
-            set quantity = quantity + ?,
-            recordUpdate_userName = ?,
-            recordUpdate_timeMillis = ?
-            where lotOccupancyId = ?
-            and feeId = ?`)
-                .run(lotOccupancyFeeForm.quantity, user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
+        // Create new record
+        const result = database
+            .prepare(`insert into LotOccupancyFees (
+          lotOccupancyId, feeId,
+          quantity, feeAmount, taxAmount,
+          recordCreate_userName, recordCreate_timeMillis,
+          recordUpdate_userName, recordUpdate_timeMillis)
+          values (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+            .run(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId, lotOccupancyFeeForm.quantity, feeAmount, taxAmount, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        return result.changes > 0;
+    }
+    finally {
+        if (connectedDatabase === undefined) {
             database.release();
-            return true;
-        }
-        else {
-            const quantity = typeof lotOccupancyFeeForm.quantity === 'string'
-                ? Number.parseFloat(lotOccupancyFeeForm.quantity)
-                : lotOccupancyFeeForm.quantity;
-            database
-                .prepare(`update LotOccupancyFees
-            set feeAmount = (feeAmount * quantity) + ?,
-            taxAmount = (taxAmount * quantity) + ?,
-            quantity = 1,
-            recordUpdate_userName = ?,
-            recordUpdate_timeMillis = ?
-            where lotOccupancyId = ?
-            and feeId = ?`)
-                .run(feeAmount * quantity, taxAmount * quantity, user.userName, rightNowMillis, lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
-            database.release();
-            return true;
         }
     }
-    // Create new record
-    const result = database
-        .prepare(`insert into LotOccupancyFees (
-        lotOccupancyId, feeId,
-        quantity, feeAmount, taxAmount,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId, lotOccupancyFeeForm.quantity, feeAmount, taxAmount, user.userName, rightNowMillis, user.userName, rightNowMillis);
-    database.release();
-    return result.changes > 0;
 }

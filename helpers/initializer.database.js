@@ -56,7 +56,12 @@ const createStatements = [
     /*
      * Fees and Transactions
      */
-    `create table if not exists FeeCategories (feeCategoryId integer not null primary key autoincrement, feeCategory varchar(100) not null, orderNumber smallint not null default 0, ${recordColumns})`,
+    `create table if not exists FeeCategories (
+    feeCategoryId integer not null primary key autoincrement,
+    feeCategory varchar(100) not null,
+    isGroupedFee bit not null default 0,
+    orderNumber smallint not null default 0,
+    ${recordColumns})`,
     `create table if not exists Fees (
     feeId integer not null primary key autoincrement,
     feeCategoryId integer not null,

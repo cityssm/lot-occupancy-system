@@ -1265,6 +1265,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
             let feeCategories;
             let feeFilterElement;
             let feeFilterResultsElement;
+            function doAddFeeCategory(clickEvent) {
+                var _a;
+                clickEvent.preventDefault();
+                const feeCategoryId = Number.parseInt((_a = clickEvent.currentTarget.dataset.feeCategoryId) !== null && _a !== void 0 ? _a : '', 10);
+                cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doAddLotOccupancyFeeCategory`, {
+                    lotOccupancyId,
+                    feeCategoryId
+                }, (rawResponseJSON) => {
+                    var _a;
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        lotOccupancyFees = responseJSON.lotOccupancyFees;
+                        renderLotOccupancyFees();
+                        bulmaJS.alert({
+                            message: 'Fee Group Added Successfully',
+                            contextualColorName: 'success'
+                        });
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: 'Error Adding Fee',
+                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                            contextualColorName: 'danger'
+                        });
+                    }
+                });
+            }
             function doAddFee(feeId, quantity = 1) {
                 cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doAddLotOccupancyFee`, {
                     lotOccupancyId,
@@ -1329,7 +1356,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             }
             function filterFees() {
-                var _a, _b, _c, _d, _e, _f;
+                var _a, _b, _c, _d, _e, _f, _g, _h;
                 const filterStringPieces = feeFilterElement.value
                     .trim()
                     .toLowerCase()
@@ -1340,10 +1367,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     categoryContainerElement.className = 'container--feeCategory';
                     categoryContainerElement.dataset.feeCategoryId =
                         feeCategory.feeCategoryId.toString();
-                    categoryContainerElement.innerHTML = `<h4 class="title is-5 mt-2">
-                ${cityssm.escapeHTML((_a = feeCategory.feeCategory) !== null && _a !== void 0 ? _a : '')}
-                </h4>
+                    categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
+                <div class="column">
+                  <h4 class="title is-5">
+                  ${cityssm.escapeHTML((_a = feeCategory.feeCategory) !== null && _a !== void 0 ? _a : '')}
+                  </h4>
+                </div>
+                </div>
                 <div class="panel mb-5"></div>`;
+                    if (feeCategory.isGroupedFee) {
+                        // eslint-disable-next-line no-unsanitized/method
+                        (_b = categoryContainerElement.querySelector('.columns')) === null || _b === void 0 ? void 0 : _b.insertAdjacentHTML('beforeend', `<div class="column is-narrow has-text-right">
+                    <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
+                      <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                      <span>Add Fee Group</span>
+                    </button>
+                    </div>`);
+                        (_c = categoryContainerElement.querySelector('button')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', doAddFeeCategory);
+                    }
                     let hasFees = false;
                     for (const fee of feeCategory.fees) {
                         // Don't include already applied fees that limit quantity
@@ -1351,7 +1392,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             continue;
                         }
                         let includeFee = true;
-                        const feeSearchString = `${(_b = feeCategory.feeCategory) !== null && _b !== void 0 ? _b : ''} ${(_c = fee.feeName) !== null && _c !== void 0 ? _c : ''} ${(_d = fee.feeDescription) !== null && _d !== void 0 ? _d : ''}`.toLowerCase();
+                        const feeSearchString = `${(_d = feeCategory.feeCategory) !== null && _d !== void 0 ? _d : ''} ${(_e = fee.feeName) !== null && _e !== void 0 ? _e : ''} ${(_f = fee.feeDescription) !== null && _f !== void 0 ? _f : ''}`.toLowerCase();
                         for (const filterStringPiece of filterStringPieces) {
                             if (!feeSearchString.includes(filterStringPiece)) {
                                 includeFee = false;
@@ -1362,20 +1403,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             continue;
                         }
                         hasFees = true;
-                        const panelBlockElement = document.createElement('a');
+                        const panelBlockElement = document.createElement(feeCategory.isGroupedFee ? 'div' : 'a');
                         panelBlockElement.className = 'panel-block is-block container--fee';
                         panelBlockElement.dataset.feeId = fee.feeId.toString();
                         panelBlockElement.dataset.feeCategoryId =
                             feeCategory.feeCategoryId.toString();
-                        panelBlockElement.href = '#';
                         // eslint-disable-next-line no-unsanitized/property
-                        panelBlockElement.innerHTML = `<strong>${cityssm.escapeHTML((_e = fee.feeName) !== null && _e !== void 0 ? _e : '')}</strong><br />
+                        panelBlockElement.innerHTML = `<strong>${cityssm.escapeHTML((_g = fee.feeName) !== null && _g !== void 0 ? _g : '')}</strong><br />
                   <small>
-                  ${cityssm
-                            .escapeHTML((_f = fee.feeDescription) !== null && _f !== void 0 ? _f : '')
+                  ${
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                        cityssm
+                            .escapeHTML((_h = fee.feeDescription) !== null && _h !== void 0 ? _h : '')
                             .replaceAll('\n', '<br />')}
                   </small>`;
-                        panelBlockElement.addEventListener('click', tryAddFee);
+                        if (!feeCategory.isGroupedFee) {
+                            ;
+                            panelBlockElement.href = '#';
+                            panelBlockElement.addEventListener('click', tryAddFee);
+                        }
+                        ;
                         categoryContainerElement.querySelector('.panel').append(panelBlockElement);
                     }
                     if (hasFees) {

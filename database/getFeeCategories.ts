@@ -1,3 +1,5 @@
+import { type PoolConnection } from 'better-sqlite-pool'
+
 import type { FeeCategory } from '../types/recordTypes.js'
 
 import getFees from './getFees.js'
@@ -7,6 +9,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 interface GetFeeCategoriesFilters {
   occupancyTypeId?: number | string
   lotTypeId?: number | string
+  feeCategoryId?: number | string
 }
 
 interface GetFeeCategoriesOptions {
@@ -15,7 +18,8 @@ interface GetFeeCategoriesOptions {
 
 export default async function getFeeCategories(
   filters: GetFeeCategoriesFilters,
-  options: GetFeeCategoriesOptions
+  options: GetFeeCategoriesOptions,
+  connectedDatabase?: PoolConnection
 ): Promise<FeeCategory[]> {
   const updateOrderNumbers =
     !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees
@@ -42,7 +46,7 @@ export default async function getFeeCategories(
 
   const feeCategories = database
     .prepare(
-      `select feeCategoryId, feeCategory, orderNumber
+      `select feeCategoryId, feeCategory, isGroupedFee, orderNumber
         from FeeCategories
         ${sqlWhereClause}
         order by orderNumber, feeCategory`
@@ -77,7 +81,30 @@ export default async function getFeeCategories(
     }
   }
 
-  database.release()
+  if (connectedDatabase === undefined) {
+    database.release()
+  }
 
   return feeCategories
+}
+
+export async function getFeeCategory(
+  feeCategoryId: number | string,
+  connectedDatabase?: PoolConnection
+): Promise<FeeCategory | undefined> {
+  const feeCategories = await getFeeCategories(
+    {
+      feeCategoryId
+    },
+    {
+      includeFees: true
+    },
+    connectedDatabase
+  )
+
+  if (feeCategories.length > 0) {
+    return feeCategories[0]
+  }
+
+  return undefined
 }

@@ -6,6 +6,7 @@ import handler_search from '../handlers/lotOccupancies-get/search.js'
 import handler_view from '../handlers/lotOccupancies-get/view.js'
 import handler_doAddLotOccupancyComment from '../handlers/lotOccupancies-post/doAddLotOccupancyComment.js'
 import handler_doAddLotOccupancyFee from '../handlers/lotOccupancies-post/doAddLotOccupancyFee.js'
+import handler_doAddLotOccupancyFeeCategory from '../handlers/lotOccupancies-post/doAddLotOccupancyFeeCategory.js'
 import handler_doAddLotOccupancyOccupant from '../handlers/lotOccupancies-post/doAddLotOccupancyOccupant.js'
 import handler_doAddLotOccupancyTransaction from '../handlers/lotOccupancies-post/doAddLotOccupancyTransaction.js'
 import handler_doCopyLotOccupancy from '../handlers/lotOccupancies-post/doCopyLotOccupancy.js'
@@ -143,6 +144,12 @@ router.post(
   '/doAddLotOccupancyFee',
   updatePostHandler,
   handler_doAddLotOccupancyFee as RequestHandler
+)
+
+router.post(
+  '/doAddLotOccupancyFeeCategory',
+  updatePostHandler,
+  handler_doAddLotOccupancyFeeCategory as RequestHandler
 )
 
 router.post(

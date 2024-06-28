@@ -59,7 +59,12 @@ declare const exports: Record<string, unknown>
       feeCategoryContainerElement.innerHTML = `<div class="panel-heading">
         <div class="columns">
           <div class="column">
-            <h2 class="title is-4">${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}</h2>
+            <h2 class="title is-4 mb-2">${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}</h2>
+            ${
+              feeCategory.isGroupedFee
+                ? '<span class="tag">Grouped Fee</span>'
+                : ''
+            }
           </div>
           <div class="column is-narrow">
             <div class="field is-grouped is-justify-content-end">
@@ -131,9 +136,12 @@ declare const exports: Record<string, unknown>
             <p>
               <a class="has-text-weight-bold" href="#">${cityssm.escapeHTML(fee.feeName ?? '')}</a><br />
               <small>
-                ${cityssm
+              ${
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                cityssm
                   .escapeHTML(fee.feeDescription ?? '')
-                  .replaceAll('\n', '<br />')}
+                  .replaceAll('\n', '<br />')
+              }
               </small>
             </p>
             ${
@@ -350,6 +358,14 @@ declare const exports: Record<string, unknown>
             '#feeCategoryEdit--feeCategory'
           ) as HTMLInputElement
         ).value = feeCategory.feeCategory
+
+        if (feeCategory.isGroupedFee) {
+          ;(
+            modalElement.querySelector(
+              '#feeCategoryEdit--isGroupedFee'
+            ) as HTMLInputElement
+          ).checked = true
+        }
       },
       onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()

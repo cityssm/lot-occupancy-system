@@ -307,6 +307,47 @@ addFeeButtonElement.addEventListener('click', () => {
   let feeFilterElement: HTMLInputElement
   let feeFilterResultsElement: HTMLElement
 
+  function doAddFeeCategory(clickEvent: Event): void {
+    clickEvent.preventDefault()
+
+    const feeCategoryId = Number.parseInt(
+      (clickEvent.currentTarget as HTMLElement).dataset.feeCategoryId ?? '',
+      10
+    )
+
+    cityssm.postJSON(
+      `${los.urlPrefix}/lotOccupancies/doAddLotOccupancyFeeCategory`,
+      {
+        lotOccupancyId,
+        feeCategoryId
+      },
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+          errorMessage?: string
+          lotOccupancyFees: LotOccupancyFee[]
+        }
+
+        if (responseJSON.success) {
+          lotOccupancyFees = responseJSON.lotOccupancyFees
+          renderLotOccupancyFees()
+
+          bulmaJS.alert({
+            message: 'Fee Group Added Successfully',
+            contextualColorName: 'success'
+          })
+
+        } else {
+          bulmaJS.alert({
+            title: 'Error Adding Fee',
+            message: responseJSON.errorMessage ?? '',
+            contextualColorName: 'danger'
+          })
+        }
+      }
+    )
+  }
+
   function doAddFee(feeId: number, quantity: number | string = 1): void {
     cityssm.postJSON(
       `${los.urlPrefix}/lotOccupancies/doAddLotOccupancyFee`,
@@ -412,10 +453,29 @@ addFeeButtonElement.addEventListener('click', () => {
       categoryContainerElement.dataset.feeCategoryId =
         feeCategory.feeCategoryId.toString()
 
-      categoryContainerElement.innerHTML = `<h4 class="title is-5 mt-2">
-        ${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}
-        </h4>
+      categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
+        <div class="column">
+          <h4 class="title is-5">
+          ${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}
+          </h4>
+        </div>
+        </div>
         <div class="panel mb-5"></div>`
+
+      if (feeCategory.isGroupedFee) {
+        // eslint-disable-next-line no-unsanitized/method
+        categoryContainerElement.querySelector('.columns')?.insertAdjacentHTML(
+          'beforeend',
+          `<div class="column is-narrow has-text-right">
+            <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
+              <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+              <span>Add Fee Group</span>
+            </button>
+            </div>`
+        )
+
+        categoryContainerElement.querySelector('button')?.addEventListener('click', doAddFeeCategory)
+      }
 
       let hasFees = false
 
@@ -447,22 +507,29 @@ addFeeButtonElement.addEventListener('click', () => {
 
         hasFees = true
 
-        const panelBlockElement = document.createElement('a')
+        const panelBlockElement = document.createElement(
+          feeCategory.isGroupedFee ? 'div' : 'a'
+        )
         panelBlockElement.className = 'panel-block is-block container--fee'
         panelBlockElement.dataset.feeId = fee.feeId.toString()
         panelBlockElement.dataset.feeCategoryId =
           feeCategory.feeCategoryId.toString()
-        panelBlockElement.href = '#'
 
         // eslint-disable-next-line no-unsanitized/property
         panelBlockElement.innerHTML = `<strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
           <small>
-          ${cityssm
-            .escapeHTML(fee.feeDescription ?? '')
-            .replaceAll('\n', '<br />')}
+          ${
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            cityssm
+              .escapeHTML(fee.feeDescription ?? '')
+              .replaceAll('\n', '<br />')
+          }
           </small>`
 
-        panelBlockElement.addEventListener('click', tryAddFee)
+        if (!feeCategory.isGroupedFee) {
+          ;(panelBlockElement as HTMLAnchorElement).href = '#'
+          panelBlockElement.addEventListener('click', tryAddFee)
+        }
         ;(
           categoryContainerElement.querySelector('.panel') as HTMLElement
         ).append(panelBlockElement)

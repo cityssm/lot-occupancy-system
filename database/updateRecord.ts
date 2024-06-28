@@ -3,7 +3,6 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 import { acquireConnection } from './pool.js'
 
 type RecordTable =
-  | 'FeeCategories'
   | 'LotStatuses'
   | 'LotTypes'
   | 'OccupancyTypes'
@@ -11,7 +10,6 @@ type RecordTable =
   | 'WorkOrderTypes'
 
 const recordNameIdColumns = new Map<RecordTable, string[]>()
-recordNameIdColumns.set('FeeCategories', ['feeCategory', 'feeCategoryId'])
 recordNameIdColumns.set('LotStatuses', ['lotStatus', 'lotStatusId'])
 recordNameIdColumns.set('LotTypes', ['lotType', 'lotTypeId'])
 recordNameIdColumns.set('OccupancyTypes', ['occupancyType', 'occupancyTypeId'])

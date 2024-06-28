@@ -26,7 +26,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             feeCategoryContainerElement.innerHTML = `<div class="panel-heading">
         <div class="columns">
           <div class="column">
-            <h2 class="title is-4">${cityssm.escapeHTML((_a = feeCategory.feeCategory) !== null && _a !== void 0 ? _a : '')}</h2>
+            <h2 class="title is-4 mb-2">${cityssm.escapeHTML((_a = feeCategory.feeCategory) !== null && _a !== void 0 ? _a : '')}</h2>
+            ${feeCategory.isGroupedFee
+                ? '<span class="tag">Grouped Fee</span>'
+                : ''}
           </div>
           <div class="column is-narrow">
             <div class="field is-grouped is-justify-content-end">
@@ -82,7 +85,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <p>
               <a class="has-text-weight-bold" href="#">${cityssm.escapeHTML((_e = fee.feeName) !== null && _e !== void 0 ? _e : '')}</a><br />
               <small>
-                ${cityssm
+              ${
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                cityssm
                     .escapeHTML((_f = fee.feeDescription) !== null && _f !== void 0 ? _f : '')
                     .replaceAll('\n', '<br />')}
               </small>
@@ -220,6 +225,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ;
                 modalElement.querySelector('#feeCategoryEdit--feeCategoryId').value = feeCategory.feeCategoryId.toString();
                 modalElement.querySelector('#feeCategoryEdit--feeCategory').value = feeCategory.feeCategory;
+                if (feeCategory.isGroupedFee) {
+                    ;
+                    modalElement.querySelector('#feeCategoryEdit--isGroupedFee').checked = true;
+                }
             },
             onshown(modalElement, closeModalFunction) {
                 var _a;

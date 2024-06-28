@@ -1,7 +1,6 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
 const recordNameColumns = new Map();
-recordNameColumns.set('FeeCategories', 'feeCategory');
 recordNameColumns.set('LotStatuses', 'lotStatus');
 recordNameColumns.set('LotTypes', 'lotType');
 recordNameColumns.set('OccupancyTypes', 'occupancyType');

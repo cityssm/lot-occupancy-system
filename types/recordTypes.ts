@@ -143,6 +143,7 @@ export interface FeeCategory extends Record {
   feeCategoryId: number
   feeCategory: string
   fees: Fee[]
+  isGroupedFee: boolean
   orderNumber?: number
 }
 

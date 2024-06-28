@@ -1,7 +1,7 @@
 import getFees from './getFees.js';
 import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default async function getFeeCategories(filters, options) {
+export default async function getFeeCategories(filters, options, connectedDatabase) {
     const updateOrderNumbers = !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees;
     const database = await acquireConnection();
     let sqlWhereClause = ' where recordDelete_timeMillis is null';
@@ -17,7 +17,7 @@ export default async function getFeeCategories(filters, options) {
         sqlParameters.push(filters.lotTypeId);
     }
     const feeCategories = database
-        .prepare(`select feeCategoryId, feeCategory, orderNumber
+        .prepare(`select feeCategoryId, feeCategory, isGroupedFee, orderNumber
         from FeeCategories
         ${sqlWhereClause}
         order by orderNumber, feeCategory`)
@@ -34,6 +34,19 @@ export default async function getFeeCategories(filters, options) {
             feeCategory.fees = await getFees(feeCategory.feeCategoryId, filters, database);
         }
     }
-    database.release();
+    if (connectedDatabase === undefined) {
+        database.release();
+    }
     return feeCategories;
+}
+export async function getFeeCategory(feeCategoryId, connectedDatabase) {
+    const feeCategories = await getFeeCategories({
+        feeCategoryId
+    }, {
+        includeFees: true
+    }, connectedDatabase);
+    if (feeCategories.length > 0) {
+        return feeCategories[0];
+    }
+    return undefined;
 }

@@ -1,3 +1,4 @@
+import { type PoolConnection } from 'better-sqlite-pool';
 export interface AddLotOccupancyFeeForm {
     lotOccupancyId: number | string;
     feeId: number | string;
@@ -5,4 +6,4 @@ export interface AddLotOccupancyFeeForm {
     feeAmount?: number | string;
     taxAmount?: number | string;
 }
-export default function addLotOccupancyFee(lotOccupancyFeeForm: AddLotOccupancyFeeForm, user: User): Promise<boolean>;
+export default function addLotOccupancyFee(lotOccupancyFeeForm: AddLotOccupancyFeeForm, user: User, connectedDatabase?: PoolConnection): Promise<boolean>;
