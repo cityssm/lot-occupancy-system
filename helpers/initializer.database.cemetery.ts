@@ -1,6 +1,7 @@
 import Debug from 'debug'
 
 import { lotOccupancyDB as databasePath } from '../data/databasePaths.js'
+import addFeeCategory from '../database/addFeeCategory.js'
 import addLotOccupantType from '../database/addLotOccupantType.js'
 import addOccupancyTypeField from '../database/addOccupancyTypeField.js'
 import { addRecord } from '../database/addRecord.js'
@@ -274,11 +275,45 @@ export async function initializeCemeteryDatabase(): Promise<boolean> {
    * Fee Categories
    */
 
-  await addRecord('FeeCategories', 'Interment Rights', 1, user)
-  await addRecord('FeeCategories', 'Cremation Services', 2, user)
-  await addRecord('FeeCategories', 'Burial Charges', 3, user)
-  await addRecord('FeeCategories', 'Disinterment of Human Remains', 4, user)
-  await addRecord('FeeCategories', 'Additional Services', 5, user)
+  await addFeeCategory(
+    {
+      feeCategory: 'Interment Rights',
+      orderNumber: 1
+    },
+    user
+  )
+
+  await addFeeCategory(
+    {
+      feeCategory: 'Cremation Services',
+      orderNumber: 2
+    },
+    user
+  )
+
+  await addFeeCategory(
+    {
+      feeCategory: 'Burial Charges',
+      orderNumber: 3
+    },
+    user
+  )
+
+  await addFeeCategory(
+    {
+      feeCategory: 'Disinterment of Human Remains',
+      orderNumber: 4
+    },
+    user
+  )
+
+  await addFeeCategory(
+    {
+      feeCategory: 'Additional Services',
+      orderNumber: 5
+    },
+    user
+  )
 
   /*
    * Work Orders
