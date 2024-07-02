@@ -3,28 +3,26 @@
 /* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a;
     const los = exports.los;
     const mapId = document.querySelector('#map--mapId')
         .value;
     const isCreate = mapId === '';
     const mapForm = document.querySelector('#form--map');
     function setUnsavedChanges() {
-        var _a;
         los.setUnsavedChanges();
-        (_a = document
-            .querySelector("button[type='submit'][form='form--map']")) === null || _a === void 0 ? void 0 : _a.classList.remove('is-light');
+        document
+            .querySelector("button[type='submit'][form='form--map']")
+            ?.classList.remove('is-light');
     }
     function clearUnsavedChanges() {
-        var _a;
         los.clearUnsavedChanges();
-        (_a = document
-            .querySelector("button[type='submit'][form='form--map']")) === null || _a === void 0 ? void 0 : _a.classList.add('is-light');
+        document
+            .querySelector("button[type='submit'][form='form--map']")
+            ?.classList.add('is-light');
     }
     function updateMap(formEvent) {
         formEvent.preventDefault();
         cityssm.postJSON(`${los.urlPrefix}/maps/${isCreate ? 'doCreateMap' : 'doUpdateMap'}`, mapForm, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
@@ -41,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: `Error Updating ${los.escapedAliases.Map}`,
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -52,14 +50,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
     for (const inputElement of inputElements) {
         inputElement.addEventListener('change', setUnsavedChanges);
     }
-    (_a = document
-        .querySelector('#button--deleteMap')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (clickEvent) => {
+    document
+        .querySelector('#button--deleteMap')
+        ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         function doDelete() {
             cityssm.postJSON(`${los.urlPrefix}/maps/doDeleteMap`, {
                 mapId
             }, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     window.location.href = los.getMapURL();
@@ -67,7 +65,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: `Error Deleting ${los.escapedAliases.Map}`,
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }

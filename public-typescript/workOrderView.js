@@ -3,17 +3,15 @@
 /* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a;
     const los = exports.los;
     const reopenWorkOrderButtonElement = document.querySelector('#button--reopenWorkOrder');
     if (reopenWorkOrderButtonElement !== null) {
-        const workOrderId = (_a = reopenWorkOrderButtonElement.dataset.workOrderId) !== null && _a !== void 0 ? _a : '';
+        const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId ?? '';
         reopenWorkOrderButtonElement.addEventListener('click', () => {
             function doReopen() {
                 cityssm.postJSON(`${los.urlPrefix}/workOrders/doReopenWorkOrder`, {
                     workOrderId
                 }, (rawResponseJSON) => {
-                    var _a;
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         window.location.href = los.getWorkOrderURL(workOrderId, true, true);
@@ -21,7 +19,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: 'Error Reopening Work Order',
-                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                            message: responseJSON.errorMessage ?? '',
                             contextualColorName: 'danger'
                         });
                     }

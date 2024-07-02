@@ -3,7 +3,6 @@
 /* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a, _b, _c, _d, _e, _f;
     const los = exports.los;
     const lotOccupancyId = document.querySelector('#lotOccupancy--lotOccupancyId').value;
     const isCreate = lotOccupancyId === '';
@@ -12,22 +11,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     let refreshAfterSave = isCreate;
     function setUnsavedChanges() {
-        var _a;
         los.setUnsavedChanges();
-        (_a = document
-            .querySelector("button[type='submit'][form='form--lotOccupancy']")) === null || _a === void 0 ? void 0 : _a.classList.remove('is-light');
+        document
+            .querySelector("button[type='submit'][form='form--lotOccupancy']")
+            ?.classList.remove('is-light');
     }
     function clearUnsavedChanges() {
-        var _a;
         los.clearUnsavedChanges();
-        (_a = document
-            .querySelector("button[type='submit'][form='form--lotOccupancy']")) === null || _a === void 0 ? void 0 : _a.classList.add('is-light');
+        document
+            .querySelector("button[type='submit'][form='form--lotOccupancy']")
+            ?.classList.add('is-light');
     }
     const formElement = document.querySelector('#form--lotOccupancy');
     formElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
         cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/${isCreate ? 'doCreateLotOccupancy' : 'doUpdateLotOccupancy'}`, formElement, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
@@ -44,7 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: `Error Saving ${los.escapedAliases.Occupancy}`,
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -58,7 +56,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doCopyLotOccupancy`, {
             lotOccupancyId
         }, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
@@ -67,14 +64,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Copying Record',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
         });
     }
-    (_a = document
-        .querySelector('#button--copyLotOccupancy')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (clickEvent) => {
+    document
+        .querySelector('#button--copyLotOccupancy')
+        ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         if (los.hasUnsavedChanges()) {
             bulmaJS.alert({
@@ -95,14 +93,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
     });
-    (_b = document
-        .querySelector('#button--deleteLotOccupancy')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', (clickEvent) => {
+    document
+        .querySelector('#button--deleteLotOccupancy')
+        ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         function doDelete() {
             cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doDeleteLotOccupancy`, {
                 lotOccupancyId
             }, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     clearUnsavedChanges();
@@ -111,7 +109,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Deleting Record',
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -127,8 +125,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    (_c = document
-        .querySelector('#button--createWorkOrder')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', (clickEvent) => {
+    document
+        .querySelector('#button--createWorkOrder')
+        ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         let createCloseModalFunction;
         function doCreate(formEvent) {
@@ -160,7 +159,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('lotOccupancy-createWorkOrder', {
             onshow(modalElement) {
-                var _a;
                 ;
                 modalElement.querySelector('#workOrderCreate--lotOccupancyId').value = lotOccupancyId;
                 modalElement.querySelector('#workOrderCreate--workOrderOpenDateString').value = cityssm.dateToString(new Date());
@@ -173,17 +171,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 for (const workOrderType of workOrderTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value = workOrderType.workOrderTypeId.toString();
-                    optionElement.textContent = (_a = workOrderType.workOrderType) !== null && _a !== void 0 ? _a : '';
+                    optionElement.textContent = workOrderType.workOrderType ?? '';
                     workOrderTypeSelectElement.append(optionElement);
                 }
             },
             onshown(modalElement, closeModalFunction) {
-                var _a;
                 createCloseModalFunction = closeModalFunction;
                 bulmaJS.toggleHtmlClipped();
                 modalElement.querySelector('#workOrderCreate--workOrderTypeId').focus();
-                (_a = modalElement
-                    .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doCreate);
+                modalElement
+                    .querySelector('form')
+                    ?.addEventListener('submit', doCreate);
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();
@@ -206,7 +204,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doGetOccupancyTypeFields`, {
                 occupancyTypeId: occupancyTypeIdElement.value
             }, (rawResponseJSON) => {
-                var _a, _b;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.occupancyTypeFields.length === 0) {
                     // eslint-disable-next-line no-unsanitized/property
@@ -225,7 +222,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     fieldElement.className = 'field';
                     fieldElement.innerHTML = `<label class="label" for="${cityssm.escapeHTML(fieldId)}"></label><div class="control"></div>`;
                     fieldElement.querySelector('label').textContent = occupancyTypeField.occupancyTypeField;
-                    if (((_a = occupancyTypeField.occupancyTypeFieldValues) !== null && _a !== void 0 ? _a : '') === '') {
+                    if ((occupancyTypeField.occupancyTypeFieldValues ?? '') === '') {
                         const inputElement = document.createElement('input');
                         inputElement.className = 'input';
                         inputElement.id = fieldId;
@@ -236,7 +233,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             occupancyTypeField.minimumLength;
                         inputElement.maxLength =
                             occupancyTypeField.maximumLength;
-                        if (((_b = occupancyTypeField.pattern) !== null && _b !== void 0 ? _b : '') !== '') {
+                        if ((occupancyTypeField.pattern ?? '') !== '') {
                             inputElement.pattern = occupancyTypeField.pattern;
                         }
                         ;
@@ -310,17 +307,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             lotSelectCloseModalFunction();
         }
         function selectExistingLot(clickEvent) {
-            var _a, _b;
             clickEvent.preventDefault();
             const selectedLotElement = clickEvent.currentTarget;
-            renderSelectedLotAndClose((_a = selectedLotElement.dataset.lotId) !== null && _a !== void 0 ? _a : '', (_b = selectedLotElement.dataset.lotName) !== null && _b !== void 0 ? _b : '');
+            renderSelectedLotAndClose(selectedLotElement.dataset.lotId ?? '', selectedLotElement.dataset.lotName ?? '');
         }
         function searchLots() {
             // eslint-disable-next-line no-unsanitized/property
             lotSelectResultsElement.innerHTML =
                 los.getLoadingParagraphHTML('Searching...');
             cityssm.postJSON(`${los.urlPrefix}/lots/doSearchLots`, lotSelectFormElement, (rawResponseJSON) => {
-                var _a, _b;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.count === 0) {
                     lotSelectResultsElement.innerHTML = `<div class="message is-info">
@@ -339,8 +334,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     // eslint-disable-next-line no-unsanitized/property
                     panelBlockElement.innerHTML = `<div class="columns">
               <div class="column">
-                ${cityssm.escapeHTML((_a = lot.lotName) !== null && _a !== void 0 ? _a : '')}<br />
-                <span class="is-size-7">${cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '')}</span>
+                ${cityssm.escapeHTML(lot.lotName ?? '')}<br />
+                <span class="is-size-7">${cityssm.escapeHTML(lot.mapName ?? '')}</span>
               </div>
               <div class="column">
                 ${cityssm.escapeHTML(lot.lotStatus)}<br />
@@ -360,15 +355,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             submitEvent.preventDefault();
             const lotName = lotSelectModalElement.querySelector('#lotCreate--lotName').value;
             cityssm.postJSON(`${los.urlPrefix}/lots/doCreateLot`, submitEvent.currentTarget, (rawResponseJSON) => {
-                var _a, _b;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    renderSelectedLotAndClose((_a = responseJSON.lotId) !== null && _a !== void 0 ? _a : '', lotName);
+                    renderSelectedLotAndClose(responseJSON.lotId ?? '', lotName);
                 }
                 else {
                     bulmaJS.alert({
                         title: `Error Creating ${los.escapedAliases.Lot}`,
-                        message: (_b = responseJSON.errorMessage) !== null && _b !== void 0 ? _b : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -379,7 +373,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 los.populateAliases(modalElement);
             },
             onshown(modalElement, closeModalFunction) {
-                var _a, _b;
                 bulmaJS.toggleHtmlClipped();
                 lotSelectModalElement = modalElement;
                 lotSelectCloseModalFunction = closeModalFunction;
@@ -427,7 +420,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const optionElement = document.createElement('option');
                     optionElement.value = map.mapId.toString();
                     optionElement.textContent =
-                        ((_a = map.mapName) !== null && _a !== void 0 ? _a : '') === '' ? '(No Name)' : (_b = map.mapName) !== null && _b !== void 0 ? _b : '';
+                        (map.mapName ?? '') === '' ? '(No Name)' : map.mapName ?? '';
                     mapElement.append(optionElement);
                 }
                 ;
@@ -438,8 +431,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    (_d = document
-        .querySelector('.is-lot-view-button')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', () => {
+    document
+        .querySelector('.is-lot-view-button')
+        ?.addEventListener('click', () => {
         const lotId = document.querySelector('#lotOccupancy--lotId').value;
         if (lotId === '') {
             bulmaJS.alert({
@@ -451,8 +445,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             window.open(`${los.urlPrefix}/lots/${lotId}`);
         }
     });
-    (_e = document
-        .querySelector('.is-clear-lot-button')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', () => {
+    document
+        .querySelector('.is-clear-lot-button')
+        ?.addEventListener('click', () => {
         if (lotNameElement.disabled) {
             bulmaJS.alert({
                 message: 'You need to unlock the field before clearing it.',
@@ -467,8 +462,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     });
     // Start Date
     los.initializeDatePickers(formElement);
-    (_f = document
-        .querySelector('#lotOccupancy--occupancyStartDateString')) === null || _f === void 0 ? void 0 : _f.addEventListener('change', () => {
+    document
+        .querySelector('#lotOccupancy--occupancyStartDateString')
+        ?.addEventListener('change', () => {
         const endDatePicker = document.querySelector('#lotOccupancy--occupancyEndDateString').bulmaCalendar.datePicker;
         endDatePicker.min = document.querySelector('#lotOccupancy--occupancyStartDateString').value;
         endDatePicker.refresh();
@@ -480,13 +476,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
     "use strict";
     // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
     /* eslint-disable unicorn/prefer-module */
-    var _a;
     Object.defineProperty(exports, "__esModule", { value: true });
     let lotOccupancyOccupants = exports.lotOccupancyOccupants;
     delete exports.lotOccupancyOccupants;
     function openEditLotOccupancyOccupant(clickEvent) {
-        var _a, _b;
-        const lotOccupantIndex = Number.parseInt((_b = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.lotOccupantIndex) !== null && _b !== void 0 ? _b : '', 10);
+        const lotOccupantIndex = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+            .lotOccupantIndex ?? '', 10);
         const lotOccupancyOccupant = lotOccupancyOccupants.find((currentLotOccupancyOccupant) => {
             return currentLotOccupancyOccupant.lotOccupantIndex === lotOccupantIndex;
         });
@@ -495,7 +490,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function editOccupant(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doUpdateLotOccupancyOccupant`, editFormElement, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
@@ -505,7 +499,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: `Error Updating ${los.escapedAliases.Occupant}`,
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -513,7 +507,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('lotOccupancy-editOccupant', {
             onshow(modalElement) {
-                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
                 los.populateAliases(modalElement);
                 modalElement.querySelector('#lotOccupancyOccupantEdit--lotOccupancyId').value = lotOccupancyId;
                 modalElement.querySelector('#lotOccupancyOccupantEdit--lotOccupantIndex').value = lotOccupantIndex.toString();
@@ -537,8 +530,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 if (!lotOccupantTypeSelected) {
                     const optionElement = document.createElement('option');
                     optionElement.value =
-                        (_b = (_a = lotOccupancyOccupant.lotOccupantTypeId) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : '';
-                    optionElement.textContent = (_c = lotOccupancyOccupant.lotOccupantType) !== null && _c !== void 0 ? _c : '';
+                        lotOccupancyOccupant.lotOccupantTypeId?.toString() ?? '';
+                    optionElement.textContent = lotOccupancyOccupant.lotOccupantType ?? '';
                     optionElement.dataset.occupantCommentTitle =
                         lotOccupancyOccupant.occupantCommentTitle;
                     optionElement.dataset.fontAwesomeIconClass =
@@ -548,34 +541,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 ;
                 modalElement.querySelector('#lotOccupancyOccupantEdit--fontAwesomeIconClass').innerHTML =
-                    `<i class="fas fa-fw fa-${cityssm.escapeHTML((_d = lotOccupancyOccupant.fontAwesomeIconClass) !== null && _d !== void 0 ? _d : '')}" aria-hidden="true"></i>`;
-                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantName').value = (_e = lotOccupancyOccupant.occupantName) !== null && _e !== void 0 ? _e : '';
-                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantFamilyName').value = (_f = lotOccupancyOccupant.occupantFamilyName) !== null && _f !== void 0 ? _f : '';
-                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantAddress1').value = (_g = lotOccupancyOccupant.occupantAddress1) !== null && _g !== void 0 ? _g : '';
-                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantAddress2').value = (_h = lotOccupancyOccupant.occupantAddress2) !== null && _h !== void 0 ? _h : '';
-                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantCity').value = (_j = lotOccupancyOccupant.occupantCity) !== null && _j !== void 0 ? _j : '';
-                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantProvince').value = (_k = lotOccupancyOccupant.occupantProvince) !== null && _k !== void 0 ? _k : '';
-                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantPostalCode').value = (_l = lotOccupancyOccupant.occupantPostalCode) !== null && _l !== void 0 ? _l : '';
-                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantPhoneNumber').value = (_m = lotOccupancyOccupant.occupantPhoneNumber) !== null && _m !== void 0 ? _m : '';
-                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantEmailAddress').value = (_o = lotOccupancyOccupant.occupantEmailAddress) !== null && _o !== void 0 ? _o : '';
+                    `<i class="fas fa-fw fa-${cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass ?? '')}" aria-hidden="true"></i>`;
+                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantName').value = lotOccupancyOccupant.occupantName ?? '';
+                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantFamilyName').value = lotOccupancyOccupant.occupantFamilyName ?? '';
+                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantAddress1').value = lotOccupancyOccupant.occupantAddress1 ?? '';
+                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantAddress2').value = lotOccupancyOccupant.occupantAddress2 ?? '';
+                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantCity').value = lotOccupancyOccupant.occupantCity ?? '';
+                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantProvince').value = lotOccupancyOccupant.occupantProvince ?? '';
+                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantPostalCode').value = lotOccupancyOccupant.occupantPostalCode ?? '';
+                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantPhoneNumber').value = lotOccupancyOccupant.occupantPhoneNumber ?? '';
+                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantEmailAddress').value = lotOccupancyOccupant.occupantEmailAddress ?? '';
                 modalElement.querySelector('#lotOccupancyOccupantEdit--occupantCommentTitle').textContent =
-                    ((_p = lotOccupancyOccupant.occupantCommentTitle) !== null && _p !== void 0 ? _p : '') === ''
+                    (lotOccupancyOccupant.occupantCommentTitle ?? '') === ''
                         ? 'Comment'
-                        : (_q = lotOccupancyOccupant.occupantCommentTitle) !== null && _q !== void 0 ? _q : '';
-                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantComment').value = (_r = lotOccupancyOccupant.occupantComment) !== null && _r !== void 0 ? _r : '';
+                        : lotOccupancyOccupant.occupantCommentTitle ?? '';
+                modalElement.querySelector('#lotOccupancyOccupantEdit--occupantComment').value = lotOccupancyOccupant.occupantComment ?? '';
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 const lotOccupantTypeIdElement = modalElement.querySelector('#lotOccupancyOccupantEdit--lotOccupantTypeId');
                 lotOccupantTypeIdElement.focus();
                 lotOccupantTypeIdElement.addEventListener('change', () => {
-                    var _a, _b;
-                    const fontAwesomeIconClass = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                        .fontAwesomeIconClass) !== null && _a !== void 0 ? _a : 'user';
+                    const fontAwesomeIconClass = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                        .fontAwesomeIconClass ?? 'user';
                     modalElement.querySelector('#lotOccupancyOccupantEdit--fontAwesomeIconClass').innerHTML =
                         `<i class="fas fa-fw fa-${cityssm.escapeHTML(fontAwesomeIconClass)}" aria-hidden="true"></i>`;
-                    let occupantCommentTitle = (_b = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                        .occupantCommentTitle) !== null && _b !== void 0 ? _b : '';
+                    let occupantCommentTitle = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                        .occupantCommentTitle ?? '';
                     if (occupantCommentTitle === '') {
                         occupantCommentTitle = 'Comment';
                     }
@@ -592,14 +584,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function deleteLotOccupancyOccupant(clickEvent) {
-        var _a;
-        const lotOccupantIndex = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.lotOccupantIndex;
+        const lotOccupantIndex = clickEvent.currentTarget.closest('tr')?.dataset.lotOccupantIndex;
         function doDelete() {
             cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doDeleteLotOccupancyOccupant`, {
                 lotOccupancyId,
                 lotOccupantIndex
             }, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
@@ -608,7 +598,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: `Error Removing ${los.escapedAliases.Occupant}`,
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -625,7 +615,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function renderLotOccupancyOccupants() {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y;
         const occupantsContainer = document.querySelector('#container--lotOccupancyOccupants');
         cityssm.clearElement(occupantsContainer);
         if (lotOccupancyOccupants.length === 0) {
@@ -649,41 +638,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
         for (const lotOccupancyOccupant of lotOccupancyOccupants) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.lotOccupantIndex =
-                (_a = lotOccupancyOccupant.lotOccupantIndex) === null || _a === void 0 ? void 0 : _a.toString();
+                lotOccupancyOccupant.lotOccupantIndex?.toString();
             // eslint-disable-next-line no-unsanitized/property
             tableRowElement.innerHTML = `<td>
-            ${cityssm.escapeHTML(((_b = lotOccupancyOccupant.occupantName) !== null && _b !== void 0 ? _b : '') === '' &&
-                ((_c = lotOccupancyOccupant.occupantFamilyName) !== null && _c !== void 0 ? _c : '') === ''
+            ${cityssm.escapeHTML((lotOccupancyOccupant.occupantName ?? '') === '' &&
+                (lotOccupancyOccupant.occupantFamilyName ?? '') === ''
                 ? '(No Name)'
                 : `${lotOccupancyOccupant.occupantName} ${lotOccupancyOccupant.occupantFamilyName}`)}<br />
             <span class="tag">
-              <i class="fas fa-fw fa-${cityssm.escapeHTML((_d = lotOccupancyOccupant.fontAwesomeIconClass) !== null && _d !== void 0 ? _d : '')}" aria-hidden="true"></i>
-              <span class="ml-1">${cityssm.escapeHTML((_e = lotOccupancyOccupant.lotOccupantType) !== null && _e !== void 0 ? _e : '')}</span>
+              <i class="fas fa-fw fa-${cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass ?? '')}" aria-hidden="true"></i>
+              <span class="ml-1">${cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType ?? '')}</span>
             </span>
           </td><td>
-            ${((_f = lotOccupancyOccupant.occupantAddress1) !== null && _f !== void 0 ? _f : '') === ''
+            ${(lotOccupancyOccupant.occupantAddress1 ?? '') === ''
                 ? ''
-                : `${cityssm.escapeHTML((_g = lotOccupancyOccupant.occupantAddress1) !== null && _g !== void 0 ? _g : '')}<br />`}
-            ${((_h = lotOccupancyOccupant.occupantAddress2) !== null && _h !== void 0 ? _h : '') === ''
+                : `${cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1 ?? '')}<br />`}
+            ${(lotOccupancyOccupant.occupantAddress2 ?? '') === ''
                 ? ''
-                : `${cityssm.escapeHTML((_j = lotOccupancyOccupant.occupantAddress2) !== null && _j !== void 0 ? _j : '')}<br />`}
-            ${((_k = lotOccupancyOccupant.occupantCity) !== null && _k !== void 0 ? _k : '') === ''
+                : `${cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2 ?? '')}<br />`}
+            ${(lotOccupancyOccupant.occupantCity ?? '') === ''
                 ? ''
-                : `${cityssm.escapeHTML((_l = lotOccupancyOccupant.occupantCity) !== null && _l !== void 0 ? _l : '')}, `}
-            ${cityssm.escapeHTML((_m = lotOccupancyOccupant.occupantProvince) !== null && _m !== void 0 ? _m : '')}<br />
-            ${cityssm.escapeHTML((_o = lotOccupancyOccupant.occupantPostalCode) !== null && _o !== void 0 ? _o : '')}
+                : `${cityssm.escapeHTML(lotOccupancyOccupant.occupantCity ?? '')}, `}
+            ${cityssm.escapeHTML(lotOccupancyOccupant.occupantProvince ?? '')}<br />
+            ${cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode ?? '')}
           </td><td>
-            ${((_p = lotOccupancyOccupant.occupantPhoneNumber) !== null && _p !== void 0 ? _p : '') === ''
+            ${(lotOccupancyOccupant.occupantPhoneNumber ?? '') === ''
                 ? ''
-                : `${cityssm.escapeHTML((_q = lotOccupancyOccupant.occupantPhoneNumber) !== null && _q !== void 0 ? _q : '')}<br />`}
-            ${((_r = lotOccupancyOccupant.occupantEmailAddress) !== null && _r !== void 0 ? _r : '') === ''
+                : `${cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber ?? '')}<br />`}
+            ${(lotOccupancyOccupant.occupantEmailAddress ?? '') === ''
                 ? ''
-                : cityssm.escapeHTML((_s = lotOccupancyOccupant.occupantEmailAddress) !== null && _s !== void 0 ? _s : '')}
+                : cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress ?? '')}
           </td><td>
-            <span data-tooltip="${cityssm.escapeHTML(((_t = lotOccupancyOccupant.occupantCommentTitle) !== null && _t !== void 0 ? _t : '') === ''
+            <span data-tooltip="${cityssm.escapeHTML((lotOccupancyOccupant.occupantCommentTitle ?? '') === ''
                 ? 'Comment'
-                : (_u = lotOccupancyOccupant.occupantCommentTitle) !== null && _u !== void 0 ? _u : '')}">
-            ${cityssm.escapeHTML((_v = lotOccupancyOccupant.occupantComment) !== null && _v !== void 0 ? _v : '')}
+                : lotOccupancyOccupant.occupantCommentTitle ?? '')}">
+            ${cityssm.escapeHTML(lotOccupancyOccupant.occupantComment ?? '')}
             </span>
           </td><td class="is-hidden-print">
             <div class="buttons are-small is-justify-content-end">
@@ -696,24 +685,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </button>
             </div>
           </td>`;
-            (_w = tableRowElement
-                .querySelector('.button--edit')) === null || _w === void 0 ? void 0 : _w.addEventListener('click', openEditLotOccupancyOccupant);
-            (_x = tableRowElement
-                .querySelector('.button--delete')) === null || _x === void 0 ? void 0 : _x.addEventListener('click', deleteLotOccupancyOccupant);
-            (_y = tableElement.querySelector('tbody')) === null || _y === void 0 ? void 0 : _y.append(tableRowElement);
+            tableRowElement
+                .querySelector('.button--edit')
+                ?.addEventListener('click', openEditLotOccupancyOccupant);
+            tableRowElement
+                .querySelector('.button--delete')
+                ?.addEventListener('click', deleteLotOccupancyOccupant);
+            tableElement.querySelector('tbody')?.append(tableRowElement);
         }
         occupantsContainer.append(tableElement);
     }
     if (isCreate) {
         const lotOccupantTypeIdElement = document.querySelector('#lotOccupancy--lotOccupantTypeId');
         lotOccupantTypeIdElement.addEventListener('change', () => {
-            var _a;
             const occupantFields = formElement.querySelectorAll("[data-table='LotOccupancyOccupant']");
             for (const occupantField of occupantFields) {
                 occupantField.disabled = lotOccupantTypeIdElement.value === '';
             }
-            let occupantCommentTitle = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                .occupantCommentTitle) !== null && _a !== void 0 ? _a : '';
+            let occupantCommentTitle = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                .occupantCommentTitle ?? '';
             if (occupantCommentTitle === '') {
                 occupantCommentTitle = 'Comment';
             }
@@ -724,15 +714,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
     else {
         renderLotOccupancyOccupants();
     }
-    (_a = document
-        .querySelector('#button--addOccupant')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
+    document
+        .querySelector('#button--addOccupant')
+        ?.addEventListener('click', () => {
         let addCloseModalFunction;
         let addFormElement;
         let searchFormElement;
         let searchResultsElement;
         function addOccupant(formOrObject) {
             cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doAddLotOccupancyOccupant`, formOrObject, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
@@ -742,7 +732,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: `Error Adding ${los.escapedAliases.Occupant}`,
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -754,12 +744,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         let pastOccupantSearchResults = [];
         function addOccupantFromCopy(clickEvent) {
-            var _a, _b;
             clickEvent.preventDefault();
             const panelBlockElement = clickEvent.currentTarget;
-            const occupant = pastOccupantSearchResults[Number.parseInt((_a = panelBlockElement.dataset.index) !== null && _a !== void 0 ? _a : '', 10)];
-            const lotOccupantTypeId = ((_b = panelBlockElement
-                .closest('.modal')) === null || _b === void 0 ? void 0 : _b.querySelector('#lotOccupancyOccupantCopy--lotOccupantTypeId')).value;
+            const occupant = pastOccupantSearchResults[Number.parseInt(panelBlockElement.dataset.index ?? '', 10)];
+            const lotOccupantTypeId = (panelBlockElement
+                .closest('.modal')
+                ?.querySelector('#lotOccupancyOccupantCopy--lotOccupantTypeId')).value;
             if (lotOccupantTypeId === '') {
                 bulmaJS.alert({
                     title: `No ${los.escapedAliases.Occupant} Type Selected`,
@@ -785,7 +775,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             searchResultsElement.innerHTML =
                 los.getLoadingParagraphHTML('Searching...');
             cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doSearchPastOccupants`, searchFormElement, (rawResponseJSON) => {
-                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
                 const responseJSON = rawResponseJSON;
                 pastOccupantSearchResults = responseJSON.occupants;
                 const panelElement = document.createElement('div');
@@ -797,21 +786,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     panelBlockElement.dataset.index = index.toString();
                     // eslint-disable-next-line no-unsanitized/property
                     panelBlockElement.innerHTML = `<strong>
-                    ${cityssm.escapeHTML((_a = occupant.occupantName) !== null && _a !== void 0 ? _a : '')} ${cityssm.escapeHTML((_b = occupant.occupantFamilyName) !== null && _b !== void 0 ? _b : '')}
+                    ${cityssm.escapeHTML(occupant.occupantName ?? '')} ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
                   </strong><br />
                   <div class="columns">
                     <div class="column">
-                      ${cityssm.escapeHTML((_c = occupant.occupantAddress1) !== null && _c !== void 0 ? _c : '')}<br />
-                      ${((_d = occupant.occupantAddress2) !== null && _d !== void 0 ? _d : '') === ''
+                      ${cityssm.escapeHTML(occupant.occupantAddress1 ?? '')}<br />
+                      ${(occupant.occupantAddress2 ?? '') === ''
                         ? ''
-                        : `${cityssm.escapeHTML((_e = occupant.occupantAddress2) !== null && _e !== void 0 ? _e : '')}<br />`}${cityssm.escapeHTML((_f = occupant.occupantCity) !== null && _f !== void 0 ? _f : '')}, ${cityssm.escapeHTML((_g = occupant.occupantProvince) !== null && _g !== void 0 ? _g : '')}<br />
-                      ${cityssm.escapeHTML((_h = occupant.occupantPostalCode) !== null && _h !== void 0 ? _h : '')}
+                        : `${cityssm.escapeHTML(occupant.occupantAddress2 ?? '')}<br />`}${cityssm.escapeHTML(occupant.occupantCity ?? '')}, ${cityssm.escapeHTML(occupant.occupantProvince ?? '')}<br />
+                      ${cityssm.escapeHTML(occupant.occupantPostalCode ?? '')}
                     </div>
                     <div class="column">
-                    ${((_j = occupant.occupantPhoneNumber) !== null && _j !== void 0 ? _j : '') === ''
+                    ${(occupant.occupantPhoneNumber ?? '') === ''
                         ? ''
-                        : `${cityssm.escapeHTML((_k = occupant.occupantPhoneNumber) !== null && _k !== void 0 ? _k : '')}<br />`}
-                    ${cityssm.escapeHTML((_l = occupant.occupantEmailAddress) !== null && _l !== void 0 ? _l : '')}<br />
+                        : `${cityssm.escapeHTML(occupant.occupantPhoneNumber ?? '')}<br />`}
+                    ${cityssm.escapeHTML(occupant.occupantEmailAddress ?? '')}<br />
                     </div>
                     </div>`;
                     panelBlockElement.addEventListener('click', addOccupantFromCopy);
@@ -848,13 +837,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const lotOccupantTypeIdElement = modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupantTypeId');
                 lotOccupantTypeIdElement.focus();
                 lotOccupantTypeIdElement.addEventListener('change', () => {
-                    var _a, _b;
-                    const fontAwesomeIconClass = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                        .fontAwesomeIconClass) !== null && _a !== void 0 ? _a : 'user';
+                    const fontAwesomeIconClass = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                        .fontAwesomeIconClass ?? 'user';
                     modalElement.querySelector('#lotOccupancyOccupantAdd--fontAwesomeIconClass').innerHTML =
                         `<i class="fas fa-fw fa-${cityssm.escapeHTML(fontAwesomeIconClass)}" aria-hidden="true"></i>`;
-                    let occupantCommentTitle = (_b = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                        .occupantCommentTitle) !== null && _b !== void 0 ? _b : '';
+                    let occupantCommentTitle = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                        .occupantCommentTitle ?? '';
                     if (occupantCommentTitle === '') {
                         occupantCommentTitle = 'Comment';
                     }
@@ -882,13 +870,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         "use strict";
         // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
         /* eslint-disable unicorn/prefer-module */
-        var _a;
         Object.defineProperty(exports, "__esModule", { value: true });
         let lotOccupancyComments = exports.lotOccupancyComments;
         delete exports.lotOccupancyComments;
         function openEditLotOccupancyComment(clickEvent) {
-            var _a, _b;
-            const lotOccupancyCommentId = Number.parseInt((_b = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.lotOccupancyCommentId) !== null && _b !== void 0 ? _b : '', 10);
+            const lotOccupancyCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+                .lotOccupancyCommentId ?? '', 10);
             const lotOccupancyComment = lotOccupancyComments.find((currentLotOccupancyComment) => {
                 return (currentLotOccupancyComment.lotOccupancyCommentId ===
                     lotOccupancyCommentId);
@@ -898,17 +885,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
             function editComment(submitEvent) {
                 submitEvent.preventDefault();
                 cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doUpdateLotOccupancyComment`, editFormElement, (rawResponseJSON) => {
-                    var _a, _b;
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
-                        lotOccupancyComments = (_a = responseJSON.lotOccupancyComments) !== null && _a !== void 0 ? _a : [];
+                        lotOccupancyComments = responseJSON.lotOccupancyComments ?? [];
                         editCloseModalFunction();
                         renderLotOccupancyComments();
                     }
                     else {
                         bulmaJS.alert({
                             title: 'Error Updating Comment',
-                            message: (_b = responseJSON.errorMessage) !== null && _b !== void 0 ? _b : '',
+                            message: responseJSON.errorMessage ?? '',
                             contextualColorName: 'danger'
                         });
                     }
@@ -916,20 +902,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             cityssm.openHtmlModal('lotOccupancy-editComment', {
                 onshow(modalElement) {
-                    var _a, _b, _c, _d;
                     los.populateAliases(modalElement);
                     modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyId').value = lotOccupancyId;
                     modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyCommentId').value = lotOccupancyCommentId.toString();
-                    modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyComment').value = (_a = lotOccupancyComment.lotOccupancyComment) !== null && _a !== void 0 ? _a : '';
+                    modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyComment').value = lotOccupancyComment.lotOccupancyComment ?? '';
                     const lotOccupancyCommentDateStringElement = modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyCommentDateString');
                     lotOccupancyCommentDateStringElement.value =
-                        (_b = lotOccupancyComment.lotOccupancyCommentDateString) !== null && _b !== void 0 ? _b : '';
+                        lotOccupancyComment.lotOccupancyCommentDateString ?? '';
                     const currentDateString = cityssm.dateToString(new Date());
                     lotOccupancyCommentDateStringElement.max =
                         lotOccupancyComment.lotOccupancyCommentDateString <= currentDateString
                             ? currentDateString
-                            : (_c = lotOccupancyComment.lotOccupancyCommentDateString) !== null && _c !== void 0 ? _c : '';
-                    modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyCommentTimeString').value = (_d = lotOccupancyComment.lotOccupancyCommentTimeString) !== null && _d !== void 0 ? _d : '';
+                            : lotOccupancyComment.lotOccupancyCommentDateString ?? '';
+                    modalElement.querySelector('#lotOccupancyCommentEdit--lotOccupancyCommentTimeString').value = lotOccupancyComment.lotOccupancyCommentTimeString ?? '';
                 },
                 onshown(modalElement, closeModalFunction) {
                     bulmaJS.toggleHtmlClipped();
@@ -945,14 +930,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         function deleteLotOccupancyComment(clickEvent) {
-            var _a, _b;
-            const lotOccupancyCommentId = Number.parseInt((_b = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.lotOccupancyCommentId) !== null && _b !== void 0 ? _b : '', 10);
+            const lotOccupancyCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+                .lotOccupancyCommentId ?? '', 10);
             function doDelete() {
                 cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doDeleteLotOccupancyComment`, {
                     lotOccupancyId,
                     lotOccupancyCommentId
                 }, (rawResponseJSON) => {
-                    var _a;
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         lotOccupancyComments = responseJSON.lotOccupancyComments;
@@ -961,7 +945,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: 'Error Removing Comment',
-                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                            message: responseJSON.errorMessage ?? '',
                             contextualColorName: 'danger'
                         });
                     }
@@ -978,7 +962,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         function renderLotOccupancyComments() {
-            var _a, _b, _c, _d, _e, _f, _g, _h;
             const containerElement = document.querySelector('#container--lotOccupancyComments');
             if (lotOccupancyComments.length === 0) {
                 containerElement.innerHTML = `<div class="message is-info">
@@ -998,15 +981,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             for (const lotOccupancyComment of lotOccupancyComments) {
                 const tableRowElement = document.createElement('tr');
                 tableRowElement.dataset.lotOccupancyCommentId =
-                    (_a = lotOccupancyComment.lotOccupancyCommentId) === null || _a === void 0 ? void 0 : _a.toString();
-                tableRowElement.innerHTML = `<td>${cityssm.escapeHTML((_b = lotOccupancyComment.recordCreate_userName) !== null && _b !== void 0 ? _b : '')}</td>
+                    lotOccupancyComment.lotOccupancyCommentId?.toString();
+                tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(lotOccupancyComment.recordCreate_userName ?? '')}</td>
               <td>
-              ${cityssm.escapeHTML((_c = lotOccupancyComment.lotOccupancyCommentDateString) !== null && _c !== void 0 ? _c : '')}
+              ${cityssm.escapeHTML(lotOccupancyComment.lotOccupancyCommentDateString ?? '')}
               ${cityssm.escapeHTML(lotOccupancyComment.lotOccupancyCommentTime === 0
                     ? ''
-                    : (_d = lotOccupancyComment.lotOccupancyCommentTimePeriodString) !== null && _d !== void 0 ? _d : '')}
+                    : lotOccupancyComment.lotOccupancyCommentTimePeriodString ?? '')}
               </td>
-              <td>${cityssm.escapeHTML((_e = lotOccupancyComment.lotOccupancyComment) !== null && _e !== void 0 ? _e : '')}</td>
+              <td>${cityssm.escapeHTML(lotOccupancyComment.lotOccupancyComment ?? '')}</td>
               <td class="is-hidden-print">
                 <div class="buttons are-small is-justify-content-end">
                 <button class="button is-primary button--edit" type="button">
@@ -1018,22 +1001,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 </button>
                 </div>
               </td>`;
-                (_f = tableRowElement
-                    .querySelector('.button--edit')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', openEditLotOccupancyComment);
-                (_g = tableRowElement
-                    .querySelector('.button--delete')) === null || _g === void 0 ? void 0 : _g.addEventListener('click', deleteLotOccupancyComment);
-                (_h = tableElement.querySelector('tbody')) === null || _h === void 0 ? void 0 : _h.append(tableRowElement);
+                tableRowElement
+                    .querySelector('.button--edit')
+                    ?.addEventListener('click', openEditLotOccupancyComment);
+                tableRowElement
+                    .querySelector('.button--delete')
+                    ?.addEventListener('click', deleteLotOccupancyComment);
+                tableElement.querySelector('tbody')?.append(tableRowElement);
             }
             containerElement.innerHTML = '';
             containerElement.append(tableElement);
         }
-        (_a = document.querySelector('#button--addComment')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
+        document.querySelector('#button--addComment')?.addEventListener('click', () => {
             let addFormElement;
             let addCloseModalFunction;
             function addComment(submitEvent) {
                 submitEvent.preventDefault();
                 cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doAddLotOccupancyComment`, addFormElement, (rawResponseJSON) => {
-                    var _a;
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         lotOccupancyComments = responseJSON.lotOccupancyComments;
@@ -1043,7 +1027,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: 'Error Adding Comment',
-                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                            message: responseJSON.errorMessage ?? '',
                             contextualColorName: 'danger'
                         });
                     }
@@ -1077,18 +1061,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
         delete exports.lotOccupancyFees;
         const lotOccupancyFeesContainerElement = document.querySelector('#container--lotOccupancyFees');
         function getFeeGrandTotal() {
-            var _a, _b, _c;
             let feeGrandTotal = 0;
             for (const lotOccupancyFee of lotOccupancyFees) {
                 feeGrandTotal +=
-                    (((_a = lotOccupancyFee.feeAmount) !== null && _a !== void 0 ? _a : 0) + ((_b = lotOccupancyFee.taxAmount) !== null && _b !== void 0 ? _b : 0)) *
-                        ((_c = lotOccupancyFee.quantity) !== null && _c !== void 0 ? _c : 0);
+                    ((lotOccupancyFee.feeAmount ?? 0) + (lotOccupancyFee.taxAmount ?? 0)) *
+                        (lotOccupancyFee.quantity ?? 0);
             }
             return feeGrandTotal;
         }
         function editLotOccupancyFeeQuantity(clickEvent) {
-            var _a, _b;
-            const feeId = Number.parseInt((_b = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.feeId) !== null && _b !== void 0 ? _b : '', 10);
+            const feeId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+                .feeId ?? '', 10);
             const fee = lotOccupancyFees.find((possibleFee) => {
                 return possibleFee.feeId === feeId;
             });
@@ -1113,20 +1096,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             cityssm.openHtmlModal('lotOccupancy-editFeeQuantity', {
                 onshow(modalElement) {
-                    var _a, _b;
                     ;
                     modalElement.querySelector('#lotOccupancyFeeQuantity--lotOccupancyId').value = lotOccupancyId;
                     modalElement.querySelector('#lotOccupancyFeeQuantity--feeId').value = fee.feeId.toString();
-                    modalElement.querySelector('#lotOccupancyFeeQuantity--quantity').valueAsNumber = (_a = fee.quantity) !== null && _a !== void 0 ? _a : 0;
-                    modalElement.querySelector('#lotOccupancyFeeQuantity--quantityUnit').textContent = (_b = fee.quantityUnit) !== null && _b !== void 0 ? _b : '';
+                    modalElement.querySelector('#lotOccupancyFeeQuantity--quantity').valueAsNumber = fee.quantity ?? 0;
+                    modalElement.querySelector('#lotOccupancyFeeQuantity--quantityUnit').textContent = fee.quantityUnit ?? '';
                 },
                 onshown(modalElement, closeModalFunction) {
-                    var _a;
                     bulmaJS.toggleHtmlClipped();
                     updateCloseModalFunction = closeModalFunction;
                     modalElement.querySelector('#lotOccupancyFeeQuantity--quantity').focus();
-                    (_a = modalElement
-                        .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doUpdateQuantity);
+                    modalElement
+                        .querySelector('form')
+                        ?.addEventListener('submit', doUpdateQuantity);
                 },
                 onremoved() {
                     bulmaJS.toggleHtmlClipped();
@@ -1140,7 +1122,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     lotOccupancyId,
                     feeId
                 }, (rawResponseJSON) => {
-                    var _a;
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         lotOccupancyFees = responseJSON.lotOccupancyFees;
@@ -1149,7 +1130,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: 'Error Deleting Fee',
-                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                            message: responseJSON.errorMessage ?? '',
                             contextualColorName: 'danger'
                         });
                     }
@@ -1166,7 +1147,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         function renderLotOccupancyFees() {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q;
             if (lotOccupancyFees.length === 0) {
                 lotOccupancyFeesContainerElement.innerHTML = `<div class="message is-info">
                 <p class="message-body">There are no fees associated with this record.</p>
@@ -1206,26 +1186,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 tableRowElement.className = 'container--lotOccupancyFee';
                 tableRowElement.dataset.feeId = lotOccupancyFee.feeId.toString();
                 tableRowElement.dataset.includeQuantity =
-                    ((_a = lotOccupancyFee.includeQuantity) !== null && _a !== void 0 ? _a : false) ? '1' : '0';
+                    lotOccupancyFee.includeQuantity ?? false ? '1' : '0';
                 // eslint-disable-next-line no-unsanitized/property
                 tableRowElement.innerHTML = `<td colspan="${lotOccupancyFee.quantity === 1 ? '5' : '1'}">
-              ${cityssm.escapeHTML((_b = lotOccupancyFee.feeName) !== null && _b !== void 0 ? _b : '')}<br />
-              <span class="tag">${cityssm.escapeHTML((_c = lotOccupancyFee.feeCategory) !== null && _c !== void 0 ? _c : '')}</span>
+              ${cityssm.escapeHTML(lotOccupancyFee.feeName ?? '')}<br />
+              <span class="tag">${cityssm.escapeHTML(lotOccupancyFee.feeCategory ?? '')}</span>
               </td>
               ${lotOccupancyFee.quantity === 1
                     ? ''
                     : `<td class="has-text-right">
-                      $${(_d = lotOccupancyFee.feeAmount) === null || _d === void 0 ? void 0 : _d.toFixed(2)}
+                      $${lotOccupancyFee.feeAmount?.toFixed(2)}
                       </td>
                       <td>&times;</td>
-                      <td class="has-text-right">${(_e = lotOccupancyFee.quantity) === null || _e === void 0 ? void 0 : _e.toString()}</td>
+                      <td class="has-text-right">${lotOccupancyFee.quantity?.toString()}</td>
                       <td>=</td>`}
               <td class="has-text-right">
-                $${(((_f = lotOccupancyFee.feeAmount) !== null && _f !== void 0 ? _f : 0) * ((_g = lotOccupancyFee.quantity) !== null && _g !== void 0 ? _g : 0)).toFixed(2)}
+                $${((lotOccupancyFee.feeAmount ?? 0) * (lotOccupancyFee.quantity ?? 0)).toFixed(2)}
               </td>
               <td class="is-hidden-print">
               <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-              ${((_h = lotOccupancyFee.includeQuantity) !== null && _h !== void 0 ? _h : false)
+              ${lotOccupancyFee.includeQuantity ?? false
                     ? `<button class="button is-primary button--editQuantity">
                       <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
                       <span>Edit</span>
@@ -1236,16 +1216,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </button>
               </div>
               </td>`;
-                (_j = tableRowElement
-                    .querySelector('.button--editQuantity')) === null || _j === void 0 ? void 0 : _j.addEventListener('click', editLotOccupancyFeeQuantity);
-                (_k = tableRowElement
-                    .querySelector('.button--delete')) === null || _k === void 0 ? void 0 : _k.addEventListener('click', deleteLotOccupancyFee);
-                (_l = lotOccupancyFeesContainerElement
-                    .querySelector('tbody')) === null || _l === void 0 ? void 0 : _l.append(tableRowElement);
+                tableRowElement
+                    .querySelector('.button--editQuantity')
+                    ?.addEventListener('click', editLotOccupancyFeeQuantity);
+                tableRowElement
+                    .querySelector('.button--delete')
+                    ?.addEventListener('click', deleteLotOccupancyFee);
+                lotOccupancyFeesContainerElement
+                    .querySelector('tbody')
+                    ?.append(tableRowElement);
                 feeAmountTotal +=
-                    ((_m = lotOccupancyFee.feeAmount) !== null && _m !== void 0 ? _m : 0) * ((_o = lotOccupancyFee.quantity) !== null && _o !== void 0 ? _o : 0);
+                    (lotOccupancyFee.feeAmount ?? 0) * (lotOccupancyFee.quantity ?? 0);
                 taxAmountTotal +=
-                    ((_p = lotOccupancyFee.taxAmount) !== null && _p !== void 0 ? _p : 0) * ((_q = lotOccupancyFee.quantity) !== null && _q !== void 0 ? _q : 0);
+                    (lotOccupancyFee.taxAmount ?? 0) * (lotOccupancyFee.quantity ?? 0);
             }
             ;
             lotOccupancyFeesContainerElement.querySelector('#lotOccupancyFees--feeAmountTotal').textContent = `$${feeAmountTotal.toFixed(2)}`;
@@ -1266,14 +1249,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             let feeFilterElement;
             let feeFilterResultsElement;
             function doAddFeeCategory(clickEvent) {
-                var _a;
                 clickEvent.preventDefault();
-                const feeCategoryId = Number.parseInt((_a = clickEvent.currentTarget.dataset.feeCategoryId) !== null && _a !== void 0 ? _a : '', 10);
+                const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId ?? '', 10);
                 cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doAddLotOccupancyFeeCategory`, {
                     lotOccupancyId,
                     feeCategoryId
                 }, (rawResponseJSON) => {
-                    var _a;
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         lotOccupancyFees = responseJSON.lotOccupancyFees;
@@ -1286,7 +1267,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: 'Error Adding Fee',
-                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                            message: responseJSON.errorMessage ?? '',
                             contextualColorName: 'danger'
                         });
                     }
@@ -1298,7 +1279,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     feeId,
                     quantity
                 }, (rawResponseJSON) => {
-                    var _a;
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         lotOccupancyFees = responseJSON.lotOccupancyFees;
@@ -1308,7 +1288,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: 'Error Adding Fee',
-                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                            message: responseJSON.errorMessage ?? '',
                             contextualColorName: 'danger'
                         });
                     }
@@ -1324,31 +1304,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 cityssm.openHtmlModal('lotOccupancy-setFeeQuantity', {
                     onshow(modalElement) {
-                        var _a;
                         ;
-                        modalElement.querySelector('#lotOccupancyFeeQuantity--quantityUnit').textContent = (_a = fee.quantityUnit) !== null && _a !== void 0 ? _a : '';
+                        modalElement.querySelector('#lotOccupancyFeeQuantity--quantityUnit').textContent = fee.quantityUnit ?? '';
                     },
                     onshown(modalElement, closeModalFunction) {
-                        var _a;
                         quantityCloseModalFunction = closeModalFunction;
                         quantityElement = modalElement.querySelector('#lotOccupancyFeeQuantity--quantity');
-                        (_a = modalElement
-                            .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doSetQuantity);
+                        modalElement
+                            .querySelector('form')
+                            ?.addEventListener('submit', doSetQuantity);
                     }
                 });
             }
             function tryAddFee(clickEvent) {
-                var _a, _b, _c;
                 clickEvent.preventDefault();
-                const feeId = Number.parseInt((_a = clickEvent.currentTarget.dataset.feeId) !== null && _a !== void 0 ? _a : '', 10);
-                const feeCategoryId = Number.parseInt((_b = clickEvent.currentTarget.dataset.feeCategoryId) !== null && _b !== void 0 ? _b : '', 10);
+                const feeId = Number.parseInt(clickEvent.currentTarget.dataset.feeId ?? '', 10);
+                const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId ?? '', 10);
                 const feeCategory = feeCategories.find((currentFeeCategory) => {
                     return currentFeeCategory.feeCategoryId === feeCategoryId;
                 });
                 const fee = feeCategory.fees.find((currentFee) => {
                     return currentFee.feeId === feeId;
                 });
-                if ((_c = fee.includeQuantity) !== null && _c !== void 0 ? _c : false) {
+                if (fee.includeQuantity ?? false) {
                     doSetQuantityAndAddFee(fee);
                 }
                 else {
@@ -1356,7 +1334,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             }
             function filterFees() {
-                var _a, _b, _c, _d, _e, _f, _g, _h;
                 const filterStringPieces = feeFilterElement.value
                     .trim()
                     .toLowerCase()
@@ -1370,20 +1347,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
                 <div class="column">
                   <h4 class="title is-5">
-                  ${cityssm.escapeHTML((_a = feeCategory.feeCategory) !== null && _a !== void 0 ? _a : '')}
+                  ${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}
                   </h4>
                 </div>
                 </div>
                 <div class="panel mb-5"></div>`;
                     if (feeCategory.isGroupedFee) {
                         // eslint-disable-next-line no-unsanitized/method
-                        (_b = categoryContainerElement.querySelector('.columns')) === null || _b === void 0 ? void 0 : _b.insertAdjacentHTML('beforeend', `<div class="column is-narrow has-text-right">
+                        categoryContainerElement.querySelector('.columns')?.insertAdjacentHTML('beforeend', `<div class="column is-narrow has-text-right">
                     <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
                       <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
                       <span>Add Fee Group</span>
                     </button>
                     </div>`);
-                        (_c = categoryContainerElement.querySelector('button')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', doAddFeeCategory);
+                        categoryContainerElement.querySelector('button')?.addEventListener('click', doAddFeeCategory);
                     }
                     let hasFees = false;
                     for (const fee of feeCategory.fees) {
@@ -1392,7 +1369,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             continue;
                         }
                         let includeFee = true;
-                        const feeSearchString = `${(_d = feeCategory.feeCategory) !== null && _d !== void 0 ? _d : ''} ${(_e = fee.feeName) !== null && _e !== void 0 ? _e : ''} ${(_f = fee.feeDescription) !== null && _f !== void 0 ? _f : ''}`.toLowerCase();
+                        const feeSearchString = `${feeCategory.feeCategory ?? ''} ${fee.feeName ?? ''} ${fee.feeDescription ?? ''}`.toLowerCase();
                         for (const filterStringPiece of filterStringPieces) {
                             if (!feeSearchString.includes(filterStringPiece)) {
                                 includeFee = false;
@@ -1409,12 +1386,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         panelBlockElement.dataset.feeCategoryId =
                             feeCategory.feeCategoryId.toString();
                         // eslint-disable-next-line no-unsanitized/property
-                        panelBlockElement.innerHTML = `<strong>${cityssm.escapeHTML((_g = fee.feeName) !== null && _g !== void 0 ? _g : '')}</strong><br />
+                        panelBlockElement.innerHTML = `<strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
                   <small>
                   ${
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                         cityssm
-                            .escapeHTML((_h = fee.feeDescription) !== null && _h !== void 0 ? _h : '')
+                            .escapeHTML(fee.feeDescription ?? '')
                             .replaceAll('\n', '<br />')}
                   </small>`;
                         if (!feeCategory.isGroupedFee) {
@@ -1468,8 +1445,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             return transactionGrandTotal;
         }
         function editLotOccupancyTransaction(clickEvent) {
-            var _a, _b;
-            const transactionIndex = Number.parseInt((_b = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.transactionIndex) !== null && _b !== void 0 ? _b : '', 10);
+            const transactionIndex = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+                .transactionIndex ?? '', 10);
             const transaction = lotOccupancyTransactions.find((possibleTransaction) => {
                 return possibleTransaction.transactionIndex === transactionIndex;
             });
@@ -1494,22 +1471,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             cityssm.openHtmlModal('lotOccupancy-editTransaction', {
                 onshow(modalElement) {
-                    var _a, _b, _c, _d, _e, _f;
                     los.populateAliases(modalElement);
                     modalElement.querySelector('#lotOccupancyTransactionEdit--lotOccupancyId').value = lotOccupancyId;
-                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionIndex').value = (_b = (_a = transaction.transactionIndex) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : '';
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionIndex').value = transaction.transactionIndex?.toString() ?? '';
                     modalElement.querySelector('#lotOccupancyTransactionEdit--transactionAmount').value = transaction.transactionAmount.toFixed(2);
-                    modalElement.querySelector('#lotOccupancyTransactionEdit--externalReceiptNumber').value = (_c = transaction.externalReceiptNumber) !== null && _c !== void 0 ? _c : '';
-                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionNote').value = (_d = transaction.transactionNote) !== null && _d !== void 0 ? _d : '';
-                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionDateString').value = (_e = transaction.transactionDateString) !== null && _e !== void 0 ? _e : '';
-                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionTimeString').value = (_f = transaction.transactionTimeString) !== null && _f !== void 0 ? _f : '';
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--externalReceiptNumber').value = transaction.externalReceiptNumber ?? '';
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionNote').value = transaction.transactionNote ?? '';
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionDateString').value = transaction.transactionDateString ?? '';
+                    modalElement.querySelector('#lotOccupancyTransactionEdit--transactionTimeString').value = transaction.transactionTimeString ?? '';
                 },
                 onshown(modalElement, closeModalFunction) {
-                    var _a;
                     bulmaJS.toggleHtmlClipped();
                     los.initializeDatePickers(modalElement);
                     modalElement.querySelector('#lotOccupancyTransactionEdit--transactionAmount').focus();
-                    (_a = modalElement.querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doEdit);
+                    modalElement.querySelector('form')?.addEventListener('submit', doEdit);
                     editCloseModalFunction = closeModalFunction;
                 },
                 onremoved() {
@@ -1524,7 +1499,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     lotOccupancyId,
                     transactionIndex
                 }, (rawResponseJSON) => {
-                    var _a;
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         lotOccupancyTransactions = responseJSON.lotOccupancyTransactions;
@@ -1533,7 +1507,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.alert({
                             title: 'Error Deleting Transaction',
-                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                            message: responseJSON.errorMessage ?? '',
                             contextualColorName: 'danger'
                         });
                     }
@@ -1550,7 +1524,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         function renderLotOccupancyTransactions() {
-            var _a, _b, _c, _d, _e, _f, _g;
             if (lotOccupancyTransactions.length === 0) {
                 // eslint-disable-next-line no-unsanitized/property
                 lotOccupancyTransactionsContainerElement.innerHTML = `<div class="message ${lotOccupancyFees.length === 0 ? 'is-info' : 'is-warning'}">
@@ -1579,10 +1552,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const tableRowElement = document.createElement('tr');
                 tableRowElement.className = 'container--lotOccupancyTransaction';
                 tableRowElement.dataset.transactionIndex =
-                    (_a = lotOccupancyTransaction.transactionIndex) === null || _a === void 0 ? void 0 : _a.toString();
+                    lotOccupancyTransaction.transactionIndex?.toString();
                 let externalReceiptNumberHTML = '';
                 if (lotOccupancyTransaction.externalReceiptNumber !== '') {
-                    externalReceiptNumberHTML = cityssm.escapeHTML((_b = lotOccupancyTransaction.externalReceiptNumber) !== null && _b !== void 0 ? _b : '');
+                    externalReceiptNumberHTML = cityssm.escapeHTML(lotOccupancyTransaction.externalReceiptNumber ?? '');
                     if (los.dynamicsGPIntegrationIsEnabled) {
                         if (lotOccupancyTransaction.dynamicsGPDocument === undefined) {
                             externalReceiptNumberHTML += ` <span data-tooltip="No Matching Document Found">
@@ -1604,11 +1577,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 // eslint-disable-next-line no-unsanitized/property
                 tableRowElement.innerHTML = `<td>
-              ${cityssm.escapeHTML((_c = lotOccupancyTransaction.transactionDateString) !== null && _c !== void 0 ? _c : '')}
+              ${cityssm.escapeHTML(lotOccupancyTransaction.transactionDateString ?? '')}
               </td>
               <td>
                 ${externalReceiptNumberHTML}
-                <small>${cityssm.escapeHTML((_d = lotOccupancyTransaction.transactionNote) !== null && _d !== void 0 ? _d : '')}</small>
+                <small>${cityssm.escapeHTML(lotOccupancyTransaction.transactionNote ?? '')}</small>
               </td>
               <td class="has-text-right">
                 $${cityssm.escapeHTML(lotOccupancyTransaction.transactionAmount.toFixed(2))}
@@ -1624,12 +1597,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                   </button>
                 </div>
               </td>`;
-                (_e = tableRowElement
-                    .querySelector('.button--edit')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', editLotOccupancyTransaction);
-                (_f = tableRowElement
-                    .querySelector('.button--delete')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', deleteLotOccupancyTransaction);
-                (_g = lotOccupancyTransactionsContainerElement
-                    .querySelector('tbody')) === null || _g === void 0 ? void 0 : _g.append(tableRowElement);
+                tableRowElement
+                    .querySelector('.button--edit')
+                    ?.addEventListener('click', editLotOccupancyTransaction);
+                tableRowElement
+                    .querySelector('.button--delete')
+                    ?.addEventListener('click', deleteLotOccupancyTransaction);
+                lotOccupancyTransactionsContainerElement
+                    .querySelector('tbody')
+                    ?.append(tableRowElement);
             }
             ;
             lotOccupancyTransactionsContainerElement.querySelector('#lotOccupancyTransactions--grandTotal').textContent = `$${transactionGrandTotal.toFixed(2)}`;
@@ -1658,7 +1634,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             function doAddTransaction(submitEvent) {
                 submitEvent.preventDefault();
                 cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doAddLotOccupancyTransaction`, submitEvent.currentTarget, (rawResponseJSON) => {
-                    var _a;
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         lotOccupancyTransactions = responseJSON.lotOccupancyTransactions;
@@ -1668,7 +1643,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         bulmaJS.confirm({
                             title: 'Error Adding Transaction',
-                            message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                            message: responseJSON.errorMessage ?? '',
                             contextualColorName: 'danger'
                         });
                     }
@@ -1676,12 +1651,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             // eslint-disable-next-line @typescript-eslint/naming-convention
             function dynamicsGP_refreshExternalReceiptNumberIcon() {
-                var _a, _b;
                 const externalReceiptNumber = externalReceiptNumberElement.value;
-                const iconElement = (_a = externalReceiptNumberElement
-                    .closest('.control')) === null || _a === void 0 ? void 0 : _a.querySelector('.icon');
-                const helpTextElement = (_b = externalReceiptNumberElement
-                    .closest('.field')) === null || _b === void 0 ? void 0 : _b.querySelector('.help');
+                const iconElement = externalReceiptNumberElement
+                    .closest('.control')
+                    ?.querySelector('.icon');
+                const helpTextElement = externalReceiptNumberElement
+                    .closest('.field')
+                    ?.querySelector('.help');
                 if (externalReceiptNumber === '') {
                     helpTextElement.innerHTML = '&nbsp;';
                     iconElement.innerHTML = '<i class="fas fa-minus" aria-hidden="true"></i>';
@@ -1734,12 +1710,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                 },
                 onshown(modalElement, closeModalFunction) {
-                    var _a;
                     bulmaJS.toggleHtmlClipped();
                     transactionAmountElement.focus();
                     addCloseModalFunction = closeModalFunction;
-                    (_a = modalElement
-                        .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doAddTransaction);
+                    modalElement
+                        .querySelector('form')
+                        ?.addEventListener('submit', doAddTransaction);
                 },
                 onremoved() {
                     bulmaJS.toggleHtmlClipped();

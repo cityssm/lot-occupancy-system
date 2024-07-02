@@ -711,7 +711,7 @@ type ResponseJSON =
         const printTitle =
           printEJS === '*'
             ? '(All Available Prints)'
-            : (exports.occupancyTypePrintTitles[printEJS] as string)
+            : ((exports.occupancyTypePrintTitles as string[])[printEJS] as string)
 
         let printIconClass = 'fa-star'
 

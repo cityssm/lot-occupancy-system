@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * Unsaved Changes
      */
-    var _a, _b, _c, _d;
     let _hasUnsavedChanges = false;
     function setUnsavedChanges() {
         if (!hasUnsavedChanges()) {
@@ -82,7 +81,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         displayMode: 'dialog'
     };
     function initializeDatePickers(containerElement) {
-        var _a, _b, _c;
         const dateElements = containerElement.querySelectorAll("input[type='date']");
         for (const dateElement of dateElements) {
             const datePickerOptions = Object.assign({}, datePickerBaseOptions);
@@ -105,8 +103,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
             // Disable html scrolling when calendar is open
             cal.on('show', () => {
-                var _a;
-                (_a = document.querySelector('html')) === null || _a === void 0 ? void 0 : _a.classList.add('is-clipped');
+                document.querySelector('html')?.classList.add('is-clipped');
             });
             // Reenable scrolling, if a modal window is not open
             cal.on('hide', () => {
@@ -117,7 +114,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // Override the previous and next month button styles
             const datePickerNavButtonElements = datepickerElement.querySelectorAll('.datepicker-nav button.is-text');
             for (const datePickerNavButtonElement of datePickerNavButtonElements) {
-                datePickerNavButtonElement.classList.add(`is-${(_a = datePickerBaseOptions.color) !== null && _a !== void 0 ? _a : ''}`);
+                datePickerNavButtonElement.classList.add(`is-${datePickerBaseOptions.color ?? ''}`);
                 datePickerNavButtonElement.classList.remove('is-text');
             }
             // Override the clear button style
@@ -136,8 +133,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // Apply a label
             const labelElement = document.querySelector(`label[for='${dateElement.id}']`);
             if (labelElement !== null) {
-                (_b = datepickerElement
-                    .querySelector('.datetimepicker-dummy-input')) === null || _b === void 0 ? void 0 : _b.setAttribute('aria-label', (_c = labelElement.textContent) !== null && _c !== void 0 ? _c : '');
+                datepickerElement
+                    .querySelector('.datetimepicker-dummy-input')
+                    ?.setAttribute('aria-label', labelElement.textContent ?? '');
             }
         }
     }
@@ -295,7 +293,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * URLs
      */
-    const urlPrefix = (_b = (_a = document.querySelector('main')) === null || _a === void 0 ? void 0 : _a.dataset.urlPrefix) !== null && _b !== void 0 ? _b : '';
+    const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
     function getRecordURL(recordTypePlural, recordId, edit, time) {
         return (urlPrefix +
             '/' +
@@ -325,7 +323,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     const los = {
         urlPrefix,
-        apiKey: (_d = (_c = document.querySelector('main')) === null || _c === void 0 ? void 0 : _c.dataset.apiKey) !== null && _d !== void 0 ? _d : '',
+        apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
         dynamicsGPIntegrationIsEnabled,
         highlightMap,
         initializeUnlockFieldButtons,

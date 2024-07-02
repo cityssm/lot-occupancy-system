@@ -9,7 +9,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
     function renderLots(rawResponseJSON) {
-        var _a, _b, _c, _d, _e, _f, _g;
         const responseJSON = rawResponseJSON;
         if (responseJSON.lots.length === 0) {
             // eslint-disable-next-line no-unsanitized/property
@@ -24,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
           <td>
             <a class="has-text-weight-bold" href="${los.getLotURL(lot.lotId)}">
-              ${cityssm.escapeHTML((_a = lot.lotName) !== null && _a !== void 0 ? _a : '')}
+              ${cityssm.escapeHTML(lot.lotName ?? '')}
             </a>
           </td><td>
             <a href="${los.getMapURL(lot.mapId)}">
@@ -33,12 +32,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : '<span class="has-text-grey">(No Name)</span>'}
             </a>
           </td><td>
-            ${cityssm.escapeHTML((_b = lot.lotType) !== null && _b !== void 0 ? _b : '')}
+            ${cityssm.escapeHTML(lot.lotType ?? '')}
           </td><td>
             ${lot.lotStatusId
-                ? cityssm.escapeHTML((_c = lot.lotStatus) !== null && _c !== void 0 ? _c : '')
+                ? cityssm.escapeHTML(lot.lotStatus ?? '')
                 : '<span class="has-text-grey">(No Status)</span>'}<br />
-            ${((_d = lot.lotOccupancyCount) !== null && _d !== void 0 ? _d : 0) > 0
+            ${(lot.lotOccupancyCount ?? 0) > 0
                 ? '<span class="is-size-7">Currently Occupied</span>'
                 : ''}
           </td>
@@ -55,12 +54,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
       <table>`;
         // eslint-disable-next-line no-unsanitized/method
         searchResultsContainerElement.insertAdjacentHTML('beforeend', los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
-        (_e = searchResultsContainerElement
-            .querySelector('table')) === null || _e === void 0 ? void 0 : _e.append(resultsTbodyElement);
-        (_f = searchResultsContainerElement
-            .querySelector("button[data-page='previous']")) === null || _f === void 0 ? void 0 : _f.addEventListener('click', previousAndGetLots);
-        (_g = searchResultsContainerElement
-            .querySelector("button[data-page='next']")) === null || _g === void 0 ? void 0 : _g.addEventListener('click', nextAndGetLots);
+        searchResultsContainerElement
+            .querySelector('table')
+            ?.append(resultsTbodyElement);
+        searchResultsContainerElement
+            .querySelector("button[data-page='previous']")
+            ?.addEventListener('click', previousAndGetLots);
+        searchResultsContainerElement
+            .querySelector("button[data-page='next']")
+            ?.addEventListener('click', nextAndGetLots);
     }
     function getLots() {
         // eslint-disable-next-line no-unsanitized/property

@@ -3,7 +3,6 @@
 /* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a, _b;
     const los = exports.los;
     const lotId = document.querySelector('#lot--lotId')
         .value;
@@ -11,22 +10,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
     // Main form
     let refreshAfterSave = isCreate;
     function setUnsavedChanges() {
-        var _a;
         los.setUnsavedChanges();
-        (_a = document
-            .querySelector("button[type='submit'][form='form--lot']")) === null || _a === void 0 ? void 0 : _a.classList.remove('is-light');
+        document
+            .querySelector("button[type='submit'][form='form--lot']")
+            ?.classList.remove('is-light');
     }
     function clearUnsavedChanges() {
-        var _a;
         los.clearUnsavedChanges();
-        (_a = document
-            .querySelector("button[type='submit'][form='form--lot']")) === null || _a === void 0 ? void 0 : _a.classList.add('is-light');
+        document
+            .querySelector("button[type='submit'][form='form--lot']")
+            ?.classList.add('is-light');
     }
     const formElement = document.querySelector('#form--lot');
     function updateLot(formEvent) {
         formEvent.preventDefault();
         cityssm.postJSON(`${los.urlPrefix}/lots/${isCreate ? 'doCreateLot' : 'doUpdateLot'}`, formElement, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
@@ -43,7 +41,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: `Error Updating ${los.escapedAliases.Lot}`,
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -55,14 +53,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
         formInputElement.addEventListener('change', setUnsavedChanges);
     }
     los.initializeUnlockFieldButtons(formElement);
-    (_a = document
-        .querySelector('#button--deleteLot')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (clickEvent) => {
+    document
+        .querySelector('#button--deleteLot')
+        ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         function doDelete() {
             cityssm.postJSON(`${los.urlPrefix}/lots/doDeleteLot`, {
                 lotId
             }, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     clearUnsavedChanges();
@@ -71,7 +69,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: `Error Deleting ${los.escapedAliases.Lot}`,
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -102,7 +100,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(`${los.urlPrefix}/lots/doGetLotTypeFields`, {
                 lotTypeId: lotTypeIdElement.value
             }, (rawResponseJSON) => {
-                var _a, _b, _c;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.lotTypeFields.length === 0) {
                     // eslint-disable-next-line no-unsanitized/property
@@ -134,10 +131,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         inputElement.required = lotTypeField.isRequired;
                         inputElement.minLength = lotTypeField.minimumLength;
                         inputElement.maxLength = lotTypeField.maximumLength;
-                        if (((_a = lotTypeField.pattern) !== null && _a !== void 0 ? _a : '') !== '') {
-                            inputElement.pattern = (_b = lotTypeField.pattern) !== null && _b !== void 0 ? _b : '';
+                        if ((lotTypeField.pattern ?? '') !== '') {
+                            inputElement.pattern = lotTypeField.pattern ?? '';
                         }
-                        (_c = fieldElement.querySelector('.control')) === null || _c === void 0 ? void 0 : _c.append(inputElement);
+                        fieldElement.querySelector('.control')?.append(inputElement);
                     }
                     else {
                         // eslint-disable-next-line no-unsanitized/property
@@ -191,8 +188,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     let lotComments = exports.lotComments;
     delete exports.lotComments;
     function openEditLotComment(clickEvent) {
-        var _a, _b;
-        const lotCommentId = Number.parseInt((_b = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.lotCommentId) !== null && _b !== void 0 ? _b : '', 10);
+        const lotCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+            .lotCommentId ?? '', 10);
         const lotComment = lotComments.find((currentLotComment) => {
             return currentLotComment.lotCommentId === lotCommentId;
         });
@@ -201,7 +198,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function editComment(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(`${los.urlPrefix}/lots/doUpdateLotComment`, editFormElement, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotComments = responseJSON.lotComments;
@@ -211,7 +207,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Updating Comment',
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -219,20 +215,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('lot-editComment', {
             onshow(modalElement) {
-                var _a, _b, _c, _d;
                 los.populateAliases(modalElement);
                 modalElement.querySelector('#lotCommentEdit--lotId').value = lotId;
                 modalElement.querySelector('#lotCommentEdit--lotCommentId').value = lotCommentId.toString();
-                modalElement.querySelector('#lotCommentEdit--lotComment').value = (_a = lotComment.lotComment) !== null && _a !== void 0 ? _a : '';
+                modalElement.querySelector('#lotCommentEdit--lotComment').value = lotComment.lotComment ?? '';
                 const lotCommentDateStringElement = modalElement.querySelector('#lotCommentEdit--lotCommentDateString');
                 lotCommentDateStringElement.value =
-                    (_b = lotComment.lotCommentDateString) !== null && _b !== void 0 ? _b : '';
+                    lotComment.lotCommentDateString ?? '';
                 const currentDateString = cityssm.dateToString(new Date());
                 lotCommentDateStringElement.max =
                     lotComment.lotCommentDateString <= currentDateString
                         ? currentDateString
-                        : (_c = lotComment.lotCommentDateString) !== null && _c !== void 0 ? _c : '';
-                modalElement.querySelector('#lotCommentEdit--lotCommentTimeString').value = (_d = lotComment.lotCommentTimeString) !== null && _d !== void 0 ? _d : '';
+                        : lotComment.lotCommentDateString ?? '';
+                modalElement.querySelector('#lotCommentEdit--lotCommentTimeString').value = lotComment.lotCommentTimeString ?? '';
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
@@ -248,14 +243,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function deleteLotComment(clickEvent) {
-        var _a, _b;
-        const lotCommentId = Number.parseInt((_b = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.lotCommentId) !== null && _b !== void 0 ? _b : '', 10);
+        const lotCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+            .lotCommentId ?? '', 10);
         function doDelete() {
             cityssm.postJSON(`${los.urlPrefix}/lots/doDeleteLotComment`, {
                 lotId,
                 lotCommentId
             }, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotComments = responseJSON.lotComments;
@@ -264,7 +258,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Removing Comment',
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -281,7 +275,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function renderLotComments() {
-        var _a, _b, _c, _d, _e, _f;
         const containerElement = document.querySelector('#container--lotComments');
         if (lotComments.length === 0) {
             containerElement.innerHTML = `<div class="message is-info">
@@ -300,17 +293,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
       <tbody></tbody>`;
         for (const lotComment of lotComments) {
             const tableRowElement = document.createElement('tr');
-            tableRowElement.dataset.lotCommentId = (_a = lotComment.lotCommentId) === null || _a === void 0 ? void 0 : _a.toString();
+            tableRowElement.dataset.lotCommentId = lotComment.lotCommentId?.toString();
             // eslint-disable-next-line no-unsanitized/property
             tableRowElement.innerHTML = `<td>
-          ${cityssm.escapeHTML((_b = lotComment.recordCreate_userName) !== null && _b !== void 0 ? _b : '')}
+          ${cityssm.escapeHTML(lotComment.recordCreate_userName ?? '')}
         </td><td>
           ${lotComment.lotCommentDateString}
           ${lotComment.lotCommentTime === 0
                 ? ''
                 : ` ${lotComment.lotCommentTimePeriodString}`}
         </td><td>
-          ${cityssm.escapeHTML((_c = lotComment.lotComment) !== null && _c !== void 0 ? _c : '')}
+          ${cityssm.escapeHTML(lotComment.lotComment ?? '')}
         </td><td class="is-hidden-print">
           <div class="buttons are-small is-justify-content-end">
             <button class="button is-primary button--edit" type="button">
@@ -322,11 +315,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </button>
           </div>
         </td>`;
-            (_d = tableRowElement
-                .querySelector('.button--edit')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', openEditLotComment);
-            (_e = tableRowElement
-                .querySelector('.button--delete')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', deleteLotComment);
-            (_f = tableElement.querySelector('tbody')) === null || _f === void 0 ? void 0 : _f.append(tableRowElement);
+            tableRowElement
+                .querySelector('.button--edit')
+                ?.addEventListener('click', openEditLotComment);
+            tableRowElement
+                .querySelector('.button--delete')
+                ?.addEventListener('click', deleteLotComment);
+            tableElement.querySelector('tbody')?.append(tableRowElement);
         }
         containerElement.innerHTML = '';
         containerElement.append(tableElement);
@@ -346,11 +341,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('lot-addComment', {
             onshow(modalElement) {
-                var _a;
                 los.populateAliases(modalElement);
                 modalElement.querySelector('#lotCommentAdd--lotId').value = lotId;
-                (_a = modalElement
-                    .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doAddComment);
+                modalElement
+                    .querySelector('form')
+                    ?.addEventListener('submit', doAddComment);
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
@@ -364,8 +359,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     if (!isCreate) {
-        (_b = document
-            .querySelector('#lotComments--add')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', openAddCommentModal);
+        document
+            .querySelector('#lotComments--add')
+            ?.addEventListener('click', openAddCommentModal);
         renderLotComments();
     }
 })();

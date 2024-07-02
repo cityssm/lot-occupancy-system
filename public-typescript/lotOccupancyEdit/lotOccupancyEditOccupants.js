@@ -1,13 +1,12 @@
 "use strict";
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable unicorn/prefer-module */
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 let lotOccupancyOccupants = exports.lotOccupancyOccupants;
 delete exports.lotOccupancyOccupants;
 function openEditLotOccupancyOccupant(clickEvent) {
-    var _a, _b;
-    const lotOccupantIndex = Number.parseInt((_b = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.lotOccupantIndex) !== null && _b !== void 0 ? _b : '', 10);
+    const lotOccupantIndex = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+        .lotOccupantIndex ?? '', 10);
     const lotOccupancyOccupant = lotOccupancyOccupants.find((currentLotOccupancyOccupant) => {
         return currentLotOccupancyOccupant.lotOccupantIndex === lotOccupantIndex;
     });
@@ -16,7 +15,6 @@ function openEditLotOccupancyOccupant(clickEvent) {
     function editOccupant(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doUpdateLotOccupancyOccupant`, editFormElement, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
@@ -26,7 +24,7 @@ function openEditLotOccupancyOccupant(clickEvent) {
             else {
                 bulmaJS.alert({
                     title: `Error Updating ${los.escapedAliases.Occupant}`,
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -34,7 +32,6 @@ function openEditLotOccupancyOccupant(clickEvent) {
     }
     cityssm.openHtmlModal('lotOccupancy-editOccupant', {
         onshow(modalElement) {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
             los.populateAliases(modalElement);
             modalElement.querySelector('#lotOccupancyOccupantEdit--lotOccupancyId').value = lotOccupancyId;
             modalElement.querySelector('#lotOccupancyOccupantEdit--lotOccupantIndex').value = lotOccupantIndex.toString();
@@ -58,8 +55,8 @@ function openEditLotOccupancyOccupant(clickEvent) {
             if (!lotOccupantTypeSelected) {
                 const optionElement = document.createElement('option');
                 optionElement.value =
-                    (_b = (_a = lotOccupancyOccupant.lotOccupantTypeId) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : '';
-                optionElement.textContent = (_c = lotOccupancyOccupant.lotOccupantType) !== null && _c !== void 0 ? _c : '';
+                    lotOccupancyOccupant.lotOccupantTypeId?.toString() ?? '';
+                optionElement.textContent = lotOccupancyOccupant.lotOccupantType ?? '';
                 optionElement.dataset.occupantCommentTitle =
                     lotOccupancyOccupant.occupantCommentTitle;
                 optionElement.dataset.fontAwesomeIconClass =
@@ -69,34 +66,33 @@ function openEditLotOccupancyOccupant(clickEvent) {
             }
             ;
             modalElement.querySelector('#lotOccupancyOccupantEdit--fontAwesomeIconClass').innerHTML =
-                `<i class="fas fa-fw fa-${cityssm.escapeHTML((_d = lotOccupancyOccupant.fontAwesomeIconClass) !== null && _d !== void 0 ? _d : '')}" aria-hidden="true"></i>`;
-            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantName').value = (_e = lotOccupancyOccupant.occupantName) !== null && _e !== void 0 ? _e : '';
-            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantFamilyName').value = (_f = lotOccupancyOccupant.occupantFamilyName) !== null && _f !== void 0 ? _f : '';
-            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantAddress1').value = (_g = lotOccupancyOccupant.occupantAddress1) !== null && _g !== void 0 ? _g : '';
-            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantAddress2').value = (_h = lotOccupancyOccupant.occupantAddress2) !== null && _h !== void 0 ? _h : '';
-            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantCity').value = (_j = lotOccupancyOccupant.occupantCity) !== null && _j !== void 0 ? _j : '';
-            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantProvince').value = (_k = lotOccupancyOccupant.occupantProvince) !== null && _k !== void 0 ? _k : '';
-            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantPostalCode').value = (_l = lotOccupancyOccupant.occupantPostalCode) !== null && _l !== void 0 ? _l : '';
-            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantPhoneNumber').value = (_m = lotOccupancyOccupant.occupantPhoneNumber) !== null && _m !== void 0 ? _m : '';
-            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantEmailAddress').value = (_o = lotOccupancyOccupant.occupantEmailAddress) !== null && _o !== void 0 ? _o : '';
+                `<i class="fas fa-fw fa-${cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass ?? '')}" aria-hidden="true"></i>`;
+            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantName').value = lotOccupancyOccupant.occupantName ?? '';
+            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantFamilyName').value = lotOccupancyOccupant.occupantFamilyName ?? '';
+            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantAddress1').value = lotOccupancyOccupant.occupantAddress1 ?? '';
+            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantAddress2').value = lotOccupancyOccupant.occupantAddress2 ?? '';
+            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantCity').value = lotOccupancyOccupant.occupantCity ?? '';
+            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantProvince').value = lotOccupancyOccupant.occupantProvince ?? '';
+            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantPostalCode').value = lotOccupancyOccupant.occupantPostalCode ?? '';
+            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantPhoneNumber').value = lotOccupancyOccupant.occupantPhoneNumber ?? '';
+            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantEmailAddress').value = lotOccupancyOccupant.occupantEmailAddress ?? '';
             modalElement.querySelector('#lotOccupancyOccupantEdit--occupantCommentTitle').textContent =
-                ((_p = lotOccupancyOccupant.occupantCommentTitle) !== null && _p !== void 0 ? _p : '') === ''
+                (lotOccupancyOccupant.occupantCommentTitle ?? '') === ''
                     ? 'Comment'
-                    : (_q = lotOccupancyOccupant.occupantCommentTitle) !== null && _q !== void 0 ? _q : '';
-            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantComment').value = (_r = lotOccupancyOccupant.occupantComment) !== null && _r !== void 0 ? _r : '';
+                    : lotOccupancyOccupant.occupantCommentTitle ?? '';
+            modalElement.querySelector('#lotOccupancyOccupantEdit--occupantComment').value = lotOccupancyOccupant.occupantComment ?? '';
         },
         onshown(modalElement, closeModalFunction) {
             bulmaJS.toggleHtmlClipped();
             const lotOccupantTypeIdElement = modalElement.querySelector('#lotOccupancyOccupantEdit--lotOccupantTypeId');
             lotOccupantTypeIdElement.focus();
             lotOccupantTypeIdElement.addEventListener('change', () => {
-                var _a, _b;
-                const fontAwesomeIconClass = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                    .fontAwesomeIconClass) !== null && _a !== void 0 ? _a : 'user';
+                const fontAwesomeIconClass = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                    .fontAwesomeIconClass ?? 'user';
                 modalElement.querySelector('#lotOccupancyOccupantEdit--fontAwesomeIconClass').innerHTML =
                     `<i class="fas fa-fw fa-${cityssm.escapeHTML(fontAwesomeIconClass)}" aria-hidden="true"></i>`;
-                let occupantCommentTitle = (_b = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                    .occupantCommentTitle) !== null && _b !== void 0 ? _b : '';
+                let occupantCommentTitle = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                    .occupantCommentTitle ?? '';
                 if (occupantCommentTitle === '') {
                     occupantCommentTitle = 'Comment';
                 }
@@ -113,14 +109,12 @@ function openEditLotOccupancyOccupant(clickEvent) {
     });
 }
 function deleteLotOccupancyOccupant(clickEvent) {
-    var _a;
-    const lotOccupantIndex = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.lotOccupantIndex;
+    const lotOccupantIndex = clickEvent.currentTarget.closest('tr')?.dataset.lotOccupantIndex;
     function doDelete() {
         cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doDeleteLotOccupancyOccupant`, {
             lotOccupancyId,
             lotOccupantIndex
         }, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
@@ -129,7 +123,7 @@ function deleteLotOccupancyOccupant(clickEvent) {
             else {
                 bulmaJS.alert({
                     title: `Error Removing ${los.escapedAliases.Occupant}`,
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -146,7 +140,6 @@ function deleteLotOccupancyOccupant(clickEvent) {
     });
 }
 function renderLotOccupancyOccupants() {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y;
     const occupantsContainer = document.querySelector('#container--lotOccupancyOccupants');
     cityssm.clearElement(occupantsContainer);
     if (lotOccupancyOccupants.length === 0) {
@@ -170,41 +163,41 @@ function renderLotOccupancyOccupants() {
     for (const lotOccupancyOccupant of lotOccupancyOccupants) {
         const tableRowElement = document.createElement('tr');
         tableRowElement.dataset.lotOccupantIndex =
-            (_a = lotOccupancyOccupant.lotOccupantIndex) === null || _a === void 0 ? void 0 : _a.toString();
+            lotOccupancyOccupant.lotOccupantIndex?.toString();
         // eslint-disable-next-line no-unsanitized/property
         tableRowElement.innerHTML = `<td>
-        ${cityssm.escapeHTML(((_b = lotOccupancyOccupant.occupantName) !== null && _b !== void 0 ? _b : '') === '' &&
-            ((_c = lotOccupancyOccupant.occupantFamilyName) !== null && _c !== void 0 ? _c : '') === ''
+        ${cityssm.escapeHTML((lotOccupancyOccupant.occupantName ?? '') === '' &&
+            (lotOccupancyOccupant.occupantFamilyName ?? '') === ''
             ? '(No Name)'
             : `${lotOccupancyOccupant.occupantName} ${lotOccupancyOccupant.occupantFamilyName}`)}<br />
         <span class="tag">
-          <i class="fas fa-fw fa-${cityssm.escapeHTML((_d = lotOccupancyOccupant.fontAwesomeIconClass) !== null && _d !== void 0 ? _d : '')}" aria-hidden="true"></i>
-          <span class="ml-1">${cityssm.escapeHTML((_e = lotOccupancyOccupant.lotOccupantType) !== null && _e !== void 0 ? _e : '')}</span>
+          <i class="fas fa-fw fa-${cityssm.escapeHTML(lotOccupancyOccupant.fontAwesomeIconClass ?? '')}" aria-hidden="true"></i>
+          <span class="ml-1">${cityssm.escapeHTML(lotOccupancyOccupant.lotOccupantType ?? '')}</span>
         </span>
       </td><td>
-        ${((_f = lotOccupancyOccupant.occupantAddress1) !== null && _f !== void 0 ? _f : '') === ''
+        ${(lotOccupancyOccupant.occupantAddress1 ?? '') === ''
             ? ''
-            : `${cityssm.escapeHTML((_g = lotOccupancyOccupant.occupantAddress1) !== null && _g !== void 0 ? _g : '')}<br />`}
-        ${((_h = lotOccupancyOccupant.occupantAddress2) !== null && _h !== void 0 ? _h : '') === ''
+            : `${cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress1 ?? '')}<br />`}
+        ${(lotOccupancyOccupant.occupantAddress2 ?? '') === ''
             ? ''
-            : `${cityssm.escapeHTML((_j = lotOccupancyOccupant.occupantAddress2) !== null && _j !== void 0 ? _j : '')}<br />`}
-        ${((_k = lotOccupancyOccupant.occupantCity) !== null && _k !== void 0 ? _k : '') === ''
+            : `${cityssm.escapeHTML(lotOccupancyOccupant.occupantAddress2 ?? '')}<br />`}
+        ${(lotOccupancyOccupant.occupantCity ?? '') === ''
             ? ''
-            : `${cityssm.escapeHTML((_l = lotOccupancyOccupant.occupantCity) !== null && _l !== void 0 ? _l : '')}, `}
-        ${cityssm.escapeHTML((_m = lotOccupancyOccupant.occupantProvince) !== null && _m !== void 0 ? _m : '')}<br />
-        ${cityssm.escapeHTML((_o = lotOccupancyOccupant.occupantPostalCode) !== null && _o !== void 0 ? _o : '')}
+            : `${cityssm.escapeHTML(lotOccupancyOccupant.occupantCity ?? '')}, `}
+        ${cityssm.escapeHTML(lotOccupancyOccupant.occupantProvince ?? '')}<br />
+        ${cityssm.escapeHTML(lotOccupancyOccupant.occupantPostalCode ?? '')}
       </td><td>
-        ${((_p = lotOccupancyOccupant.occupantPhoneNumber) !== null && _p !== void 0 ? _p : '') === ''
+        ${(lotOccupancyOccupant.occupantPhoneNumber ?? '') === ''
             ? ''
-            : `${cityssm.escapeHTML((_q = lotOccupancyOccupant.occupantPhoneNumber) !== null && _q !== void 0 ? _q : '')}<br />`}
-        ${((_r = lotOccupancyOccupant.occupantEmailAddress) !== null && _r !== void 0 ? _r : '') === ''
+            : `${cityssm.escapeHTML(lotOccupancyOccupant.occupantPhoneNumber ?? '')}<br />`}
+        ${(lotOccupancyOccupant.occupantEmailAddress ?? '') === ''
             ? ''
-            : cityssm.escapeHTML((_s = lotOccupancyOccupant.occupantEmailAddress) !== null && _s !== void 0 ? _s : '')}
+            : cityssm.escapeHTML(lotOccupancyOccupant.occupantEmailAddress ?? '')}
       </td><td>
-        <span data-tooltip="${cityssm.escapeHTML(((_t = lotOccupancyOccupant.occupantCommentTitle) !== null && _t !== void 0 ? _t : '') === ''
+        <span data-tooltip="${cityssm.escapeHTML((lotOccupancyOccupant.occupantCommentTitle ?? '') === ''
             ? 'Comment'
-            : (_u = lotOccupancyOccupant.occupantCommentTitle) !== null && _u !== void 0 ? _u : '')}">
-        ${cityssm.escapeHTML((_v = lotOccupancyOccupant.occupantComment) !== null && _v !== void 0 ? _v : '')}
+            : lotOccupancyOccupant.occupantCommentTitle ?? '')}">
+        ${cityssm.escapeHTML(lotOccupancyOccupant.occupantComment ?? '')}
         </span>
       </td><td class="is-hidden-print">
         <div class="buttons are-small is-justify-content-end">
@@ -217,24 +210,25 @@ function renderLotOccupancyOccupants() {
           </button>
         </div>
       </td>`;
-        (_w = tableRowElement
-            .querySelector('.button--edit')) === null || _w === void 0 ? void 0 : _w.addEventListener('click', openEditLotOccupancyOccupant);
-        (_x = tableRowElement
-            .querySelector('.button--delete')) === null || _x === void 0 ? void 0 : _x.addEventListener('click', deleteLotOccupancyOccupant);
-        (_y = tableElement.querySelector('tbody')) === null || _y === void 0 ? void 0 : _y.append(tableRowElement);
+        tableRowElement
+            .querySelector('.button--edit')
+            ?.addEventListener('click', openEditLotOccupancyOccupant);
+        tableRowElement
+            .querySelector('.button--delete')
+            ?.addEventListener('click', deleteLotOccupancyOccupant);
+        tableElement.querySelector('tbody')?.append(tableRowElement);
     }
     occupantsContainer.append(tableElement);
 }
 if (isCreate) {
     const lotOccupantTypeIdElement = document.querySelector('#lotOccupancy--lotOccupantTypeId');
     lotOccupantTypeIdElement.addEventListener('change', () => {
-        var _a;
         const occupantFields = formElement.querySelectorAll("[data-table='LotOccupancyOccupant']");
         for (const occupantField of occupantFields) {
             occupantField.disabled = lotOccupantTypeIdElement.value === '';
         }
-        let occupantCommentTitle = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
-            .occupantCommentTitle) !== null && _a !== void 0 ? _a : '';
+        let occupantCommentTitle = lotOccupantTypeIdElement.selectedOptions[0].dataset
+            .occupantCommentTitle ?? '';
         if (occupantCommentTitle === '') {
             occupantCommentTitle = 'Comment';
         }
@@ -245,15 +239,15 @@ if (isCreate) {
 else {
     renderLotOccupancyOccupants();
 }
-(_a = document
-    .querySelector('#button--addOccupant')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
+document
+    .querySelector('#button--addOccupant')
+    ?.addEventListener('click', () => {
     let addCloseModalFunction;
     let addFormElement;
     let searchFormElement;
     let searchResultsElement;
     function addOccupant(formOrObject) {
         cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doAddLotOccupancyOccupant`, formOrObject, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotOccupancyOccupants = responseJSON.lotOccupancyOccupants;
@@ -263,7 +257,7 @@ else {
             else {
                 bulmaJS.alert({
                     title: `Error Adding ${los.escapedAliases.Occupant}`,
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -275,12 +269,12 @@ else {
     }
     let pastOccupantSearchResults = [];
     function addOccupantFromCopy(clickEvent) {
-        var _a, _b;
         clickEvent.preventDefault();
         const panelBlockElement = clickEvent.currentTarget;
-        const occupant = pastOccupantSearchResults[Number.parseInt((_a = panelBlockElement.dataset.index) !== null && _a !== void 0 ? _a : '', 10)];
-        const lotOccupantTypeId = ((_b = panelBlockElement
-            .closest('.modal')) === null || _b === void 0 ? void 0 : _b.querySelector('#lotOccupancyOccupantCopy--lotOccupantTypeId')).value;
+        const occupant = pastOccupantSearchResults[Number.parseInt(panelBlockElement.dataset.index ?? '', 10)];
+        const lotOccupantTypeId = (panelBlockElement
+            .closest('.modal')
+            ?.querySelector('#lotOccupancyOccupantCopy--lotOccupantTypeId')).value;
         if (lotOccupantTypeId === '') {
             bulmaJS.alert({
                 title: `No ${los.escapedAliases.Occupant} Type Selected`,
@@ -306,7 +300,6 @@ else {
         searchResultsElement.innerHTML =
             los.getLoadingParagraphHTML('Searching...');
         cityssm.postJSON(`${los.urlPrefix}/lotOccupancies/doSearchPastOccupants`, searchFormElement, (rawResponseJSON) => {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
             const responseJSON = rawResponseJSON;
             pastOccupantSearchResults = responseJSON.occupants;
             const panelElement = document.createElement('div');
@@ -318,21 +311,21 @@ else {
                 panelBlockElement.dataset.index = index.toString();
                 // eslint-disable-next-line no-unsanitized/property
                 panelBlockElement.innerHTML = `<strong>
-                ${cityssm.escapeHTML((_a = occupant.occupantName) !== null && _a !== void 0 ? _a : '')} ${cityssm.escapeHTML((_b = occupant.occupantFamilyName) !== null && _b !== void 0 ? _b : '')}
+                ${cityssm.escapeHTML(occupant.occupantName ?? '')} ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
               </strong><br />
               <div class="columns">
                 <div class="column">
-                  ${cityssm.escapeHTML((_c = occupant.occupantAddress1) !== null && _c !== void 0 ? _c : '')}<br />
-                  ${((_d = occupant.occupantAddress2) !== null && _d !== void 0 ? _d : '') === ''
+                  ${cityssm.escapeHTML(occupant.occupantAddress1 ?? '')}<br />
+                  ${(occupant.occupantAddress2 ?? '') === ''
                     ? ''
-                    : `${cityssm.escapeHTML((_e = occupant.occupantAddress2) !== null && _e !== void 0 ? _e : '')}<br />`}${cityssm.escapeHTML((_f = occupant.occupantCity) !== null && _f !== void 0 ? _f : '')}, ${cityssm.escapeHTML((_g = occupant.occupantProvince) !== null && _g !== void 0 ? _g : '')}<br />
-                  ${cityssm.escapeHTML((_h = occupant.occupantPostalCode) !== null && _h !== void 0 ? _h : '')}
+                    : `${cityssm.escapeHTML(occupant.occupantAddress2 ?? '')}<br />`}${cityssm.escapeHTML(occupant.occupantCity ?? '')}, ${cityssm.escapeHTML(occupant.occupantProvince ?? '')}<br />
+                  ${cityssm.escapeHTML(occupant.occupantPostalCode ?? '')}
                 </div>
                 <div class="column">
-                ${((_j = occupant.occupantPhoneNumber) !== null && _j !== void 0 ? _j : '') === ''
+                ${(occupant.occupantPhoneNumber ?? '') === ''
                     ? ''
-                    : `${cityssm.escapeHTML((_k = occupant.occupantPhoneNumber) !== null && _k !== void 0 ? _k : '')}<br />`}
-                ${cityssm.escapeHTML((_l = occupant.occupantEmailAddress) !== null && _l !== void 0 ? _l : '')}<br />
+                    : `${cityssm.escapeHTML(occupant.occupantPhoneNumber ?? '')}<br />`}
+                ${cityssm.escapeHTML(occupant.occupantEmailAddress ?? '')}<br />
                 </div>
                 </div>`;
                 panelBlockElement.addEventListener('click', addOccupantFromCopy);
@@ -369,13 +362,12 @@ else {
             const lotOccupantTypeIdElement = modalElement.querySelector('#lotOccupancyOccupantAdd--lotOccupantTypeId');
             lotOccupantTypeIdElement.focus();
             lotOccupantTypeIdElement.addEventListener('change', () => {
-                var _a, _b;
-                const fontAwesomeIconClass = (_a = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                    .fontAwesomeIconClass) !== null && _a !== void 0 ? _a : 'user';
+                const fontAwesomeIconClass = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                    .fontAwesomeIconClass ?? 'user';
                 modalElement.querySelector('#lotOccupancyOccupantAdd--fontAwesomeIconClass').innerHTML =
                     `<i class="fas fa-fw fa-${cityssm.escapeHTML(fontAwesomeIconClass)}" aria-hidden="true"></i>`;
-                let occupantCommentTitle = (_b = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                    .occupantCommentTitle) !== null && _b !== void 0 ? _b : '';
+                let occupantCommentTitle = lotOccupantTypeIdElement.selectedOptions[0].dataset
+                    .occupantCommentTitle ?? '';
                 if (occupantCommentTitle === '') {
                     occupantCommentTitle = 'Comment';
                 }

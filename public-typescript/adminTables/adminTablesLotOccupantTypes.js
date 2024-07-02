@@ -7,7 +7,6 @@ delete exports.lotOccupantTypes;
 function updateLotOccupantType(submitEvent) {
     submitEvent.preventDefault();
     cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateLotOccupantType`, submitEvent.currentTarget, (rawResponseJSON) => {
-        var _a;
         const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             lotOccupantTypes = responseJSON.lotOccupantTypes;
@@ -19,7 +18,7 @@ function updateLotOccupantType(submitEvent) {
         else {
             bulmaJS.alert({
                 title: `Error Updating ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
             });
         }
@@ -32,7 +31,6 @@ function deleteLotOccupantType(clickEvent) {
         cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteLotOccupantType`, {
             lotOccupantTypeId
         }, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
@@ -50,7 +48,7 @@ function deleteLotOccupantType(clickEvent) {
             else {
                 bulmaJS.alert({
                     title: `Error Deleting ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -78,7 +76,6 @@ function moveLotOccupantType(clickEvent) {
         lotOccupantTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
     }, (rawResponseJSON) => {
-        var _a;
         const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             lotOccupantTypes = responseJSON.lotOccupantTypes;
@@ -87,14 +84,13 @@ function moveLotOccupantType(clickEvent) {
         else {
             bulmaJS.alert({
                 title: `Error Moving ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
             });
         }
     });
 }
 function renderLotOccupantTypes() {
-    var _a, _b;
     const containerElement = document.querySelector('#container--lotOccupantTypes');
     if (lotOccupantTypes.length === 0) {
         // eslint-disable-next-line no-unsanitized/property
@@ -173,12 +169,14 @@ function renderLotOccupantTypes() {
         const fontAwesomeInputElement = tableRowElement.querySelector("input[name='fontAwesomeIconClass']");
         fontAwesomeInputElement.addEventListener('keyup', refreshFontAwesomeIcon);
         fontAwesomeInputElement.addEventListener('change', refreshFontAwesomeIcon);
-        (_a = tableRowElement
-            .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', updateLotOccupantType);
+        tableRowElement
+            .querySelector('form')
+            ?.addEventListener('submit', updateLotOccupantType);
         tableRowElement.querySelector('.button--moveLotOccupantTypeUp').addEventListener('click', moveLotOccupantType);
         tableRowElement.querySelector('.button--moveLotOccupantTypeDown').addEventListener('click', moveLotOccupantType);
-        (_b = tableRowElement
-            .querySelector('.button--deleteLotOccupantType')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', deleteLotOccupantType);
+        tableRowElement
+            .querySelector('.button--deleteLotOccupantType')
+            ?.addEventListener('click', deleteLotOccupantType);
         containerElement.append(tableRowElement);
     }
 }
@@ -187,18 +185,17 @@ document.querySelector('#form--addLotOccupantType').addEventListener('submit', (
     submitEvent.preventDefault();
     const formElement = submitEvent.currentTarget;
     cityssm.postJSON(`${los.urlPrefix}/admin/doAddLotOccupantType`, formElement, (rawResponseJSON) => {
-        var _a, _b;
         const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             lotOccupantTypes = responseJSON.lotOccupantTypes;
             renderLotOccupantTypes();
             formElement.reset();
-            (_a = formElement.querySelector('input')) === null || _a === void 0 ? void 0 : _a.focus();
+            formElement.querySelector('input')?.focus();
         }
         else {
             bulmaJS.alert({
                 title: `Error Adding ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                message: (_b = responseJSON.errorMessage) !== null && _b !== void 0 ? _b : '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
             });
         }

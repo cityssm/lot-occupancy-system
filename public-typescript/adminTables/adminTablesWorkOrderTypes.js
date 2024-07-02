@@ -7,7 +7,6 @@ delete exports.workOrderTypes;
 function updateWorkOrderType(submitEvent) {
     submitEvent.preventDefault();
     cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateWorkOrderType`, submitEvent.currentTarget, (rawResponseJSON) => {
-        var _a;
         const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderTypes = responseJSON.workOrderTypes;
@@ -19,7 +18,7 @@ function updateWorkOrderType(submitEvent) {
         else {
             bulmaJS.alert({
                 title: 'Error Updating Work Order Type',
-                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
             });
         }
@@ -32,7 +31,6 @@ function deleteWorkOrderType(clickEvent) {
         cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteWorkOrderType`, {
             workOrderTypeId
         }, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
@@ -50,7 +48,7 @@ function deleteWorkOrderType(clickEvent) {
             else {
                 bulmaJS.alert({
                     title: 'Error Deleting Work Order Type',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -78,7 +76,6 @@ function moveWorkOrderType(clickEvent) {
         workOrderTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
     }, (rawResponseJSON) => {
-        var _a;
         const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderTypes = responseJSON.workOrderTypes;
@@ -87,14 +84,13 @@ function moveWorkOrderType(clickEvent) {
         else {
             bulmaJS.alert({
                 title: 'Error Moving Work Order Type',
-                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
             });
         }
     });
 }
 function renderWorkOrderTypes() {
-    var _a, _b, _c;
     const containerElement = document.querySelector('#container--workOrderTypes');
     if (workOrderTypes.length === 0) {
         containerElement.innerHTML = `<tr><td colspan="2">
@@ -114,7 +110,7 @@ function renderWorkOrderTypes() {
           <div class="field has-addons">
             <div class="control">
               <input class="input" name="workOrderType" type="text"
-                value="${cityssm.escapeHTML((_a = workOrderType.workOrderType) !== null && _a !== void 0 ? _a : '')}" maxlength="100" aria-label="Work Order Type" required />
+                value="${cityssm.escapeHTML(workOrderType.workOrderType ?? '')}" maxlength="100" aria-label="Work Order Type" required />
             </div>
             <div class="control">
               <button class="button is-success" type="submit" aria-label="Save">
@@ -135,12 +131,14 @@ function renderWorkOrderTypes() {
           </div>
         </div>
       </td>`;
-        (_b = tableRowElement
-            .querySelector('form')) === null || _b === void 0 ? void 0 : _b.addEventListener('submit', updateWorkOrderType);
+        tableRowElement
+            .querySelector('form')
+            ?.addEventListener('submit', updateWorkOrderType);
         tableRowElement.querySelector('.button--moveWorkOrderTypeUp').addEventListener('click', moveWorkOrderType);
         tableRowElement.querySelector('.button--moveWorkOrderTypeDown').addEventListener('click', moveWorkOrderType);
-        (_c = tableRowElement
-            .querySelector('.button--deleteWorkOrderType')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', deleteWorkOrderType);
+        tableRowElement
+            .querySelector('.button--deleteWorkOrderType')
+            ?.addEventListener('click', deleteWorkOrderType);
         containerElement.append(tableRowElement);
     }
 }
@@ -149,18 +147,17 @@ document.querySelector('#form--addWorkOrderType').addEventListener('submit', (su
     submitEvent.preventDefault();
     const formElement = submitEvent.currentTarget;
     cityssm.postJSON(`${los.urlPrefix}/admin/doAddWorkOrderType`, formElement, (rawResponseJSON) => {
-        var _a, _b;
         const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderTypes = responseJSON.workOrderTypes;
             renderWorkOrderTypes();
             formElement.reset();
-            (_a = formElement.querySelector('input')) === null || _a === void 0 ? void 0 : _a.focus();
+            formElement.querySelector('input')?.focus();
         }
         else {
             bulmaJS.alert({
                 title: 'Error Adding Work Order Type',
-                message: (_b = responseJSON.errorMessage) !== null && _b !== void 0 ? _b : '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
             });
         }

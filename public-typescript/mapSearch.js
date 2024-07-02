@@ -3,13 +3,11 @@
 /* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a;
     const los = exports.los;
     const maps = exports.maps;
     const searchFilterElement = document.querySelector('#searchFilter--map');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     function renderResults() {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
         // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Maps}...`);
         let searchResultCount = 0;
@@ -19,7 +17,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .toLowerCase()
             .split(' ');
         for (const map of maps) {
-            const mapSearchString = `${(_a = map.mapName) !== null && _a !== void 0 ? _a : ''} ${(_b = map.mapDescription) !== null && _b !== void 0 ? _b : ''} ${(_c = map.mapAddress1) !== null && _c !== void 0 ? _c : ''} ${(_d = map.mapAddress2) !== null && _d !== void 0 ? _d : ''}`.toLowerCase();
+            const mapSearchString = `${map.mapName ?? ''} ${map.mapDescription ?? ''} ${map.mapAddress1 ?? ''} ${map.mapAddress2 ?? ''}`.toLowerCase();
             let showMap = true;
             for (const filterStringPiece of filterStringSplit) {
                 if (!mapSearchString.includes(filterStringPiece)) {
@@ -35,26 +33,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
             searchResultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
           <td>
             <a class="has-text-weight-bold" href="${los.getMapURL(map.mapId)}">
-              ${cityssm.escapeHTML(((_e = map.mapName) !== null && _e !== void 0 ? _e : '') === '' ? '(No Name)' : (_f = map.mapName) !== null && _f !== void 0 ? _f : '')}
+              ${cityssm.escapeHTML((map.mapName ?? '') === '' ? '(No Name)' : map.mapName ?? '')}
             </a><br />
             <span class="is-size-7">
-              ${cityssm.escapeHTML((_g = map.mapDescription) !== null && _g !== void 0 ? _g : '')}
+              ${cityssm.escapeHTML(map.mapDescription ?? '')}
             </span>
           </td><td>
-            ${((_h = map.mapAddress1) !== null && _h !== void 0 ? _h : '') === ''
+            ${(map.mapAddress1 ?? '') === ''
                 ? ''
-                : `${cityssm.escapeHTML((_j = map.mapAddress1) !== null && _j !== void 0 ? _j : '')}<br />`}
-            ${((_k = map.mapAddress2) !== null && _k !== void 0 ? _k : '') === ''
+                : `${cityssm.escapeHTML(map.mapAddress1 ?? '')}<br />`}
+            ${(map.mapAddress2 ?? '') === ''
                 ? ''
-                : `${cityssm.escapeHTML((_l = map.mapAddress2) !== null && _l !== void 0 ? _l : '')}<br />`}
+                : `${cityssm.escapeHTML(map.mapAddress2 ?? '')}<br />`}
             ${map.mapCity || map.mapProvince
-                ? `${cityssm.escapeHTML((_m = map.mapCity) !== null && _m !== void 0 ? _m : '')}, ${cityssm.escapeHTML((_o = map.mapProvince) !== null && _o !== void 0 ? _o : '')}<br />`
+                ? `${cityssm.escapeHTML(map.mapCity ?? '')}, ${cityssm.escapeHTML(map.mapProvince ?? '')}<br />`
                 : ''}
-            ${((_p = map.mapPostalCode) !== null && _p !== void 0 ? _p : '') === ''
+            ${(map.mapPostalCode ?? '') === ''
                 ? ''
-                : cityssm.escapeHTML((_q = map.mapPostalCode) !== null && _q !== void 0 ? _q : '')}
+                : cityssm.escapeHTML(map.mapPostalCode ?? '')}
           </td><td>
-            ${cityssm.escapeHTML((_r = map.mapPhoneNumber) !== null && _r !== void 0 ? _r : '')}
+            ${cityssm.escapeHTML(map.mapPhoneNumber ?? '')}
           </td><td class="has-text-centered">
             ${map.mapLatitude && map.mapLongitude
                 ? `<span data-tooltip="Has Geographic Coordinates">
@@ -62,7 +60,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     </span>`
                 : ''}
           </td><td class="has-text-centered">
-            ${((_s = map.mapSVG) !== null && _s !== void 0 ? _s : '') === ''
+            ${(map.mapSVG ?? '') === ''
                 ? ''
                 : '<span data-tooltip="Has Image"><i class="fas fa-image" aria-label="Has Image"></i></span>'}
           </td><td class="has-text-right">
@@ -95,8 +93,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     }
     searchFilterElement.addEventListener('keyup', renderResults);
-    (_a = document
-        .querySelector('#form--searchFilters')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', (formEvent) => {
+    document
+        .querySelector('#form--searchFilters')
+        ?.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
         renderResults();
     });

@@ -7,10 +7,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const los = exports.los;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function refreshFontAwesomeIcon(changeEvent) {
-        var _a;
         const inputElement = changeEvent.currentTarget;
         const fontAwesomeIconClass = inputElement.value;
-        ((_a = inputElement.closest('.field')) === null || _a === void 0 ? void 0 : _a.querySelectorAll('.button.is-static'
+        (inputElement.closest('.field')?.querySelectorAll('.button.is-static'
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         ))[1].innerHTML =
             `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;

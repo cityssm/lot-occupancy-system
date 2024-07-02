@@ -2,11 +2,9 @@
 /* @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a, _b;
     const los = exports.los;
     function doBackup() {
         cityssm.postJSON(`${los.urlPrefix}/admin/doBackupDatabase`, {}, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 bulmaJS.alert({
@@ -20,7 +18,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Backing Up Database',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -28,7 +26,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function doCleanup() {
         cityssm.postJSON(`${los.urlPrefix}/admin/doCleanupDatabase`, {}, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 bulmaJS.alert({
@@ -41,14 +38,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Cleaning Database',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
         });
     }
-    (_a = document
-        .querySelector('#button--cleanupDatabase')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
+    document
+        .querySelector('#button--cleanupDatabase')
+        ?.addEventListener('click', () => {
         bulmaJS.confirm({
             title: 'Cleanup Database',
             message: 'Are you sure you want to cleanup up the database?',
@@ -58,8 +56,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    (_b = document
-        .querySelector('#button--backupDatabase')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => {
+    document
+        .querySelector('#button--backupDatabase')
+        ?.addEventListener('click', () => {
         bulmaJS.confirm({
             title: 'Backup Database',
             message: 'Are you sure you want to backup up the database?',

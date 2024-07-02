@@ -9,7 +9,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const workOrderMilestoneDateStringElement = workOrderSearchFiltersFormElement.querySelector('#searchFilter--workOrderMilestoneDateString');
     const milestoneCalendarContainerElement = document.querySelector('#container--milestoneCalendar');
     function renderMilestones(workOrderMilestones) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q;
         if (workOrderMilestones.length === 0) {
             milestoneCalendarContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no milestones that meet the search criteria.</p>
@@ -30,9 +29,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 currentPanelElement.innerHTML = `<h2 class="panel-heading">
           ${cityssm.escapeHTML(milestone.workOrderMilestoneDate === 0
                     ? 'No Set Date'
-                    : (_a = milestone.workOrderMilestoneDateString) !== null && _a !== void 0 ? _a : '')}
+                    : milestone.workOrderMilestoneDateString ?? '')}
           </h2>`;
-                currentPanelDateString = (_b = milestone.workOrderMilestoneDateString) !== null && _b !== void 0 ? _b : '';
+                currentPanelDateString = milestone.workOrderMilestoneDateString ?? '';
             }
             const panelBlockElement = document.createElement('div');
             panelBlockElement.className = 'panel-block is-block';
@@ -42,26 +41,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 panelBlockElement.classList.add('has-background-warning-light');
             }
             let lotOccupancyHTML = '';
-            for (const lot of (_c = milestone.workOrderLots) !== null && _c !== void 0 ? _c : []) {
+            for (const lot of milestone.workOrderLots ?? []) {
                 lotOccupancyHTML += `<li class="has-tooltip-left"
-          data-tooltip="${cityssm.escapeHTML((_d = lot.mapName) !== null && _d !== void 0 ? _d : '')}">
+          data-tooltip="${cityssm.escapeHTML(lot.mapName ?? '')}">
           <span class="fa-li">
           <i class="fas fa-vector-square"
             aria-label="${los.escapedAliases.Lot}"></i>
           </span>
-          ${cityssm.escapeHTML((_e = lot.lotName) !== null && _e !== void 0 ? _e : '')}
+          ${cityssm.escapeHTML(lot.lotName ?? '')}
           </li>`;
             }
-            for (const lotOccupancy of (_f = milestone.workOrderLotOccupancies) !== null && _f !== void 0 ? _f : []) {
-                for (const occupant of (_g = lotOccupancy.lotOccupancyOccupants) !== null && _g !== void 0 ? _g : []) {
+            for (const lotOccupancy of milestone.workOrderLotOccupancies ?? []) {
+                for (const occupant of lotOccupancy.lotOccupancyOccupants ?? []) {
                     lotOccupancyHTML += `<li class="has-tooltip-left"
-            data-tooltip="${cityssm.escapeHTML((_h = occupant.lotOccupantType) !== null && _h !== void 0 ? _h : '')}">
+            data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
             <span class="fa-li">
             <i class="fas fa-user"
               aria-label="${los.escapedAliases.Occupancy}"></i>
             </span>
-            ${cityssm.escapeHTML((_j = occupant.occupantName) !== null && _j !== void 0 ? _j : '')}
-            ${cityssm.escapeHTML((_k = occupant.occupantFamilyName) !== null && _k !== void 0 ? _k : '')}
+            ${cityssm.escapeHTML(occupant.occupantName ?? '')}
+            ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
             </li>`;
                 }
             }
@@ -78,17 +77,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ? ''
                 : `${milestone.workOrderMilestoneTimePeriodString}<br />`}
           ${milestone.workOrderMilestoneTypeId
-                ? `<strong>${cityssm.escapeHTML((_l = milestone.workOrderMilestoneType) !== null && _l !== void 0 ? _l : '')}</strong><br />`
+                ? `<strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong><br />`
                 : ''}
           <span class="is-size-7">
-            ${cityssm.escapeHTML((_m = milestone.workOrderMilestoneDescription) !== null && _m !== void 0 ? _m : '')}
+            ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}
           </span>
         </div><div class="column">
-          <i class="fas fa-circle" style="color:${los.getRandomColor((_o = milestone.workOrderNumber) !== null && _o !== void 0 ? _o : '')}" aria-hidden="true"></i>
+          <i class="fas fa-circle" style="color:${los.getRandomColor(milestone.workOrderNumber ?? '')}" aria-hidden="true"></i>
           <a class="has-text-weight-bold" href="${los.getWorkOrderURL(milestone.workOrderId)}">
-            ${cityssm.escapeHTML((_p = milestone.workOrderNumber) !== null && _p !== void 0 ? _p : '')}
+            ${cityssm.escapeHTML(milestone.workOrderNumber ?? '')}
           </a><br />
-          <span class="is-size-7">${cityssm.escapeHTML((_q = milestone.workOrderDescription) !== null && _q !== void 0 ? _q : '')}</span>
+          <span class="is-size-7">${cityssm.escapeHTML(milestone.workOrderDescription ?? '')}</span>
         </div><div class="column is-size-7">
           ${lotOccupancyHTML === ''
                 ? ''

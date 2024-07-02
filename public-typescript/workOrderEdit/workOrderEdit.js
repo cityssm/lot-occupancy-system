@@ -3,30 +3,29 @@
 /* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a, _b, _c, _d;
     const los = exports.los;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     const isCreate = workOrderId === '';
     const workOrderFormElement = document.querySelector('#form--workOrderEdit');
-    los.initializeDatePickers((_a = workOrderFormElement
-        .querySelector('#workOrderEdit--workOrderOpenDateString')) === null || _a === void 0 ? void 0 : _a.closest('.field'));
+    los.initializeDatePickers(workOrderFormElement
+        .querySelector('#workOrderEdit--workOrderOpenDateString')
+        ?.closest('.field'));
     los.initializeUnlockFieldButtons(workOrderFormElement);
     function setUnsavedChanges() {
-        var _a;
         los.setUnsavedChanges();
-        (_a = document
-            .querySelector("button[type='submit'][form='form--workOrderEdit']")) === null || _a === void 0 ? void 0 : _a.classList.remove('is-light');
+        document
+            .querySelector("button[type='submit'][form='form--workOrderEdit']")
+            ?.classList.remove('is-light');
     }
     function clearUnsavedChanges() {
-        var _a;
         los.clearUnsavedChanges();
-        (_a = document
-            .querySelector("button[type='submit'][form='form--workOrderEdit']")) === null || _a === void 0 ? void 0 : _a.classList.add('is-light');
+        document
+            .querySelector("button[type='submit'][form='form--workOrderEdit']")
+            ?.classList.add('is-light');
     }
     workOrderFormElement.addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         cityssm.postJSON(`${los.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`, submitEvent.currentTarget, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
@@ -43,7 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Updating Work Order',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -60,7 +59,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.postJSON(`${los.urlPrefix}/workOrders/doCloseWorkOrder`, {
             workOrderId
         }, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
@@ -69,7 +67,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Closing Work Order',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -79,7 +77,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrder`, {
             workOrderId
         }, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
@@ -88,15 +85,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Deleting Work Order',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
         });
     }
     let workOrderMilestones;
-    (_b = document
-        .querySelector('#button--closeWorkOrder')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => {
+    document
+        .querySelector('#button--closeWorkOrder')
+        ?.addEventListener('click', () => {
         const hasOpenMilestones = workOrderMilestones.some((milestone) => {
             return !milestone.workOrderMilestoneCompletionDate;
         });
@@ -135,8 +133,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
     });
-    (_c = document
-        .querySelector('#button--deleteWorkOrder')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', (clickEvent) => {
+    document
+        .querySelector('#button--deleteWorkOrder')
+        ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         bulmaJS.confirm({
             title: 'Delete Work Order',
@@ -177,7 +176,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             workOrderMilestoneDateFilter: 'date',
             workOrderMilestoneDateString
         }, (rawResponseJSON) => {
-            var _a, _b, _c, _d;
             const responseJSON = rawResponseJSON;
             const workOrderMilestones = responseJSON.workOrderMilestones.filter((possibleMilestone) => {
                 return possibleMilestone.workOrderId.toString() !== workOrderId;
@@ -187,13 +185,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 targetPanelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
               <div class="columns">
                 <div class="column is-5">
-                  ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === 0 ? 'No Time' : (_a = milestone.workOrderMilestoneTimePeriodString) !== null && _a !== void 0 ? _a : '')}<br />
-                  <strong>${cityssm.escapeHTML((_b = milestone.workOrderMilestoneType) !== null && _b !== void 0 ? _b : '')}</strong>
+                  ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === 0 ? 'No Time' : milestone.workOrderMilestoneTimePeriodString ?? '')}<br />
+                  <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
                 </div>
                 <div class="column">
-                  ${cityssm.escapeHTML((_c = milestone.workOrderNumber) !== null && _c !== void 0 ? _c : '')}<br />
+                  ${cityssm.escapeHTML(milestone.workOrderNumber ?? '')}<br />
                   <span class="is-size-7">
-                    ${cityssm.escapeHTML((_d = milestone.workOrderDescription) !== null && _d !== void 0 ? _d : '')}
+                    ${cityssm.escapeHTML(milestone.workOrderDescription ?? '')}
                   </span>
                 </div>
               </div>
@@ -212,7 +210,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function processMilestoneResponse(rawResponseJSON) {
-        var _a;
         const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
             workOrderMilestones = responseJSON.workOrderMilestones;
@@ -221,16 +218,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
         else {
             bulmaJS.alert({
                 title: 'Error Reopening Milestone',
-                message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
             });
         }
     }
     function completeMilestone(clickEvent) {
-        var _a;
         clickEvent.preventDefault();
         const currentDateString = cityssm.dateToString(new Date());
-        const workOrderMilestoneId = Number.parseInt((_a = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId) !== null && _a !== void 0 ? _a : '', 10);
+        const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId ?? '', 10);
         const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
             return currentMilestone.workOrderMilestoneId === workOrderMilestoneId;
         });
@@ -295,9 +291,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function editMilestone(clickEvent) {
-        var _a;
         clickEvent.preventDefault();
-        const workOrderMilestoneId = Number.parseInt((_a = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId) !== null && _a !== void 0 ? _a : '', 10);
+        const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId ?? '', 10);
         const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
             return currentMilestone.workOrderMilestoneId === workOrderMilestoneId;
         });
@@ -315,10 +310,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('workOrder-editMilestone', {
             onshow(modalElement) {
-                var _a, _b, _c, _d, _e, _f;
                 ;
                 modalElement.querySelector('#milestoneEdit--workOrderId').value = workOrderId;
-                modalElement.querySelector('#milestoneEdit--workOrderMilestoneId').value = (_b = (_a = workOrderMilestone.workOrderMilestoneId) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : '';
+                modalElement.querySelector('#milestoneEdit--workOrderMilestoneId').value = workOrderMilestone.workOrderMilestoneId?.toString() ?? '';
                 const milestoneTypeElement = modalElement.querySelector('#milestoneEdit--workOrderMilestoneTypeId');
                 let milestoneTypeFound = false;
                 for (const milestoneType of exports.workOrderMilestoneTypes) {
@@ -339,27 +333,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     optionElement.value =
                         workOrderMilestone.workOrderMilestoneTypeId.toString();
                     optionElement.textContent =
-                        (_c = workOrderMilestone.workOrderMilestoneType) !== null && _c !== void 0 ? _c : '';
+                        workOrderMilestone.workOrderMilestoneType ?? '';
                     optionElement.selected = true;
                     milestoneTypeElement.append(optionElement);
                 }
                 workOrderMilestoneDateStringElement = modalElement.querySelector('#milestoneEdit--workOrderMilestoneDateString');
                 workOrderMilestoneDateStringElement.value =
-                    (_d = workOrderMilestone.workOrderMilestoneDateString) !== null && _d !== void 0 ? _d : '';
+                    workOrderMilestone.workOrderMilestoneDateString ?? '';
                 if (workOrderMilestone.workOrderMilestoneTime) {
                     ;
-                    modalElement.querySelector('#milestoneEdit--workOrderMilestoneTimeString').value = (_e = workOrderMilestone.workOrderMilestoneTimeString) !== null && _e !== void 0 ? _e : '';
+                    modalElement.querySelector('#milestoneEdit--workOrderMilestoneTimeString').value = workOrderMilestone.workOrderMilestoneTimeString ?? '';
                 }
                 ;
-                modalElement.querySelector('#milestoneEdit--workOrderMilestoneDescription').value = (_f = workOrderMilestone.workOrderMilestoneDescription) !== null && _f !== void 0 ? _f : '';
+                modalElement.querySelector('#milestoneEdit--workOrderMilestoneDescription').value = workOrderMilestone.workOrderMilestoneDescription ?? '';
             },
             onshown(modalElement, closeModalFunction) {
-                var _a;
                 editCloseModalFunction = closeModalFunction;
                 bulmaJS.toggleHtmlClipped();
                 los.initializeDatePickers(modalElement);
                 // los.initializeTimePickers(modalElement);
-                (_a = modalElement.querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doEdit);
+                modalElement.querySelector('form')?.addEventListener('submit', doEdit);
                 const conflictingMilestonePanelElement = document.querySelector('#milestoneEdit--conflictingMilestonesPanel');
                 workOrderMilestoneDateStringElement.addEventListener('change', () => {
                     refreshConflictingMilestones(workOrderMilestoneDateStringElement.value, conflictingMilestonePanelElement);
@@ -372,7 +365,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function renderMilestones() {
-        var _a, _b, _c, _d, _e, _f, _g;
         // Clear milestones panel
         const milestonesPanelElement = document.querySelector('#panel--milestones');
         const panelBlockElementsToDelete = milestonesPanelElement.querySelectorAll('.panel-block');
@@ -383,7 +375,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const panelBlockElement = document.createElement('div');
             panelBlockElement.className = 'panel-block is-block container--milestone';
             panelBlockElement.dataset.workOrderMilestoneId =
-                (_a = milestone.workOrderMilestoneId) === null || _a === void 0 ? void 0 : _a.toString();
+                milestone.workOrderMilestoneId?.toString();
             // eslint-disable-next-line no-unsanitized/property
             panelBlockElement.innerHTML = `<div class="columns is-mobile">
         <div class="column is-narrow">
@@ -398,7 +390,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                   </button>`}
         </div><div class="column">
           ${milestone.workOrderMilestoneTypeId
-                ? `<strong>${cityssm.escapeHTML((_b = milestone.workOrderMilestoneType) !== null && _b !== void 0 ? _b : '')}</strong><br />`
+                ? `<strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong><br />`
                 : ''}
           ${milestone.workOrderMilestoneDate === 0
                 ? '<span class="has-text-grey">(No Set Date)</span>'
@@ -407,7 +399,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ? ` ${milestone.workOrderMilestoneTimePeriodString}`
                 : ''}<br />
           <span class="is-size-7">
-            ${cityssm.escapeHTML((_c = milestone.workOrderMilestoneDescription) !== null && _c !== void 0 ? _c : '')}
+            ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}
           </span>
         </div><div class="column is-narrow">
           <div class="dropdown is-right">
@@ -436,14 +428,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </div>
           </div>
         </div></div>`;
-            (_d = panelBlockElement
-                .querySelector('.button--reopenMilestone')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', reopenMilestone);
-            (_e = panelBlockElement
-                .querySelector('.button--editMilestone')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', editMilestone);
-            (_f = panelBlockElement
-                .querySelector('.button--completeMilestone')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', completeMilestone);
-            (_g = panelBlockElement
-                .querySelector('.button--deleteMilestone')) === null || _g === void 0 ? void 0 : _g.addEventListener('click', deleteMilestone);
+            panelBlockElement
+                .querySelector('.button--reopenMilestone')
+                ?.addEventListener('click', reopenMilestone);
+            panelBlockElement
+                .querySelector('.button--editMilestone')
+                ?.addEventListener('click', editMilestone);
+            panelBlockElement
+                .querySelector('.button--completeMilestone')
+                ?.addEventListener('click', completeMilestone);
+            panelBlockElement
+                .querySelector('.button--deleteMilestone')
+                ?.addEventListener('click', deleteMilestone);
             milestonesPanelElement.append(panelBlockElement);
         }
         bulmaJS.init(milestonesPanelElement);
@@ -453,8 +449,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             exports.workOrderMilestones;
         delete exports.workOrderMilestones;
         renderMilestones();
-        (_d = document
-            .querySelector('#button--addMilestone')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', () => {
+        document
+            .querySelector('#button--addMilestone')
+            ?.addEventListener('click', () => {
             let addFormElement;
             let workOrderMilestoneDateStringElement;
             let addCloseModalFunction;

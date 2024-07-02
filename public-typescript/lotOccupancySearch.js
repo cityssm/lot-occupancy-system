@@ -9,7 +9,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
     function renderLotOccupancies(rawResponseJSON) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
         const responseJSON = rawResponseJSON;
         if (responseJSON.lotOccupancies.length === 0) {
             // eslint-disable-next-line no-unsanitized/property
@@ -42,26 +41,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </span>`;
             }
             let occupantsHTML = '';
-            for (const occupant of (_a = lotOccupancy.lotOccupancyOccupants) !== null && _a !== void 0 ? _a : []) {
-                occupantsHTML += `<li class="has-tooltip-left" data-tooltip="${cityssm.escapeHTML((_b = occupant.lotOccupantType) !== null && _b !== void 0 ? _b : '')}">
+            for (const occupant of lotOccupancy.lotOccupancyOccupants ?? []) {
+                occupantsHTML += `<li class="has-tooltip-left" data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
           <span class="fa-li">
-            <i class="fas fa-fw fa-${cityssm.escapeHTML(((_c = occupant.fontAwesomeIconClass) !== null && _c !== void 0 ? _c : '') === ''
+            <i class="fas fa-fw fa-${cityssm.escapeHTML((occupant.fontAwesomeIconClass ?? '') === ''
                     ? 'user'
-                    : (_d = occupant.fontAwesomeIconClass) !== null && _d !== void 0 ? _d : '')}" aria-hidden="true"></i>
+                    : occupant.fontAwesomeIconClass ?? '')}" aria-hidden="true"></i>
           </span>
-          ${cityssm.escapeHTML((_e = occupant.occupantName) !== null && _e !== void 0 ? _e : '')}
-          ${cityssm.escapeHTML((_f = occupant.occupantFamilyName) !== null && _f !== void 0 ? _f : '')}
+          ${cityssm.escapeHTML(occupant.occupantName ?? '')}
+          ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
           </li>`;
             }
-            const feeTotal = ((_h = (_g = lotOccupancy.lotOccupancyFees) === null || _g === void 0 ? void 0 : _g.reduce((soFar, currentFee) => {
-                var _a, _b, _c;
+            const feeTotal = (lotOccupancy.lotOccupancyFees?.reduce((soFar, currentFee) => {
                 return (soFar +
-                    (((_a = currentFee.feeAmount) !== null && _a !== void 0 ? _a : 0) + ((_b = currentFee.taxAmount) !== null && _b !== void 0 ? _b : 0)) *
-                        ((_c = currentFee.quantity) !== null && _c !== void 0 ? _c : 0));
-            }, 0)) !== null && _h !== void 0 ? _h : 0).toFixed(2);
-            const transactionTotal = ((_k = (_j = lotOccupancy.lotOccupancyTransactions) === null || _j === void 0 ? void 0 : _j.reduce((soFar, currentTransaction) => {
+                    ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
+                        (currentFee.quantity ?? 0));
+            }, 0) ?? 0).toFixed(2);
+            const transactionTotal = (lotOccupancy.lotOccupancyTransactions?.reduce((soFar, currentTransaction) => {
                 return soFar + currentTransaction.transactionAmount;
-            }, 0)) !== null && _k !== void 0 ? _k : 0).toFixed(2);
+            }, 0) ?? 0).toFixed(2);
             let feeIconHTML = '';
             if (feeTotal !== '0.00' || transactionTotal !== '0.00') {
                 feeIconHTML = `<span class="icon"
@@ -79,14 +77,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </td><td>
             <a class="has-text-weight-bold"
               href="${los.getLotOccupancyURL(lotOccupancy.lotOccupancyId)}">
-              ${cityssm.escapeHTML((_l = lotOccupancy.occupancyType) !== null && _l !== void 0 ? _l : '')}
+              ${cityssm.escapeHTML(lotOccupancy.occupancyType ?? '')}
             </a><br />
             <span class="is-size-7">#${lotOccupancy.lotOccupancyId}</span>
           </td><td>
-            ${((_m = lotOccupancy.lotId) !== null && _m !== void 0 ? _m : -1) === -1
+            ${(lotOccupancy.lotId ?? -1) === -1
                 ? `<span class="has-text-grey">(No ${los.escapedAliases.Lot})</span>`
-                : `<a class="has-tooltip-right" data-tooltip="${cityssm.escapeHTML((_o = lotOccupancy.lotType) !== null && _o !== void 0 ? _o : '')}" href="${los.getLotURL(lotOccupancy.lotId)}">${cityssm.escapeHTML((_p = lotOccupancy.lotName) !== null && _p !== void 0 ? _p : '')}</a>`}<br />
-            <span class="is-size-7">${cityssm.escapeHTML((_q = lotOccupancy.mapName) !== null && _q !== void 0 ? _q : '')}</span>
+                : `<a class="has-tooltip-right" data-tooltip="${cityssm.escapeHTML(lotOccupancy.lotType ?? '')}" href="${los.getLotURL(lotOccupancy.lotId)}">${cityssm.escapeHTML(lotOccupancy.lotName ?? '')}</a>`}<br />
+            <span class="is-size-7">${cityssm.escapeHTML(lotOccupancy.mapName ?? '')}</span>
           </td><td>
             ${lotOccupancy.occupancyStartDateString}
           </td><td>
@@ -120,14 +118,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
       <th class="has-width-1"><span class="is-sr-only">Print</span></th>
       </tr></thead>
       <table>`;
-        (_r = searchResultsContainerElement
-            .querySelector('table')) === null || _r === void 0 ? void 0 : _r.append(resultsTbodyElement);
+        searchResultsContainerElement
+            .querySelector('table')
+            ?.append(resultsTbodyElement);
         // eslint-disable-next-line no-unsanitized/method
         searchResultsContainerElement.insertAdjacentHTML('beforeend', los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
-        (_s = searchResultsContainerElement
-            .querySelector("button[data-page='previous']")) === null || _s === void 0 ? void 0 : _s.addEventListener('click', previousAndGetLotOccupancies);
-        (_t = searchResultsContainerElement
-            .querySelector("button[data-page='next']")) === null || _t === void 0 ? void 0 : _t.addEventListener('click', nextAndGetLotOccupancies);
+        searchResultsContainerElement
+            .querySelector("button[data-page='previous']")
+            ?.addEventListener('click', previousAndGetLotOccupancies);
+        searchResultsContainerElement
+            .querySelector("button[data-page='next']")
+            ?.addEventListener('click', nextAndGetLotOccupancies);
     }
     function getLotOccupancies() {
         // eslint-disable-next-line no-unsanitized/property

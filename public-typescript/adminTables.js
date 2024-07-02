@@ -7,10 +7,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const los = exports.los;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function refreshFontAwesomeIcon(changeEvent) {
-        var _a;
         const inputElement = changeEvent.currentTarget;
         const fontAwesomeIconClass = inputElement.value;
-        ((_a = inputElement.closest('.field')) === null || _a === void 0 ? void 0 : _a.querySelectorAll('.button.is-static'
+        (inputElement.closest('.field')?.querySelectorAll('.button.is-static'
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         ))[1].innerHTML =
             `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
@@ -24,7 +23,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function updateWorkOrderType(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateWorkOrderType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
@@ -36,7 +34,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Updating Work Order Type',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -49,7 +47,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteWorkOrderType`, {
                 workOrderTypeId
             }, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     workOrderTypes = responseJSON.workOrderTypes;
@@ -67,7 +64,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Deleting Work Order Type',
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -95,7 +92,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             workOrderTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
@@ -104,14 +100,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Moving Work Order Type',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
         });
     }
     function renderWorkOrderTypes() {
-        var _a, _b, _c;
         const containerElement = document.querySelector('#container--workOrderTypes');
         if (workOrderTypes.length === 0) {
             containerElement.innerHTML = `<tr><td colspan="2">
@@ -131,7 +126,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               <div class="field has-addons">
                 <div class="control">
                   <input class="input" name="workOrderType" type="text"
-                    value="${cityssm.escapeHTML((_a = workOrderType.workOrderType) !== null && _a !== void 0 ? _a : '')}" maxlength="100" aria-label="Work Order Type" required />
+                    value="${cityssm.escapeHTML(workOrderType.workOrderType ?? '')}" maxlength="100" aria-label="Work Order Type" required />
                 </div>
                 <div class="control">
                   <button class="button is-success" type="submit" aria-label="Save">
@@ -152,12 +147,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </div>
             </div>
           </td>`;
-            (_b = tableRowElement
-                .querySelector('form')) === null || _b === void 0 ? void 0 : _b.addEventListener('submit', updateWorkOrderType);
+            tableRowElement
+                .querySelector('form')
+                ?.addEventListener('submit', updateWorkOrderType);
             tableRowElement.querySelector('.button--moveWorkOrderTypeUp').addEventListener('click', moveWorkOrderType);
             tableRowElement.querySelector('.button--moveWorkOrderTypeDown').addEventListener('click', moveWorkOrderType);
-            (_c = tableRowElement
-                .querySelector('.button--deleteWorkOrderType')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', deleteWorkOrderType);
+            tableRowElement
+                .querySelector('.button--deleteWorkOrderType')
+                ?.addEventListener('click', deleteWorkOrderType);
             containerElement.append(tableRowElement);
         }
     }
@@ -166,18 +163,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(`${los.urlPrefix}/admin/doAddWorkOrderType`, formElement, (rawResponseJSON) => {
-            var _a, _b;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 renderWorkOrderTypes();
                 formElement.reset();
-                (_a = formElement.querySelector('input')) === null || _a === void 0 ? void 0 : _a.focus();
+                formElement.querySelector('input')?.focus();
             }
             else {
                 bulmaJS.alert({
                     title: 'Error Adding Work Order Type',
-                    message: (_b = responseJSON.errorMessage) !== null && _b !== void 0 ? _b : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -195,7 +191,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function updateWorkOrderMilestoneType(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateWorkOrderMilestoneType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
@@ -207,7 +202,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Updating Work Order Milestone Type',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -220,7 +215,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteWorkOrderMilestoneType`, {
                 workOrderMilestoneTypeId
             }, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
@@ -238,7 +232,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Deleting Work Order Milestone Type',
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -266,7 +260,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             workOrderMilestoneTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
@@ -275,14 +268,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: 'Error Moving Work Order Milestone Type',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
         });
     }
     function renderWorkOrderMilestoneTypes() {
-        var _a, _b;
         const containerElement = document.querySelector('#container--workOrderMilestoneTypes');
         if (workOrderMilestoneTypes.length === 0) {
             containerElement.innerHTML = `<tr><td colspan="2">
@@ -323,12 +315,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </div>
             </div>
           </td>`;
-            (_a = tableRowElement
-                .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', updateWorkOrderMilestoneType);
+            tableRowElement
+                .querySelector('form')
+                ?.addEventListener('submit', updateWorkOrderMilestoneType);
             tableRowElement.querySelector('.button--moveWorkOrderMilestoneTypeUp').addEventListener('click', moveWorkOrderMilestoneType);
             tableRowElement.querySelector('.button--moveWorkOrderMilestoneTypeDown').addEventListener('click', moveWorkOrderMilestoneType);
-            (_b = tableRowElement
-                .querySelector('.button--deleteWorkOrderMilestoneType')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', deleteWorkOrderMilestoneType);
+            tableRowElement
+                .querySelector('.button--deleteWorkOrderMilestoneType')
+                ?.addEventListener('click', deleteWorkOrderMilestoneType);
             containerElement.append(tableRowElement);
         }
     }
@@ -337,18 +331,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(`${los.urlPrefix}/admin/doAddWorkOrderMilestoneType`, formElement, (rawResponseJSON) => {
-            var _a, _b;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 renderWorkOrderMilestoneTypes();
                 formElement.reset();
-                (_a = formElement.querySelector('input')) === null || _a === void 0 ? void 0 : _a.focus();
+                formElement.querySelector('input')?.focus();
             }
             else {
                 bulmaJS.alert({
                     title: 'Error Adding Work Order Milestone Type',
-                    message: (_b = responseJSON.errorMessage) !== null && _b !== void 0 ? _b : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -365,7 +358,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function updateLotStatus(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateLotStatus`, submitEvent.currentTarget, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotStatuses = responseJSON.lotStatuses;
@@ -377,7 +369,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: `Error Updating ${los.escapedAliases.Lot} Status`,
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -390,7 +382,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteLotStatus`, {
                 lotStatusId
             }, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotStatuses = responseJSON.lotStatuses;
@@ -408,7 +399,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: `Error Deleting ${los.escapedAliases.Lot} Status`,
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -436,7 +427,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             lotStatusId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotStatuses = responseJSON.lotStatuses;
@@ -445,14 +435,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: `Error Moving ${los.escapedAliases.Lot} Status`,
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
         });
     }
     function renderLotStatuses() {
-        var _a, _b;
         const containerElement = document.querySelector('#container--lotStatuses');
         if (lotStatuses.length === 0) {
             // eslint-disable-next-line no-unsanitized/property
@@ -494,12 +483,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </div>
             </div>
           </td>`;
-            (_a = tableRowElement
-                .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', updateLotStatus);
+            tableRowElement
+                .querySelector('form')
+                ?.addEventListener('submit', updateLotStatus);
             tableRowElement.querySelector('.button--moveLotStatusUp').addEventListener('click', moveLotStatus);
             tableRowElement.querySelector('.button--moveLotStatusDown').addEventListener('click', moveLotStatus);
-            (_b = tableRowElement
-                .querySelector('.button--deleteLotStatus')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', deleteLotStatus);
+            tableRowElement
+                .querySelector('.button--deleteLotStatus')
+                ?.addEventListener('click', deleteLotStatus);
             containerElement.append(tableRowElement);
         }
     }
@@ -508,18 +499,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(`${los.urlPrefix}/admin/doAddLotStatus`, formElement, (rawResponseJSON) => {
-            var _a, _b;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotStatuses = responseJSON.lotStatuses;
                 renderLotStatuses();
                 formElement.reset();
-                (_a = formElement.querySelector('input')) === null || _a === void 0 ? void 0 : _a.focus();
+                formElement.querySelector('input')?.focus();
             }
             else {
                 bulmaJS.alert({
                     title: `Error Adding ${los.escapedAliases.Lot} Status`,
-                    message: (_b = responseJSON.errorMessage) !== null && _b !== void 0 ? _b : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -537,7 +527,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function updateLotOccupantType(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateLotOccupantType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
@@ -549,7 +538,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: `Error Updating ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -562,7 +551,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteLotOccupantType`, {
                 lotOccupantTypeId
             }, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     lotOccupantTypes = responseJSON.lotOccupantTypes;
@@ -580,7 +568,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: `Error Deleting ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
@@ -608,7 +596,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             lotOccupantTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
@@ -617,14 +604,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 bulmaJS.alert({
                     title: `Error Moving ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
         });
     }
     function renderLotOccupantTypes() {
-        var _a, _b;
         const containerElement = document.querySelector('#container--lotOccupantTypes');
         if (lotOccupantTypes.length === 0) {
             // eslint-disable-next-line no-unsanitized/property
@@ -703,12 +689,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const fontAwesomeInputElement = tableRowElement.querySelector("input[name='fontAwesomeIconClass']");
             fontAwesomeInputElement.addEventListener('keyup', refreshFontAwesomeIcon);
             fontAwesomeInputElement.addEventListener('change', refreshFontAwesomeIcon);
-            (_a = tableRowElement
-                .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', updateLotOccupantType);
+            tableRowElement
+                .querySelector('form')
+                ?.addEventListener('submit', updateLotOccupantType);
             tableRowElement.querySelector('.button--moveLotOccupantTypeUp').addEventListener('click', moveLotOccupantType);
             tableRowElement.querySelector('.button--moveLotOccupantTypeDown').addEventListener('click', moveLotOccupantType);
-            (_b = tableRowElement
-                .querySelector('.button--deleteLotOccupantType')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', deleteLotOccupantType);
+            tableRowElement
+                .querySelector('.button--deleteLotOccupantType')
+                ?.addEventListener('click', deleteLotOccupantType);
             containerElement.append(tableRowElement);
         }
     }
@@ -717,18 +705,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(`${los.urlPrefix}/admin/doAddLotOccupantType`, formElement, (rawResponseJSON) => {
-            var _a, _b;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 lotOccupantTypes = responseJSON.lotOccupantTypes;
                 renderLotOccupantTypes();
                 formElement.reset();
-                (_a = formElement.querySelector('input')) === null || _a === void 0 ? void 0 : _a.focus();
+                formElement.querySelector('input')?.focus();
             }
             else {
                 bulmaJS.alert({
                     title: `Error Adding ${los.escapedAliases.Lot} ${los.escapedAliases.Occupant} Type`,
-                    message: (_b = responseJSON.errorMessage) !== null && _b !== void 0 ? _b : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }

@@ -1,13 +1,12 @@
 "use strict";
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable unicorn/prefer-module */
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 let workOrderComments = exports.workOrderComments;
 delete exports.workOrderComments;
 function openEditWorkOrderComment(clickEvent) {
-    var _a, _b;
-    const workOrderCommentId = Number.parseInt((_b = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.workOrderCommentId) !== null && _b !== void 0 ? _b : '', 10);
+    const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+        .workOrderCommentId ?? '', 10);
     const workOrderComment = workOrderComments.find((currentComment) => {
         return currentComment.workOrderCommentId === workOrderCommentId;
     });
@@ -16,7 +15,6 @@ function openEditWorkOrderComment(clickEvent) {
     function editComment(submitEvent) {
         submitEvent.preventDefault();
         cityssm.postJSON(`${los.urlPrefix}/workOrders/doUpdateWorkOrderComment`, editFormElement, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderComments = responseJSON.workOrderComments;
@@ -26,7 +24,7 @@ function openEditWorkOrderComment(clickEvent) {
             else {
                 bulmaJS.alert({
                     title: 'Error Updating Comment',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -34,20 +32,19 @@ function openEditWorkOrderComment(clickEvent) {
     }
     cityssm.openHtmlModal('workOrder-editComment', {
         onshow(modalElement) {
-            var _a, _b, _c, _d;
             ;
             modalElement.querySelector('#workOrderCommentEdit--workOrderId').value = workOrderId;
             modalElement.querySelector('#workOrderCommentEdit--workOrderCommentId').value = workOrderCommentId.toString();
-            modalElement.querySelector('#workOrderCommentEdit--workOrderComment').value = (_a = workOrderComment.workOrderComment) !== null && _a !== void 0 ? _a : '';
+            modalElement.querySelector('#workOrderCommentEdit--workOrderComment').value = workOrderComment.workOrderComment ?? '';
             const workOrderCommentDateStringElement = modalElement.querySelector('#workOrderCommentEdit--workOrderCommentDateString');
             workOrderCommentDateStringElement.value =
-                (_b = workOrderComment.workOrderCommentDateString) !== null && _b !== void 0 ? _b : '';
+                workOrderComment.workOrderCommentDateString ?? '';
             const currentDateString = cityssm.dateToString(new Date());
             workOrderCommentDateStringElement.max =
                 workOrderComment.workOrderCommentDateString <= currentDateString
                     ? currentDateString
-                    : (_c = workOrderComment.workOrderCommentDateString) !== null && _c !== void 0 ? _c : '';
-            modalElement.querySelector('#workOrderCommentEdit--workOrderCommentTimeString').value = (_d = workOrderComment.workOrderCommentTimeString) !== null && _d !== void 0 ? _d : '';
+                    : workOrderComment.workOrderCommentDateString ?? '';
+            modalElement.querySelector('#workOrderCommentEdit--workOrderCommentTimeString').value = workOrderComment.workOrderCommentTimeString ?? '';
         },
         onshown(modalElement, closeModalFunction) {
             bulmaJS.toggleHtmlClipped();
@@ -63,14 +60,13 @@ function openEditWorkOrderComment(clickEvent) {
     });
 }
 function deleteWorkOrderComment(clickEvent) {
-    var _a, _b;
-    const workOrderCommentId = Number.parseInt((_b = (_a = clickEvent.currentTarget.closest('tr')) === null || _a === void 0 ? void 0 : _a.dataset.workOrderCommentId) !== null && _b !== void 0 ? _b : '', 10);
+    const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+        .workOrderCommentId ?? '', 10);
     function doDelete() {
         cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrderComment`, {
             workOrderId,
             workOrderCommentId
         }, (rawResponseJSON) => {
-            var _a;
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 workOrderComments = responseJSON.workOrderComments;
@@ -79,7 +75,7 @@ function deleteWorkOrderComment(clickEvent) {
             else {
                 bulmaJS.alert({
                     title: 'Error Removing Comment',
-                    message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                    message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
             }
@@ -96,7 +92,6 @@ function deleteWorkOrderComment(clickEvent) {
     });
 }
 function renderWorkOrderComments() {
-    var _a, _b, _c, _d, _e, _f;
     const containerElement = document.querySelector('#container--workOrderComments');
     if (workOrderComments.length === 0) {
         containerElement.innerHTML = `<div class="message is-info">
@@ -114,17 +109,17 @@ function renderWorkOrderComments() {
     for (const workOrderComment of workOrderComments) {
         const tableRowElement = document.createElement('tr');
         tableRowElement.dataset.workOrderCommentId =
-            (_a = workOrderComment.workOrderCommentId) === null || _a === void 0 ? void 0 : _a.toString();
+            workOrderComment.workOrderCommentId?.toString();
         // eslint-disable-next-line no-unsanitized/property
         tableRowElement.innerHTML = `<td>
-        ${cityssm.escapeHTML((_b = workOrderComment.recordCreate_userName) !== null && _b !== void 0 ? _b : '')}
+        ${cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '')}
       </td><td>
         ${workOrderComment.workOrderCommentDateString}
         ${workOrderComment.workOrderCommentTime === 0
             ? ''
             : workOrderComment.workOrderCommentTimePeriodString}
       </td><td>
-        ${cityssm.escapeHTML((_c = workOrderComment.workOrderComment) !== null && _c !== void 0 ? _c : '')}
+        ${cityssm.escapeHTML(workOrderComment.workOrderComment ?? '')}
       </td><td class="is-hidden-print">
         <div class="buttons are-small is-justify-content-end">
           <button class="button is-primary button--edit" type="button">
@@ -136,11 +131,13 @@ function renderWorkOrderComments() {
           </button>
         </div>
       </td>`;
-        (_d = tableRowElement
-            .querySelector('.button--edit')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', openEditWorkOrderComment);
-        (_e = tableRowElement
-            .querySelector('.button--delete')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', deleteWorkOrderComment);
-        (_f = tableElement.querySelector('tbody')) === null || _f === void 0 ? void 0 : _f.append(tableRowElement);
+        tableRowElement
+            .querySelector('.button--edit')
+            ?.addEventListener('click', openEditWorkOrderComment);
+        tableRowElement
+            .querySelector('.button--delete')
+            ?.addEventListener('click', deleteWorkOrderComment);
+        tableElement.querySelector('tbody')?.append(tableRowElement);
     }
     containerElement.innerHTML = '';
     containerElement.append(tableElement);
@@ -160,11 +157,11 @@ function openAddCommentModal() {
     }
     cityssm.openHtmlModal('workOrder-addComment', {
         onshow(modalElement) {
-            var _a;
             los.populateAliases(modalElement);
             modalElement.querySelector('#workOrderCommentAdd--workOrderId').value = workOrderId;
-            (_a = modalElement
-                .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doAddComment);
+            modalElement
+                .querySelector('form')
+                ?.addEventListener('submit', doAddComment);
         },
         onshown(modalElement, closeModalFunction) {
             bulmaJS.toggleHtmlClipped();
@@ -177,8 +174,9 @@ function openAddCommentModal() {
         }
     });
 }
-(_a = document
-    .querySelector('#workOrderComments--add')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', openAddCommentModal);
+document
+    .querySelector('#workOrderComments--add')
+    ?.addEventListener('click', openAddCommentModal);
 if (!isCreate) {
     renderWorkOrderComments();
 }

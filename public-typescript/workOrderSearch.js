@@ -11,7 +11,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
     function renderWorkOrders(rawResponseJSON) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v;
         const responseJSON = rawResponseJSON;
         if (responseJSON.workOrders.length === 0) {
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
@@ -22,29 +21,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const resultsTbodyElement = document.createElement('tbody');
         for (const workOrder of responseJSON.workOrders) {
             let relatedHTML = '';
-            for (const lot of (_a = workOrder.workOrderLots) !== null && _a !== void 0 ? _a : []) {
+            for (const lot of workOrder.workOrderLots ?? []) {
                 relatedHTML += `<li class="has-tooltip-left"
-          data-tooltip="${cityssm.escapeHTML((_b = lot.mapName) !== null && _b !== void 0 ? _b : '')}">
+          data-tooltip="${cityssm.escapeHTML(lot.mapName ?? '')}">
           <span class="fa-li">
             <i class="fas fa-fw fa-vector-square"
               aria-label="${los.escapedAliases.Lot}"></i>
           </span>
-          ${cityssm.escapeHTML(((_c = lot.lotName) !== null && _c !== void 0 ? _c : '') === ''
+          ${cityssm.escapeHTML((lot.lotName ?? '') === ''
                     ? `(No ${los.escapedAliases.Lot} Name)`
-                    : (_d = lot.lotName) !== null && _d !== void 0 ? _d : '')}
+                    : lot.lotName ?? '')}
           </li>`;
             }
-            for (const occupancy of (_e = workOrder.workOrderLotOccupancies) !== null && _e !== void 0 ? _e : []) {
-                for (const occupant of (_f = occupancy.lotOccupancyOccupants) !== null && _f !== void 0 ? _f : []) {
+            for (const occupancy of workOrder.workOrderLotOccupancies ?? []) {
+                for (const occupant of occupancy.lotOccupancyOccupants ?? []) {
                     relatedHTML += `<li class="has-tooltip-left"
-            data-tooltip="${cityssm.escapeHTML((_g = occupant.lotOccupantType) !== null && _g !== void 0 ? _g : '')}">
+            data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
             <span class="fa-li">
-              <i class="fas fa-fw fa-${cityssm.escapeHTML(((_h = occupant.fontAwesomeIconClass) !== null && _h !== void 0 ? _h : '') === ''
+              <i class="fas fa-fw fa-${cityssm.escapeHTML((occupant.fontAwesomeIconClass ?? '') === ''
                         ? 'user'
-                        : (_j = occupant.fontAwesomeIconClass) !== null && _j !== void 0 ? _j : '')}" aria-label="${los.escapedAliases.occupant}"></i>
+                        : occupant.fontAwesomeIconClass ?? '')}" aria-label="${los.escapedAliases.occupant}"></i>
             </span>
-            ${cityssm.escapeHTML(((_k = occupant.occupantName) !== null && _k !== void 0 ? _k : '') === '' &&
-                        ((_l = occupant.occupantFamilyName) !== null && _l !== void 0 ? _l : '') === ''
+            ${cityssm.escapeHTML((occupant.occupantName ?? '') === '' &&
+                        (occupant.occupantFamilyName ?? '') === ''
                         ? '(No Name)'
                         : `${occupant.occupantName} ${occupant.occupantFamilyName}`)}
             </li>`;
@@ -54,14 +53,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
           <td>
             <a class="has-text-weight-bold" href="${los.getWorkOrderURL(workOrder.workOrderId)}">
-              ${((_m = workOrder.workOrderNumber) === null || _m === void 0 ? void 0 : _m.trim()) === ''
+              ${workOrder.workOrderNumber?.trim() === ''
                 ? '(No Number)'
-                : cityssm.escapeHTML((_o = workOrder.workOrderNumber) !== null && _o !== void 0 ? _o : '')}
+                : cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
             </a>
           </td><td>
-            ${cityssm.escapeHTML((_p = workOrder.workOrderType) !== null && _p !== void 0 ? _p : '')}<br />
+            ${cityssm.escapeHTML(workOrder.workOrderType ?? '')}<br />
             <span class="is-size-7">
-              ${cityssm.escapeHTML((_q = workOrder.workOrderDescription) !== null && _q !== void 0 ? _q : '')}
+              ${cityssm.escapeHTML(workOrder.workOrderDescription ?? '')}
             </span>
           </td><td>
             ${relatedHTML === ''
@@ -88,9 +87,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </td><td>
             ${workOrder.workOrderMilestoneCount === 0
                 ? '-'
-                : `${((_r = workOrder.workOrderMilestoneCompletionCount) !== null && _r !== void 0 ? _r : '').toString()}
+                : `${(workOrder.workOrderMilestoneCompletionCount ?? '').toString()}
                   /
-                  ${((_s = workOrder.workOrderMilestoneCount) !== null && _s !== void 0 ? _s : '').toString()}`}
+                  ${(workOrder.workOrderMilestoneCount ?? '').toString()}`}
           </td>
           ${workOrderPrints.length > 0
                 ? `<td>
@@ -115,12 +114,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
       <table>`;
         // eslint-disable-next-line no-unsanitized/method
         searchResultsContainerElement.insertAdjacentHTML('beforeend', los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
-        (_t = searchResultsContainerElement
-            .querySelector('table')) === null || _t === void 0 ? void 0 : _t.append(resultsTbodyElement);
-        (_u = searchResultsContainerElement
-            .querySelector("button[data-page='previous']")) === null || _u === void 0 ? void 0 : _u.addEventListener('click', previousAndGetWorkOrders);
-        (_v = searchResultsContainerElement
-            .querySelector("button[data-page='next']")) === null || _v === void 0 ? void 0 : _v.addEventListener('click', nextAndGetWorkOrders);
+        searchResultsContainerElement
+            .querySelector('table')
+            ?.append(resultsTbodyElement);
+        searchResultsContainerElement
+            .querySelector("button[data-page='previous']")
+            ?.addEventListener('click', previousAndGetWorkOrders);
+        searchResultsContainerElement
+            .querySelector("button[data-page='next']")
+            ?.addEventListener('click', nextAndGetWorkOrders);
     }
     function getWorkOrders() {
         // eslint-disable-next-line no-unsanitized/property
