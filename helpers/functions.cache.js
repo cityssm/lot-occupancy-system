@@ -227,6 +227,9 @@ export function clearCacheByTableName(tableName, relayMessage = true) {
             clearWorkOrderTypesCache();
             break;
         }
+        default: {
+            return;
+        }
     }
     try {
         if (relayMessage && cluster.isWorker) {

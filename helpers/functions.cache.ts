@@ -353,6 +353,10 @@ export function clearCacheByTableName(
       clearWorkOrderTypesCache()
       break
     }
+
+    default: {
+      return
+    }
   }
 
   try {
