@@ -23,8 +23,7 @@
 
   const recipient = recipientOccupants.length > 0 ? recipientOccupants[0] : undefined;
 
-  const deathDateOccupantTypeField = "Death Date";
-  const deathPlaceOccupantTypeField = "Death Place";
+  const recipientFields = ["Birth Date", "Birth Place"]
 %>
 <html>
   <head>
@@ -167,13 +166,22 @@
                     </tr><tr>
                         <th class="has-text-left">E-mail:</th>
                         <td class="has-border-bottom"><%= recipient ? recipient.occupantEmailAddress : "" %>&nbsp;</td>
-                    </tr><tr>
-                        <th class="has-text-left">Date of birth:</th>
-                        <td class="has-border-bottom">&nbsp;</td>
-                    </tr><tr>
-                        <th class="has-text-left has-text-nowrap">Place of birth:</th>
-                        <td class="has-border-bottom" style="width:100%">&nbsp;</td>
                     </tr>
+                    <% 
+                      for (const fieldName of recipientFields) { 
+                    %>
+                      <tr>
+                        <th class="has-text-left"><%= fieldName %>:</th>
+                        <%
+                          const field = lotOccupancy.lotOccupancyFields.find((possibleField) => {
+                            return possibleField.occupancyTypeField === fieldName;
+                          });
+                        %>
+                        <td class="has-border-bottom"><%= field?.lotOccupancyFieldValue ?? "" %>&nbsp;</td>
+                      </tr>
+                    <% 
+                      }
+                    %>
                   </tbody>
                 </table>
               </td>
@@ -216,7 +224,7 @@
               </tr>
               <% 
                 for (const field of lotOccupancy.lotOccupancyFields) { 
-                  if (field.lotOccupancyFieldValue) {
+                  if (!recipientFields.includes(field.occupancyTypeField) && field.lotOccupancyFieldValue) {
               %>
                   <tr>
                     <td><%= field.occupancyTypeField %></td>
