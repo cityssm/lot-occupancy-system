@@ -1,9 +1,9 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
-export function getLotNameWhereClause(lotName = '', lotNameSearchType, lotsTableAlias = 'l') {
+export function getLotNameWhereClause(lotName = '', lotNameSearchType = '', lotsTableAlias = 'l') {
     let sqlWhereClause = '';
     const sqlParameters = [];
     if (lotName !== '') {
-        switch (lotNameSearchType) {
+        switch (lotNameSearchType ?? '') {
             case 'startsWith': {
                 sqlWhereClause += ` and ${lotsTableAlias}.lotName like ? || '%'`;
                 sqlParameters.push(lotName);

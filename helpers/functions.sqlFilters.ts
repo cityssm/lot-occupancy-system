@@ -9,14 +9,14 @@ interface WhereClauseReturn {
 
 export function getLotNameWhereClause(
   lotName = '',
-  lotNameSearchType: LotNameSearchType | undefined,
+  lotNameSearchType: LotNameSearchType = '',
   lotsTableAlias = 'l'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
   const sqlParameters: unknown[] = []
 
   if (lotName !== '') {
-    switch (lotNameSearchType) {
+    switch (lotNameSearchType ?? '') {
       case 'startsWith': {
         sqlWhereClause += ` and ${lotsTableAlias}.lotName like ? || '%'`
         sqlParameters.push(lotName)
