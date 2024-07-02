@@ -8,8 +8,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const feeCategoriesContainerElement = document.querySelector('#container--feeCategories');
     let feeCategories = exports.feeCategories;
     delete exports.feeCategories;
+    function getFeeCategory(feeCategoryId) {
+        return feeCategories.find((currentFeeCategory) => {
+            return currentFeeCategory.feeCategoryId === feeCategoryId;
+        });
+    }
+    function getFee(feeCategory, feeId) {
+        return feeCategory.fees.find((currentFee) => {
+            return currentFee.feeId === feeId;
+        });
+    }
     function renderFeeCategories() {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
         if (feeCategories.length === 0) {
             feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
         <p class="message-body">There are no available fees.</p>
@@ -87,7 +97,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 panelBlockElement.innerHTML = `<div class="columns">
           <div class="column is-half">
             <p>
-              <a class="has-text-weight-bold" href="#">${cityssm.escapeHTML((_e = fee.feeName) !== null && _e !== void 0 ? _e : '')}</a><br />
+              <a class="has-text-weight-bold a--editFee" href="#">${cityssm.escapeHTML((_e = fee.feeName) !== null && _e !== void 0 ? _e : '')}</a><br />
               <small>
               ${
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -122,8 +132,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ${fee.feeFunction
                     ? `${cityssm.escapeHTML(fee.feeFunction)}<br />
                         <small>Fee Function</small>`
-                    : `$${((_m = fee.feeAmount) !== null && _m !== void 0 ? _m : 0).toFixed(2)}<br />
-                        <small>Fee</small>`}
+                    : `<a class="a--editFeeAmount" href="#">
+                        $${((_m = fee.feeAmount) !== null && _m !== void 0 ? _m : 0).toFixed(2)}<br />
+                        <small>Fee</small>
+                        </a>`}
               </div>
               <div class="column has-text-centered">
                 ${fee.taxPercentage
@@ -144,15 +156,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>
         </div>`;
                 (_q = panelBlockElement
-                    .querySelector('a')) === null || _q === void 0 ? void 0 : _q.addEventListener('click', openEditFee);
+                    .querySelector('.a--editFee')) === null || _q === void 0 ? void 0 : _q.addEventListener('click', openEditFee);
+                (_r = panelBlockElement
+                    .querySelector('.a--editFeeAmount')) === null || _r === void 0 ? void 0 : _r.addEventListener('click', openEditFeeAmount);
                 panelBlockElement.querySelector('.button--moveFeeUp').addEventListener('click', moveFee);
                 panelBlockElement.querySelector('.button--moveFeeDown').addEventListener('click', moveFee);
                 feeCategoryContainerElement.append(panelBlockElement);
             }
-            (_r = feeCategoryContainerElement
-                .querySelector('.button--editFeeCategory')) === null || _r === void 0 ? void 0 : _r.addEventListener('click', openEditFeeCategory);
             (_s = feeCategoryContainerElement
-                .querySelector('.button--addFee')) === null || _s === void 0 ? void 0 : _s.addEventListener('click', openAddFee);
+                .querySelector('.button--editFeeCategory')) === null || _s === void 0 ? void 0 : _s.addEventListener('click', openEditFeeCategory);
+            (_t = feeCategoryContainerElement
+                .querySelector('.button--addFee')) === null || _t === void 0 ? void 0 : _t.addEventListener('click', openAddFee);
             feeCategoryContainerElement.querySelector('.button--moveFeeCategoryUp').addEventListener('click', moveFeeCategory);
             feeCategoryContainerElement.querySelector('.button--moveFeeCategoryDown').addEventListener('click', moveFeeCategory);
             feeCategoriesContainerElement.append(feeCategoryContainerElement);
@@ -201,9 +215,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function openEditFeeCategory(clickEvent) {
         var _a;
         const feeCategoryId = Number.parseInt((_a = clickEvent.currentTarget.closest('.container--feeCategory').dataset.feeCategoryId) !== null && _a !== void 0 ? _a : '', 10);
-        const feeCategory = feeCategories.find((currentFeeCategory) => {
-            return currentFeeCategory.feeCategoryId === feeCategoryId;
-        });
+        const feeCategory = getFeeCategory(feeCategoryId);
         let editCloseModalFunction;
         function doUpdateFeeCategory(submitEvent) {
             submitEvent.preventDefault();
@@ -410,6 +422,54 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
+    function openEditFeeAmount(clickEvent) {
+        var _a, _b;
+        clickEvent.preventDefault();
+        const feeContainerElement = clickEvent.currentTarget.closest('.container--fee');
+        const feeId = Number.parseInt((_a = feeContainerElement.dataset.feeId) !== null && _a !== void 0 ? _a : '', 10);
+        const feeCategoryId = Number.parseInt((_b = feeContainerElement.closest('.container--feeCategory')
+            .dataset.feeCategoryId) !== null && _b !== void 0 ? _b : '');
+        const feeCategory = getFeeCategory(feeCategoryId);
+        const fee = getFee(feeCategory, feeId);
+        let editCloseModalFunction;
+        function doUpdateFeeAmount(submitEvent) {
+            submitEvent.preventDefault();
+            cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateFeeAmount`, submitEvent.currentTarget, (rawResponseJSON) => {
+                var _a;
+                const responseJSON = rawResponseJSON;
+                if (responseJSON.success) {
+                    feeCategories = responseJSON.feeCategories;
+                    editCloseModalFunction();
+                    renderFeeCategories();
+                }
+                else {
+                    bulmaJS.alert({
+                        title: 'Error Updating Fee Amount',
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
+                        contextualColorName: 'danger'
+                    });
+                }
+            });
+        }
+        cityssm.openHtmlModal('adminFees-editFeeAmount', {
+            onshow(modalElement) {
+                var _a, _b, _c;
+                ;
+                modalElement.querySelector('#feeAmountEdit--feeId').value = fee.feeId.toString();
+                modalElement.querySelector('#feeAmountEdit--feeCategory').textContent = feeCategory.feeCategory;
+                modalElement.querySelector('#feeAmountEdit--feeName').textContent = (_a = fee.feeName) !== null && _a !== void 0 ? _a : '';
+                modalElement.querySelector('#feeAmountEdit--feeAmount').value = (_c = (_b = fee.feeAmount) === null || _b === void 0 ? void 0 : _b.toFixed(2)) !== null && _c !== void 0 ? _c : '0';
+            },
+            onshown(modalElement, closeModalFunction) {
+                var _a;
+                ;
+                modalElement.querySelector('#feeAmountEdit--feeAmount').select();
+                editCloseModalFunction = closeModalFunction;
+                (_a = modalElement
+                    .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', doUpdateFeeAmount);
+            }
+        });
+    }
     function openEditFee(clickEvent) {
         var _a, _b;
         clickEvent.preventDefault();
@@ -417,12 +477,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const feeId = Number.parseInt((_a = feeContainerElement.dataset.feeId) !== null && _a !== void 0 ? _a : '', 10);
         const feeCategoryId = Number.parseInt((_b = feeContainerElement.closest('.container--feeCategory')
             .dataset.feeCategoryId) !== null && _b !== void 0 ? _b : '');
-        const feeCategory = feeCategories.find((currentFeeCategory) => {
-            return currentFeeCategory.feeCategoryId === feeCategoryId;
-        });
-        const fee = feeCategory.fees.find((currentFee) => {
-            return currentFee.feeId === feeId;
-        });
+        const feeCategory = getFeeCategory(feeCategoryId);
+        const fee = getFee(feeCategory, feeId);
         let editCloseModalFunction;
         let editModalElement;
         function doUpdateFee(submitEvent) {

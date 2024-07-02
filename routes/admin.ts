@@ -53,6 +53,7 @@ import handler_doMoveWorkOrderMilestoneTypeUp from '../handlers/admin-post/doMov
 import handler_doMoveWorkOrderTypeDown from '../handlers/admin-post/doMoveWorkOrderTypeDown.js'
 import handler_doMoveWorkOrderTypeUp from '../handlers/admin-post/doMoveWorkOrderTypeUp.js'
 import handler_doUpdateFee from '../handlers/admin-post/doUpdateFee.js'
+import handler_doUpdateFeeAmount from '../handlers/admin-post/doUpdateFeeAmount.js'
 import handler_doUpdateFeeCategory from '../handlers/admin-post/doUpdateFeeCategory.js'
 import handler_doUpdateLotOccupantType from '../handlers/admin-post/doUpdateLotOccupantType.js'
 import handler_doUpdateLotStatus from '../handlers/admin-post/doUpdateLotStatus.js'
@@ -98,6 +99,8 @@ router.post(
 router.post('/doAddFee', handler_doAddFee as RequestHandler)
 
 router.post('/doUpdateFee', handler_doUpdateFee as RequestHandler)
+
+router.post('/doUpdateFeeAmount', handler_doUpdateFeeAmount as RequestHandler)
 
 router.post('/doMoveFeeUp', handler_doMoveFeeUp as RequestHandler)
 
@@ -321,7 +324,9 @@ router.post(
   handler_doDeleteLotOccupantType as RequestHandler
 )
 
-// Database Maintenance
+/*
+ * Database Maintenance
+ */
 
 router.get('/database', handler_database)
 

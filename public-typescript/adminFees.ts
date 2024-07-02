@@ -36,6 +36,18 @@ declare const exports: Record<string, unknown>
         errorMessage: string
       }
 
+  function getFeeCategory(feeCategoryId: number): FeeCategory {
+    return feeCategories.find((currentFeeCategory) => {
+      return currentFeeCategory.feeCategoryId === feeCategoryId
+    }) as FeeCategory
+  }
+
+  function getFee(feeCategory: FeeCategory, feeId: number): Fee {
+    return feeCategory.fees.find((currentFee) => {
+      return currentFee.feeId === feeId
+    }) as Fee
+  }
+
   function renderFeeCategories(): void {
     if (feeCategories.length === 0) {
       feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
@@ -140,7 +152,7 @@ declare const exports: Record<string, unknown>
         panelBlockElement.innerHTML = `<div class="columns">
           <div class="column is-half">
             <p>
-              <a class="has-text-weight-bold" href="#">${cityssm.escapeHTML(fee.feeName ?? '')}</a><br />
+              <a class="has-text-weight-bold a--editFee" href="#">${cityssm.escapeHTML(fee.feeName ?? '')}</a><br />
               <small>
               ${
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -185,8 +197,10 @@ declare const exports: Record<string, unknown>
                   fee.feeFunction
                     ? `${cityssm.escapeHTML(fee.feeFunction)}<br />
                         <small>Fee Function</small>`
-                    : `$${(fee.feeAmount ?? 0).toFixed(2)}<br />
-                        <small>Fee</small>`
+                    : `<a class="a--editFeeAmount" href="#">
+                        $${(fee.feeAmount ?? 0).toFixed(2)}<br />
+                        <small>Fee</small>
+                        </a>`
                 }
               </div>
               <div class="column has-text-centered">
@@ -216,8 +230,12 @@ declare const exports: Record<string, unknown>
         </div>`
 
         panelBlockElement
-          .querySelector('a')
+          .querySelector('.a--editFee')
           ?.addEventListener('click', openEditFee)
+
+        panelBlockElement
+          .querySelector('.a--editFeeAmount')
+          ?.addEventListener('click', openEditFeeAmount)
         ;(
           panelBlockElement.querySelector(
             '.button--moveFeeUp'
@@ -322,9 +340,7 @@ declare const exports: Record<string, unknown>
       10
     )
 
-    const feeCategory = feeCategories.find((currentFeeCategory) => {
-      return currentFeeCategory.feeCategoryId === feeCategoryId
-    }) as FeeCategory
+    const feeCategory = getFeeCategory(feeCategoryId)
 
     let editCloseModalFunction: () => void
 
@@ -639,6 +655,85 @@ declare const exports: Record<string, unknown>
     })
   }
 
+  function openEditFeeAmount(clickEvent: Event): void {
+    clickEvent.preventDefault()
+
+    const feeContainerElement = (
+      clickEvent.currentTarget as HTMLElement
+    ).closest('.container--fee') as HTMLElement
+
+    const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10)
+    const feeCategoryId = Number.parseInt(
+      (feeContainerElement.closest('.container--feeCategory') as HTMLElement)
+        .dataset.feeCategoryId ?? ''
+    )
+
+    const feeCategory = getFeeCategory(feeCategoryId)
+    const fee = getFee(feeCategory, feeId)
+
+    let editCloseModalFunction: () => void
+
+    function doUpdateFeeAmount(submitEvent: SubmitEvent): void {
+      submitEvent.preventDefault()
+
+      cityssm.postJSON(
+        `${los.urlPrefix}/admin/doUpdateFeeAmount`,
+        submitEvent.currentTarget,
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as ResponseJSON
+
+          if (responseJSON.success) {
+            feeCategories = responseJSON.feeCategories
+            editCloseModalFunction()
+            renderFeeCategories()
+          } else {
+            bulmaJS.alert({
+              title: 'Error Updating Fee Amount',
+              message: responseJSON.errorMessage ?? '',
+              contextualColorName: 'danger'
+            })
+          }
+        }
+      )
+    }
+
+    cityssm.openHtmlModal('adminFees-editFeeAmount', {
+      onshow(modalElement) {
+        ;(
+          modalElement.querySelector(
+            '#feeAmountEdit--feeId'
+          ) as HTMLInputElement
+        ).value = fee.feeId.toString()
+        ;(
+          modalElement.querySelector(
+            '#feeAmountEdit--feeCategory'
+          ) as HTMLElement
+        ).textContent = feeCategory.feeCategory
+        ;(
+          modalElement.querySelector('#feeAmountEdit--feeName') as HTMLElement
+        ).textContent = fee.feeName ?? ''
+        ;(
+          modalElement.querySelector(
+            '#feeAmountEdit--feeAmount'
+          ) as HTMLInputElement
+        ).value = fee.feeAmount?.toFixed(2) ?? '0'
+      },
+      onshown(modalElement, closeModalFunction) {
+        ;(
+          modalElement.querySelector(
+            '#feeAmountEdit--feeAmount'
+          ) as HTMLInputElement
+        ).select()
+
+        editCloseModalFunction = closeModalFunction
+
+        modalElement
+          .querySelector('form')
+          ?.addEventListener('submit', doUpdateFeeAmount)
+      }
+    })
+  }
+
   function openEditFee(clickEvent: Event): void {
     clickEvent.preventDefault()
 
@@ -652,13 +747,9 @@ declare const exports: Record<string, unknown>
         .dataset.feeCategoryId ?? ''
     )
 
-    const feeCategory = feeCategories.find((currentFeeCategory) => {
-      return currentFeeCategory.feeCategoryId === feeCategoryId
-    }) as FeeCategory
+    const feeCategory = getFeeCategory(feeCategoryId)
 
-    const fee = feeCategory.fees.find((currentFee) => {
-      return currentFee.feeId === feeId
-    }) as Fee
+    const fee = getFee(feeCategory, feeId)
 
     let editCloseModalFunction: () => void
     let editModalElement: HTMLElement

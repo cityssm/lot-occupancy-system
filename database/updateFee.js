@@ -26,3 +26,16 @@ export default async function updateFee(feeForm, user) {
     database.release();
     return result.changes > 0;
 }
+export async function updateFeeAmount(feeAmountForm, user) {
+    const database = await acquireConnection();
+    const result = database
+        .prepare(`update Fees
+        set feeAmount = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where recordDelete_timeMillis is null
+        and feeId = ?`)
+        .run(feeAmountForm.feeAmount, user.userName, Date.now(), feeAmountForm.feeId);
+    database.release();
+    return result.changes > 0;
+}

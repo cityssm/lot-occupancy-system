@@ -15,3 +15,8 @@ export interface UpdateFeeForm {
     isRequired: '' | '1';
 }
 export default function updateFee(feeForm: UpdateFeeForm, user: User): Promise<boolean>;
+export interface UpdateFeeAmountForm {
+    feeId: string;
+    feeAmount: string;
+}
+export declare function updateFeeAmount(feeAmountForm: UpdateFeeAmountForm, user: User): Promise<boolean>;
