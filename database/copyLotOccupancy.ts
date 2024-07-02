@@ -1,6 +1,9 @@
 import { dateToString } from '@cityssm/utils-datetime'
 
+import type { LotOccupancy } from '../types/recordTypes.js'
+
 import addLotOccupancy from './addLotOccupancy.js'
+import addLotOccupancyComment from './addLotOccupancyComment.js'
 import addLotOccupancyOccupant from './addLotOccupancyOccupant.js'
 import getLotOccupancy from './getLotOccupancy.js'
 import { acquireConnection } from './pool.js'
@@ -11,12 +14,12 @@ export default async function copyLotOccupancy(
 ): Promise<number> {
   const database = await acquireConnection()
 
-  const oldLotOccupancy = (await getLotOccupancy(oldLotOccupancyId, database))!
+  const oldLotOccupancy = await getLotOccupancy(oldLotOccupancyId, database) as LotOccupancy
 
   const newLotOccupancyId = await addLotOccupancy(
     {
       lotId: oldLotOccupancy.lotId ?? '',
-      occupancyTypeId: oldLotOccupancy.occupancyTypeId!,
+      occupancyTypeId: oldLotOccupancy.occupancyTypeId,
       occupancyStartDateString: dateToString(new Date()),
       occupancyEndDateString: ''
     },
@@ -73,6 +76,15 @@ export default async function copyLotOccupancy(
       database
     )
   }
+
+  /*
+   * Add Comment
+   */
+
+  await addLotOccupancyComment({
+    lotOccupancyId: newLotOccupancyId,
+    lotOccupancyComment: `New record copied from #${oldLotOccupancyId}.`
+  }, user)
 
   database.release()
 
