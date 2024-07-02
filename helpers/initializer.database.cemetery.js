@@ -71,16 +71,44 @@ export async function initializeCemeteryDatabase() {
     await addRecord('OccupancyTypes', 'Preneed', 1, user);
     const intermentOccupancyTypeId = await addRecord('OccupancyTypes', 'Interment', 2, user);
     const cremationOccupancyTypeId = await addRecord('OccupancyTypes', 'Cremation', 3, user);
+    // Birth Date
+    const birthDateField = {
+        occupancyTypeId: intermentOccupancyTypeId,
+        occupancyTypeField: 'Birth Date',
+        occupancyTypeFieldValues: '',
+        pattern: String.raw `\d{4}-\d{2}-\d{2}`,
+        isRequired: '',
+        minimumLength: 10,
+        maximumLength: 10,
+        orderNumber: 1
+    };
+    await addOccupancyTypeField(birthDateField, user);
+    await addOccupancyTypeField(Object.assign(birthDateField, {
+        occupancyTypeId: cremationOccupancyTypeId
+    }), user);
+    // Birth Place
+    const birthPlace = {
+        occupancyTypeId: intermentOccupancyTypeId,
+        occupancyTypeField: 'Birth Place',
+        occupancyTypeFieldValues: '',
+        pattern: '',
+        isRequired: '',
+        minimumLength: 1,
+        maximumLength: 100,
+        orderNumber: 2
+    };
+    await addOccupancyTypeField(birthPlace, user);
+    await addOccupancyTypeField(Object.assign(birthPlace, { occupancyTypeId: cremationOccupancyTypeId }), user);
     // Death Date
     const deathDateField = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: 'Death Date',
         occupancyTypeFieldValues: '',
-        pattern: String.raw `\d{4}([\/-]\d{2}){2}`,
+        pattern: String.raw `\d{4}-\d{2}-\d{2}`,
         isRequired: '',
         minimumLength: 10,
         maximumLength: 10,
-        orderNumber: 1
+        orderNumber: 3
     };
     await addOccupancyTypeField(deathDateField, user);
     await addOccupancyTypeField(Object.assign(deathDateField, {
@@ -95,7 +123,7 @@ export async function initializeCemeteryDatabase() {
         isRequired: '',
         minimumLength: 1,
         maximumLength: 3,
-        orderNumber: 2
+        orderNumber: 4
     };
     await addOccupancyTypeField(deathAgeField, user);
     await addOccupancyTypeField(Object.assign(deathAgeField, { occupancyTypeId: cremationOccupancyTypeId }), user);
@@ -108,7 +136,7 @@ export async function initializeCemeteryDatabase() {
         isRequired: '',
         minimumLength: 1,
         maximumLength: 10,
-        orderNumber: 3
+        orderNumber: 5
     };
     await addOccupancyTypeField(deathAgePeriod, user);
     await addOccupancyTypeField(Object.assign(deathAgePeriod, {
@@ -123,7 +151,7 @@ export async function initializeCemeteryDatabase() {
         isRequired: '',
         minimumLength: 1,
         maximumLength: 100,
-        orderNumber: 4
+        orderNumber: 6
     };
     await addOccupancyTypeField(deathPlace, user);
     await addOccupancyTypeField(Object.assign(deathPlace, { occupancyTypeId: cremationOccupancyTypeId }), user);
@@ -145,7 +173,7 @@ export async function initializeCemeteryDatabase() {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: 'Funeral Date',
         occupancyTypeFieldValues: '',
-        pattern: String.raw `\d{4}([\/-]\d{2}){2}`,
+        pattern: String.raw `\d{4}-\d{2}-\d{2}`,
         isRequired: '',
         minimumLength: 10,
         maximumLength: 10,
