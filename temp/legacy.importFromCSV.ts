@@ -1,6 +1,11 @@
 import fs from 'node:fs'
 
-import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime'
+import {
+  type DateString,
+  type TimeString,
+  dateIntegerToString,
+  dateToString
+} from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 import papa from 'papaparse'
 
@@ -243,19 +248,23 @@ function getMapByMapDescription(mapDescription: string): recordTypes.MapRecord {
   return map
 }
 
-function formatDateString(year: string, month: string, day: string): string {
+function formatDateString(
+  year: string,
+  month: string,
+  day: string
+): DateString {
   const formattedYear = `0000${year}`.slice(-4)
   const formattedMonth = `00${month}`.slice(-2)
   const formattedDay = `00${day}`.slice(-2)
 
-  return `${formattedYear}-${formattedMonth}-${formattedDay}`
+  return `${formattedYear}-${formattedMonth}-${formattedDay}` as DateString
 }
 
-function formatTimeString(hour: string, minute: string): string {
+function formatTimeString(hour: string, minute: string): TimeString {
   const formattedHour = `00${hour}`.slice(-2)
   const formattedMinute = `00${minute}`.slice(-2)
 
-  return `${formattedHour}:${formattedMinute}`
+  return `${formattedHour}:${formattedMinute}` as TimeString
 }
 
 const cemeteryToMapName = {
@@ -359,7 +368,7 @@ async function importFromMasterCSV(): Promise<void> {
         cemetery: masterRow.CM_CEMETERY
       })!
 
-      let lotId: number
+      let lotId: number | undefined
 
       if (masterRow.CM_CEMETERY !== '00') {
         lotId = await addLot(
@@ -438,7 +447,7 @@ async function importFromMasterCSV(): Promise<void> {
         preneedLotOccupancyId = await addLotOccupancy(
           {
             occupancyTypeId: importIds.preneedOccupancyType.occupancyTypeId,
-            lotId,
+            lotId: lotId ?? '',
             occupancyStartDateString: preneedOccupancyStartDateString,
             occupancyEndDateString,
             occupancyTypeFieldIds: ''
@@ -503,7 +512,11 @@ async function importFromMasterCSV(): Promise<void> {
         }
 
         if (occupancyEndDateString === '') {
-          await updateLotStatus(lotId, importIds.reservedLotStatusId, user)
+          await updateLotStatus(
+            lotId ?? '',
+            importIds.reservedLotStatusId,
+            user
+          )
         }
       }
 
@@ -548,7 +561,7 @@ async function importFromMasterCSV(): Promise<void> {
         deceasedLotOccupancyId = await addLotOccupancy(
           {
             occupancyTypeId: occupancyType.occupancyTypeId,
-            lotId,
+            lotId: lotId ?? '',
             occupancyStartDateString: deceasedOccupancyStartDateString,
             occupancyEndDateString: deceasedOccupancyEndDateString,
             occupancyTypeFieldIds: ''
@@ -640,16 +653,16 @@ async function importFromMasterCSV(): Promise<void> {
           await addLotOccupancyOccupant(
             {
               lotOccupancyId: deceasedLotOccupancyId,
-              lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId!,
-              occupantName: funeralHomeOccupant.occupantName!,
+              lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId ?? '',
+              occupantName: funeralHomeOccupant.occupantName ?? '',
               occupantFamilyName: '',
-              occupantAddress1: funeralHomeOccupant.occupantAddress1!,
-              occupantAddress2: funeralHomeOccupant.occupantAddress2!,
-              occupantCity: funeralHomeOccupant.occupantCity!,
-              occupantProvince: funeralHomeOccupant.occupantProvince!,
-              occupantPostalCode: funeralHomeOccupant.occupantPostalCode!,
-              occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber!,
-              occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress!
+              occupantAddress1: funeralHomeOccupant.occupantAddress1 ?? '',
+              occupantAddress2: funeralHomeOccupant.occupantAddress2 ?? '',
+              occupantCity: funeralHomeOccupant.occupantCity ?? '',
+              occupantProvince: funeralHomeOccupant.occupantProvince ?? '',
+              occupantPostalCode: funeralHomeOccupant.occupantPostalCode ?? '',
+              occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber ?? '',
+              occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress ?? ''
             },
             user
           )
@@ -771,7 +784,7 @@ async function importFromMasterCSV(): Promise<void> {
           )
         }
 
-        await updateLotStatus(lotId, importIds.takenLotStatusId, user)
+        await updateLotStatus(lotId ?? '', importIds.takenLotStatusId, user)
 
         if (masterRow.CM_PRENEED_OWNER !== '') {
           await addLotOccupancyOccupant(
@@ -830,7 +843,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         cemetery = 'HC'
       }
 
-      let lot: recordTypes.Lot
+      let lot: recordTypes.Lot | undefined
 
       if (cemetery !== '') {
         const map = await getMap({
@@ -861,7 +874,7 @@ async function importFromPrepaidCSV(): Promise<void> {
               lotName,
               lotTypeId,
               lotStatusId: importIds.reservedLotStatusId,
-              mapId: map.mapId!,
+              mapId: map.mapId ?? '',
               mapKey: lotName.includes(',') ? lotName.split(',')[0] : lotName,
               lotLatitude: '',
               lotLongitude: ''

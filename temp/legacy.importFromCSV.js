@@ -209,7 +209,7 @@ async function importFromMasterCSV() {
                 }
                 preneedLotOccupancyId = await addLotOccupancy({
                     occupancyTypeId: importIds.preneedOccupancyType.occupancyTypeId,
-                    lotId,
+                    lotId: lotId ?? '',
                     occupancyStartDateString: preneedOccupancyStartDateString,
                     occupancyEndDateString,
                     occupancyTypeFieldIds: ''
@@ -253,7 +253,7 @@ async function importFromMasterCSV() {
                     }, user);
                 }
                 if (occupancyEndDateString === '') {
-                    await updateLotStatus(lotId, importIds.reservedLotStatusId, user);
+                    await updateLotStatus(lotId ?? '', importIds.reservedLotStatusId, user);
                 }
             }
             let deceasedOccupancyStartDateString;
@@ -278,7 +278,7 @@ async function importFromMasterCSV() {
                     : importIds.cremationOccupancyType;
                 deceasedLotOccupancyId = await addLotOccupancy({
                     occupancyTypeId: occupancyType.occupancyTypeId,
-                    lotId,
+                    lotId: lotId ?? '',
                     occupancyStartDateString: deceasedOccupancyStartDateString,
                     occupancyEndDateString: deceasedOccupancyEndDateString,
                     occupancyTypeFieldIds: ''
@@ -330,16 +330,16 @@ async function importFromMasterCSV() {
                     const funeralHomeOccupant = importData.getFuneralHomeLotOccupancyOccupantData(masterRow.CM_FUNERAL_HOME);
                     await addLotOccupancyOccupant({
                         lotOccupancyId: deceasedLotOccupancyId,
-                        lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId,
-                        occupantName: funeralHomeOccupant.occupantName,
+                        lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId ?? '',
+                        occupantName: funeralHomeOccupant.occupantName ?? '',
                         occupantFamilyName: '',
-                        occupantAddress1: funeralHomeOccupant.occupantAddress1,
-                        occupantAddress2: funeralHomeOccupant.occupantAddress2,
-                        occupantCity: funeralHomeOccupant.occupantCity,
-                        occupantProvince: funeralHomeOccupant.occupantProvince,
-                        occupantPostalCode: funeralHomeOccupant.occupantPostalCode,
-                        occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber,
-                        occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress
+                        occupantAddress1: funeralHomeOccupant.occupantAddress1 ?? '',
+                        occupantAddress2: funeralHomeOccupant.occupantAddress2 ?? '',
+                        occupantCity: funeralHomeOccupant.occupantCity ?? '',
+                        occupantProvince: funeralHomeOccupant.occupantProvince ?? '',
+                        occupantPostalCode: funeralHomeOccupant.occupantPostalCode ?? '',
+                        occupantPhoneNumber: funeralHomeOccupant.occupantPhoneNumber ?? '',
+                        occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress ?? ''
                     }, user);
                     /*
                       addOrUpdateLotOccupancyField(
@@ -414,7 +414,7 @@ async function importFromMasterCSV() {
                         lotOccupancyComment: `Imported Contract #${masterRow.CM_WORK_ORDER}`
                     }, user);
                 }
-                await updateLotStatus(lotId, importIds.takenLotStatusId, user);
+                await updateLotStatus(lotId ?? '', importIds.takenLotStatusId, user);
                 if (masterRow.CM_PRENEED_OWNER !== '') {
                     await addLotOccupancyOccupant({
                         lotOccupancyId: deceasedLotOccupancyId,
@@ -485,7 +485,7 @@ async function importFromPrepaidCSV() {
                         lotName,
                         lotTypeId,
                         lotStatusId: importIds.reservedLotStatusId,
-                        mapId: map.mapId,
+                        mapId: map.mapId ?? '',
                         mapKey: lotName.includes(',') ? lotName.split(',')[0] : lotName,
                         lotLatitude: '',
                         lotLongitude: ''
