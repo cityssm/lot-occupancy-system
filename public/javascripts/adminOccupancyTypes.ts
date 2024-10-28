@@ -5,7 +5,10 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../../types/globalTypes.js'
-import type { OccupancyType, OccupancyTypeField } from '../../types/recordTypes.js'
+import type {
+  OccupancyType,
+  OccupancyTypeField
+} from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -301,6 +304,7 @@ type ResponseJSON =
       )
     }) as OccupancyTypeField
 
+    let fieldTypeElement: HTMLSelectElement
     let minimumLengthElement: HTMLInputElement
     let maximumLengthElement: HTMLInputElement
     let patternElement: HTMLInputElement
@@ -313,14 +317,28 @@ type ResponseJSON =
     }
 
     function toggleInputFields(): void {
-      if (occupancyTypeFieldValuesElement.value === '') {
-        minimumLengthElement.disabled = false
-        maximumLengthElement.disabled = false
-        patternElement.disabled = false
-      } else {
-        minimumLengthElement.disabled = true
-        maximumLengthElement.disabled = true
-        patternElement.disabled = true
+      switch (fieldTypeElement.value) {
+        case 'date': {
+          minimumLengthElement.disabled = true
+          maximumLengthElement.disabled = true
+          patternElement.disabled = true
+          occupancyTypeFieldValuesElement.disabled = true
+          break
+        }
+        case 'select': {
+          minimumLengthElement.disabled = true
+          maximumLengthElement.disabled = true
+          patternElement.disabled = true
+          occupancyTypeFieldValuesElement.disabled = false
+          break
+        }
+        default: {
+          minimumLengthElement.disabled = false
+          maximumLengthElement.disabled = false
+          patternElement.disabled = false
+          occupancyTypeFieldValuesElement.disabled = true
+          break
+        }
       }
     }
 
@@ -390,6 +408,12 @@ type ResponseJSON =
           ) as HTMLSelectElement
         ).value = occupancyTypeField.isRequired ?? false ? '1' : '0'
 
+        fieldTypeElement = modalElement.querySelector(
+          '#occupancyTypeFieldEdit--fieldType'
+        ) as HTMLSelectElement
+
+        fieldTypeElement.value = occupancyTypeField.fieldType
+
         minimumLengthElement = modalElement.querySelector(
           '#occupancyTypeFieldEdit--minimumLength'
         ) as HTMLInputElement
@@ -431,10 +455,7 @@ type ResponseJSON =
         minimumLengthElement.addEventListener('keyup', updateMaximumLengthMin)
         updateMaximumLengthMin()
 
-        occupancyTypeFieldValuesElement.addEventListener(
-          'keyup',
-          toggleInputFields
-        )
+        fieldTypeElement.addEventListener('change', toggleInputFields)
 
         modalElement
           .querySelector('#button--deleteOccupancyTypeField')
@@ -711,7 +732,9 @@ type ResponseJSON =
         const printTitle =
           printEJS === '*'
             ? '(All Available Prints)'
-            : ((exports.occupancyTypePrintTitles as string[])[printEJS] as string)
+            : ((exports.occupancyTypePrintTitles as string[])[
+                printEJS
+              ] as string)
 
         let printIconClass = 'fa-star'
 

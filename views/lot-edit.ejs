@@ -160,30 +160,30 @@
                 <%= configFunctions.getConfigProperty("aliases.lot") %> Status
             </label>
             <div class="field">
-                <div class="control">
-                    <div class="select is-fullwidth">
-                        <select id="lot--lotStatusId" name="lotStatusId">
-                            <option value="">(No Status)</option>
-                            <% let statusIsFound = false; %>
-                            <% for (const lotStatus of lotStatuses) { %>
-                                <% 
-                                    if (lot.lotStatusId === lotStatus.lotStatusId) {
-                                        statusIsFound = true;
-                                    }
-                                %>
-                                <option value="<%= lotStatus.lotStatusId %>"
-                                    <%= (lot.lotStatusId === lotStatus.lotStatusId ? " selected" : "") %>>
-                                    <%= lotStatus.lotStatus %>
-                                </option>
-                            <% } %>
-                            <% if (lot.lotStatusId && !statusIsFound) { %>
-                                <option value="<%= lot.lotStatusId %>" selected>
-                                    <%= lot.lotStatus %>
-                                </option>
-                            <% } %>
-                        </select>
-                    </div>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="lot--lotStatusId" name="lotStatusId">
+                    <option value="">(No Status)</option>
+                    <% let statusIsFound = false; %>
+                    <% for (const lotStatus of lotStatuses) { %>
+                      <% 
+                        if (lot.lotStatusId === lotStatus.lotStatusId) {
+                          statusIsFound = true;
+                        }
+                      %>
+                      <option value="<%= lotStatus.lotStatusId %>"
+                        <%= (lot.lotStatusId === lotStatus.lotStatusId ? " selected" : "") %>>
+                        <%= lotStatus.lotStatus %>
+                      </option>
+                    <% } %>
+                    <% if (lot.lotStatusId && !statusIsFound) { %>
+                      <option value="<%= lot.lotStatusId %>" selected>
+                        <%= lot.lotStatus %>
+                      </option>
+                    <% } %>
+                  </select>
                 </div>
+              </div>
             </div>
         </div>
         <div class="column">
@@ -201,60 +201,61 @@
                         </p>
                     </div>
                 <% } else { %>
-                    <% let lotTypeFieldIds = ""; %>
-                    <% for (const lotField of lot.lotFields) { %>
-                        <% lotTypeFieldIds += "," + lotField.lotTypeFieldId; %>
-                        <div class="field">
-                            <label class="label" for="lot--lotFieldValue_<%= lotField.lotTypeFieldId %>">
-                                <%= lotField.lotTypeField %>
-                            </label>
-                            <div class="control">
-                                <% if (!lotField.lotTypeFieldValues || lotField.lotTypeFieldValues === "") { %>
-                                    <input class="input"
-                                        id="lot--lotFieldValue_<%= lotField.lotTypeFieldId %>"
-                                        name="lotFieldValue_<%= lotField.lotTypeFieldId %>"
-                                        type="text"
-                                        value="<%= lotField.lotFieldValue %>"
-                                        <% if (lotField.pattern !== "") { %>
-                                            pattern="<%= lotField.pattern %>"
-                                        <% } %>
-                                        minlength="<%= lotField.minimumLength %>"
-                                        maxlength="<%= lotField.maximumLength %>"
-                                        <%= lotField.isRequired ? " required" : "" %> />
-                                <% } else { %>
-                                    <%
-                                        const fieldValues = lotField.lotTypeFieldValues.split("\n");
-                                        let valueFound = false;
-                                    %>
-                                    <div class="select is-fullwidth">
-                                        <select id="lot--lotFieldValue_<%= lotField.lotTypeFieldId %>"
-                                            name="lotFieldValue_<%= lotField.lotTypeFieldId %>">
-                                            <% if (!lotField.isRequired || lotField.lotFieldValue === "") { %>
-                                                <option value="">(Not Set)</option>
-                                            <% } %>
-                                            <% for (const fieldValue of fieldValues) { %>
-                                                <% 
-                                                    if (fieldValue === lotField.lotFieldValue) {
-                                                        valueFound = true;
-                                                    }
-                                                %>
-                                                <option value="<%= fieldValue %>"
-                                                    <%= (fieldValue === lotField.lotFieldValue ? " selected" : "") %>>
-                                                    <%= fieldValue %>
-                                                </option>
-                                            <% } %>
-                                            <% if (!valueFound && lotField.lotFieldValue !== "") { %>
-                                                <option value="<%= lotField.lotFieldValue %>" selected>
-                                                    <%= lotField.lotFieldValue %>
-                                                </option>
-                                            <% } %>
-                                        </select>
-                                    </div>
-                                <% } %>
-                            </div>
-                        </div>
-                    <% } %>
-                    <input id="lot--lotTypeFieldIds" name="lotTypeFieldIds" type="hidden" value="<%= lotTypeFieldIds.slice(1) %>" />
+                  <% let lotTypeFieldIds = ""; %>
+                  <% for (const lotField of lot.lotFields) { %>
+                    <% lotTypeFieldIds += "," + lotField.lotTypeFieldId; %>
+                    <div class="field">
+                      <label class="label" for="lot--lotFieldValue_<%= lotField.lotTypeFieldId %>">
+                        <%= lotField.lotTypeField %>
+                      </label>
+                      <div class="control">
+                        <% if (lotField.fieldType === 'select' || (lotField.lotTypeFieldValues ?? '') !== "") { %>
+
+                          <%
+                            const fieldValues = lotField.lotTypeFieldValues.split("\n");
+                            let valueFound = false;
+                          %>
+                          <div class="select is-fullwidth">
+                            <select id="lot--lotFieldValue_<%= lotField.lotTypeFieldId %>"
+                              name="lotFieldValue_<%= lotField.lotTypeFieldId %>">
+                              <% if (!lotField.isRequired || lotField.lotFieldValue === "") { %>
+                                  <option value="">(Not Set)</option>
+                              <% } %>
+                              <% for (const fieldValue of fieldValues) { %>
+                                <% 
+                                  if (fieldValue === lotField.lotFieldValue) {
+                                    valueFound = true;
+                                  }
+                                %>
+                                <option value="<%= fieldValue %>"
+                                  <%= (fieldValue === lotField.lotFieldValue ? " selected" : "") %>>
+                                  <%= fieldValue %>
+                                </option>
+                              <% } %>
+                              <% if (!valueFound && lotField.lotFieldValue !== "") { %>
+                                <option value="<%= lotField.lotFieldValue %>" selected>
+                                  <%= lotField.lotFieldValue %>
+                                </option>
+                              <% } %>
+                            </select>
+                          </div>                                
+                        <% } else { %>
+                          <input class="input"
+                            id="lot--lotFieldValue_<%= lotField.lotTypeFieldId %>"
+                            name="lotFieldValue_<%= lotField.lotTypeFieldId %>"
+                            type="<%= lotField.fieldType %>"
+                            value="<%= lotField.lotFieldValue %>"
+                            <% if (lotField.pattern !== "") { %>
+                                pattern="<%= lotField.pattern %>"
+                            <% } %>
+                            minlength="<%= lotField.minimumLength %>"
+                            maxlength="<%= lotField.maximumLength %>"
+                            <%= lotField.isRequired ? " required" : "" %> />
+                        <% } %>
+                      </div>
+                    </div>
+                  <% } %>
+                  <input id="lot--lotTypeFieldIds" name="lotTypeFieldIds" type="hidden" value="<%= lotTypeFieldIds.slice(1) %>" />
                 <% } %>
             </div>
         </div>

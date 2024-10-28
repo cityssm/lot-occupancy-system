@@ -6,10 +6,11 @@ export interface AddOccupancyTypeFieldForm {
   occupancyTypeId?: string | number
   occupancyTypeField: string
   occupancyTypeFieldValues?: string
+  fieldType?: string
   isRequired?: string
   pattern?: string
-  minimumLength: string | number
-  maximumLength: string | number
+  minimumLength?: string | number
+  maximumLength?: string | number
   orderNumber?: number
 }
 
@@ -24,17 +25,18 @@ export default async function addOccupancyTypeField(
   const result = database
     .prepare(
       `insert into OccupancyTypeFields (
-        occupancyTypeId, occupancyTypeField,
+        occupancyTypeId, occupancyTypeField, fieldType,
         occupancyTypeFieldValues, isRequired, pattern,
         minimumLength, maximumLength,
         orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       occupancyTypeFieldForm.occupancyTypeId ?? undefined,
       occupancyTypeFieldForm.occupancyTypeField,
+      occupancyTypeFieldForm.fieldType ?? 'text',
       occupancyTypeFieldForm.occupancyTypeFieldValues ?? '',
       occupancyTypeFieldForm.isRequired === '' ? 0 : 1,
       occupancyTypeFieldForm.pattern ?? '',

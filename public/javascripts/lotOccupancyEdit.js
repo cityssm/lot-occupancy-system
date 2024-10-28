@@ -1,6 +1,4 @@
 "use strict";
-/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair */
-/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -222,24 +220,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     fieldElement.className = 'field';
                     fieldElement.innerHTML = `<label class="label" for="${cityssm.escapeHTML(fieldId)}"></label><div class="control"></div>`;
                     fieldElement.querySelector('label').textContent = occupancyTypeField.occupancyTypeField;
-                    if ((occupancyTypeField.occupancyTypeFieldValues ?? '') === '') {
-                        const inputElement = document.createElement('input');
-                        inputElement.className = 'input';
-                        inputElement.id = fieldId;
-                        inputElement.name = fieldName;
-                        inputElement.type = 'text';
-                        inputElement.required = occupancyTypeField.isRequired;
-                        inputElement.minLength =
-                            occupancyTypeField.minimumLength;
-                        inputElement.maxLength =
-                            occupancyTypeField.maximumLength;
-                        if ((occupancyTypeField.pattern ?? '') !== '') {
-                            inputElement.pattern = occupancyTypeField.pattern;
-                        }
-                        ;
-                        fieldElement.querySelector('.control').append(inputElement);
-                    }
-                    else {
+                    if (occupancyTypeField.fieldType === 'select' ||
+                        (occupancyTypeField.occupancyTypeFieldValues ?? '') !== '') {
                         ;
                         fieldElement.querySelector('.control').innerHTML = `<div class="select is-fullwidth">
                   <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
@@ -255,6 +237,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             optionElement.textContent = optionValue;
                             selectElement.append(optionElement);
                         }
+                    }
+                    else {
+                        const inputElement = document.createElement('input');
+                        inputElement.className = 'input';
+                        inputElement.id = fieldId;
+                        inputElement.name = fieldName;
+                        inputElement.type = occupancyTypeField.fieldType;
+                        inputElement.required = occupancyTypeField.isRequired;
+                        inputElement.minLength =
+                            occupancyTypeField.minimumLength;
+                        inputElement.maxLength =
+                            occupancyTypeField.maximumLength;
+                        if ((occupancyTypeField.pattern ?? '') !== '') {
+                            inputElement.pattern = occupancyTypeField.pattern;
+                        }
+                        ;
+                        fieldElement.querySelector('.control').append(inputElement);
                     }
                     console.log(fieldElement);
                     lotOccupancyFieldsContainerElement.append(fieldElement);

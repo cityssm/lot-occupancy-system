@@ -151,6 +151,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             : allOccupancyTypeFields).find((currentOccupancyTypeField) => {
             return (currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId);
         });
+        let fieldTypeElement;
         let minimumLengthElement;
         let maximumLengthElement;
         let patternElement;
@@ -160,15 +161,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
             maximumLengthElement.min = minimumLengthElement.value;
         }
         function toggleInputFields() {
-            if (occupancyTypeFieldValuesElement.value === '') {
-                minimumLengthElement.disabled = false;
-                maximumLengthElement.disabled = false;
-                patternElement.disabled = false;
-            }
-            else {
-                minimumLengthElement.disabled = true;
-                maximumLengthElement.disabled = true;
-                patternElement.disabled = true;
+            switch (fieldTypeElement.value) {
+                case 'date': {
+                    minimumLengthElement.disabled = true;
+                    maximumLengthElement.disabled = true;
+                    patternElement.disabled = true;
+                    occupancyTypeFieldValuesElement.disabled = true;
+                    break;
+                }
+                case 'select': {
+                    minimumLengthElement.disabled = true;
+                    maximumLengthElement.disabled = true;
+                    patternElement.disabled = true;
+                    occupancyTypeFieldValuesElement.disabled = false;
+                    break;
+                }
+                default: {
+                    minimumLengthElement.disabled = false;
+                    maximumLengthElement.disabled = false;
+                    patternElement.disabled = false;
+                    occupancyTypeFieldValuesElement.disabled = true;
+                    break;
+                }
             }
         }
         function doUpdate(submitEvent) {
@@ -209,6 +223,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector('#occupancyTypeFieldEdit--occupancyTypeFieldId').value = occupancyTypeField.occupancyTypeFieldId.toString();
                 modalElement.querySelector('#occupancyTypeFieldEdit--occupancyTypeField').value = occupancyTypeField.occupancyTypeField ?? '';
                 modalElement.querySelector('#occupancyTypeFieldEdit--isRequired').value = occupancyTypeField.isRequired ?? false ? '1' : '0';
+                fieldTypeElement = modalElement.querySelector('#occupancyTypeFieldEdit--fieldType');
+                fieldTypeElement.value = occupancyTypeField.fieldType;
                 minimumLengthElement = modalElement.querySelector('#occupancyTypeFieldEdit--minimumLength');
                 minimumLengthElement.value =
                     occupancyTypeField.minimumLength?.toString() ?? '';
@@ -230,7 +246,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector('form')?.addEventListener('submit', doUpdate);
                 minimumLengthElement.addEventListener('keyup', updateMaximumLengthMin);
                 updateMaximumLengthMin();
-                occupancyTypeFieldValuesElement.addEventListener('keyup', toggleInputFields);
+                fieldTypeElement.addEventListener('change', toggleInputFields);
                 modalElement
                     .querySelector('#button--deleteOccupancyTypeField')
                     ?.addEventListener('click', confirmDoDelete);

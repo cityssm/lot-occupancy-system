@@ -7,7 +7,7 @@ export default async function getOccupancyTypeFields(occupancyTypeId, connectedD
         sqlParameters.push(occupancyTypeId);
     }
     const occupancyTypeFields = database
-        .prepare(`select occupancyTypeFieldId, occupancyTypeField,
+        .prepare(`select occupancyTypeFieldId, occupancyTypeField, fieldType,
         occupancyTypeFieldValues, isRequired, pattern, minimumLength, maximumLength, orderNumber
         from OccupancyTypeFields
         where recordDelete_timeMillis is null

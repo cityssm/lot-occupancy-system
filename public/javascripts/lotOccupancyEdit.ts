@@ -1,6 +1,3 @@
-/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair */
-/* eslint-disable unicorn/prefer-module */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
@@ -360,31 +357,10 @@ declare const exports: Record<string, unknown>
               fieldElement.querySelector('label') as HTMLLabelElement
             ).textContent = occupancyTypeField.occupancyTypeField as string
 
-            if ((occupancyTypeField.occupancyTypeFieldValues ?? '') === '') {
-              const inputElement = document.createElement('input')
-
-              inputElement.className = 'input'
-
-              inputElement.id = fieldId
-
-              inputElement.name = fieldName
-
-              inputElement.type = 'text'
-
-              inputElement.required = occupancyTypeField.isRequired as boolean
-              inputElement.minLength =
-                occupancyTypeField.minimumLength as number
-              inputElement.maxLength =
-                occupancyTypeField.maximumLength as number
-
-              if ((occupancyTypeField.pattern ?? '') !== '') {
-                inputElement.pattern = occupancyTypeField.pattern as string
-              }
-
-              ;(fieldElement.querySelector('.control') as HTMLElement).append(
-                inputElement
-              )
-            } else {
+            if (
+              occupancyTypeField.fieldType === 'select' ||
+              (occupancyTypeField.occupancyTypeFieldValues ?? '') !== ''
+            ) {
               ;(
                 fieldElement.querySelector('.control') as HTMLElement
               ).innerHTML = `<div class="select is-fullwidth">
@@ -409,6 +385,32 @@ declare const exports: Record<string, unknown>
                 optionElement.textContent = optionValue
                 selectElement.append(optionElement)
               }
+            } else {
+              const inputElement = document.createElement('input')
+
+              inputElement.className = 'input'
+
+              inputElement.id = fieldId
+
+              inputElement.name = fieldName
+
+              inputElement.type = occupancyTypeField.fieldType
+
+              inputElement.required = occupancyTypeField.isRequired as boolean
+
+              inputElement.minLength =
+                occupancyTypeField.minimumLength as number
+
+              inputElement.maxLength =
+                occupancyTypeField.maximumLength as number
+
+              if ((occupancyTypeField.pattern ?? '') !== '') {
+                inputElement.pattern = occupancyTypeField.pattern as string
+              }
+
+              ;(fieldElement.querySelector('.control') as HTMLElement).append(
+                inputElement
+              )
             }
 
             console.log(fieldElement)

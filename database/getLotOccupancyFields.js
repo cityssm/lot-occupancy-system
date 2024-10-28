@@ -3,7 +3,7 @@ export default async function getLotOccupancyFields(lotOccupancyId, connectedDat
     const database = connectedDatabase ?? (await acquireConnection());
     const lotOccupancyFields = database
         .prepare(`select o.lotOccupancyId, o.occupancyTypeFieldId,
-        o.lotOccupancyFieldValue, f.occupancyTypeField, f.occupancyTypeFieldValues,
+        o.lotOccupancyFieldValue, f.occupancyTypeField, f.fieldType, f.occupancyTypeFieldValues,
         f.isRequired, f.pattern, f.minimumLength, f.maximumLength,
         f.orderNumber, t.orderNumber as occupancyTypeOrderNumber
         from LotOccupancyFields o
@@ -15,7 +15,7 @@ export default async function getLotOccupancyFields(lotOccupancyId, connectedDat
         union
         
         select ? as lotOccupancyId, f.occupancyTypeFieldId,
-        '' as lotOccupancyFieldValue, f.occupancyTypeField, f.occupancyTypeFieldValues,
+        '' as lotOccupancyFieldValue, f.occupancyTypeField, f.fieldType, f.occupancyTypeFieldValues,
         f.isRequired, f.pattern, f.minimumLength, f.maximumLength,
         f.orderNumber, t.orderNumber as occupancyTypeOrderNumber
         from OccupancyTypeFields f

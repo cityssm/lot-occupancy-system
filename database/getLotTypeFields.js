@@ -4,7 +4,7 @@ export default async function getLotTypeFields(lotTypeId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const lotTypeFields = database
         .prepare(`select lotTypeFieldId,
-        lotTypeField, lotTypeFieldValues,
+        lotTypeField, fieldType, lotTypeFieldValues,
         isRequired, pattern, minimumLength, maximumLength, orderNumber
         from LotTypeFields
         where recordDelete_timeMillis is null

@@ -12,17 +12,5 @@
   },
   "compileOnSave": true,
   "buildOnSave": true,
-  "include": ["public/javascripts/*"],
-  "exclude": [
-    "bin/*",
-    "cypress/*",
-    "data/*",
-    "database/*",
-    "handlers/*",
-    "helpers/*",
-    "routes/*",
-    "temp/*",
-    "test/*",
-    "types/*"
-  ]
+  "include": ["./*"]
 }

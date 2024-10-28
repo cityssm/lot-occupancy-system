@@ -6,6 +6,7 @@ export interface UpdateOccupancyTypeFieldForm {
   occupancyTypeFieldId: number | string
   occupancyTypeField: string
   isRequired: '0' | '1'
+  fieldType?: string
   minimumLength?: string
   maximumLength?: string
   pattern?: string
@@ -23,6 +24,7 @@ export default async function updateOccupancyTypeField(
       `update OccupancyTypeFields
         set occupancyTypeField = ?,
         isRequired = ?,
+        fieldType = ?,
         minimumLength = ?,
         maximumLength = ?,
         pattern = ?,
@@ -35,6 +37,7 @@ export default async function updateOccupancyTypeField(
     .run(
       occupancyTypeFieldForm.occupancyTypeField,
       Number.parseInt(occupancyTypeFieldForm.isRequired, 10),
+      occupancyTypeFieldForm.fieldType ?? 'text',
       occupancyTypeFieldForm.minimumLength ?? 0,
       occupancyTypeFieldForm.maximumLength ?? 100,
       occupancyTypeFieldForm.pattern ?? '',

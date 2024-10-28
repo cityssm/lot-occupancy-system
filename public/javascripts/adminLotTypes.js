@@ -60,9 +60,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function openEditLotType(clickEvent) {
         const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.lotTypeId ?? '', 10);
-        const lotType = lotTypes.find((currentLotType) => {
-            return lotTypeId === currentLotType.lotTypeId;
-        });
+        const lotType = lotTypes.find((currentLotType) => lotTypeId === currentLotType.lotTypeId);
         let editCloseModalFunction;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
@@ -136,12 +134,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }, lotTypeResponseHandler);
     }
     function openEditLotTypeField(lotTypeId, lotTypeFieldId) {
-        const lotType = lotTypes.find((currentLotType) => {
-            return currentLotType.lotTypeId === lotTypeId;
-        });
-        const lotTypeField = (lotType.lotTypeFields ?? []).find((currentLotTypeField) => {
-            return currentLotTypeField.lotTypeFieldId === lotTypeFieldId;
-        });
+        const lotType = lotTypes.find((currentLotType) => currentLotType.lotTypeId === lotTypeId);
+        const lotTypeField = (lotType.lotTypeFields ?? []).find((currentLotTypeField) => currentLotTypeField.lotTypeFieldId === lotTypeFieldId);
+        let fieldTypeElement;
         let minimumLengthElement;
         let maximumLengthElement;
         let patternElement;
@@ -151,15 +146,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
             maximumLengthElement.min = minimumLengthElement.value;
         }
         function toggleInputFields() {
-            if (lotTypeFieldValuesElement.value === '') {
-                minimumLengthElement.disabled = false;
-                maximumLengthElement.disabled = false;
-                patternElement.disabled = false;
-            }
-            else {
-                minimumLengthElement.disabled = true;
-                maximumLengthElement.disabled = true;
-                patternElement.disabled = true;
+            switch (fieldTypeElement.value) {
+                case 'date': {
+                    minimumLengthElement.disabled = true;
+                    maximumLengthElement.disabled = true;
+                    patternElement.disabled = true;
+                    lotTypeFieldValuesElement.disabled = true;
+                    break;
+                }
+                case 'select': {
+                    minimumLengthElement.disabled = true;
+                    maximumLengthElement.disabled = true;
+                    patternElement.disabled = true;
+                    lotTypeFieldValuesElement.disabled = false;
+                    break;
+                }
+                default: {
+                    minimumLengthElement.disabled = false;
+                    maximumLengthElement.disabled = false;
+                    patternElement.disabled = false;
+                    lotTypeFieldValuesElement.disabled = true;
+                    break;
+                }
             }
         }
         function doUpdate(submitEvent) {
@@ -200,6 +208,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector('#lotTypeFieldEdit--lotTypeFieldId').value = lotTypeField.lotTypeFieldId.toString();
                 modalElement.querySelector('#lotTypeFieldEdit--lotTypeField').value = lotTypeField.lotTypeField ?? '';
                 modalElement.querySelector('#lotTypeFieldEdit--isRequired').value = lotTypeField.isRequired ? '1' : '0';
+                fieldTypeElement = modalElement.querySelector('#lotTypeFieldEdit--fieldType');
+                fieldTypeElement.value = lotTypeField.fieldType;
                 minimumLengthElement = modalElement.querySelector('#lotTypeFieldEdit--minimumLength');
                 minimumLengthElement.value =
                     lotTypeField.minimumLength?.toString() ?? '';
@@ -220,7 +230,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector('form')?.addEventListener('submit', doUpdate);
                 minimumLengthElement.addEventListener('keyup', updateMaximumLengthMin);
                 updateMaximumLengthMin();
-                lotTypeFieldValuesElement.addEventListener('keyup', toggleInputFields);
+                fieldTypeElement.addEventListener('change', toggleInputFields);
                 modalElement
                     .querySelector('#button--deleteLotTypeField')
                     ?.addEventListener('click', confirmDoDelete);

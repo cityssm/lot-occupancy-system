@@ -6,6 +6,7 @@ export default async function updateOccupancyTypeField(occupancyTypeFieldForm, u
         .prepare(`update OccupancyTypeFields
         set occupancyTypeField = ?,
         isRequired = ?,
+        fieldType = ?,
         minimumLength = ?,
         maximumLength = ?,
         pattern = ?,
@@ -14,7 +15,7 @@ export default async function updateOccupancyTypeField(occupancyTypeFieldForm, u
         recordUpdate_timeMillis = ?
         where occupancyTypeFieldId = ?
         and recordDelete_timeMillis is null`)
-        .run(occupancyTypeFieldForm.occupancyTypeField, Number.parseInt(occupancyTypeFieldForm.isRequired, 10), occupancyTypeFieldForm.minimumLength ?? 0, occupancyTypeFieldForm.maximumLength ?? 100, occupancyTypeFieldForm.pattern ?? '', occupancyTypeFieldForm.occupancyTypeFieldValues, user.userName, Date.now(), occupancyTypeFieldForm.occupancyTypeFieldId);
+        .run(occupancyTypeFieldForm.occupancyTypeField, Number.parseInt(occupancyTypeFieldForm.isRequired, 10), occupancyTypeFieldForm.fieldType ?? 'text', occupancyTypeFieldForm.minimumLength ?? 0, occupancyTypeFieldForm.maximumLength ?? 100, occupancyTypeFieldForm.pattern ?? '', occupancyTypeFieldForm.occupancyTypeFieldValues, user.userName, Date.now(), occupancyTypeFieldForm.occupancyTypeFieldId);
     database.release();
     clearCacheByTableName('OccupancyTypeFields');
     return result.changes > 0;

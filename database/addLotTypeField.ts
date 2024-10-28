@@ -5,11 +5,12 @@ import { acquireConnection } from './pool.js'
 export interface AddLotTypeFieldForm {
   lotTypeId: string | number
   lotTypeField: string
+  fieldType?: string
   lotTypeFieldValues?: string
   isRequired?: string
   pattern?: string
-  minimumLength: string | number
-  maximumLength: string | number
+  minimumLength?: string | number
+  maximumLength?: string | number
   orderNumber?: number
 }
 
@@ -24,17 +25,18 @@ export default async function addLotTypeField(
   const result = database
     .prepare(
       `insert into LotTypeFields (
-        lotTypeId, lotTypeField, lotTypeFieldValues,
+        lotTypeId, lotTypeField, fieldType, lotTypeFieldValues,
         isRequired, pattern,
         minimumLength, maximumLength,
         orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       lotTypeFieldForm.lotTypeId,
       lotTypeFieldForm.lotTypeField,
+      lotTypeFieldForm.fieldType ?? 'text',
       lotTypeFieldForm.lotTypeFieldValues ?? '',
       lotTypeFieldForm.isRequired === '' ? 0 : 1,
       lotTypeFieldForm.pattern ?? '',

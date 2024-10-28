@@ -14,7 +14,7 @@ export default async function getLotTypeFields(
   const lotTypeFields = database
     .prepare(
       `select lotTypeFieldId,
-        lotTypeField, lotTypeFieldValues,
+        lotTypeField, fieldType, lotTypeFieldValues,
         isRequired, pattern, minimumLength, maximumLength, orderNumber
         from LotTypeFields
         where recordDelete_timeMillis is null

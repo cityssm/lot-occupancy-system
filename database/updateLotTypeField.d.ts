@@ -2,6 +2,7 @@ export interface UpdateLotTypeFieldForm {
     lotTypeFieldId: number | string;
     lotTypeField: string;
     isRequired: '0' | '1';
+    fieldType?: string;
     minimumLength?: string;
     maximumLength?: string;
     pattern?: string;

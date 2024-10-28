@@ -6,6 +6,7 @@ export interface UpdateLotTypeFieldForm {
   lotTypeFieldId: number | string
   lotTypeField: string
   isRequired: '0' | '1'
+  fieldType?: string
   minimumLength?: string
   maximumLength?: string
   pattern?: string
@@ -23,6 +24,7 @@ export default async function updateLotTypeField(
       `update LotTypeFields
         set lotTypeField = ?,
         isRequired = ?,
+        fieldType = ?,
         minimumLength = ?,
         maximumLength = ?,
         pattern = ?,
@@ -35,6 +37,7 @@ export default async function updateLotTypeField(
     .run(
       lotTypeFieldForm.lotTypeField,
       Number.parseInt(lotTypeFieldForm.isRequired, 10),
+      lotTypeFieldForm.fieldType ?? 'text',
       lotTypeFieldForm.minimumLength ?? 0,
       lotTypeFieldForm.maximumLength ?? 100,
       lotTypeFieldForm.pattern ?? '',

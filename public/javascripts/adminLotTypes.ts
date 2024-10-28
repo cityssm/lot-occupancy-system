@@ -57,7 +57,9 @@ type ResponseJSON =
       ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
       : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
 
-    const panelBlockElements = lotTypeElement.querySelectorAll('.panel-block') as NodeListOf<HTMLElement>
+    const panelBlockElements = lotTypeElement.querySelectorAll(
+      '.panel-block'
+    ) as NodeListOf<HTMLElement>
 
     for (const panelBlockElement of panelBlockElements) {
       panelBlockElement.classList.toggle('is-hidden')
@@ -119,9 +121,9 @@ type ResponseJSON =
       10
     )
 
-    const lotType = lotTypes.find((currentLotType) => {
-      return lotTypeId === currentLotType.lotTypeId
-    }) as LotType
+    const lotType = lotTypes.find(
+      (currentLotType) => lotTypeId === currentLotType.lotTypeId
+    ) as LotType
 
     let editCloseModalFunction: () => void
 
@@ -264,16 +266,16 @@ type ResponseJSON =
     lotTypeId: number,
     lotTypeFieldId: number
   ): void {
-    const lotType = lotTypes.find((currentLotType) => {
-      return currentLotType.lotTypeId === lotTypeId
-    }) as LotType
+    const lotType = lotTypes.find(
+      (currentLotType) => currentLotType.lotTypeId === lotTypeId
+    ) as LotType
 
     const lotTypeField = (lotType.lotTypeFields ?? []).find(
-      (currentLotTypeField) => {
-        return currentLotTypeField.lotTypeFieldId === lotTypeFieldId
-      }
+      (currentLotTypeField) =>
+        currentLotTypeField.lotTypeFieldId === lotTypeFieldId
     ) as LotTypeField
 
+    let fieldTypeElement: HTMLSelectElement
     let minimumLengthElement: HTMLInputElement
     let maximumLengthElement: HTMLInputElement
     let patternElement: HTMLInputElement
@@ -286,14 +288,28 @@ type ResponseJSON =
     }
 
     function toggleInputFields(): void {
-      if (lotTypeFieldValuesElement.value === '') {
-        minimumLengthElement.disabled = false
-        maximumLengthElement.disabled = false
-        patternElement.disabled = false
-      } else {
-        minimumLengthElement.disabled = true
-        maximumLengthElement.disabled = true
-        patternElement.disabled = true
+      switch (fieldTypeElement.value) {
+        case 'date': {
+          minimumLengthElement.disabled = true
+          maximumLengthElement.disabled = true
+          patternElement.disabled = true
+          lotTypeFieldValuesElement.disabled = true
+          break
+        }
+        case 'select': {
+          minimumLengthElement.disabled = true
+          maximumLengthElement.disabled = true
+          patternElement.disabled = true
+          lotTypeFieldValuesElement.disabled = false
+          break
+        }
+        default: {
+          minimumLengthElement.disabled = false
+          maximumLengthElement.disabled = false
+          patternElement.disabled = false
+          lotTypeFieldValuesElement.disabled = true
+          break
+        }
       }
     }
 
@@ -363,6 +379,12 @@ type ResponseJSON =
           ) as HTMLSelectElement
         ).value = lotTypeField.isRequired ? '1' : '0'
 
+        fieldTypeElement = modalElement.querySelector(
+          '#lotTypeFieldEdit--fieldType'
+        ) as HTMLSelectElement
+
+        fieldTypeElement.value = lotTypeField.fieldType
+
         minimumLengthElement = modalElement.querySelector(
           '#lotTypeFieldEdit--minimumLength'
         ) as HTMLInputElement
@@ -403,7 +425,7 @@ type ResponseJSON =
         minimumLengthElement.addEventListener('keyup', updateMaximumLengthMin)
         updateMaximumLengthMin()
 
-        lotTypeFieldValuesElement.addEventListener('keyup', toggleInputFields)
+        fieldTypeElement.addEventListener('change', toggleInputFields)
 
         modalElement
           .querySelector('#button--deleteLotTypeField')

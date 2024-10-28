@@ -4,7 +4,7 @@ export default async function getLotFields(lotId, connectedDatabase) {
     const lotFields = database
         .prepare(`select l.lotId, l.lotTypeFieldId,
         l.lotFieldValue,
-        f.lotTypeField, f.lotTypeFieldValues,
+        f.lotTypeField, f.fieldType, f.lotTypeFieldValues,
         f.isRequired, f.pattern, f.minimumLength, f.maximumLength,
         f.orderNumber, t.orderNumber as lotTypeOrderNumber
         from LotFields l
@@ -17,7 +17,7 @@ export default async function getLotFields(lotId, connectedDatabase) {
     
         select ? as lotId, f.lotTypeFieldId,
         '' as lotFieldValue,
-        f.lotTypeField, f.lotTypeFieldValues,
+        f.lotTypeField, f.fieldType, f.lotTypeFieldValues,
         f.isRequired, f.pattern, f.minimumLength, f.maximumLength,
         f.orderNumber, t.orderNumber as lotTypeOrderNumber
         from LotTypeFields f

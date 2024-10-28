@@ -131,6 +131,7 @@ export async function initializeCemeteryDatabase() {
     const deathAgePeriod = {
         occupancyTypeId: intermentOccupancyTypeId,
         occupancyTypeField: 'Death Age Period',
+        fieldType: 'select',
         occupancyTypeFieldValues: 'Years\nMonths\nDays\nStillborn',
         pattern: '',
         isRequired: '',
