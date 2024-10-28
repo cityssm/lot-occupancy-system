@@ -1,13 +1,13 @@
-import type * as recordTypes from '../types/recordTypes'
+import type { Fee, LotOccupancy } from '../types/recordTypes.js'
 
-export const calculateFeeAmount = (
-  fee: recordTypes.Fee,
-  lotOccupancy: recordTypes.LotOccupancy
-): number => {
+export function calculateFeeAmount(
+  fee: Fee,
+  lotOccupancy: LotOccupancy
+): number {
   return fee.feeFunction ? 0 : fee.feeAmount ?? 0
 }
 
-export function calculateTaxAmount(fee: recordTypes.Fee, feeAmount: number): number {
+export function calculateTaxAmount(fee: Fee, feeAmount: number): number {
   return fee.taxPercentage
     ? feeAmount * (fee.taxPercentage / 100)
     : fee.taxAmount ?? 0

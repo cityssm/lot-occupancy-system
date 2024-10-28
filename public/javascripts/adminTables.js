@@ -1,6 +1,4 @@
 "use strict";
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -72,7 +70,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             bulmaJS.confirm({
                 title: 'Delete Work Order Type',
                 message: `Are you sure you want to delete this work order type?<br />
-      Note that no work orders will be removed.`,
+          Note that no work orders will be removed.`,
                 messageIsHtml: true,
                 contextualColorName: 'warning',
                 okButton: {
@@ -109,8 +107,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const containerElement = document.querySelector('#container--workOrderTypes');
             if (workOrderTypes.length === 0) {
                 containerElement.innerHTML = `<tr><td colspan="2">
-      <div class="message is-warning"><p class="message-body">There are no active work order types.</p></div>
-      </td></tr>`;
+          <div class="message is-warning"><p class="message-body">There are no active work order types.</p></div>
+          </td></tr>`;
                 return;
             }
             containerElement.innerHTML = '';
@@ -236,7 +234,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             bulmaJS.confirm({
                 title: 'Delete Work Order Milestone Type',
                 message: `Are you sure you want to delete this work order milestone type?<br />
-      Note that no work orders will be removed.`,
+          Note that no work orders will be removed.`,
                 messageIsHtml: true,
                 contextualColorName: 'warning',
                 okButton: {
@@ -273,8 +271,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const containerElement = document.querySelector('#container--workOrderMilestoneTypes');
             if (workOrderMilestoneTypes.length === 0) {
                 containerElement.innerHTML = `<tr><td colspan="2">
-      <div class="message is-warning"><p class="message-body">There are no active work order milestone types.</p></div>
-      </td></tr>`;
+          <div class="message is-warning">
+            <p class="message-body">There are no active work order milestone types.</p>
+          </div>
+          </td></tr>`;
                 return;
             }
             containerElement.innerHTML = '';
@@ -400,7 +400,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             bulmaJS.confirm({
                 title: `Delete ${los.escapedAliases.Lot} Status`,
                 message: `Are you sure you want to delete this status?<br />
-            Note that no ${los.escapedAliases.lot} will be removed.`,
+          Note that no ${los.escapedAliases.lot} will be removed.`,
                 messageIsHtml: true,
                 contextualColorName: 'warning',
                 okButton: {
@@ -438,8 +438,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (lotStatuses.length === 0) {
                 // eslint-disable-next-line no-unsanitized/property
                 containerElement.innerHTML = `<tr><td colspan="2">
-      <div class="message is-warning"><p class="message-body">There are no active ${los.escapedAliases.lot} statuses.</p></div>
-      </td></tr>`;
+          <div class="message is-warning">
+            <p class="message-body">There are no active ${los.escapedAliases.lot} statuses.</p>
+          </div>
+          </td></tr>`;
                 return;
             }
             containerElement.innerHTML = '';
@@ -603,10 +605,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (lotOccupantTypes.length === 0) {
                 // eslint-disable-next-line no-unsanitized/property
                 containerElement.innerHTML = `<tr><td colspan="3">
-      <div class="message is-warning">
-      <p class="message-body">There are no active ${los.escapedAliases.lot} ${los.escapedAliases.occupant} types.</p>
-      </div>
-      </td></tr>`;
+          <div class="message is-warning">
+          <p class="message-body">There are no active ${los.escapedAliases.lot} ${los.escapedAliases.occupant} types.</p>
+          </div>
+          </td></tr>`;
                 return;
             }
             containerElement.innerHTML = '';

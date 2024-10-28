@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
@@ -69,7 +66,7 @@ declare const exports: Record<string, unknown>
           clearUnsavedChanges()
 
           if (isCreate) {
-            window.location.href = los.getWorkOrderURL(
+            globalThis.location.href = los.getWorkOrderURL(
               responseJSON.workOrderId,
               true
             )
@@ -116,7 +113,7 @@ declare const exports: Record<string, unknown>
 
         if (responseJSON.success) {
           clearUnsavedChanges()
-          window.location.href = los.getWorkOrderURL(workOrderId)
+          globalThis.location.href = los.getWorkOrderURL(workOrderId)
         } else {
           bulmaJS.alert({
             title: 'Error Closing Work Order',
@@ -142,7 +139,7 @@ declare const exports: Record<string, unknown>
 
         if (responseJSON.success) {
           clearUnsavedChanges()
-          window.location.href = `${los.urlPrefix}/workOrders`
+          globalThis.location.href = `${los.urlPrefix}/workOrders`
         } else {
           bulmaJS.alert({
             title: 'Error Deleting Work Order',
@@ -159,9 +156,9 @@ declare const exports: Record<string, unknown>
   document
     .querySelector('#button--closeWorkOrder')
     ?.addEventListener('click', () => {
-      const hasOpenMilestones = workOrderMilestones.some((milestone) => {
-        return !milestone.workOrderMilestoneCompletionDate
-      })
+      const hasOpenMilestones = workOrderMilestones.some(
+        (milestone) => !milestone.workOrderMilestoneCompletionDate
+      )
 
       if (hasOpenMilestones) {
         bulmaJS.alert({
@@ -363,25 +360,25 @@ declare const exports: Record<string, unknown>
         if (workOrderLotOccupancies.length === 0) {
           // eslint-disable-next-line no-unsanitized/property
           occupanciesContainerElement.innerHTML = `<div class="message is-info">
-      <p class="message-body">There are no ${los.escapedAliases.occupancies} associated with this work order.</p>
-      </div>`
+            <p class="message-body">There are no ${los.escapedAliases.occupancies} associated with this work order.</p>
+            </div>`
 
           return
         }
 
         // eslint-disable-next-line no-unsanitized/property
         occupanciesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-    <thead><tr>
-    <th class="has-width-1"></th>
-    <th>${los.escapedAliases.Occupancy} Type</th>
-    <th>${los.escapedAliases.Lot}</th>
-    <th>${los.escapedAliases.OccupancyStartDate}</th>
-    <th>End Date</th>
-    <th>${los.escapedAliases.Occupants}</th>
-    <th class="has-width-1"></th>
-    </tr></thead>
-    <tbody></tbody>
-    </table>`
+          <thead><tr>
+            <th class="has-width-1"></th>
+            <th>${los.escapedAliases.Occupancy} Type</th>
+            <th>${los.escapedAliases.Lot}</th>
+            <th>${los.escapedAliases.OccupancyStartDate}</th>
+            <th>End Date</th>
+            <th>${los.escapedAliases.Occupants}</th>
+            <th class="has-width-1"></th>
+          </tr></thead>
+          <tbody></tbody>
+          </table>`
 
         const currentDateString = cityssm.dateToString(new Date())
 
@@ -398,9 +395,7 @@ declare const exports: Record<string, unknown>
 
           const hasLotRecord =
             lotOccupancy.lotId &&
-            workOrderLots.some((lot) => {
-              return lotOccupancy.lotId === lot.lotId
-            })
+            workOrderLots.some((lot) => lotOccupancy.lotId === lot.lotId)
 
           // eslint-disable-next-line no-unsanitized/property
           rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
@@ -446,17 +441,17 @@ declare const exports: Record<string, unknown>
 
           for (const occupant of lotOccupancy.lotOccupancyOccupants!) {
             occupantsHTML += `<li class="has-tooltip-left"
-        data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
-        <span class="fa-li">
-        <i class="fas fa-fw fa-${cityssm.escapeHTML(
-          (occupant.fontAwesomeIconClass ?? '') === ''
-            ? 'user'
-            : occupant.fontAwesomeIconClass ?? ''
-        )}" aria-label="${los.escapedAliases.Occupant}"></i>
-        </span>
-        ${cityssm.escapeHTML(occupant.occupantName ?? '')}
-        ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
-        </li>`
+              data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
+              <span class="fa-li">
+              <i class="fas fa-fw fa-${cityssm.escapeHTML(
+                (occupant.fontAwesomeIconClass ?? '') === ''
+                  ? 'user'
+                  : occupant.fontAwesomeIconClass ?? ''
+              )}" aria-label="${los.escapedAliases.Occupant}"></i>
+              </span>
+              ${cityssm.escapeHTML(occupant.occupantName ?? '')}
+              ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
+              </li>`
           }
 
           // eslint-disable-next-line no-unsanitized/method
@@ -505,9 +500,9 @@ declare const exports: Record<string, unknown>
           10
         )
 
-        const lot = workOrderLots.find((possibleLot) => {
-          return possibleLot.lotId === lotId
-        }) as Lot
+        const lot = workOrderLots.find(
+          (possibleLot) => possibleLot.lotId === lotId
+        ) as Lot
 
         let editCloseModalFunction: () => void
 
@@ -665,23 +660,23 @@ declare const exports: Record<string, unknown>
         if (workOrderLots.length === 0) {
           // eslint-disable-next-line no-unsanitized/property
           lotsContainerElement.innerHTML = `<div class="message is-info">
-      <p class="message-body">There are no ${los.escapedAliases.lots} associated with this work order.</p>
-      </div>`
+            <p class="message-body">There are no ${los.escapedAliases.lots} associated with this work order.</p>
+            </div>`
 
           return
         }
 
         // eslint-disable-next-line no-unsanitized/property
         lotsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-    <thead><tr>
-      <th>${los.escapedAliases.Lot}</th>
-      <th>${los.escapedAliases.Map}</th>
-      <th>${los.escapedAliases.Lot} Type</th>
-      <th>Status</th>
-      <th class="has-width-1"></th>
-    </tr></thead>
-    <tbody></tbody>
-    </table>`
+          <thead><tr>
+            <th>${los.escapedAliases.Lot}</th>
+            <th>${los.escapedAliases.Map}</th>
+            <th>${los.escapedAliases.Lot} Type</th>
+            <th>Status</th>
+            <th class="has-width-1"></th>
+          </tr></thead>
+          <tbody></tbody>
+          </table>`
 
         for (const lot of workOrderLots) {
           const rowElement = document.createElement('tr')
@@ -691,27 +686,27 @@ declare const exports: Record<string, unknown>
 
           // eslint-disable-next-line no-unsanitized/property
           rowElement.innerHTML = `<td>
-        <a class="has-text-weight-bold" href="${los.getLotURL(lot.lotId)}">
-          ${cityssm.escapeHTML(lot.lotName ?? '')}
-        </a>
-      </td><td>
-        ${cityssm.escapeHTML(lot.mapName ?? '')}
-      </td><td>
-        ${cityssm.escapeHTML(lot.lotType ?? '')}
-      </td><td>
-        ${
-          lot.lotStatusId
-            ? cityssm.escapeHTML(lot.lotStatus ?? '')
-            : '<span class="has-text-grey">(No Status)</span>'
-        }
-      </td><td class="is-nowrap">
-        <button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">
-        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-        </button>
-        <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">
-        <i class="fas fa-trash" aria-hidden="true"></i>
-        </button>
-      </td>`
+              <a class="has-text-weight-bold" href="${los.getLotURL(lot.lotId)}">
+                ${cityssm.escapeHTML(lot.lotName ?? '')}
+              </a>
+            </td><td>
+              ${cityssm.escapeHTML(lot.mapName ?? '')}
+            </td><td>
+              ${cityssm.escapeHTML(lot.lotType ?? '')}
+            </td><td>
+              ${
+                lot.lotStatusId
+                  ? cityssm.escapeHTML(lot.lotStatus ?? '')
+                  : '<span class="has-text-grey">(No Status)</span>'
+              }
+            </td><td class="is-nowrap">
+              <button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">
+              <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+              </button>
+              <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">
+              <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </td>`
 
           rowElement
             .querySelector('.button--editLotStatus')
@@ -771,24 +766,24 @@ declare const exports: Record<string, unknown>
 
                 if (responseJSON.lotOccupancies.length === 0) {
                   searchResultsContainerElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">There are no records that meet the search criteria.</p>
-              </div>`
+                    <p class="message-body">There are no records that meet the search criteria.</p>
+                    </div>`
 
                   return
                 }
 
                 // eslint-disable-next-line no-unsanitized/property
                 searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-            <thead><tr>
-            <th class="has-width-1"></th>
-            <th>${los.escapedAliases.Occupancy} Type</th>
-            <th>${los.escapedAliases.Lot}</th>
-            <th>${los.escapedAliases.OccupancyStartDate}</th>
-            <th>End Date</th>
-            <th>${los.escapedAliases.Occupants}</th>
-            </tr></thead>
-            <tbody></tbody>
-            </table>`
+                  <thead><tr>
+                    <th class="has-width-1"></th>
+                    <th>${los.escapedAliases.Occupancy} Type</th>
+                    <th>${los.escapedAliases.Lot}</th>
+                    <th>${los.escapedAliases.OccupancyStartDate}</th>
+                    <th>End Date</th>
+                    <th>${los.escapedAliases.Occupants}</th>
+                  </tr></thead>
+                  <tbody></tbody>
+                  </table>`
 
                 for (const lotOccupancy of responseJSON.lotOccupancies) {
                   const rowElement = document.createElement('tr')
@@ -797,13 +792,13 @@ declare const exports: Record<string, unknown>
                     lotOccupancy.lotOccupancyId.toString()
 
                   rowElement.innerHTML = `<td class="has-text-centered">
-                <button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">
-                  <i class="fas fa-plus" aria-hidden="true"></i>
-                </button>
-              </td>
-              <td class="has-text-weight-bold">
-                ${cityssm.escapeHTML(lotOccupancy.occupancyType ?? '')}
-              </td>`
+                      <button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                      </button>
+                    </td>
+                    <td class="has-text-weight-bold">
+                      ${cityssm.escapeHTML(lotOccupancy.occupancyType ?? '')}
+                    </td>`
 
                   if (lotOccupancy.lotId) {
                     rowElement.insertAdjacentHTML(
@@ -966,15 +961,15 @@ declare const exports: Record<string, unknown>
 
                 // eslint-disable-next-line no-unsanitized/property
                 searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-          <thead><tr>
-          <th class="has-width-1"></th>
-          <th>${los.escapedAliases.Lot}</th>
-          <th>${los.escapedAliases.Map}</th>
-          <th>${los.escapedAliases.Lot} Type</th>
-          <th>Status</th>
-          </tr></thead>
-          <tbody></tbody>
-          </table>`
+                  <thead><tr>
+                    <th class="has-width-1"></th>
+                    <th>${los.escapedAliases.Lot}</th>
+                    <th>${los.escapedAliases.Map}</th>
+                    <th>${los.escapedAliases.Lot} Type</th>
+                    <th>Status</th>
+                  </tr></thead>
+                  <tbody></tbody>
+                  </table>`
 
                 for (const lot of responseJSON.lots) {
                   const rowElement = document.createElement('tr')
@@ -982,18 +977,18 @@ declare const exports: Record<string, unknown>
                   rowElement.dataset.lotId = lot.lotId.toString()
 
                   rowElement.innerHTML = `<td class="has-text-centered">
-              <button class="button is-small is-success button--addLot" data-tooltip="Add" type="button" aria-label="Add">
-                <i class="fas fa-plus" aria-hidden="true"></i>
-              </button>
-            </td><td class="has-text-weight-bold">
-              ${cityssm.escapeHTML(lot.lotName ?? '')}
-            </td><td>
-              ${cityssm.escapeHTML(lot.mapName ?? '')}
-            </td><td>
-              ${cityssm.escapeHTML(lot.lotType ?? '')}
-            </td><td>
-              ${cityssm.escapeHTML(lot.lotStatus ?? '')}
-            </td>`
+                      <button class="button is-small is-success button--addLot" data-tooltip="Add" type="button" aria-label="Add">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                      </button>
+                    </td><td class="has-text-weight-bold">
+                      ${cityssm.escapeHTML(lot.lotName ?? '')}
+                    </td><td>
+                      ${cityssm.escapeHTML(lot.mapName ?? '')}
+                    </td><td>
+                      ${cityssm.escapeHTML(lot.lotType ?? '')}
+                    </td><td>
+                      ${cityssm.escapeHTML(lot.lotStatus ?? '')}
+                    </td>`
 
                   rowElement
                     .querySelector('.button--addLot')
@@ -1078,9 +1073,10 @@ declare const exports: Record<string, unknown>
         10
       )
 
-      const workOrderComment = workOrderComments.find((currentComment) => {
-        return currentComment.workOrderCommentId === workOrderCommentId
-      }) as WorkOrderComment
+      const workOrderComment = workOrderComments.find(
+        (currentComment) =>
+          currentComment.workOrderCommentId === workOrderCommentId
+      ) as WorkOrderComment
 
       let editFormElement: HTMLFormElement
       let editCloseModalFunction: () => void
@@ -1234,10 +1230,12 @@ declare const exports: Record<string, unknown>
       const tableElement = document.createElement('table')
       tableElement.className = 'table is-fullwidth is-striped is-hoverable'
       tableElement.innerHTML = `<thead><tr>
-    <th>Commentor</th>
-    <th>Comment Date</th>
-    <th>Comment</th>
-    <th class="is-hidden-print"><span class="is-sr-only">Options</span></th></tr></thead><tbody></tbody>`
+        <th>Commentor</th>
+        <th>Comment Date</th>
+        <th>Comment</th>
+        <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+        </tr></thead>
+        <tbody></tbody>`
 
       for (const workOrderComment of workOrderComments) {
         const tableRowElement = document.createElement('tr')
@@ -1247,27 +1245,27 @@ declare const exports: Record<string, unknown>
 
         // eslint-disable-next-line no-unsanitized/property
         tableRowElement.innerHTML = `<td>
-        ${cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '')}
-      </td><td>
-        ${workOrderComment.workOrderCommentDateString}
-        ${
-          workOrderComment.workOrderCommentTime === 0
-            ? ''
-            : workOrderComment.workOrderCommentTimePeriodString
-        }
-      </td><td>
-        ${cityssm.escapeHTML(workOrderComment.workOrderComment ?? '')}
-      </td><td class="is-hidden-print">
-        <div class="buttons are-small is-justify-content-end">
-          <button class="button is-primary button--edit" type="button">
-            <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-            <span>Edit</span>
-          </button>
-          <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
-            <i class="fas fa-trash" aria-hidden="true"></i>
-          </button>
-        </div>
-      </td>`
+            ${cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '')}
+          </td><td>
+            ${workOrderComment.workOrderCommentDateString}
+            ${
+              workOrderComment.workOrderCommentTime === 0
+                ? ''
+                : workOrderComment.workOrderCommentTimePeriodString
+            }
+          </td><td>
+            ${cityssm.escapeHTML(workOrderComment.workOrderComment ?? '')}
+          </td><td class="is-hidden-print">
+            <div class="buttons are-small is-justify-content-end">
+              <button class="button is-primary button--edit" type="button">
+                <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                <span>Edit</span>
+              </button>
+              <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </td>`
 
         tableRowElement
           .querySelector('.button--edit')
@@ -1389,9 +1387,8 @@ declare const exports: Record<string, unknown>
         }
 
         const workOrderMilestones = responseJSON.workOrderMilestones.filter(
-          (possibleMilestone) => {
-            return possibleMilestone.workOrderId.toString() !== workOrderId
-          }
+          (possibleMilestone) =>
+            possibleMilestone.workOrderId.toString() !== workOrderId
         )
 
         clearPanelBlockElements(targetPanelElement)
@@ -1466,9 +1463,10 @@ declare const exports: Record<string, unknown>
       10
     )
 
-    const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
-      return currentMilestone.workOrderMilestoneId === workOrderMilestoneId
-    }) as WorkOrderMilestone
+    const workOrderMilestone = workOrderMilestones.find(
+      (currentMilestone) =>
+        currentMilestone.workOrderMilestoneId === workOrderMilestoneId
+    ) as WorkOrderMilestone
 
     function doComplete(): void {
       cityssm.postJSON(
@@ -1575,9 +1573,10 @@ declare const exports: Record<string, unknown>
       10
     )
 
-    const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
-      return currentMilestone.workOrderMilestoneId === workOrderMilestoneId
-    }) as WorkOrderMilestone
+    const workOrderMilestone = workOrderMilestones.find(
+      (currentMilestone) =>
+        currentMilestone.workOrderMilestoneId === workOrderMilestoneId
+    ) as WorkOrderMilestone
 
     let editCloseModalFunction: () => void
     let workOrderMilestoneDateStringElement: HTMLInputElement

@@ -1,6 +1,4 @@
 "use strict";
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     /*
@@ -36,12 +34,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             svgId = svgId.slice(0, Math.max(0, svgId.lastIndexOf('-')));
         }
         if (svgElementToHighlight !== null) {
-            // eslint-disable-next-line unicorn/no-null
             svgElementToHighlight.style.fill = '';
             svgElementToHighlight.classList.add('highlight', `is-${contextualClass}`);
             const childPathElements = svgElementToHighlight.querySelectorAll('path');
             for (const pathElement of childPathElements) {
-                // eslint-disable-next-line unicorn/no-null
                 pathElement.style.fill = '';
             }
         }
@@ -83,7 +79,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function initializeDatePickers(containerElement) {
         const dateElements = containerElement.querySelectorAll("input[type='date']");
         for (const dateElement of dateElements) {
-            const datePickerOptions = Object.assign({}, datePickerBaseOptions);
+            const datePickerOptions = { ...datePickerBaseOptions };
             if (dateElement.required) {
                 datePickerOptions.showClearButton = false;
             }

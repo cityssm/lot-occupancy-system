@@ -71,7 +71,7 @@ declare const exports: Record<string, unknown>
           clearUnsavedChanges()
 
           if (isCreate || refreshAfterSave) {
-            window.location.href = los.getLotOccupancyURL(
+            globalThis.location.href = los.getLotOccupancyURL(
               responseJSON.lotOccupancyId,
               true,
               true
@@ -115,7 +115,7 @@ declare const exports: Record<string, unknown>
         if (responseJSON.success) {
           clearUnsavedChanges()
 
-          window.location.href = los.getLotOccupancyURL(
+          globalThis.location.href = los.getLotOccupancyURL(
             responseJSON.lotOccupancyId,
             true
           )
@@ -173,7 +173,7 @@ declare const exports: Record<string, unknown>
 
             if (responseJSON.success) {
               clearUnsavedChanges()
-              window.location.href = los.getLotOccupancyURL()
+              globalThis.location.href = los.getLotOccupancyURL()
             } else {
               bulmaJS.alert({
                 title: 'Error Deleting Record',
@@ -226,7 +226,7 @@ declare const exports: Record<string, unknown>
                 okButton: {
                   text: 'Yes, Open the Work Order',
                   callbackFunction: () => {
-                    window.location.href = los.getWorkOrderURL(
+                    globalThis.location.href = los.getWorkOrderURL(
                       responseJSON.workOrderId,
                       true
                     )
@@ -2197,11 +2197,11 @@ declare const exports: Record<string, unknown>
                 ?.insertAdjacentHTML(
                   'beforeend',
                   `<div class="column is-narrow has-text-right">
-            <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
-              <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-              <span>Add Fee Group</span>
-            </button>
-            </div>`
+                    <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
+                      <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                      <span>Add Fee Group</span>
+                    </button>
+                    </div>`
                 )
 
               categoryContainerElement
@@ -2474,7 +2474,7 @@ declare const exports: Record<string, unknown>
         }
 
         bulmaJS.confirm({
-          title: 'Delete Trasnaction',
+          title: 'Delete Transaction',
           message: 'Are you sure you want to delete this transaction?',
           contextualColorName: 'warning',
           okButton: {

@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 import type { Options as BulmaCalendarOptions } from 'bulma-calendar'
@@ -79,14 +76,12 @@ declare const exports: Record<string, unknown> & {
     }
 
     if (svgElementToHighlight !== null) {
-      // eslint-disable-next-line unicorn/no-null
       svgElementToHighlight.style.fill = ''
 
       svgElementToHighlight.classList.add('highlight', `is-${contextualClass}`)
 
       const childPathElements = svgElementToHighlight.querySelectorAll('path')
       for (const pathElement of childPathElements) {
-        // eslint-disable-next-line unicorn/no-null
         pathElement.style.fill = ''
       }
     }
@@ -144,7 +139,7 @@ declare const exports: Record<string, unknown> & {
       containerElement.querySelectorAll("input[type='date']")
 
     for (const dateElement of dateElements) {
-      const datePickerOptions = Object.assign({}, datePickerBaseOptions)
+      const datePickerOptions = { ...datePickerBaseOptions }
 
       if (dateElement.required) {
         datePickerOptions.showClearButton = false

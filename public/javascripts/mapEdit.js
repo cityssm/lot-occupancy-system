@@ -1,6 +1,4 @@
 "use strict";
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -27,7 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
-                    window.location.href = los.getMapURL(responseJSON.mapId, true);
+                    globalThis.location.href = los.getMapURL(responseJSON.mapId, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -60,7 +58,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    window.location.href = los.getMapURL();
+                    globalThis.location.href = los.getMapURL();
                 }
                 else {
                     bulmaJS.alert({

@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
@@ -121,7 +118,7 @@ declare const bulmaJS: BulmaJS
       bulmaJS.confirm({
         title: 'Delete Work Order Type',
         message: `Are you sure you want to delete this work order type?<br />
-      Note that no work orders will be removed.`,
+          Note that no work orders will be removed.`,
         messageIsHtml: true,
         contextualColorName: 'warning',
         okButton: {
@@ -172,8 +169,8 @@ declare const bulmaJS: BulmaJS
 
       if (workOrderTypes.length === 0) {
         containerElement.innerHTML = `<tr><td colspan="2">
-      <div class="message is-warning"><p class="message-body">There are no active work order types.</p></div>
-      </td></tr>`
+          <div class="message is-warning"><p class="message-body">There are no active work order types.</p></div>
+          </td></tr>`
 
         return
       }
@@ -361,7 +358,7 @@ declare const bulmaJS: BulmaJS
       bulmaJS.confirm({
         title: 'Delete Work Order Milestone Type',
         message: `Are you sure you want to delete this work order milestone type?<br />
-      Note that no work orders will be removed.`,
+          Note that no work orders will be removed.`,
         messageIsHtml: true,
         contextualColorName: 'warning',
         okButton: {
@@ -413,8 +410,10 @@ declare const bulmaJS: BulmaJS
 
       if (workOrderMilestoneTypes.length === 0) {
         containerElement.innerHTML = `<tr><td colspan="2">
-      <div class="message is-warning"><p class="message-body">There are no active work order milestone types.</p></div>
-      </td></tr>`
+          <div class="message is-warning">
+            <p class="message-body">There are no active work order milestone types.</p>
+          </div>
+          </td></tr>`
 
         return
       }
@@ -602,7 +601,7 @@ declare const bulmaJS: BulmaJS
       bulmaJS.confirm({
         title: `Delete ${los.escapedAliases.Lot} Status`,
         message: `Are you sure you want to delete this status?<br />
-            Note that no ${los.escapedAliases.lot} will be removed.`,
+          Note that no ${los.escapedAliases.lot} will be removed.`,
         messageIsHtml: true,
         contextualColorName: 'warning',
         okButton: {
@@ -654,8 +653,10 @@ declare const bulmaJS: BulmaJS
       if (lotStatuses.length === 0) {
         // eslint-disable-next-line no-unsanitized/property
         containerElement.innerHTML = `<tr><td colspan="2">
-      <div class="message is-warning"><p class="message-body">There are no active ${los.escapedAliases.lot} statuses.</p></div>
-      </td></tr>`
+          <div class="message is-warning">
+            <p class="message-body">There are no active ${los.escapedAliases.lot} statuses.</p>
+          </div>
+          </td></tr>`
 
         return
       }
@@ -893,10 +894,10 @@ declare const bulmaJS: BulmaJS
       if (lotOccupantTypes.length === 0) {
         // eslint-disable-next-line no-unsanitized/property
         containerElement.innerHTML = `<tr><td colspan="3">
-      <div class="message is-warning">
-      <p class="message-body">There are no active ${los.escapedAliases.lot} ${los.escapedAliases.occupant} types.</p>
-      </div>
-      </td></tr>`
+          <div class="message is-warning">
+          <p class="message-body">There are no active ${los.escapedAliases.lot} ${los.escapedAliases.occupant} types.</p>
+          </div>
+          </td></tr>`
 
         return
       }

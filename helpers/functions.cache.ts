@@ -1,3 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/init-declarations */
+
 import cluster from 'node:cluster'
 
 import Debug from 'debug'
@@ -9,7 +12,10 @@ import getOccupancyTypeFieldsFromDatabase from '../database/getOccupancyTypeFiel
 import getOccupancyTypesFromDatabase from '../database/getOccupancyTypes.js'
 import getWorkOrderMilestoneTypesFromDatabase from '../database/getWorkOrderMilestoneTypes.js'
 import getWorkOrderTypesFromDatabase from '../database/getWorkOrderTypes.js'
-import type { ClearCacheWorkerMessage } from '../types/applicationTypes.js'
+import type {
+  ClearCacheWorkerMessage,
+  WorkerMessage
+} from '../types/applicationTypes.js'
 import type {
   LotOccupantType,
   LotStatus,
@@ -43,9 +49,10 @@ export async function getLotOccupantTypeById(
 ): Promise<LotOccupantType | undefined> {
   const cachedLotOccupantTypes = await getLotOccupantTypes()
 
-  return cachedLotOccupantTypes.find((currentLotOccupantType) => {
-    return currentLotOccupantType.lotOccupantTypeId === lotOccupantTypeId
-  })
+  return cachedLotOccupantTypes.find(
+    (currentLotOccupantType) =>
+      currentLotOccupantType.lotOccupantTypeId === lotOccupantTypeId
+  )
 }
 
 export async function getLotOccupantTypeByLotOccupantType(
@@ -55,12 +62,11 @@ export async function getLotOccupantTypeByLotOccupantType(
 
   const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase()
 
-  return cachedLotOccupantTypes.find((currentLotOccupantType) => {
-    return (
+  return cachedLotOccupantTypes.find(
+    (currentLotOccupantType) =>
       currentLotOccupantType.lotOccupantType.toLowerCase() ===
       lotOccupantTypeLowerCase
-    )
-  })
+  )
 }
 
 function clearLotOccupantTypesCache(): void {
@@ -86,9 +92,9 @@ export async function getLotStatusById(
 ): Promise<LotStatus | undefined> {
   const cachedLotStatuses = await getLotStatuses()
 
-  return cachedLotStatuses.find((currentLotStatus) => {
-    return currentLotStatus.lotStatusId === lotStatusId
-  })
+  return cachedLotStatuses.find(
+    (currentLotStatus) => currentLotStatus.lotStatusId === lotStatusId
+  )
 }
 
 export async function getLotStatusByLotStatus(
@@ -98,9 +104,10 @@ export async function getLotStatusByLotStatus(
 
   const lotStatusLowerCase = lotStatus.toLowerCase()
 
-  return cachedLotStatuses.find((currentLotStatus) => {
-    return currentLotStatus.lotStatus.toLowerCase() === lotStatusLowerCase
-  })
+  return cachedLotStatuses.find(
+    (currentLotStatus) =>
+      currentLotStatus.lotStatus.toLowerCase() === lotStatusLowerCase
+  )
 }
 
 function clearLotStatusesCache(): void {
@@ -126,9 +133,9 @@ export async function getLotTypeById(
 ): Promise<LotType | undefined> {
   const cachedLotTypes = await getLotTypes()
 
-  return cachedLotTypes.find((currentLotType) => {
-    return currentLotType.lotTypeId === lotTypeId
-  })
+  return cachedLotTypes.find(
+    (currentLotType) => currentLotType.lotTypeId === lotTypeId
+  )
 }
 
 export async function getLotTypesByLotType(
@@ -138,9 +145,10 @@ export async function getLotTypesByLotType(
 
   const lotTypeLowerCase = lotType.toLowerCase()
 
-  return cachedLotTypes.find((currentLotType) => {
-    return currentLotType.lotType.toLowerCase() === lotTypeLowerCase
-  })
+  return cachedLotTypes.find(
+    (currentLotType) =>
+      currentLotType.lotType.toLowerCase() === lotTypeLowerCase
+  )
 }
 
 function clearLotTypesCache(): void {
@@ -176,9 +184,10 @@ export async function getOccupancyTypeById(
 ): Promise<OccupancyType | undefined> {
   const cachedOccupancyTypes = await getOccupancyTypes()
 
-  return cachedOccupancyTypes.find((currentOccupancyType) => {
-    return currentOccupancyType.occupancyTypeId === occupancyTypeId
-  })
+  return cachedOccupancyTypes.find(
+    (currentOccupancyType) =>
+      currentOccupancyType.occupancyTypeId === occupancyTypeId
+  )
 }
 
 export async function getOccupancyTypeByOccupancyType(
@@ -188,12 +197,11 @@ export async function getOccupancyTypeByOccupancyType(
 
   const occupancyTypeLowerCase = occupancyTypeString.toLowerCase()
 
-  return cachedOccupancyTypes.find((currentOccupancyType) => {
-    return (
+  return cachedOccupancyTypes.find(
+    (currentOccupancyType) =>
       currentOccupancyType.occupancyType.toLowerCase() ===
       occupancyTypeLowerCase
-    )
-  })
+  )
 }
 
 export async function getOccupancyTypePrintsById(
@@ -239,9 +247,10 @@ export async function getWorkOrderTypeById(
 ): Promise<WorkOrderType | undefined> {
   const cachedWorkOrderTypes = await getWorkOrderTypes()
 
-  return cachedWorkOrderTypes.find((currentWorkOrderType) => {
-    return currentWorkOrderType.workOrderTypeId === workOrderTypeId
-  })
+  return cachedWorkOrderTypes.find(
+    (currentWorkOrderType) =>
+      currentWorkOrderType.workOrderTypeId === workOrderTypeId
+  )
 }
 
 function clearWorkOrderTypesCache(): void {
@@ -269,12 +278,11 @@ export async function getWorkOrderMilestoneTypeById(
 ): Promise<WorkOrderMilestoneType | undefined> {
   const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
 
-  return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => {
-    return (
+  return cachedWorkOrderMilestoneTypes.find(
+    (currentWorkOrderMilestoneType) =>
       currentWorkOrderMilestoneType.workOrderMilestoneTypeId ===
       workOrderMilestoneTypeId
-    )
-  })
+  )
 }
 
 export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
@@ -285,12 +293,11 @@ export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
   const workOrderMilestoneTypeLowerCase =
     workOrderMilestoneTypeString.toLowerCase()
 
-  return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => {
-    return (
+  return cachedWorkOrderMilestoneTypes.find(
+    (currentWorkOrderMilestoneType) =>
       currentWorkOrderMilestoneType.workOrderMilestoneType.toLowerCase() ===
       workOrderMilestoneTypeLowerCase
-    )
-  })
+  )
 }
 
 export async function preloadCaches(): Promise<void> {
@@ -370,14 +377,16 @@ export function clearCacheByTableName(
 
       debug(`Sending clear cache from worker: ${tableName}`)
 
-      process.send!(workerMessage)
+      if (process.send !== undefined) {
+        process.send(workerMessage)
+      }
     }
   } catch {}
 }
 
-process.on('message', (message: ClearCacheWorkerMessage) => {
+process.on('message', (message: WorkerMessage) => {
   if (message.messageType === 'clearCache' && message.pid !== process.pid) {
-    debug(`Clearing cache: ${message.tableName}`)
-    clearCacheByTableName(message.tableName, false)
+    debug(`Clearing cache: ${(message as ClearCacheWorkerMessage).tableName}`)
+    clearCacheByTableName((message as ClearCacheWorkerMessage).tableName, false)
   }
 })

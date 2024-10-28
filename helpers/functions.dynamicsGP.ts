@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
-
 import {
   type DiamondCashReceipt,
   type DiamondExtendedGPInvoice,
@@ -12,6 +10,7 @@ import type { DynamicsGPDocument } from '../types/recordTypes.js'
 
 import { getConfigProperty } from './functions.config.js'
 
+// eslint-disable-next-line @typescript-eslint/init-declarations
 let gp: DynamicsGP
 
 if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
@@ -46,9 +45,7 @@ function filterInvoice(invoice: GPInvoice): GPInvoice | undefined {
   const itemNumbers = getConfigProperty('settings.dynamicsGP.itemNumbers')
 
   for (const itemNumber of itemNumbers) {
-    const found = invoice.lineItems.some((itemRecord) => {
-      return itemRecord.itemNumber === itemNumber
-    })
+    const found = invoice.lineItems.some((itemRecord) => itemRecord.itemNumber === itemNumber)
 
     if (!found) {
       return undefined

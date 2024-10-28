@@ -1,6 +1,6 @@
-/* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 import { DynamicsGP } from '@cityssm/dynamics-gp';
 import { getConfigProperty } from './functions.config.js';
+// eslint-disable-next-line @typescript-eslint/init-declarations
 let gp;
 if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
     gp = new DynamicsGP(getConfigProperty('settings.dynamicsGP.mssqlConfig'));
@@ -25,9 +25,7 @@ function filterCashReceipt(cashReceipt) {
 function filterInvoice(invoice) {
     const itemNumbers = getConfigProperty('settings.dynamicsGP.itemNumbers');
     for (const itemNumber of itemNumbers) {
-        const found = invoice.lineItems.some((itemRecord) => {
-            return itemRecord.itemNumber === itemNumber;
-        });
+        const found = invoice.lineItems.some((itemRecord) => itemRecord.itemNumber === itemNumber);
         if (!found) {
             return undefined;
         }

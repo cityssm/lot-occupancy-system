@@ -1,6 +1,4 @@
 "use strict";
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -52,14 +50,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
           ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
           </li>`;
             }
-            const feeTotal = (lotOccupancy.lotOccupancyFees?.reduce((soFar, currentFee) => {
-                return (soFar +
-                    ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
-                        (currentFee.quantity ?? 0));
-            }, 0) ?? 0).toFixed(2);
-            const transactionTotal = (lotOccupancy.lotOccupancyTransactions?.reduce((soFar, currentTransaction) => {
-                return soFar + currentTransaction.transactionAmount;
-            }, 0) ?? 0).toFixed(2);
+            const feeTotal = (lotOccupancy.lotOccupancyFees?.reduce((soFar, currentFee) => soFar +
+                ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
+                    (currentFee.quantity ?? 0), 0) ?? 0).toFixed(2);
+            const transactionTotal = (lotOccupancy.lotOccupancyTransactions?.reduce((soFar, currentTransaction) => soFar + currentTransaction.transactionAmount, 0) ?? 0).toFixed(2);
             let feeIconHTML = '';
             if (feeTotal !== '0.00' || transactionTotal !== '0.00') {
                 feeIconHTML = `<span class="icon"

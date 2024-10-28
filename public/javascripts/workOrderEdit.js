@@ -1,6 +1,4 @@
 "use strict";
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -30,7 +28,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
-                    window.location.href = los.getWorkOrderURL(responseJSON.workOrderId, true);
+                    globalThis.location.href = los.getWorkOrderURL(responseJSON.workOrderId, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -62,7 +60,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
-                window.location.href = los.getWorkOrderURL(workOrderId);
+                globalThis.location.href = los.getWorkOrderURL(workOrderId);
             }
             else {
                 bulmaJS.alert({
@@ -80,7 +78,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
-                window.location.href = `${los.urlPrefix}/workOrders`;
+                globalThis.location.href = `${los.urlPrefix}/workOrders`;
             }
             else {
                 bulmaJS.alert({
@@ -95,9 +93,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     document
         .querySelector('#button--closeWorkOrder')
         ?.addEventListener('click', () => {
-        const hasOpenMilestones = workOrderMilestones.some((milestone) => {
-            return !milestone.workOrderMilestoneCompletionDate;
-        });
+        const hasOpenMilestones = workOrderMilestones.some((milestone) => !milestone.workOrderMilestoneCompletionDate);
         if (hasOpenMilestones) {
             bulmaJS.alert({
                 title: 'Outstanding Milestones',
@@ -242,23 +238,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 if (workOrderLotOccupancies.length === 0) {
                     // eslint-disable-next-line no-unsanitized/property
                     occupanciesContainerElement.innerHTML = `<div class="message is-info">
-      <p class="message-body">There are no ${los.escapedAliases.occupancies} associated with this work order.</p>
-      </div>`;
+            <p class="message-body">There are no ${los.escapedAliases.occupancies} associated with this work order.</p>
+            </div>`;
                     return;
                 }
                 // eslint-disable-next-line no-unsanitized/property
                 occupanciesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-    <thead><tr>
-    <th class="has-width-1"></th>
-    <th>${los.escapedAliases.Occupancy} Type</th>
-    <th>${los.escapedAliases.Lot}</th>
-    <th>${los.escapedAliases.OccupancyStartDate}</th>
-    <th>End Date</th>
-    <th>${los.escapedAliases.Occupants}</th>
-    <th class="has-width-1"></th>
-    </tr></thead>
-    <tbody></tbody>
-    </table>`;
+          <thead><tr>
+            <th class="has-width-1"></th>
+            <th>${los.escapedAliases.Occupancy} Type</th>
+            <th>${los.escapedAliases.Lot}</th>
+            <th>${los.escapedAliases.OccupancyStartDate}</th>
+            <th>End Date</th>
+            <th>${los.escapedAliases.Occupants}</th>
+            <th class="has-width-1"></th>
+          </tr></thead>
+          <tbody></tbody>
+          </table>`;
                 const currentDateString = cityssm.dateToString(new Date());
                 for (const lotOccupancy of workOrderLotOccupancies) {
                     const rowElement = document.createElement('tr');
@@ -268,9 +264,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const isActive = !(lotOccupancy.occupancyEndDate &&
                         lotOccupancy.occupancyEndDateString < currentDateString);
                     const hasLotRecord = lotOccupancy.lotId &&
-                        workOrderLots.some((lot) => {
-                            return lotOccupancy.lotId === lot.lotId;
-                        });
+                        workOrderLots.some((lot) => lotOccupancy.lotId === lot.lotId);
                     // eslint-disable-next-line no-unsanitized/property
                     rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
       ${isActive
@@ -303,15 +297,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     let occupantsHTML = '';
                     for (const occupant of lotOccupancy.lotOccupancyOccupants) {
                         occupantsHTML += `<li class="has-tooltip-left"
-        data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
-        <span class="fa-li">
-        <i class="fas fa-fw fa-${cityssm.escapeHTML((occupant.fontAwesomeIconClass ?? '') === ''
+              data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
+              <span class="fa-li">
+              <i class="fas fa-fw fa-${cityssm.escapeHTML((occupant.fontAwesomeIconClass ?? '') === ''
                             ? 'user'
                             : occupant.fontAwesomeIconClass ?? '')}" aria-label="${los.escapedAliases.Occupant}"></i>
-        </span>
-        ${cityssm.escapeHTML(occupant.occupantName ?? '')}
-        ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
-        </li>`;
+              </span>
+              ${cityssm.escapeHTML(occupant.occupantName ?? '')}
+              ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
+              </li>`;
                     }
                     // eslint-disable-next-line no-unsanitized/method
                     rowElement.insertAdjacentHTML('beforeend', `<td>
@@ -340,9 +334,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             function openEditLotStatus(clickEvent) {
                 const lotId = Number.parseInt(clickEvent.currentTarget.closest('.container--lot').dataset.lotId ?? '', 10);
-                const lot = workOrderLots.find((possibleLot) => {
-                    return possibleLot.lotId === lotId;
-                });
+                const lot = workOrderLots.find((possibleLot) => possibleLot.lotId === lotId);
                 let editCloseModalFunction;
                 function doUpdateLotStatus(submitEvent) {
                     submitEvent.preventDefault();
@@ -441,46 +433,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 if (workOrderLots.length === 0) {
                     // eslint-disable-next-line no-unsanitized/property
                     lotsContainerElement.innerHTML = `<div class="message is-info">
-      <p class="message-body">There are no ${los.escapedAliases.lots} associated with this work order.</p>
-      </div>`;
+            <p class="message-body">There are no ${los.escapedAliases.lots} associated with this work order.</p>
+            </div>`;
                     return;
                 }
                 // eslint-disable-next-line no-unsanitized/property
                 lotsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-    <thead><tr>
-      <th>${los.escapedAliases.Lot}</th>
-      <th>${los.escapedAliases.Map}</th>
-      <th>${los.escapedAliases.Lot} Type</th>
-      <th>Status</th>
-      <th class="has-width-1"></th>
-    </tr></thead>
-    <tbody></tbody>
-    </table>`;
+          <thead><tr>
+            <th>${los.escapedAliases.Lot}</th>
+            <th>${los.escapedAliases.Map}</th>
+            <th>${los.escapedAliases.Lot} Type</th>
+            <th>Status</th>
+            <th class="has-width-1"></th>
+          </tr></thead>
+          <tbody></tbody>
+          </table>`;
                 for (const lot of workOrderLots) {
                     const rowElement = document.createElement('tr');
                     rowElement.className = 'container--lot';
                     rowElement.dataset.lotId = lot.lotId.toString();
                     // eslint-disable-next-line no-unsanitized/property
                     rowElement.innerHTML = `<td>
-        <a class="has-text-weight-bold" href="${los.getLotURL(lot.lotId)}">
-          ${cityssm.escapeHTML(lot.lotName ?? '')}
-        </a>
-      </td><td>
-        ${cityssm.escapeHTML(lot.mapName ?? '')}
-      </td><td>
-        ${cityssm.escapeHTML(lot.lotType ?? '')}
-      </td><td>
-        ${lot.lotStatusId
+              <a class="has-text-weight-bold" href="${los.getLotURL(lot.lotId)}">
+                ${cityssm.escapeHTML(lot.lotName ?? '')}
+              </a>
+            </td><td>
+              ${cityssm.escapeHTML(lot.mapName ?? '')}
+            </td><td>
+              ${cityssm.escapeHTML(lot.lotType ?? '')}
+            </td><td>
+              ${lot.lotStatusId
                         ? cityssm.escapeHTML(lot.lotStatus ?? '')
                         : '<span class="has-text-grey">(No Status)</span>'}
-      </td><td class="is-nowrap">
-        <button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">
-        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-        </button>
-        <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">
-        <i class="fas fa-trash" aria-hidden="true"></i>
-        </button>
-      </td>`;
+            </td><td class="is-nowrap">
+              <button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">
+              <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+              </button>
+              <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">
+              <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </td>`;
                     rowElement
                         .querySelector('.button--editLotStatus')
                         ?.addEventListener('click', openEditLotStatus);
@@ -520,35 +512,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         const responseJSON = rawResponseJSON;
                         if (responseJSON.lotOccupancies.length === 0) {
                             searchResultsContainerElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">There are no records that meet the search criteria.</p>
-              </div>`;
+                    <p class="message-body">There are no records that meet the search criteria.</p>
+                    </div>`;
                             return;
                         }
                         // eslint-disable-next-line no-unsanitized/property
                         searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-            <thead><tr>
-            <th class="has-width-1"></th>
-            <th>${los.escapedAliases.Occupancy} Type</th>
-            <th>${los.escapedAliases.Lot}</th>
-            <th>${los.escapedAliases.OccupancyStartDate}</th>
-            <th>End Date</th>
-            <th>${los.escapedAliases.Occupants}</th>
-            </tr></thead>
-            <tbody></tbody>
-            </table>`;
+                  <thead><tr>
+                    <th class="has-width-1"></th>
+                    <th>${los.escapedAliases.Occupancy} Type</th>
+                    <th>${los.escapedAliases.Lot}</th>
+                    <th>${los.escapedAliases.OccupancyStartDate}</th>
+                    <th>End Date</th>
+                    <th>${los.escapedAliases.Occupants}</th>
+                  </tr></thead>
+                  <tbody></tbody>
+                  </table>`;
                         for (const lotOccupancy of responseJSON.lotOccupancies) {
                             const rowElement = document.createElement('tr');
                             rowElement.className = 'container--lotOccupancy';
                             rowElement.dataset.lotOccupancyId =
                                 lotOccupancy.lotOccupancyId.toString();
                             rowElement.innerHTML = `<td class="has-text-centered">
-                <button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">
-                  <i class="fas fa-plus" aria-hidden="true"></i>
-                </button>
-              </td>
-              <td class="has-text-weight-bold">
-                ${cityssm.escapeHTML(lotOccupancy.occupancyType ?? '')}
-              </td>`;
+                      <button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                      </button>
+                    </td>
+                    <td class="has-text-weight-bold">
+                      ${cityssm.escapeHTML(lotOccupancy.occupancyType ?? '')}
+                    </td>`;
                             if (lotOccupancy.lotId) {
                                 rowElement.insertAdjacentHTML('beforeend', `<td>${cityssm.escapeHTML(lotOccupancy.lotName ?? '')}</td>`);
                             }
@@ -638,32 +630,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         }
                         // eslint-disable-next-line no-unsanitized/property
                         searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-          <thead><tr>
-          <th class="has-width-1"></th>
-          <th>${los.escapedAliases.Lot}</th>
-          <th>${los.escapedAliases.Map}</th>
-          <th>${los.escapedAliases.Lot} Type</th>
-          <th>Status</th>
-          </tr></thead>
-          <tbody></tbody>
-          </table>`;
+                  <thead><tr>
+                    <th class="has-width-1"></th>
+                    <th>${los.escapedAliases.Lot}</th>
+                    <th>${los.escapedAliases.Map}</th>
+                    <th>${los.escapedAliases.Lot} Type</th>
+                    <th>Status</th>
+                  </tr></thead>
+                  <tbody></tbody>
+                  </table>`;
                         for (const lot of responseJSON.lots) {
                             const rowElement = document.createElement('tr');
                             rowElement.className = 'container--lot';
                             rowElement.dataset.lotId = lot.lotId.toString();
                             rowElement.innerHTML = `<td class="has-text-centered">
-              <button class="button is-small is-success button--addLot" data-tooltip="Add" type="button" aria-label="Add">
-                <i class="fas fa-plus" aria-hidden="true"></i>
-              </button>
-            </td><td class="has-text-weight-bold">
-              ${cityssm.escapeHTML(lot.lotName ?? '')}
-            </td><td>
-              ${cityssm.escapeHTML(lot.mapName ?? '')}
-            </td><td>
-              ${cityssm.escapeHTML(lot.lotType ?? '')}
-            </td><td>
-              ${cityssm.escapeHTML(lot.lotStatus ?? '')}
-            </td>`;
+                      <button class="button is-small is-success button--addLot" data-tooltip="Add" type="button" aria-label="Add">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                      </button>
+                    </td><td class="has-text-weight-bold">
+                      ${cityssm.escapeHTML(lot.lotName ?? '')}
+                    </td><td>
+                      ${cityssm.escapeHTML(lot.mapName ?? '')}
+                    </td><td>
+                      ${cityssm.escapeHTML(lot.lotType ?? '')}
+                    </td><td>
+                      ${cityssm.escapeHTML(lot.lotStatus ?? '')}
+                    </td>`;
                             rowElement
                                 .querySelector('.button--addLot')
                                 ?.addEventListener('click', doAddLot);
@@ -716,9 +708,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function openEditWorkOrderComment(clickEvent) {
             const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
                 .workOrderCommentId ?? '', 10);
-            const workOrderComment = workOrderComments.find((currentComment) => {
-                return currentComment.workOrderCommentId === workOrderCommentId;
-            });
+            const workOrderComment = workOrderComments.find((currentComment) => currentComment.workOrderCommentId === workOrderCommentId);
             let editFormElement;
             let editCloseModalFunction;
             function editComment(submitEvent) {
@@ -811,35 +801,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const tableElement = document.createElement('table');
             tableElement.className = 'table is-fullwidth is-striped is-hoverable';
             tableElement.innerHTML = `<thead><tr>
-    <th>Commentor</th>
-    <th>Comment Date</th>
-    <th>Comment</th>
-    <th class="is-hidden-print"><span class="is-sr-only">Options</span></th></tr></thead><tbody></tbody>`;
+        <th>Commentor</th>
+        <th>Comment Date</th>
+        <th>Comment</th>
+        <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+        </tr></thead>
+        <tbody></tbody>`;
             for (const workOrderComment of workOrderComments) {
                 const tableRowElement = document.createElement('tr');
                 tableRowElement.dataset.workOrderCommentId =
                     workOrderComment.workOrderCommentId?.toString();
                 // eslint-disable-next-line no-unsanitized/property
                 tableRowElement.innerHTML = `<td>
-        ${cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '')}
-      </td><td>
-        ${workOrderComment.workOrderCommentDateString}
-        ${workOrderComment.workOrderCommentTime === 0
+            ${cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '')}
+          </td><td>
+            ${workOrderComment.workOrderCommentDateString}
+            ${workOrderComment.workOrderCommentTime === 0
                     ? ''
                     : workOrderComment.workOrderCommentTimePeriodString}
-      </td><td>
-        ${cityssm.escapeHTML(workOrderComment.workOrderComment ?? '')}
-      </td><td class="is-hidden-print">
-        <div class="buttons are-small is-justify-content-end">
-          <button class="button is-primary button--edit" type="button">
-            <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-            <span>Edit</span>
-          </button>
-          <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
-            <i class="fas fa-trash" aria-hidden="true"></i>
-          </button>
-        </div>
-      </td>`;
+          </td><td>
+            ${cityssm.escapeHTML(workOrderComment.workOrderComment ?? '')}
+          </td><td class="is-hidden-print">
+            <div class="buttons are-small is-justify-content-end">
+              <button class="button is-primary button--edit" type="button">
+                <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                <span>Edit</span>
+              </button>
+              <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </td>`;
                 tableRowElement
                     .querySelector('.button--edit')
                     ?.addEventListener('click', openEditWorkOrderComment);
@@ -910,9 +902,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             workOrderMilestoneDateString
         }, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
-            const workOrderMilestones = responseJSON.workOrderMilestones.filter((possibleMilestone) => {
-                return possibleMilestone.workOrderId.toString() !== workOrderId;
-            });
+            const workOrderMilestones = responseJSON.workOrderMilestones.filter((possibleMilestone) => possibleMilestone.workOrderId.toString() !== workOrderId);
             clearPanelBlockElements(targetPanelElement);
             for (const milestone of workOrderMilestones) {
                 targetPanelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
@@ -960,9 +950,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const currentDateString = cityssm.dateToString(new Date());
         const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId ?? '', 10);
-        const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
-            return currentMilestone.workOrderMilestoneId === workOrderMilestoneId;
-        });
+        const workOrderMilestone = workOrderMilestones.find((currentMilestone) => currentMilestone.workOrderMilestoneId === workOrderMilestoneId);
         function doComplete() {
             cityssm.postJSON(`${los.urlPrefix}/workOrders/doCompleteWorkOrderMilestone`, {
                 workOrderId,
@@ -1026,9 +1014,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function editMilestone(clickEvent) {
         clickEvent.preventDefault();
         const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId ?? '', 10);
-        const workOrderMilestone = workOrderMilestones.find((currentMilestone) => {
-            return currentMilestone.workOrderMilestoneId === workOrderMilestoneId;
-        });
+        const workOrderMilestone = workOrderMilestones.find((currentMilestone) => currentMilestone.workOrderMilestoneId === workOrderMilestoneId);
         let editCloseModalFunction;
         let workOrderMilestoneDateStringElement;
         function doEdit(submitEvent) {

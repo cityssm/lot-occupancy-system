@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
@@ -50,7 +47,7 @@ declare const exports: Record<string, unknown>
           clearUnsavedChanges()
 
           if (isCreate) {
-            window.location.href = los.getMapURL(responseJSON.mapId, true)
+            globalThis.location.href = los.getMapURL(responseJSON.mapId, true)
           } else {
             bulmaJS.alert({
               message: `${los.escapedAliases.Map} Updated Successfully`,
@@ -95,7 +92,7 @@ declare const exports: Record<string, unknown>
             }
 
             if (responseJSON.success) {
-              window.location.href = los.getMapURL()
+              globalThis.location.href = los.getMapURL()
             } else {
               bulmaJS.alert({
                 title: `Error Deleting ${los.escapedAliases.Map}`,

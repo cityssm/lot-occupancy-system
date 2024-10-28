@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
-
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../../types/globalTypes.js'
@@ -89,20 +86,19 @@ declare const exports: Record<string, unknown>
       }
 
       const feeTotal = (
-        lotOccupancy.lotOccupancyFees?.reduce((soFar, currentFee): number => {
-          return (
+        lotOccupancy.lotOccupancyFees?.reduce(
+          (soFar, currentFee): number =>
             soFar +
             ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
-              (currentFee.quantity ?? 0)
-          )
-        }, 0) ?? 0
+              (currentFee.quantity ?? 0),
+          0
+        ) ?? 0
       ).toFixed(2)
 
       const transactionTotal = (
         lotOccupancy.lotOccupancyTransactions?.reduce(
-          (soFar, currentTransaction): number => {
-            return soFar + currentTransaction.transactionAmount
-          },
+          (soFar, currentTransaction): number =>
+            soFar + currentTransaction.transactionAmount,
           0
         ) ?? 0
       ).toFixed(2)

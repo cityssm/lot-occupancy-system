@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
-
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { LOS } from '../../types/globalTypes.js'

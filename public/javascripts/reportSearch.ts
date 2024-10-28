@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
-
 ;(() => {
   const menuTabElements: NodeListOf<HTMLAnchorElement> =
     document.querySelectorAll('.menu a')
