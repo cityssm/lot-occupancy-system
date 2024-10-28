@@ -5,8 +5,8 @@ import {
   lotOccupancyDB as databasePath
 } from '../data/databasePaths.js'
 
-export const backupDatabase = async (): Promise<string | false> => {
-  const databasePathSplit = databasePath.split(/[/\\]/g)
+export async function backupDatabase(): Promise<string | false> {
+  const databasePathSplit = databasePath.split(/[/\\]/)
 
   const backupDatabasePath = `${backupFolder}/${databasePathSplit.at(-1)}.${Date.now().toString()}`
 

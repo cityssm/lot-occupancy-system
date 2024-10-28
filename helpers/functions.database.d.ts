@@ -1,1 +1,1 @@
-export declare const backupDatabase: () => Promise<string | false>;
+export declare function backupDatabase(): Promise<string | false>;

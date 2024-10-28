@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import { backupFolder, lotOccupancyDB as databasePath } from '../data/databasePaths.js';
-export const backupDatabase = async () => {
-    const databasePathSplit = databasePath.split(/[/\\]/g);
+export async function backupDatabase() {
+    const databasePathSplit = databasePath.split(/[/\\]/);
     const backupDatabasePath = `${backupFolder}/${databasePathSplit.at(-1)}.${Date.now().toString()}`;
     try {
         await fs.copyFile(databasePath, backupDatabasePath);
@@ -10,4 +10,4 @@ export const backupDatabase = async () => {
     catch {
         return false;
     }
-};
+}
