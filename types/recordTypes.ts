@@ -50,6 +50,7 @@ export interface LotTypeField extends Record {
   lotTypeId?: number
   lotType: LotType
 
+  fieldType: string
   lotTypeFieldValues?: string
   isRequired?: boolean
   pattern?: string
@@ -123,6 +124,8 @@ export interface OccupancyTypeField {
   occupancyTypeFieldId: number
   occupancyTypeId?: number
   occupancyTypeField?: string
+  
+  fieldType: string
   occupancyTypeFieldValues?: string
   isRequired?: boolean
   pattern?: string

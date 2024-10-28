@@ -12,9 +12,15 @@ const createStatements = [
     /*
      * Lot Types
      */
-    `create table if not exists LotTypes (lotTypeId integer not null primary key autoincrement, lotType varchar(100) not null, orderNumber smallint not null default 0, ${recordColumns})`,
+    `create table if not exists LotTypes (
+    lotTypeId integer not null primary key autoincrement, lotType varchar(100) not null, orderNumber smallint not null default 0, ${recordColumns})`,
     'create index if not exists idx_lottypes_ordernumber on LotTypes (orderNumber, lotType)',
-    `create table if not exists LotTypeFields (lotTypeFieldId integer not null primary key autoincrement, lotTypeId integer not null, lotTypeField varchar(100) not null, lotTypeFieldValues text, isRequired bit not null default 0, pattern varchar(100), minimumLength smallint not null default 1 check (minimumLength >= 0), maximumLength smallint not null default 100 check (maximumLength >= 0), orderNumber smallint not null default 0, ${recordColumns}, foreign key (lotTypeId) references LotTypes (lotTypeId))`,
+    `create table if not exists LotTypeFields (
+    lotTypeFieldId integer not null primary key autoincrement, lotTypeId integer not null, lotTypeField varchar(100) not null,
+    fieldType varchar(15) not null default 'text',
+    lotTypeFieldValues text, isRequired bit not null default 0, pattern varchar(100),
+    minimumLength smallint not null default 1 check (minimumLength >= 0), maximumLength smallint not null default 100 check (maximumLength >= 0), orderNumber smallint not null default 0, ${recordColumns},
+    foreign key (lotTypeId) references LotTypes (lotTypeId))`,
     'create index if not exists idx_lottypefields_ordernumber on LotTypeFields (lotTypeId, orderNumber, lotTypeField)',
     /*
      * Lot Statuses
@@ -34,7 +40,12 @@ const createStatements = [
      */
     `create table if not exists OccupancyTypes (occupancyTypeId integer not null primary key autoincrement, occupancyType varchar(100) not null, orderNumber smallint not null default 0, ${recordColumns})`,
     'create index if not exists idx_occupancytypes_ordernumber on OccupancyTypes (orderNumber, occupancyType)',
-    `create table if not exists OccupancyTypeFields (occupancyTypeFieldId integer not null primary key autoincrement, occupancyTypeId integer, occupancyTypeField varchar(100) not null, occupancyTypeFieldValues text, isRequired bit not null default 0, pattern varchar(100), minimumLength smallint not null default 1 check (minimumLength >= 0), maximumLength smallint not null default 100 check (maximumLength >= 0), orderNumber smallint not null default 0, ${recordColumns}, foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId))`,
+    `create table if not exists OccupancyTypeFields (
+    occupancyTypeFieldId integer not null primary key autoincrement, occupancyTypeId integer, occupancyTypeField varchar(100) not null,
+    fieldType varchar(15) not null default 'text',
+    occupancyTypeFieldValues text, isRequired bit not null default 0, pattern varchar(100),
+    minimumLength smallint not null default 1 check (minimumLength >= 0), maximumLength smallint not null default 100 check (maximumLength >= 0), orderNumber smallint not null default 0, ${recordColumns},
+    foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId))`,
     // eslint-disable-next-line no-secrets/no-secrets
     'create index if not exists idx_occupancytypefields_ordernumber on OccupancyTypeFields (occupancyTypeId, orderNumber, occupancyTypeField)',
     `create table if not exists OccupancyTypePrints (occupancyTypeId integer not null, printEJS varchar(100) not null, orderNumber smallint not null default 0, ${recordColumns}, primary key (occupancyTypeId, printEJS), foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId))`,
