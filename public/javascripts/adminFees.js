@@ -1,6 +1,4 @@
 "use strict";
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -8,14 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
     let feeCategories = exports.feeCategories;
     delete exports.feeCategories;
     function getFeeCategory(feeCategoryId) {
-        return feeCategories.find((currentFeeCategory) => {
-            return currentFeeCategory.feeCategoryId === feeCategoryId;
-        });
+        return feeCategories.find((currentFeeCategory) => currentFeeCategory.feeCategoryId === feeCategoryId);
     }
     function getFee(feeCategory, feeId) {
-        return feeCategory.fees.find((currentFee) => {
-            return currentFee.feeId === feeId;
-        });
+        return feeCategory.fees.find((currentFee) => currentFee.feeId === feeId);
     }
     function renderFeeCategories() {
         if (feeCategories.length === 0) {
@@ -551,8 +545,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         }
         function toggleQuantityFields() {
-            const includeQuanitityValue = editModalElement.querySelector('#feeEdit--includeQuantity').value;
-            editModalElement.querySelector('#feeEdit--quantityUnit').disabled = includeQuanitityValue === '';
+            const includeQuantityValue = editModalElement.querySelector('#feeEdit--includeQuantity').value;
+            editModalElement.querySelector('#feeEdit--quantityUnit').disabled = includeQuantityValue === '';
         }
         cityssm.openHtmlModal('adminFees-editFee', {
             onshow(modalElement) {

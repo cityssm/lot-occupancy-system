@@ -30,7 +30,7 @@ declare const exports: Record<string, unknown>
             }
 
             if (responseJSON.success) {
-              window.location.href = los.getWorkOrderURL(
+              globalThis.location.href = los.getWorkOrderURL(
                 workOrderId,
                 true,
                 true

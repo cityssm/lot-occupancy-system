@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }, (rawResponseJSON) => {
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
-                        window.location.href = los.getWorkOrderURL(workOrderId, true, true);
+                        globalThis.location.href = los.getWorkOrderURL(workOrderId, true, true);
                     }
                     else {
                         bulmaJS.alert({

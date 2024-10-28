@@ -32,8 +32,8 @@ export default async function addLotOccupancyFee(lotOccupancyFeeForm, user, conn
           where lotOccupancyId = ?
           and feeId = ?`)
             .get(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId);
-        if (record) {
-            if (record.recordDelete_timeMillis) {
+        if (record !== undefined) {
+            if (record.recordDelete_timeMillis !== null) {
                 database
                     .prepare(`delete from LotOccupancyFees
               where recordDelete_timeMillis is not null

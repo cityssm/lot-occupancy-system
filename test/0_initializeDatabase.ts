@@ -15,6 +15,7 @@ describe('Initialize Database', () => {
       assert.fail('Test database must be used!')
     }
 
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     await fs.unlink(databasePath)
 
     const success = await initializeCemeteryDatabase()

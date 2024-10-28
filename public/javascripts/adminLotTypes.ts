@@ -17,7 +17,7 @@ type ResponseJSON =
     }
   | {
       success: false
-      errorMessage: string
+      errorMessage?: string
     }
 ;(() => {
   const los = exports.los as LOS

@@ -53,14 +53,14 @@ export default async function addLot(
   const lotTypeFieldIds = (lotForm.lotTypeFieldIds ?? '').split(',')
 
   for (const lotTypeFieldId of lotTypeFieldIds) {
-    const lotFieldValue = lotForm[`lotFieldValue_${lotTypeFieldId}`] as string
+    const lotFieldValue = lotForm[`lotFieldValue_${lotTypeFieldId}`] as string | undefined
 
     if ((lotFieldValue ?? '') !== '') {
       await addOrUpdateLotField(
         {
           lotId,
           lotTypeFieldId,
-          lotFieldValue
+          lotFieldValue: lotFieldValue ?? ''
         },
         user,
         database

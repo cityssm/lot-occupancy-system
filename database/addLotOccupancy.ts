@@ -78,14 +78,14 @@ export default async function addLotOccupancy(
   for (const occupancyTypeFieldId of occupancyTypeFieldIds) {
     const lotOccupancyFieldValue = lotOccupancyForm[
       `lotOccupancyFieldValue_${occupancyTypeFieldId}`
-    ] as string
+    ] as string | undefined
 
     if ((lotOccupancyFieldValue ?? '') !== '') {
       await addOrUpdateLotOccupancyField(
         {
           lotOccupancyId,
           occupancyTypeFieldId,
-          lotOccupancyFieldValue
+          lotOccupancyFieldValue: lotOccupancyFieldValue ?? ''
         },
         user,
         database
@@ -97,17 +97,17 @@ export default async function addLotOccupancy(
     await addLotOccupancyOccupant(
       {
         lotOccupancyId,
-        lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId!,
-        occupantName: lotOccupancyForm.occupantName!,
-        occupantFamilyName: lotOccupancyForm.occupantFamilyName!,
-        occupantAddress1: lotOccupancyForm.occupantAddress1!,
-        occupantAddress2: lotOccupancyForm.occupantAddress2!,
-        occupantCity: lotOccupancyForm.occupantCity!,
-        occupantProvince: lotOccupancyForm.occupantProvince!,
-        occupantPostalCode: lotOccupancyForm.occupantPostalCode!,
-        occupantPhoneNumber: lotOccupancyForm.occupantPhoneNumber!,
-        occupantEmailAddress: lotOccupancyForm.occupantEmailAddress!,
-        occupantComment: lotOccupancyForm.occupantComment!
+        lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId ?? '',
+        occupantName: lotOccupancyForm.occupantName ?? '',
+        occupantFamilyName: lotOccupancyForm.occupantFamilyName ?? '',
+        occupantAddress1: lotOccupancyForm.occupantAddress1 ?? '',
+        occupantAddress2: lotOccupancyForm.occupantAddress2 ?? '',
+        occupantCity: lotOccupancyForm.occupantCity ?? '',
+        occupantProvince: lotOccupancyForm.occupantProvince ?? '',
+        occupantPostalCode: lotOccupancyForm.occupantPostalCode ?? '',
+        occupantPhoneNumber: lotOccupancyForm.occupantPhoneNumber ?? '',
+        occupantEmailAddress: lotOccupancyForm.occupantEmailAddress ?? '',
+        occupantComment: lotOccupancyForm.occupantComment ?? ''
       },
       user,
       database

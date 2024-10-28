@@ -1,4 +1,4 @@
-import { type PoolConnection } from 'better-sqlite-pool'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import {
   calculateFeeAmount,
@@ -60,14 +60,16 @@ export default async function addLotOccupancyFee(
           where lotOccupancyId = ?
           and feeId = ?`
       )
-      .get(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId) as {
-      feeAmount?: number
-      taxAmount?: number
-      recordDelete_timeMillis?: number
-    }
+      .get(lotOccupancyFeeForm.lotOccupancyId, lotOccupancyFeeForm.feeId) as
+      | {
+          feeAmount: number | null
+          taxAmount: number | null
+          recordDelete_timeMillis: number | null
+        }
+      | undefined
 
-    if (record) {
-      if (record.recordDelete_timeMillis) {
+    if (record !== undefined) {
+      if (record.recordDelete_timeMillis !== null) {
         database
           .prepare(
             `delete from LotOccupancyFees

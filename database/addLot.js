@@ -20,7 +20,7 @@ export default async function addLot(lotForm, user) {
             await addOrUpdateLotField({
                 lotId,
                 lotTypeFieldId,
-                lotFieldValue
+                lotFieldValue: lotFieldValue ?? ''
             }, user, database);
         }
     }

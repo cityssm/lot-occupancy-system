@@ -27,24 +27,24 @@ export default async function addLotOccupancy(lotOccupancyForm, user, connectedD
             await addOrUpdateLotOccupancyField({
                 lotOccupancyId,
                 occupancyTypeFieldId,
-                lotOccupancyFieldValue
+                lotOccupancyFieldValue: lotOccupancyFieldValue ?? ''
             }, user, database);
         }
     }
     if ((lotOccupancyForm.lotOccupantTypeId ?? '') !== '') {
         await addLotOccupancyOccupant({
             lotOccupancyId,
-            lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId,
-            occupantName: lotOccupancyForm.occupantName,
-            occupantFamilyName: lotOccupancyForm.occupantFamilyName,
-            occupantAddress1: lotOccupancyForm.occupantAddress1,
-            occupantAddress2: lotOccupancyForm.occupantAddress2,
-            occupantCity: lotOccupancyForm.occupantCity,
-            occupantProvince: lotOccupancyForm.occupantProvince,
-            occupantPostalCode: lotOccupancyForm.occupantPostalCode,
-            occupantPhoneNumber: lotOccupancyForm.occupantPhoneNumber,
-            occupantEmailAddress: lotOccupancyForm.occupantEmailAddress,
-            occupantComment: lotOccupancyForm.occupantComment
+            lotOccupantTypeId: lotOccupancyForm.lotOccupantTypeId ?? '',
+            occupantName: lotOccupancyForm.occupantName ?? '',
+            occupantFamilyName: lotOccupancyForm.occupantFamilyName ?? '',
+            occupantAddress1: lotOccupancyForm.occupantAddress1 ?? '',
+            occupantAddress2: lotOccupancyForm.occupantAddress2 ?? '',
+            occupantCity: lotOccupancyForm.occupantCity ?? '',
+            occupantProvince: lotOccupancyForm.occupantProvince ?? '',
+            occupantPostalCode: lotOccupancyForm.occupantPostalCode ?? '',
+            occupantPhoneNumber: lotOccupancyForm.occupantPhoneNumber ?? '',
+            occupantEmailAddress: lotOccupancyForm.occupantEmailAddress ?? '',
+            occupantComment: lotOccupancyForm.occupantComment ?? ''
         }, user, database);
     }
     if (connectedDatabase === undefined) {

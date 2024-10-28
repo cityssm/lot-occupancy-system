@@ -1,5 +1,3 @@
-/* @typescript-eslint/no-non-null-assertion, unicorn/prefer-module */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
@@ -24,7 +22,7 @@ declare const exports: Record<string, unknown>
             }
           | {
               success: false
-              errorMessage: string
+              errorMessage?: string
             }
 
         if (responseJSON.success) {
@@ -59,7 +57,7 @@ declare const exports: Record<string, unknown>
             }
           | {
               success: false
-              errorMessage: string
+              errorMessage?: string
             }
 
         if (responseJSON.success) {

@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
@@ -33,19 +30,19 @@ declare const exports: Record<string, unknown>
       }
     | {
         success: false
-        errorMessage: string
+        errorMessage?: string
       }
 
   function getFeeCategory(feeCategoryId: number): FeeCategory {
-    return feeCategories.find((currentFeeCategory) => {
-      return currentFeeCategory.feeCategoryId === feeCategoryId
-    }) as FeeCategory
+    return feeCategories.find(
+      (currentFeeCategory) => currentFeeCategory.feeCategoryId === feeCategoryId
+    ) as FeeCategory
   }
 
   function getFee(feeCategory: FeeCategory, feeId: number): Fee {
-    return feeCategory.fees.find((currentFee) => {
-      return currentFee.feeId === feeId
-    }) as Fee
+    return feeCategory.fees.find(
+      (currentFee) => currentFee.feeId === feeId
+    ) as Fee
   }
 
   function renderFeeCategories(): void {
@@ -861,7 +858,7 @@ declare const exports: Record<string, unknown>
     }
 
     function toggleQuantityFields(): void {
-      const includeQuanitityValue = (
+      const includeQuantityValue = (
         editModalElement.querySelector(
           '#feeEdit--includeQuantity'
         ) as HTMLSelectElement
@@ -871,7 +868,7 @@ declare const exports: Record<string, unknown>
         editModalElement.querySelector(
           '#feeEdit--quantityUnit'
         ) as HTMLInputElement
-      ).disabled = includeQuanitityValue === ''
+      ).disabled = includeQuantityValue === ''
     }
 
     cityssm.openHtmlModal('adminFees-editFee', {

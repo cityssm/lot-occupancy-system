@@ -1,4 +1,4 @@
-import { type PoolConnection } from 'better-sqlite-pool';
+import type { PoolConnection } from 'better-sqlite-pool';
 export interface AddLotOccupancyFeeForm {
     lotOccupancyId: number | string;
     feeId: number | string;
