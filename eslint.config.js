@@ -1,5 +1,4 @@
-import { configWebApp } from 'eslint-config-cityssm';
-import tseslint from 'typescript-eslint';
+import { configWebApp, tseslint } from 'eslint-config-cityssm';
 export const config = tseslint.config(...configWebApp, {
     languageOptions: {
         parserOptions: {

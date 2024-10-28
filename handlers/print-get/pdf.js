@@ -25,7 +25,8 @@ export async function handler(request, response, next) {
         response.send(pdf);
     }
     async function ejsCallbackFunction(ejsError, ejsData) {
-        if (ejsError) {
+        // eslint-disable-next-line unicorn/no-null
+        if (ejsError != null) {
             next(ejsError);
             return;
         }
@@ -34,7 +35,7 @@ export async function handler(request, response, next) {
             printBackground: true,
             preferCSSPageSize: true
         });
-        pdfCallbackFunction(pdf);
+        pdfCallbackFunction(Buffer.from(pdf));
     }
     await renderEjsFile(reportPath, reportData, {}, ejsCallbackFunction);
 }

@@ -63,10 +63,11 @@ export async function handler(
   }
 
   async function ejsCallbackFunction(
-    ejsError: Error,
+    ejsError: Error | null,
     ejsData: string
   ): Promise<void> {
-    if (ejsError) {
+    // eslint-disable-next-line unicorn/no-null
+    if (ejsError != null) {
       next(ejsError)
       return
     }
@@ -77,7 +78,7 @@ export async function handler(
       preferCSSPageSize: true
     })
 
-    pdfCallbackFunction(pdf)
+    pdfCallbackFunction(Buffer.from(pdf))
   }
 
   await renderEjsFile(reportPath, reportData, {}, ejsCallbackFunction)
