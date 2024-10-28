@@ -2,6 +2,7 @@
   "reject": [
     "@cityssm/bulma-sticky-table",
     "@fortawesome/fontawesome-free",
-    "bulma"
+    "bulma",
+    "bulma-calendar"
   ]
 }
