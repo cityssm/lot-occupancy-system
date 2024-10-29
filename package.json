@@ -75,6 +75,7 @@
     "@cityssm/fa-glow": "^0.1.0",
     "@cityssm/mssql-multi-pool": "^4.0.0",
     "@cityssm/simple-fa5-checkbox": "^0.2.1",
+    "@cityssm/to-millis": "^0.1.0",
     "@types/activedirectory2": "^1.2.6",
     "@types/better-sqlite3": "^7.6.11",
     "@types/compression": "^1.7.5",

@@ -4,6 +4,8 @@ import assert from 'node:assert'
 import { exec } from 'node:child_process'
 import http from 'node:http'
 
+import { minutesToMillis } from '@cityssm/to-millis'
+
 import { app } from '../app.js'
 
 import { portNumber } from './_globals.js'
@@ -15,6 +17,7 @@ function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {
     cypressCommand += ` --tag "${browser},${process.version}" --record`
   }
 
+  // eslint-disable-next-line security/detect-child-process, sonarjs/os-command
   const childProcess = exec(cypressCommand)
 
   childProcess.stdout?.on('data', (data) => {
@@ -59,10 +62,10 @@ describe('lot-occupancy-system', () => {
   describe('Cypress tests', () => {
     it('Should run Cypress tests in Chrome', (done) => {
       runCypress('chrome', done)
-    }).timeout(30 * 60 * 60 * 1000)
+    }).timeout(minutesToMillis(30))
 
     it('Should run Cypress tests in Firefox', (done) => {
       runCypress('firefox', done)
-    }).timeout(30 * 60 * 60 * 1000)
+    }).timeout(minutesToMillis(30))
   })
 })
