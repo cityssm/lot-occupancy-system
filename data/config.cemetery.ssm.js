@@ -1,6 +1,6 @@
 import NodeCache from 'node-cache';
 import { config as cemeteryConfig } from './config.cemetery.ontario.js';
-export const config = Object.assign({}, cemeteryConfig);
+export const config = { ...cemeteryConfig };
 config.aliases.occupancyStartDate = 'Purchase Date';
 config.aliases.externalReceiptNumber = 'GP Receipt Number';
 config.settings.lot.lotNamePattern =

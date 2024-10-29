@@ -1,5 +1,5 @@
 import { config as baseConfig } from './config.base.js';
-export const config = Object.assign({}, baseConfig);
+export const config = { ...baseConfig };
 config.application = {
     applicationName: 'Cemetery Management System',
     backgroundURL: '/images/cemetery-background.jpg',

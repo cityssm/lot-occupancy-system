@@ -39,7 +39,7 @@ export default async function getLotOccupancyComments(
     )
     .all(lotOccupancyId) as LotOccupancyComment[]
 
-  if (connectedDatabase === null) {
+  if (connectedDatabase === undefined) {
     database.release()
   }
 

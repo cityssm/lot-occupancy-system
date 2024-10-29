@@ -1,6 +1,8 @@
+import type { Config } from '../types/configTypes.js'
+
 import { config as cemeteryConfig } from './config.cemetery.ssm.js'
 
-export const config = Object.assign({}, cemeteryConfig)
+export const config: Config = { ...cemeteryConfig }
 
 config.application.useTestDatabases = true
 

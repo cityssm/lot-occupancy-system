@@ -1,8 +1,10 @@
 import NodeCache from 'node-cache'
 
+import type { Config } from '../types/configTypes.js'
+
 import { config as cemeteryConfig } from './config.cemetery.ontario.js'
 
-export const config = Object.assign({}, cemeteryConfig)
+export const config: Config = { ...cemeteryConfig}
 
 config.aliases.occupancyStartDate = 'Purchase Date'
 config.aliases.externalReceiptNumber = 'GP Receipt Number'

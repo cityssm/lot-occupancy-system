@@ -12,8 +12,8 @@ recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId');
 function getCurrentOrderNumber(recordTable, recordId, database) {
     const currentOrderNumber = database
         .prepare(`select orderNumber
-        from ${recordTable}
-        where ${recordIdColumns.get(recordTable)} = ?`)
+          from ${recordTable}
+          where ${recordIdColumns.get(recordTable)} = ?`)
         .get(recordId).orderNumber;
     return currentOrderNumber;
 }
@@ -36,8 +36,8 @@ export async function moveRecordDownToBottom(recordTable, recordId) {
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
-        from ${recordTable}
-        where recordDelete_timeMillis is null`)
+          from ${recordTable}
+          where recordDelete_timeMillis is null`)
         .get().maxOrderNumber;
     if (currentOrderNumber !== maxOrderNumber) {
         updateRecordOrderNumber(recordTable, recordId, maxOrderNumber + 1, database);

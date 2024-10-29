@@ -1,6 +1,8 @@
+import type { Config } from '../types/configTypes.js'
+
 import { config as baseConfig } from './config.base.js'
 
-export const config = Object.assign({}, baseConfig)
+export const config: Config = { ...baseConfig }
 
 config.application = {
   applicationName: 'Cemetery Management System',

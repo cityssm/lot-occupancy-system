@@ -1,5 +1,6 @@
+import { hoursToMillis } from '@cityssm/to-millis';
 export const configDefaultValues = {
-    'activeDirectory': undefined,
+    activeDirectory: undefined,
     'application.applicationName': 'Lot Occupancy System',
     'application.backgroundURL': '/images/cemetery-background.jpg',
     'application.logoURL': '/images/cemetery-logo.png',
@@ -13,7 +14,7 @@ export const configDefaultValues = {
     'reverseProxy.urlPrefix': '',
     'session.cookieName': 'lot-occupancy-system-user-sid',
     'session.secret': 'cityssm/lot-occupancy-system',
-    'session.maxAgeMillis': 60 * 60 * 1000,
+    'session.maxAgeMillis': hoursToMillis(1),
     'session.doKeepAlive': false,
     'users.testing': [],
     'users.canLogin': ['administrator'],

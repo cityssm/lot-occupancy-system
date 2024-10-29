@@ -19,9 +19,7 @@ export default async function getNextWorkOrderNumber(
   database.function(
     // eslint-disable-next-line no-secrets/no-secrets
     'userFn_matchesWorkOrderNumberSyntax',
-    (workOrderNumber: string) => {
-      return regex.test(workOrderNumber) ? 1 : 0
-    }
+    (workOrderNumber: string) => (regex.test(workOrderNumber) ? 1 : 0)
   )
 
   const workOrderNumberRecord = database
@@ -31,9 +29,11 @@ export default async function getNextWorkOrderNumber(
         where userFn_matchesWorkOrderNumberSyntax(workOrderNumber) = 1
         order by cast(substr(workOrderNumber, instr(workOrderNumber, '-') + 1) as integer) desc`
     )
-    .get() as {
-    workOrderNumber: string
-  }
+    .get() as
+    | {
+        workOrderNumber: string
+      }
+    | undefined
 
   if (connectedDatabase === undefined) {
     database.release()
@@ -41,7 +41,7 @@ export default async function getNextWorkOrderNumber(
 
   let workOrderNumberIndex = 0
 
-  if (workOrderNumberRecord) {
+  if (workOrderNumberRecord !== undefined) {
     workOrderNumberIndex = Number.parseInt(
       workOrderNumberRecord.workOrderNumber.split('-')[1],
       10

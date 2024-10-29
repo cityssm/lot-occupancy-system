@@ -1,9 +1,14 @@
+import { hoursToMillis } from '@cityssm/to-millis'
 import type { config as MSSQLConfig } from 'mssql'
 
-import type { ConfigActiveDirectory, ConfigNtfyStartup, DynamicsGPLookup } from '../types/configTypes.js'
+import type {
+  ConfigActiveDirectory,
+  ConfigNtfyStartup,
+  DynamicsGPLookup
+} from '../types/configTypes.js'
 
 export const configDefaultValues = {
-  'activeDirectory': undefined as unknown as ConfigActiveDirectory,
+  activeDirectory: undefined as unknown as ConfigActiveDirectory,
 
   'application.applicationName': 'Lot Occupancy System',
   'application.backgroundURL': '/images/cemetery-background.jpg',
@@ -21,7 +26,7 @@ export const configDefaultValues = {
 
   'session.cookieName': 'lot-occupancy-system-user-sid',
   'session.secret': 'cityssm/lot-occupancy-system',
-  'session.maxAgeMillis': 60 * 60 * 1000,
+  'session.maxAgeMillis': hoursToMillis(1),
   'session.doKeepAlive': false,
 
   'users.testing': [] as string[],
@@ -66,7 +71,9 @@ export const configDefaultValues = {
 
   'settings.adminCleanup.recordDeleteAgeDays': 60,
 
-  'settings.printPdf.contentDisposition': 'attachment' as 'attachment' | 'inline',
+  'settings.printPdf.contentDisposition': 'attachment' as
+    | 'attachment'
+    | 'inline',
 
   'settings.dynamicsGP.integrationIsEnabled': false,
   'settings.dynamicsGP.mssqlConfig': undefined as unknown as MSSQLConfig,

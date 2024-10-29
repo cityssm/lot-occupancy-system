@@ -1,5 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable no-case-declarations */
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToString } from '@cityssm/utils-datetime';
 import camelCase from 'camelcase';
 import { getConfigProperty } from '../helpers/functions.config.js';
@@ -38,7 +36,7 @@ const occupantEmailAddressAlias = `${occupantCamelCase}EmailAddress`;
 const occupantCommentTitleAlias = `${occupantCamelCase}CommentTitle`;
 const occupantCommentAlias = `${occupantCamelCase}Comment`;
 export default async function getReportData(reportName, reportParameters = {}) {
-    let sql;
+    let sql = '';
     const sqlParameters = [];
     // eslint-disable-next-line sonarjs/max-switch-cases
     switch (reportName) {

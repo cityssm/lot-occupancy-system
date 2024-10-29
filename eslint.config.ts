@@ -1,4 +1,4 @@
-import { configWebApp, tseslint } from 'eslint-config-cityssm'
+import { configWebApp, cspellWords, tseslint } from 'eslint-config-cityssm'
 
 export const config = tseslint.config(...configWebApp, {
   languageOptions: {
@@ -6,6 +6,16 @@ export const config = tseslint.config(...configWebApp, {
       // eslint-disable-next-line @cspell/spellchecker
       project: ['./tsconfig.json', './public/javascripts/tsconfig.json']
     }
+  },
+  rules: {
+    '@cspell/spellchecker': [
+      'warn',
+      {
+        cspell: {
+          words: [...cspellWords, 'ical', 'ntfy']
+        }
+      }
+    ]
   }
 })
 

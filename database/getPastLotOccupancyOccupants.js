@@ -9,12 +9,11 @@ export default async function getPastLotOccupancyOccupants(filters, options) {
             if (searchFilterPiece === '') {
                 continue;
             }
-            sqlWhereClause +=
-                " and (o.occupantName like '%' || ? || '%'" +
-                    " or o.occupantFamilyName like '%' || ? || '%'" +
-                    " or o.occupantAddress1 like '%' || ? || '%'" +
-                    " or o.occupantAddress2 like '%' || ? || '%'" +
-                    " or o.occupantCity like '%' || ? || '%')";
+            sqlWhereClause += ` and (o.occupantName like '%' || ? || '%'
+        or o.occupantFamilyName like '%' || ? || '%'
+        or o.occupantAddress1 like '%' || ? || '%'
+        or o.occupantAddress2 like '%' || ? || '%'
+        or o.occupantCity like '%' || ? || '%')`;
             sqlParameters.push(searchFilterPiece, searchFilterPiece, searchFilterPiece, searchFilterPiece, searchFilterPiece);
         }
     }
@@ -24,14 +23,14 @@ export default async function getPastLotOccupancyOccupants(filters, options) {
       o.occupantPhoneNumber, o.occupantEmailAddress,
       count(*) as lotOccupancyIdCount,
       max(o.recordUpdate_timeMillis) as recordUpdate_timeMillisMax
-      from LotOccupancyOccupants o
-      left join LotOccupancies l on o.lotOccupancyId = l.lotOccupancyId
-      ${sqlWhereClause}
-      group by occupantName, occupantAddress1, occupantAddress2,
-        occupantCity, occupantProvince, occupantPostalCode,
-        occupantPhoneNumber, occupantEmailAddress
-      order by lotOccupancyIdCount desc, recordUpdate_timeMillisMax desc
-      limit ${options.limit}`;
+    from LotOccupancyOccupants o
+    left join LotOccupancies l on o.lotOccupancyId = l.lotOccupancyId
+    ${sqlWhereClause}
+    group by occupantName, occupantAddress1, occupantAddress2,
+      occupantCity, occupantProvince, occupantPostalCode,
+      occupantPhoneNumber, occupantEmailAddress
+    order by lotOccupancyIdCount desc, recordUpdate_timeMillisMax desc
+    limit ${options.limit}`;
     const lotOccupancyOccupants = database
         .prepare(sql)
         .all(sqlParameters);

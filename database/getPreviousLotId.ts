@@ -20,9 +20,11 @@ export default async function getPreviousLotId(
         order by userFn_lotNameSortName(lotName) desc
         limit 1`
     )
-    .get(lotId) as {
-    lotId: number
-  }
+    .get(lotId) as
+    | {
+        lotId: number
+      }
+    | undefined
 
   database.release()
 

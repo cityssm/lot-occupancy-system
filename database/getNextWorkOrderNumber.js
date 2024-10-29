@@ -7,9 +7,7 @@ export default async function getNextWorkOrderNumber(connectedDatabase) {
     const regex = new RegExp(`^${currentYearString}-\\d+$`);
     database.function(
     // eslint-disable-next-line no-secrets/no-secrets
-    'userFn_matchesWorkOrderNumberSyntax', (workOrderNumber) => {
-        return regex.test(workOrderNumber) ? 1 : 0;
-    });
+    'userFn_matchesWorkOrderNumberSyntax', (workOrderNumber) => (regex.test(workOrderNumber) ? 1 : 0));
     const workOrderNumberRecord = database
         .prepare(
     // eslint-disable-next-line no-secrets/no-secrets
@@ -21,7 +19,7 @@ export default async function getNextWorkOrderNumber(connectedDatabase) {
         database.release();
     }
     let workOrderNumberIndex = 0;
-    if (workOrderNumberRecord) {
+    if (workOrderNumberRecord !== undefined) {
         workOrderNumberIndex = Number.parseInt(workOrderNumberRecord.workOrderNumber.split('-')[1], 10);
     }
     workOrderNumberIndex += 1;

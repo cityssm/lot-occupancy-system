@@ -1,9 +1,10 @@
 import cluster, { type Worker } from 'node:cluster'
 import os from 'node:os'
-import { dirname } from 'node:path'
+import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import ntfyPublish, { type NtfyMessageOptions } from '@cityssm/ntfy-publish'
+import { secondsToMillis } from '@cityssm/to-millis'
 import Debug from 'debug'
 import exitHook from 'exit-hook'
 
@@ -12,7 +13,7 @@ import type { WorkerMessage } from '../types/applicationTypes.js'
 
 const debug = Debug(`lot-occupancy-system:www:${process.pid}`)
 
-const directoryName = dirname(fileURLToPath(import.meta.url))
+const directoryName = path.dirname(fileURLToPath(import.meta.url))
 
 const processCount = Math.min(
   getConfigProperty('application.maximumProcesses'),
@@ -98,7 +99,7 @@ if (process.env.STARTUP_TEST === 'true') {
   setTimeout(() => {
     debug('Killing processes')
 
-    // eslint-disable-next-line n/no-process-exit, unicorn/no-process-exit
+    // eslint-disable-next-line unicorn/no-process-exit
     process.exit(0)
-  }, 10_000)
+  }, secondsToMillis(killSeconds))
 }

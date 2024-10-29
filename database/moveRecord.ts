@@ -32,8 +32,8 @@ function getCurrentOrderNumber(
     database
       .prepare(
         `select orderNumber
-        from ${recordTable}
-        where ${recordIdColumns.get(recordTable)!} = ?`
+          from ${recordTable}
+          where ${recordIdColumns.get(recordTable)!} = ?`
       )
       .get(recordId) as { orderNumber: number }
   ).orderNumber
@@ -92,8 +92,8 @@ export async function moveRecordDownToBottom(
     database
       .prepare(
         `select max(orderNumber) as maxOrderNumber
-        from ${recordTable}
-        where recordDelete_timeMillis is null`
+          from ${recordTable}
+          where recordDelete_timeMillis is null`
       )
       .get() as { maxOrderNumber: number }
   ).maxOrderNumber

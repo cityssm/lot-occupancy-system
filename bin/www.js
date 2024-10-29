@@ -1,13 +1,14 @@
 import cluster from 'node:cluster';
 import os from 'node:os';
-import { dirname } from 'node:path';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ntfyPublish from '@cityssm/ntfy-publish';
+import { secondsToMillis } from '@cityssm/to-millis';
 import Debug from 'debug';
 import exitHook from 'exit-hook';
 import { getConfigProperty } from '../helpers/functions.config.js';
 const debug = Debug(`lot-occupancy-system:www:${process.pid}`);
-const directoryName = dirname(fileURLToPath(import.meta.url));
+const directoryName = path.dirname(fileURLToPath(import.meta.url));
 const processCount = Math.min(getConfigProperty('application.maximumProcesses'), os.cpus().length);
 process.title = `${getConfigProperty('application.applicationName')} (Primary)`;
 debug(`Primary pid:   ${process.pid}`);
@@ -68,7 +69,7 @@ if (process.env.STARTUP_TEST === 'true') {
     debug(`Killing processes in ${killSeconds} seconds...`);
     setTimeout(() => {
         debug('Killing processes');
-        // eslint-disable-next-line n/no-process-exit, unicorn/no-process-exit
+        // eslint-disable-next-line unicorn/no-process-exit
         process.exit(0);
-    }, 10_000);
+    }, secondsToMillis(killSeconds));
 }

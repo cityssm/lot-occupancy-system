@@ -1,4 +1,3 @@
-/* eslint-disable node/no-unpublished-import */
 import 'cypress-axe';
 export const logout = () => {
     cy.visit('/logout');

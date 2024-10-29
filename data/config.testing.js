@@ -1,5 +1,5 @@
 import { config as cemeteryConfig } from './config.cemetery.ssm.js';
-export const config = Object.assign({}, cemeteryConfig);
+export const config = { ...cemeteryConfig };
 config.application.useTestDatabases = true;
 config.session.doKeepAlive = true;
 config.users = {

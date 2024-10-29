@@ -1,5 +1,5 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable n/no-process-exit, unicorn/no-process-exit */
+/* eslint-disable unicorn/no-process-exit */
 import http from 'node:http';
 import Debug from 'debug';
 import exitHook from 'exit-hook';
@@ -12,7 +12,6 @@ function onError(error) {
     }
     // handle specific listen errors with friendly messages
     switch (error.code) {
-        // eslint-disable-next-line no-fallthrough
         case 'EACCES': {
             debug('Requires elevated privileges');
             process.exit(1);

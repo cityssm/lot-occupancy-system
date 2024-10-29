@@ -20,7 +20,7 @@ export default async function getLotOccupancyComments(lotOccupancyId, connectedD
         and lotOccupancyId = ?
         order by lotOccupancyCommentDate desc, lotOccupancyCommentTime desc, lotOccupancyCommentId desc`)
         .all(lotOccupancyId);
-    if (connectedDatabase === null) {
+    if (connectedDatabase === undefined) {
         database.release();
     }
     return lotComments;

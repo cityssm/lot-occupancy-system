@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable no-case-declarations */
-
 import {
   type DateString,
   dateIntegerToString,
@@ -57,7 +54,7 @@ export default async function getReportData(
   reportName: string,
   reportParameters: ReportParameters = {}
 ): Promise<unknown[] | undefined> {
-  let sql: string
+  let sql = ''
   const sqlParameters: unknown[] = []
 
   // eslint-disable-next-line sonarjs/max-switch-cases

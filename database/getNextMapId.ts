@@ -14,9 +14,11 @@ export default async function getNextMapId(
         order by mapName
         limit 1`
     )
-    .get(mapId) as {
-    mapId: number
-  }
+    .get(mapId) as
+    | {
+        mapId: number
+      }
+    | undefined
 
   database.release()
 

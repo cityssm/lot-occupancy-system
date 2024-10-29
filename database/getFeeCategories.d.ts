@@ -1,4 +1,4 @@
-import { type PoolConnection } from 'better-sqlite-pool';
+import type { PoolConnection } from 'better-sqlite-pool';
 import type { FeeCategory } from '../types/recordTypes.js';
 interface GetFeeCategoriesFilters {
     occupancyTypeId?: number | string;
