@@ -7,7 +7,11 @@ import {
 import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    { workOrderMilestoneTypeId: string; moveToEnd: '0' | '1' }
+  >,
   response: Response
 ): Promise<void> {
   const success =
@@ -28,4 +32,3 @@ export default async function handler(
     workOrderMilestoneTypes
   })
 }
-

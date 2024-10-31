@@ -1,12 +1,12 @@
 import fs from 'node:fs/promises'
 
 import Debug from 'debug'
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidV4 } from 'uuid'
 
 const debug = Debug('lot-occupancy-system:functions.api')
 
 const apiKeyPath = 'data/apiKeys.json'
-let apiKeys: Record<string, string>
+let apiKeys: Record<string, string> | undefined
 
 async function loadApiKeys(): Promise<void> {
   try {
@@ -27,7 +27,7 @@ async function saveApiKeys(): Promise<void> {
 }
 
 function generateApiKey(apiKeyPrefix: string): string {
-  return `${apiKeyPrefix}-${uuidv4()}-${Date.now().toString()}`
+  return `${apiKeyPrefix}-${uuidV4()}-${Date.now().toString()}`
 }
 
 export async function regenerateApiKey(userName: string): Promise<void> {

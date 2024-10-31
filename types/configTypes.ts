@@ -1,4 +1,3 @@
-// eslint-disable-next-line n/no-extraneous-import
 import type { config as MSSQLConfig } from 'mssql'
 
 export interface Config {

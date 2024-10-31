@@ -33,7 +33,7 @@ function getCurrentOrderNumber(
       .prepare(
         `select orderNumber
           from ${recordTable}
-          where ${recordIdColumns.get(recordTable)!} = ?`
+          where ${recordIdColumns.get(recordTable)} = ?`
       )
       .get(recordId) as { orderNumber: number }
   ).orderNumber
@@ -43,7 +43,7 @@ function getCurrentOrderNumber(
 
 export async function moveRecordDown(
   recordTable: RecordTable,
-  recordId: number
+  recordId: number | string
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -78,7 +78,7 @@ export async function moveRecordDown(
 
 export async function moveRecordDownToBottom(
   recordTable: RecordTable,
-  recordId: number
+  recordId: number | string
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -120,7 +120,7 @@ export async function moveRecordDownToBottom(
 
 export async function moveRecordUp(
   recordTable: RecordTable,
-  recordId: number
+  recordId: number | string
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -160,7 +160,7 @@ export async function moveRecordUp(
 
 export async function moveRecordUpToTop(
   recordTable: RecordTable,
-  recordId: number
+  recordId: number | string
 ): Promise<boolean> {
   const database = await acquireConnection()
 

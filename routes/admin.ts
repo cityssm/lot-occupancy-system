@@ -1,4 +1,4 @@
-import { type RequestHandler, Router } from 'express'
+import { Router } from 'express'
 
 import handler_database from '../handlers/admin-get/database.js'
 import handler_fees from '../handlers/admin-get/fees.js'
@@ -72,257 +72,170 @@ export const router = Router()
  * Fees
  */
 
-router.get('/fees', handler_fees as RequestHandler)
+router.get('/fees', handler_fees)
 
-router.post('/doAddFeeCategory', handler_doAddFeeCategory as RequestHandler)
+router.post('/doAddFeeCategory', handler_doAddFeeCategory)
 
-router.post(
-  '/doUpdateFeeCategory',
-  handler_doUpdateFeeCategory as RequestHandler
-)
+router.post('/doUpdateFeeCategory', handler_doUpdateFeeCategory)
 
-router.post(
-  '/doMoveFeeCategoryUp',
-  handler_doMoveFeeCategoryUp as RequestHandler
-)
+router.post('/doMoveFeeCategoryUp', handler_doMoveFeeCategoryUp)
 
-router.post(
-  '/doMoveFeeCategoryDown',
-  handler_doMoveFeeCategoryDown as RequestHandler
-)
+router.post('/doMoveFeeCategoryDown', handler_doMoveFeeCategoryDown)
 
-router.post(
-  '/doDeleteFeeCategory',
-  handler_doDeleteFeeCategory as RequestHandler
-)
+router.post('/doDeleteFeeCategory', handler_doDeleteFeeCategory)
 
-router.post('/doAddFee', handler_doAddFee as RequestHandler)
+router.post('/doAddFee', handler_doAddFee)
 
-router.post('/doUpdateFee', handler_doUpdateFee as RequestHandler)
+router.post('/doUpdateFee', handler_doUpdateFee)
 
-router.post('/doUpdateFeeAmount', handler_doUpdateFeeAmount as RequestHandler)
+router.post('/doUpdateFeeAmount', handler_doUpdateFeeAmount)
 
-router.post('/doMoveFeeUp', handler_doMoveFeeUp as RequestHandler)
+router.post('/doMoveFeeUp', handler_doMoveFeeUp)
 
-router.post('/doMoveFeeDown', handler_doMoveFeeDown as RequestHandler)
+router.post('/doMoveFeeDown', handler_doMoveFeeDown)
 
-router.post('/doDeleteFee', handler_doDeleteFee as RequestHandler)
+router.post('/doDeleteFee', handler_doDeleteFee)
 
 /*
  * Occupancy Type Management
  */
 
-router.get('/occupancyTypes', handler_occupancyTypes as RequestHandler)
+router.get('/occupancyTypes', handler_occupancyTypes)
 
-router.post('/doAddOccupancyType', handler_doAddOccupancyType as RequestHandler)
+router.post('/doAddOccupancyType', handler_doAddOccupancyType)
 
-router.post(
-  '/doUpdateOccupancyType',
-  handler_doUpdateOccupancyType as RequestHandler
-)
+router.post('/doUpdateOccupancyType', handler_doUpdateOccupancyType)
 
-router.post(
-  '/doMoveOccupancyTypeUp',
-  handler_doMoveOccupancyTypeUp as RequestHandler
-)
+router.post('/doMoveOccupancyTypeUp', handler_doMoveOccupancyTypeUp)
 
-router.post(
-  '/doMoveOccupancyTypeDown',
-  handler_doMoveOccupancyTypeDown as RequestHandler
-)
+router.post('/doMoveOccupancyTypeDown', handler_doMoveOccupancyTypeDown)
 
-router.post(
-  '/doDeleteOccupancyType',
-  handler_doDeleteOccupancyType as RequestHandler
-)
+router.post('/doDeleteOccupancyType', handler_doDeleteOccupancyType)
 
 // Occupancy Type Fields
 
-router.post(
-  '/doAddOccupancyTypeField',
-  handler_doAddOccupancyTypeField as RequestHandler
-)
+router.post('/doAddOccupancyTypeField', handler_doAddOccupancyTypeField)
 
-router.post(
-  '/doUpdateOccupancyTypeField',
-  handler_doUpdateOccupancyTypeField as RequestHandler
-)
+router.post('/doUpdateOccupancyTypeField', handler_doUpdateOccupancyTypeField)
 
-router.post(
-  '/doMoveOccupancyTypeFieldUp',
-  handler_doMoveOccupancyTypeFieldUp as RequestHandler
-)
+router.post('/doMoveOccupancyTypeFieldUp', handler_doMoveOccupancyTypeFieldUp)
 
 router.post(
   '/doMoveOccupancyTypeFieldDown',
-  handler_doMoveOccupancyTypeFieldDown as RequestHandler
+  handler_doMoveOccupancyTypeFieldDown
 )
 
-router.post(
-  '/doDeleteOccupancyTypeField',
-  handler_doDeleteOccupancyTypeField as RequestHandler
-)
+router.post('/doDeleteOccupancyTypeField', handler_doDeleteOccupancyTypeField)
 
 // Occupancy Type Prints
 
-router.post(
-  '/doAddOccupancyTypePrint',
-  handler_doAddOccupancyTypePrint as RequestHandler
-)
+router.post('/doAddOccupancyTypePrint', handler_doAddOccupancyTypePrint)
 
-router.post(
-  '/doMoveOccupancyTypePrintUp',
-  handler_doMoveOccupancyTypePrintUp as RequestHandler
-)
+router.post('/doMoveOccupancyTypePrintUp', handler_doMoveOccupancyTypePrintUp)
 
 router.post(
   '/doMoveOccupancyTypePrintDown',
-  handler_doMoveOccupancyTypePrintDown as RequestHandler
+  handler_doMoveOccupancyTypePrintDown
 )
 
-router.post(
-  '/doDeleteOccupancyTypePrint',
-  handler_doDeleteOccupancyTypePrint as RequestHandler
-)
+router.post('/doDeleteOccupancyTypePrint', handler_doDeleteOccupancyTypePrint)
 
 /*
  * Lot Type Management
  */
 
-router.get('/lotTypes', handler_lotTypes as RequestHandler)
+router.get('/lotTypes', handler_lotTypes)
 
-router.post('/doAddLotType', handler_doAddLotType as RequestHandler)
+router.post('/doAddLotType', handler_doAddLotType)
 
-router.post('/doUpdateLotType', handler_doUpdateLotType as RequestHandler)
+router.post('/doUpdateLotType', handler_doUpdateLotType)
 
-router.post('/doMoveLotTypeUp', handler_doMoveLotTypeUp as RequestHandler)
+router.post('/doMoveLotTypeUp', handler_doMoveLotTypeUp)
 
-router.post('/doMoveLotTypeDown', handler_doMoveLotTypeDown as RequestHandler)
+router.post('/doMoveLotTypeDown', handler_doMoveLotTypeDown)
 
-router.post('/doDeleteLotType', handler_doDeleteLotType as RequestHandler)
+router.post('/doDeleteLotType', handler_doDeleteLotType)
 
 // Lot Type Fields
 
-router.post('/doAddLotTypeField', handler_doAddLotTypeField as RequestHandler)
+router.post('/doAddLotTypeField', handler_doAddLotTypeField)
 
-router.post(
-  '/doUpdateLotTypeField',
-  handler_doUpdateLotTypeField as RequestHandler
-)
+router.post('/doUpdateLotTypeField', handler_doUpdateLotTypeField)
 
-router.post(
-  '/doMoveLotTypeFieldUp',
-  handler_doMoveLotTypeFieldUp as RequestHandler
-)
+router.post('/doMoveLotTypeFieldUp', handler_doMoveLotTypeFieldUp)
 
-router.post(
-  '/doMoveLotTypeFieldDown',
-  handler_doMoveLotTypeFieldDown as RequestHandler
-)
+router.post('/doMoveLotTypeFieldDown', handler_doMoveLotTypeFieldDown)
 
-router.post(
-  '/doDeleteLotTypeField',
-  handler_doDeleteLotTypeField as RequestHandler
-)
+router.post('/doDeleteLotTypeField', handler_doDeleteLotTypeField)
 
 /*
  * Config Tables
  */
 
-router.get('/tables', handler_tables as RequestHandler)
+router.get('/tables', handler_tables)
 
 // Config Tables - Work Order Types
 
-router.post('/doAddWorkOrderType', handler_doAddWorkOrderType as RequestHandler)
+router.post('/doAddWorkOrderType', handler_doAddWorkOrderType)
 
-router.post(
-  '/doUpdateWorkOrderType',
-  handler_doUpdateWorkOrderType as RequestHandler
-)
+router.post('/doUpdateWorkOrderType', handler_doUpdateWorkOrderType)
 
-router.post(
-  '/doMoveWorkOrderTypeUp',
-  handler_doMoveWorkOrderTypeUp as RequestHandler
-)
+router.post('/doMoveWorkOrderTypeUp', handler_doMoveWorkOrderTypeUp)
 
-router.post(
-  '/doMoveWorkOrderTypeDown',
-  handler_doMoveWorkOrderTypeDown as RequestHandler
-)
+router.post('/doMoveWorkOrderTypeDown', handler_doMoveWorkOrderTypeDown)
 
-router.post(
-  '/doDeleteWorkOrderType',
-  handler_doDeleteWorkOrderType as RequestHandler
-)
+router.post('/doDeleteWorkOrderType', handler_doDeleteWorkOrderType)
 // Config Tables - Work Order Milestone Types
 
 router.post(
   '/doAddWorkOrderMilestoneType',
 
-  handler_doAddWorkOrderMilestoneType as RequestHandler
+  handler_doAddWorkOrderMilestoneType
 )
 
 router.post(
   '/doUpdateWorkOrderMilestoneType',
-  handler_doUpdateWorkOrderMilestoneType as RequestHandler
+  handler_doUpdateWorkOrderMilestoneType
 )
 
 router.post(
   '/doMoveWorkOrderMilestoneTypeUp',
-  handler_doMoveWorkOrderMilestoneTypeUp as RequestHandler
+  handler_doMoveWorkOrderMilestoneTypeUp
 )
 
 router.post(
   '/doMoveWorkOrderMilestoneTypeDown',
-  handler_doMoveWorkOrderMilestoneTypeDown as RequestHandler
+  handler_doMoveWorkOrderMilestoneTypeDown
 )
 
 router.post(
   '/doDeleteWorkOrderMilestoneType',
-  handler_doDeleteWorkOrderMilestoneType as RequestHandler
+  handler_doDeleteWorkOrderMilestoneType
 )
 
 // Config Tables - Lot Statuses
 
-router.post('/doAddLotStatus', handler_doAddLotStatus as RequestHandler)
+router.post('/doAddLotStatus', handler_doAddLotStatus)
 
-router.post('/doUpdateLotStatus', handler_doUpdateLotStatus as RequestHandler)
+router.post('/doUpdateLotStatus', handler_doUpdateLotStatus)
 
-router.post('/doMoveLotStatusUp', handler_doMoveLotStatusUp as RequestHandler)
+router.post('/doMoveLotStatusUp', handler_doMoveLotStatusUp)
 
-router.post(
-  '/doMoveLotStatusDown',
-  handler_doMoveLotStatusDown as RequestHandler
-)
+router.post('/doMoveLotStatusDown', handler_doMoveLotStatusDown)
 
-router.post('/doDeleteLotStatus', handler_doDeleteLotStatus as RequestHandler)
+router.post('/doDeleteLotStatus', handler_doDeleteLotStatus)
 
 // Config Tables - Lot Occupant Types
 
-router.post(
-  '/doAddLotOccupantType',
-  handler_doAddLotOccupantType as RequestHandler
-)
+router.post('/doAddLotOccupantType', handler_doAddLotOccupantType)
 
-router.post(
-  '/doUpdateLotOccupantType',
-  handler_doUpdateLotOccupantType as RequestHandler
-)
+router.post('/doUpdateLotOccupantType', handler_doUpdateLotOccupantType)
 
-router.post(
-  '/doMoveLotOccupantTypeUp',
-  handler_doMoveLotOccupantTypeUp as RequestHandler
-)
+router.post('/doMoveLotOccupantTypeUp', handler_doMoveLotOccupantTypeUp)
 
-router.post(
-  '/doMoveLotOccupantTypeDown',
-  handler_doMoveLotOccupantTypeDown as RequestHandler
-)
+router.post('/doMoveLotOccupantTypeDown', handler_doMoveLotOccupantTypeDown)
 
-router.post(
-  '/doDeleteLotOccupantType',
-  handler_doDeleteLotOccupantType as RequestHandler
-)
+router.post('/doDeleteLotOccupantType', handler_doDeleteLotOccupantType)
 
 /*
  * Database Maintenance
@@ -330,9 +243,9 @@ router.post(
 
 router.get('/database', handler_database)
 
-router.post('/doBackupDatabase', handler_doBackupDatabase as RequestHandler)
+router.post('/doBackupDatabase', handler_doBackupDatabase)
 
-router.post('/doCleanupDatabase', handler_doCleanupDatabase as RequestHandler)
+router.post('/doCleanupDatabase', handler_doCleanupDatabase)
 
 // Ntfy Startup
 

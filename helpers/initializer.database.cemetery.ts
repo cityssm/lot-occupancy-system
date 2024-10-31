@@ -1,3 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+
 import Debug from 'debug'
 
 import { lotOccupancyDB as databasePath } from '../data/databasePaths.js'

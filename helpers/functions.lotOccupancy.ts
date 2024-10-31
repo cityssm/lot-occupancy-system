@@ -1,4 +1,8 @@
-import type { LotOccupancy, LotOccupancyFee, LotOccupancyOccupant } from '../types/recordTypes'
+import type {
+  LotOccupancy,
+  LotOccupancyFee,
+  LotOccupancyOccupant
+} from '../types/recordTypes'
 
 export function filterOccupantsByLotOccupantType(
   lotOccupancy: LotOccupancy,
@@ -7,12 +11,9 @@ export function filterOccupantsByLotOccupantType(
   const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase()
 
   return (lotOccupancy.lotOccupancyOccupants ?? []).filter(
-    (possibleOccupant) => {
-      return (
-        (possibleOccupant.lotOccupantType as string).toLowerCase() ===
-        lotOccupantTypeLowerCase
-      )
-    }
+    (possibleOccupant) =>
+      (possibleOccupant.lotOccupantType as string).toLowerCase() ===
+      lotOccupantTypeLowerCase
   )
 }
 
@@ -23,12 +24,9 @@ export function getFieldValueByOccupancyTypeField(
   const occupancyTypeFieldLowerCase = occupancyTypeField.toLowerCase()
 
   const field = (lotOccupancy.lotOccupancyFields ?? []).find(
-    (possibleField) => {
-      return (
-        (possibleField.occupancyTypeField as string).toLowerCase() ===
-        occupancyTypeFieldLowerCase
-      )
-    }
+    (possibleField) =>
+      (possibleField.occupancyTypeField as string).toLowerCase() ===
+      occupancyTypeFieldLowerCase
   )
 
   if (field === undefined) {
@@ -45,19 +43,17 @@ export function getFeesByFeeCategory(
 ): LotOccupancyFee[] {
   const feeCategoryLowerCase = feeCategory.toLowerCase()
 
-  return (lotOccupancy.lotOccupancyFees ?? []).filter((possibleFee) => {
-    return feeCategoryContains
+  return (lotOccupancy.lotOccupancyFees ?? []).filter((possibleFee) =>
+    feeCategoryContains
       ? (possibleFee.feeCategory as string)
           .toLowerCase()
           .includes(feeCategoryLowerCase)
       : (possibleFee.feeCategory as string).toLowerCase() ===
-          feeCategoryLowerCase
-  })
+        feeCategoryLowerCase
+  )
 }
 
-export function getTransactionTotal(
-  lotOccupancy: LotOccupancy
-): number {
+export function getTransactionTotal(lotOccupancy: LotOccupancy): number {
   let transactionTotal = 0
 
   for (const transaction of lotOccupancy.lotOccupancyTransactions ?? []) {

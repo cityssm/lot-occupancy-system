@@ -1,10 +1,5 @@
 import Debug from 'debug'
-import {
-  type Request,
-  type RequestHandler,
-  type Response,
-  Router
-} from 'express'
+import { type Request, type Response, Router } from 'express'
 
 import { useTestDatabases } from '../data/databasePaths.js'
 import { getApiKey } from '../helpers/functions.api.js'
@@ -41,7 +36,11 @@ function getHandler(request: Request, response: Response): void {
 }
 
 async function postHandler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    { userName: string; password: string; redirect: string }
+  >,
   response: Response
 ): Promise<void> {
   const userName = (
@@ -72,28 +71,22 @@ async function postHandler(
     isAuthenticated = await authenticate(userName, passwordPlain)
   }
 
-  let userObject: User | undefined
+  let userObject: User | undefined = undefined
 
   if (isAuthenticated) {
     const userNameLowerCase = userName.toLowerCase()
 
     const canLogin = getConfigProperty('users.canLogin').some(
-      (currentUserName) => {
-        return userNameLowerCase === currentUserName.toLowerCase()
-      }
+      (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
     )
 
     if (canLogin) {
       const canUpdate = getConfigProperty('users.canUpdate').some(
-        (currentUserName) => {
-          return userNameLowerCase === currentUserName.toLowerCase()
-        }
+        (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
       )
 
       const isAdmin = getConfigProperty('users.isAdmin').some(
-        (currentUserName) => {
-          return userNameLowerCase === currentUserName.toLowerCase()
-        }
+        (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
       )
 
       const apiKey = await getApiKey(userNameLowerCase)
@@ -123,9 +116,6 @@ async function postHandler(
   }
 }
 
-router
-  .route('/')
-  .get(getHandler)
-  .post(postHandler as RequestHandler)
+router.route('/').get(getHandler).post(postHandler)
 
 export default router

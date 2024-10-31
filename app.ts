@@ -229,7 +229,7 @@ app.use(`${urlPrefix}/dashboard`, sessionChecker, routerDashboard)
 
 app.use(
   `${urlPrefix}/api/:apiKey`,
-  permissionHandlers.apiGetHandler as RequestHandler,
+  permissionHandlers.apiGetHandler,
   routerApi
 )
 

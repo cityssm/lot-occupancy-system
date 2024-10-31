@@ -12,7 +12,7 @@ export const config = tseslint.config(...configWebApp, {
       'warn',
       {
         cspell: {
-          words: [...cspellWords, 'ical', 'ntfy']
+          words: [...cspellWords, 'ical', 'preneed', 'ntfy']
         }
       }
     ]

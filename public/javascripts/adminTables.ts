@@ -23,10 +23,9 @@ declare const bulmaJS: BulmaJS
 
     // eslint-disable-next-line no-unsanitized/property
     ;(
-      inputElement.closest('.field')?.querySelectorAll(
-        '.button.is-static'
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      ) as NodeListOf<HTMLButtonElement>
+      inputElement
+        .closest('.field')
+        ?.querySelectorAll('.button.is-static') as NodeListOf<HTMLButtonElement>
     )[1].innerHTML =
       `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`
   }

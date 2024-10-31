@@ -1,6 +1,4 @@
 "use strict";
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
@@ -64,9 +62,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function openEditOccupancyType(clickEvent) {
         const occupancyTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--occupancyType').dataset.occupancyTypeId ?? '', 10);
-        const occupancyType = occupancyTypes.find((currentOccupancyType) => {
-            return occupancyTypeId === currentOccupancyType.occupancyTypeId;
-        });
+        const occupancyType = occupancyTypes.find((currentOccupancyType) => occupancyTypeId === currentOccupancyType.occupancyTypeId);
         let editCloseModalFunction;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
@@ -142,15 +138,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function openEditOccupancyTypeField(occupancyTypeId, occupancyTypeFieldId) {
         let occupancyType;
         if (occupancyTypeId) {
-            occupancyType = occupancyTypes.find((currentOccupancyType) => {
-                return currentOccupancyType.occupancyTypeId === occupancyTypeId;
-            });
+            occupancyType = occupancyTypes.find((currentOccupancyType) => currentOccupancyType.occupancyTypeId === occupancyTypeId);
         }
         const occupancyTypeField = (occupancyType
             ? occupancyType.occupancyTypeFields ?? []
-            : allOccupancyTypeFields).find((currentOccupancyTypeField) => {
-            return (currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId);
-        });
+            : allOccupancyTypeFields).find((currentOccupancyTypeField) => currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId);
         let fieldTypeElement;
         let minimumLengthElement;
         let maximumLengthElement;

@@ -67,7 +67,7 @@ export async function moveFeeDownToBottom(
   return true
 }
 
-export async function moveFeeUp(feeId: number): Promise<boolean> {
+export async function moveFeeUp(feeId: number | string): Promise<boolean> {
   const database = await acquireConnection()
 
   const currentFee = (await getFee(feeId, database)) as Fee

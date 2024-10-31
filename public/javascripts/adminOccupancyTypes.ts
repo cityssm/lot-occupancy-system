@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
@@ -139,9 +136,10 @@ type ResponseJSON =
       10
     )
 
-    const occupancyType = occupancyTypes.find((currentOccupancyType) => {
-      return occupancyTypeId === currentOccupancyType.occupancyTypeId
-    }) as OccupancyType
+    const occupancyType = occupancyTypes.find(
+      (currentOccupancyType) =>
+        occupancyTypeId === currentOccupancyType.occupancyTypeId
+    ) as OccupancyType
 
     let editCloseModalFunction: () => void
 
@@ -289,20 +287,20 @@ type ResponseJSON =
     let occupancyType: OccupancyType | undefined
 
     if (occupancyTypeId) {
-      occupancyType = occupancyTypes.find((currentOccupancyType) => {
-        return currentOccupancyType.occupancyTypeId === occupancyTypeId
-      })
+      occupancyType = occupancyTypes.find(
+        (currentOccupancyType) =>
+          currentOccupancyType.occupancyTypeId === occupancyTypeId
+      )
     }
 
     const occupancyTypeField = (
       occupancyType
         ? occupancyType.occupancyTypeFields ?? []
         : allOccupancyTypeFields
-    ).find((currentOccupancyTypeField) => {
-      return (
+    ).find(
+      (currentOccupancyTypeField) =>
         currentOccupancyTypeField.occupancyTypeFieldId === occupancyTypeFieldId
-      )
-    }) as OccupancyTypeField
+    ) as OccupancyTypeField
 
     let fieldTypeElement: HTMLSelectElement
     let minimumLengthElement: HTMLInputElement

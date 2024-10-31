@@ -4,13 +4,13 @@ import { updateRecord } from '../../database/updateRecord.js'
 import { getLotTypes } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<unknown, unknown, { lotTypeId: string; lotType: string }>,
   response: Response
 ): Promise<void> {
   const success = await updateRecord(
     'LotTypes',
-    request.body.lotTypeId as string,
-    request.body.lotType as string,
+    request.body.lotTypeId,
+    request.body.lotType,
     request.session.user as User
   )
 
@@ -21,4 +21,3 @@ export default async function handler(
     lotTypes
   })
 }
-

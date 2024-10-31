@@ -4,13 +4,17 @@ import { updateRecord } from '../../database/updateRecord.js'
 import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    { workOrderMilestoneTypeId: string; workOrderMilestoneType: string }
+  >,
   response: Response
 ): Promise<void> {
   const success = await updateRecord(
     'WorkOrderMilestoneTypes',
-    request.body.workOrderMilestoneTypeId as string,
-    request.body.workOrderMilestoneType as string,
+    request.body.workOrderMilestoneTypeId,
+    request.body.workOrderMilestoneType,
     request.session.user as User
   )
 

@@ -15,7 +15,5 @@ export async function apiKeyIsValid(request) {
     if (userName === undefined) {
         return false;
     }
-    return getConfigProperty('users.canLogin').some((currentUserName) => {
-        return userName === currentUserName.toLowerCase();
-    });
+    return getConfigProperty('users.canLogin').some((currentUserName) => userName === currentUserName.toLowerCase());
 }

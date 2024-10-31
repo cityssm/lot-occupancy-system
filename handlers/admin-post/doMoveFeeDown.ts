@@ -4,7 +4,7 @@ import getFeeCategories from '../../database/getFeeCategories.js'
 import { moveFeeDown, moveFeeDownToBottom } from '../../database/moveFee.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<unknown, unknown, { feeId: string; moveToEnd: '0' | '1' }>,
   response: Response
 ): Promise<void> {
   const success =

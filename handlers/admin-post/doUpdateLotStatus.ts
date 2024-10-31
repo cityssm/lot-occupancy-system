@@ -4,13 +4,17 @@ import { updateRecord } from '../../database/updateRecord.js'
 import { getLotStatuses } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    { lotStatusId: string; lotStatus: string }
+  >,
   response: Response
 ): Promise<void> {
   const success = await updateRecord(
     'LotStatuses',
-    request.body.lotStatusId as string,
-    request.body.lotStatus as string,
+    request.body.lotStatusId,
+    request.body.lotStatus,
     request.session.user as User
   )
 

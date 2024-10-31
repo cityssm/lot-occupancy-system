@@ -7,12 +7,19 @@ import {
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    { workOrderTypeId: string; moveToEnd: '0' | '1' }
+  >,
   response: Response
 ): Promise<void> {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveRecordDownToBottom('WorkOrderTypes', request.body.workOrderTypeId)
+      ? await moveRecordDownToBottom(
+          'WorkOrderTypes',
+          request.body.workOrderTypeId
+        )
       : await moveRecordDown('WorkOrderTypes', request.body.workOrderTypeId)
 
   const workOrderTypes = await getWorkOrderTypes()
@@ -22,4 +29,3 @@ export default async function handler(
     workOrderTypes
   })
 }
-

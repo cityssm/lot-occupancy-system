@@ -7,13 +7,17 @@ import {
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    { occupancyTypeId: string; occupancyType: string }
+  >,
   response: Response
 ): Promise<void> {
   const success = await updateRecord(
     'OccupancyTypes',
-    request.body.occupancyTypeId as string,
-    request.body.occupancyType as string,
+    request.body.occupancyTypeId,
+    request.body.occupancyType,
     request.session.user as User
   )
 

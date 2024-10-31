@@ -39,19 +39,13 @@ async function postHandler(request, response) {
     else if (userName !== '' && passwordPlain !== '') {
         isAuthenticated = await authenticate(userName, passwordPlain);
     }
-    let userObject;
+    let userObject = undefined;
     if (isAuthenticated) {
         const userNameLowerCase = userName.toLowerCase();
-        const canLogin = getConfigProperty('users.canLogin').some((currentUserName) => {
-            return userNameLowerCase === currentUserName.toLowerCase();
-        });
+        const canLogin = getConfigProperty('users.canLogin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
         if (canLogin) {
-            const canUpdate = getConfigProperty('users.canUpdate').some((currentUserName) => {
-                return userNameLowerCase === currentUserName.toLowerCase();
-            });
-            const isAdmin = getConfigProperty('users.isAdmin').some((currentUserName) => {
-                return userNameLowerCase === currentUserName.toLowerCase();
-            });
+            const canUpdate = getConfigProperty('users.canUpdate').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+            const isAdmin = getConfigProperty('users.isAdmin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
             const apiKey = await getApiKey(userNameLowerCase);
             userObject = {
                 userName: userNameLowerCase,
@@ -76,8 +70,5 @@ async function postHandler(request, response) {
         });
     }
 }
-router
-    .route('/')
-    .get(getHandler)
-    .post(postHandler);
+router.route('/').get(getHandler).post(postHandler);
 export default router;

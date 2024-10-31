@@ -13,34 +13,34 @@ import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js'
 
 export const router = Router()
 
-router.get('/', handler_search as RequestHandler)
+router.get('/', handler_search)
 
-router.get('/new', updateGetHandler, handler_new as RequestHandler)
+router.get('/new', updateGetHandler, handler_new)
 
-router.get('/:mapId', handler_view as RequestHandler)
+router.get('/:mapId', handler_view)
 
-router.get('/:mapId/next', handler_next as RequestHandler)
+router.get('/:mapId/next', handler_next)
 
-router.get('/:mapId/previous', handler_previous as RequestHandler)
+router.get('/:mapId/previous', handler_previous)
 
-router.get('/:mapId/edit', updateGetHandler, handler_edit as RequestHandler)
+router.get('/:mapId/edit', updateGetHandler, handler_edit)
 
 router.post(
   '/doCreateMap',
   updatePostHandler,
-  handler_doCreateMap as RequestHandler
+  handler_doCreateMap
 )
 
 router.post(
   '/doUpdateMap',
   updatePostHandler,
-  handler_doUpdateMap as RequestHandler
+  handler_doUpdateMap
 )
 
 router.post(
   '/doDeleteMap',
   updatePostHandler,
-  handler_doDeleteMap as RequestHandler
+  handler_doDeleteMap
 )
 
 export default router

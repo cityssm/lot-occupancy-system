@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 
-let mapSVGs: string[]
+let mapSVGs: string[] | undefined
 
 export async function getMapSVGs(): Promise<string[]> {
   if (mapSVGs === undefined) {

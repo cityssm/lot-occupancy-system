@@ -30,15 +30,17 @@ async function authenticateViaActiveDirectory(
 }
 
 export async function authenticate(
-  userName: string,
-  password: string
+  userName: string | undefined,
+  password: string | undefined
 ): Promise<boolean> {
   if ((userName ?? '') === '' || (password ?? '') === '') {
     return false
   }
 
-  return await authenticateViaActiveDirectory(userName, password)
+  return await authenticateViaActiveDirectory(userName ?? '', password ?? '')
 }
+
+/* eslint-disable @cspell/spellchecker */
 
 const safeRedirects = new Set([
   '/admin/cleanup',
@@ -58,6 +60,8 @@ const safeRedirects = new Set([
   '/workorders/outlook',
   '/reports'
 ])
+
+/* eslint-enable @cspell/spellchecker */
 
 const recordUrl = /^\/(?:maps|lots|lotoccupancies|workorders)\/\d+(?:\/edit)?$/
 

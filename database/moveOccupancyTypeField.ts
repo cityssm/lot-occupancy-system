@@ -6,7 +6,7 @@ import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 function getCurrentField(
-  occupancyTypeFieldId: number,
+  occupancyTypeFieldId: number | string,
   connectedDatabase: PoolConnection
 ): { occupancyTypeId?: number; orderNumber: number } {
   return connectedDatabase
@@ -22,7 +22,7 @@ function getCurrentField(
 }
 
 export async function moveOccupancyTypeFieldDown(
-  occupancyTypeFieldId: number
+  occupancyTypeFieldId: number | string
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -57,7 +57,7 @@ export async function moveOccupancyTypeFieldDown(
 }
 
 export async function moveOccupancyTypeFieldDownToBottom(
-  occupancyTypeFieldId: number
+  occupancyTypeFieldId: number | string
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -116,7 +116,7 @@ export async function moveOccupancyTypeFieldDownToBottom(
 }
 
 export async function moveOccupancyTypeFieldUp(
-  occupancyTypeFieldId: number
+  occupancyTypeFieldId: number | string
 ): Promise<boolean> {
   const database = await acquireConnection()
 
@@ -156,7 +156,7 @@ export async function moveOccupancyTypeFieldUp(
 }
 
 export async function moveOccupancyTypeFieldUpToTop(
-  occupancyTypeFieldId: number
+  occupancyTypeFieldId: number | string
 ): Promise<boolean> {
   const database = await acquireConnection()
 

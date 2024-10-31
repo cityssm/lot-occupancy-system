@@ -1,3 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @cspell/spellchecker, no-secrets/no-secrets */
+
 import sqlite from 'better-sqlite3'
 import debug from 'debug'
 
@@ -62,7 +65,6 @@ const createStatements = [
     minimumLength smallint not null default 1 check (minimumLength >= 0), maximumLength smallint not null default 100 check (maximumLength >= 0), orderNumber smallint not null default 0, ${recordColumns},
     foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId))`,
     
-  // eslint-disable-next-line no-secrets/no-secrets
   'create index if not exists idx_occupancytypefields_ordernumber on OccupancyTypeFields (occupancyTypeId, orderNumber, occupancyTypeField)',
   `create table if not exists OccupancyTypePrints (occupancyTypeId integer not null, printEJS varchar(100) not null, orderNumber smallint not null default 0, ${recordColumns}, primary key (occupancyTypeId, printEJS), foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId))`,
   'create index if not exists idx_occupancytypeprints_ordernumber on OccupancyTypePrints (occupancyTypeId, orderNumber, printEJS)',
@@ -73,7 +75,7 @@ const createStatements = [
     occupantCommentTitle varchar(50) not null default '',
     orderNumber smallint not null default 0,
     ${recordColumns})`,
-  // eslint-disable-next-line no-secrets/no-secrets
+
   'create index if not exists idx_lotoccupanttypes_ordernumber on LotOccupantTypes (orderNumber, lotOccupantType)',
   `create table if not exists LotOccupancies (lotOccupancyId integer not null primary key autoincrement, occupancyTypeId integer not null, lotId integer, occupancyStartDate integer not null check (occupancyStartDate > 0), occupancyEndDate integer check (occupancyEndDate > 0), ${recordColumns}, foreign key (lotId) references Lots (lotId), foreign key (occupancyTypeId) references OccupancyTypes (occupancyTypeId))`,
   `create table if not exists LotOccupancyOccupants (lotOccupancyId integer not null, lotOccupantIndex  integer not null, occupantName varchar(200) not null, occupantAddress1 varchar(50), occupantAddress2 varchar(50), occupantCity varchar(20), occupantProvince varchar(2), occupantPostalCode varchar(7), occupantPhoneNumber varchar(30), occupantEmailAddress varchar(200), lotOccupantTypeId integer not null, occupantComment text not null default '', ${recordColumns}, primary key (lotOccupancyId, lotOccupantIndex), foreign key (lotOccupancyId) references LotOccupancies (lotOccupancyId), foreign key (lotOccupantTypeId) references LotOccupantTypes (lotOccupantTypeId)) without rowid`,

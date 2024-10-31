@@ -1,4 +1,3 @@
-// skipcq: JS-C1003 - Added to ReportData
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 
 import getLot from '../database/getLot.js'
@@ -6,9 +5,7 @@ import getLotOccupancy from '../database/getLotOccupancy.js'
 import getWorkOrder from '../database/getWorkOrder.js'
 import type { Lot, LotOccupancy, WorkOrder } from '../types/recordTypes.js'
 
-// skipcq: JS-C1003 - Added to ReportData
 import * as configFunctions from './functions.config.js'
-// skipcq: JS-C1003 - Added to ReportData
 import * as lotOccupancyFunctions from './functions.lotOccupancy.js'
 
 interface PrintConfig {
@@ -102,7 +99,7 @@ export async function getReportData(
   ) {
     const lotOccupancy = await getLotOccupancy(requestQuery.lotOccupancyId)
 
-    if (lotOccupancy !== undefined && (lotOccupancy?.lotId ?? -1) !== -1) {
+    if (lotOccupancy !== undefined && (lotOccupancy.lotId ?? -1) !== -1) {
       reportData.lot = await getLot(lotOccupancy.lotId ?? -1)
     }
 

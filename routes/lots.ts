@@ -1,4 +1,4 @@
-import { type RequestHandler, Router } from 'express'
+import { Router } from 'express'
 
 import handler_edit from '../handlers/lots-get/edit.js'
 import handler_new from '../handlers/lots-get/new.js'
@@ -22,64 +22,64 @@ export const router = Router()
  * Lot Search
  */
 
-router.get('/', handler_search as RequestHandler)
+router.get('/', handler_search)
 
-router.post('/doSearchLots', handler_doSearchLots as RequestHandler)
+router.post('/doSearchLots', handler_doSearchLots)
 
 /*
  * Lot View / Edit
  */
 
-router.get('/new', updateGetHandler, handler_new as RequestHandler)
+router.get('/new', updateGetHandler, handler_new)
 
-router.get('/:lotId', handler_view as RequestHandler)
+router.get('/:lotId', handler_view)
 
-router.get('/:lotId/next', handler_next as RequestHandler)
+router.get('/:lotId/next', handler_next)
 
-router.get('/:lotId/previous', handler_previous as RequestHandler)
+router.get('/:lotId/previous', handler_previous)
 
-router.get('/:lotId/edit', updateGetHandler, handler_edit as RequestHandler)
+router.get('/:lotId/edit', updateGetHandler, handler_edit)
 
 router.post(
   '/doGetLotTypeFields',
   updatePostHandler,
-  handler_doGetLotTypeFields as RequestHandler
+  handler_doGetLotTypeFields
 )
 
 router.post(
   '/doCreateLot',
   updatePostHandler,
-  handler_doCreateLot as RequestHandler
+  handler_doCreateLot
 )
 
 router.post(
   '/doUpdateLot',
   updatePostHandler,
-  handler_doUpdateLot as RequestHandler
+  handler_doUpdateLot
 )
 
 router.post(
   '/doDeleteLot',
   updatePostHandler,
-  handler_doDeleteLot as RequestHandler
+  handler_doDeleteLot
 )
 
 router.post(
   '/doAddLotComment',
   updatePostHandler,
-  handler_doAddLotComment as RequestHandler
+  handler_doAddLotComment
 )
 
 router.post(
   '/doUpdateLotComment',
   updatePostHandler,
-  handler_doUpdateLotComment as RequestHandler
+  handler_doUpdateLotComment
 )
 
 router.post(
   '/doDeleteLotComment',
   updatePostHandler,
-  handler_doDeleteLotComment as RequestHandler
+  handler_doDeleteLotComment
 )
 
 export default router

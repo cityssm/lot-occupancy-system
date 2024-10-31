@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function refreshFontAwesomeIcon(changeEvent) {
         const inputElement = changeEvent.currentTarget;
         const fontAwesomeIconClass = inputElement.value;
-        (inputElement.closest('.field')?.querySelectorAll('.button.is-static'
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        ))[1].innerHTML =
+        (inputElement
+            .closest('.field')
+            ?.querySelectorAll('.button.is-static'))[1].innerHTML =
             `<i class="fas fa-fw fa-${fontAwesomeIconClass}" aria-hidden="true"></i>`;
     }
     /**

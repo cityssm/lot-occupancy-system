@@ -10,7 +10,11 @@ import {
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    { occupancyTypeId: string; printEJS: string; moveToEnd: '0' | '1' }
+  >,
   response: Response
 ): Promise<void> {
   const success =
@@ -33,4 +37,3 @@ export default async function handler(
     allOccupancyTypeFields
   })
 }
-

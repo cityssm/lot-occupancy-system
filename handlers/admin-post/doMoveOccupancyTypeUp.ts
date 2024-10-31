@@ -1,16 +1,17 @@
 import type { Request, Response } from 'express'
 
-import {
-  moveRecordUp,
-  moveRecordUpToTop
-} from '../../database/moveRecord.js'
+import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js'
 import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    { occupancyTypeId: string; moveToEnd: '0' | '1' }
+  >,
   response: Response
 ): Promise<void> {
   const success =
@@ -27,4 +28,3 @@ export default async function handler(
     allOccupancyTypeFields
   })
 }
-
