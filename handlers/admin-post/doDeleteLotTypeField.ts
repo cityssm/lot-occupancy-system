@@ -4,7 +4,7 @@ import { deleteRecord } from '../../database/deleteRecord.js'
 import { getLotTypes } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<unknown, unknown, { lotTypeFieldId: string }>,
   response: Response
 ): Promise<void> {
   const success = await deleteRecord(
@@ -20,4 +20,3 @@ export default async function handler(
     lotTypes
   })
 }
-

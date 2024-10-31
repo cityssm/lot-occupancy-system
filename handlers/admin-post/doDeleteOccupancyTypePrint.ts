@@ -7,12 +7,16 @@ import {
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    { occupancyTypeId: string; printEJS: string }
+  >,
   response: Response
 ): Promise<void> {
   const success = await deleteOccupancyTypePrint(
-    request.body.occupancyTypeId as string,
-    request.body.printEJS as string,
+    request.body.occupancyTypeId,
+    request.body.printEJS,
     request.session.user as User
   )
 
@@ -25,4 +29,3 @@ export default async function handler(
     allOccupancyTypeFields
   })
 }
-

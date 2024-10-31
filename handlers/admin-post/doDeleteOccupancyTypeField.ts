@@ -7,12 +7,12 @@ import {
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<unknown, unknown, { occupancyTypeFieldId: string }>,
   response: Response
 ): Promise<void> {
   const success = await deleteRecord(
     'OccupancyTypeFields',
-    request.body.occupancyTypeFieldId as string,
+    request.body.occupancyTypeFieldId,
     request.session.user as User
   )
 
@@ -25,4 +25,3 @@ export default async function handler(
     allOccupancyTypeFields
   })
 }
-

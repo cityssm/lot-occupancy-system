@@ -4,12 +4,12 @@ import { deleteRecord } from '../../database/deleteRecord.js'
 import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<unknown, unknown, { workOrderMilestoneTypeId: string }>,
   response: Response
 ): Promise<void> {
   const success = await deleteRecord(
     'WorkOrderMilestoneTypes',
-    request.body.workOrderMilestoneTypeId as string,
+    request.body.workOrderMilestoneTypeId,
     request.session.user as User
   )
 
@@ -20,4 +20,3 @@ export default async function handler(
     workOrderMilestoneTypes
   })
 }
-

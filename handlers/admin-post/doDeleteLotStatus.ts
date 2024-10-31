@@ -4,12 +4,12 @@ import { deleteRecord } from '../../database/deleteRecord.js'
 import { getLotStatuses } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<unknown, unknown, { lotStatusId: string }>,
   response: Response
 ): Promise<void> {
   const success = await deleteRecord(
     'LotStatuses',
-    request.body.lotStatusId as string,
+    request.body.lotStatusId,
     request.session.user as User
   )
 

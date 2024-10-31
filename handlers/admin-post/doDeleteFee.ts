@@ -4,12 +4,12 @@ import { deleteRecord } from '../../database/deleteRecord.js'
 import getFeeCategories from '../../database/getFeeCategories.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<unknown, unknown, { feeId: string }>,
   response: Response
 ): Promise<void> {
   const success = await deleteRecord(
     'Fees',
-    request.body.feeId as string,
+    request.body.feeId,
     request.session.user as User
   )
 
