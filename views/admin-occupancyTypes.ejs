@@ -37,46 +37,46 @@
       </div>
       
       <div class="tabs is-boxed" role="tablist">
-          <ul role="presentation">
-              <li class="is-active" role="presentation">
-                  <a href="#tab--occupancyTypes">
-                      <i class="fas fa-user-friends" aria-hidden="true"></i>
-                      <span class="ml-2">Types and Fields</span>
-                  </a>
-              </li>
-              <li role="presentation">
-                  <a href="#tab--occupancyTypePrints">
-                      <i class="fas fa-print" aria-hidden="true"></i>
-                      <span class="ml-2">Prints</span>
-                  </a>
-              </li>
-          </ul>
+        <ul role="presentation">
+          <li class="is-active" role="presentation">
+            <a href="#tab--occupancyTypes">
+              <i class="fas fa-user-friends" aria-hidden="true"></i>
+              <span class="ml-2">Types and Fields</span>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#tab--occupancyTypePrints">
+              <i class="fas fa-print" aria-hidden="true"></i>
+              <span class="ml-2">Prints</span>
+            </a>
+          </li>
+        </ul>
       </div>
       <div class="tab-container">
-          <div id="tab--occupancyTypes">
-              <div id="container--occupancyTypes"></div>
-          </div>
-          <div class="is-hidden" id="tab--occupancyTypePrints">
-              <div class="columns">
-                  <div class="column">
-                      <div id="container--occupancyTypePrints"></div>
-                  </div>
-                  <div class="column is-4">
-                      <div class="box">
-                          <h2 class="title is-6">Available Prints</h2>
-                          <ul class="fa-ul">
-                              <% for (const [printEJS, printTitle] of Object.entries(occupancyTypePrintTitles)) { %>
-                                  <% const printIconClass = printEJS.startsWith("pdf/") ? "fa-file-pdf" : "fa-file" %>
-                                  <li>
-                                      <span class="fa-li"><i class="fas <%= printIconClass %>" aria-hidden="true"></i></span>
-                                      <%= printTitle %>
-                                  </li>
-                              <% } %>
-                          </ul>
-                      </div>
-                  </div>
+        <div id="tab--occupancyTypes">
+          <div id="container--occupancyTypes"></div>
+        </div>
+        <div class="is-hidden" id="tab--occupancyTypePrints">
+          <div class="columns">
+            <div class="column">
+              <div id="container--occupancyTypePrints"></div>
+            </div>
+            <div class="column is-4">
+              <div class="box">
+                <h2 class="title is-6">Available Prints</h2>
+                <ul class="fa-ul">
+                  <% for (const [printEJS, printTitle] of Object.entries(occupancyTypePrintTitles)) { %>
+                    <% const printIconClass = printEJS.startsWith("pdf/") ? "fa-file-pdf" : "fa-file" %>
+                    <li>
+                      <span class="fa-li"><i class="fas <%= printIconClass %>" aria-hidden="true"></i></span>
+                      <%= printTitle %>
+                    </li>
+                  <% } %>
+                </ul>
               </div>
+            </div>
           </div>
+        </div>
       </div>
   </div>
 </div>
